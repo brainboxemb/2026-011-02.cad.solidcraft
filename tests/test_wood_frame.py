@@ -1,16 +1,20 @@
 """Regressions for the upright wooden HUB75 frame and native groups."""
 from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'models/advanced/hub75-wood-frame/scpf'))
 import unittest
 from scpf.runner import run_script
 from components.hub75_basic import Hub75PanelBasic
 from components.hub75 import Hub75Panel
 from components.corner_bracket import CornerBracket
-from models.advanced.hub75_wood_frame.parts.wood import (
+from hub75_wood_frame.parts.wood import (
     SideWall, BottomBoard, RoofBoard, BackBoard, Window,
     GlassSideStrip, GlassCrossStrip,
 )
 ROOT = Path(__file__).resolve().parents[1]
-WOOD = ROOT / "models/advanced/hub75_wood_frame/scpf/model.py"
+WOOD = ROOT / "models/advanced/hub75-wood-frame/scpf/model.py"
 
 
 def actions():
@@ -87,7 +91,7 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_glass_frame_is_mitred_rounded_and_in_front(self):
         from math import sqrt
-        from models.advanced.hub75_wood_frame.parts.wood import (
+        from hub75_wood_frame.parts.wood import (
             _rounded_side_profile, _rounded_cross_profile,
         )
         radius = CornerBracket.inside_corner_radius

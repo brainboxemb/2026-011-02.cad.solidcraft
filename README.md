@@ -23,7 +23,7 @@ Then choose **one** model to send to the active SolidCraft design:
 
 ```powershell
 # Wooden frame + five basic HUB75 modules + shared printed corner brackets
-python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
 
 # Detailed HUB75 panel, original two-occurrence regression
 python -m scpf models/component-examples/hub75-panel/scpf/model.py --connect
@@ -73,7 +73,7 @@ After updating, open a **new empty SolidCraft document** and run, from the
 repository root:
 
 ```powershell
-python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
 ```
 
 Alternatively, if you are already in the model's own directory:
@@ -97,14 +97,14 @@ manually created `ext/` folder are needed.
 `--out` **only generates JSON**; it does not connect to the GUI:
 
 ```powershell
-python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --out output/wood-box.json
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --out output/wood-box.json
 ```
 
 For a separate native CLI run and generated `.sc` / STEP / measurements
 (and optionally a PNG), use:
 
 ```powershell
-.\scripts\qualify-solidcraft.ps1 -Model models/advanced/hub75_wood_frame/scpf/model.py -Snapshot
+.\scripts\qualify-solidcraft.ps1 -Model models/advanced/hub75-wood-frame/scpf/model.py -Snapshot
 ```
 
 The CLI workflow requires `solidcraft-cli` in PATH or `-CliPath`. It
@@ -145,7 +145,7 @@ the old CAD cheatsheet URL redirects there.
 - [Corner Bracket](models/component-examples/corner-bracket/README.md)
 - [HUB75 Panel / two occurrences and four rear bays](models/component-examples/hub75-panel/README.md)
 - [Basic HUB75 Screen / five occurrences](models/advanced/hub75-screen/README.md)
-- [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/advanced/hub75_wood_frame/README.md)
+- [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/advanced/hub75-wood-frame/README.md)
 - [Plastic Enclosure Pi](models/basic/plastic-enclosure-pi/README.md)
 - [Plate](models/basic/plate/README.md) and [CSG comparison](models/basic/csg-cube/README.md)
 

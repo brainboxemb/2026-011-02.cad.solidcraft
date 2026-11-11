@@ -17,7 +17,7 @@ SOURCES = {
     "corner-bracket": "models/component-examples/corner-bracket/scpf/model.py",
     "hub75-panel": "models/component-examples/hub75-panel/scpf/model.py",
     "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
-    "hub75-wood-frame": "models/advanced/hub75_wood_frame/scpf/model.py",
+    "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
 }
 SECTIONS = {
     "basic": ("Basic Models", "Small, transparent models used to develop and verify SCPF features.",

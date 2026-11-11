@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75BasicBox</h1><p>Upright wooden enclosure with four hole-free corner brackets</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">131 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span></div>
+<span class="badge">136 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, four rounded corner brackets without screw holes and four 15 × 15 mm wooden glazing retainers. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.</p></section>
@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create one lightweight bounding-box panel</li><li>Place five native panel occurrences on the 160 mm grid</li><li>Add two 15 mm side boards and bottom/roof</li><li>Place separate 9 mm back and 4 mm window</li><li>Place four hole-free CornerBracket occurrences under one native parent</li><li>Keep advanced HUB75 PCB and connector details separate</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;HUB75 wooden enclosure: grouped geometry, physically upright (Z up).
 
 Source: 55th-edition Basic Box v29, 874 x 392 mm external.
@@ -188,6 +189,30 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75PanelBasic&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75PanelBasic&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75PanelBasic&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75PanelBasic&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -196,51 +221,50 @@ WoodenHub75BasicBox()
       0.0,
       7.25,
       21.14500000000001
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
+    &quot;occurrence&quot;: &quot;Hub75PanelBasic:2&quot;,
     &quot;translate&quot;: [
       -320.0,
-      0.0,
-      0.0
+      7.25,
+      21.14500000000001
     ]
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
+    &quot;occurrence&quot;: &quot;Hub75PanelBasic:3&quot;,
     &quot;translate&quot;: [
       -160.0,
-      0.0,
-      0.0
+      7.25,
+      21.14500000000001
     ]
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
+    &quot;occurrence&quot;: &quot;Hub75PanelBasic:4&quot;,
     &quot;translate&quot;: [
       160.0,
-      0.0,
-      0.0
+      7.25,
+      21.14500000000001
     ]
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
+    &quot;occurrence&quot;: &quot;Hub75PanelBasic:5&quot;,
     &quot;translate&quot;: [
       320.0,
-      0.0,
-      0.0
+      7.25,
+      21.14500000000001
     ]
   }
 }</code></pre></li>
@@ -330,6 +354,12 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;SideWall&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -338,17 +368,16 @@ WoodenHub75BasicBox()
       -429.5,
       25.0,
       0.0
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;SideWall&quot;,
+    &quot;occurrence&quot;: &quot;SideWall:2&quot;,
     &quot;translate&quot;: [
-      859.0,
-      0.0,
+      429.5,
+      25.0,
       0.0
     ]
   }
@@ -447,8 +476,7 @@ WoodenHub75BasicBox()
       0.0,
       25.0,
       -15.0
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_width</small><pre><code>{
@@ -545,8 +573,7 @@ WoodenHub75BasicBox()
       0.0,
       37.0,
       362.0
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: BackBoard_width</small><pre><code>{
@@ -643,8 +670,7 @@ WoodenHub75BasicBox()
       0.0,
       79.5,
       -15.0
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassSideStrip_depth</small><pre><code>{
@@ -795,6 +821,12 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;GlassSideStrip&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -803,18 +835,6 @@ WoodenHub75BasicBox()
       -422.0,
       -25.5,
       0.0
-    ],
-    &quot;move_grounded&quot;: false
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;GlassSideStrip&quot;,
-    &quot;translate&quot;: [
-      844.0,
-      0.0,
-      0.0
     ]
   }
 }</code></pre></li>
@@ -822,19 +842,17 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassSideStrip:2&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        422.0,
-        -25.5,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
+    &quot;translate&quot;: [
+      422.0,
+      -25.5,
+      0.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      0.0,
+      1.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassCrossStrip_depth</small><pre><code>{
@@ -985,6 +1003,12 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;GlassCrossStrip&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -993,18 +1017,6 @@ WoodenHub75BasicBox()
       0.0,
       -25.5,
       0.0
-    ],
-    &quot;move_grounded&quot;: false
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;GlassCrossStrip&quot;,
-    &quot;translate&quot;: [
-      0.0,
-      0.0,
-      362.0
     ]
   }
 }</code></pre></li>
@@ -1012,19 +1024,17 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassCrossStrip:2&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        0.0,
-        -25.5,
-        362.0
-      ],
-      &quot;axis&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
+    &quot;translate&quot;: [
+      0.0,
+      -25.5,
+      362.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
+      0.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_bracket_width</small><pre><code>{
@@ -1318,6 +1328,24 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -1326,18 +1354,6 @@ WoodenHub75BasicBox()
       -437.0,
       -13.0,
       377.0
-    ],
-    &quot;move_grounded&quot;: false
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;CornerBracket&quot;,
-    &quot;translate&quot;: [
-      874.0,
-      0.0,
-      0.0
     ]
   }
 }</code></pre></li>
@@ -1345,79 +1361,51 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        437.0,
-        -13.0,
-        377.0
-      ],
-      &quot;axis&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;CornerBracket&quot;,
     &quot;translate&quot;: [
+      437.0,
+      -13.0,
+      377.0
+    ],
+    &quot;axis&quot;: [
       0.0,
       0.0,
-      -392.0
-    ]
+      1.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        -437.0,
-        -13.0,
-        -15.0
-      ],
-      &quot;axis&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;CornerBracket&quot;,
     &quot;translate&quot;: [
-      874.0,
+      -437.0,
+      -13.0,
+      -15.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
       0.0,
-      -392.0
-    ]
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        437.0,
-        -13.0,
-        -15.0
-      ],
-      &quot;axis&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
+    &quot;translate&quot;: [
+      437.0,
+      -13.0,
+      -15.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: Window_width</small><pre><code>{
@@ -1513,8 +1501,7 @@ WoodenHub75BasicBox()
       0.0,
       -16.0,
       1.0
-    ],
-    &quot;move_grounded&quot;: false
+    ]
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

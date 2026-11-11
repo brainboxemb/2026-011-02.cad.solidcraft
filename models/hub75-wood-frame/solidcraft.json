@@ -119,6 +119,30 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75PanelBasic:1",
@@ -126,51 +150,50 @@
           0.0,
           7.25,
           21.14500000000001
-        ],
-        "move_grounded": false
+        ]
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "Hub75PanelBasic",
+        "occurrence": "Hub75PanelBasic:2",
         "translate": [
           -320.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "Hub75PanelBasic",
+        "occurrence": "Hub75PanelBasic:3",
         "translate": [
           -160.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "Hub75PanelBasic",
+        "occurrence": "Hub75PanelBasic:4",
         "translate": [
           160.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "Hub75PanelBasic",
+        "occurrence": "Hub75PanelBasic:5",
         "translate": [
           320.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
@@ -261,6 +284,12 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "SideWall"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "SideWall:1",
@@ -268,17 +297,16 @@
           -429.5,
           25.0,
           0.0
-        ],
-        "move_grounded": false
+        ]
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "SideWall",
+        "occurrence": "SideWall:2",
         "translate": [
-          859.0,
-          0.0,
+          429.5,
+          25.0,
           0.0
         ]
       }
@@ -377,8 +405,7 @@
           0.0,
           25.0,
           -15.0
-        ],
-        "move_grounded": false
+        ]
       }
     },
     {
@@ -475,8 +502,7 @@
           0.0,
           37.0,
           362.0
-        ],
-        "move_grounded": false
+        ]
       }
     },
     {
@@ -573,8 +599,7 @@
           0.0,
           79.5,
           -15.0
-        ],
-        "move_grounded": false
+        ]
       }
     },
     {
@@ -726,24 +751,18 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassSideStrip"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "GlassSideStrip:1",
         "translate": [
           -422.0,
           -25.5,
-          0.0
-        ],
-        "move_grounded": false
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "GlassSideStrip",
-        "translate": [
-          844.0,
-          0.0,
           0.0
         ]
       }
@@ -752,19 +771,17 @@
       "command": "occurrence.move",
       "params": {
         "occurrence": "GlassSideStrip:2",
-        "to": {
-          "position": [
-            422.0,
-            -25.5,
-            0.0
-          ],
-          "axis": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "angle": "180 deg"
-        }
+        "translate": [
+          422.0,
+          -25.5,
+          0.0
+        ],
+        "axis": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
@@ -916,6 +933,12 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassCrossStrip"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "GlassCrossStrip:1",
@@ -923,18 +946,6 @@
           0.0,
           -25.5,
           0.0
-        ],
-        "move_grounded": false
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "GlassCrossStrip",
-        "translate": [
-          0.0,
-          0.0,
-          362.0
         ]
       }
     },
@@ -942,19 +953,17 @@
       "command": "occurrence.move",
       "params": {
         "occurrence": "GlassCrossStrip:2",
-        "to": {
-          "position": [
-            0.0,
-            -25.5,
-            362.0
-          ],
-          "axis": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
+        "translate": [
+          0.0,
+          -25.5,
+          362.0
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
@@ -1249,6 +1258,24 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "CornerBracket:1",
@@ -1256,18 +1283,6 @@
           -437.0,
           -13.0,
           377.0
-        ],
-        "move_grounded": false
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket",
-        "translate": [
-          874.0,
-          0.0,
-          0.0
         ]
       }
     },
@@ -1275,79 +1290,51 @@
       "command": "occurrence.move",
       "params": {
         "occurrence": "CornerBracket:2",
-        "to": {
-          "position": [
-            437.0,
-            -13.0,
-            377.0
-          ],
-          "axis": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "angle": "180 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket",
         "translate": [
+          437.0,
+          -13.0,
+          377.0
+        ],
+        "axis": [
           0.0,
           0.0,
-          -392.0
-        ]
+          1.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "CornerBracket:3",
-        "to": {
-          "position": [
-            -437.0,
-            -13.0,
-            -15.0
-          ],
-          "axis": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket",
         "translate": [
-          874.0,
+          -437.0,
+          -13.0,
+          -15.0
+        ],
+        "axis": [
+          1.0,
           0.0,
-          -392.0
-        ]
+          0.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "CornerBracket:4",
-        "to": {
-          "position": [
-            437.0,
-            -13.0,
-            -15.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
+        "translate": [
+          437.0,
+          -13.0,
+          -15.0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
@@ -1443,8 +1430,7 @@
           0.0,
           -16.0,
           1.0
-        ],
-        "move_grounded": false
+        ]
       }
     }
   ]

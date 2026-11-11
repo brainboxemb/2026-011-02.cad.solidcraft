@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / plastic-enclosure</div>
 <h1>Plastic Enclosure</h1><p>A shelled enclosure with native plastic design features</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">14 commands</span><span class="badge">80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses</span></div>
+<span class="badge">14 commands</span><span class="badge">80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Rebuilds the supplied enclosure with the normal SCPF Box sketch/extrusion, followed by native Shell, Lip, Snap Fit, Boss and Rest features.</p></section>
@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Enclosure footprint — sketch the 80 × 50 mm base</li><li>Extrude1 — create the 30 mm solid</li><li>Shell1 — hollow to 2 mm with the top open</li><li>Lip1 — add a 1 × 2 mm rim lip</li><li>SnapFit1 — add the 14 mm cantilever snap</li><li>Boss1 / Boss2 — add two Ø7 × 12 mm screw bosses</li><li>Rest1 — add the 16 × 24 × 3 mm centre rest</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>class Enclosure:
     &quot;&quot;&quot;Rebuild the SolidCraft plastic enclosure with native plastic features.&quot;&quot;&quot;
 

@@ -10,7 +10,9 @@ its depth along +Z. Rotate each occurrence +90 degrees around X to stand
 it upright. Alternating panels require one composed absolute axis-angle
 rotation (180 degrees about [0, 1, -1]); SCPF currently replaces,
 rather than composes, consecutive rotate() calls.
-All occurrence rotations happen BEFORE their horizontal placement.
+SCPF creates all native copies before asking SolidCraft to place them.
+Rotations and positions are applied with SolidCraft's native commands, not
+custom matrix arithmetic.
 """
 from scpf import component
 from components.hub75 import Hub75Panel as Hub75PanelDefinition
@@ -25,8 +27,9 @@ class BasicHub75Screen:
     def build(self):
         # The native panel has its display face in XY and its rear in +Z.
         # Rotate to XZ so the 319.71 mm long side points upwards in world Z.
-        # Keep the master at X=0: copies inherit the master's transformation.
-        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90)
+        # The master is X=0 and Z=160; all native copies start unplaced.
+        # SolidCraft applies each occurrence's intended pose once.
+        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
         screen = central
 
         for index in (0, 1, 3, 4):
@@ -38,7 +41,8 @@ class BasicHub75Screen:
                 # rotate() sets, rather than composes, an orientation; a
                 # second rotate(axis=Y) would discard the upright X rotation.
                 occurrence = occurrence.rotate(axis=(0, 1, -1), degrees=180)
-            # Apply placement last to avoid rotating the column offset.
+            # This sets a Python-side position; the native move is emitted
+            # after ALL copies are created (SolidCraft 0.30.1).
             occurrence = occurrence.move(x=x)
             screen = screen + occurrence
 

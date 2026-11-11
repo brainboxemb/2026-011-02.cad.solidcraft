@@ -413,143 +413,113 @@
       }
     },
     {
-      "command": "occurrence.move",
+      "command": "occurrence.copy",
       "params": {
-        "occurrence": "Hub75Panel:1",
-        "to": {
-          "position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "axis": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "angle": "90 deg"
-        },
-        "move_grounded": true
+        "component": "Hub75Panel"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
-        "component": "Hub75Panel",
+        "component": "Hub75Panel"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75Panel"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75Panel"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Hub75Panel:1",
         "translate": [
-          -320.0,
+          0.0,
+          0.0,
+          160.0
+        ],
+        "axis": [
+          1.0,
           0.0,
           0.0
-        ]
+        ],
+        "angle": "90 deg",
+        "move_grounded": true
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75Panel:2",
-        "to": {
-          "position": [
-            -320.0,
-            0.0,
-            0.0
-          ],
-          "axis": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "angle": "90 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "Hub75Panel",
         "translate": [
-          -160.0,
+          -320.0,
+          0.0,
+          160.0
+        ],
+        "axis": [
+          1.0,
           0.0,
           0.0
-        ]
+        ],
+        "angle": "90 deg"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75Panel:3",
-        "to": {
-          "position": [
-            -160.0,
-            0.0,
-            0.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            -1.0
-          ],
-          "angle": "180 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "Hub75Panel",
         "translate": [
-          160.0,
+          -160.0,
           0.0,
-          0.0
-        ]
+          160.0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          -1.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75Panel:4",
-        "to": {
-          "position": [
-            160.0,
-            0.0,
-            0.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            -1.0
-          ],
-          "angle": "180 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "Hub75Panel",
         "translate": [
-          320.0,
+          160.0,
           0.0,
-          0.0
-        ]
+          160.0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          -1.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75Panel:5",
-        "to": {
-          "position": [
-            320.0,
-            0.0,
-            0.0
-          ],
-          "axis": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "angle": "90 deg"
-        }
+        "translate": [
+          320.0,
+          0.0,
+          160.0
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "90 deg"
       }
     }
   ]

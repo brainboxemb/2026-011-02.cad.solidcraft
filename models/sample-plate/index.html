@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / sample-plate</div>
 <h1>SamplePlate</h1><p>Original four-sketch history: Base, Holes, Boss, Bore</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">21 commands</span><span class="badge">80 × 50 × 8 mm; R6; Ø24 × 14 boss</span></div>
+<span class="badge">21 commands</span><span class="badge">80 × 50 × 8 mm; R6; Ø24 × 14 boss</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Recreates the original saved SolidCraft construction history with four named sketches and sketch-based cuts. The object-level Hole and Cylinder intent is compiled to the four editable sketches and matching cut/join history.</p></section>
@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Base — sketch XY rectangle (80 × 50)</li><li>Extrude1 — extrude base by 8 mm</li><li>Fillet1 — fillet four vertical corners, R6</li><li>Holes — cut two mounting holes Ø8</li><li>Boss — join Ø24 boss above plate, height 14</li><li>Bore — cut central Ø12 bore through full 22 mm</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>class SamplePlate:
     &quot;&quot;&quot;Build the sample plate from object-level CAD intent.&quot;&quot;&quot;
 

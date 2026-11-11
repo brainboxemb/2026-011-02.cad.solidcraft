@@ -117,3 +117,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px}
   .model-preview-layout{grid-template-columns:1fr}
   .model-preview-layout .picture{height:clamp(260px,74vw,410px)}
 }
+
+/* Native front/back inspection views for one upright HUB75 panel. */
+.panel-views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.panel-views figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.panel-views a{display:flex;justify-content:center;align-items:center;background:#eef3fa;min-height:280px}
+.panel-views img{display:block;max-width:100%;height:370px;width:100%;object-fit:contain;padding:16px}
+.panel-views figcaption{padding:12px 18px;font-weight:650;border-top:1px solid var(--line)}
+@media(max-width:760px){.panel-views{grid-template-columns:1fr}.panel-views img{height:310px}}

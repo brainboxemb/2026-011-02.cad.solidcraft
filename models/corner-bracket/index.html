@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / corner-bracket</div>
 <h1>CornerBracket</h1><p>24 mm plywood corner bracket without mounting holes</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">17 commands</span><span class="badge">24 mm width, 12 mm wall, 60 mm arms; no screw holes</span></div>
+<span class="badge">17 commands</span><span class="badge">24 mm width, 12 mm wall, 60 mm arms; no screw holes</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.</p></section>
@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Solid bracket — mounting-hole features deliberately omitted</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;Standalone native regression for the shared hole-free corner bracket.
 
 The original geometry now lives in components/corner_bracket.py

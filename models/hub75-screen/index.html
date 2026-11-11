@@ -11,15 +11,16 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-screen</div>
 <h1>BasicHub75Screen</h1><p>Five shared native HUB75 occurrences with two 180° rotations</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">48 commands</span><span class="badge">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</span></div>
+<span class="badge">48 commands</span><span class="badge">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>Five panels on the source project&#x27;s 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 rotate 180° about the local depth axis for the rear data chain. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.</p></section>
+<p>Five panels on the source project&#x27;s 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 reverse direction around the assembled front-to-back axis for the rear data chain, and all occurrences stand upright in XZ. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Create the reusable tapered HUB75 component</li><li>Make six blind M3 rear bores and assign material once</li><li>Ground the middle occurrence at X=0</li><li>Place four copies on the 160 mm nominal grid</li><li>Rotate the alternating copies around Z by 180°</li><li>Verify five saved native occurrences</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Create the reusable tapered HUB75 component</li><li>Make six blind M3 rear bores and assign material once</li><li>Ground the middle occurrence at X=0</li><li>Place four copies on the 160 mm nominal grid</li><li>Place native occurrences with translate, axis and angle</li><li>Verify five saved native occurrences</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;Five physically upright HUB75 panels in the XZ display plane.
 
 World coordinates (shared with the wooden-frame project):
@@ -32,7 +33,9 @@ its depth along +Z. Rotate each occurrence +90 degrees around X to stand
 it upright. Alternating panels require one composed absolute axis-angle
 rotation (180 degrees about [0, 1, -1]); SCPF currently replaces,
 rather than composes, consecutive rotate() calls.
-All occurrence rotations happen BEFORE their horizontal placement.
+SCPF creates all native copies before asking SolidCraft to place them.
+Rotations and positions are applied with SolidCraft&#x27;s native commands, not
+custom matrix arithmetic.
 &quot;&quot;&quot;
 from scpf import component
 from components.hub75 import Hub75Panel as Hub75PanelDefinition
@@ -47,8 +50,9 @@ class BasicHub75Screen:
     def build(self):
         # The native panel has its display face in XY and its rear in +Z.
         # Rotate to XZ so the 319.71 mm long side points upwards in world Z.
-        # Keep the master at X=0: copies inherit the master&#x27;s transformation.
-        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90)
+        # The master is X=0 and Z=160; all native copies start unplaced.
+        # SolidCraft applies each occurrence&#x27;s intended pose once.
+        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
         screen = central
 
         for index in (0, 1, 3, 4):
@@ -60,7 +64,8 @@ class BasicHub75Screen:
                 # rotate() sets, rather than composes, an orientation; a
                 # second rotate(axis=Y) would discard the upright X rotation.
                 occurrence = occurrence.rotate(axis=(0, 1, -1), degrees=180)
-            # Apply placement last to avoid rotating the column offset.
+            # This sets a Python-side position; the native move is emitted
+            # after ALL copies are created (SolidCraft 0.30.1).
             occurrence = occurrence.move(x=x)
             screen = screen + occurrence
 
@@ -481,144 +486,114 @@ BasicHub75Screen()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:1&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;90 deg&quot;
-    },
-    &quot;move_grounded&quot;: true
+    &quot;component&quot;: &quot;Hub75Panel&quot;
   }
 }</code></pre></li>
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75Panel&quot;,
+    &quot;component&quot;: &quot;Hub75Panel&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75Panel&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;Hub75Panel&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;Hub75Panel:1&quot;,
     &quot;translate&quot;: [
-      -320.0,
+      0.0,
+      0.0,
+      160.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
       0.0,
       0.0
-    ]
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;,
+    &quot;move_grounded&quot;: true
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75Panel:2&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        -320.0,
-        0.0,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;90 deg&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75Panel&quot;,
     &quot;translate&quot;: [
-      -160.0,
+      -320.0,
+      0.0,
+      160.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
       0.0,
       0.0
-    ]
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75Panel:3&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        -160.0,
-        0.0,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        0.0,
-        1.0,
-        -1.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75Panel&quot;,
     &quot;translate&quot;: [
-      160.0,
+      -160.0,
       0.0,
-      0.0
-    ]
+      160.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      -1.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75Panel:4&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        160.0,
-        0.0,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        0.0,
-        1.0,
-        -1.0
-      ],
-      &quot;angle&quot;: &quot;180 deg&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;Hub75Panel&quot;,
     &quot;translate&quot;: [
-      320.0,
+      160.0,
       0.0,
-      0.0
-    ]
+      160.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      -1.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75Panel:5&quot;,
-    &quot;to&quot;: {
-      &quot;position&quot;: [
-        320.0,
-        0.0,
-        0.0
-      ],
-      &quot;axis&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ],
-      &quot;angle&quot;: &quot;90 deg&quot;
-    }
+    &quot;translate&quot;: [
+      320.0,
+      0.0,
+      160.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
+      0.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

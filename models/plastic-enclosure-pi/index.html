@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / plastic-enclosure-pi</div>
 <h1>Plastic Enclosure Pi</h1><p>Raspberry Pi 4 case with connectors, vents and engraving</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">39 commands</span><span class="badge">95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs</span></div>
+<span class="badge">39 commands</span><span class="badge">95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Reconstructs the Raspberry Pi 4 video using a rounded open-top shell, mounting bosses, connector cuts, floor vents, Pi 4 lettering and PETG material.</p></section>
@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Outline — centered 95 × 66 mm footprint</li><li>Extrude — height 24 mm</li><li>Fillet — four vertical corners R5</li><li>Shell — open top, 2 mm wall</li><li>Fillet upper rim — R1</li><li>Four mounting bosses — Ø6 / Ø2.5, 58 × 49 pattern</li><li>Sketch and cut USB-C and dual micro-HDMI ports</li><li>Sketch and cut USB / Ethernet opening</li><li>Sketch and cut five floor ventilation slots</li><li>Engrave Pi 4 text, 0.6 mm</li><li>Assign PETG physical material</li></ol></section></div>
+
 <h2>Python model</h2><pre><code>class PlasticEnclosurePi:
     # SolidCraft 0.8 Raspberry Pi 4 video: board 85 × 56, case +10 mm.
     board_w = 85.0

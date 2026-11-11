@@ -413,14 +413,21 @@
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "occurrence.move",
       "params": {
-        "component": "Hub75Panel",
+        "occurrence": "Hub75Panel:1",
         "translate": [
-          160.0,
+          0.0,
+          0.0,
+          160.0
+        ],
+        "axis": [
+          1.0,
           0.0,
           0.0
-        ]
+        ],
+        "angle": "90 deg",
+        "move_grounded": true
       }
     }
   ]

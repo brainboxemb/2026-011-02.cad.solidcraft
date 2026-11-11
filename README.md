@@ -79,7 +79,7 @@ connection preference is enabled.
 - [Corner Bracket](models/corner-bracket/README.md)
 - [HUB75 Panel / two occurrences and four rear bays](models/hub75-panel/README.md)
 - [Basic HUB75 Screen / five occurrences](models/hub75-screen/README.md)
-- [Wooden Basic Box / simple HUB75 envelopes and prototype corner rails](models/hub75-wood-frame/README.md)
+- [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/hub75-wood-frame/README.md)
 - [Plastic Enclosure Pi](models/plastic-enclosure-pi/README.md)
 - [Plate](models/plate/README.md) and [CSG comparison](models/csg-cube/README.md)
 

@@ -25,6 +25,34 @@ The overall front rectangular outer size is **874 × 392 mm**, while the
 visible window opening is 844 × 362 mm. The nominal LED grid remains
 **800 × 320 mm**. The 0.30 mm pitch seam is not removed by the simple model.
 
+## Native browser hierarchy
+
+The Python class **`HUB75Panels`** (plural) in
+[`models/components/hub75_panels.py`](../components/hub75_panels.py)
+returns five `Hub75PanelBasic` occurrences grouped inside a real native
+component named `HUB75Panels`. The browser is therefore structured as:
+
+```text
+WoodenHub75BasicBox
+├─ HUB75Panels
+│  ├─ Hub75PanelBasic:1
+│  ├─ Hub75PanelBasic:2
+│  ├─ Hub75PanelBasic:3
+│  ├─ Hub75PanelBasic:4
+│  └─ Hub75PanelBasic:5
+├─ SideWall:1, SideWall:2
+├─ BottomBoard
+├─ RoofBoard
+├─ BackBoard
+├─ Window
+└─ CornerRailConcept:1..4
+```
+
+The native compiler creates one parent component and a single editable
+`Hub75PanelBasic` definition under it, with five placements. This is
+not a rename of five unrelated browser entries. No detailed PCB geometry
+is required for the lightweight wooden frame.
+
 ## Orientation in SolidCraft
 
 The enclosure now **stands upright in the actual CAD model**, rather than

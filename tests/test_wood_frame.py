@@ -29,8 +29,9 @@ class WoodenFrameTests(unittest.TestCase):
         commands = result["commands"]
         kinds = [item["command"] for item in commands]
         defs = [item["params"]["name"] for item in commands if item["command"]=="component.create"]
-        self.assertEqual(len(defs),7)
-        self.assertEqual(len(set(defs)),7)
+        self.assertEqual(len(defs),8)
+        self.assertEqual(len(set(defs)),8)
+        self.assertEqual(defs[0], "HUB75Panels")
         self.assertIn("Hub75PanelBasic",defs)
         self.assertIn("CornerRailConcept",defs)
         self.assertEqual(kinds.count("occurrence.copy"),8) # 4 panels, 1 side, 3 corner rails
@@ -41,6 +42,28 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(kinds.count("material.assign"),7)
         self.assertEqual(kinds.count("occurrence.move"),12) # placements and rotations for upright box
         self.assertEqual(kinds.count("solid.extrude"),7)
+
+    def test_hub75_panels_group_is_a_native_parent_not_flat_labels(self):
+        commands = run_script(ROOT / "models/hub75-wood-frame/scpf/model.py")["commands"]
+        components = [c["params"] for c in commands
+                      if c["command"] == "component.create"]
+        group = next(c for c in components if c["name"] == "HUB75Panels")
+        self.assertFalse(group["activate"])
+        self.assertTrue(group["grounded"])
+        module = next(c for c in components if c["name"] == "Hub75PanelBasic")
+        self.assertEqual(module["parent"], "HUB75Panels")
+        self.assertFalse(module["grounded"])
+        for frame in ("SideWall", "BottomBoard", "RoofBoard",
+                      "BackBoard", "Window", "CornerRailConcept"):
+            part = next(c for c in components if c["name"] == frame)
+            self.assertNotIn("parent", part)
+
+        # One shared component definition with five placements, no
+        # duplicated body geometry and no extra native booleans.
+        self.assertEqual(
+            len([c for c in commands
+                 if c["command"] == "occurrence.copy"
+                 and c["params"]["component"] == "Hub75PanelBasic"]), 4)
 
     def test_wooden_box_has_real_z_up_geometry(self):
         commands = run_script(ROOT / "models/hub75-wood-frame/scpf/model.py")["commands"]

@@ -5,14 +5,16 @@ SolidCraft's normal Z-up 3D view. This uses the physical CAD axes:
   X: screen width (left/right)
   Y: cabinet depth (negative = viewer/front, positive = back)
   Z: height (world up)
-All parts stand in XZ. It is real geometry, NOT a screenshot camera fix.
+All parts stand in XZ. Five panels are grouped under HUB75Panels
+as one native subassembly, while each wood component remains separate.
+It is real geometry, NOT a screenshot camera fix.
 
 Reference: Basic Box v29. Wooden opening Z=0..362, outside box
 Z=-15..377. LED front plane Y=0, cabinet depth Y=-25..75,
 outer back +Y. Provisional corner rails are not the final brackets.
 """
 from scpf import component
-from models.components.hub75_basic import Hub75PanelBasic as BasicDefinition
+from models.components.hub75_panels import HUB75Panels
 from models.components.wood_box import (
     SideWall as SideDefinition,
     BottomBoard as BottomDefinition,
@@ -22,7 +24,6 @@ from models.components.wood_box import (
     CornerRailConcept as CornerDefinition,
 )
 
-Panel = component(BasicDefinition)
 Side = component(SideDefinition)
 Bottom = component(BottomDefinition)
 Roof = component(RoofDefinition)
@@ -42,25 +43,11 @@ class WoodenHub75BasicBox:
     cabinet_depth = 100.0
 
     def build(self):
-        # Panels are centered vertically inside the 362 mm wood aperture.
-        # Box() has its bottom on local Z=0 and is centered in X/Y.
-        # Move its depth center +7.25: its FRONT face is at world Y=0.
-        panel_bottom = (self.internal_height - BasicDefinition.height) / 2
-        panel_y = BasicDefinition.depth / 2
-        centre = Panel().move(y=panel_y, z=panel_bottom)
-        assembly = centre
-
-        for column in (0, 1, 3, 4):
-            x = (column - 2) * self.panel_pitch
-            copy = centre.copy().move(x=x)
-            if column in (1, 3):
-                # Rotating a box around Y flips its local positive Z down.
-                # Compensate by translating the pivot to its TOP edge.
-                # This keeps all five actual panel bottoms at panel_bottom.
-                copy = copy.move(z=BasicDefinition.height).rotate(
-                    axis=(0, 1, 0), degrees=180
-                )
-            assembly = assembly + copy
+        # One expandable native group for all five lightweight panels.
+        # The frame's wood pieces remain separate, editable components.
+        assembly = HUB75Panels(
+            opening_height=self.internal_height, pitch=self.panel_pitch
+        ).build()
 
         side_x = self.internal_width / 2 + self.plywood / 2
         top_z = self.internal_height

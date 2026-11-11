@@ -110,6 +110,17 @@ jobs:
           ' output/native/hub75-screen/commands.json
           unzip -p output/native/hub75-screen/model.sc document.json > output/native/hub75-screen/document.json
           jq -e '(.components | length) == 1 and (.occurrences | length) == 5' output/native/hub75-screen/document.json
+          # SolidCraft stores an actual expandable HUB75Panels component.
+          # Child definition and four copies must have the same native parent.
+          jq -e '
+            ([.commands[] | select(.command == "component.create" and
+                .params.name == "HUB75Panels" and .params.activate == false)] | length) == 1 and
+            ([.commands[] | select(.command == "component.create" and
+                .params.name == "Hub75PanelBasic" and
+                .params.parent == "HUB75Panels")] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy" and
+                .params.component == "Hub75PanelBasic")] | length) == 4
+          ' output/native/hub75-wood-frame/commands.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
           jq -e '
             ([.commands[] | select(.command == "solid.extrude") |

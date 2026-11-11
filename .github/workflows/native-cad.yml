@@ -56,7 +56,7 @@ jobs:
           set -euo pipefail
           unset PYTHONPATH
           solidcraft-cli --version
-          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
             mkdir -p "output/native/$model"
             python -m scpf "models/$model/scpf/model.py" --out "output/native/$model/commands.json"
             solidcraft-cli run "output/native/$model/commands.json" \
@@ -88,6 +88,14 @@ jobs:
           ' output/native/hub75-panel/commands.json
           unzip -p output/native/hub75-panel/model.sc document.json > output/native/hub75-panel/document.json
           jq -e '(.components | length) == 1 and (.occurrences | length) == 2' output/native/hub75-panel/document.json
+          jq -e '
+            ([.commands[] | select(.command == "component.create")] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy")] | length) == 4 and
+            ([.commands[] | select(.command == "occurrence.move")] | length) == 2 and
+            ([.commands[] | select(.command == "solid.loft")] | length) == 1
+          ' output/native/hub75-screen/commands.json
+          unzip -p output/native/hub75-screen/model.sc document.json > output/native/hub75-screen/document.json
+          jq -e '(.components | length) == 1 and (.occurrences | length) == 5' output/native/hub75-screen/document.json
           # Check representative editable SolidCraft feature histories, not just images.
           unzip -p output/native/sample-plate/model.sc document.json > output/native/sample-plate/document.json
           jq -e '
@@ -123,17 +131,17 @@ jobs:
             --arg version "$SOLIDCRAFT_VERSION" --arg run "$GITHUB_RUN_ID" \
             '{source_commit:$source,scpf_commit:$scpf,solidcraft_version:$version,workflow_run:$run,verified:true}' \
             > output/native/verification.json
-          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
             python -m scpf "models/$model/scpf/model.py" \
               --out "output/models/$model/scpf/solidcraft.json"
           done
           python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
-          for model in plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
+          for model in plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
             test -s "output/site/models/$model/native.png"
           done
           jq -e --arg scpf "$SCPF_COMMIT" --arg source "$GITHUB_SHA" \
-            '.scpf_commit == $scpf and .source_commit == $source and (.native_verified_models | length) >= 7' \
+            '.scpf_commit == $scpf and .source_commit == $source and (.native_verified_models | length)  >= 8' \
             output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()

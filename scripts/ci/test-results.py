@@ -41,7 +41,7 @@ def check(site, commit):
     assert 'href="cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert provenance["scpf_commit"] in text
-    for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
+    for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug
         assert (model / "model.py").is_file(), slug

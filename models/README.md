@@ -6,6 +6,7 @@ Every model below is owned by this CAD repository, not by `lib.py.solidcraft`. R
 | --- | --- |
 | [corner-bracket](corner-bracket/README.md) | L-shaped plywood bracket, native fillets/chamfers/countersinks |
 | [hub75-panel](hub75-panel/README.md) | Measured P5 panel with native loft and two component occurrences |
+| [hub75-screen](hub75-screen/README.md) | Five native panel occurrences, alternating rotations |
 | [plastic-enclosure-pi](plastic-enclosure-pi/README.md) | Raspberry Pi enclosure with shell, ports and vents |
 | [plastic-enclosure](plastic-enclosure/README.md) | Shell, lip, snap, bosses and rest |
 | [sample-plate](sample-plate/scpf/model.py) | Four-sketch native history (Base/Holes/Boss/Bore) |

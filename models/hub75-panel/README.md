@@ -20,7 +20,7 @@ orientation are deliberately not modelled yet.
 SCPF uses X for width, Y for height and Z for depth (front at Z=0).
 The source OpenSCAD model used X/Z for the front and Y for depth.
 
-The assembly builds the model **once**, then creates a second occurrence with
+Both the two-occurrence regression and the [five-panel screen](../hub75-screen/README.md) import the [shared Hub75Panel model](../components/hub75.py). The assembly builds the model **once**, then creates a second occurrence with
 `panel.copy().move(x=160)`. `TwoHub75Panels()` therefore produces one
 `Hub75Panel` component definition and two native occurrences at X=0 and
 X=160 mm. A native occurrence
@@ -30,8 +30,7 @@ original 160 mm nominal placement grid.
 
 **Current limit:** `copy().move(x=self.pitch_x)` uses a placement value,
 not an associative SolidCraft constraint or an editable native design
-parameter. Rotations, five occurrences, and the detailed body/PCB/connector
-colors are separate follow-ups in issue #16.
+parameter. The five rotated occurrences are implemented in the [screen model](../hub75-screen/README.md). Detailed front/PCB/connector colors, couplers and exploded views remain open in [CAD issue #7](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/7).
 
 Generate and inspect after running `./bootstrap.ps1`:
 

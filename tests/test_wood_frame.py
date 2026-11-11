@@ -160,12 +160,12 @@ class WoodenFrameTests(unittest.TestCase):
                     and c["params"]["occurrence"].startswith("CornerBracket:")]
         self.assertEqual(len(placements),4)
         self.assertEqual(placements[0]["translate"],[-437.0,-13.0,377.0])
-        rotated=[v["to"] for v in placements[1:]]
-        self.assertEqual([v["angle"] for v in rotated],["180 deg"]*3)
-        self.assertEqual([v["axis"] for v in rotated],
-                         [[0.0,0.0,1.0],[1.0,0.0,0.0],[0.0,1.0,0.0]])
-        self.assertEqual([(v["position"][0],v["position"][2]) for v in rotated],
-                         [(437.0,377.0),(-437.0,-15.0),(437.0,-15.0)])
+        # SolidCraft 0.30.1 accepts relative matrices, not absolute 'to'.
+        rotated=[v["matrix"] for v in placements[1:]]
+        self.assertTrue(all("to" not in v for v in placements))
+        for matrix, diagonal in zip(
+                rotated, [(-1,-1,1), (1,-1,-1), (-1,1,-1)]):
+            self.assertEqual([matrix[i][i] for i in range(3)], list(diagonal))
 
     def test_advanced_panel_still_has_rear_bays_and_blind_holes(self):
         commands=run_script(ROOT/"models/component-examples/hub75-panel/scpf/model.py")["commands"]

@@ -117,11 +117,14 @@ stay within the box's front plane, rather than sticking out.
 Every outside X/Z corner has **two CornerBracket occurrences**:
 
 - Four at the front, in the Y=−25..−1 band.
-- Four at the rear, in the Y=60..84 band.
+- Four at the rear, in the **Y=51..75** band, entirely on the sidewalls.
 
 The four X/Z corner positions are **X=±434** and **Z=−12 or 374 mm**.
 All eight reuse the **same shared CornerBracket component** with
-its existing R4 inside fillet.
+its existing R4 inside fillet. At the rear, the bracket's back edge is
+flush with the **rear face of the sidewall (Y=75)**. The 9 mm backboard
+starts there and occupies Y=75..84, so no corner bracket overlaps it.
+This is independent of the roof's 1 mm overhang *past* the backboard.
 
 The old screw-hole operations are deliberately absent. They had caused
 native SolidCraft warnings and should not be silently reintroduced.

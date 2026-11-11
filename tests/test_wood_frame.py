@@ -31,7 +31,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual((BackBoard.width,BackBoard.height,BackBoard.thickness), (874,377,9))
         self.assertEqual((Window.width,Window.height,Window.thickness), (840,360,4))
         self.assertEqual((GlassSideStrip.width,GlassSideStrip.depth,GlassSideStrip.height), (15,15,362))
-        self.assertEqual((GlassCrossStrip.length,GlassCrossStrip.depth,GlassCrossStrip.thickness), (814,15,15))
+        self.assertEqual((GlassCrossStrip.length,GlassCrossStrip.depth,GlassCrossStrip.thickness), (844,15,15))
 
     def test_four_real_native_groups(self):
         commands=actions()

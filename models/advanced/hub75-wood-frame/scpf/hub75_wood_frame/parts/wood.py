@@ -134,6 +134,8 @@ class GlassSideStrip:
     corner_radius = CornerBracket.inside_corner_radius
 
     def build(self):
+        # Distinct darker finish helps distinguish the two vertical
+        # retainers from the horizontal ones and the box itself.
         profile = Polygon2D(
             _rounded_side_profile(
                 value_of(self.width), value_of(self.height),
@@ -144,7 +146,7 @@ class GlassSideStrip:
         return profile.extrude(
             self.depth, direction=Direction.SYMMETRIC,
         ).with_material(
-            "LIGHTPLY glazing side strip", density_g_cm3=0.55, color="#C89D61"
+            "LIGHTPLY glazing side strip", density_g_cm3=0.55, color="#A9793E"
         )
 
 
@@ -156,6 +158,8 @@ class GlassCrossStrip:
     corner_radius = CornerBracket.inside_corner_radius
 
     def build(self):
+        # Light finish: top/bottom parts are visually different from
+        # the darker side strips and regular LIGHTPLY walls.
         profile = Polygon2D(
             _rounded_cross_profile(
                 value_of(self.length), value_of(self.thickness),
@@ -166,5 +170,5 @@ class GlassCrossStrip:
         return profile.extrude(
             self.depth, direction=Direction.SYMMETRIC,
         ).with_material(
-            "LIGHTPLY glazing cross strip", density_g_cm3=0.55, color="#C89D61"
+            "LIGHTPLY glazing cross strip", density_g_cm3=0.55, color="#E3BF80"
         )

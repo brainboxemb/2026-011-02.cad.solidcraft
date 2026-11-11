@@ -210,6 +210,31 @@ jobs:
             ([.commands[] | select(.command == "occurrence.move"
               and (.params | has("matrix") or has("to")))] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
+          # The four native glazing pieces must be at the window's front,
+          # not through the window and not flipped into the XY plane.
+          # The diagonal mitres and R4 corner contours are tested in Python.
+          jq -e '
+            ([.bodies[] | select(.name | startswith("GlassSideStrip"))] | length) == 2 and
+            ([.bodies[] | select(.name | startswith("GlassCrossStrip"))] | length) == 2 and
+            (all(.bodies[] | select(.name | startswith("Glass"));
+              ((.bbox.min[1] + 33) | fabs) < 0.001 and
+              ((.bbox.max[1] + 18) | fabs) < 0.001)) and
+            (([.bodies[] | select(.name | startswith("GlassSideStrip")) |
+                .bbox.min[0]] | sort) == [-422,407]) and
+            (([.bodies[] | select(.name | startswith("GlassCrossStrip")) |
+                .bbox.min[2]] | sort) == [0,347])
+          ' output/native/hub75-wood-frame/measurements.json
+          jq -e '
+            ([.commands[] | select(.command == "material.create" and
+              .params.name == "LIGHTPLY glazing side strip" and
+              .params.color == "#A9793E")] | length) == 1 and
+            ([.commands[] | select(.command == "material.create" and
+              .params.name == "LIGHTPLY glazing cross strip" and
+              .params.color == "#E3BF80")] | length) == 1 and
+            ([.commands[] | select(.command == "material.create" and
+              .params.name == "LIGHTPLY side wall" and
+              .params.color == "#CBA36B")] | length) == 1
+          ' output/native/hub75-wood-frame/commands.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
           jq -e '
             ([.commands[] | select(.command == "solid.extrude") |

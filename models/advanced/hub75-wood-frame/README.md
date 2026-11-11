@@ -31,16 +31,43 @@ identical Y and Z positions; no rotated copies stick out of the frame.
 The roof extends in Y from -25 to +99 and in Z from 362 to 377, with
 its **15 mm thickness vertical**. The back board is behind the main
 100 mm-deep case, at Y=75..84. Plexiglass is at Y=-18..-14.
-Four 15×15 mm wooden glass retainers now lie **in front of the
-plexiglass** at Y=-33..-18, touching its front face. Each end is
-**mitred at 45°** against its neighbour. The assembled rectangular frame
-has a rounded external corner of **R4**, matching
-`CornerBracket.inside_corner_radius`. The side and cross pieces split
-the *same* circular contour along the 45° joining line, so the corners
-meet without overlapping or leaving a triangular gap. This is expressed
-as an editable XZ polygonal contour extruded along Y (not a decorative
-post-render rounding). The curved cut uses short straight segments
-and still requires a real cutting/fastening test.
+### The four glazing strips: where they sit and how they meet
+
+The glass is 4 mm thick, from **Y=-18 to -14 mm**. All four
+wooden retainers are 15 mm deep in Y, from **Y=-33 to -18 mm**.
+Their rear faces therefore meet the front face of the glass,
+without extending through it.
+
+The retainers are separate manufactured parts:
+
+| Piece | Position and orientation | Appearance |
+| --- | --- | --- |
+| Left side | Outer edge X=-422; vertical Z=0..362 | Darker wood `#A9793E` |
+| Right side | Mirror of the left at X=+422 | Same darker wood |
+| Bottom | Outer edge Z=0; horizontal | Lighter wood `#E3BF80` |
+| Top | Mirror of the bottom at Z=362 | Same lighter wood |
+
+The normal plywood frame remains `#CBA36B`. The different
+finishes are **visual aids in the CAD model**, not prescribed
+timber species or coatings.
+
+**What makes the 45° corners?** Each strip's cross-section has
+a diagonal end. The two neighbouring ends meet on the same diagonal.
+Neither strip is simply laid over the other. The external corner is
+rounded to the same **R4** used for the printed corner bracket's
+inside radius. A small series of straight profile segments represents
+that arc inside native SolidCraft.
+
+**Why does the mirroring now work?** SCPF creates the second native
+occurrence of a strip *before* moving or rotating either occurrence.
+Then SolidCraft itself applies the correct 180° orientation and
+position. No custom Python rotation matrices or corrective offsets
+are used. The right-hand strip flips around Z; the top strip flips
+around X. Both remain in the XZ plane.
+
+The native model is verified for distinct parts, correct Y depth,
+mirrored X/Z positions, mitred profiles and material assignments.
+The final design still needs a physical fit and fastening test.
 
 The rear board starts at Z=-15 and ends at **Z=362**, so it now
 fits **under** the roof instead of crossing it.
@@ -50,11 +77,12 @@ corners (X=±437, Z=-15/377), Y=-13. Unlike an internal-corner position
 that would physically intersect the plywood, their 12 mm wings follow
 the **outside faces** of the side, top and bottom boards. The 24 mm bracket
 width occupies Y=-25..-1 of the wooden cabinet depth; the top wing sits
-above the roof, and the vertical wing sits outside the side board. The
-four-hole geometry is **defined once** in `components/corner_bracket.py`,
-also used by the standalone demo. The native 90° countersinks remain an
-approximation of the original flat-bottom recess; real bolt seating,
-corner clearances and arm-tip refinements still need physical checking.
+above the roof, and the vertical wing sits outside the side board. The shared bracket geometry is **defined once** in
+`components/corner_bracket.py` and used by the standalone demo.
+**Screw holes are currently omitted** because an earlier native SolidCraft
+attempt produced errors. No countersink geometry is claimed for this
+version. Bolt seating, corner clearances and arm-tip fit still need
+physical checking.
 
 ## Actual SolidCraft model browser groups
 

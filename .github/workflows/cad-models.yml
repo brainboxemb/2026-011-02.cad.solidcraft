@@ -32,20 +32,20 @@ jobs:
           set -euo pipefail
           unset PYTHONPATH
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
-            python -m scpf "examples/$model/scpf/model.py" --out "output/examples/$model/scpf/solidcraft.json"
-            python -m json.tool "output/examples/$model/scpf/solidcraft.json" >/dev/null
+            python -m scpf "models/$model/scpf/model.py" --out "output/models/$model/scpf/solidcraft.json"
+            python -m json.tool "output/models/$model/scpf/solidcraft.json" >/dev/null
           done
           python - <<'PY'
           import json
           from pathlib import Path
-          data=json.loads(Path('output/examples/hub75-panel/scpf/solidcraft.json').read_text())
+          data=json.loads(Path('output/models/hub75-panel/scpf/solidcraft.json').read_text())
           commands=[x['command'] for x in data['commands']]
           for command in ('component.create','occurrence.copy','solid.loft'):
               assert commands.count(command)==1, (command, commands.count(command))
           PY
       - name: Generate and smoke-test static site (not published)
         run: |
-          python scripts/ci/build-results.py --generated output/examples --commit "$GITHUB_SHA" --out output/site
+          python scripts/ci/build-results.py --generated output/models --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:

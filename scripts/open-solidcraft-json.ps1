@@ -1,5 +1,5 @@
 # Execute a SolidCraft command script and open the resulting native design.
-# Usage: .\scripts\open-solidcraft-json.ps1 -Script "examples/plate/scpf/solidcraft.json"
+# Usage: .\scripts\open-solidcraft-json.ps1 -Script "output/models/plate/scpf/solidcraft.json"
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]

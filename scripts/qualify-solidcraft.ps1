@@ -3,7 +3,7 @@
 [CmdletBinding()]
 param(
     [string]$CliPath = '',
-    [string]$Model = 'examples/sample-plate/scpf/model.py',
+    [string]$Model = 'models/sample-plate/scpf/model.py',
     [switch]$Snapshot
 )
 $ErrorActionPreference = 'Stop'
@@ -29,16 +29,13 @@ if (-not $CliPath -or -not (Test-Path -LiteralPath $CliPath)) {
     throw 'SolidCraft CLI not found. Install SolidCraft or supply -CliPath.'
 }
 New-Item -ItemType Directory -Path $out -Force | Out-Null
-$oldPythonPath = $env:PYTHONPATH
-try {
-    $env:PYTHONPATH = Join-Path $root 'scpf'
-    & python -m unittest discover -s (Join-Path $root 'scpf\tests') -v
-    if ($LASTEXITCODE -ne 0) { throw 'SCPF regression tests failed.' }
-    & python -m scpf (Join-Path $root $Model) --out $scriptFile
-    if ($LASTEXITCODE -ne 0) { throw 'SCPF compilation failed.' }
-} finally {
-    $env:PYTHONPATH = $oldPythonPath
-}
+# SCPF is an external editable package installed by bootstrap.ps1.
+# The CAD project does not set PYTHONPATH or run library-owned unit tests.
+& python -m pip show scpf | Out-Null
+if ($LASTEXITCODE -ne 0) { throw 'SCPF package missing: run .\bootstrap.ps1.' }
+& python -m scpf (Join-Path $root $Model) --out $scriptFile
+if ($LASTEXITCODE -ne 0) { throw 'SCPF compilation failed.' }
+
 & $CliPath --version
 if ($LASTEXITCODE -ne 0) { throw 'SolidCraft version check failed.' }
 & $CliPath run $scriptFile --param-check strict --results --json-out $resultsFile --save $nativeFile --out $stepFile

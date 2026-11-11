@@ -58,7 +58,7 @@ jobs:
           solidcraft-cli --version
           for model in corner-bracket hub75-panel; do
             mkdir -p "output/native/$model"
-            python -m scpf "examples/$model/scpf/model.py" --out "output/native/$model/commands.json"
+            python -m scpf "models/$model/scpf/model.py" --out "output/native/$model/commands.json"
             solidcraft-cli run "output/native/$model/commands.json" \
               --param-check strict --results \
               --json-out "output/native/$model/results.json" \
@@ -88,10 +88,10 @@ jobs:
             '{source_commit:$source,scpf_commit:$scpf,solidcraft_version:$version,workflow_run:$run,verified:true}' \
             > output/native/verification.json
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
-            python -m scpf "examples/$model/scpf/model.py" \
-              --out "output/examples/$model/scpf/solidcraft.json"
+            python -m scpf "models/$model/scpf/model.py" \
+              --out "output/models/$model/scpf/solidcraft.json"
           done
-          python scripts/ci/build-results.py --generated output/examples --native output/native --commit "$GITHUB_SHA" --out output/site
+          python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
           test -s output/site/models/corner-bracket/native.png
           test -s output/site/models/hub75-panel/native.png

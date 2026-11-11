@@ -1,93 +1,129 @@
-# Wooden HUB75 Basic Box — advanced assembly
+# Wooden HUB75 Basic Box — one parametrized assembly
 
-Upright five-module display inside the 874 × 392 mm plywood case. The
-**basic** HUB75 boxes model only measured envelopes; the advanced HUB75
-reference retains the real four-bay electronics back and six blind M3 bores.
-All five simple panel fronts are coplanar, with no misleading rotations.
+This model is a wooden enclosure for five upright P5 HUB75 LED modules.
+Everything specific to this wooden enclosure is defined in
+[`scpf/model.py`](scpf/model.py): the boards, glazing retainers, glass,
+assembly and their placements.
 
-## Reference, dimensions and parts
+Only the general reusable parts — `Hub75PanelBasic` and `CornerBracket` —
+come from the top-level `components/` directory. There is no separate
+`wood.py` or `wood_frames.py` abstraction to chase through.
 
-Reference: [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view).
+**Reference:** [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view).
+These figures reflect the **corrected design choices** below, not necessarily
+every older dimension written in the v29 reference.
 
-| Part | Dimensions (mm) | Ownership |
+## Change dimensions in one place
+
+At the bottom of the source, `WoodenHub75Box` has the design parameters:
+
+```python
+class WoodenHub75Box:
+    opening_width = 844.0
+    opening_height = 362.0
+    panel_count = 5
+    panel_pitch = 160.0
+
+    wood_thickness = 12.0
+    back_thickness = 9.0
+    cabinet_depth = 100.0
+    frame_front_y = -25.0
+
+    roof_front_overhang = 10.0
+    roof_rear_overhang = 1.0
+    corner_radius = 4.0
+
+    glass_width = 840.0
+    glass_height = 360.0
+    glass_thickness = 4.0
+    glass_bottom_clearance = 1.0
+    glazing_width = 15.0
+    glazing_depth = 15.0
+```
+
+Change these parameters, **not** the placement coordinates of every
+separate board. In `build()` the dimensions are derived and passed to the
+individual components.
+
+World axes: **X** left/right, **Y** front-to-back (front is negative Y),
+**Z** upward. The wood opening spans X=−422..422 and Z=0..362 mm.
+
+## Wood dimensions and the roof overhang
+
+| Part | Size and placement | Notes |
 | --- | --- | --- |
-| 5 HUB75 basic envelopes | 159.70 × 319.71 × 14.50 | `components/hub75_basic.py` |
-| Internal opening | 844 × 362 | `scpf/model.py` |
-| 2 side walls | 15 × 362 × 100 | `parts/wood.py` |
-| Bottom | 874 × 100 × 15 | `parts/wood.py` |
-| **Horizontal** roof | 874 × 124 × 15 | `parts/wood.py` |
-| Rear board | 874 × 377 × 9 | `parts/wood.py` |
-| Plexiglass | 840 × 360 × 4 | `parts/wood.py` |
-| 4 mitred, R4 glazing strips | 2 × 15×15×362 and 2 × 844×15×15 (including mitre tips) | `parts/wood.py` |
-| 4 corner brackets (no screw holes) | 24 mm extrusion, 12 mm wall, 60 mm arms | `components/corner_bracket.py` |
+| Two sidewalls | **12 × 100 × 362 mm** | Front Y=−25; rear Y=75 |
+| Bottom board | **868 × 100 × 12 mm** | Z=−12..0; R4 at outer bottom edges |
+| Roof board | **868 × 120 × 12 mm** | Z=362..374; R4 at outer top edges |
+| Rear board | **868 × 374 × 9 mm** | Y=75..84, fixed to the rear |
+| Plexiglass | **840 × 360 × 4 mm** | Y=−10..−6; Z=1..361 |
+| Five basic panels | 159.70 × 319.71 × 14.50 mm | X pitch 160 |
+| Four glass retainers | Two lengths: **844** and **362 mm** | 15 mm wide/deep, straight mitres |
+| Eight corner brackets | 24 mm Y width, 12 mm wall | Two per corner, no screw holes |
 
-**Geometry axes:** X is screen width, Y depth (front at negative Y), Z
-height/up. Outside plywood spans X=-437..437 and Z=-15..377.
-The opening is X=-422..422, Z=0..362. Panels stand from Z=21.145 to
-340.855 and have front plane Y=0. Their centre X coordinates are
--320, -160, 0, 160, 320 mm, pitch 160. The five basic rectangles have
-identical Y and Z positions; no rotated copies stick out of the frame.
+**Roof front:** the sidewall front is at Y=−25, while the roof starts at
+Y=−35. That is a **10 mm front overhang**.
 
-The roof extends in Y from -25 to +99 and in Z from 362 to 377, with
-its **15 mm thickness vertical**. The back board is behind the main
-100 mm-deep case, at Y=75..84. Plexiglass is at Y=-18..-14.
-### The four glazing strips: where they sit and how they meet
+**Roof rear:** the rear sheet ends at Y=84; the roof finishes at Y=85.
+That is **1 mm behind the mounted backboard**, *not* 1 mm behind the
+sidewalls. The roof depth is therefore 120 mm, centred at Y=25.
 
-The glass is 4 mm thick, from **Y=-18 to -14 mm**. All four
-wooden retainers are 15 mm deep in Y, from **Y=-33 to -18 mm**.
-Their rear faces therefore meet the front face of the glass,
-without extending through it.
+The roof and bottom board are rounded at their **outside X/Z corners**
+with a native SolidCraft **R4 fillet**. This creates the clearance for
+the rounded inside corners of the printed brackets.
 
-The retainers are separate manufactured parts:
+## One GlassStrip class, four pieces
 
-| Piece | Position and orientation | Appearance |
-| --- | --- | --- |
-| Left side | Outer edge X=-422; vertical Z=0..362 | Darker wood `#A9793E` |
-| Right side | Mirror of the left at X=+422 | Same darker wood |
-| Bottom | Outer edge Z=0; horizontal | Lighter wood `#E3BF80` |
-| Top | Mirror of the bottom at Z=362 | Same lighter wood |
+The wooden retaining frame has only **one Python type**:
 
-The normal plywood frame remains `#CBA36B`. The different
-finishes are **visual aids in the CAD model**, not prescribed
-timber species or coatings.
+```python
+class GlassStrip:
+    length = 844.0
+    width = 15.0
+    depth = 15.0
+    finish = 0
+```
 
-**What makes the 45° corners?** Each strip's cross-section has
-a diagonal end. The two neighbouring ends meet on the same diagonal.
-Neither strip is simply laid over the other. The external corner is
-rounded to the same **R4** used for the printed corner bracket's
-inside radius. A small series of straight profile segments represents
-that arc inside native SolidCraft.
+It defines a long strip with **straight 45° cuts at both ends**.
+The assembly creates two length variants from the same class:
 
-**Why does the mirroring now work?** SCPF creates the second native
-occurrence of a strip *before* moving or rotating either occurrence.
-Then SolidCraft itself applies the correct 180° orientation and
-position. No custom Python rotation matrices or corrective offsets
-are used. The right-hand strip flips around Z; the top strip flips
-around X. Both remain in the XZ plane.
+- **Horizontal:** length 844 mm, lighter wood finish; two occurrences
+  at Z=0 and Z=362. The top copy turns 180° about X.
+- **Vertical:** length 362 mm, darker wood finish; two occurrences
+  at X=−422 and X=422. The left and right copies turn +90° and −90°
+  about Y to stand upright.
 
-The native model is verified for distinct parts, correct Y depth,
-mirrored X/Z positions, mitred profiles and material assignments.
-The final design still needs a physical fit and fastening test.
+They are four individual manufactured parts in SolidCraft, not
+four different Python classes. The two lengths require two native
+component definitions, each shared by its pair of occurrences.
 
-The rear board starts at Z=-15 and ends at **Z=362**, so it now
-fits **under** the roof instead of crossing it.
+**Do not round the glass retaining strips.** Their ends are mitred,
+not filleted. The R4 rounding belongs to the **roof and bottom boards**.
 
-The four **shared CornerBracket** instances sit on the OUTSIDE wood
-corners (X=±437, Z=-15/377), Y=-13. Unlike an internal-corner position
-that would physically intersect the plywood, their 12 mm wings follow
-the **outside faces** of the side, top and bottom boards. The 24 mm bracket
-width occupies Y=-25..-1 of the wooden cabinet depth; the top wing sits
-above the roof, and the vertical wing sits outside the side board. The shared bracket geometry is **defined once** in
-`components/corner_bracket.py` and used by the standalone demo.
-**Screw holes are currently omitted** because an earlier native SolidCraft
-attempt produced errors. No countersink geometry is claimed for this
-version. Bolt seating, corner clearances and arm-tip fit still need
-physical checking.
+The retaining strips begin at **Y=−25**, aligned flush with the
+sidewalls. They are 15 mm deep and end at Y=−10. The glass touches their
+rear faces and occupies Y=−10..−6. The glass and its retainers therefore
+stay within the box's front plane, rather than sticking out.
 
-## Actual SolidCraft model browser groups
+## Eight printed corner brackets
+
+Every outside X/Z corner has **two CornerBracket occurrences**:
+
+- Four at the front, in the Y=−25..−1 band.
+- Four at the rear, in the Y=60..84 band.
+
+The four X/Z corner positions are **X=±434** and **Z=−12 or 374 mm**.
+All eight reuse the **same shared CornerBracket component** with
+its existing R4 inside fillet.
+
+The old screw-hole operations are deliberately absent. They had caused
+native SolidCraft warnings and should not be silently reintroduced.
+Mounting and fastener design remains to be resolved later.
+
+## Model browser and source layout
 
 ```text
-WoodenHub75BasicBox
+WoodenHub75Box
 ├── HUB75Panels
 │   └── Hub75PanelBasic × 5
 ├── WoodBoxFrame
@@ -96,37 +132,33 @@ WoodenHub75BasicBox
 │   ├── RoofBoard
 │   └── BackBoard
 ├── WoodGlassFrame
-│   ├── GlassSideStrip × 2
-│   └── GlassCrossStrip × 2
+│   ├── GlassStrip (horizontal, 844 mm) × 2
+│   └── GlassStrip 2 (vertical, 362 mm) × 2
 ├── CornerBrackets
-│   └── CornerBracket × 4
+│   └── CornerBracket × 8
 └── Window (plexiglass)
 ```
 
-These are **real nested SolidCraft components**: one shared editable
-definition per manufactured part, not labels or joined mesh objects.
-The case-specific code lives under this model's `parts/` and
-`assemblies/`; only generically reusable parts belong to root
-`components/`. This advanced design can eventually move to its own repo.
+All seven wooden-case Python classes are located in the model's own
+`scpf/model.py`. The generic imported panel and bracket are located in
+`components/hub75_basic.py` and `components/corner_bracket.py`.
+This structure keeps the full model readable in one place.
 
-## Load into the native SolidCraft GUI
+## Test locally
 
-Open a new, empty SolidCraft design with **Preferences → Assistant →
-Let AI agents connect** enabled. After `./bootstrap.ps1` from the repo
-root, run:
+After `./bootstrap.ps1` and `git pull`, open a blank design in
+SolidCraft 0.30.1 and enable **Preferences → Assistant →
+Let AI agents connect**:
 
 ```powershell
 python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
 ```
 
-From inside its `scpf/` directory, `python -m scpf model.py --connect`
-also works. The `--out` option only generates JSON.
+To inspect only the generated command JSON:
 
-**Remaining design work:** exact bracket and mounting fit, glass
-standoffs and seals, electronics installation, ventilation, optional
-exploded view. Rear/top native image views are [issue #20](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/20),
-and interactive CAD web loading is [issue #21](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/21).
+```powershell
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --out output/wood-frame.json
+```
 
-## Naming
-
-The CAD directory `hub75-wood-frame` uses kebab-case. Python-only modules live under `scpf/hub75_wood_frame/` and use snake_case; classes use PascalCase. No external PYTHONPATH is needed.
+The native CI separately checks that SolidCraft can evaluate the assembly.
+Passing Python tests alone is insufficient evidence of correct physical fit.

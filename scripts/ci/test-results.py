@@ -27,6 +27,8 @@ def check(site, commit):
     assert (site / "results.css").is_file()
     provenance = json.loads((site / "provenance.json").read_text(encoding="utf-8"))
     assert provenance["source_commit"] == commit
+    if provenance["native_verified_models"]:
+        assert provenance.get("solidcraft_version") == "0.30.1"
     assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpf_commit"])
     assert isinstance(provenance["native_verified_models"], list)
     assert len(set(provenance["native_verified_models"])) == len(provenance["native_verified_models"])
@@ -42,6 +44,7 @@ def check(site, commit):
     assert commit in text, "site must identify its source commit"
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
+    assert "SolidCraft engine:" in text and "0.30.1 tested" in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
@@ -55,6 +58,7 @@ def check(site, commit):
         assert (model / "solidcraft.json").is_file(), slug
         page = (model / "index.html").read_text(encoding="utf-8")
         assert "Native SolidCraft command sequence" in page
+        assert "SolidCraft 0.30.1" in page
         assert "Show exact command and parameters" not in page
         assert "<details>" not in page
         assert "&quot;command&quot;" in page and "&quot;params&quot;" in page
@@ -68,6 +72,12 @@ def check(site, commit):
         if "Previously verified render from main" in page:
             assert (model / "native.png").is_file()
             assert "not yet native-verified" in page
+        if slug == "hub75-panel" and slug in provenance["native_verified_models"]:
+            for filename in ("front.png", "rear.png"):
+                assert (model / filename).is_file()
+                assert f'href="{filename}"' in page
+                assert f'src="{filename}"' in page
+            assert "Front and rear of the same upright panel" in page
         parser = Parser()
         parser.feed(page)
         for href in parser.links:

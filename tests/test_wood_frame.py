@@ -58,36 +58,49 @@ class WoodenFrameTests(unittest.TestCase):
                            ("GlassSideStrip",1),("GlassCrossStrip",1),("CornerBracket",3)):
             self.assertEqual(sum(c["component"]==name for c in copies),count)
 
-    def test_uniform_panel_positions_without_native_rotation(self):
-        commands=actions()
-        panel_moves=[c["params"] for c in commands if c["command"]=="occurrence.move"
-                     and c["params"]["occurrence"].startswith("Hub75PanelBasic:")]
-        self.assertEqual(len(panel_moves),1)
-        self.assertNotIn("to",panel_moves[0])
-        self.assertEqual([round(v,3) for v in panel_moves[0]["translate"]],
-                         [0.0,7.25,21.145])
-        copies=[c["params"] for c in commands if c["command"]=="occurrence.copy"
-                and c["params"]["component"]=="Hub75PanelBasic"]
-        self.assertEqual(sorted(c["translate"][0] for c in copies),
-                         [-320.0,-160.0,160.0,320.0])
-        for c in copies:
-            # Native copy offsets are relative to the already placed centre.
-            # Y and Z must remain unchanged; no doubled Y=14.5/Z=42.29.
-            self.assertEqual([round(x,3) for x in c["translate"][1:]],
-                             [0.0,0.0])
-
-    def test_native_copy_offsets_are_relative_to_original_positions(self):
+    def test_basic_panels_have_independent_native_positions(self):
+        """Five copies must be placed separately, never moved cumulatively."""
         commands = actions()
-        copies = [c["params"] for c in commands if c["command"]=="occurrence.copy"]
-        def for_component(name):
-            return [c["translate"] for c in copies if c["component"]==name]
-        # SCPF library correctly converts absolute Python positions to
-        # native occurrence.copy deltas. A sidewall on the right no longer
-        # ends up in the middle, and glazing bars meet at the perimeter.
-        self.assertEqual(for_component("SideWall"), [[859.0, 0.0, 0.0]])
-        self.assertEqual(for_component("GlassSideStrip"), [[844.0, 0.0, 0.0]])
-        self.assertEqual(for_component("GlassCrossStrip"), [[0.0, 0.0, 362.0]])
-        self.assertEqual(for_component("CornerBracket")[0], [874.0, 0.0, 0.0])
+        copies = [c["params"] for c in commands
+                  if c["command"] == "occurrence.copy"
+                  and c["params"]["component"] == "Hub75PanelBasic"]
+        moves = [c["params"] for c in commands
+                 if c["command"] == "occurrence.move"
+                 and c["params"]["occurrence"].startswith("Hub75PanelBasic:")]
+        self.assertEqual(copies, [{"component": "Hub75PanelBasic"}] * 4)
+        self.assertEqual(len(moves), 5)
+        self.assertEqual(sorted(round(m["translate"][0], 3) for m in moves),
+                         [-320., -160., 0., 160., 320.])
+        self.assertTrue(all([round(x, 3) for x in m["translate"][1:]]
+                            == [7.25, 21.145] for m in moves))
+        self.assertTrue(all("matrix" not in m and "to" not in m for m in moves))
+
+    def test_copy_then_place_is_used_for_all_shared_components(self):
+        """No inherited native offsets, no special-case inverse matrices."""
+        commands = actions()
+        names = ("SideWall", "GlassSideStrip", "GlassCrossStrip", "CornerBracket")
+        for name in names:
+            copies = [(i, c["params"]) for i, c in enumerate(commands)
+                      if c["command"] == "occurrence.copy"
+                      and c["params"]["component"] == name]
+            moves = [(i, c["params"]) for i, c in enumerate(commands)
+                     if c["command"] == "occurrence.move"
+                     and c["params"]["occurrence"].startswith(name + ":")]
+            self.assertTrue(copies, name)
+            self.assertTrue(moves, name)
+            self.assertLess(max(i for i, _ in copies),
+                            min(i for i, _ in moves), name)
+            self.assertTrue(all(p == {"component": name} for _, p in copies))
+        def placement(name):
+            return [c["params"]["translate"] for c in commands
+                    if c["command"] == "occurrence.move"
+                    and c["params"]["occurrence"].startswith(name + ":")]
+        self.assertEqual([p[0] for p in placement("SideWall")],
+                         [-429.5, 429.5])
+        self.assertEqual([p[0] for p in placement("GlassSideStrip")],
+                         [-422.0, 422.0])
+        self.assertEqual([p[2] for p in placement("GlassCrossStrip")],
+                         [0.0, 362.0])
 
     def test_glass_frame_is_mitred_rounded_and_in_front(self):
         from math import sqrt
@@ -160,12 +173,17 @@ class WoodenFrameTests(unittest.TestCase):
                     and c["params"]["occurrence"].startswith("CornerBracket:")]
         self.assertEqual(len(placements),4)
         self.assertEqual(placements[0]["translate"],[-437.0,-13.0,377.0])
-        rotated=[v["to"] for v in placements[1:]]
-        self.assertEqual([v["angle"] for v in rotated],["180 deg"]*3)
-        self.assertEqual([v["axis"] for v in rotated],
-                         [[0.0,0.0,1.0],[1.0,0.0,0.0],[0.0,1.0,0.0]])
-        self.assertEqual([(v["position"][0],v["position"][2]) for v in rotated],
-                         [(437.0,377.0),(-437.0,-15.0),(437.0,-15.0)])
+        # SolidCraft handles each rotation directly; never emit matrices.
+        for pose, axis in zip(placements[1:],
+                              ([0., 0., 1.], [1., 0., 0.], [0., 1., 0.])):
+            self.assertEqual(pose["axis"], axis)
+            self.assertEqual(pose["angle"], "180 deg")
+            self.assertNotIn("matrix", pose)
+            self.assertNotIn("to", pose)
+        self.assertEqual([(p["translate"][0], p["translate"][2])
+                          for p in placements[1:]],
+                         [(437.0, 377.0), (-437.0, -15.0),
+                          (437.0, -15.0)])
 
     def test_advanced_panel_still_has_rear_bays_and_blind_holes(self):
         commands=run_script(ROOT/"models/component-examples/hub75-panel/scpf/model.py")["commands"]

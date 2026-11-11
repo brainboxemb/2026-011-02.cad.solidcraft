@@ -9,41 +9,49 @@ MODEL = ROOT / "models/component-examples/hub75-panel/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
-    def test_five_panel_screen_is_upright_with_two_alternating_orientations(self):
-        """Every occurrence must have a vertical long edge in world Z.
+    def test_five_panel_screen_uses_native_rotations_and_independent_positions(self):
+        """Copies first, then move each independently with SolidCraft 0.30.1.
 
-        Rotations are absolute axis-angle poses, NOT chained Euler angles.
-        We verify the exact native JSON placement for all five panels.
+        No Python matrix calculations, and no unsupported 'to' parameter.
+        The native CI separately checks actual saved SolidCraft transforms.
         """
         commands = run_script(ROOT / "models/advanced/hub75-screen/scpf/model.py")["commands"]
-        def of(name):
-            return [item["params"] for item in commands if item["command"] == name]
+        def of(kind):
+            return [item["params"] for item in commands if item["command"] == kind]
 
         self.assertEqual(len(of("component.create")), 1)
         self.assertEqual(len(of("occurrence.copy")), 4)
+        self.assertEqual(len(of("occurrence.move")), 5)
         self.assertEqual(len(of("solid.loft")), 1)
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(len(of("material.create")), 1)
-        self.assertEqual([c["translate"] for c in of("occurrence.copy")],
-                         [[-320.0, 0.0, 0.0], [-160.0, 0.0, 0.0],
-                          [160.0, 0.0, 0.0], [320.0, 0.0, 0.0]])
-        orientations = of("occurrence.move")
-        self.assertEqual([c["occurrence"] for c in orientations],
-                         [f"Hub75Panel:{i}" for i in range(1, 6)])
-        self.assertEqual([c["to"]["position"] for c in orientations],
-                         [[0.0, 0.0, 0.0], [-320.0, 0.0, 0.0],
-                          [-160.0, 0.0, 0.0], [160.0, 0.0, 0.0],
-                          [320.0, 0.0, 0.0]])
-        for number, placement in enumerate(orientations, start=1):
-            pose = placement["to"]
-            if number in (3, 4):
-                self.assertEqual(pose["axis"], [0.0, 1.0, -1.0])
-                self.assertEqual(pose["angle"], "180 deg")
-            else:
-                self.assertEqual(pose["axis"], [1.0, 0.0, 0.0])
-                self.assertEqual(pose["angle"], "90 deg")
 
-    def test_two_panel_and_screen_import_the_same_definition(self):
+        # A copied native component inherits its source transform.
+        # Therefore, create all copies BEFORE applying any placement.
+        copy_indices = [i for i, row in enumerate(commands)
+                        if row["command"] == "occurrence.copy"]
+        move_indices = [i for i, row in enumerate(commands)
+                        if row["command"] == "occurrence.move"]
+        self.assertLess(max(copy_indices), min(move_indices))
+        self.assertTrue(all(p == {"component": "Hub75Panel"}
+                            for p in of("occurrence.copy")))
+
+        placements = of("occurrence.move")
+        self.assertEqual([p["occurrence"] for p in placements],
+                         [f"Hub75Panel:{i}" for i in range(1, 6)])
+        self.assertEqual([p["translate"] for p in placements],
+                         [[0., 0., 160.], [-320., 0., 160.],
+                          [-160., 0., 160.], [160., 0., 160.],
+                          [320., 0., 160.]])
+        for i, pose in enumerate(placements):
+            axis = [0., 1., -1.] if i in (2, 3) else [1., 0., 0.]
+            angle = "180 deg" if i in (2, 3) else "90 deg"
+            self.assertEqual(pose["axis"], axis)
+            self.assertEqual(pose["angle"], angle)
+            self.assertNotIn("matrix", pose)
+            self.assertNotIn("to", pose)
+
+    def test_single_panel_and_screen_import_the_same_definition(self):
         from components.hub75 import Hub75Panel as PanelDefinition
         from scpf import component
         panel = component(PanelDefinition)()
@@ -61,16 +69,21 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(duplicate.translation, (24, 0, 0))
         self.assertIsNone(duplicate.attachment)
 
-    def test_two_placements_share_one_component_definition(self):
+    def test_single_panel_has_one_upright_occurrence(self):
         commands = run_script(MODEL)["commands"]
         def of(kind):
             return [c["params"] for c in commands if c["command"] == kind]
 
         self.assertEqual([c["name"] for c in of("component.create")], ["Hub75Panel"])
-        copies = of("occurrence.copy")
-        self.assertEqual(len(copies), 1)
-        self.assertEqual(copies[0]["component"], "Hub75Panel")
-        self.assertEqual(copies[0]["translate"], [160.0, 0.0, 0.0])
+        self.assertEqual(of("occurrence.copy"), [])
+        moved = of("occurrence.move")
+        self.assertEqual(len(moved), 1)
+        self.assertTrue(moved[0]["move_grounded"])
+        self.assertNotIn("to", moved[0])
+        self.assertEqual(moved[0]["translate"], [0., 0., 160.])
+        self.assertEqual(moved[0]["axis"], [1., 0., 0.])
+        self.assertEqual(moved[0]["angle"], "90 deg")
+        self.assertNotIn("matrix", moved[0])
         self.assertEqual(of("joint.create"), [])
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(

@@ -1,6 +1,6 @@
-# vcs2l: exact SCPF library source commit (includes native v0.30.1 rotation compatibility (library PR #39))
+# vcs2l: exact SCPF library source commit (includes native v0.30.1 rotation compatibility and CLI matrix layout (library PRs #39–40))
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.git
-    version: 3a95fe97e947ac8ac76879fdda3a96f52533ab89
+    version: 26b3eb2a89d7f2f2bc415661ec6ca3f8c04c521f

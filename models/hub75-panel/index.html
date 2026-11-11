@@ -15,67 +15,19 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create Hub75Panel component</li><li>Sketch and extrude the physical front envelope</li><li>Cut six Ø3 mounting holes</li><li>Assign grey housing material</li><li>Copy the component occurrence</li><li>Place the second occurrence at nominal 160 mm X pitch</li></ol></section></div>
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;First reusable HUB75 reference: two native component occurrences.
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Original two-panel regression: one component definition, two occurrences.&quot;&quot;&quot;
+from scpf import component
+from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
 
-Based on the measured portrait-orientation panel in:
-brainboxemb/2026-006-01.cad.HUB75-display-frame
-v1.2/cad/components/hub75_panel.scad
-
-Coordinate mapping for SCPF: X = panel width, Y = panel height,
-Z = front-to-rear depth. The front is at Z=0; the original OpenSCAD
-component uses X/Z for the front and Y for depth.
-
-Only the straight front and STEP-derived tapered outer envelope, six M3
-mounting-hole centres and a housing material are modelled at this stage. This is NOT yet the full rear frame,
-PCB, connectors, locator pins or an alternating-orientation assembly.
-&quot;&quot;&quot;
-
-
-class Hub75Panel:
-    width = 159.70
-    height = 319.71
-    depth = 14.50
-    front_depth = 2.00  # straight front: 1 mm mask + 1 mm PCB
-    rear_inset = 1.25   # STEP taper: inset on every side at the rear
-
-    # Source holes: X=7.85/151.85, Z=7.855/159.855/311.855 from
-    # the drawing&#x27;s lower-left corner. They become +/-72 and +/-152
-    # once the panel is centred on the front plane.
-    mount_x = 72.0
-    mount_y = 152.0
-    hole_diameter = 3.0
-
-    def build(self):
-        # Real long sloping sides from Z=2 to Z=14.5, not a short bevel.
-        body = Box(self.width, self.height, self.depth).taper(
-            from_z=self.front_depth, inset=self.rear_inset,
-        )
-
-        for x in (-self.mount_x, self.mount_x):
-            for y in (-self.mount_y, 0, self.mount_y):
-                body = body + Hole(
-                    d=self.hole_diameter,
-                    depth=self.depth + 0.5,
-                    direction=(0, 0, -1),
-                ).at(x, y, self.depth)
-
-        # One gray housing material. Detailed PCB/front/connector colors
-        # require separate native bodies in a later panel-model iteration.
-        return body.with_material(
-            &quot;HUB75 housing&quot;, density_g_cm3=1.20, color=&quot;#B8B8B8&quot;
-        )
-
+Hub75Panel = component(Hub75PanelDefinition)
 
 class TwoHub75Panels:
-    pitch_x = 160.0  # nominal grid, NOT the 159.70 mm physical width
+    pitch_x = 160.0
 
     def build(self):
         first = Hub75Panel()
         second = first.copy().move(x=self.pitch_x)
-        # One Python model build, two native SolidCraft occurrences.
-        # No boolean union and no duplicate editable feature history.
         return first + second
-
 
 TwoHub75Panels()
 </code></pre>

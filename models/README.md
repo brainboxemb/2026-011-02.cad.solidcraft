@@ -56,7 +56,7 @@ Use plain Python classes, numeric class attributes instead of
 ## Directory and Python naming convention
 
 - CAD model directories and published URLs use **kebab-case**, e.g. `hub75-wood-frame`.
-- Python packages, modules and files use **snake_case**, e.g. `hub75_wood_frame`, `hub75_panels.py`.
-- Python classes use **PascalCase**, e.g. `WoodBoxFrame`.
-- A CAD directory is not a Python package. Model-local import packages live below `scpf/` and the model script makes that directory importable; no external `PYTHONPATH` is needed.
+- When a separate Python module is actually needed, it uses **snake_case**. The current wooden HUB75 design keeps all its case-specific classes directly in one `scpf/model.py`, without a `hub75_wood_frame` package.
+- Python classes use **PascalCase**, e.g. `WoodenHub75Box`, `GlassStrip`.
+- A CAD directory is not necessarily a Python package. Reusable cross-model components live in root `components/`; model-specific wood parts and their assembly belong together in the wooden model's own `scpf/model.py`.
 - Published slugs remain unchanged when internal directories move.

@@ -292,6 +292,27 @@ jobs:
             .body_count == 1 and .bodies[0].name == "CornerBracket"
             and .bodies[0].closed == true
           ' output/native/corner-bracket/measurements.json
+      - name: Native comparison of independent SCPF and SCPC designs
+        shell: bash
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          for model in plate corner-bracket; do
+            mkdir -p "output/native/$model/scpf" "output/native/$model/scpc"
+            cp "output/native/$model/measurements.json" "output/native/$model/scpf/measurements.json"
+            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
+              --out "output/native/$model/scpc/commands.json"
+            solidcraft-cli run "output/native/$model/scpc/commands.json" \
+              --param-check strict --results \
+              --json-out "output/native/$model/scpc/results.json" \
+              --save "output/native/$model/scpc/model.sc" \
+              --out "output/native/$model/scpc/model.step"
+            solidcraft-cli eval "output/native/$model/scpc/model.sc" \
+              --json-out "output/native/$model/scpc/measurements.json"
+            jq -e '(.timeline | all(.error == null))' \
+              "output/native/$model/scpc/measurements.json"
+            python scripts/ci/compare-scpc.py output/native "$model"
+          done
       - name: Build source-matched native result pages
         shell: bash
         run: |
@@ -303,6 +324,10 @@ jobs:
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" \
               --out "output/models/$model/scpf/solidcraft.json"
+          done
+          for model in plate corner-bracket; do
+            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
+              --out "output/models/$model/scpc/solidcraft.json"
           done
           python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"

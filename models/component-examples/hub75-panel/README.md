@@ -55,8 +55,9 @@ The occurrence is rotated **+90° around X** into the upright world **XZ** plane
 and placed at **world Z=160 mm**. The front face points toward **world +Y**;
 the rear with electronics pockets faces **world −Y**.
 
-The saved SolidCraft 0.30.1 document uses a *relative 4×4 matrix* for this
-occurrence placement. This is important: the later absolute `to` syntax was
+SolidCraft 0.30.1 handles the occurrence placement directly using native
+`translate`, `axis` and `angle` parameters. SCPF does not calculate its own
+rotation matrices. This is important: the later absolute `to` syntax was
 silently ignored by SolidCraft 0.30.1, so a syntactically valid JSON did
 not previously prove that the panel stood upright.
 

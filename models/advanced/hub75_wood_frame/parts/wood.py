@@ -75,6 +75,7 @@ class Window:
 # split between the two 45-degree mating surfaces without a seam gap.
 from math import cos, sin, radians
 from scpf import Polygon2D, Direction
+from scpf.core import value_of
 from components.corner_bracket import CornerBracket
 
 
@@ -135,7 +136,8 @@ class GlassSideStrip:
     def build(self):
         profile = Polygon2D(
             _rounded_side_profile(
-                self.width, self.height, self.corner_radius
+                value_of(self.width), value_of(self.height),
+                value_of(self.corner_radius)
             ),
             plane="XZ", world=True,
         )
@@ -156,7 +158,8 @@ class GlassCrossStrip:
     def build(self):
         profile = Polygon2D(
             _rounded_cross_profile(
-                self.length, self.thickness, self.corner_radius
+                value_of(self.length), value_of(self.thickness),
+                value_of(self.corner_radius)
             ),
             plane="XZ", world=True,
         )

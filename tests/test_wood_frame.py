@@ -67,8 +67,10 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(sorted(c["translate"][0] for c in copies),
                          [-320.0,-160.0,160.0,320.0])
         for c in copies:
+            # Native copy offsets are relative to the already placed centre.
+            # Y and Z must remain unchanged; no doubled Y=14.5/Z=42.29.
             self.assertEqual([round(x,3) for x in c["translate"][1:]],
-                             [7.25,21.145])
+                             [0.0,0.0])
 
     def test_native_copy_offsets_are_relative_to_original_positions(self):
         commands = actions()

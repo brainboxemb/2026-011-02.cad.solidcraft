@@ -35,18 +35,22 @@ It uses one `GlassStrip` type for the four differently oriented retainers.
 Only the generically reusable HUB75 module and CornerBracket remain in
 `components/`. There is no separate `parts/` or `assemblies/` layer.
 
-## Open a verified model in your browser
+## Open a verified model with the SolidCraft web application
 
-Native-verified CAD model pages offer a **downloadable SolidCraft `.sc`
-file**, **Open in SolidCraft (browser)** and an optional embedded viewer.
-The official SolidCraft web app opens the editable native design, including
-its component tree and feature timeline. We do **not** mirror or maintain
-another SolidCraft application.
+For every verified design, the model page offers a downloadable native
+`.sc` file and a **clearly labelled link to the external SolidCraft
+website** (`docs.solidcraft.io`). Clicking that link opens a new tab.
+The browser downloads the SolidCraft web application from its own
+servers, so the external provider handles that network traffic.
+Our GitHub Pages site supplies only the verified model file.
 
-The browser link is only shown when the `.sc` belongs to the exact
-verified source revision. See [browser viewer and hosting decisions](../docs/browser-viewer.md)
-for how the link works, what still needs a real browser test and when
-self-hosting might eventually be justified.
+We deliberately do **not** embed SolidCraft on our page. The model
+gallery itself never automatically loads the web application.
+
+See [browser links and the option to host SolidCraft ourselves](../docs/browser-viewer.md).
+The upstream web application can also be compiled from source and
+served as a self-contained static site, but we would test that separately,
+with an independent repository and fixed version.
 
 ## Running a model
 

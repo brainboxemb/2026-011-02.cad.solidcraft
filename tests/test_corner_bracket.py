@@ -5,7 +5,7 @@ import unittest
 from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-EXAMPLE = ROOT / "models" / "corner-bracket" / "scpf"
+EXAMPLE = ROOT / "models" / "component-examples" / "corner-bracket" / "scpf"
 
 
 class CornerBracketTests(unittest.TestCase):

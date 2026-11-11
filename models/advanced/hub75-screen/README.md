@@ -26,13 +26,13 @@ From the CAD repository root after `./bootstrap.ps1`, with a **new empty
 SolidCraft design** and its Assistant connection enabled:
 
 ```powershell
-python -m scpf models/hub75-screen/scpf/model.py --connect
+python -m scpf models/advanced/hub75-screen/scpf/model.py --connect
 ```
 
 `--connect` applies the model to the open GUI; save it there. For
 **optional** JSON generation or headless native verification:
 
 ```powershell
-python -m scpf models/hub75-screen/scpf/model.py --out output/hub75-screen.json
+python -m scpf models/advanced/hub75-screen/scpf/model.py --out output/hub75-screen.json
 solidcraft-cli run output/hub75-screen.json --param-check strict --results --save output/hub75-screen.sc --out output/hub75-screen.step
 ```

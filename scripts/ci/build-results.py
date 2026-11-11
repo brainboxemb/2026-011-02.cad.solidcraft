@@ -65,6 +65,19 @@ MODELS = {
                    "Chamfer — print-face elephant-foot relief",
                    "Four countersinks — single hole feature per location"],
     },
+    "hub75-screen": {
+        "title": "BasicHub75Screen",
+        "tagline": "Five shared native HUB75 occurrences with two 180° rotations",
+        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 rotate 180° about the local depth axis for the rear data chain. The PCB, connectors and detailed rear structure remain future design phases.",
+        "parameters": "Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm",
+        "diagram": "hub75-screen",
+        "stages": ["Create the reusable tapered HUB75 component",
+                   "Make six M3 bores and assign its material once",
+                   "Ground the middle occurrence at X=0",
+                   "Place four copies on the 160 mm nominal grid",
+                   "Rotate the alternating copies around Z by 180°",
+                   "Verify five saved native occurrences"],
+    },
     "hub75-panel": {
         "title": "TwoHub75Panels",
         "tagline": "Two occurrences of one measured P5 HUB75 panel component",
@@ -119,6 +132,7 @@ DIAGRAMS = {
     "csg": """<path d="M130 68 250 15 376 68 376 188 250 241 130 188Z" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M130 68 250 125 376 68 M250 125 V241" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="250" cy="129" rx="39" ry="37" fill="#f1f6fc" stroke="#285785" stroke-width="5"/><ellipse cx="250" cy="130" rx="14" ry="34" fill="#acc6e3" stroke="#285785" stroke-width="3"/><path d="M196 90 307 162 M185 155 310 100" stroke="#285785" stroke-width="4" stroke-dasharray="8 8"/>""",
     "bracket": """<path d="M104 195 104 34 145 34 145 163 388 163 388 207 104 207Z" fill="#b4cde9" stroke="#285785" stroke-width="5"/><path d="M145 163 174 188 407 188 388 163 M388 207 407 188" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="230" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/><ellipse cx="330" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/>""",
     "hub75": """<rect x="130" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><rect x="250" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><g fill="#f5f5f5" stroke="#374151" stroke-width="2"><circle cx="145" cy="42" r="3"/><circle cx="227" cy="42" r="3"/><circle cx="145" cy="130" r="3"/><circle cx="227" cy="130" r="3"/><circle cx="145" cy="218" r="3"/><circle cx="227" cy="218" r="3"/><circle cx="265" cy="42" r="3"/><circle cx="347" cy="42" r="3"/><circle cx="265" cy="130" r="3"/><circle cx="347" cy="130" r="3"/><circle cx="265" cy="218" r="3"/><circle cx="347" cy="218" r="3"/></g>""",
+    "hub75-screen": """<g fill="#b8b8b8" stroke="#374151" stroke-width="3"><rect x="24" y="32" width="84" height="192" rx="2"/><rect x="116" y="32" width="84" height="192" rx="2"/><rect x="208" y="32" width="84" height="192" rx="2"/><rect x="300" y="32" width="84" height="192" rx="2"/><rect x="392" y="32" width="84" height="192" rx="2"/></g><g fill="#f5f5f5" stroke="#374151" stroke-width="1.5"><circle cx="34" cy="44" r="3"/><circle cx="98" cy="44" r="3"/><circle cx="126" cy="44" r="3"/><circle cx="190" cy="44" r="3"/><circle cx="218" cy="44" r="3"/><circle cx="282" cy="44" r="3"/><circle cx="310" cy="44" r="3"/><circle cx="374" cy="44" r="3"/><circle cx="402" cy="44" r="3"/><circle cx="466" cy="44" r="3"/></g>""",
     "plastic-enclosure": """<path d="M82 78 250 25 420 78 420 185 250 238 82 185Z" fill="#a8c5e2" stroke="#285785" stroke-width="5"/><path d="M107 91 250 48 394 91 394 169 250 211 107 169Z" fill="#eef4fb" stroke="#285785" stroke-width="4"/><path d="M82 78 107 91 M420 78 394 91 M82 185 107 169 M420 185 394 169" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="153" rx="13" ry="9" fill="#7ba4cc" stroke="#285785" stroke-width="3"/><ellipse cx="345" cy="118" rx="13" ry="9" fill="#7ba4cc" stroke="#285785" stroke-width="3"/><rect x="218" y="128" width="64" height="38" rx="5" fill="#8db2d5" stroke="#285785" stroke-width="3"/><path d="M248 70 V128 M248 70 266 77 266 91" fill="none" stroke="#285785" stroke-width="5"/>""",
 }
 
@@ -151,7 +165,7 @@ def screenshot_info(native_root, commit, model, scpf_commit):
             or metadata.get("scpf_commit") != scpf_commit
             or metadata.get("verified") is not True):
         return None
-    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
+    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "hub75-screen": "hub75-screen/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
     if not rel:
         return None
     candidate = native_root / rel
@@ -296,7 +310,7 @@ Native qualification is reported only when the matching verified image exists.</
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
     home = f"""<section class="hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
-<p>Explore eight CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
+<p>Explore nine CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>

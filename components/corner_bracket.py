@@ -1,4 +1,4 @@
-"""One reusable, editable four-hole CornerBracketFast geometry definition.
+"""One reusable, editable four-hole CornerBracket geometry definition.
 
 Shared between the standalone reference and the wooden HUB75 enclosure.
 This keeps the reviewed sketch, four mounting holes and all edge treatments
@@ -7,7 +7,7 @@ flat-bottom recess reconstruction.
 """
 from scpf import Polygon2D, Direction, Edges, Hole
 
-class CornerBracketFast:
+class CornerBracket:
     bracket_width = 24.0
     wall_thickness = 12.0
     horizontal_arm_length = 60.0

@@ -1,12 +1,12 @@
 """Standalone native regression for the shared fast corner bracket.
 
-The original geometry now lives in models/components/corner_bracket_fast.py
+The original geometry now lives in components/corner_bracket.py
 so the wooden screen reuses the exact same four-hole shape and edge history.
 """
-from models.components.corner_bracket_fast import CornerBracketFast as _Shared
+from components.corner_bracket import CornerBracket as _Shared
 
 
-class CornerBracketFast:
+class CornerBracket:
     bracket_width = _Shared.bracket_width
     wall_thickness = _Shared.wall_thickness
     horizontal_arm_length = _Shared.horizontal_arm_length
@@ -30,4 +30,4 @@ class CornerBracketFast:
         return _Shared.build(self)
 
 
-CornerBracketFast()
+CornerBracket()

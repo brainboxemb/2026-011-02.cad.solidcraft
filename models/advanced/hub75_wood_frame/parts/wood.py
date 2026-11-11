@@ -3,13 +3,13 @@
 Reference: Batavierenrace 55th edition Basic Box / LIGHTPLY concept (v29).
 The class names describe individual manufacturing pieces. In this concept
 the four printed corner connectors are sourced from the shared
-CornerBracketFast model, not placeholder 100 mm L-rails.
+CornerBracket model, not placeholder 100 mm L-rails.
 
 WORLD: X = screen width, Y = screen depth, Z = vertical (up).
 All wooden parts are native SolidCraft solids standing upright, not
 a horizontal XY layout rotated only in the camera.
 """
-from scpf import Box, Polygon2D
+from scpf import Box
 
 
 class SideWall:

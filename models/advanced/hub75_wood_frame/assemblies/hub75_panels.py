@@ -6,7 +6,7 @@ All front faces are coplanar at Y=0, all bottoms at Z=21.145 mm.
 Advanced, physically oriented modules stay in the detailed HUB75 model.
 """
 from scpf import component
-from models.components.hub75_basic import Hub75PanelBasic
+from components.hub75_basic import Hub75PanelBasic
 
 Panel = component(Hub75PanelBasic)
 

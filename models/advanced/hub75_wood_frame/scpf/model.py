@@ -5,9 +5,9 @@ Basic modules are coplanar rectangular envelopes. The detailed HUB75
 reference independently retains PCB/connector orientations.
 """
 from scpf import component
-from models.components.hub75_panels import HUB75Panels
-from models.components.wood_box import Window as WindowDefinition
-from models.components.wood_frames import WoodBoxFrame, WoodGlassFrame, CornerBrackets
+from models.advanced.hub75_wood_frame.assemblies.hub75_panels import HUB75Panels
+from models.advanced.hub75_wood_frame.parts.wood import Window as WindowDefinition
+from models.advanced.hub75_wood_frame.assemblies.wood_frames import WoodBoxFrame, WoodGlassFrame, CornerBrackets
 
 Glass = component(WindowDefinition)
 

@@ -9,13 +9,12 @@ clean and let each manufactured part be selected individually:
 World X = width, Y = depth (front -Y), Z = up.
 """
 from scpf import component
-from scpf.core import value_of
 
-from models.components.wood_box import (
+from models.advanced.hub75_wood_frame.parts.wood import (
     SideWall, BottomBoard, RoofBoard, BackBoard,
     GlassSideStrip, GlassCrossStrip,
 )
-from models.components.corner_bracket_fast import CornerBracketFast
+from components.corner_bracket import CornerBracket
 
 Side = component(SideWall)
 Bottom = component(BottomBoard)
@@ -23,7 +22,7 @@ Roof = component(RoofBoard)
 Back = component(BackBoard)
 GlassSide = component(GlassSideStrip)
 GlassCross = component(GlassCrossStrip)
-Bracket = component(CornerBracketFast)
+Bracket = component(CornerBracket)
 
 
 class WoodBoxFrame:
@@ -92,8 +91,8 @@ class CornerBrackets:
 
     def build(self):
         half = self.opening_width / 2
-        front_band_y = self.front_y + CornerBracketFast.bracket_width / 2
-        top_left = Bracket(plywood_thickness=value_of(self.plywood)).move(
+        front_band_y = self.front_y + CornerBracket.bracket_width / 2
+        top_left = Bracket(plywood_thickness=self.plywood).move(
             x=-half, y=front_band_y, z=self.opening_height
         )
         corners = top_left

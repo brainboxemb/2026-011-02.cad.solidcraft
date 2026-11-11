@@ -6,7 +6,7 @@ From rear left to right: chain numbers 5,4,3,2,1, input top/bottom
 alternating TOP, BOTTOM, TOP, BOTTOM, TOP.
 """
 from scpf import component
-from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
+from components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 

@@ -82,29 +82,29 @@ MODELS = {
     "hub75-screen": {
         "title": "BasicHub75Screen",
         "tagline": "Five shared native HUB75 occurrences with two 180° rotations",
-        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 rotate 180° about the local depth axis for the rear data chain. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.",
+        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 reverse direction around the assembled front-to-back axis for the rear data chain, and all occurrences stand upright in XZ. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.",
         "parameters": "Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm",
         "diagram": "hub75-screen",
         "stages": ["Create the reusable tapered HUB75 component",
                    "Make six blind M3 rear bores and assign material once",
                    "Ground the middle occurrence at X=0",
                    "Place four copies on the 160 mm nominal grid",
-                   "Rotate the alternating copies around Z by 180°",
+                   "Set absolute target poses using supported relative native matrices",
                    "Verify five saved native occurrences"],
     },
     "hub75-panel": {
-        "title": "TwoHub75Panels",
-        "tagline": "Two occurrences of one measured P5 HUB75 panel component",
-        "description": "First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. Two native occurrences at 160 mm pitch; rear-step/rounding details, PCB and connectors are future steps.",
-        "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; two occurrences at 160 mm pitch",
+        "title": "Hub75Panel",
+        "tagline": "One upright measured P5 HUB75 panel component",
+        "description": "First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. One native occurrence upright in XZ, with front/rear snapshots; rear-step/rounding details, PCB and connectors are future steps.",
+        "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; one upright occurrence",
         "diagram": "hub75",
         "stages": ["Create Hub75Panel component",
                    "Sketch and extrude the physical front envelope",
                    "Cut four rear electronics bays from the rear plane",
                    "Cut six blind rear-side Ø3 mounting holes",
                    "Assign grey housing material",
-                   "Copy the component occurrence",
-                   "Place the second occurrence at nominal 160 mm X pitch"],
+                   "Rotate the single component into the upright XZ plane",
+                   "Verify front and rear views in SolidCraft 0.30.1"],
     },
     "plastic-enclosure-pi": {
         "title": "Plastic Enclosure Pi",
@@ -309,6 +309,36 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             'full-size image available"></a>'
             if preview_image else diagram(slug)
         )
+        # Publish native face views only when their verification provenance
+        # matches the exact CAD source and SCPF library revision.
+        extra_views = ""
+        if slug == "hub75-panel" and has_native:
+            faces = []
+            for title, filename in (("Front — LED mask", "front.png"),
+                                    ("Rear — pockets and mounting bores", "rear.png")):
+                candidate = native_root / slug / filename
+                if not candidate.is_file() or not candidate.stat().st_size:
+                    raise ValueError(f"Verified HUB75 face view is missing: {candidate}")
+                copy_if_exists(candidate, work / filename)
+                faces.append(
+                    f'<figure><a href="{filename}" target="_blank" rel="noopener">'
+                    f'<img src="{filename}" alt="Native SolidCraft {esc(title)}">'
+                    f'</a><figcaption>{esc(title)}</figcaption></figure>'
+                )
+            extra_views = ('<h2>Front and rear of the same upright panel</h2>'
+                           '<div class="panel-views">' + ''.join(faces) + '</div>'
+                           '<p class="small muted">Both are native SolidCraft '
+                           'snapshots of the same single-component design.</p>')
+        tested_version = "0.30.1"
+        engine_version = (
+            read_json(native_root / "verification.json").get("solidcraft_version")
+            if has_native else None
+        )
+        version_label = (
+            f"SolidCraft {engine_version} · verified native run"
+            if engine_version else
+            f"SolidCraft {tested_version} target · native version unverified for this revision"
+        )
         status = ("Native verified · snapshot from matching run" if has_native
                   else "Previously verified render from main · not verified for this PR"
                   if previously_verified else
@@ -319,7 +349,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         view = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
-<span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span></div>
+<span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span><span class="badge">{esc(version_label)}</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
 <p class="small muted">{"Native SolidCraft image, matching this source revision. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
 <p>{esc(info["description"])}</p></section>
@@ -328,6 +358,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol>{stage_summary}</ol></section></div>
+{extra_views}
 <h2>Python model</h2><pre><code>{script}</code></pre>
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
 <div class="notice"><strong>Verification:</strong> {esc(status)}.
@@ -361,7 +392,7 @@ Native qualification is reported only when the matching verified image exists.</
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
 <p class="small muted">CAD source revision: <code>{esc(commit)}</code><br>
-SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a></p></main>"""
+SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a><br>SolidCraft engine: <strong>0.30.1 tested</strong>; older releases are refused by the SCPF compatibility guard, newer releases warn.</p></main>"""
     provenance = {
         "source_commit": commit,
         "scpf_commit": scpf_commit,

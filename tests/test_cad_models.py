@@ -19,7 +19,7 @@ class CADModelRegressions(unittest.TestCase):
         """No dataclass/type ceremony or implicit last geometry expression."""
         scripts = sorted((ROOT / "models").glob("**/scpf/model.py"))
         scripts.extend(sorted((ROOT / "components").glob("*.py")))
-        scripts.extend(sorted((ROOT / "models/advanced/hub75_wood_frame").glob("**/*.py")))
+        scripts.extend(sorted((ROOT / "models/advanced/hub75-wood-frame/scpf").glob("**/*.py")))
         self.assertGreaterEqual(len(scripts), 10)
         for script in scripts:
             with self.subTest(model=str(script.relative_to(ROOT))):

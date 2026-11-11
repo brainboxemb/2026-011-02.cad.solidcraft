@@ -11,7 +11,9 @@ import json
 import re
 import shutil
 from pathlib import Path
-from model_catalog import SOURCES, SECTIONS, source_path
+from model_catalog import (
+    SOURCES, SECTIONS, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, source_path,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -345,7 +347,48 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                   "Generated command plan · native render not verified for this commit")
         badge = "verified" if has_native else "pending"
         stage_summary = "".join(f"<li>{esc(s)}</li>" for s in info["stages"])
-        script = esc(source.read_text(encoding="utf-8"))
+        launcher_code = esc(source.read_text(encoding="utf-8"))
+        component_path = COMPONENT_SOURCES.get(slug)
+        if component_path is None:
+            # Self-contained models have only one source file.
+            python_source = f"<h2>Python model</h2><pre><code>{launcher_code}</code></pre>"
+            source_links = '<a class="btn" href="model.py">SCPF source</a>'
+        else:
+            # Display and publish the actual imported source. Merely showing
+            # model.py hides the entire sketch/feature construction from readers.
+            component_file = ROOT / component_path
+            if not component_file.is_file():
+                raise FileNotFoundError(f"Missing shared CAD component: {component_file}")
+            downloadable = "source/" + component_path
+            copy_if_exists(component_file, work / downloadable)
+            component_code = esc(component_file.read_text(encoding="utf-8"))
+            component_label = esc(component_path)
+            definition_section = (
+                '<section class="source-section source-definition">'
+                '<h2>Python component — actual geometry</h2>'
+                f'<p>The sketch, extrusion, fillets and other editable CAD features live in '
+                f'<code>{component_label}</code>. This file is reused by other models.</p>'
+                f'<p><a class="btn secondary" href="{downloadable}">Download component source</a></p>'
+                f'<pre><code>{component_code}</code></pre></section>'
+            )
+            launcher_section = (
+                '<section class="source-section source-launcher">'
+                '<h2>Model script — how the component is used</h2>'
+                '<p><code>model.py</code> is the entry point that SCPF executes. '
+                'It imports the shared definition and places it into the CAD model; '
+                'it is not a second copy of the component geometry.</p>'
+                '<p><a class="btn secondary" href="model.py">Download model.py</a></p>'
+                f'<pre><code>{launcher_code}</code></pre></section>'
+            )
+            python_source = (
+                definition_section + launcher_section
+                if slug in COMPONENT_DEFINITION_PRIMARY
+                else launcher_section + definition_section
+            )
+            source_links = (
+                f'<a class="btn" href="{downloadable}">Actual component source</a>'
+                '<a class="btn secondary" href="model.py">Model entry point</a>'
+            )
         view = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
@@ -353,13 +396,13 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
 <p class="small muted">{"Native SolidCraft image, matching this source revision. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
 <p>{esc(info["description"])}</p></section>
-<section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
-<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links">{source_links}<a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol>{stage_summary}</ol></section></div>
 {extra_views}
-<h2>Python model</h2><pre><code>{script}</code></pre>
+{python_source}
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
 <div class="notice"><strong>Verification:</strong> {esc(status)}.
 The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.

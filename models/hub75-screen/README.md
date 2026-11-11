@@ -20,9 +20,17 @@ The first occurrence is the *middle* panel at X=0; `copy()` adds the other four 
 
 **Scope:** this phase now verifies five real placements, rotation, the existing rear loft, **four rear electronics bays with dividing ribs**, six **blind rear-facing mounting bores** (front face stays intact), and one grey housing material. It does **not** yet include rounded/stepped bay corners, rear-tube reinforcement, connector/PCB bodies, brackets or native exploded views. The source's annotations and physical connector roles are documented, not claimed to be displayed in SolidCraft.
 
-## Build
+## Open in SolidCraft
 
-From the repository root, after `./bootstrap.ps1`:
+From the CAD repository root after `./bootstrap.ps1`, with a **new empty
+SolidCraft design** and its Assistant connection enabled:
+
+```powershell
+python -m scpf models/hub75-screen/scpf/model.py --connect
+```
+
+`--connect` applies the model to the open GUI; save it there. For
+**optional** JSON generation or headless native verification:
 
 ```powershell
 python -m scpf models/hub75-screen/scpf/model.py --out output/hub75-screen.json

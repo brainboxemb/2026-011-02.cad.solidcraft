@@ -15,13 +15,107 @@
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.</p></section>
-<section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
-<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="source/components/corner_bracket.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Solid bracket — mounting-hole features deliberately omitted</li></ol></section></div>
 
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;Standalone native regression for the shared hole-free corner bracket.
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>components/corner_bracket.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/components/corner_bracket.py">Download component source</a></p><pre><code>&quot;&quot;&quot;One shared, editable CornerBracket shape WITHOUT screw holes.
+
+The standalone demonstration and wooden HUB75 assembly import this single
+geometry definition. While the screw-hole operations are producing native
+SolidCraft warnings, keep the bracket as a clean L-shaped body with the
+reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
+experiments remain only in the standalone model_reference.py, not here.
+&quot;&quot;&quot;
+from scpf import Polygon2D, Direction, Edges
+
+class CornerBracket:
+    bracket_width = 24.0
+    wall_thickness = 12.0
+    horizontal_arm_length = 60.0
+    vertical_arm_length = 60.0
+
+    outer_corner_chamfer = 6.0
+    arm_end_chamfer = 3.0
+    side_edge_chamfer = 2.0
+    elephant_foot_relief = 0.6
+    inside_corner_radius = 4.0
+
+    def build(self):
+        w = self.wall_thickness
+        h = self.horizontal_arm_length
+        v = self.vertical_arm_length
+        end = self.arm_end_chamfer
+        outer = self.outer_corner_chamfer
+        ef = self.elephant_foot_relief
+
+        # L profile in the XZ plane (+Z up, +X right; not to scale):
+        #
+        #       D--------------------------------C
+        #      /                                  \
+        #     E                                    B
+        #     |                                    |
+        #     |         I--------------------------A
+        #     |         |
+        #     |         |
+        #     F         |
+        #      \        |
+        #       G-------H
+        #
+        # A o_hor_tip    B o_hor_bevel  C o_hor
+        # D o_corner     E o_vert       F o_vert_bevel
+        # G o_vert_end   H v_tip        I i_corner
+        #
+        # Start at I, the inside corner and sketch origin (0, 0).
+        # Polygon order: I -&gt; A -&gt; B -&gt; C -&gt; D -&gt; E -&gt; F -&gt; G -&gt; H -&gt; I.
+        # Each label names its point and the segment starting at that point.
+        # Elephant-foot relief is NOT part of this sketch: it comes later.
+        profile = Polygon2D([
+            (&quot;i_corner&quot;, (0, 0)),
+            (&quot;o_hor_tip&quot;, (h, 0)),
+            (&quot;o_hor_bevel&quot;, (h, w - end)),
+            (&quot;o_hor&quot;, (h - end, w)),
+            (&quot;o_corner&quot;, (-w + outer, w)),
+            (&quot;o_vert&quot;, (-w, w - outer)),
+            (&quot;o_vert_bevel&quot;, (-w, -v + end)),
+            (&quot;o_vert_end&quot;, (-w + end, -v)),
+            (&quot;v_tip&quot;, (0, -v)),
+        ], plane=&quot;XZ&quot;, world=True)
+
+        body = profile.extrude(self.bracket_width, direction=Direction.SYMMETRIC)
+
+        # Round the inside, then remove printing relief from the two tip
+        # edges (parallel to the extrusion direction).
+        body = body.fillet(
+            self.inside_corner_radius,
+            edges=Edges.from_vertices(&quot;i_corner&quot;),
+        )
+        body = body.chamfer(
+            self.elephant_foot_relief,
+            edges=Edges.from_vertices(&quot;o_hor_tip&quot;, &quot;v_tip&quot;),
+        )
+        body = body.chamfer(
+            self.side_edge_chamfer,
+            edges=Edges.from_profile(&quot;o_*&quot;, sides=&quot;both&quot;),
+        )
+        # Inner relief along both broad faces, independent of the 2D outline.
+        body = body.chamfer(
+            self.elephant_foot_relief,
+            edges=Edges.from_profile(&quot;i_corner&quot;, sides=&quot;both&quot;),
+        )
+
+        # No mounting holes in this version. The historical four-hole
+        # geometry caused warnings in native SolidCraft when replayed
+        # inside the larger wooden frame. Keep this bracket reliable as a
+        # positioned/rounded solid while the mounting approach is reviewed.
+        # Do not reintroduce holes through model-specific workarounds.
+
+        return body
+
+
+</code></pre></section><section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the entry point that SCPF executes. It imports the shared definition and places it into the CAD model; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;Standalone native regression for the shared hole-free corner bracket.
 
 The original geometry now lives in components/corner_bracket.py
 so the wooden screen reuses the exact same hole-free shape and edge history.
@@ -45,7 +139,7 @@ class CornerBracket:
 
 
 CornerBracket()
-</code></pre>
+</code></pre></section>
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {

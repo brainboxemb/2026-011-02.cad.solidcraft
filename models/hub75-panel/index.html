@@ -15,13 +15,115 @@
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. One native occurrence upright in XZ, with front/rear snapshots; rear-step/rounding details, PCB and connectors are future steps.</p></section>
-<section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
-<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="source/components/hub75.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create Hub75Panel component</li><li>Sketch and extrude the physical front envelope</li><li>Cut four rear electronics bays from the rear plane</li><li>Cut six blind rear-side Ø3 mounting holes</li><li>Assign grey housing material</li><li>Rotate the single component into the upright XZ plane</li><li>Verify front and rear views in SolidCraft 0.30.1</li></ol></section></div>
 <h2>Front and rear of the same upright panel</h2><div class="panel-views"><figure><a href="front.png" target="_blank" rel="noopener"><img src="front.png" alt="Native SolidCraft Front — LED mask"></a><figcaption>Front — LED mask</figcaption></figure><figure><a href="rear.png" target="_blank" rel="noopener"><img src="rear.png" alt="Native SolidCraft Rear — pockets and mounting bores"></a><figcaption>Rear — pockets and mounting bores</figcaption></figure></div><p class="small muted">Both are native SolidCraft snapshots of the same single-component design.</p>
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;One reusable HUB75 mechanical component, shown upright in world XZ.
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>components/hub75.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/components/hub75.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Single measured HUB75 panel reused in the regression and screen assembly.
+
+Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
+The current CAD body is still an approximate rear-tapered envelope with
+four rear electronics-bay pockets and six blind mounting bores. The pocket
+outlines are currently square-cornered approximations; the rounded/stepped
+bay edges, tubes, PCB and connectors still need distinct features.
+&quot;&quot;&quot;
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction
+
+
+class Hub75Panel:
+    width = 159.70
+    height = 319.71
+    depth = 14.50
+    front_depth = 2.00  # straight front: 1 mm mask + 1 mm PCB
+    rear_inset = 1.25   # STEP taper: inset on every side at the rear
+
+    # Source holes: X=7.85/151.85, Z=7.855/159.855/311.855 from
+    # the drawing&#x27;s lower-left corner. They become +/-72 and +/-152
+    # once the panel is centred on the front plane.
+    mount_x = 72.0
+    mount_y = 152.0
+    hole_diameter = 3.0
+
+    # Rear web geometry from v1.2 hub75_panel.scad / supplied STEP reference.
+    # Source dimensions belong to nominal 160 x 320 mm reference space.
+    rear_side_rail = 12.5       # each long rail, X direction
+    rear_end_rail = 10.75      # top/bottom border, long Y direction
+    rear_crossbar = 20.0       # 3 horizontal ribs, centered at quarters
+
+    def build(self):
+        # Real long sloping sides from Z=2 to Z=14.5, not a short bevel.
+        body = Box(self.width, self.height, self.depth).taper(
+            from_z=self.front_depth, inset=self.rear_inset,
+        )
+
+        # Cut the four electronics bays FROM THE REAR, leaving the complete
+        # front mask + PCB stack at Z=0..2 mm. On the source panel the four
+        # openings are separated by 3 crossbars, 20 mm wide in reference
+        # coordinates. A single named sketch creates one editable cut.
+        #
+        # OpenSCAD source coordinates use X/Z in the display face; SCPF uses
+        # X/Y. The reference&#x27;s 80/160/240 mm rib positions therefore become
+        # Y=-H/4, Y=0 and Y=+H/4 in portrait orientation.
+        side = self.rear_side_rail * (159.70 / 160.0)
+        end = self.rear_end_rail * (319.71 / 320.0)
+        rib_half = self.rear_crossbar * (319.71 / 320.0) / 2
+        half_height = self.height / 2
+        quarter_height = self.height / 4
+        opening_width = self.width - 2 * side
+        left = -self.width / 2 + side
+        bay_ranges = (
+            (-half_height + end, -quarter_height - rib_half),
+            (-quarter_height + rib_half, -rib_half),
+            (rib_half, quarter_height - rib_half),
+            (quarter_height + rib_half, half_height - end),
+        )
+        with Sketch(
+            name=&quot;Rear electronics bays&quot;,
+            on=body,
+            parent=Anchor.TOP,
+        ) as bays:
+            for bottom, top in bay_ranges:
+                bays.add(
+                    Rectangle2D(opening_width, top - bottom),
+                    offset=(left, bottom),
+                )
+        body = body - bays.extrude(
+            self.depth - self.front_depth,
+            direction=Direction.NEGATIVE,
+        )
+
+        # These four rectangles create the real rails and 3 dividing ribs.
+        # Pending STEP details: 5 mm rounded corners, the stepped 7.75 mm
+        # central rail relief, shallow rear recess and reinforcement tubes.
+        # In particular this is not yet a complete molded HUB75 rear shell.
+
+        # The mounting bores are at the BACK of the mechanical housing.
+        # Our first envelope model previously cut all the way through the
+        # 2 mm front mask / PCB stack. The real panel must have a solid
+        # front face: stop the six bores at the START of the rear housing,
+        # Z=front_depth, without opening the front at Z=0.
+        #
+        # OpenSCAD builds separate mounting tubes and front layers. A blind
+        # bore in the simplified single-body envelope preserves that
+        # mechanical intent without inventing the missing rear structure.
+        rear_bore_depth = self.depth - self.front_depth
+        for x in (-self.mount_x, self.mount_x):
+            for y in (-self.mount_y, 0, self.mount_y):
+                body = body + Hole(
+                    d=self.hole_diameter,
+                    depth=rear_bore_depth,
+                    direction=(0, 0, -1),
+                ).at(x, y, self.depth)
+
+        # One gray housing material. Detailed PCB/front/connector colors
+        # require separate native bodies in a later panel-model iteration.
+        return body.with_material(
+            &quot;HUB75 housing&quot;, density_g_cm3=1.20, color=&quot;#B8B8B8&quot;
+        )
+
+</code></pre></section><section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the entry point that SCPF executes. It imports the shared definition and places it into the CAD model; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;One reusable HUB75 mechanical component, shown upright in world XZ.
 
 A single panel is a component. A screen assembly is responsible for copies.
 The detailed panel definition stays native XY with rear depth in +Z; its
@@ -41,7 +143,7 @@ class SingleHub75Panel:
 
 
 SingleHub75Panel()
-</code></pre>
+</code></pre></section>
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {

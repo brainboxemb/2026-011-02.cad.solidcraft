@@ -11,16 +11,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75PanelBasic_height",
-        "expression": "319.71",
+        "name": "Hub75PanelBasic_depth",
+        "expression": "14.5",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75PanelBasic_depth",
-        "expression": "14.5",
+        "name": "Hub75PanelBasic_height",
+        "expression": "319.71",
         "unit": "mm"
       }
     },
@@ -43,11 +43,11 @@
       "params": {
         "p0": [
           "-Hub75PanelBasic_width / 2",
-          "-Hub75PanelBasic_height / 2"
+          "-Hub75PanelBasic_depth / 2"
         ],
         "p1": [
           "Hub75PanelBasic_width / 2",
-          "Hub75PanelBasic_height / 2"
+          "Hub75PanelBasic_depth / 2"
         ]
       }
     },
@@ -58,7 +58,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "Hub75PanelBasic_depth",
+        "distance": "Hub75PanelBasic_height",
         "body_name": "Hub75PanelBasic"
       }
     },
@@ -86,13 +86,25 @@
       }
     },
     {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Hub75PanelBasic:1",
+        "translate": [
+          0.0,
+          7.25,
+          21.14500000000001
+        ],
+        "move_grounded": true
+      }
+    },
+    {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75PanelBasic",
         "translate": [
           -320.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
@@ -102,8 +114,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           -160.0,
-          0.0,
-          0.0
+          7.25,
+          340.855
         ]
       }
     },
@@ -114,13 +126,13 @@
         "to": {
           "position": [
             -160.0,
-            0.0,
-            0.0
+            7.25,
+            340.855
           ],
           "axis": [
             0.0,
-            0.0,
-            1.0
+            1.0,
+            0.0
           ],
           "angle": "180 deg"
         }
@@ -132,8 +144,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           160.0,
-          0.0,
-          0.0
+          7.25,
+          340.855
         ]
       }
     },
@@ -144,13 +156,13 @@
         "to": {
           "position": [
             160.0,
-            0.0,
-            0.0
+            7.25,
+            340.855
           ],
           "axis": [
             0.0,
-            0.0,
-            1.0
+            1.0,
+            0.0
           ],
           "angle": "180 deg"
         }
@@ -162,8 +174,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           320.0,
-          0.0,
-          0.0
+          7.25,
+          21.14500000000001
         ]
       }
     },
@@ -178,16 +190,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_height",
-        "expression": "362",
+        "name": "SideWall_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_depth",
-        "expression": "100",
+        "name": "SideWall_height",
+        "expression": "362",
         "unit": "mm"
       }
     },
@@ -210,11 +222,11 @@
       "params": {
         "p0": [
           "-SideWall_thickness / 2",
-          "-SideWall_height / 2"
+          "-SideWall_depth / 2"
         ],
         "p1": [
           "SideWall_thickness / 2",
-          "SideWall_height / 2"
+          "SideWall_depth / 2"
         ]
       }
     },
@@ -225,7 +237,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "SideWall_depth",
+        "distance": "SideWall_height",
         "body_name": "SideWall"
       }
     },
@@ -258,8 +270,8 @@
         "occurrence": "SideWall:1",
         "translate": [
           -429.5,
-          0.0,
-          -25.0
+          25.0,
+          0.0
         ],
         "move_grounded": false
       }
@@ -270,8 +282,8 @@
         "component": "SideWall",
         "translate": [
           429.5,
-          0.0,
-          -25.0
+          25.0,
+          0.0
         ]
       }
     },
@@ -286,16 +298,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_thickness",
-        "expression": "15",
+        "name": "BottomBoard_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_depth",
-        "expression": "100",
+        "name": "BottomBoard_thickness",
+        "expression": "15",
         "unit": "mm"
       }
     },
@@ -318,11 +330,11 @@
       "params": {
         "p0": [
           "-BottomBoard_width / 2",
-          "-BottomBoard_thickness / 2"
+          "-BottomBoard_depth / 2"
         ],
         "p1": [
           "BottomBoard_width / 2",
-          "BottomBoard_thickness / 2"
+          "BottomBoard_depth / 2"
         ]
       }
     },
@@ -333,7 +345,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BottomBoard_depth",
+        "distance": "BottomBoard_thickness",
         "body_name": "BottomBoard"
       }
     },
@@ -366,8 +378,8 @@
         "occurrence": "BottomBoard:1",
         "translate": [
           0.0,
-          -188.5,
-          -25.0
+          25.0,
+          -15.0
         ],
         "move_grounded": false
       }
@@ -463,8 +475,8 @@
         "occurrence": "RoofBoard:1",
         "translate": [
           0.0,
-          188.5,
-          -25.0
+          37.0,
+          362.0
         ],
         "move_grounded": false
       }
@@ -480,16 +492,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "BackBoard_height",
-        "expression": "377",
+        "name": "BackBoard_thickness",
+        "expression": "9",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "BackBoard_thickness",
-        "expression": "9",
+        "name": "BackBoard_height",
+        "expression": "377",
         "unit": "mm"
       }
     },
@@ -512,11 +524,11 @@
       "params": {
         "p0": [
           "-BackBoard_width / 2",
-          "-BackBoard_height / 2"
+          "-BackBoard_thickness / 2"
         ],
         "p1": [
           "BackBoard_width / 2",
-          "BackBoard_height / 2"
+          "BackBoard_thickness / 2"
         ]
       }
     },
@@ -527,7 +539,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BackBoard_thickness",
+        "distance": "BackBoard_height",
         "body_name": "BackBoard"
       }
     },
@@ -560,8 +572,8 @@
         "occurrence": "BackBoard:1",
         "translate": [
           0.0,
-          0.0,
-          75.0
+          79.5,
+          -7.5
         ],
         "move_grounded": false
       }
@@ -577,16 +589,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Window_height",
-        "expression": "360",
+        "name": "Window_thickness",
+        "expression": "4",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "Window_thickness",
-        "expression": "4",
+        "name": "Window_height",
+        "expression": "360",
         "unit": "mm"
       }
     },
@@ -609,11 +621,11 @@
       "params": {
         "p0": [
           "-Window_width / 2",
-          "-Window_height / 2"
+          "-Window_thickness / 2"
         ],
         "p1": [
           "Window_width / 2",
-          "Window_height / 2"
+          "Window_thickness / 2"
         ]
       }
     },
@@ -624,7 +636,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "Window_thickness",
+        "distance": "Window_height",
         "body_name": "Window"
       }
     },
@@ -657,8 +669,8 @@
         "occurrence": "Window:1",
         "translate": [
           0.0,
-          0.0,
-          -18.0
+          -16.0,
+          1.0
         ],
         "move_grounded": false
       }
@@ -697,7 +709,7 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
+        "plane": "XZ",
         "name": "Profile"
       }
     },
@@ -715,19 +727,19 @@
           ],
           [
             100.0,
-            6.0
+            -6.0
           ],
           [
             6.0,
-            6.0
+            -6.0
           ],
           [
             6.0,
-            100.0
+            -100.0
           ],
           [
             0.0,
-            100.0
+            -100.0
           ]
         ],
         "closed": true,
@@ -782,8 +794,8 @@
         "occurrence": "CornerRailConcept:1",
         "translate": [
           -437.0,
-          -196.0,
-          -25.0
+          75.0,
+          -15.0
         ],
         "move_grounded": false
       }
@@ -794,8 +806,8 @@
         "component": "CornerRailConcept",
         "translate": [
           437.0,
-          -196.0,
-          -25.0
+          75.0,
+          -15.0
         ]
       }
     },
@@ -806,15 +818,15 @@
         "to": {
           "position": [
             437.0,
-            -196.0,
-            -25.0
+            75.0,
+            -15.0
           ],
           "axis": [
             0.0,
-            0.0,
-            1.0
+            1.0,
+            0.0
           ],
-          "angle": "90 deg"
+          "angle": "-90 deg"
         }
       }
     },
@@ -824,8 +836,8 @@
         "component": "CornerRailConcept",
         "translate": [
           437.0,
-          196.0,
-          -25.0
+          75.0,
+          377.0
         ]
       }
     },
@@ -836,13 +848,13 @@
         "to": {
           "position": [
             437.0,
-            196.0,
-            -25.0
+            75.0,
+            377.0
           ],
           "axis": [
             0.0,
-            0.0,
-            1.0
+            1.0,
+            0.0
           ],
           "angle": "180 deg"
         }
@@ -854,8 +866,8 @@
         "component": "CornerRailConcept",
         "translate": [
           -437.0,
-          196.0,
-          -25.0
+          75.0,
+          377.0
         ]
       }
     },
@@ -866,15 +878,15 @@
         "to": {
           "position": [
             -437.0,
-            196.0,
-            -25.0
+            75.0,
+            377.0
           ],
           "axis": [
             0.0,
-            0.0,
-            1.0
+            1.0,
+            0.0
           ],
-          "angle": "270 deg"
+          "angle": "90 deg"
         }
       }
     }

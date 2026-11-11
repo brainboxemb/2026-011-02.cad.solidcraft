@@ -5,7 +5,7 @@ import json
 import re
 import sys
 import zipfile
-from urllib.parse import urlparse, parse_qs, unquote
+from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 from model_catalog import COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY
 
@@ -106,31 +106,35 @@ def check(site, commit):
                 assert doc["format"] == "solidcraft/48", slug
                 assert container["format"] == "solidcraft-container/1", slug
             assert 'href="model.sc"' in page
-            assert 'href="viewer.html"' in page
-            assert "Open in SolidCraft (browser)" in page
-            viewer = model / "viewer.html"
-            assert viewer.is_file(), slug
-            viewer_text = viewer.read_text(encoding="utf-8")
-            assert '<iframe src="https://docs.solidcraft.io/app/?embed&amp;open=' in viewer_text, slug
+            assert 'href="viewer.html"' not in page, slug
+            assert not (model / "viewer.html").exists(), slug
+            assert "<iframe" not in page, slug
+            assert "Open in SolidCraft Web (external website)" in page
+            assert "docs.solidcraft.io" in page
+            assert "network traffic" in page
+            assert "You are leaving" in page
             expected_model_url = (
                 "https://brainboxemb.github.io/2026-011-02.cad.solidcraft/"
                 f"models/{slug}/model.sc"
             )
-            parser_viewer = Parser()
-            parser_viewer.feed(viewer_text)
-            assert any("model.sc" == href for href in parser_viewer.links)
+            parser_page = Parser()
+            parser_page.feed(page)
             full_urls = [
-                href for href in parser_viewer.links
+                href for href in parser_page.links
                 if href.startswith("https://docs.solidcraft.io/app/?open=")
             ]
             assert len(full_urls) == 1, slug
             full_query = parse_qs(urlparse(full_urls[0]).query)
             assert full_query.get("open") == [expected_model_url], slug
+            assert "?embed" not in full_urls[0], slug
+            assert 'target="_blank" rel="noopener noreferrer"' in page
         else:
             # PR previews may reuse a stale screenshot but must NEVER
             # claim the browser can open a source-matched native design.
-            assert "Open in SolidCraft (browser)" not in page, slug
+            assert "Open in SolidCraft Web (external website)" not in page, slug
             assert 'href="viewer.html"' not in page, slug
+            assert not (model / "viewer.html").exists(), slug
+            assert "<iframe" not in page, slug
         if slug == "hub75-panel" and slug in provenance["native_verified_models"]:
             for filename in ("front.png", "rear.png"):
                 assert (model / filename).is_file()

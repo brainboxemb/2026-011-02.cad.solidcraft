@@ -92,18 +92,18 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertFalse(any(c["params"].get("name")=="CornerRailConcept"
                              for c in commands))
 
-    def test_corner_placement_at_four_aperture_corners(self):
+    def test_corner_brackets_cover_outside_wood_surfaces(self):
         placements=[c["params"] for c in actions()
                     if c["command"]=="occurrence.move"
                     and c["params"]["occurrence"].startswith("CornerBracket:")]
         self.assertEqual(len(placements),4)
-        self.assertEqual(placements[0]["translate"],[-422.0,-13.0,362.0])
+        self.assertEqual(placements[0]["translate"],[-437.0,-13.0,377.0])
         rotated=[v["to"] for v in placements[1:]]
         self.assertEqual([v["angle"] for v in rotated],["180 deg"]*3)
         self.assertEqual([v["axis"] for v in rotated],
                          [[0.0,0.0,1.0],[1.0,0.0,0.0],[0.0,1.0,0.0]])
         self.assertEqual([(v["position"][0],v["position"][2]) for v in rotated],
-                         [(422.0,362.0),(-422.0,0.0),(422.0,0.0)])
+                         [(437.0,377.0),(-437.0,-15.0),(437.0,-15.0)])
 
     def test_advanced_panel_still_has_rear_bays_and_blind_holes(self):
         commands=run_script(ROOT/"models/component-examples/hub75-panel/scpf/model.py")["commands"]

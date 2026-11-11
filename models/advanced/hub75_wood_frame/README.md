@@ -35,13 +35,16 @@ Four provisional 15×15 mm wood strips hold the glass from behind
 at Y=-14..1. These strips are real parts but require future mechanical
 fit, fastening and sealing verification.
 
-The four **real shared CornerBracket shapes** have their sketch origins
-at the four *inside* opening corners (±422, Z=0/362), Y=-13. Each copy
-is rotated to follow the neighbouring wood. The geometry is **only
-defined once**, in `components/corner_bracket.py`, and used identically by
-the standalone Corner Bracket example and this assembly. The current
-native 90° countersinks approximate the original flat-bottom recess;
-the printed part still needs a fit check and arm-tip refinement.
+The four **shared CornerBracket** instances sit on the OUTSIDE wood
+corners (X=±437, Z=-15/377), Y=-13. Unlike an internal-corner position
+that would physically intersect the plywood, their 12 mm wings follow
+the **outside faces** of the side, top and bottom boards. The 24 mm bracket
+width occupies Y=-25..-1 of the wooden cabinet depth; the top wing sits
+above the roof, and the vertical wing sits outside the side board. The
+four-hole geometry is **defined once** in `components/corner_bracket.py`,
+also used by the standalone demo. The native 90° countersinks remain an
+approximation of the original flat-bottom recess; real bolt seating,
+corner clearances and arm-tip refinements still need physical checking.
 
 ## Actual SolidCraft model browser groups
 

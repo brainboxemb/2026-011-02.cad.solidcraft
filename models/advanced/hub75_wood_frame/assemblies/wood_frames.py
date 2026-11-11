@@ -78,11 +78,13 @@ class WoodGlassFrame:
 
 
 class CornerBrackets:
-    """The shared four-hole fast bracket at the four actual wood corners.
+    """Four genuine L brackets on the OUTSIDE of plywood corners.
 
-    The L inside vertex belongs at each *interior aperture corner*,
-    not at the extreme outer corner. Rotations are 180 deg around
-    X/Y/Z, which turn the arms into the wood without floating free.
+    The sketch's inner vertex is at each OUTER plywood corner. A bracket
+    horizontal wing rests above/below the top/bottom board, and the
+    vertical wing lies left/right of the side board. Arms point inward
+    along the board surfaces, rather than intersecting solid plywood.
+    Screws through the bracket's X/Z walls then enter the wood.
     """
     opening_width = 844.0
     opening_height = 362.0
@@ -90,16 +92,21 @@ class CornerBrackets:
     front_y = -25.0
 
     def build(self):
-        half = self.opening_width / 2
+        outer_half = self.opening_width / 2 + self.plywood
+        top_z = self.opening_height + self.plywood
+        bottom_z = -self.plywood
+        # Put the 24 mm wide bracket on the first 24 mm of case depth.
+        # At top-left, local horizontal +X wing lies ON top of the roof
+        # and the local vertical -Z wing lies OUTSIDE the left side board.
         front_band_y = self.front_y + CornerBracket.bracket_width / 2
         top_left = Bracket(plywood_thickness=self.plywood).move(
-            x=-half, y=front_band_y, z=self.opening_height
+            x=-outer_half, y=front_band_y, z=top_z
         )
         corners = top_left
         for dx, dz, axis in (
-            (self.opening_width, 0.0, (0, 0, 1)),       # upper right
-            (0.0, -self.opening_height, (1, 0, 0)),    # lower left
-            (self.opening_width, -self.opening_height, (0, 1, 0)), # lower right
+            (2 * outer_half, 0.0, (0, 0, 1)),         # upper right
+            (0.0, bottom_z - top_z, (1, 0, 0)),        # lower left
+            (2 * outer_half, bottom_z - top_z, (0, 1, 0)), # lower right
         ):
             corners = corners + top_left.copy().move(
                 x=dx, z=dz

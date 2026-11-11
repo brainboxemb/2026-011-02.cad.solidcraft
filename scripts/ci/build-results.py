@@ -14,7 +14,7 @@ import zipfile
 from urllib.parse import quote
 from pathlib import Path
 from model_catalog import (
-    SOURCES, SECTIONS, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, source_path,
+    SOURCES, SECTIONS, COMMAND_SOURCES, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, source_path,
 )
 
 
@@ -180,13 +180,25 @@ def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def library_revision():
-    """Exact external SCPF SHA from this project's vcs2l manifest."""
+def dependency_revision(name):
+    """Read one explicit Git revision from the small vcs2l manifest."""
     manifest = (ROOT / "dependencies.repos").read_text(encoding="utf-8")
-    matches = re.findall(r"^\s*version:\s*([0-9a-f]{40})\s*$", manifest, re.MULTILINE)
-    if len(matches) != 1:
-        raise ValueError("Expected one exact SCPF SHA in dependencies.repos")
-    return matches[0]
+    section = re.search(
+        rf"(?ms)^  {re.escape(name)}:\s*\n(.*?)(?=^  [\w-]+:|\Z)", manifest
+    )
+    if not section:
+        raise ValueError(f"Missing {name} dependency section")
+    sha = re.search(
+        r"(?m)^    version:\s*([0-9a-f]{40})\s*$", section.group(1)
+    )
+    if not sha:
+        raise ValueError(f"Missing exact {name} revision")
+    return sha.group(1)
+
+
+def library_revision():
+    """Exact Forge/SCPF Git revision, not the independent SCPC version."""
+    return dependency_revision("scpf")
 
 
 def screenshot_info(native_root, commit, model, scpf_commit):
@@ -219,11 +231,11 @@ def layout(title, body, css_path, home_path):
 <a class="brand" href="{esc(home_path)}">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="{esc(home_path)}">Models</a>
 <a href="{LIBRARY_CHEATSHEET}">Cheatsheet</a>
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 {body}<footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>"""
 
 
@@ -286,6 +298,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
     copy_if_exists(ROOT / "site/results.css", out / "results.css")
     cards = {key: [] for key in SECTIONS}
     scpf_commit = library_revision()
+    scpc_commit = dependency_revision("scpc")
     verified_models = []
     verified_count = 0
     for slug, info in MODELS.items():
@@ -445,6 +458,37 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 f'<a class="btn" href="{downloadable}">Actual component source</a>'
                 '<a class="btn secondary" href="model.py">Model entry point</a>'
             )
+        # When the CAD project has an independent, manually authored SCPC
+        # variant, publish BOTH Python scripts and both command plans.
+        # Never fabricate SCPC code by exporting or decompiling SCPF JSON.
+        scpc_source_block = ""
+        if slug in COMMAND_SOURCES:
+            native_script = source_path(ROOT, slug, "scpc")
+            if not native_script.is_file():
+                raise ValueError(f"Missing SCPC model for {slug}")
+            copy_if_exists(native_script, work / "scpc-model.py")
+            scpc_plan = ((generated_root / slug / "scpc" / "solidcraft.json")
+                         if generated_root is not None else
+                         native_script.parent / "solidcraft.json")
+            if not scpc_plan.is_file():
+                raise ValueError(f"Missing independently compiled SCPC JSON for {slug}")
+            copy_if_exists(scpc_plan, work / "scpc-commands.json")
+            scpc_source_block = (
+                '<section class="source-section scpc-source">'
+                '<h2>SCPC — explicit native SolidCraft commands</h2>'
+                '<p>This is an independent second implementation using '
+                '<code>Script.add("native.command", ...)</code>. '
+                'It does not call SCPF or re-export its generated JSON. '
+                'Both versions are checked against the native CAD engine.</p>'
+                '<div class="links"><a class="btn secondary" href="scpc-model.py">'
+                'Download SCPC model.py</a>'
+                '<a class="btn secondary" href="scpc-commands.json">'
+                'SCPC command JSON</a></div>'
+                f'<pre><code>{esc(native_script.read_text(encoding="utf-8"))}</code></pre>'
+                '</section>'
+            )
+            source_links += ('<a class="btn secondary" href="scpc-model.py">'
+                             'SCPC native-command script</a>')
         view = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
@@ -460,7 +504,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 {browser_controls}
 {extra_views}
 {python_source}
-<h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
+{scpc_source_block}
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
 <div class="notice"><strong>Verification:</strong> {esc(status)}.
 The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.
 Native qualification is reported only when the matching verified image exists.</div>
@@ -492,10 +537,11 @@ Native qualification is reported only when the matching verified image exists.</
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
 <p class="small muted">CAD source revision: <code>{esc(commit)}</code><br>
-SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a><br>SolidCraft engine: <strong>0.30.1 tested</strong>; older releases are refused by the SCPF compatibility guard, newer releases warn.</p></main>"""
+SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a><br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/{esc(scpc_commit)}"><code>{esc(scpc_commit)}</code></a><br>SolidCraft engine: <strong>0.30.1 tested</strong>; older releases are refused by the SCPF compatibility guard, newer releases warn.</p></main>"""
     provenance = {
         "source_commit": commit,
         "scpf_commit": scpf_commit,
+        "scpc_commit": scpc_commit,
         "native_verified_models": verified_models,
     }
     if native_root is not None and (native_root / "verification.json").is_file():
@@ -516,7 +562,7 @@ SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft
 
 
 
-LIBRARY_CHEATSHEET = "https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"
+LIBRARY_CHEATSHEET = "https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"
 
 
 def redirect_legacy_cheatsheet(out):

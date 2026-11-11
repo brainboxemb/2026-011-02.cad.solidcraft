@@ -7,7 +7,7 @@ import sys
 import zipfile
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
-from model_catalog import COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY
+from model_catalog import COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, COMMAND_SOURCES
 
 
 class Parser(html.parser.HTMLParser):
@@ -33,22 +33,23 @@ def check(site, commit):
     if provenance["native_verified_models"]:
         assert provenance.get("solidcraft_version") == "0.30.1"
     assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpf_commit"])
+    assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpc_commit"])
     assert isinstance(provenance["native_verified_models"], list)
     assert len(set(provenance["native_verified_models"])) == len(provenance["native_verified_models"])
     cheatsheet = site / "cheatsheet" / "index.html"
     assert cheatsheet.is_file()
     guide = cheatsheet.read_text(encoding="utf-8")
-    library_url = "https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"
+    library_url = "https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"
     assert f'http-equiv="refresh" content="0; url={library_url}"' in guide
     assert f'rel="canonical" href="{library_url}"' in guide
     assert "Rectangle2D" not in guide  # no duplicated API reference
 
     text = homepage.read_text(encoding="utf-8")
     assert commit in text, "site must identify its source commit"
-    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"' in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert "SolidCraft engine:" in text and "0.30.1 tested" in text
-    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
     for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
@@ -135,6 +136,22 @@ def check(site, commit):
             assert 'href="viewer.html"' not in page, slug
             assert not (model / "viewer.html").exists(), slug
             assert "<iframe" not in page, slug
+        if slug in COMMAND_SOURCES:
+            native_file = model / "scpc-model.py"
+            native_json = model / "scpc-commands.json"
+            assert native_file.is_file(), slug
+            assert native_json.is_file(), slug
+            actual = Path(__file__).resolve().parents[2] / COMMAND_SOURCES[slug]
+            assert native_file.read_bytes() == actual.read_bytes(), slug
+            assert "SCPC — explicit native SolidCraft commands" in page, slug
+            assert 'href="scpc-model.py"' in page, slug
+            assert 'href="scpc-commands.json"' in page, slug
+            assert 'script.add' in page, slug
+            data = json.loads(native_json.read_text(encoding="utf-8"))
+            assert len(data["commands"]) == (12 if slug == "plate" else 17)
+        else:
+            assert not (model / "scpc-model.py").exists(), slug
+            assert not (model / "scpc-commands.json").exists(), slug
         if slug == "hub75-panel" and slug in provenance["native_verified_models"]:
             for filename in ("front.png", "rear.png"):
                 assert (model / filename).is_file()

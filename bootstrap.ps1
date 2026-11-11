@@ -1,65 +1,76 @@
 <#
 .SYNOPSIS
-    Fetch pinned external SCPF package and install it in the active Python environment.
+    Install both pinned SolidCraft Python libraries (SCPF and SCPC).
 .DESCRIPTION
-    vcs2l checks out dependencies.repos into ext/; never changes the pin.
-    Uses vcs from PATH or the shared brainboxemb-dev-tools Conda environment.
-    Safe to rerun; fails fast on missing tooling, wrong commit or failed pip install.
+    Read the exact Git commits from dependencies.repos, clone/update only
+    clean external checkouts and install the Python packages editable.
+    No Git submodules, manually created ext/ directory, or vcs2l command.
+    Start from your active Python / Conda environment.
 #>
 [CmdletBinding()]
-param([string]$CondaExe)
+param([string]$CondaExe) # Old optional argument accepted for compatibility.
 $ErrorActionPreference = 'Stop'
-$repoRoot = $PSScriptRoot
-$manifest = Join-Path $repoRoot 'dependencies.repos'
-$ext = Join-Path $repoRoot 'ext'
-$package = Join-Path $ext 'scpf/scpf/pyproject.toml'
-if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) { throw "Missing $manifest" }
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) { throw 'Git is required.' }
+$root = $PSScriptRoot
+$manifest = Join-Path $root 'dependencies.repos'
+$ext = Join-Path $root 'ext'
+if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {
+    throw "Missing $manifest"
+}
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    throw 'Git is required.'
+}
+if (-not (Get-Command python -ErrorAction SilentlyContinue)) {
+    throw 'Activate the Python or Conda environment before running bootstrap.'
+}
+$source = Get-Content -LiteralPath $manifest -Raw
 New-Item -ItemType Directory -Path $ext -Force | Out-Null
-$target = Join-Path $ext 'scpf'
-$wanted = (Select-String -LiteralPath $manifest -Pattern '^\s*version:\s*([0-9a-f]{40})\s*$').Matches.Groups[1].Value
-if (-not $wanted) { throw 'Expected an exact 40-character SCPF Git SHA in dependencies.repos.' }
-Push-Location $repoRoot
-try {
+
+foreach ($name in @('scpf', 'scpc')) {
+    # dependencies.repos has a deliberately small, fixed vcs2l layout.
+    $part = [regex]::Match($source, "(?ms)^  ${name}:\s*\r?\n(.*?)(?=^  [\w-]+:|\z)")
+    if (-not $part.Success) { throw "Missing $name entry in dependencies.repos" }
+    $urlMatch = [regex]::Match($part.Groups[1].Value, '(?m)^    url:\s*(\S+)\s*$')
+    $shaMatch = [regex]::Match($part.Groups[1].Value, '(?m)^    version:\s*([0-9a-f]{40})\s*$')
+    if (-not $urlMatch.Success -or -not $shaMatch.Success) {
+        throw "Missing Git URL or exact revision for $name"
+    }
+    $url = $urlMatch.Groups[1].Value.Trim()
+    $wanted = $shaMatch.Groups[1].Value
+    $target = Join-Path $ext $name
+
     if (Test-Path -LiteralPath (Join-Path $target '.git')) {
-        # "vcs import" does not upgrade an existing checkout. On a pin
-        # change, update only a checkout without TRACKED modifications. Untracked
-        # pip editable-install metadata is not discarded.
         $current = (& git -C $target rev-parse HEAD).Trim()
-        if ($LASTEXITCODE -ne 0) { throw "Invalid existing SCPF checkout at $target" }
+        if ($LASTEXITCODE -ne 0) { throw "Cannot inspect $target" }
         if ($current -ne $wanted) {
             $dirty = & git -C $target status --porcelain --untracked-files=no
-            if ($LASTEXITCODE -ne 0) { throw 'Cannot inspect the existing SCPF checkout.' }
-            if ($dirty) {
-                throw "SCPF ext/scpf has local changes; preserve them before updating from $current to $wanted."
+            if ($LASTEXITCODE -ne 0 -or $dirty) {
+                throw "$name has local tracked changes; preserve them before updating."
             }
-            Write-Host "Updating external SCPF from $current to $wanted"
+            & git -C $target remote set-url origin $url
+            if ($LASTEXITCODE -ne 0) { throw "Cannot update origin for $name" }
             & git -C $target fetch origin $wanted
-            if ($LASTEXITCODE -ne 0) { throw "Fetching pinned SCPF commit $wanted failed." }
+            if ($LASTEXITCODE -ne 0) { throw "Cannot fetch $name revision $wanted" }
             & git -C $target -c advice.detachedHead=false checkout --detach $wanted
-            if ($LASTEXITCODE -ne 0) { throw "Checking out SCPF revision $wanted failed." }
+            if ($LASTEXITCODE -ne 0) { throw "Cannot check out $name revision $wanted" }
         }
     } else {
         if (Test-Path -LiteralPath $target) {
-            throw "Existing $target is not a Git checkout; move it aside before bootstrap."
+            throw "$target exists but is not a Git checkout; move it aside first."
         }
-        # First installation uses vcs2l and the declarative manifest.
-        $vcs = Get-Command vcs -CommandType Application -ErrorAction SilentlyContinue
-        if ($vcs) {
-            & $vcs.Source import --input dependencies.repos ext
-        } else {
-            $condaCmd = Get-Command conda.exe -CommandType Application -ErrorAction SilentlyContinue
-            $candidates = @($CondaExe, $env:CONDA_EXE, $(if ($condaCmd) {$condaCmd.Source}), 'C:\tools\miniconda3\Scripts\conda.exe', $(if ($env:USERPROFILE) {Join-Path $env:USERPROFILE 'miniconda3\Scripts\conda.exe'}))
-            $conda = $candidates | Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) } | Select-Object -First 1
-            if (-not $conda) { throw 'vcs2l not found; activate brainboxemb-dev-tools or install vcs2l.' }
-            & $conda run --no-capture-output --name brainboxemb-dev-tools vcs import --input dependencies.repos ext
-        }
-        if ($LASTEXITCODE -ne 0) { throw 'vcs import failed.' }
+        & git clone --quiet --no-checkout -- $url $target
+        if ($LASTEXITCODE -ne 0) { throw "Cannot clone $url" }
+        & git -C $target -c advice.detachedHead=false checkout --detach $wanted
+        if ($LASTEXITCODE -ne 0) { throw "Cannot check out $name revision $wanted" }
     }
-    if (-not (Test-Path -LiteralPath $package -PathType Leaf)) { throw "Missing SCPF package: $package" }
     $actual = (& git -C $target rev-parse HEAD).Trim()
-    if ($LASTEXITCODE -ne 0 -or $actual -ne $wanted) { throw "Wrong SCPF revision: expected $wanted, found $actual" }
-    & python -m pip install -e ./ext/scpf/scpf
-    if ($LASTEXITCODE -ne 0) { throw 'SCPF editable installation failed.' }
-    Write-Host "Ready: SCPF library at $actual"
-} finally { Pop-Location }
+    if ($LASTEXITCODE -ne 0 -or $actual -ne $wanted) {
+        throw "$name revision mismatch: expected $wanted, found $actual"
+    }
+    $package = if ($name -eq 'scpf') { Join-Path $target 'scpf' } else { $target }
+    if (-not (Test-Path -LiteralPath (Join-Path $package 'pyproject.toml'))) {
+        throw "Missing package pyproject.toml at $package"
+    }
+    & python -m pip install -e $package
+    if ($LASTEXITCODE -ne 0) { throw "Editable pip install failed for $name" }
+    Write-Host "Ready: $name at $actual"
+}

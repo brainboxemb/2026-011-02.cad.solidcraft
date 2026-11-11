@@ -24,6 +24,27 @@ These live in top-level `components/`. The standalone demonstration
 scripts in `models/component-examples/` import the corresponding
 component and never reimplement its sketch or features.
 
+## Parallel Python interfaces — Forge and native Commands
+
+The **same model** can have an independent script for each interface:
+
+```text
+models/basic/plate/
+  scpf/model.py   — parametric Forge objects
+  scpc/model.py   — direct SolidCraft command calls
+```
+
+The first parallel models are [Plate](basic/plate/README.md) and
+[CornerBracket](component-examples/corner-bracket/README.md).
+They are compiled from distinct sources and compared using the native
+SolidCraft engine. **SCPC does not reuse SCPF-generated JSON.**
+
+The libraries are [SCPF Forge](https://github.com/brainboxemb/lib.py.solidcraft.forge)
+and [SCPC Commands](https://github.com/brainboxemb/lib.py.solidcraft.cmd).
+The model site publishes both source scripts and their command plans.
+The second route is intentionally low-level and exposes SolidCraft's
+native parameter/edge-selector semantics.
+
 ## Advanced Models — designs and assemblies
 
 - [Five-panel screen](advanced/hub75-screen/README.md)

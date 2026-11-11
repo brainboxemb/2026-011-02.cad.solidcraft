@@ -1,135 +1,87 @@
-# Wooden HUB75 Basic Box — fast mechanical concept
+# Wooden HUB75 Basic Box — advanced assembly
 
-**Scope:** physical **wooden prototype** with **five simple panel volumes**
-and **four external full-depth corner connector concepts**. This is
-intentionally separate from the advanced HUB75 model and its rear four-bay
-electronics shell.
+Upright five-module display inside the 874 × 392 mm plywood case. The
+**basic** HUB75 boxes model only measured envelopes; the advanced HUB75
+reference retains the real four-bay electronics back and six blind M3 bores.
+All five simple panel fronts are coplanar, with no misleading rotations.
 
-## Sources and dimensions
+## Reference, dimensions and parts
 
-The [55th edition Basic Box concept](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view)
-records the selected v29 geometry and materials:
+Reference: [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view).
 
-| Part | Size (mm) | Material |
+| Part | Dimensions (mm) | Ownership |
 | --- | --- | --- |
-| Five panel envelopes | 159.70 × 319.71 × 14.50 each | dark, fast BRep box |
-| Plexiglass window | 840 × 360 × 4 | plexiglass |
-| Free opening | 844 × 362 | clearance around window |
-| Two side walls | 15 × 362 × 100 | 15 mm LIGHTPLY |
-| Bottom | 874 × 15 × 100 | 15 mm LIGHTPLY |
-| Roof | 874 × 15 × 124 | 15 mm LIGHTPLY |
-| Rear panel | 874 × 377 × 9 | 9 mm LIGHTPLY |
-| Four corner rails | 100 mm long L arms, 6 mm profile thickness, 100 mm depth | **provisional** printed corner connection |
+| 5 HUB75 basic envelopes | 159.70 × 319.71 × 14.50 | `components/hub75_basic.py` |
+| Internal opening | 844 × 362 | `scpf/model.py` |
+| 2 side walls | 15 × 362 × 100 | `parts/wood.py` |
+| Bottom | 874 × 100 × 15 | `parts/wood.py` |
+| **Horizontal** roof | 874 × 124 × 15 | `parts/wood.py` |
+| Rear board | 874 × 377 × 9 | `parts/wood.py` |
+| Plexiglass | 840 × 360 × 4 | `parts/wood.py` |
+| 4 glazing strips | 2 × 15×15×362 and 2 × 814×15×15 | `parts/wood.py` |
+| 4 four-hole corner brackets | 24 mm extrusion, 12 mm wall, 60 mm arms | `components/corner_bracket.py` |
 
-The overall front rectangular outer size is **874 × 392 mm**, while the
-visible window opening is 844 × 362 mm. The nominal LED grid remains
-**800 × 320 mm**. The 0.30 mm pitch seam is not removed by the simple model.
+**Geometry axes:** X is screen width, Y depth (front at negative Y), Z
+height/up. Outside plywood spans X=-437..437 and Z=-15..377.
+The opening is X=-422..422, Z=0..362. Panels stand from Z=21.145 to
+340.855 and have front plane Y=0. Their centre X coordinates are
+-320, -160, 0, 160, 320 mm, pitch 160. The five basic rectangles have
+identical Y and Z positions; no rotated copies stick out of the frame.
 
-## Native browser hierarchy
+The roof extends in Y from -25 to +99 and in Z from 362 to 377, with
+its **15 mm thickness vertical**. The back board is behind the main
+100 mm-deep case, at Y=75..84. Plexiglass is at Y=-18..-14.
+Four provisional 15×15 mm wood strips hold the glass from behind
+at Y=-14..1. These strips are real parts but require future mechanical
+fit, fastening and sealing verification.
 
-The Python class **`HUB75Panels`** (plural) in
-[`models/components/hub75_panels.py`](../components/hub75_panels.py)
-returns five `Hub75PanelBasic` occurrences grouped inside a real native
-component named `HUB75Panels`. The browser is therefore structured as:
+The four **real shared CornerBracket shapes** have their sketch origins
+at the four *inside* opening corners (±422, Z=0/362), Y=-13. Each copy
+is rotated to follow the neighbouring wood. The geometry is **only
+defined once**, in `components/corner_bracket.py`, and used identically by
+the standalone Corner Bracket example and this assembly. The current
+native 90° countersinks approximate the original flat-bottom recess;
+the printed part still needs a fit check and arm-tip refinement.
+
+## Actual SolidCraft model browser groups
 
 ```text
 WoodenHub75BasicBox
-├─ HUB75Panels
-│  ├─ Hub75PanelBasic:1
-│  ├─ Hub75PanelBasic:2
-│  ├─ Hub75PanelBasic:3
-│  ├─ Hub75PanelBasic:4
-│  └─ Hub75PanelBasic:5
-├─ SideWall:1, SideWall:2
-├─ BottomBoard
-├─ RoofBoard
-├─ BackBoard
-├─ Window
-└─ CornerRailConcept:1..4
+├── HUB75Panels
+│   └── Hub75PanelBasic × 5
+├── WoodBoxFrame
+│   ├── SideWall × 2
+│   ├── BottomBoard
+│   ├── RoofBoard
+│   └── BackBoard
+├── WoodGlassFrame
+│   ├── GlassSideStrip × 2
+│   └── GlassCrossStrip × 2
+├── CornerBrackets
+│   └── CornerBracket × 4
+└── Window (plexiglass)
 ```
 
-The native compiler creates one parent component and a single editable
-`Hub75PanelBasic` definition under it, with five placements. This is
-not a rename of five unrelated browser entries. No detailed PCB geometry
-is required for the lightweight wooden frame.
+These are **real nested SolidCraft components**: one shared editable
+definition per manufactured part, not labels or joined mesh objects.
+The case-specific code lives under this model's `parts/` and
+`assemblies/`; only generically reusable parts belong to root
+`components/`. This advanced design can eventually move to its own repo.
 
-## Orientation in SolidCraft
+## Load into the native SolidCraft GUI
 
-The enclosure now **stands upright in the actual CAD model**, rather than
-being represented flat in the XY plane. Its axes follow the standard
-3D-view convention:
-
-- **X** = 874 mm total screen width, left to right.
-- **Y** = front-to-back depth (negative Y faces the viewer).
-- **Z** = 392 mm total frame height, up.
-
-The wooden opening is at Z=0..362 mm; the 15 mm bottom and top boards
-extend to Z=-15 and Z=377 mm. The measured five basic panels stand in
-the XZ plane, with their front at Y=0 and a common bottom clearance of
-(362−319.71)/2 = **21.145 mm**.
-
-Both the window and the rear board are vertical XZ surfaces. The corner
-rails use an XZ sketch and extend along the depth axis. Their 90°
-orientations are around **Y**, not around Z. The alternating HUB75
-occurrences also rotate around Y; their pivot positions are corrected
-so a 180° turn does not invert a panel below the cabinet floor.
-
-The separate **advanced** HUB75 panel reference still uses its earlier
-XY/front and Z/depth axes. This change applies to the fast wooden-frame
-assembly and its basic panel only, so it does not silently alter the
-existing advanced-model tests or references.
-
-## Basic versus advanced HUB75
-
-| Basic | Advanced |
-| --- | --- |
-| `models/components/hub75_basic.py` | `models/components/hub75.py` |
-| Single native Box, measured envelope | Native loft, four rear pockets, six blind mounting holes |
-| Very few features; assembly layout and enclosure checks | Detailed module interfaces, connector and mounting development |
-| Used by this wooden Basic Box | Used by `hub75-panel` and `hub75-screen` regressions |
-
-Both representations are **independent**, but share the same measured
-external dimensions. The advanced design remains in use and is not replaced.
-
-## Intentional limits
-
-The wooden outer structure is based on the actual Basic Box concept, not
-on the older **840 × 360 aluminium extrusion** prototype.
-
-The four red `CornerRailConcept` occurrences are **visual / envelope
-placeholders** showing full-depth external corner coupling. They are not the
-final production Corner Bracket geometry, hole locations, structural strength
-or fit. Their 100 mm arms follow the earlier 100 mm bracket design intent;
-their 6 mm profile wall is a preliminary display dimension. The existing
-`corner-bracket` SCPF model remains unchanged and will be reused in the
-follow-up once its physical orientation and wood attachments are specified.
-
-The model also deliberately omits the 15 × 15 mm inner support strips,
-glass standoffs (5/10/15/20 mm trial spacing), sealing, ventilation,
-frame screws, electronics and assembly exploded view. These are the next
-mechanical milestones; don't interpret this source as a printable final
-design.
-
-## Open directly in SolidCraft
-
-From the CAD repository root (after `./bootstrap.ps1`), start SolidCraft,
-open a **new empty design**, and enable **Preferences → Assistant → Let AI
-agents connect**. Then:
+Open a new, empty SolidCraft design with **Preferences → Assistant →
+Let AI agents connect** enabled. After `./bootstrap.ps1` from the repo
+root, run:
 
 ```powershell
-python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
 ```
 
-The model is sent directly to the active design; save the `.sc` file from
-SolidCraft. This is the recommended way to inspect the wooden enclosure.
+From inside its `scpf/` directory, `python -m scpf model.py --connect`
+also works. The `--out` option only generates JSON.
 
-If you specifically need an **intermediate JSON file** or a separate
-headless CLI run, use:
-
-```powershell
-python -m scpf models/hub75-wood-frame/scpf/model.py --out output/wood-basic-box.json
-solidcraft-cli run output/wood-basic-box.json --param-check strict --results --save output/wood-basic-box.sc
-```
-
-The initial native build qualifies only the mechanical representation.
-A simplified panel is **not** proof of the real PCB or connector fit.
+**Remaining design work:** exact bracket and mounting fit, glass
+standoffs and seals, electronics installation, ventilation, optional
+exploded view. Rear/top native image views are [issue #20](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/20),
+and interactive CAD web loading is [issue #21](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/21).

@@ -22,14 +22,14 @@ conda activate brainboxemb-dev-tools
 Then choose **one** model to send to the active SolidCraft design:
 
 ```powershell
-# Wooden frame + five basic HUB75 modules + provisional corner rails
-python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+# Wooden frame + five basic HUB75 modules + shared printed corner brackets
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
 
 # Detailed HUB75 panel, original two-occurrence regression
-python -m scpf models/hub75-panel/scpf/model.py --connect
+python -m scpf models/component-examples/hub75-panel/scpf/model.py --connect
 
 # Five detailed HUB75 panel occurrences
-python -m scpf models/hub75-screen/scpf/model.py --connect
+python -m scpf models/advanced/hub75-screen/scpf/model.py --connect
 ```
 
 `--connect` compiles the Python script and sends its native commands through
@@ -73,7 +73,7 @@ After updating, open a **new empty SolidCraft document** and run, from the
 repository root:
 
 ```powershell
-python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
 ```
 
 Alternatively, if you are already in the model's own directory:
@@ -97,14 +97,14 @@ manually created `ext/` folder are needed.
 `--out` **only generates JSON**; it does not connect to the GUI:
 
 ```powershell
-python -m scpf models/hub75-wood-frame/scpf/model.py --out output/wood-box.json
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --out output/wood-box.json
 ```
 
 For a separate native CLI run and generated `.sc` / STEP / measurements
 (and optionally a PNG), use:
 
 ```powershell
-.\scripts\qualify-solidcraft.ps1 -Model models/hub75-wood-frame/scpf/model.py -Snapshot
+.\scripts\qualify-solidcraft.ps1 -Model models/advanced/hub75_wood_frame/scpf/model.py -Snapshot
 ```
 
 The CLI workflow requires `solidcraft-cli` in PATH or `-CliPath`. It
@@ -112,11 +112,29 @@ does **not** connect to the active SolidCraft GUI. If live `--connect`
 reports a missing port/token, confirm the GUI is open and the Assistant
 connection preference is enabled.
 
+## Organization
+
+The Models website shows **Basic Models → Components → Advanced Models**.
+
+- `components/`: genuinely reusable geometry, such as
+  `CornerBracket`, `Hub75Panel` and `Hub75PanelBasic`.
+- `models/basic/`: compact design/test examples for developing SCPF.
+- `models/component-examples/`: standalone example wrappers importing
+  the shared component definitions; **no duplicate geometry**.
+- `models/advanced/`: complete projects with private `parts/` and
+  `assemblies/` next to their model script.
+- `scripts/ci/model_catalog.py`: canonical source paths and website
+  categories for every qualified model.
+
+The API cheatsheet lives only on the
+[SCPF library site](https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/);
+the old CAD cheatsheet URL redirects there.
+
 ## Project structure
 
-- `models/<name>/scpf/model.py` — project-owned CAD models and assembly sources.
-- `models/<name>/README.md` — model design notes and geometry references.
-- `models/<name>/source/` — original SolidCraft command/document references where available.
+- `models/<category>/<name>/scpf/model.py` — project-owned CAD models and assembly sources.
+- `models/<category>/<name>/README.md` — model design notes and geometry references.
+- `models/<category>/<name>/source/` — original SolidCraft command/document references where available.
 - `examples/` — small retained API qualification fixtures; reusable API tests live in the library.
 - `scripts/ci/` and `site/` — source-matched result pages and checks.
 - `.github/workflows/cad-models.yml` — Python package install, command-plan qualification and site smoke tests.
@@ -124,12 +142,12 @@ connection preference is enabled.
 
 ## Main models
 
-- [Corner Bracket](models/corner-bracket/README.md)
-- [HUB75 Panel / two occurrences and four rear bays](models/hub75-panel/README.md)
-- [Basic HUB75 Screen / five occurrences](models/hub75-screen/README.md)
-- [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/hub75-wood-frame/README.md)
-- [Plastic Enclosure Pi](models/plastic-enclosure-pi/README.md)
-- [Plate](models/plate/README.md) and [CSG comparison](models/csg-cube/README.md)
+- [Corner Bracket](models/component-examples/corner-bracket/README.md)
+- [HUB75 Panel / two occurrences and four rear bays](models/component-examples/hub75-panel/README.md)
+- [Basic HUB75 Screen / five occurrences](models/advanced/hub75-screen/README.md)
+- [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/advanced/hub75_wood_frame/README.md)
+- [Plastic Enclosure Pi](models/basic/plastic-enclosure-pi/README.md)
+- [Plate](models/basic/plate/README.md) and [CSG comparison](models/basic/csg-cube/README.md)
 
 ## Publication and migration
 

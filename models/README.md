@@ -1,38 +1,52 @@
-# CAD model catalog
+# SolidCraft model catalog
 
-Every model below is owned by this CAD repository, not by `lib.py.solidcraft`. Run `./bootstrap.ps1` once to install the pinned SCPF package.
+The source is organized by the **purpose of the code**, not by a
+perceived level of geometric complexity.
 
-| Model | Purpose |
-| --- | --- |
-| [corner-bracket](corner-bracket/README.md) | L-shaped plywood bracket, native fillets/chamfers/countersinks |
-| [hub75-panel](hub75-panel/README.md) | Measured P5 panel with native loft and two component occurrences |
-| [hub75-screen](hub75-screen/README.md) | Five advanced panel occurrences, alternating rotations |
-| [hub75-wood-frame](hub75-wood-frame/README.md) | Upright wooden box with nested HUB75Panels group (5 fast panels) and external corner rails |
-| [plastic-enclosure-pi](plastic-enclosure-pi/README.md) | Raspberry Pi enclosure with shell, ports and vents |
-| [plastic-enclosure](plastic-enclosure/README.md) | Shell, lip, snap, bosses and rest |
-| [sample-plate](sample-plate/scpf/model.py) | Four-sketch native history (Base/Holes/Boss/Bore) |
-| [plate](plate/README.md) | Rounded plate and mounting holes |
-| [bracket](bracket/README.md) | L extrusion and holes |
-| [csg-cube](csg-cube/README.md) | CSG reference and cross-CAD comparison |
+## Basic Models — SCPF tooling and tests
 
-To open a model **directly in SolidCraft**, start the GUI, open a new blank
-design, enable **Preferences → Assistant → Let AI agents connect**, then run:
+- [Plate](basic/plate/README.md), [CsgCube](basic/csg-cube/README.md)
+- [Bracket](basic/bracket/README.md), [SamplePlate](basic/sample-plate/scpf/model.py)
+- [Plastic Enclosure](basic/plastic-enclosure/README.md),
+  [Plastic Enclosure Pi](basic/plastic-enclosure-pi/README.md)
+
+## Components — reusable physical geometry
+
+- [CornerBracket](../components/corner_bracket.py) has **one** shape
+  definition, reused by the
+  [standalone example](component-examples/corner-bracket/README.md)
+  and the wooden display.
+- [Hub75Panel](../components/hub75.py) is the detailed panel with
+  rear electronics bays; [Hub75PanelBasic](../components/hub75_basic.py)
+  is the faster envelope.
+
+These live in top-level `components/`. The standalone demonstration
+scripts in `models/component-examples/` import the corresponding
+component and never reimplement its sketch or features.
+
+## Advanced Models — designs and assemblies
+
+- [Five-panel screen](advanced/hub75-screen/README.md)
+- [Wooden HUB75 Basic Box](advanced/hub75_wood_frame/README.md)
+
+Parts specific to the wooden case are in its own `parts/` directory,
+and combinations (including `WoodBoxFrame`, `WoodGlassFrame` and
+`HUB75Panels`) are in its `assemblies/` directory.
+
+## Running a model
+
+Run `./bootstrap.ps1` after `git pull`. Open an empty design in
+SolidCraft and enable **Preferences → Assistant → Let AI agents connect**.
 
 ```powershell
-python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
 ```
 
-This is the standard interactive workflow. The optional `--out` mode
-generates a JSON command file without opening or modifying any GUI document.
-See the repository [README](../README.md) for first-time setup and
-`scripts/qualify-solidcraft.ps1` for headless native verification.
+`--connect` sends native commands to the GUI. `--out output/model.json`
+only compiles JSON. See the [root README](../README.md).
 
-## SCPF source conventions
+## Source conventions
 
-Models are ordinary Python classes, without `@dataclass` or required
-`float` annotations. Numeric class attributes become editable SolidCraft
-parameters automatically. Each `build(self)` ends with an **explicit**
-`return` of the Shape or assembly. This is more familiar to Python readers
-than relying on an implicit final expression and preserves the same native
-commands and parameter names. Root scripts end in `ModelName()` (no
-`main()` or `show()`).
+Use plain Python classes, numeric class attributes instead of
+`@dataclass` and `: float`, and an explicit `return` from every
+`build()`. Root files end in `ModelName()`, no `show()` or `main()`.

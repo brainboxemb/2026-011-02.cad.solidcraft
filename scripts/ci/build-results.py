@@ -71,7 +71,7 @@ MODELS = {
     "hub75-wood-frame": {
         "title": "WoodenHub75Box",
         "tagline": "Parametrized 12 mm plywood box, eight brackets and one GlassStrip type",
-        "description": "One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The R4 fillets belong to the roof and bottom boards, not the glazing strips.",
+        "description": "One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.",
         "parameters": "Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets",
         "diagram": "hub75-wood-frame",
         "stages": ["Define one central parameter set and the wooden component types",

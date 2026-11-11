@@ -1,11 +1,12 @@
-"""One reusable, editable four-hole CornerBracket geometry definition.
+"""One shared, editable CornerBracket shape WITHOUT screw holes.
 
-Shared between the standalone reference and the wooden HUB75 enclosure.
-This keeps the reviewed sketch, four mounting holes and all edge treatments
-in one file. It is the FAST countersink approximation, not the older
-flat-bottom recess reconstruction.
+The standalone demonstration and wooden HUB75 assembly import this single
+geometry definition. While the screw-hole operations are producing native
+SolidCraft warnings, keep the bracket as a clean L-shaped body with the
+reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
+experiments remain only in the standalone model_reference.py, not here.
 """
-from scpf import Polygon2D, Direction, Edges, Hole
+from scpf import Polygon2D, Direction, Edges
 
 class CornerBracket:
     bracket_width = 24.0
@@ -18,17 +19,6 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
-
-    plywood_thickness = 12.0
-    bolt_offset = 12.0
-    bolt_spacing = 18.0
-    bolt_y_offset = 0.0
-
-    bolt_diameter = 5.0
-    bolt_clearance = 0.4
-    head_diameter = 10.0
-    head_clearance = 0.4
-    head_recess = 1.0
 
     def build(self):
         w = self.wall_thickness
@@ -93,30 +83,11 @@ class CornerBracket:
             edges=Edges.from_profile("i_corner", sides="both"),
         )
 
-        # A single 90-degree countersink avoids coincident circle/face cuts.
-        # For 90 degrees, increasing the mouth diameter by 2*recess gives
-        # the original head diameter at the intended nominal recess depth.
-        # Note: this is a tapered opening, not a flat-bottom counterbore.
-        through_d = self.bolt_diameter + self.bolt_clearance
-        mouth_d = self.head_diameter + self.head_clearance + 2 * self.head_recess
-        first = self.plywood_thickness + self.bolt_offset
-
-        for x in (first, first + self.bolt_spacing):
-            body = body + Hole(
-                d=through_d,
-                countersink_d=mouth_d,
-                countersink_angle=90,
-                direction=(0, 0, -1),
-            ).at(x, self.bolt_y_offset, w)
-
-        for z in (-first, -(first + self.bolt_spacing)):
-            body = body + Hole(
-                d=through_d,
-                depth=w + 1.0,
-                countersink_d=mouth_d,
-                countersink_angle=90,
-                direction=(1, 0, 0),
-            ).at(-w, -self.bolt_y_offset, z)
+        # No mounting holes in this version. The historical four-hole
+        # geometry caused warnings in native SolidCraft when replayed
+        # inside the larger wooden frame. Keep this bracket reliable as a
+        # positioned/rounded solid while the mounting approach is reviewed.
+        # Do not reintroduce holes through model-specific workarounds.
 
         return body
 

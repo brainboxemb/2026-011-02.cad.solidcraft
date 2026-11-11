@@ -49,7 +49,7 @@ def check(site, commit):
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert "SolidCraft engine:" in text and "0.30.1 tested" in text
-    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
     for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):

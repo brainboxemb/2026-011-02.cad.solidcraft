@@ -140,10 +140,21 @@ class WoodenFrameTests(unittest.TestCase):
                   for p in brackets}
         expected = {(x, y, z)
                     for x in (-434., 434.)
-                    for y in (-13., 72.)
+                    for y in (-13., 63.)
                     for z in (-12., 374.)}
         self.assertEqual(coords, expected)
         self.assertFalse(any(p["command"] == "solid.hole" for p in cmd))
+
+        # The rear bracket sits ON the side wall, not over the rear sheet.
+        # Sidewall Y=-25..75; backboard starts at Y=75 and ends at 84.
+        bracket_width = 24.
+        back_start_y = 75.
+        rear_brackets = [p for p in brackets if p["translate"][1] > 0]
+        self.assertEqual(len(rear_brackets), 4)
+        for bracket in rear_brackets:
+            last_y = bracket["translate"][1] + bracket_width / 2
+            self.assertAlmostEqual(last_y, back_start_y)
+            self.assertLessEqual(last_y, back_start_y)
 
     def test_wood_dimensions_and_roof_overhang(self):
         source = MODEL.read_text(encoding="utf-8")

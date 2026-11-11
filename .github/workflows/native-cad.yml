@@ -56,6 +56,7 @@ jobs:
           set -euo pipefail
           unset PYTHONPATH
           solidcraft-cli --version
+          python -c 'from scpf.version import check_cli_version; check_cli_version(require_cli=True)'
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             mkdir -p "output/native/$model"
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/native/$model/commands.json"
@@ -87,9 +88,19 @@ jobs:
               test -s "output/native/$model/model.png"
             fi
           done
+          # Front is +Y; rear with four pockets is -Y. No camera-only geometry trick.
+          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
+            --out output/native/hub75-panel/front.png --no-grid --no-axes \
+            --camera '{"target":[0,-7.25,160],"yaw":3.141592653589793,"pitch":0,"distance":460,"fov":0}'
+          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
+            --out output/native/hub75-panel/rear.png --no-grid --no-axes \
+            --camera '{"target":[0,-7.25,160],"yaw":0,"pitch":0,"distance":460,"fov":0}'
+          test -s output/native/hub75-panel/front.png
+          test -s output/native/hub75-panel/rear.png
           jq -e '
             ([.commands[] | select(.command == "component.create")] | length) == 1 and
-            ([.commands[] | select(.command == "occurrence.copy")] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy")] | length) == 0 and
+            ([.commands[] | select(.command == "occurrence.move" and .params.matrix != null)] | length) == 1 and
             ([.commands[] | select(.command == "solid.loft")] | length) == 1
           ' output/native/hub75-panel/commands.json
           jq -e '
@@ -103,7 +114,10 @@ jobs:
                .params.direction == "negative")] | length) == 1
           ' output/native/hub75-panel/commands.json
           unzip -p output/native/hub75-panel/model.sc document.json > output/native/hub75-panel/document.json
-          jq -e '(.components | length) == 1 and (.occurrences | length) == 2' output/native/hub75-panel/document.json
+          jq -e '(.components | length) == 1 and (.occurrences | length) == 1
+                 and ((.occurrences[0].transform[1][2] - 1) | fabs) < 0.000001
+                 and ((.occurrences[0].transform[2][1] + 1) | fabs) < 0.000001
+                 and ((.occurrences[0].transform[3][2] - 160) | fabs) < 0.000001' output/native/hub75-panel/document.json
           jq -e '
             ([.commands[] | select(.command == "component.create")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy")] | length) == 4 and
@@ -115,7 +129,11 @@ jobs:
               .params.name == "Rear electronics bays")] | length) == 1
           ' output/native/hub75-screen/commands.json
           unzip -p output/native/hub75-screen/model.sc document.json > output/native/hub75-screen/document.json
-          jq -e '(.components | length) == 1 and (.occurrences | length) == 5' output/native/hub75-screen/document.json
+          jq -e '(.components | length) == 1 and (.occurrences | length) == 5
+              and ([.occurrences[].transform[3][0]] == [0,-320,-160,160,320])
+              and (all(.occurrences[]; ((.transform[3][2] - 160) | fabs) < 0.000001))
+              and ((.occurrences[0].transform[1][2] - 1) | fabs) < 0.000001
+              and ((.occurrences[2].transform[1][2] + 1) | fabs) < 0.000001' output/native/hub75-screen/document.json
           # The shared CornerBracket is intentionally hole-free.
           # Verify native feature plans for the standalone definition and
           # full wooden assembly, while leaving HUB75 panel bores intact.

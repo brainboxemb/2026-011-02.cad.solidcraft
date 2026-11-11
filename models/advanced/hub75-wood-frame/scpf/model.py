@@ -4,10 +4,15 @@ Source: 55th-edition Basic Box v29, 874 x 392 mm external.
 Basic modules are coplanar rectangular envelopes. The detailed HUB75
 reference independently retains PCB/connector orientations.
 """
+from pathlib import Path
+import sys
 from scpf import component
-from models.advanced.hub75_wood_frame.assemblies.hub75_panels import HUB75Panels
-from models.advanced.hub75_wood_frame.parts.wood import Window as WindowDefinition
-from models.advanced.hub75_wood_frame.assemblies.wood_frames import WoodBoxFrame, WoodGlassFrame, CornerBrackets
+
+# The CAD directory is kebab-case; only the importable package is snake_case.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from hub75_wood_frame.assemblies.hub75_panels import HUB75Panels
+from hub75_wood_frame.parts.wood import Window as WindowDefinition
+from hub75_wood_frame.assemblies.wood_frames import WoodBoxFrame, WoodGlassFrame, CornerBrackets
 
 Glass = component(WindowDefinition)
 

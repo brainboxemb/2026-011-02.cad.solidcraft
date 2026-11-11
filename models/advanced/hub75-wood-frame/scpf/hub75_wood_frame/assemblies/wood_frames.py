@@ -10,7 +10,7 @@ World X = width, Y = depth (front -Y), Z = up.
 """
 from scpf import component
 
-from models.advanced.hub75_wood_frame.parts.wood import (
+from hub75_wood_frame.parts.wood import (
     SideWall, BottomBoard, RoofBoard, BackBoard,
     GlassSideStrip, GlassCrossStrip,
 )

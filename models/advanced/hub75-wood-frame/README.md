@@ -88,7 +88,7 @@ Let AI agents connect** enabled. After `./bootstrap.ps1` from the repo
 root, run:
 
 ```powershell
-python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
 ```
 
 From inside its `scpf/` directory, `python -m scpf model.py --connect`
@@ -98,3 +98,7 @@ also works. The `--out` option only generates JSON.
 standoffs and seals, electronics installation, ventilation, optional
 exploded view. Rear/top native image views are [issue #20](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/20),
 and interactive CAD web loading is [issue #21](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/21).
+
+## Naming
+
+The CAD directory `hub75-wood-frame` uses kebab-case. Python-only modules live under `scpf/hub75_wood_frame/` and use snake_case; classes use PascalCase. No external PYTHONPATH is needed.

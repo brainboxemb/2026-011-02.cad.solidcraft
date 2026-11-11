@@ -8,4 +8,4 @@ repositories:
   scpc:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git
-    version: 69237a9afcbf454d174ef45d1c83c54727ac74e8
+    version: fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7

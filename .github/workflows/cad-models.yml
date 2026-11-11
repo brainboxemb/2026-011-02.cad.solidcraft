@@ -43,6 +43,12 @@ jobs:
           for command in ('component.create','occurrence.copy','solid.loft'):
               assert commands.count(command)==1, (command, commands.count(command))
           PY
+      - name: Run project model regressions against installed SCPF
+        shell: bash
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          python -m unittest discover -s tests -v
       - name: Generate and smoke-test static site (not published)
         run: |
           python scripts/ci/build-results.py --generated output/models --commit "$GITHUB_SHA" --out output/site

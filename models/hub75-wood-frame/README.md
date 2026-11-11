@@ -66,6 +66,18 @@ agents connect**. Then:
 python -m scpf models/hub75-wood-frame/scpf/model.py --connect
 ```
 
+If you have already navigated to `models/hub75-wood-frame/scpf`,
+the shorter command works too:
+
+```powershell
+python -m scpf model.py --connect
+```
+
+The SCPF runner temporarily resolves imports of `models.components` based
+on the model path; no `PYTHONPATH` setting is necessary. Run
+`./bootstrap.ps1` from the repository root after upgrading this project,
+so the pinned fixed SCPF library revision is installed locally.
+
 The model is sent directly to the active design; save the `.sc` file from
 SolidCraft. This is the recommended way to inspect the wooden enclosure.
 

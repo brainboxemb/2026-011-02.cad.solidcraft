@@ -1,6 +1,6 @@
-# vcs2l: exact SCPF library source commit (post-split library API-only commit)
+# vcs2l: exact SCPF library source commit (nested local imports qualified in SCPF PR #35)
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.git
-    version: eee05ee3f252b903a2e744802378f0f47bfe9cb1
+    version: a82088135a222bb3c81f7ecb47332ca3d30306a3

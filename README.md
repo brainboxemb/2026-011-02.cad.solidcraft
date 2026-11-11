@@ -19,6 +19,15 @@ conda activate brainboxemb-dev-tools
 .\bootstrap.ps1
 ```
 
+You can run the command **from the project root** as below, or directly
+from a model's own directory. The pinned SCPF package now resolves shared
+`models.components` imports either way. For example, when your PowerShell
+prompt is already in `models/hub75-wood-frame/scpf/`:
+
+```powershell
+python -m scpf model.py --connect
+```
+
 Then choose **one** model to send to the active SolidCraft design:
 
 ```powershell

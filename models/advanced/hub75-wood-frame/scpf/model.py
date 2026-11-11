@@ -251,8 +251,10 @@ class WoodenHub75Box:
         right_trim = vertical.copy().rotate(
             axis=(0, 1, 0), degrees=-90,
         ).move(x=w / 2, y=trim_y, z=h / 2)
+        # Put the two horizontal occurrences first in the native browser.
+        # They become GlassStrip:1/2; the vertical length is GlassStrip 2.
         glazing = (
-            left_trim + right_trim + bottom_trim + top_trim
+            bottom_trim + top_trim + left_trim + right_trim
         ).group("WoodGlassFrame")
 
         # Glass is directly behind the retaining strips. With front=-25

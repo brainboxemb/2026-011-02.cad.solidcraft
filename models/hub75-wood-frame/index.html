@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75BasicBox</h1><p>Upright wooden enclosure with real four-hole corner brackets</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">146 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span></div>
+<span class="badge">144 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, four real four-hole corner brackets and four 15 × 15 mm wooden glazing retainers. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.</p></section>
@@ -201,8 +201,8 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
     &quot;translate&quot;: [
       -320.0,
-      7.25,
-      21.14500000000001
+      0.0,
+      0.0
     ]
   }
 }</code></pre></li>
@@ -212,8 +212,8 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
     &quot;translate&quot;: [
       -160.0,
-      7.25,
-      21.14500000000001
+      0.0,
+      0.0
     ]
   }
 }</code></pre></li>
@@ -223,8 +223,8 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
     &quot;translate&quot;: [
       160.0,
-      7.25,
-      21.14500000000001
+      0.0,
+      0.0
     ]
   }
 }</code></pre></li>
@@ -234,8 +234,8 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;Hub75PanelBasic&quot;,
     &quot;translate&quot;: [
       320.0,
-      7.25,
-      21.14500000000001
+      0.0,
+      0.0
     ]
   }
 }</code></pre></li>
@@ -342,8 +342,8 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;component&quot;: &quot;SideWall&quot;,
     &quot;translate&quot;: [
-      429.5,
-      25.0,
+      859.0,
+      0.0,
       0.0
     ]
   }
@@ -637,17 +637,9 @@ WoodenHub75BasicBox()
     &quot;translate&quot;: [
       0.0,
       79.5,
-      -7.5
+      -15.0
     ],
     &quot;move_grounded&quot;: false
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassSideStrip_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassSideStrip_width&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassSideStrip_depth</small><pre><code>{
@@ -655,14 +647,6 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassSideStrip_depth&quot;,
     &quot;expression&quot;: &quot;15&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassSideStrip_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassSideStrip_height&quot;,
-    &quot;expression&quot;: &quot;362&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -674,23 +658,100 @@ WoodenHub75BasicBox()
     &quot;parent&quot;: &quot;WoodGlassFrame&quot;
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: GlassSideStrip footprint, plane: XY</small><pre><code>{
+<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;GlassSideStrip footprint&quot;
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Profile&quot;
   }
 }</code></pre></li>
-<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
   &quot;params&quot;: {
-    &quot;p0&quot;: [
-      &quot;-GlassSideStrip_width / 2&quot;,
-      &quot;-GlassSideStrip_depth / 2&quot;
+    &quot;points&quot;: [
+      [
+        0,
+        -4.0
+      ],
+      [
+        0,
+        -358.0
+      ],
+      [
+        0.03422055450475847,
+        -358.5221047688802
+      ],
+      [
+        0.1362966948437272,
+        -359.0352761804101
+      ],
+      [
+        0.30448186995485305,
+        -359.53073372946034
+      ],
+      [
+        0.5358983848622452,
+        -360.0
+      ],
+      [
+        0.8265866388350598,
+        -360.4350457160349
+      ],
+      [
+        1.1715728752538102,
+        -360.8284271247462
+      ],
+      [
+        15.0,
+        -347.0
+      ],
+      [
+        15.0,
+        -15.0
+      ],
+      [
+        1.1715728752538093,
+        -1.1715728752538102
+      ],
+      [
+        0.8265866388350593,
+        -1.5649542839651174
+      ],
+      [
+        0.5358983848622456,
+        -1.9999999999999996
+      ],
+      [
+        0.3044818699548526,
+        -2.4692662705396415
+      ],
+      [
+        0.13629669484372675,
+        -2.964723819589917
+      ],
+      [
+        0.03422055450475803,
+        -3.4778952311197946
+      ]
     ],
-    &quot;p1&quot;: [
-      &quot;GlassSideStrip_width / 2&quot;,
-      &quot;GlassSideStrip_depth / 2&quot;
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;a&quot;,
+      &quot;b&quot;,
+      &quot;c&quot;,
+      &quot;d&quot;,
+      &quot;e&quot;,
+      &quot;f&quot;,
+      &quot;g&quot;,
+      &quot;h&quot;,
+      &quot;i&quot;,
+      &quot;j&quot;,
+      &quot;k&quot;,
+      &quot;l&quot;,
+      &quot;m&quot;,
+      &quot;n&quot;,
+      &quot;o&quot;,
+      &quot;p&quot;
     ]
   }
 }</code></pre></li>
@@ -698,10 +759,11 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: GlassSideStrip</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassSideStrip</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassSideStrip_height&quot;,
+    &quot;distance&quot;: &quot;GlassSideStrip_depth&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;GlassSideStrip&quot;
   }
 }</code></pre></li>
@@ -733,8 +795,8 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassSideStrip:1&quot;,
     &quot;translate&quot;: [
-      -414.5,
-      -6.5,
+      -422.0,
+      -25.5,
       0.0
     ],
     &quot;move_grounded&quot;: false
@@ -745,32 +807,35 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;component&quot;: &quot;GlassSideStrip&quot;,
     &quot;translate&quot;: [
-      414.5,
-      -6.5,
+      844.0,
+      0.0,
       0.0
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassCrossStrip_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassCrossStrip_length&quot;,
-    &quot;expression&quot;: &quot;814&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
+    &quot;occurrence&quot;: &quot;GlassSideStrip:2&quot;,
+    &quot;to&quot;: {
+      &quot;position&quot;: [
+        422.0,
+        -25.5,
+        0.0
+      ],
+      &quot;axis&quot;: [
+        0.0,
+        0.0,
+        1.0
+      ],
+      &quot;angle&quot;: &quot;180 deg&quot;
+    }
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassCrossStrip_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassCrossStrip_depth&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassCrossStrip_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassCrossStrip_thickness&quot;,
     &quot;expression&quot;: &quot;15&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
@@ -783,23 +848,100 @@ WoodenHub75BasicBox()
     &quot;parent&quot;: &quot;WoodGlassFrame&quot;
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: GlassCrossStrip footprint, plane: XY</small><pre><code>{
+<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;GlassCrossStrip footprint&quot;
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Profile&quot;
   }
 }</code></pre></li>
-<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
   &quot;params&quot;: {
-    &quot;p0&quot;: [
-      &quot;-GlassCrossStrip_length / 2&quot;,
-      &quot;-GlassCrossStrip_depth / 2&quot;
+    &quot;points&quot;: [
+      [
+        -420.8284271247462,
+        -1.1715728752538102
+      ],
+      [
+        -420.4350457160349,
+        -0.8265866388350602
+      ],
+      [
+        -420.0,
+        -0.5358983848622465
+      ],
+      [
+        -419.53073372946034,
+        -0.3044818699548526
+      ],
+      [
+        -419.0352761804101,
+        -0.13629669484372675
+      ],
+      [
+        -418.5221047688802,
+        -0.03422055450475847
+      ],
+      [
+        -418.0,
+        -0.0
+      ],
+      [
+        418.0,
+        0
+      ],
+      [
+        418.5221047688802,
+        -0.03422055450475803
+      ],
+      [
+        419.0352761804101,
+        -0.1362966948437263
+      ],
+      [
+        419.53073372946034,
+        -0.3044818699548535
+      ],
+      [
+        420.0,
+        -0.5358983848622456
+      ],
+      [
+        420.4350457160349,
+        -0.8265866388350593
+      ],
+      [
+        420.8284271247462,
+        -1.1715728752538093
+      ],
+      [
+        407.0,
+        -15.0
+      ],
+      [
+        -407.0,
+        -15.0
+      ]
     ],
-    &quot;p1&quot;: [
-      &quot;GlassCrossStrip_length / 2&quot;,
-      &quot;GlassCrossStrip_depth / 2&quot;
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;a&quot;,
+      &quot;b&quot;,
+      &quot;c&quot;,
+      &quot;d&quot;,
+      &quot;e&quot;,
+      &quot;f&quot;,
+      &quot;g&quot;,
+      &quot;h&quot;,
+      &quot;i&quot;,
+      &quot;j&quot;,
+      &quot;k&quot;,
+      &quot;l&quot;,
+      &quot;m&quot;,
+      &quot;n&quot;,
+      &quot;o&quot;,
+      &quot;p&quot;
     ]
   }
 }</code></pre></li>
@@ -807,10 +949,11 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: GlassCrossStrip</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassCrossStrip</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassCrossStrip_thickness&quot;,
+    &quot;distance&quot;: &quot;GlassCrossStrip_depth&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;GlassCrossStrip&quot;
   }
 }</code></pre></li>
@@ -843,7 +986,7 @@ WoodenHub75BasicBox()
     &quot;occurrence&quot;: &quot;GlassCrossStrip:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      -6.5,
+      -25.5,
       0.0
     ],
     &quot;move_grounded&quot;: false
@@ -855,9 +998,28 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;GlassCrossStrip&quot;,
     &quot;translate&quot;: [
       0.0,
-      -6.5,
-      347.0
+      0.0,
+      362.0
     ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;GlassCrossStrip:2&quot;,
+    &quot;to&quot;: {
+      &quot;position&quot;: [
+        0.0,
+        -25.5,
+        362.0
+      ],
+      &quot;axis&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ],
+      &quot;angle&quot;: &quot;180 deg&quot;
+    }
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_bracket_width</small><pre><code>{
@@ -1330,9 +1492,9 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;component&quot;: &quot;CornerBracket&quot;,
     &quot;translate&quot;: [
-      437.0,
-      -13.0,
-      377.0
+      874.0,
+      0.0,
+      0.0
     ]
   }
 }</code></pre></li>
@@ -1360,9 +1522,9 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;component&quot;: &quot;CornerBracket&quot;,
     &quot;translate&quot;: [
-      -437.0,
-      -13.0,
-      -15.0
+      0.0,
+      0.0,
+      -392.0
     ]
   }
 }</code></pre></li>
@@ -1390,9 +1552,9 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;component&quot;: &quot;CornerBracket&quot;,
     &quot;translate&quot;: [
-      437.0,
-      -13.0,
-      -15.0
+      874.0,
+      0.0,
+      -392.0
     ]
   }
 }</code></pre></li>

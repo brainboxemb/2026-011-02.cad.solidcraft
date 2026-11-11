@@ -136,8 +136,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           -320.0,
-          7.25,
-          21.14500000000001
+          0.0,
+          0.0
         ]
       }
     },
@@ -147,8 +147,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           -160.0,
-          7.25,
-          21.14500000000001
+          0.0,
+          0.0
         ]
       }
     },
@@ -158,8 +158,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           160.0,
-          7.25,
-          21.14500000000001
+          0.0,
+          0.0
         ]
       }
     },
@@ -169,8 +169,8 @@
         "component": "Hub75PanelBasic",
         "translate": [
           320.0,
-          7.25,
-          21.14500000000001
+          0.0,
+          0.0
         ]
       }
     },
@@ -277,8 +277,8 @@
       "params": {
         "component": "SideWall",
         "translate": [
-          429.5,
-          25.0,
+          859.0,
+          0.0,
           0.0
         ]
       }
@@ -572,7 +572,7 @@
         "translate": [
           0.0,
           79.5,
-          -7.5
+          -15.0
         ],
         "move_grounded": false
       }
@@ -580,24 +580,8 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "GlassSideStrip_width",
-        "expression": "15",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "GlassSideStrip_depth",
         "expression": "15",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassSideStrip_height",
-        "expression": "362",
         "unit": "mm"
       }
     },
@@ -612,20 +596,97 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "GlassSideStrip footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-GlassSideStrip_width / 2",
-          "-GlassSideStrip_depth / 2"
+        "points": [
+          [
+            0,
+            -4.0
+          ],
+          [
+            0,
+            -358.0
+          ],
+          [
+            0.03422055450475847,
+            -358.5221047688802
+          ],
+          [
+            0.1362966948437272,
+            -359.0352761804101
+          ],
+          [
+            0.30448186995485305,
+            -359.53073372946034
+          ],
+          [
+            0.5358983848622452,
+            -360.0
+          ],
+          [
+            0.8265866388350598,
+            -360.4350457160349
+          ],
+          [
+            1.1715728752538102,
+            -360.8284271247462
+          ],
+          [
+            15.0,
+            -347.0
+          ],
+          [
+            15.0,
+            -15.0
+          ],
+          [
+            1.1715728752538093,
+            -1.1715728752538102
+          ],
+          [
+            0.8265866388350593,
+            -1.5649542839651174
+          ],
+          [
+            0.5358983848622456,
+            -1.9999999999999996
+          ],
+          [
+            0.3044818699548526,
+            -2.4692662705396415
+          ],
+          [
+            0.13629669484372675,
+            -2.964723819589917
+          ],
+          [
+            0.03422055450475803,
+            -3.4778952311197946
+          ]
         ],
-        "p1": [
-          "GlassSideStrip_width / 2",
-          "GlassSideStrip_depth / 2"
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p"
         ]
       }
     },
@@ -636,7 +697,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "GlassSideStrip_height",
+        "distance": "GlassSideStrip_depth",
+        "direction": "symmetric",
         "body_name": "GlassSideStrip"
       }
     },
@@ -668,8 +730,8 @@
       "params": {
         "occurrence": "GlassSideStrip:1",
         "translate": [
-          -414.5,
-          -6.5,
+          -422.0,
+          -25.5,
           0.0
         ],
         "move_grounded": false
@@ -680,32 +742,35 @@
       "params": {
         "component": "GlassSideStrip",
         "translate": [
-          414.5,
-          -6.5,
+          844.0,
+          0.0,
           0.0
         ]
       }
     },
     {
-      "command": "parameters.add",
+      "command": "occurrence.move",
       "params": {
-        "name": "GlassCrossStrip_length",
-        "expression": "814",
-        "unit": "mm"
+        "occurrence": "GlassSideStrip:2",
+        "to": {
+          "position": [
+            422.0,
+            -25.5,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "180 deg"
+        }
       }
     },
     {
       "command": "parameters.add",
       "params": {
         "name": "GlassCrossStrip_depth",
-        "expression": "15",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassCrossStrip_thickness",
         "expression": "15",
         "unit": "mm"
       }
@@ -721,20 +786,97 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "GlassCrossStrip footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-GlassCrossStrip_length / 2",
-          "-GlassCrossStrip_depth / 2"
+        "points": [
+          [
+            -420.8284271247462,
+            -1.1715728752538102
+          ],
+          [
+            -420.4350457160349,
+            -0.8265866388350602
+          ],
+          [
+            -420.0,
+            -0.5358983848622465
+          ],
+          [
+            -419.53073372946034,
+            -0.3044818699548526
+          ],
+          [
+            -419.0352761804101,
+            -0.13629669484372675
+          ],
+          [
+            -418.5221047688802,
+            -0.03422055450475847
+          ],
+          [
+            -418.0,
+            -0.0
+          ],
+          [
+            418.0,
+            0
+          ],
+          [
+            418.5221047688802,
+            -0.03422055450475803
+          ],
+          [
+            419.0352761804101,
+            -0.1362966948437263
+          ],
+          [
+            419.53073372946034,
+            -0.3044818699548535
+          ],
+          [
+            420.0,
+            -0.5358983848622456
+          ],
+          [
+            420.4350457160349,
+            -0.8265866388350593
+          ],
+          [
+            420.8284271247462,
+            -1.1715728752538093
+          ],
+          [
+            407.0,
+            -15.0
+          ],
+          [
+            -407.0,
+            -15.0
+          ]
         ],
-        "p1": [
-          "GlassCrossStrip_length / 2",
-          "GlassCrossStrip_depth / 2"
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j",
+          "k",
+          "l",
+          "m",
+          "n",
+          "o",
+          "p"
         ]
       }
     },
@@ -745,7 +887,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "GlassCrossStrip_thickness",
+        "distance": "GlassCrossStrip_depth",
+        "direction": "symmetric",
         "body_name": "GlassCrossStrip"
       }
     },
@@ -778,7 +921,7 @@
         "occurrence": "GlassCrossStrip:1",
         "translate": [
           0.0,
-          -6.5,
+          -25.5,
           0.0
         ],
         "move_grounded": false
@@ -790,9 +933,28 @@
         "component": "GlassCrossStrip",
         "translate": [
           0.0,
-          -6.5,
-          347.0
+          0.0,
+          362.0
         ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "GlassCrossStrip:2",
+        "to": {
+          "position": [
+            0.0,
+            -25.5,
+            362.0
+          ],
+          "axis": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "angle": "180 deg"
+        }
       }
     },
     {
@@ -1265,9 +1427,9 @@
       "params": {
         "component": "CornerBracket",
         "translate": [
-          437.0,
-          -13.0,
-          377.0
+          874.0,
+          0.0,
+          0.0
         ]
       }
     },
@@ -1295,9 +1457,9 @@
       "params": {
         "component": "CornerBracket",
         "translate": [
-          -437.0,
-          -13.0,
-          -15.0
+          0.0,
+          0.0,
+          -392.0
         ]
       }
     },
@@ -1325,9 +1487,9 @@
       "params": {
         "component": "CornerBracket",
         "translate": [
-          437.0,
-          -13.0,
-          -15.0
+          874.0,
+          0.0,
+          -392.0
         ]
       }
     },

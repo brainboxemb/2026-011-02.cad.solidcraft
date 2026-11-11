@@ -181,7 +181,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -201,7 +201,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -221,7 +221,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -241,7 +241,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -261,7 +261,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -281,7 +281,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth + 0.5 mm",
+        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
         "direction": [
           0.0,
           0.0,

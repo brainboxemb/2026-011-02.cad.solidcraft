@@ -14,7 +14,7 @@
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Create the reusable tapered HUB75 component</li><li>Make six M3 bores and assign its material once</li><li>Ground the middle occurrence at X=0</li><li>Place four copies on the 160 mm nominal grid</li><li>Rotate the alternating copies around Z by 180°</li><li>Verify five saved native occurrences</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Create the reusable tapered HUB75 component</li><li>Make six blind M3 rear bores and assign material once</li><li>Ground the middle occurrence at X=0</li><li>Place four copies on the 160 mm nominal grid</li><li>Rotate the alternating copies around Z by 180°</li><li>Verify five saved native occurrences</li></ol></section></div>
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;Basic five-panel array copied from the OpenSCAD v1.2 placement rules.
 
 SCPF coordinates: X horizontal, Y panel vertical, Z front-to-rear.
@@ -228,7 +228,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -248,7 +248,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -268,7 +268,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -288,7 +288,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -308,7 +308,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -328,7 +328,7 @@ BasicHub75Screen()
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth + 0.5 mm&quot;,
+    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,

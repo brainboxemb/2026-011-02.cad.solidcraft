@@ -64,8 +64,8 @@ class Hub75PanelTests(unittest.TestCase):
             [c["name"] for c in of("parameters.add")],
             ["Hub75Panel_width", "Hub75Panel_height", "Hub75Panel_depth",
              "Hub75Panel_front_depth", "Hub75Panel_rear_inset",
-             "Hub75Panel_rear_side_rail", "Hub75Panel_rear_end_rail",
-             "Hub75Panel_rear_crossbar", "Hub75Panel_hole_diameter",
+             "Hub75Panel_rear_side_rail", "Hub75Panel_rear_crossbar",
+             "Hub75Panel_rear_end_rail", "Hub75Panel_hole_diameter",
              "Hub75Panel_mount_x", "Hub75Panel_mount_y"],
         )
 
@@ -84,7 +84,7 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(
             [p.get("offset", 0) for p in planes],
             [0, "Hub75Panel_front_depth", "Hub75Panel_depth",
-             "Hub75Panel_depth"],
+             "(Hub75Panel_depth)"],
         )
 
     def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
@@ -98,7 +98,7 @@ class Hub75PanelTests(unittest.TestCase):
                    if c["command"] == "sketch.create"
                    and c["params"]["name"] == "Rear electronics bays")
         self.assertEqual(commands[idx]["params"]["offset"],
-                         "Hub75Panel_depth")
+                         "(Hub75Panel_depth)")
         rectangles = []
         for operation in commands[idx + 1:]:
             if operation["command"] == "sketch.finish":

@@ -127,6 +127,23 @@ jobs:
             ([.commands[] | select(.command == "occurrence.copy" and
                 .params.component == "Hub75PanelBasic")] | length) == 4
           ' output/native/hub75-wood-frame/commands.json
+          # Regression for the real relative-transform bug: the first
+          # SideWall is at X=-429.5, and the second must be +859 mm from
+          # that first placement, NOT +429.5 mm from it.
+          jq -e '
+            ([.commands[] | select(.command == "occurrence.copy"
+              and .params.component == "SideWall"
+              and .params.translate == [859,0,0])] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy"
+              and .params.component == "GlassSideStrip"
+              and .params.translate == [844,0,0])] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy"
+              and .params.component == "GlassCrossStrip"
+              and .params.translate == [0,0,362])] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.move"
+              and .params.occurrence == "BackBoard:1"
+              and .params.translate == [0,79.5,-15])] | length) == 1
+          ' output/native/hub75-wood-frame/commands.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
           jq -e '
             ([.commands[] | select(.command == "solid.extrude") |

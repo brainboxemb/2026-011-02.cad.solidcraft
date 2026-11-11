@@ -38,6 +38,54 @@ design**, but it **does not** launch SolidCraft, create a new document or
 automatically save the design. Save it yourself in SolidCraft. Before running
 another model, create a new empty design to avoid mixing geometries.
 
+### Update the CAD models and SCPF library
+
+When the CAD repository has new changes (for example a new `HUB75Panels`
+component), **update the CAD project first**, then rerun its bootstrap to
+install the exact matching SCPF-library revision:
+
+```powershell
+cd C:\Workspace\brainboxemb-github\2026-011-02.cad.solidcraft
+conda activate brainboxemb-dev-tools
+git pull
+.\bootstrap.ps1
+```
+
+`git pull` updates the models, the README and
+[`dependencies.repos`](dependencies.repos). The bootstrap script compares
+the pinned **SCPF commit** with your checkout in `ext/scpf`; it downloads
+that revision if necessary and reinstalls the Python package in the
+activated Conda environment. You do **not** need to clone the library
+separately or run `git pull` inside `ext/scpf`.
+
+Check the installed SCPF Git commit with:
+
+```powershell
+git -C ext/scpf rev-parse --short HEAD
+```
+
+The result should match the **start** of the full `version:` SHA shown
+in `dependencies.repos`. The exact value changes whenever the CAD project
+updates its library pin. `bootstrap.ps1` fails safely if you have changed
+tracked files in the external SCPF checkout; preserve those changes first.
+
+After updating, open a **new empty SolidCraft document** and run, from the
+repository root:
+
+```powershell
+python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+```
+
+Alternatively, if you are already in the model's own directory:
+
+```powershell
+cd models\hub75-wood-frame\scpf
+python -m scpf model.py --connect
+```
+
+`--connect` applies the model to the active SolidCraft GUI document; it
+does **not** need an intermediate JSON file.
+
 `bootstrap.ps1` normally needs to run only once per environment or when
 the pinned dependency is updated. It uses [vcs2l](https://github.com/ros-infrastructure/vcs2l)
 to install the exact SCPF version from [dependencies.repos](dependencies.repos)

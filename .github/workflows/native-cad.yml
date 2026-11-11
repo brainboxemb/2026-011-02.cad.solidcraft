@@ -33,11 +33,10 @@ jobs:
           python -m pip install vcs2l==1.1.7
           mkdir -p ext
           vcs import --input dependencies.repos ext
-          expected="$(sed -n 's/^[[:space:]]*version:[[:space:]]*\([0-9a-f]\{40\}\)[[:space:]]*$/\1/p' dependencies.repos)"
-          actual="$(git -C ext/scpf rev-parse HEAD)"
-          test -n "$expected" && test "$expected" = "$actual"
+          python scripts/ci/check-pins.py
           python -m pip install -e ext/scpf/scpf
-          echo "SCPF_COMMIT=$actual" >> "$GITHUB_ENV"
+          python -m pip install -e ext/scpc
+          echo "SCPF_COMMIT=$(git -C ext/scpf rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Download the verified official SolidCraft release
         shell: bash
         run: |

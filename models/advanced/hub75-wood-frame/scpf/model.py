@@ -270,11 +270,14 @@ class WoodenHub75Box:
                z=value_of(self.glass_bottom_clearance))
 
         # 4. EIGHT hole-free brackets: two on each physical X/Z corner.
-        #    Four at front (Y=-25..-1), four at back (Y=60..84).
+        #    Front brackets start with the sidewall at Y=front.
+        #    Rear brackets END with the sidewall at Y=rear, BEFORE the
+        #    separately attached 9 mm backboard (Y=rear..back_outer).
+        #    Each bracket is 24 mm wide in Y; none intersects the backboard.
         #    Shared source: components/corner_bracket.py.
         bracket_half = CornerBracket.bracket_width / 2
         front_bracket_y = front + bracket_half
-        rear_bracket_y = back_outer - bracket_half
+        rear_bracket_y = rear - bracket_half
         upper_left = Bracket().move(
             x=-outer_half, y=front_bracket_y, z=top_z
         )

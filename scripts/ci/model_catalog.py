@@ -19,6 +19,24 @@ SOURCES = {
     "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
 }
+# Components are defined in separate Python files so that multiple assemblies
+# reuse one editable shape. The CAD site must show the *real definition*, not
+# mislead readers by showing only a small import/launcher script.
+#
+# Each path is relative to the repository root. The downloaded site keeps
+# these paths under the corresponding model's own /source/ directory.
+COMPONENT_SOURCES = {
+    "corner-bracket": "components/corner_bracket.py",
+    "hub75-panel": "components/hub75.py",
+    "hub75-screen": "components/hub75.py",
+}
+
+# Component examples display their real source first. Assemblies are primarily
+# about arranging components, so show the assembly script first.
+COMPONENT_DEFINITION_PRIMARY = frozenset({
+    "corner-bracket", "hub75-panel",
+})
+
 SECTIONS = {
     "basic": ("Basic Models", "Small, transparent models used to develop and verify SCPF features.",
               ("plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi")),

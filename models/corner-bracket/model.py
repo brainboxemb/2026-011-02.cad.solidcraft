@@ -1,7 +1,7 @@
-"""Standalone native regression for the shared fast corner bracket.
+"""Standalone native regression for the shared hole-free corner bracket.
 
 The original geometry now lives in components/corner_bracket.py
-so the wooden screen reuses the exact same four-hole shape and edge history.
+so the wooden screen reuses the exact same hole-free shape and edge history.
 """
 from components.corner_bracket import CornerBracket as _Shared
 
@@ -16,15 +16,6 @@ class CornerBracket:
     side_edge_chamfer = _Shared.side_edge_chamfer
     elephant_foot_relief = _Shared.elephant_foot_relief
     inside_corner_radius = _Shared.inside_corner_radius
-    plywood_thickness = _Shared.plywood_thickness
-    bolt_offset = _Shared.bolt_offset
-    bolt_spacing = _Shared.bolt_spacing
-    bolt_y_offset = _Shared.bolt_y_offset
-    bolt_diameter = _Shared.bolt_diameter
-    bolt_clearance = _Shared.bolt_clearance
-    head_diameter = _Shared.head_diameter
-    head_clearance = _Shared.head_clearance
-    head_recess = _Shared.head_recess
 
     def build(self):
         return _Shared.build(self)

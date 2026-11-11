@@ -180,9 +180,15 @@ def layout(title, body, css_path, home_path):
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(title)} · SolidCraft CAD projects</title><link rel="stylesheet" href="{esc(css_path)}"></head>
-<body><header class="top"><div class="wrap"><nav><a class="brand" href="{esc(home_path)}">SolidCraft · CAD projects</a>
-<a href="{esc(home_path)}">Models</a><a href="{esc(home_path)}cheatsheet/">SCPF cheatsheet</a><a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source on GitHub</a></nav></div></header>
-{body}<footer><div class="wrap">SCPF Python models produce native SolidCraft commands. SolidCraft builds all geometry.</div></footer>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="{esc(home_path)}">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="{esc(home_path)}">Models</a>
+<a href="{esc(home_path)}cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+{body}<footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>"""
 
 
@@ -281,7 +287,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         badge = "verified" if has_native else "pending"
         stage_summary = "".join(f"<li>{esc(s)}</li>" for s in info["stages"])
         script = esc(source.read_text(encoding="utf-8"))
-        view = f"""<section class="hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
+        view = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
 <span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span></div>
@@ -308,7 +314,7 @@ Native qualification is reported only when the matching verified image exists.</
 <h3><a href="models/{slug}/">{esc(info["title"])}</a></h3><p>{esc(info["tagline"])}</p>
 <p class="small muted">{esc(info["parameters"])}</p>
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
-    home = f"""<section class="hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
+    home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore nine CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
@@ -424,7 +430,7 @@ def make_cheatsheet(out):
                       '</h2><div class="cheatsheet-grid">' + cards +
                       '</div></section>')
     body = (
-        '<section class="hero"><div class="wrap"><div class="eyebrow">SCPF / API reference</div>'
+        '<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF / API reference</div>'
         '<h1>SCPF cheatsheet</h1><p>2D sketches, 3D volumes and native SolidCraft operations.</p></div></section>'
         '<main class="wrap"><div class="notice">SCPF is an experimental API: some combinations are not yet supported.'
         ' <code>Cylinder(d=..., h=...)</code> starts at its base;'

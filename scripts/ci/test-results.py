@@ -40,6 +40,8 @@ def check(site, commit):
     assert commit in text, "site must identify its source commit"
     assert 'href="cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
+    assert "SolidCraft <span>CAD models</span>" in text
     assert provenance["scpf_commit"] in text
     for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug

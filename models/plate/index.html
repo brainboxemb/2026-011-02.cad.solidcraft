@@ -4,8 +4,8 @@
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="../../">Models</a>
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Cheatsheet</a>
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / plate</div>
@@ -16,7 +16,7 @@
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>A feature-based plate: sketch, extrusion, four vertical fillets and a through-hole sketch.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
-<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Sketch the rectangle</li><li>Extrude the base</li><li>Fillet vertical corners</li><li>Sketch four hole centres</li><li>Cut the holes</li></ol></section></div>
@@ -41,7 +41,32 @@
 
 Plate()
 </code></pre>
-<h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: length</small><pre><code>{
+<section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;Plate described with native SolidCraft commands, independent of SCPF.
+
+SCPC does NOT call Forge. Open this file next to ../scpf/model.py
+to compare the high-level and native-command approaches.
+&quot;&quot;&quot;
+from scpc import Script
+
+script = Script()
+for name, value in ((&quot;length&quot;, 100), (&quot;width&quot;, 60), (&quot;thickness&quot;, 10)):
+    script.add(&quot;parameters.add&quot;, name=name, expression=str(value), unit=&quot;mm&quot;)
+
+script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Plate footprint&quot;)
+script.add(&quot;sketch.rectangle.two_point&quot;,
+           p0=[&quot;-length / 2&quot;, &quot;-width / 2&quot;],
+           p1=[&quot;length / 2&quot;, &quot;width / 2&quot;])
+script.add(&quot;sketch.finish&quot;)
+script.add(&quot;solid.extrude&quot;, distance=&quot;thickness&quot;, body_name=&quot;Plate&quot;)
+script.add(&quot;solid.fillet&quot;, body=&quot;Plate&quot;, radius=2,
+           edges=[[-50, -30, 5], [50, -30, 5],
+                  [50, 30, 5], [-50, 30, 5]])
+
+for x, y in ((-35, -15), (35, -15), (35, 15), (-35, 15)):
+    script.add(&quot;solid.hole&quot;, position=[x, y, 10],
+               diameter=8, targets=[&quot;Plate&quot;])
+</code></pre></section>
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: length</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;length&quot;,
@@ -185,5 +210,5 @@ Plate()
 The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.
 Native qualification is reported only when the matching verified image exists.</div>
 <p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>

@@ -4,8 +4,8 @@
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="../../">Models</a>
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Cheatsheet</a>
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / corner-bracket</div>
@@ -16,7 +16,7 @@
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
-<div class="links"><a class="btn" href="source/components/corner_bracket.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<div class="links"><a class="btn" href="source/components/corner_bracket.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Solid bracket — mounting-hole features deliberately omitted</li></ol></section></div>
@@ -141,7 +141,77 @@ class CornerBracket:
 
 CornerBracket()
 </code></pre></section>
-<h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
+<section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;CornerBracket in native SolidCraft commands (no dependency on SCPF).
+
+This is intentionally explicit: the command IDs, sketch profile and
+edge-selection points are the native SolidCraft API. SCPC does not recreate
+the bracket geometry in Python; it simply sends these commands.
+
+Important: the edge positions below are for the **current 60/12/24 mm
+reference bracket**. Unlike the parametrized Forge implementation, changing
+a dimension here also requires reviewing the edge-selector positions.
+&quot;&quot;&quot;
+from scpc import Script
+
+script = Script()
+for name, value in (
+    (&quot;bracket_width&quot;, 24),
+    (&quot;horizontal_arm_length&quot;, 60),
+    (&quot;wall_thickness&quot;, 12),
+    (&quot;arm_end_chamfer&quot;, 3),
+    (&quot;outer_corner_chamfer&quot;, 6),
+    (&quot;vertical_arm_length&quot;, 60),
+    (&quot;inside_corner_radius&quot;, 4),
+    (&quot;elephant_foot_relief&quot;, 0.6),
+    (&quot;side_edge_chamfer&quot;, 2),
+):
+    script.add(&quot;parameters.add&quot;, name=name, expression=str(value), unit=&quot;mm&quot;)
+
+# This is the same XZ outline as the reviewed standalone printed bracket.
+# Native sketch.line accepts points and (optional) stable corner labels.
+script.add(&quot;sketch.create&quot;, plane=&quot;XZ&quot;, name=&quot;Profile&quot;)
+script.add(&quot;sketch.line&quot;,
+    points=[
+        [0, 0],
+        [&quot;horizontal_arm_length&quot;, 0],
+        [&quot;horizontal_arm_length&quot;, &quot;-(wall_thickness - (arm_end_chamfer))&quot;],
+        [&quot;horizontal_arm_length - (arm_end_chamfer)&quot;, &quot;-(wall_thickness)&quot;],
+        [&quot;(-(wall_thickness)) + (outer_corner_chamfer)&quot;, &quot;-(wall_thickness)&quot;],
+        [&quot;-(wall_thickness)&quot;, &quot;-(wall_thickness - (outer_corner_chamfer))&quot;],
+        [&quot;-(wall_thickness)&quot;, &quot;-((-(vertical_arm_length)) + (arm_end_chamfer))&quot;],
+        [&quot;(-(wall_thickness)) + (arm_end_chamfer)&quot;, &quot;-(-(vertical_arm_length))&quot;],
+        [0, &quot;-(-(vertical_arm_length))&quot;],
+    ],
+    closed=True,
+    ids=[&quot;i_corner&quot;, &quot;o_hor_tip&quot;, &quot;o_hor_bevel&quot;, &quot;o_hor&quot;,
+         &quot;o_corner&quot;, &quot;o_vert&quot;, &quot;o_vert_bevel&quot;, &quot;o_vert_end&quot;, &quot;v_tip&quot;],
+)
+script.add(&quot;sketch.finish&quot;)
+script.add(&quot;solid.extrude&quot;, distance=&quot;bracket_width&quot;,
+           direction=&quot;symmetric&quot;, body_name=&quot;CornerBracket&quot;)
+
+# One concave inner fillet and three native chamfers; no screw holes.
+script.add(&quot;solid.fillet&quot;, edges=[[0, 0, 0]],
+           radius=4, body=&quot;CornerBracket&quot;)
+script.add(&quot;solid.chamfer&quot;, edges=[[60, 0, 0], [0, 0, -60]],
+           distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
+
+# These positions select the two outside broad faces, including the
+# mitred end edges. They are reference coordinates, not Python CSG.
+outside_edges = [
+    [60, -12, 4.5], [58.5, -12, 10.5], [25.5, -12, 12],
+    [-9, -12, 9], [-12, -12, -25.5],
+    [-10.5, -12, -58.5], [-4.5, -12, -60],
+    [60, 12, 4.5], [58.5, 12, 10.5], [25.5, 12, 12],
+    [-9, 12, 9], [-12, 12, -25.5],
+    [-10.5, 12, -58.5], [-4.5, 12, -60],
+]
+script.add(&quot;solid.chamfer&quot;, edges=outside_edges,
+           distance=&quot;side_edge_chamfer&quot;, body=&quot;CornerBracket&quot;)
+script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
+           distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
+</code></pre></section>
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;bracket_width&quot;,
@@ -422,5 +492,5 @@ CornerBracket()
 The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.
 Native qualification is reported only when the matching verified image exists.</div>
 <p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
-<a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>

@@ -52,8 +52,13 @@ jobs:
           assert screen_commands.count('component.create') == 1
           assert screen_commands.count('occurrence.copy') == 4
           assert screen_commands.count('occurrence.move') == 5
-          assert all('matrix' in c['params'] and 'to' not in c['params']
-                     for c in screen['commands'] if c['command'] == 'occurrence.move')
+          placements=[c['params'] for c in screen['commands']
+                      if c['command']=='occurrence.move']
+          assert all('axis' in p and 'angle' in p and 'translate' in p
+                     and 'matrix' not in p and 'to' not in p for p in placements)
+          kinds=[c['command'] for c in screen['commands']]
+          assert max(i for i,k in enumerate(kinds) if k=='occurrence.copy') < (
+                 min(i for i,k in enumerate(kinds) if k=='occurrence.move'))
           PY
       - name: Run project model regressions against installed SCPF
         shell: bash

@@ -45,6 +45,13 @@ Change these parameters, **not** the placement coordinates of every
 separate board. In `build()` the dimensions are derived and passed to the
 individual components.
 
+These are **Python model parameters**: change them and regenerate the
+SolidCraft model. Do not assume a change to one parameter in an already-open
+SolidCraft assembly will automatically reposition every separate occurrence.
+Within each individual `GlassStrip`, however, the native sketch uses
+**symbolic length and width parameters**, so those are real editable CAD
+dimensions, not hardcoded polygon points.
+
 World axes: **X** left/right, **Y** front-to-back (front is negative Y),
 **Z** upward. The wood opening spans X=−422..422 and Z=0..362 mm.
 

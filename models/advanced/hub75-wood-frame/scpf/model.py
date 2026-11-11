@@ -113,16 +113,17 @@ class GlassStrip:
     finish = 0
 
     def build(self):
-        length = value_of(self.length)
-        width = value_of(self.width)
-        if not 0 < width < length / 2:
+        if not 0 < value_of(self.width) < value_of(self.length) / 2:
             raise ValueError("GlassStrip width must be less than half its length")
-        half = length / 2
-        # Outside edge z=0, the ends retreat by 'width' at the inside
-        # edge z=width: this gives equal 45-degree cuts on both ends.
+        # Keep the actual native SolidCraft sketch symbolic: editing the
+        # native GlassStrip_length / GlassStrip_width parameters changes
+        # the corresponding XZ profile, not merely the Python preview.
+        half = self.length / 2
+        inset = half - self.width
+        # Outside edge z=0, both end cuts retreat by 'width' at z=width.
         profile = Polygon2D([
             (-half, 0), (half, 0),
-            (half - width, width), (-half + width, width),
+            (inset, self.width), (-inset, self.width),
         ], plane="XZ", world=True)
         dark = value_of(self.finish) >= 0.5
         return profile.extrude(

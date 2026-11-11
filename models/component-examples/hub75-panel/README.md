@@ -1,5 +1,17 @@
 # HUB75 Panel — one upright native SolidCraft component
 
+## Source shown on the model website
+
+The website shows the **real shared component source first**, not just the
+short model entry script. The complete editable profile, extrusions and
+features are in `components/hub75.py`.
+
+The separate `scpf/model.py` is the **entry point**: it loads the shared
+component and asks SCPF to create or position it. Keeping the geometry
+in one shared file means the standalone example and the larger assembly
+use the same design. Both Python files can be viewed and downloaded
+individually from the model page.
+
 Source of measured geometry: `brainboxemb/2026-006-01.cad.HUB75-display-frame`,
 `v1.2/cad/components/hub75_panel.scad` (portrait 64×32 P5 panel).
 

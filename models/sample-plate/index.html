@@ -20,6 +20,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Base — sketch XY rectangle (80 × 50)</li><li>Extrude1 — extrude base by 8 mm</li><li>Fillet1 — fillet four vertical corners, R6</li><li>Holes — cut two mounting holes Ø8</li><li>Boss — join Ø24 boss above plate, height 14</li><li>Bore — cut central Ø12 bore through full 22 mm</li></ol></section></div>
+<section class="panel browser-open"><h2>Interactive SolidCraft model (experimental)</h2><p>Explore the actual editable native design in your browser, including its component tree and feature history. This uses the official SolidCraft web app and our source-matched SolidCraft 0.30.1 file.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fsample-plate%2Fmodel.sc" target="_blank" rel="noopener noreferrer">Open in SolidCraft (browser)</a><a class="btn secondary" href="viewer.html">Show embedded viewer</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">Browser loading has not yet been verified in every browser. If it fails, download the native .sc and open it in SolidCraft 0.30.1.</p></section>
 
 <h2>Python model</h2><pre><code>class SamplePlate:
     &quot;&quot;&quot;Build the sample plate from object-level CAD intent.&quot;&quot;&quot;

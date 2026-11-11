@@ -125,3 +125,25 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px}
 .panel-views img{display:block;max-width:100%;height:370px;width:100%;object-fit:contain;padding:16px}
 .panel-views figcaption{padding:12px 18px;font-weight:650;border-top:1px solid var(--line)}
 @media(max-width:760px){.panel-views{grid-template-columns:1fr}.panel-views img{height:310px}}
+
+/* Opt-in interactive SolidCraft viewer. The full WASM app loads only on
+   viewer.html, not while browsing the model gallery. */
+.browser-open { margin: 18px 0 26px; }
+.interactive-frame {
+  width: 100%;
+  margin: 20px 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e9eef5;
+}
+.interactive-frame iframe {
+  display: block;
+  border: 0;
+  width: 100%;
+  height: min(77vh, 860px);
+  min-height: 450px;
+}
+@media (max-width: 640px) {
+  .interactive-frame iframe { min-height: 520px; }
+}

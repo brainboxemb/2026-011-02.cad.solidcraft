@@ -10,6 +10,8 @@ import html
 import json
 import re
 import shutil
+import zipfile
+from urllib.parse import quote
 from pathlib import Path
 from model_catalog import (
     SOURCES, SECTIONS, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, source_path,
@@ -17,6 +19,13 @@ from model_catalog import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# The official stable SolidCraft web app understands ?open= and ?embed&open=.
+# Keep the .sc file on our existing GitHub Pages site: no custom web CAD
+# runtime, frontend build, or CAD server is required for this first experiment.
+PUBLIC_SITE = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
+SOLIDCRAFT_WEB = "https://docs.solidcraft.io/app/"
+NATIVE_FILE_FORMAT = "solidcraft/48"  # SolidCraft CLI 0.30.1
 MODELS = {
     "plate": {
         "title": "Plate", "tagline": "A rounded plate with four holes",
@@ -301,7 +310,73 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         preview_image = screenshot or previously_verified
         if preview_image is not None:
             copy_if_exists(preview_image, work / "native.png")
+        browser_controls = ""
         if has_native:
+            # Only a native file from the exact verified source/engine run is
+            # published. A previous-site preview must NEVER ship a stale .sc.
+            native_file = native_root / slug / "model.sc"
+            if not native_file.is_file() or not zipfile.is_zipfile(native_file):
+                raise ValueError(f"Missing/invalid native SolidCraft file: {native_file}")
+            with zipfile.ZipFile(native_file) as archive:
+                doc = json.loads(archive.read("document.json"))
+                if doc.get("format") != NATIVE_FILE_FORMAT:
+                    raise ValueError(
+                        f"{slug}: expected {NATIVE_FILE_FORMAT}, got {doc.get('format')!r}"
+                    )
+                if json.loads(archive.read("container.json")).get("format") != "solidcraft-container/1":
+                    raise ValueError(f"{slug}: unsupported SolidCraft archive")
+            copy_if_exists(native_file, work / "model.sc")
+            model_url = f"{PUBLIC_SITE}/models/{slug}/model.sc"
+            encoded_url = quote(model_url, safe="")
+            full_url = f"{SOLIDCRAFT_WEB}?open={encoded_url}"
+            embed_url = f"{SOLIDCRAFT_WEB}?embed&open={encoded_url}"
+            browser_controls = (
+                f'<section class="panel browser-open">'
+                '<h2>Interactive SolidCraft model (experimental)</h2>'
+                '<p>Explore the actual editable native design in your browser, '
+                'including its component tree and feature history. '
+                'This uses the official SolidCraft web app and our '
+                'source-matched SolidCraft 0.30.1 file.</p>'
+                '<div class="links">'
+                f'<a class="btn" href="{esc(full_url)}" target="_blank" '
+                'rel="noopener noreferrer">Open in SolidCraft (browser)</a>'
+                '<a class="btn secondary" href="viewer.html">'
+                'Show embedded viewer</a>'
+                '<a class="btn secondary" href="model.sc" download>'
+                'Download native .sc</a>'
+                '</div><p class="small muted">Browser loading has not yet '
+                'been verified in every browser. If it fails, download '
+                'the native .sc and open it in SolidCraft 0.30.1.</p></section>'
+            )
+            viewer_body = (
+                '<main class="wrap"><h1>Interactive model — '
+                + esc(info["title"]) + '</h1>'
+                '<p>This is the official SolidCraft browser viewer. '
+                'It loads the verified design directly from GitHub Pages; '
+                'no local CAD installation is required.</p>'
+                '<div class="links">'
+                f'<a class="btn" href="{esc(full_url)}" target="_blank" '
+                'rel="noopener noreferrer">Open full SolidCraft app</a>'
+                '<a class="btn secondary" href="model.sc" download>'
+                'Download model.sc</a>'
+                '<a class="btn secondary" href="./">Back to model page</a>'
+                '</div>'
+                '<div class="interactive-frame"><iframe '
+                f'src="{esc(embed_url)}" '
+                f'title="SolidCraft interactive model — {esc(info["title"])}" '
+                'loading="lazy" allow="fullscreen" '
+                'referrerpolicy="strict-origin-when-cross-origin"></iframe></div>'
+                '<p class="small muted">The hosted app must be allowed to fetch '
+                'the public .sc file with CORS. If you see an empty design '
+                'or loading fails, use the full-app link or download the '
+                'native file. The model was built with SolidCraft 0.30.1.</p>'
+                '</main>'
+            )
+            (work / "viewer.html").write_text(
+                layout(info["title"] + " interactive viewer",
+                       viewer_body, "../../results.css", "../../"),
+                encoding="utf-8",
+            )
             verified_count += 1
             verified_models.append(slug)
         photo = (
@@ -402,6 +477,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol>{stage_summary}</ol></section></div>
+{browser_controls}
 {extra_views}
 {python_source}
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
@@ -428,7 +504,7 @@ Native qualification is reported only when the matching verified image exists.</
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="{LIBRARY_CHEATSHEET}">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
-<p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
+<p>Each model has its Python source, generated command JSON and a readable operation timeline. Native-verified models also have an experimental browser viewer, a direct link to the official SolidCraft app, and a downloadable editable .sc design. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>
 {sections_html}<h2>How it works</h2>
 <div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> and with an explicit <code>return</code>.</p>

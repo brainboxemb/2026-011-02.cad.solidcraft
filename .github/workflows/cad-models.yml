@@ -40,9 +40,10 @@ jobs:
           from pathlib import Path
           data=json.loads(Path('output/models/hub75-panel/scpf/solidcraft.json').read_text())
           commands=[x['command'] for x in data['commands']]
-          for command in ('component.create','occurrence.copy','solid.loft'):
+          for command in ('component.create','occurrence.move','solid.loft'):
               assert commands.count(command)==1, (command, commands.count(command))
           assert commands.count('sketch.rectangle.two_point') == 7
+          assert commands.count('occurrence.copy') == 0
           assert commands.count('solid.hole') == 6
           assert sum(1 for c in data['commands'] if c['command']=='sketch.create'
                      and c['params'].get('name')=='Rear electronics bays') == 1
@@ -51,6 +52,8 @@ jobs:
           assert screen_commands.count('component.create') == 1
           assert screen_commands.count('occurrence.copy') == 4
           assert screen_commands.count('occurrence.move') == 5
+          assert all('matrix' in c['params'] and 'to' not in c['params']
+                     for c in screen['commands'] if c['command'] == 'occurrence.move')
           PY
       - name: Run project model regressions against installed SCPF
         shell: bash

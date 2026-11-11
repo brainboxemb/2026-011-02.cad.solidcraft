@@ -9,6 +9,33 @@ MODEL = ROOT / "models/hub75-panel/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
+    def test_five_panel_screen_uses_one_component_and_rotates_two_placements(self):
+        commands = run_script(ROOT / "models/hub75-screen/scpf/model.py")["commands"]
+        def of(name):
+            return [item["params"] for item in commands if item["command"] == name]
+
+        self.assertEqual(len(of("component.create")), 1)
+        self.assertEqual(len(of("occurrence.copy")), 4)
+        self.assertEqual(len(of("solid.loft")), 1)
+        self.assertEqual(len(of("solid.hole")), 6)
+        self.assertEqual(len(of("material.create")), 1)
+        self.assertEqual([c["translate"] for c in of("occurrence.copy")],
+                         [[-320.0, 0.0, 0.0], [-160.0, 0.0, 0.0],
+                          [160.0, 0.0, 0.0], [320.0, 0.0, 0.0]])
+        orientations = of("occurrence.move")
+        self.assertEqual([c["occurrence"] for c in orientations],
+                         ["Hub75Panel:3", "Hub75Panel:4"])
+        self.assertEqual([c["to"]["position"] for c in orientations],
+                         [[-160.0, 0.0, 0.0], [160.0, 0.0, 0.0]])
+        self.assertTrue(all(c["to"]["axis"] == [0.0, 0.0, 1.0] and
+                            c["to"]["angle"] == "180 deg" for c in orientations))
+
+    def test_two_panel_and_screen_import_the_same_definition(self):
+        from models.components.hub75 import Hub75Panel as PanelDefinition
+        from scpf import component
+        panel = component(PanelDefinition)()
+        self.assertIs(panel.definition.shape, panel.copy().definition.shape)
+
     def test_copy_creates_a_second_occurrence_of_one_definition(self):
         from scpf.core import Box
         from scpf.model_objects import ModelDefinition, ModelInstance

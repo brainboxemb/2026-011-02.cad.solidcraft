@@ -31,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           unset PYTHONPATH
-          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
             python -m scpf "models/$model/scpf/model.py" --out "output/models/$model/scpf/solidcraft.json"
             python -m json.tool "output/models/$model/scpf/solidcraft.json" >/dev/null
           done
@@ -42,6 +42,11 @@ jobs:
           commands=[x['command'] for x in data['commands']]
           for command in ('component.create','occurrence.copy','solid.loft'):
               assert commands.count(command)==1, (command, commands.count(command))
+          screen=json.loads(Path('output/models/hub75-screen/scpf/solidcraft.json').read_text())
+          screen_commands=[c['command'] for c in screen['commands']]
+          assert screen_commands.count('component.create') == 1
+          assert screen_commands.count('occurrence.copy') == 4
+          assert screen_commands.count('occurrence.move') == 2
           PY
       - name: Run project model regressions against installed SCPF
         shell: bash

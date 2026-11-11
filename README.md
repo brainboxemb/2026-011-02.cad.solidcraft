@@ -28,11 +28,12 @@ python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
 
 - [Corner Bracket](models/corner-bracket/README.md)
 - [HUB75 Panel / two occurrences](models/hub75-panel/README.md)
+- [Basic HUB75 Screen / five occurrences](models/hub75-screen/README.md)
 - [Plastic Enclosure Pi](models/plastic-enclosure-pi/README.md)
 - [Plate](models/plate/README.md) and [CSG comparison](models/csg-cube/README.md)
 
 ## Publication and migration
 
-All eight models are compiled against one pinned SCPF library revision. Seven primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+All nine models are compiled against one pinned SCPF library revision. Eight primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
 
 Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.

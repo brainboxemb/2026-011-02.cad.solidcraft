@@ -25,8 +25,8 @@ class BasicHub75Screen:
     def build(self):
         # The native panel has its display face in XY and its rear in +Z.
         # Rotate to XZ so the 319.71 mm long side points upwards in world Z.
-        # Keep the master at X=0: copies inherit the master's transformation.
-        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90)
+        # Keep the master at X=0 and Z=160: copies inherit its upright pose.
+        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
         screen = central
 
         for index in (0, 1, 3, 4):

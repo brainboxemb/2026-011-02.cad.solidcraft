@@ -15,7 +15,17 @@ Every model below is owned by this CAD repository, not by `lib.py.solidcraft`. R
 | [bracket](bracket/README.md) | L extrusion and holes |
 | [csg-cube](csg-cube/README.md) | CSG reference and cross-CAD comparison |
 
-A model generates native command JSON using `python -m scpf models/<slug>/scpf/model.py --out output/<slug>.json`. See `scripts/qualify-solidcraft.ps1` for native SolidCraft CLI execution.
+To open a model **directly in SolidCraft**, start the GUI, open a new blank
+design, enable **Preferences → Assistant → Let AI agents connect**, then run:
+
+```powershell
+python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+```
+
+This is the standard interactive workflow. The optional `--out` mode
+generates a JSON command file without opening or modifying any GUI document.
+See the repository [README](../README.md) for first-time setup and
+`scripts/qualify-solidcraft.ps1` for headless native verification.
 
 ## SCPF source conventions
 

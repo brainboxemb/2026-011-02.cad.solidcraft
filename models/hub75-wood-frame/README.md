@@ -56,10 +56,23 @@ frame screws, electronics and assembly exploded view. These are the next
 mechanical milestones; don't interpret this source as a printable final
 design.
 
-## Generate / inspect
+## Open directly in SolidCraft
+
+From the CAD repository root (after `./bootstrap.ps1`), start SolidCraft,
+open a **new empty design**, and enable **Preferences → Assistant → Let AI
+agents connect**. Then:
 
 ```powershell
-.\bootstrap.ps1
+python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+```
+
+The model is sent directly to the active design; save the `.sc` file from
+SolidCraft. This is the recommended way to inspect the wooden enclosure.
+
+If you specifically need an **intermediate JSON file** or a separate
+headless CLI run, use:
+
+```powershell
 python -m scpf models/hub75-wood-frame/scpf/model.py --out output/wood-basic-box.json
 solidcraft-cli run output/wood-basic-box.json --param-check strict --results --save output/wood-basic-box.sc
 ```

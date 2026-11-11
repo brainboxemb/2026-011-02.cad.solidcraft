@@ -59,7 +59,19 @@ original 160 mm nominal placement grid.
 not an associative SolidCraft constraint or an editable native design
 parameter. The five rotated occurrences are implemented in the [screen model](../hub75-screen/README.md). Detailed front/PCB/connector colors, couplers and exploded views remain open in [CAD issue #7](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/7).
 
-Generate and inspect after running `./bootstrap.ps1`:
+## Open in SolidCraft
+
+With the GUI running, a **new empty design** active, and
+**Preferences → Assistant → Let AI agents connect** enabled:
+
+```powershell
+python -m scpf models/hub75-panel/scpf/model.py --connect
+```
+
+This is the default interactive workflow: it creates the editable native
+model in the already open design; save it in SolidCraft.
+
+For **optional** command-JSON generation and headless verification:
 
 ```powershell
 python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json

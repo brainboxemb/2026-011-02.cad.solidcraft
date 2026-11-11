@@ -2,17 +2,67 @@
 
 CAD projects and native SolidCraft verification. The Python interface/compiler lives in [lib.py.solidcraft](https://github.com/brainboxemb/lib.py.solidcraft), not here.
 
-## Start on Windows
+## Run a model directly in SolidCraft (Windows)
 
-Activate the shared `brainboxemb-dev-tools` Conda environment, then run from the repository root:
+The normal workflow is to send your Python model to the **open SolidCraft
+GUI**. You do **not** need to save an intermediate JSON command file.
+
+1. Open SolidCraft and create a **new empty design**.
+2. Enable **Preferences → Assistant → Let AI agents connect** in SolidCraft.
+3. Open PowerShell in this repository's root (the folder containing
+   `bootstrap.ps1` and `models/`).
+4. Activate your normal environment and, on first use, initialize the pinned
+   SCPF dependency:
 
 ```powershell
+conda activate brainboxemb-dev-tools
 .\bootstrap.ps1
-python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
-.\scripts\qualify-solidcraft.ps1 -Model models/hub75-panel/scpf/model.py -Snapshot
 ```
 
-`bootstrap.ps1` uses [vcs2l](https://github.com/ros-infrastructure/vcs2l) to import the **exact** commit declared in [dependencies.repos](dependencies.repos) into ignored `ext/scpf/`, checks the checkout SHA, and installs the external `scpf` Python package editable into the active environment. No submodule, source copying, manually created `ext/` or `PYTHONPATH` changes are needed.
+Then choose **one** model to send to the active SolidCraft design:
+
+```powershell
+# Wooden frame + five basic HUB75 modules + provisional corner rails
+python -m scpf models/hub75-wood-frame/scpf/model.py --connect
+
+# Detailed HUB75 panel, original two-occurrence regression
+python -m scpf models/hub75-panel/scpf/model.py --connect
+
+# Five detailed HUB75 panel occurrences
+python -m scpf models/hub75-screen/scpf/model.py --connect
+```
+
+`--connect` compiles the Python script and sends its native commands through
+SolidCraft's authenticated local control channel. It changes the **active
+design**, but it **does not** launch SolidCraft, create a new document or
+automatically save the design. Save it yourself in SolidCraft. Before running
+another model, create a new empty design to avoid mixing geometries.
+
+`bootstrap.ps1` normally needs to run only once per environment or when
+the pinned dependency is updated. It uses [vcs2l](https://github.com/ros-infrastructure/vcs2l)
+to install the exact SCPF version from [dependencies.repos](dependencies.repos)
+into ignored `ext/scpf/`. No Git submodules, manual `PYTHONPATH`, or
+manually created `ext/` folder are needed.
+
+### Optional: generate JSON or run headless
+
+`--out` **only generates JSON**; it does not connect to the GUI:
+
+```powershell
+python -m scpf models/hub75-wood-frame/scpf/model.py --out output/wood-box.json
+```
+
+For a separate native CLI run and generated `.sc` / STEP / measurements
+(and optionally a PNG), use:
+
+```powershell
+.\scripts\qualify-solidcraft.ps1 -Model models/hub75-wood-frame/scpf/model.py -Snapshot
+```
+
+The CLI workflow requires `solidcraft-cli` in PATH or `-CliPath`. It
+does **not** connect to the active SolidCraft GUI. If live `--connect`
+reports a missing port/token, confirm the GUI is open and the Assistant
+connection preference is enabled.
 
 ## Project structure
 

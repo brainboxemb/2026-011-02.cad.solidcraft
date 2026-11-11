@@ -103,6 +103,18 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(positions), 6)
         self.assertEqual(len({str(p) for p in positions}), 6)
         self.assertTrue(all(h["direction"] == [0, 0, -1] for h in holes))
+        # Every bore must start at the REAR and terminate at Z=2 mm.
+        # An old through-hole depth of 15 mm would pierce the front face.
+        # Native input preserves expressions in the parameterized model.
+        from models.components.hub75 import Hub75Panel
+        reference = Hub75Panel()
+        self.assertEqual(reference.depth - reference.front_depth, 12.5)
+        for bore in holes:
+            depth_expression = str(bore["depth"])
+            self.assertIn("Hub75Panel_depth", depth_expression)
+            self.assertIn("Hub75Panel_front_depth", depth_expression)
+            self.assertNotIn("15", depth_expression)
+        self.assertEqual(len(holes), 6)
         self.assertTrue(all(h["targets"] == ["Hub75Panel"] for h in holes))
 
     def test_material_is_native_and_housing_color_is_grey(self):

@@ -107,7 +107,7 @@ jobs:
           jq -e '
             ([.commands[] | select(.command == "component.create")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy")] | length) == 4 and
-            ([.commands[] | select(.command == "occurrence.move")] | length) == 2 and
+            ([.commands[] | select(.command == "occurrence.move")] | length) == 5 and
             ([.commands[] | select(.command == "solid.loft")] | length) == 1
           ' output/native/hub75-screen/commands.json
           jq -e '

@@ -15,3 +15,11 @@ code output/plate.json
 
 Additional CadQuery, vcad, µcad and PythonSCAD variants are independent
 comparison references, not scripting runtimes for this project.
+
+
+## Two scripts: Forge and native commands
+
+- [SCPF model](scpf/model.py) describes a parametric Box, R2 fillets and four holes.
+- [SCPC model](scpc/model.py) expresses the **same part using native SolidCraft commands** (parameters, sketch, extrusion, fillet and holes), without importing the Forge model or loading its generated JSON.
+
+Use `python -m scpc models/basic/plate/scpc/model.py --out output/plate-scpc.json` after `bootstrap.ps1`. Native CI checks both scripts produce matching BRep measurements and editable feature history. The SCPC edge selection coordinates are explicit; changes to dimensions need a deliberate review of those selectors.

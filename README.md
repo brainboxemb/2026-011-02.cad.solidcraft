@@ -1,6 +1,33 @@
 # 2026-011-02.cad.solidcraft
 
-CAD projects and native SolidCraft verification. The Python interface/compiler lives in [lib.py.solidcraft](https://github.com/brainboxemb/lib.py.solidcraft), not here.
+CAD projects and native SolidCraft verification. The Python libraries live separately: [SCPF Python Forge](https://github.com/brainboxemb/lib.py.solidcraft.forge) for parametrized models and [SCPC Python Commands](https://github.com/brainboxemb/lib.py.solidcraft.cmd) for explicit native commands.
+
+## Two Python scripts for one CAD design
+
+The same design can be expressed in two deliberately different ways:
+
+```text
+models/basic/plate/
+├── scpf/model.py   # Forge: parametric geometry objects
+├── scpc/model.py   # Commands: native SolidCraft API calls
+└── README.md
+```
+
+The native-command version is **not** compiled from the Forge script.
+Both are independently written; SolidCraft executes both, and CI compares
+their native geometry and feature history. We start with **Plate** and
+**CornerBracket** before converting other models.
+
+```powershell
+.\bootstrap.ps1  # installs BOTH pinned Python packages
+python -m scpf models/basic/plate/scpf/model.py --out output/plate-forge.json
+python -m scpc models/basic/plate/scpc/model.py --out output/plate-commands.json
+python -m scpc models/basic/plate/scpc/model.py --connect
+```
+
+The last command modifies an *already open* SolidCraft GUI design; open
+an empty document first. Only SolidCraft performs CAD operations. SCPC
+does not contain any replacement geometry calculations.
 
 ## Run a model directly in SolidCraft (Windows)
 
@@ -38,11 +65,11 @@ design**, but it **does not** launch SolidCraft, create a new document or
 automatically save the design. Save it yourself in SolidCraft. Before running
 another model, create a new empty design to avoid mixing geometries.
 
-### Update the CAD models and SCPF library
+### Update the CAD models and both Python libraries
 
 When the CAD repository has new changes (for example a new `HUB75Panels`
 component), **update the CAD project first**, then rerun its bootstrap to
-install the exact matching SCPF-library revision:
+install the exact matching Forge and SCPC library revisions:
 
 ```powershell
 cd C:\Workspace\brainboxemb-github\2026-011-02.cad.solidcraft
@@ -58,10 +85,11 @@ that revision if necessary and reinstalls the Python package in the
 activated Conda environment. You do **not** need to clone the library
 separately or run `git pull` inside `ext/scpf`.
 
-Check the installed SCPF Git commit with:
+Check the pinned Git commits with:
 
 ```powershell
 git -C ext/scpf rev-parse --short HEAD
+git -C ext/scpc rev-parse --short HEAD
 ```
 
 The result should match the **start** of the full `version:` SHA shown
@@ -88,7 +116,7 @@ does **not** need an intermediate JSON file.
 
 `bootstrap.ps1` normally needs to run only once per environment or when
 the pinned dependency is updated. It uses [vcs2l](https://github.com/ros-infrastructure/vcs2l)
-to install the exact SCPF version from [dependencies.repos](dependencies.repos)
+to install the exact SCPF and SCPC versions from [dependencies.repos](dependencies.repos)
 into ignored `ext/scpf/`. No Git submodules, manual `PYTHONPATH`, or
 manually created `ext/` folder are needed.
 
@@ -132,7 +160,7 @@ the old CAD cheatsheet URL redirects there.
 
 ## Project structure
 
-- `models/<category>/<name>/scpf/model.py` — project-owned CAD models and assembly sources.
+- `models/<category>/<name>/scpf/model.py` — parametric Forge design.\n- `models/<category>/<name>/scpc/model.py` — explicit native command design (where implemented).
 - `models/<category>/<name>/README.md` — model design notes and geometry references.
 - `models/<category>/<name>/source/` — original SolidCraft command/document references where available.
 - `examples/` — small retained API qualification fixtures; reusable API tests live in the library.
@@ -151,7 +179,7 @@ the old CAD cheatsheet URL redirects there.
 
 ## Publication and migration
 
-All ten models are compiled against one pinned SCPF library revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+All ten existing Forge models use a pinned SCPF revision. The first two parallel native-command models also use a separately pinned SCPC revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
 
 Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.
 

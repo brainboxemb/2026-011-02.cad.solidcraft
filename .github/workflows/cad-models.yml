@@ -1,0 +1,54 @@
+name: CAD models and site smoke tests
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  models:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fetch exact SCPF library revision (vcs2l)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install vcs2l==1.1.7
+          mkdir -p ext
+          vcs import --input dependencies.repos ext
+          expected="$(sed -n 's/^[[:space:]]*version:[[:space:]]*\([0-9a-f]\{40\}\)[[:space:]]*$/\1/p' dependencies.repos)"
+          actual="$(git -C ext/scpf rev-parse HEAD)"
+          test -n "$expected" && test "$expected" = "$actual"
+          python -m pip install -e ext/scpf/scpf
+      - name: Compile project models with installed SCPF (no PYTHONPATH)
+        shell: bash
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel; do
+            python -m scpf "examples/$model/scpf/model.py" --out "output/examples/$model/scpf/solidcraft.json"
+            python -m json.tool "output/examples/$model/scpf/solidcraft.json" >/dev/null
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('output/examples/hub75-panel/scpf/solidcraft.json').read_text())
+          commands=[x['command'] for x in data['commands']]
+          for command in ('component.create','occurrence.copy','solid.loft'):
+              assert commands.count(command)==1, (command, commands.count(command))
+          PY
+      - name: Generate and smoke-test static site (not published)
+        run: |
+          python scripts/ci/build-results.py --generated output/examples --commit "$GITHUB_SHA" --out output/site
+          python scripts/ci/test-results.py output/site "$GITHUB_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cad-site-smoke
+          path: output/site/
+          if-no-files-found: error

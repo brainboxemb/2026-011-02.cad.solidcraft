@@ -19,10 +19,30 @@ OpenSCAD reference builds its mounting tubes and front layers separately;
 our simplified one-body envelope uses a blind cut as the closest supported
 native feature until that rear structure is modelled. The six coordinates
 remain available for locating brackets and other mounting parts.
-The recessed rear bays, PCB and connectors remain out of scope.
+## Four rear electronics bays (first rear-frame milestone)
 
-The more complex rear frame, PCB, connectors, pin guides and alternating
-orientation are deliberately not modelled yet.
+The tapered rear housing now contains **four editable pockets** cut in one
+named sketch (`Rear electronics bays`). From the actual rear mounting face
+Z=14.50 mm, a negative 12.50 mm cut stops at Z=2.00 mm, so it **never
+pierces the LED/front PCB stack**. The original six mounting bores remain
+on the two side rails and the three crossbar positions.
+
+The rear web layout is derived from
+[the v1.2 OpenSCAD reference](https://github.com/brainboxemb/2026-006-01.cad.HUB75-display-frame/blob/main/v1.2/cad/components/hub75_panel.scad):
+
+- Side rails **12.50 mm** in 160 mm reference-space width.
+- Top/bottom end rails **10.75 mm** in 320 mm reference-space height.
+- Three dividing ribs **20.00 mm** wide at height 80/160/240 mm.
+- Physical scaling uses measured 159.70 × 319.71 mm, without stretching
+  the placement grid (which stays at nominal 160 × 320 mm).
+
+**Current approximation:** the four pockets have square corners, whereas
+the measured STEP/OpenSCAD model has **R5 rounded opening corners**, local
+45°/3 mm rail steps, a shallow 0.8 mm rear recess, circular mounting tubes,
+additional reinforcement bushings and two locator pins. This milestone
+deliberately avoids misrepresenting those as finished geometry. The PCB,
+power/IDC connector volumes, front mask and distinct colors still need
+their own editable SolidCraft bodies/features; they are not present yet.
 
 SCPF uses X for width, Y for height and Z for depth (front at Z=0).
 The source OpenSCAD model used X/Z for the front and Y for depth.

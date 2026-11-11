@@ -27,7 +27,7 @@ python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
 ## Main models
 
 - [Corner Bracket](models/corner-bracket/README.md)
-- [HUB75 Panel / two occurrences](models/hub75-panel/README.md)
+- [HUB75 Panel / two occurrences and four rear bays](models/hub75-panel/README.md)
 - [Basic HUB75 Screen / five occurrences](models/hub75-screen/README.md)
 - [Plastic Enclosure Pi](models/plastic-enclosure-pi/README.md)
 - [Plate](models/plate/README.md) and [CSG comparison](models/csg-cube/README.md)

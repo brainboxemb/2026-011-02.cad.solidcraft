@@ -3,6 +3,7 @@
 Moved from lib.py.solidcraft/scpf/tests/test_models.py: these source fixtures
 belong to the consumer CAD repository, not the reusable Python library.
 """
+import ast
 import json
 import tempfile
 import unittest
@@ -14,6 +15,25 @@ from scpf.runner import run_script
 ROOT = Path(__file__).resolve().parents[1]
 
 class CADModelRegressions(unittest.TestCase):
+    def test_model_scripts_use_plain_classes_and_explicit_returns(self):
+        """No dataclass/type ceremony or implicit last geometry expression."""
+        scripts = sorted((ROOT / "models").glob("*/scpf/model.py"))
+        scripts.append(ROOT / "models/components/hub75.py")
+        self.assertGreaterEqual(len(scripts), 10)
+        for script in scripts:
+            with self.subTest(model=str(script.relative_to(ROOT))):
+                module = ast.parse(script.read_text(encoding="utf-8"))
+                classes = [node for node in module.body if isinstance(node, ast.ClassDef)]
+                for cls in classes:
+                    self.assertFalse(cls.decorator_list, cls.name)
+                    # SCPF class parameters are simple numeric class attributes.
+                    for statement in cls.body:
+                        self.assertNotIsInstance(statement, ast.AnnAssign, cls.name)
+                    for fn in (node for node in cls.body
+                               if isinstance(node, ast.FunctionDef) and node.name == "build"):
+                        self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
+
+
     def test_csg_cube_matches_reviewed_native_commands(self):
         generated = run_script(ROOT / "models/csg-cube/scpf/model.py")
         expected = json.loads((ROOT / "models/csg-cube/scpf/reference.json").read_text())

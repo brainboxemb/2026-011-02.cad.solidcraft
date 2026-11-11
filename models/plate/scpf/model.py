@@ -1,8 +1,7 @@
-@dataclass
 class Plate:
-    length: float = 100
-    width: float = 60
-    thickness: float = 10
+    length = 100
+    width = 60
+    thickness = 10
 
     def build(self):
         body = Box(self.length, self.width, self.thickness)
@@ -13,7 +12,7 @@ class Plate:
             body = body + Hole(
                 d=8, depth=Depth.THROUGH_ALL
             ).at(x, y, self.thickness)
-        body
+        return body
 
 
 Plate()

@@ -1,10 +1,9 @@
-@dataclass
 class SamplePlate:
     """Build the sample plate from object-level CAD intent."""
 
-    width: float = 80
-    depth: float = 50
-    thickness: float = 8
+    width = 80
+    depth = 50
+    thickness = 8
 
     def build(self):
         plate = Rectangle2D(self.width, self.depth).extrude(self.thickness)
@@ -28,7 +27,7 @@ class SamplePlate:
             plate,
             parent=Anchor.TOP,
         )
-        plate + bore
+        return plate + bore
 
 
 SamplePlate()

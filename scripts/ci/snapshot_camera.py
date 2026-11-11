@@ -21,12 +21,11 @@ CAMERAS = {
         "distance": 1020,
         "fov": 0,
     },
-    # Five detailed HUB75 modules are still built in the XY panel plane,
-    # not the upright XZ convention of the wooden box. View from +Z.
+    # The detailed panel array now stands in the XZ plane like the wooden box.
     "hub75-screen": {
-        "target": [0, 0, 8],
+        "target": [0, 0, 160],
         "yaw": -0.24,
-        "pitch": 1.15,
+        "pitch": 0.20,
         "distance": 920,
         "fov": 0,
     },

@@ -9,7 +9,12 @@ MODEL = ROOT / "models/component-examples/hub75-panel/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
-    def test_five_panel_screen_uses_one_component_and_rotates_two_placements(self):
+    def test_five_panel_screen_is_upright_with_two_alternating_orientations(self):
+        """Every occurrence must have a vertical long edge in world Z.
+
+        Rotations are absolute axis-angle poses, NOT chained Euler angles.
+        We verify the exact native JSON placement for all five panels.
+        """
         commands = run_script(ROOT / "models/advanced/hub75-screen/scpf/model.py")["commands"]
         def of(name):
             return [item["params"] for item in commands if item["command"] == name]
@@ -24,11 +29,19 @@ class Hub75PanelTests(unittest.TestCase):
                           [160.0, 0.0, 0.0], [320.0, 0.0, 0.0]])
         orientations = of("occurrence.move")
         self.assertEqual([c["occurrence"] for c in orientations],
-                         ["Hub75Panel:3", "Hub75Panel:4"])
+                         [f"Hub75Panel:{i}" for i in range(1, 6)])
         self.assertEqual([c["to"]["position"] for c in orientations],
-                         [[-160.0, 0.0, 0.0], [160.0, 0.0, 0.0]])
-        self.assertTrue(all(c["to"]["axis"] == [0.0, 0.0, 1.0] and
-                            c["to"]["angle"] == "180 deg" for c in orientations))
+                         [[0.0, 0.0, 0.0], [-320.0, 0.0, 0.0],
+                          [-160.0, 0.0, 0.0], [160.0, 0.0, 0.0],
+                          [320.0, 0.0, 0.0]])
+        for number, placement in enumerate(orientations, start=1):
+            pose = placement["to"]
+            if number in (3, 4):
+                self.assertEqual(pose["axis"], [0.0, 1.0, -1.0])
+                self.assertEqual(pose["angle"], "180 deg")
+            else:
+                self.assertEqual(pose["axis"], [1.0, 0.0, 0.0])
+                self.assertEqual(pose["angle"], "90 deg")
 
     def test_two_panel_and_screen_import_the_same_definition(self):
         from components.hub75 import Hub75Panel as PanelDefinition

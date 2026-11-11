@@ -50,7 +50,7 @@ jobs:
           screen_commands=[c['command'] for c in screen['commands']]
           assert screen_commands.count('component.create') == 1
           assert screen_commands.count('occurrence.copy') == 4
-          assert screen_commands.count('occurrence.move') == 2
+          assert screen_commands.count('occurrence.move') == 5
           PY
       - name: Run project model regressions against installed SCPF
         shell: bash

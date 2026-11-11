@@ -14,9 +14,9 @@
 | 4 | +160 mm | 2 | Bottom | 180° |
 | 5 | +320 mm | 1 | Top | 0° |
 
-This is a nominal **800 × 320 mm** panel grid. The SCPF panel front plane is **XY**, depth is **Z**; OpenSCAD's `rotate([0,180,0])` about its Y depth axis becomes SolidCraft's native occurrence rotation about **Z**.
+This is a nominal **800 × 320 mm** panel grid. The detailed component's **native** front plane is XY, depth is Z. In the **assembly**, each occurrence is rotated +90° about world X so its front plane is **XZ** (standing upright), depth is along world Y and the 319.71 mm dimension points up along Z. Alternating panel orientations combine the upright X+90° with a world Y+180° turn as one absolute axis-angle pose (180° about the diagonal [0, 1, -1]), because SCPF does not compose consecutive rotate calls. The translation to the column X position happens last.
 
-The first occurrence is the *middle* panel at X=0; `copy()` adds the other four placements. The two alternating rotations are native absolute `occurrence.move` placements. All five share one component definition/feature history.
+The first occurrence is the *middle* panel at X=0; `copy()` adds the other four placements. Every panel has a vertical Z axis; the two alternating rotations are performed before the final column translations. All five share one component definition/feature history.
 
 **Scope:** this phase now verifies five real placements, rotation, the existing rear loft, **four rear electronics bays with dividing ribs**, six **blind rear-facing mounting bores** (front face stays intact), and one grey housing material. It does **not** yet include rounded/stepped bay corners, rear-tube reinforcement, connector/PCB bodies, brackets or native exploded views. The source's annotations and physical connector roles are documented, not claimed to be displayed in SolidCraft.
 

@@ -89,7 +89,7 @@ MODELS = {
                    "Make six blind M3 rear bores and assign material once",
                    "Ground the middle occurrence at X=0",
                    "Place four copies on the 160 mm nominal grid",
-                   "Set absolute target poses using supported relative native matrices",
+                   "Place native occurrences with translate, axis and angle",
                    "Verify five saved native occurrences"],
     },
     "hub75-panel": {

@@ -64,3 +64,11 @@ python -m scpf models/component-examples/corner-bracket/scpf/model.py --out outp
 The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/lib.py.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.
 
 Original geometry reference: `brainboxemb/2026-011-01.cad.model-archive`, `models/corner_bracket/v0.1/scad/corner_bracket.scad`.
+
+
+## Two scripts: Forge and native commands
+
+- [SCPF model](scpf/model.py) instantiates the shared parametric [CornerBracket](../../../components/corner_bracket.py) definition.
+- [SCPC model](scpc/model.py) independently lists all **17 native SolidCraft commands**, including named XZ sketch points, extrusion, R4 fillet and three chamfers.
+
+This is useful for understanding exactly what SolidCraft receives. SCPC does **not** read Forge's JSON. Its explicit edge selectors describe the current reference dimensions (60 mm arms, 12 mm wall, 24 mm extrusion); when those dimensions change, review the sample coordinates as well. Native CI runs both and compares the final geometry and feature history.

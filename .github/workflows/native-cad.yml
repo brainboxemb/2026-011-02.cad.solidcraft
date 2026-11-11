@@ -68,16 +68,22 @@ jobs:
               --json-out "output/native/$model/measurements.json"
             jq -e '(.timeline | all(.error == null))' "output/native/$model/measurements.json"
             test -s "output/native/$model/model.step"
+            # For large screen/assembly models use a real model-centred camera.
+            # The default ISO view may show only one corner of a wide assembly.
+            # The CLI accepts an orbit camera JSON in millimetres and radians.
+            snapshot_args=(--out "output/native/$model/model.png" --no-grid --no-axes)
+            camera="$(python scripts/ci/snapshot_camera.py "$model")"
+            if [ -n "$camera" ]; then
+              snapshot_args+=(--camera "$camera")
+            fi
             # CSG snapshots have historically been optional (CPU renderer).
             if [ "$model" = csg-cube ]; then
-              if ! solidcraft-cli snapshot "output/native/$model/model.sc" \
-                --out "output/native/$model/model.png" --no-grid --no-axes; then
+              if ! solidcraft-cli snapshot "output/native/$model/model.sc" "${snapshot_args[@]}"; then
                 rm -f "output/native/$model/model.png"
                 echo "CSG snapshot failed; native solid/STEP still verified."
               fi
             else
-              solidcraft-cli snapshot "output/native/$model/model.sc" \
-                --out "output/native/$model/model.png" --no-grid --no-axes
+              solidcraft-cli snapshot "output/native/$model/model.sc" "${snapshot_args[@]}"
               test -s "output/native/$model/model.png"
             fi
           done

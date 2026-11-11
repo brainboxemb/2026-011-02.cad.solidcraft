@@ -64,15 +64,17 @@ class Hub75PanelTests(unittest.TestCase):
             [c["name"] for c in of("parameters.add")],
             ["Hub75Panel_width", "Hub75Panel_height", "Hub75Panel_depth",
              "Hub75Panel_front_depth", "Hub75Panel_rear_inset",
-             "Hub75Panel_hole_diameter", "Hub75Panel_mount_x", "Hub75Panel_mount_y"],
+             "Hub75Panel_rear_side_rail", "Hub75Panel_rear_crossbar",
+             "Hub75Panel_rear_end_rail", "Hub75Panel_hole_diameter",
+             "Hub75Panel_mount_x", "Hub75Panel_mount_y"],
         )
 
     def test_rear_taper_uses_editable_native_loft(self):
         commands = run_script(MODEL)["commands"]
         kinds = [c["command"] for c in commands]
-        self.assertEqual(kinds.count("solid.extrude"), 1)
+        self.assertEqual(kinds.count("solid.extrude"), 2)
         self.assertEqual(kinds.count("solid.loft"), 1)
-        self.assertEqual(kinds.count("sketch.rectangle.two_point"), 3)
+        self.assertEqual(kinds.count("sketch.rectangle.two_point"), 7)
         loft = next(c["params"] for c in commands if c["command"] == "solid.loft")
         self.assertEqual(loft["operation"], "join")
         self.assertEqual(loft["targets"], ["Hub75Panel"])
@@ -81,8 +83,58 @@ class Hub75PanelTests(unittest.TestCase):
         planes = [c["params"] for c in commands if c["command"] == "sketch.create"]
         self.assertEqual(
             [p.get("offset", 0) for p in planes],
-            [0, "Hub75Panel_front_depth", "Hub75Panel_depth"],
+            [0, "Hub75Panel_front_depth", "Hub75Panel_depth",
+             "(Hub75Panel_depth)"],
         )
+
+    def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
+        from models.components.hub75 import Hub75Panel
+
+        commands = run_script(MODEL)["commands"]
+        named = [c for c in commands if c["command"] == "sketch.create"]
+        self.assertEqual([c["params"]["name"] for c in named][-1],
+                         "Rear electronics bays")
+        idx = next(i for i, c in enumerate(commands)
+                   if c["command"] == "sketch.create"
+                   and c["params"]["name"] == "Rear electronics bays")
+        self.assertEqual(commands[idx]["params"]["offset"],
+                         "(Hub75Panel_depth)")
+        rectangles = []
+        for operation in commands[idx + 1:]:
+            if operation["command"] == "sketch.finish":
+                break
+            self.assertEqual(operation["command"], "sketch.rectangle.two_point")
+            rectangles.append(operation["params"])
+        self.assertEqual(len(rectangles), 4)
+        cuts = [c["params"] for c in commands
+                if c["command"] == "solid.extrude"
+                and c["params"].get("operation") == "cut"]
+        self.assertEqual(len(cuts), 1)
+        self.assertEqual(cuts[0]["direction"], "negative")
+        self.assertEqual(cuts[0]["name"], "Rear electronics bays")
+        self.assertIn("Hub75Panel_depth", str(cuts[0]["distance"]))
+        self.assertIn("Hub75Panel_front_depth", str(cuts[0]["distance"]))
+
+        # Drawing and STEP values; coordinates are measured, not guessed.
+        panel = Hub75Panel()
+        self.assertEqual(panel.depth - panel.front_depth, 12.5)
+        side = 12.5 * 159.70 / 160.0
+        end = 10.75 * 319.71 / 320.0
+        crossbar = 20 * 319.71 / 320.0
+        actual_width = 159.70 - 2 * side
+        self.assertAlmostEqual(actual_width, 134.746875, places=5)
+        expected_bounds = [
+            (-319.71 / 2 + end, -319.71 / 4 - crossbar / 2),
+            (-319.71 / 4 + crossbar / 2, -crossbar / 2),
+            (crossbar / 2, 319.71 / 4 - crossbar / 2),
+            (319.71 / 4 + crossbar / 2, 319.71 / 2 - end),
+        ]
+        # The SCPF compiler preserves symbolic param expressions: compare
+        # numeric drawing inputs rather than requiring hardcoded output strings.
+        self.assertEqual(len(expected_bounds), len(rectangles))
+        self.assertTrue(all(high > low for low, high in expected_bounds))
+        self.assertEqual(len([c for c in commands
+                              if c["command"] == "solid.hole"]), 6)
 
     def test_taper_rejects_invalid_dimensions(self):
         from scpf.core import Box

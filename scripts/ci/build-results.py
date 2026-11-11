@@ -68,7 +68,7 @@ MODELS = {
     "hub75-screen": {
         "title": "BasicHub75Screen",
         "tagline": "Five shared native HUB75 occurrences with two 180° rotations",
-        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 rotate 180° about the local depth axis for the rear data chain. The PCB, connectors and detailed rear structure remain future design phases.",
+        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 rotate 180° about the local depth axis for the rear data chain. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.",
         "parameters": "Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm",
         "diagram": "hub75-screen",
         "stages": ["Create the reusable tapered HUB75 component",
@@ -81,11 +81,12 @@ MODELS = {
     "hub75-panel": {
         "title": "TwoHub75Panels",
         "tagline": "Two occurrences of one measured P5 HUB75 panel component",
-        "description": "First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with six rear-side blind Ø3 mounting-hole centres and a grey housing material. Two native occurrences at 160 mm pitch; rear details, PCB, connectors and rotations are future steps.",
+        "description": "First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. Two native occurrences at 160 mm pitch; rear-step/rounding details, PCB and connectors are future steps.",
         "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; two occurrences at 160 mm pitch",
         "diagram": "hub75",
         "stages": ["Create Hub75Panel component",
                    "Sketch and extrude the physical front envelope",
+                   "Cut four rear electronics bays from the rear plane",
                    "Cut six blind rear-side Ø3 mounting holes",
                    "Assign grey housing material",
                    "Copy the component occurrence",

@@ -4,17 +4,17 @@
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="./">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="./">Models</a>
-<a href="./cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Cheatsheet</a>
 <a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
-<main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
+<main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">10 models</span> <span class="badge verified">10 matching native screenshots</span></p></section>
-<div class="grid"><article class="card"><div class="picture"><img src="models/plate/native.png" alt="SolidCraft model render"></div>
+<section class="model-category" id="basic"><h2>Basic Models</h2><p class="muted">Small, transparent models used to develop and verify SCPF features.</p><div class="grid"><article class="card"><div class="picture"><img src="models/plate/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/plate/">Plate</a></h3><p>A rounded plate with four holes</p>
 <p class="small muted">100 × 60 × 10 mm; four Ø8 mm holes</p>
@@ -30,23 +30,7 @@
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/bracket/">Bracket</a></h3><p>An L-shaped extrusion with two mounting holes</p>
 <p class="small muted">60 mm wide; 6 mm wall; two Ø8 mm holes</p>
-<a class="btn" href="models/bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/corner-bracket/native.png" alt="SolidCraft model render"></div>
-<div class="inside"><span class="badge verified">Native verified</span>
-<h3><a href="models/corner-bracket/">CornerBracket</a></h3><p>24 mm plywood corner bracket with four countersunk mounting holes</p>
-<p class="small muted">24 mm width, 12 mm wall, 60 mm arms; four Ø5.4 mm holes</p>
-<a class="btn" href="models/corner-bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-wood-frame/native.png" alt="SolidCraft model render"></div>
-<div class="inside"><span class="badge verified">Native verified</span>
-<h3><a href="models/hub75-wood-frame/">WoodenHub75BasicBox</a></h3><p>Fast wooden enclosure and four external corner couplers</p>
-<p class="small muted">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</p>
-<a class="btn" href="models/hub75-wood-frame/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-screen/native.png" alt="SolidCraft model render"></div>
-<div class="inside"><span class="badge verified">Native verified</span>
-<h3><a href="models/hub75-screen/">BasicHub75Screen</a></h3><p>Five shared native HUB75 occurrences with two 180° rotations</p>
-<p class="small muted">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</p>
-<a class="btn" href="models/hub75-screen/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-panel/native.png" alt="SolidCraft model render"></div>
-<div class="inside"><span class="badge verified">Native verified</span>
-<h3><a href="models/hub75-panel/">TwoHub75Panels</a></h3><p>Two occurrences of one measured P5 HUB75 panel component</p>
-<p class="small muted">159.70 × 319.71 × 14.50 mm; six Ø3 holes; two occurrences at 160 mm pitch</p>
-<a class="btn" href="models/hub75-panel/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/plastic-enclosure-pi/native.png" alt="SolidCraft model render"></div>
+<a class="btn" href="models/bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/plastic-enclosure-pi/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/plastic-enclosure-pi/">Plastic Enclosure Pi</a></h3><p>Raspberry Pi 4 case with connectors, vents and engraving</p>
 <p class="small muted">95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs</p>
@@ -54,12 +38,28 @@
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/plastic-enclosure/">Plastic Enclosure</a></h3><p>A shelled enclosure with native plastic design features</p>
 <p class="small muted">80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses</p>
-<a class="btn" href="models/plastic-enclosure/">Explore model →</a></div></article></div><h2>How it works</h2>
-<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
+<a class="btn" href="models/plastic-enclosure/">Explore model →</a></div></article></div></section><section class="model-category" id="components"><h2>Components</h2><p class="muted">Reusable physical parts; example scripts import the same shared definition.</p><div class="grid"><article class="card"><div class="picture"><img src="models/corner-bracket/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/corner-bracket/">CornerBracket</a></h3><p>24 mm plywood corner bracket with four countersunk mounting holes</p>
+<p class="small muted">24 mm width, 12 mm wall, 60 mm arms; four Ø5.4 mm holes</p>
+<a class="btn" href="models/corner-bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-panel/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/hub75-panel/">TwoHub75Panels</a></h3><p>Two occurrences of one measured P5 HUB75 panel component</p>
+<p class="small muted">159.70 × 319.71 × 14.50 mm; six Ø3 holes; two occurrences at 160 mm pitch</p>
+<a class="btn" href="models/hub75-panel/">Explore model →</a></div></article></div></section><section class="model-category" id="advanced"><h2>Advanced Models</h2><p class="muted">Full designs and nested native assemblies built from reusable components.</p><div class="grid"><article class="card"><div class="picture"><img src="models/hub75-wood-frame/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/hub75-wood-frame/">WoodenHub75BasicBox</a></h3><p>Upright wooden enclosure with real four-hole corner brackets</p>
+<p class="small muted">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</p>
+<a class="btn" href="models/hub75-wood-frame/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-screen/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/hub75-screen/">BasicHub75Screen</a></h3><p>Five shared native HUB75 occurrences with two 180° rotations</p>
+<p class="small muted">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</p>
+<a class="btn" href="models/hub75-screen/">Explore model →</a></div></article></div></section><h2>How it works</h2>
+<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> and with an explicit <code>return</code>.</p>
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
-<p class="small muted">CAD source revision: <code>0d1c96f8311cc89cdc32e9a05ec2d3394514bfa2</code><br>
+<p class="small muted">CAD source revision: <code>04a40899b880efd249eb26e77e8ada718c21f6e9</code><br>
 SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/aec569c3bbd53c8a7ba9b0ff4fb1d0065dcb38e4"><code>aec569c3bbd53c8a7ba9b0ff4fb1d0065dcb38e4</code></a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
 <a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>

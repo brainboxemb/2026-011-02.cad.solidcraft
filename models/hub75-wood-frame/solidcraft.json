@@ -9,6 +9,30 @@
       }
     },
     {
+      "command": "component.create",
+      "params": {
+        "name": "WoodBoxFrame",
+        "activate": false,
+        "grounded": false
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "WoodGlassFrame",
+        "activate": false,
+        "grounded": false
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerBrackets",
+        "activate": false,
+        "grounded": false
+      }
+    },
+    {
       "command": "parameters.add",
       "params": {
         "name": "Hub75PanelBasic_width",
@@ -124,27 +148,8 @@
         "translate": [
           -160.0,
           7.25,
-          340.855
+          21.14500000000001
         ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:3",
-        "to": {
-          "position": [
-            -160.0,
-            7.25,
-            340.855
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
       }
     },
     {
@@ -154,27 +159,8 @@
         "translate": [
           160.0,
           7.25,
-          340.855
+          21.14500000000001
         ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:4",
-        "to": {
-          "position": [
-            160.0,
-            7.25,
-            340.855
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
       }
     },
     {
@@ -216,7 +202,8 @@
       "command": "component.create",
       "params": {
         "name": "SideWall",
-        "grounded": false
+        "grounded": false,
+        "parent": "WoodBoxFrame"
       }
     },
     {
@@ -324,7 +311,8 @@
       "command": "component.create",
       "params": {
         "name": "BottomBoard",
-        "grounded": false
+        "grounded": false,
+        "parent": "WoodBoxFrame"
       }
     },
     {
@@ -404,16 +392,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_thickness",
-        "expression": "15",
+        "name": "RoofBoard_depth",
+        "expression": "124",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_depth",
-        "expression": "124",
+        "name": "RoofBoard_thickness",
+        "expression": "15",
         "unit": "mm"
       }
     },
@@ -421,7 +409,8 @@
       "command": "component.create",
       "params": {
         "name": "RoofBoard",
-        "grounded": false
+        "grounded": false,
+        "parent": "WoodBoxFrame"
       }
     },
     {
@@ -436,11 +425,11 @@
       "params": {
         "p0": [
           "-RoofBoard_width / 2",
-          "-RoofBoard_thickness / 2"
+          "-RoofBoard_depth / 2"
         ],
         "p1": [
           "RoofBoard_width / 2",
-          "RoofBoard_thickness / 2"
+          "RoofBoard_depth / 2"
         ]
       }
     },
@@ -451,7 +440,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "RoofBoard_depth",
+        "distance": "RoofBoard_thickness",
         "body_name": "RoofBoard"
       }
     },
@@ -518,7 +507,8 @@
       "command": "component.create",
       "params": {
         "name": "BackBoard",
-        "grounded": false
+        "grounded": false,
+        "parent": "WoodBoxFrame"
       }
     },
     {
@@ -585,6 +575,779 @@
           -7.5
         ],
         "move_grounded": false
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassSideStrip_width",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassSideStrip_depth",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassSideStrip_height",
+        "expression": "362",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "GlassSideStrip",
+        "grounded": false,
+        "parent": "WoodGlassFrame"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "GlassSideStrip footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-GlassSideStrip_width / 2",
+          "-GlassSideStrip_depth / 2"
+        ],
+        "p1": [
+          "GlassSideStrip_width / 2",
+          "GlassSideStrip_depth / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "GlassSideStrip_height",
+        "body_name": "GlassSideStrip"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY glazing side strip",
+        "density_g_cm3": 0.55,
+        "color": "#C89D61"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "GlassSideStrip"
+        ],
+        "material": "LIGHTPLY glazing side strip"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "GlassSideStrip:1",
+        "translate": [
+          -414.5,
+          -6.5,
+          0.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassSideStrip",
+        "translate": [
+          414.5,
+          -6.5,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassCrossStrip_length",
+        "expression": "814",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassCrossStrip_depth",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "GlassCrossStrip_thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "GlassCrossStrip",
+        "grounded": false,
+        "parent": "WoodGlassFrame"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "GlassCrossStrip footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-GlassCrossStrip_length / 2",
+          "-GlassCrossStrip_depth / 2"
+        ],
+        "p1": [
+          "GlassCrossStrip_length / 2",
+          "GlassCrossStrip_depth / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "GlassCrossStrip_thickness",
+        "body_name": "GlassCrossStrip"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY glazing cross strip",
+        "density_g_cm3": 0.55,
+        "color": "#C89D61"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "GlassCrossStrip"
+        ],
+        "material": "LIGHTPLY glazing cross strip"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "GlassCrossStrip:1",
+        "translate": [
+          0.0,
+          -6.5,
+          0.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassCrossStrip",
+        "translate": [
+          0.0,
+          -6.5,
+          347.0
+        ]
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bracket_width",
+        "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_horizontal_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_wall_thickness",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_arm_end_chamfer",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_outer_corner_chamfer",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_vertical_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_inside_corner_radius",
+        "expression": "4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_elephant_foot_relief",
+        "expression": "0.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_side_edge_chamfer",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bolt_diameter",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bolt_clearance",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_head_diameter",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_head_clearance",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_head_recess",
+        "expression": "1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_plywood_thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bolt_offset",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bolt_y_offset",
+        "expression": "0",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_bolt_spacing",
+        "expression": "18",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerBracket",
+        "grounded": false,
+        "parent": "CornerBrackets"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "CornerBracket_horizontal_arm_length",
+            0
+          ],
+          [
+            "CornerBracket_horizontal_arm_length",
+            "-(CornerBracket_wall_thickness - (CornerBracket_arm_end_chamfer))"
+          ],
+          [
+            "CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)",
+            "-(CornerBracket_wall_thickness)"
+          ],
+          [
+            "(-(CornerBracket_wall_thickness)) + (CornerBracket_outer_corner_chamfer)",
+            "-(CornerBracket_wall_thickness)"
+          ],
+          [
+            "-(CornerBracket_wall_thickness)",
+            "-(CornerBracket_wall_thickness - (CornerBracket_outer_corner_chamfer))"
+          ],
+          [
+            "-(CornerBracket_wall_thickness)",
+            "-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))"
+          ],
+          [
+            "(-(CornerBracket_wall_thickness)) + (CornerBracket_arm_end_chamfer)",
+            "-(-(CornerBracket_vertical_arm_length))"
+          ],
+          [
+            0,
+            "-(-(CornerBracket_vertical_arm_length))"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "v_tip"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "CornerBracket_bracket_width",
+        "direction": "symmetric",
+        "body_name": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        ],
+        "radius": 4.0,
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            60.0,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -60.0
+          ]
+        ],
+        "distance": "CornerBracket_elephant_foot_relief",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            60.0,
+            -12.0,
+            4.5
+          ],
+          [
+            58.5,
+            -12.0,
+            10.5
+          ],
+          [
+            25.5,
+            -12.0,
+            12.0
+          ],
+          [
+            -9.0,
+            -12.0,
+            9.0
+          ],
+          [
+            -12.0,
+            -12.0,
+            -25.5
+          ],
+          [
+            -10.5,
+            -12.0,
+            -58.5
+          ],
+          [
+            -4.5,
+            -12.0,
+            -60.0
+          ],
+          [
+            60.0,
+            12.0,
+            4.5
+          ],
+          [
+            58.5,
+            12.0,
+            10.5
+          ],
+          [
+            25.5,
+            12.0,
+            12.0
+          ],
+          [
+            -9.0,
+            12.0,
+            9.0
+          ],
+          [
+            -12.0,
+            12.0,
+            -25.5
+          ],
+          [
+            -10.5,
+            12.0,
+            -58.5
+          ],
+          [
+            -4.5,
+            12.0,
+            -60.0
+          ]
+        ],
+        "distance": "CornerBracket_side_edge_chamfer",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            30.0,
+            -12.0,
+            -0.0
+          ],
+          [
+            30.0,
+            12.0,
+            -0.0
+          ]
+        ],
+        "distance": "CornerBracket_elephant_foot_relief",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "CornerBracket_plywood_thickness + (CornerBracket_bolt_offset)",
+          "CornerBracket_bolt_y_offset",
+          "CornerBracket_wall_thickness"
+        ],
+        "diameter": "CornerBracket_bolt_diameter + (CornerBracket_bolt_clearance)",
+        "targets": [
+          "CornerBracket"
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "(CornerBracket_head_diameter + (CornerBracket_head_clearance)) + (CornerBracket_head_recess * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(CornerBracket_plywood_thickness + (CornerBracket_bolt_offset)) + (CornerBracket_bolt_spacing)",
+          "CornerBracket_bolt_y_offset",
+          "CornerBracket_wall_thickness"
+        ],
+        "diameter": "CornerBracket_bolt_diameter + (CornerBracket_bolt_clearance)",
+        "targets": [
+          "CornerBracket"
+        ],
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "(CornerBracket_head_diameter + (CornerBracket_head_clearance)) + (CornerBracket_head_recess * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(CornerBracket_wall_thickness)",
+          "-(CornerBracket_bolt_y_offset)",
+          "-(CornerBracket_plywood_thickness + (CornerBracket_bolt_offset))"
+        ],
+        "diameter": "CornerBracket_bolt_diameter + (CornerBracket_bolt_clearance)",
+        "targets": [
+          "CornerBracket"
+        ],
+        "depth": "CornerBracket_wall_thickness + 1 mm",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "(CornerBracket_head_diameter + (CornerBracket_head_clearance)) + (CornerBracket_head_recess * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(CornerBracket_wall_thickness)",
+          "-(CornerBracket_bolt_y_offset)",
+          "-((CornerBracket_plywood_thickness + (CornerBracket_bolt_offset)) + (CornerBracket_bolt_spacing))"
+        ],
+        "diameter": "CornerBracket_bolt_diameter + (CornerBracket_bolt_clearance)",
+        "targets": [
+          "CornerBracket"
+        ],
+        "depth": "CornerBracket_wall_thickness + 1 mm",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "(CornerBracket_head_diameter + (CornerBracket_head_clearance)) + (CornerBracket_head_recess * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerBracket:1",
+        "translate": [
+          -437.0,
+          -13.0,
+          377.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket",
+        "translate": [
+          437.0,
+          -13.0,
+          377.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerBracket:2",
+        "to": {
+          "position": [
+            437.0,
+            -13.0,
+            377.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "180 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket",
+        "translate": [
+          -437.0,
+          -13.0,
+          -15.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerBracket:3",
+        "to": {
+          "position": [
+            -437.0,
+            -13.0,
+            -15.0
+          ],
+          "axis": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "angle": "180 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerBracket",
+        "translate": [
+          437.0,
+          -13.0,
+          -15.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerBracket:4",
+        "to": {
+          "position": [
+            437.0,
+            -13.0,
+            -15.0
+          ],
+          "axis": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "angle": "180 deg"
+        }
       }
     },
     {
@@ -682,221 +1445,6 @@
           1.0
         ],
         "move_grounded": false
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerRailConcept_depth",
-        "expression": "100",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerRailConcept_arm_length",
-        "expression": "100",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerRailConcept_wall",
-        "expression": "6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "component.create",
-      "params": {
-        "name": "CornerRailConcept",
-        "grounded": false
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "Profile"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            0.0,
-            0.0
-          ],
-          [
-            100.0,
-            0.0
-          ],
-          [
-            100.0,
-            -6.0
-          ],
-          [
-            6.0,
-            -6.0
-          ],
-          [
-            6.0,
-            -100.0
-          ],
-          [
-            0.0,
-            -100.0
-          ]
-        ],
-        "closed": true,
-        "ids": [
-          "a",
-          "b",
-          "c",
-          "d",
-          "e",
-          "f"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "CornerRailConcept_depth",
-        "direction": "positive",
-        "body_name": "CornerRailConcept"
-      }
-    },
-    {
-      "command": "material.create",
-      "params": {
-        "name": "Printed corner connector concept",
-        "density_g_cm3": 1.25,
-        "color": "#D65A3F"
-      }
-    },
-    {
-      "command": "material.assign",
-      "params": {
-        "bodies": [
-          "CornerRailConcept"
-        ],
-        "material": "Printed corner connector concept"
-      }
-    },
-    {
-      "command": "component.activate",
-      "params": {
-        "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerRailConcept:1",
-        "translate": [
-          -437.0,
-          75.0,
-          -15.0
-        ],
-        "move_grounded": false
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerRailConcept",
-        "translate": [
-          437.0,
-          75.0,
-          -15.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerRailConcept:2",
-        "to": {
-          "position": [
-            437.0,
-            75.0,
-            -15.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "-90 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerRailConcept",
-        "translate": [
-          437.0,
-          75.0,
-          377.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerRailConcept:3",
-        "to": {
-          "position": [
-            437.0,
-            75.0,
-            377.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "180 deg"
-        }
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerRailConcept",
-        "translate": [
-          -437.0,
-          75.0,
-          377.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerRailConcept:4",
-        "to": {
-          "position": [
-            -437.0,
-            75.0,
-            377.0
-          ],
-          "axis": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "angle": "90 deg"
-        }
       }
     }
   ]

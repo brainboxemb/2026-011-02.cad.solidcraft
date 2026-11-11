@@ -4,7 +4,7 @@
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="../../">Models</a>
-<a href="../../cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Cheatsheet</a>
 <a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
@@ -22,7 +22,7 @@
 <h3>Construction stages</h3><ol><li>Create Hub75Panel component</li><li>Sketch and extrude the physical front envelope</li><li>Cut four rear electronics bays from the rear plane</li><li>Cut six blind rear-side Ø3 mounting holes</li><li>Assign grey housing material</li><li>Copy the component occurrence</li><li>Place the second occurrence at nominal 160 mm X pitch</li></ol></section></div>
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;Original two-panel regression: one component definition, two occurrences.&quot;&quot;&quot;
 from scpf import component
-from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
+from components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 

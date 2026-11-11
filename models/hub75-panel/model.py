@@ -1,6 +1,6 @@
 """Original two-panel regression: one component definition, two occurrences."""
 from scpf import component
-from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
+from components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 

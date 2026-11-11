@@ -4,7 +4,7 @@
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="../../">Models</a>
-<a href="../../cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/">Cheatsheet</a>
 <a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
@@ -14,135 +14,45 @@
 <span class="badge">30 commands</span><span class="badge">24 mm width, 12 mm wall, 60 mm arms; four Ø5.4 mm holes</span></div>
 <div class="two"><section class="panel"><h2>Model preview</h2><div class="picture"><img src="native.png" alt="SolidCraft CAD render"></div>
 <p class="small muted">Native SolidCraft image, matching this source revision.</p>
-<p>The default SCPF model uses one native 90° countersink per hole. The old recessed-hole experiment remains as model_reference.py; this fast variant has a larger tapered opening instead of a flat-bottom head seat. Remaining arm-end points are tracked in issue #20.</p></section>
+<p>One shared CornerBracket definition is used by this standalone model and the wooden HUB75 enclosure. Current 90° countersinks approximate the older flat-bottom screw-seat recess; see the bracket README for remaining geometry differences.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Four countersinks — single hole feature per location</li></ol></section></div>
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;Fast CornerBracket variant: one native countersink per mounting hole.
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Standalone native regression for the shared fast corner bracket.
 
-Temporary GUI-performance experiment.  Unlike the production reference, the
-counterbore/recess and the 0.2 mm hole-edge relief cuts are omitted.  The
-larger countersink mouth is intentional; it is NOT an exact geometrical
-replacement for a flat-bottom recessed screw-head seat.
+The original geometry now lives in components/corner_bracket.py
+so the wooden screen reuses the exact same four-hole shape and edge history.
 &quot;&quot;&quot;
+from components.corner_bracket import CornerBracket as _Shared
 
-class CornerBracketFast:
-    bracket_width = 24.0
-    wall_thickness = 12.0
-    horizontal_arm_length = 60.0
-    vertical_arm_length = 60.0
 
-    outer_corner_chamfer = 6.0
-    arm_end_chamfer = 3.0
-    side_edge_chamfer = 2.0
-    elephant_foot_relief = 0.6
-    inside_corner_radius = 4.0
-
-    plywood_thickness = 12.0
-    bolt_offset = 12.0
-    bolt_spacing = 18.0
-    bolt_y_offset = 0.0
-
-    bolt_diameter = 5.0
-    bolt_clearance = 0.4
-    head_diameter = 10.0
-    head_clearance = 0.4
-    head_recess = 1.0
+class CornerBracket:
+    bracket_width = _Shared.bracket_width
+    wall_thickness = _Shared.wall_thickness
+    horizontal_arm_length = _Shared.horizontal_arm_length
+    vertical_arm_length = _Shared.vertical_arm_length
+    outer_corner_chamfer = _Shared.outer_corner_chamfer
+    arm_end_chamfer = _Shared.arm_end_chamfer
+    side_edge_chamfer = _Shared.side_edge_chamfer
+    elephant_foot_relief = _Shared.elephant_foot_relief
+    inside_corner_radius = _Shared.inside_corner_radius
+    plywood_thickness = _Shared.plywood_thickness
+    bolt_offset = _Shared.bolt_offset
+    bolt_spacing = _Shared.bolt_spacing
+    bolt_y_offset = _Shared.bolt_y_offset
+    bolt_diameter = _Shared.bolt_diameter
+    bolt_clearance = _Shared.bolt_clearance
+    head_diameter = _Shared.head_diameter
+    head_clearance = _Shared.head_clearance
+    head_recess = _Shared.head_recess
 
     def build(self):
-        w = self.wall_thickness
-        h = self.horizontal_arm_length
-        v = self.vertical_arm_length
-        end = self.arm_end_chamfer
-        outer = self.outer_corner_chamfer
-        ef = self.elephant_foot_relief
-
-        # L profile in the XZ plane (+Z up, +X right; not to scale):
-        #
-        #       D--------------------------------C
-        #      /                                  \
-        #     E                                    B
-        #     |                                    |
-        #     |         I--------------------------A
-        #     |         |
-        #     |         |
-        #     F         |
-        #      \        |
-        #       G-------H
-        #
-        # A o_hor_tip    B o_hor_bevel  C o_hor
-        # D o_corner     E o_vert       F o_vert_bevel
-        # G o_vert_end   H v_tip        I i_corner
-        #
-        # Start at I, the inside corner and sketch origin (0, 0).
-        # Polygon order: I -&gt; A -&gt; B -&gt; C -&gt; D -&gt; E -&gt; F -&gt; G -&gt; H -&gt; I.
-        # Each label names its point and the segment starting at that point.
-        # Elephant-foot relief is NOT part of this sketch: it comes later.
-        profile = Polygon2D([
-            (&quot;i_corner&quot;, (0, 0)),
-            (&quot;o_hor_tip&quot;, (h, 0)),
-            (&quot;o_hor_bevel&quot;, (h, w - end)),
-            (&quot;o_hor&quot;, (h - end, w)),
-            (&quot;o_corner&quot;, (-w + outer, w)),
-            (&quot;o_vert&quot;, (-w, w - outer)),
-            (&quot;o_vert_bevel&quot;, (-w, -v + end)),
-            (&quot;o_vert_end&quot;, (-w + end, -v)),
-            (&quot;v_tip&quot;, (0, -v)),
-        ], plane=&quot;XZ&quot;, world=True)
-
-        body = profile.extrude(self.bracket_width, direction=Direction.SYMMETRIC)
-
-        # Round the inside, then remove printing relief from the two tip
-        # edges (parallel to the extrusion direction).
-        body = body.fillet(
-            self.inside_corner_radius,
-            edges=Edges.from_vertices(&quot;i_corner&quot;),
-        )
-        body = body.chamfer(
-            self.elephant_foot_relief,
-            edges=Edges.from_vertices(&quot;o_hor_tip&quot;, &quot;v_tip&quot;),
-        )
-        body = body.chamfer(
-            self.side_edge_chamfer,
-            edges=Edges.from_profile(&quot;o_*&quot;, sides=&quot;both&quot;),
-        )
-        # Inner relief along both broad faces, independent of the 2D outline.
-        body = body.chamfer(
-            self.elephant_foot_relief,
-            edges=Edges.from_profile(&quot;i_corner&quot;, sides=&quot;both&quot;),
-        )
-
-        # A single 90-degree countersink avoids coincident circle/face cuts.
-        # For 90 degrees, increasing the mouth diameter by 2*recess gives
-        # the original head diameter at the intended nominal recess depth.
-        # Note: this is a tapered opening, not a flat-bottom counterbore.
-        through_d = self.bolt_diameter + self.bolt_clearance
-        mouth_d = self.head_diameter + self.head_clearance + 2 * self.head_recess
-        first = self.plywood_thickness + self.bolt_offset
-
-        for x in (first, first + self.bolt_spacing):
-            body = body + Hole(
-                d=through_d,
-                countersink_d=mouth_d,
-                countersink_angle=90,
-                direction=(0, 0, -1),
-            ).at(x, self.bolt_y_offset, w)
-
-        for z in (-first, -(first + self.bolt_spacing)):
-            body = body + Hole(
-                d=through_d,
-                depth=w + 1.0,
-                countersink_d=mouth_d,
-                countersink_angle=90,
-                direction=(1, 0, 0),
-            ).at(-w, -self.bolt_y_offset, z)
-
-        return body
+        return _Shared.build(self)
 
 
-CornerBracketFast()
+CornerBracket()
 </code></pre>
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
@@ -354,12 +264,12 @@ CornerBracketFast()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracketFast</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracketFast&quot;
+    &quot;body_name&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
 <li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
@@ -373,7 +283,7 @@ CornerBracketFast()
       ]
     ],
     &quot;radius&quot;: 4.0,
-    &quot;body&quot;: &quot;CornerBracketFast&quot;
+    &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
 <li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
@@ -392,7 +302,7 @@ CornerBracketFast()
       ]
     ],
     &quot;distance&quot;: &quot;elephant_foot_relief&quot;,
-    &quot;body&quot;: &quot;CornerBracketFast&quot;
+    &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
 <li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
@@ -471,7 +381,7 @@ CornerBracketFast()
       ]
     ],
     &quot;distance&quot;: &quot;side_edge_chamfer&quot;,
-    &quot;body&quot;: &quot;CornerBracketFast&quot;
+    &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
 <li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
@@ -490,7 +400,7 @@ CornerBracketFast()
       ]
     ],
     &quot;distance&quot;: &quot;elephant_foot_relief&quot;,
-    &quot;body&quot;: &quot;CornerBracketFast&quot;
+    &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
 <li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
@@ -503,7 +413,7 @@ CornerBracketFast()
     ],
     &quot;diameter&quot;: &quot;bolt_diameter + (bolt_clearance)&quot;,
     &quot;targets&quot;: [
-      &quot;CornerBracketFast&quot;
+      &quot;CornerBracket&quot;
     ],
     &quot;direction&quot;: [
       0.0,
@@ -525,7 +435,7 @@ CornerBracketFast()
     ],
     &quot;diameter&quot;: &quot;bolt_diameter + (bolt_clearance)&quot;,
     &quot;targets&quot;: [
-      &quot;CornerBracketFast&quot;
+      &quot;CornerBracket&quot;
     ],
     &quot;direction&quot;: [
       0.0,
@@ -547,7 +457,7 @@ CornerBracketFast()
     ],
     &quot;diameter&quot;: &quot;bolt_diameter + (bolt_clearance)&quot;,
     &quot;targets&quot;: [
-      &quot;CornerBracketFast&quot;
+      &quot;CornerBracket&quot;
     ],
     &quot;depth&quot;: &quot;wall_thickness + 1 mm&quot;,
     &quot;direction&quot;: [
@@ -570,7 +480,7 @@ CornerBracketFast()
     ],
     &quot;diameter&quot;: &quot;bolt_diameter + (bolt_clearance)&quot;,
     &quot;targets&quot;: [
-      &quot;CornerBracketFast&quot;
+      &quot;CornerBracket&quot;
     ],
     &quot;depth&quot;: &quot;wall_thickness + 1 mm&quot;,
     &quot;direction&quot;: [

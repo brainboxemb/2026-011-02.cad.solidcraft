@@ -110,6 +110,13 @@ jobs:
           ' output/native/hub75-screen/commands.json
           unzip -p output/native/hub75-screen/model.sc document.json > output/native/hub75-screen/document.json
           jq -e '(.components | length) == 1 and (.occurrences | length) == 5' output/native/hub75-screen/document.json
+          # Geometry must physically stand in XZ, not only be camera-rotated.
+          jq -e '
+            ([.commands[] | select(.command == "solid.extrude") |
+              .params.distance] | index("Hub75PanelBasic_height")) != null and
+            ([.commands[] | select(.command == "sketch.create") |
+              .params.plane] | index("XZ")) != null
+          ' output/native/hub75-wood-frame/commands.json
           # Check representative editable SolidCraft feature histories, not just images.
           unzip -p output/native/sample-plate/model.sc document.json > output/native/sample-plate/document.json
           jq -e '

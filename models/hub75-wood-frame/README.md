@@ -25,6 +25,32 @@ The overall front rectangular outer size is **874 × 392 mm**, while the
 visible window opening is 844 × 362 mm. The nominal LED grid remains
 **800 × 320 mm**. The 0.30 mm pitch seam is not removed by the simple model.
 
+## Orientation in SolidCraft
+
+The enclosure now **stands upright in the actual CAD model**, rather than
+being represented flat in the XY plane. Its axes follow the standard
+3D-view convention:
+
+- **X** = 874 mm total screen width, left to right.
+- **Y** = front-to-back depth (negative Y faces the viewer).
+- **Z** = 392 mm total frame height, up.
+
+The wooden opening is at Z=0..362 mm; the 15 mm bottom and top boards
+extend to Z=-15 and Z=377 mm. The measured five basic panels stand in
+the XZ plane, with their front at Y=0 and a common bottom clearance of
+(362−319.71)/2 = **21.145 mm**.
+
+Both the window and the rear board are vertical XZ surfaces. The corner
+rails use an XZ sketch and extend along the depth axis. Their 90°
+orientations are around **Y**, not around Z. The alternating HUB75
+occurrences also rotate around Y; their pivot positions are corrected
+so a 180° turn does not invert a panel below the cabinet floor.
+
+The separate **advanced** HUB75 panel reference still uses its earlier
+XY/front and Z/depth axes. This change applies to the fast wooden-frame
+assembly and its basic panel only, so it does not silently alter the
+existing advanced-model tests or references.
+
 ## Basic versus advanced HUB75
 
 | Basic | Advanced |

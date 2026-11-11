@@ -76,7 +76,7 @@ class GlassSideStrip:
 
     def build(self):
         return Box(self.width, self.depth, self.height).with_material(
-            "LIGHTPLY glazing strip", density_g_cm3=0.55, color="#C89D61"
+            "LIGHTPLY glazing side strip", density_g_cm3=0.55, color="#C89D61"
         )
 
 
@@ -88,5 +88,5 @@ class GlassCrossStrip:
 
     def build(self):
         return Box(self.length, self.depth, self.thickness).with_material(
-            "LIGHTPLY glazing strip", density_g_cm3=0.55, color="#C89D61"
+            "LIGHTPLY glazing cross strip", density_g_cm3=0.55, color="#C89D61"
         )

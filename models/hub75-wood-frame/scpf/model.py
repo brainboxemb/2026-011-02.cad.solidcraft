@@ -54,9 +54,9 @@ class WoodenHub75BasicBox:
         # Boards and window are separate native components, not fused
         # to one BRep. These placements form the *basic* wooden envelope.
         assembly = assembly + Side().move(x=-side_x, z=-25)
-        assembly = assembly + Side().move(x=+side_x, z=-25)
+        assembly = assembly + Side().move(x=side_x, z=-25)
         assembly = assembly + Bottom().move(y=-board_y, z=-25)
-        assembly = assembly + Roof().move(y=+board_y, z=-25)
+        assembly = assembly + Roof().move(y=board_y, z=-25)
         assembly = assembly + Back().move(z=75)
         assembly = assembly + Glass().move(z=-18)
 
@@ -67,9 +67,9 @@ class WoodenHub75BasicBox:
         outer_y = self.overall_height / 2
         for x, y, angle in (
             (-outer_x, -outer_y, 0),
-            (+outer_x, -outer_y, 90),
-            (+outer_x, +outer_y, 180),
-            (-outer_x, +outer_y, 270),
+            (outer_x, -outer_y, 90),
+            (outer_x, outer_y, 180),
+            (-outer_x, outer_y, 270),
         ):
             rail = Corner().move(x=x, y=y, z=self.corner_z)
             if angle:

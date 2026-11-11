@@ -132,6 +132,51 @@ class WoodenFrameTests(unittest.TestCase):
         for part in (GlassSideStrip,GlassCrossStrip):
             self.assertEqual(part.corner_radius,radius)
 
+    def test_glazing_strips_have_different_finishes_from_box_wood(self):
+        """Three readable finishes identify the correct manufactured parts."""
+        materials = {
+            c["params"]["name"]: c["params"]["color"]
+            for c in actions() if c["command"] == "material.create"
+        }
+        side = materials["LIGHTPLY glazing side strip"]
+        cross = materials["LIGHTPLY glazing cross strip"]
+        box = materials["LIGHTPLY side wall"]
+        self.assertEqual(side, "#A9793E")
+        self.assertEqual(cross, "#E3BF80")
+        self.assertEqual(box, "#CBA36B")
+        self.assertEqual(len({side, cross, box}), 3)
+
+    def test_glazing_uses_native_mirroring_not_duplicate_geometry(self):
+        """The opposite strips reuse the same native component definition."""
+        commands = actions()
+        copies = [c for c in commands if c["command"] == "occurrence.copy"
+                  and c["params"]["component"] in
+                  ("GlassSideStrip", "GlassCrossStrip")]
+        self.assertEqual(len(copies), 2)
+        self.assertTrue(all(c["params"].get("translate") is None for c in copies))
+        placements = {
+            c["params"]["occurrence"]: c["params"]
+            for c in commands if c["command"] == "occurrence.move"
+            and c["params"]["occurrence"].startswith(
+                ("GlassSideStrip:", "GlassCrossStrip:")
+            )
+        }
+        self.assertEqual(len(placements), 4)
+        self.assertEqual(placements["GlassSideStrip:1"]["translate"],
+                         [-422., -25.5, 0.])
+        self.assertEqual(placements["GlassSideStrip:2"]["translate"],
+                         [422., -25.5, 0.])
+        self.assertEqual(placements["GlassCrossStrip:1"]["translate"],
+                         [0., -25.5, 0.])
+        self.assertEqual(placements["GlassCrossStrip:2"]["translate"],
+                         [0., -25.5, 362.])
+        self.assertEqual(placements["GlassSideStrip:2"]["axis"],
+                         [0., 0., 1.])
+        self.assertEqual(placements["GlassCrossStrip:2"]["axis"],
+                         [1., 0., 0.])
+        self.assertEqual(placements["GlassSideStrip:2"]["angle"], "180 deg")
+        self.assertEqual(placements["GlassCrossStrip:2"]["angle"], "180 deg")
+
     def test_back_board_ends_below_roof(self):
         commands=actions()
         back=next(c["params"] for c in commands if

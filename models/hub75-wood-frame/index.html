@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75BasicBox</h1><p>Fast wooden enclosure and four external corner couplers</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">97 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span></div>
+<span class="badge">98 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span></div>
 <div class="two"><section class="panel"><h2>Model preview</h2><div class="picture"><img src="native.png" alt="SolidCraft CAD render"></div>
 <p class="small muted">Native SolidCraft image, matching this source revision.</p>
 <p>Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, and four provisional 3D-printed external L corner rails. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.</p></section>
@@ -27,14 +27,16 @@ SolidCraft&#x27;s normal Z-up 3D view. This uses the physical CAD axes:
   X: screen width (left/right)
   Y: cabinet depth (negative = viewer/front, positive = back)
   Z: height (world up)
-All parts stand in XZ. It is real geometry, NOT a screenshot camera fix.
+All parts stand in XZ. Five panels are grouped under HUB75Panels
+as one native subassembly, while each wood component remains separate.
+It is real geometry, NOT a screenshot camera fix.
 
 Reference: Basic Box v29. Wooden opening Z=0..362, outside box
 Z=-15..377. LED front plane Y=0, cabinet depth Y=-25..75,
 outer back +Y. Provisional corner rails are not the final brackets.
 &quot;&quot;&quot;
 from scpf import component
-from models.components.hub75_basic import Hub75PanelBasic as BasicDefinition
+from models.components.hub75_panels import HUB75Panels
 from models.components.wood_box import (
     SideWall as SideDefinition,
     BottomBoard as BottomDefinition,
@@ -44,7 +46,6 @@ from models.components.wood_box import (
     CornerRailConcept as CornerDefinition,
 )
 
-Panel = component(BasicDefinition)
 Side = component(SideDefinition)
 Bottom = component(BottomDefinition)
 Roof = component(RoofDefinition)
@@ -64,25 +65,11 @@ class WoodenHub75BasicBox:
     cabinet_depth = 100.0
 
     def build(self):
-        # Panels are centered vertically inside the 362 mm wood aperture.
-        # Box() has its bottom on local Z=0 and is centered in X/Y.
-        # Move its depth center +7.25: its FRONT face is at world Y=0.
-        panel_bottom = (self.internal_height - BasicDefinition.height) / 2
-        panel_y = BasicDefinition.depth / 2
-        centre = Panel().move(y=panel_y, z=panel_bottom)
-        assembly = centre
-
-        for column in (0, 1, 3, 4):
-            x = (column - 2) * self.panel_pitch
-            copy = centre.copy().move(x=x)
-            if column in (1, 3):
-                # Rotating a box around Y flips its local positive Z down.
-                # Compensate by translating the pivot to its TOP edge.
-                # This keeps all five actual panel bottoms at panel_bottom.
-                copy = copy.move(z=BasicDefinition.height).rotate(
-                    axis=(0, 1, 0), degrees=180
-                )
-            assembly = assembly + copy
+        # One expandable native group for all five lightweight panels.
+        # The frame&#x27;s wood pieces remain separate, editable components.
+        assembly = HUB75Panels(
+            opening_height=self.internal_height, pitch=self.panel_pitch
+        ).build()
 
         side_x = self.internal_width / 2 + self.plywood / 2
         top_z = self.internal_height
@@ -132,7 +119,15 @@ class WoodenHub75BasicBox:
 
 WoodenHub75BasicBox()
 </code></pre>
-<h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75PanelBasic_width</small><pre><code>{
+<h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Create reusable component</strong><small>component.create · name: HUB75Panels</small><pre><code>{
+  &quot;command&quot;: &quot;component.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;HUB75Panels&quot;,
+    &quot;activate&quot;: false,
+    &quot;grounded&quot;: true
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75PanelBasic_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;Hub75PanelBasic_width&quot;,
@@ -160,7 +155,8 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;Hub75PanelBasic&quot;,
-    &quot;grounded&quot;: true
+    &quot;grounded&quot;: false,
+    &quot;parent&quot;: &quot;HUB75Panels&quot;
   }
 }</code></pre></li>
 <li><strong>Create sketch</strong><small>sketch.create · name: Hub75PanelBasic footprint, plane: XY</small><pre><code>{
@@ -226,7 +222,7 @@ WoodenHub75BasicBox()
       7.25,
       21.14500000000001
     ],
-    &quot;move_grounded&quot;: true
+    &quot;move_grounded&quot;: false
   }
 }</code></pre></li>
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{

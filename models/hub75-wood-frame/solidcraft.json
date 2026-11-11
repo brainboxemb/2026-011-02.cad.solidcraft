@@ -1,6 +1,14 @@
 {
   "commands": [
     {
+      "command": "component.create",
+      "params": {
+        "name": "HUB75Panels",
+        "activate": false,
+        "grounded": true
+      }
+    },
+    {
       "command": "parameters.add",
       "params": {
         "name": "Hub75PanelBasic_width",
@@ -28,7 +36,8 @@
       "command": "component.create",
       "params": {
         "name": "Hub75PanelBasic",
-        "grounded": true
+        "grounded": false,
+        "parent": "HUB75Panels"
       }
     },
     {
@@ -94,7 +103,7 @@
           7.25,
           21.14500000000001
         ],
-        "move_grounded": true
+        "move_grounded": false
       }
     },
     {

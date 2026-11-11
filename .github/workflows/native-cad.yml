@@ -136,9 +136,27 @@ jobs:
               and ([.occurrences[].transform[3][0]] == [0,-320,-160,160,320])
               and (all(.occurrences[]; ((.transform[3][2] - 160) | fabs) < 0.000001))
               and ((.occurrences[0].transform[1][2] - 1) | fabs) < 0.000001
-              and ((.occurrences[2].transform[1][2] - 1) | fabs) < 0.000001
+              and ((.occurrences[2].transform[1][2] + 1) | fabs) < 0.000001
               and ((.occurrences[2].transform[0][0] + 1) | fabs) < 0.000001
-              and ((.occurrences[2].transform[2][1] - 1) | fabs) < 0.000001' output/native/hub75-screen/document.json
+              and ((.occurrences[2].transform[2][1] + 1) | fabs) < 0.000001' output/native/hub75-screen/document.json
+          # Native BRep dimensions are independent evidence: each panel
+          # must be 159.70 wide, 319.71 high in world Z and 14.50 deep in Y.
+          # Confirm that the full assembled screen is 5 x 160 mm wide.
+          jq -e '
+            .body_count == 1 and
+            ((.bodies[0].bbox.max[2] - .bodies[0].bbox.min[2] - 319.71) | fabs) < 0.001 and
+            ((.bodies[0].bbox.max[1] - .bodies[0].bbox.min[1] - 14.50) | fabs) < 0.001
+          ' output/native/hub75-panel/measurements.json
+          jq -e '
+            .body_count == 5 and
+            (all(.bodies[];
+              ((.bbox.max[2] - .bbox.min[2] - 319.71) | fabs) < 0.001
+              and ((.bbox.max[1] - .bbox.min[1] - 14.50) | fabs) < 0.001))
+            and (([.bodies[].bbox.min[0]] | min) + 399.85 | fabs) < 0.001
+            and (([.bodies[].bbox.max[0]] | max) - 399.85 | fabs) < 0.001
+          ' output/native/hub75-screen/measurements.json
+          # Alternate panels are rotated 180° in the display plane:
+          # the height axis is reversed, but the rear must stay at world -Y.
           # The shared CornerBracket is intentionally hole-free.
           # Verify native feature plans for the standalone definition and
           # full wooden assembly, while leaving HUB75 panel bores intact.

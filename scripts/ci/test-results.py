@@ -33,12 +33,14 @@ def check(site, commit):
     cheatsheet = site / "cheatsheet" / "index.html"
     assert cheatsheet.is_file()
     guide = cheatsheet.read_text(encoding="utf-8")
-    for term in ("Rectangle2D", "Circle2D", "Cylinder(d=", "extrude", "issue #5"):
-        assert term in guide, term
+    library_url = "https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"
+    assert f'http-equiv="refresh" content="0; url={library_url}"' in guide
+    assert f'rel="canonical" href="{library_url}"' in guide
+    assert "Rectangle2D" not in guide  # no duplicated API reference
 
     text = homepage.read_text(encoding="utf-8")
     assert commit in text, "site must identify its source commit"
-    assert 'href="cheatsheet/"' in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
     assert "SolidCraft <span>CAD models</span>" in text

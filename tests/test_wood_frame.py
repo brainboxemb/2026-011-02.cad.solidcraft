@@ -31,7 +31,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual((BackBoard.width,BackBoard.height,BackBoard.thickness), (874,377,9))
         self.assertEqual((Window.width,Window.height,Window.thickness), (840,360,4))
         self.assertEqual((GlassSideStrip.width,GlassSideStrip.depth,GlassSideStrip.height), (15,15,362))
-        self.assertEqual((GlassCrossStrip.length,GlassCrossStrip.depth,GlassCrossStrip.thickness), (814,15,15))
+        self.assertEqual((GlassCrossStrip.length,GlassCrossStrip.depth,GlassCrossStrip.thickness), (844,15,15))
 
     def test_four_real_native_groups(self):
         commands=actions()
@@ -67,8 +67,62 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(sorted(c["translate"][0] for c in copies),
                          [-320.0,-160.0,160.0,320.0])
         for c in copies:
+            # Native copy offsets are relative to the already placed centre.
+            # Y and Z must remain unchanged; no doubled Y=14.5/Z=42.29.
             self.assertEqual([round(x,3) for x in c["translate"][1:]],
-                             [7.25,21.145])
+                             [0.0,0.0])
+
+    def test_native_copy_offsets_are_relative_to_original_positions(self):
+        commands = actions()
+        copies = [c["params"] for c in commands if c["command"]=="occurrence.copy"]
+        def for_component(name):
+            return [c["translate"] for c in copies if c["component"]==name]
+        # SCPF library correctly converts absolute Python positions to
+        # native occurrence.copy deltas. A sidewall on the right no longer
+        # ends up in the middle, and glazing bars meet at the perimeter.
+        self.assertEqual(for_component("SideWall"), [[859.0, 0.0, 0.0]])
+        self.assertEqual(for_component("GlassSideStrip"), [[844.0, 0.0, 0.0]])
+        self.assertEqual(for_component("GlassCrossStrip"), [[0.0, 0.0, 362.0]])
+        self.assertEqual(for_component("CornerBracket")[0], [874.0, 0.0, 0.0])
+
+    def test_glass_frame_is_mitred_rounded_and_in_front(self):
+        from math import sqrt
+        from models.advanced.hub75_wood_frame.parts.wood import (
+            _rounded_side_profile, _rounded_cross_profile,
+        )
+        radius = CornerBracket.inside_corner_radius
+        d = radius*(1-1/sqrt(2))
+        side = _rounded_side_profile(15,362,radius)
+        cross = _rounded_cross_profile(844,15,radius)
+        def has_point(points,x,z):
+            return any(abs(px-x)<1e-6 and abs(pz-z)<1e-6
+                       for px,pz in points)
+        self.assertEqual(radius, 4.0)
+        self.assertTrue(has_point(side,d,d))
+        self.assertTrue(has_point(side,15,15))
+        self.assertTrue(has_point(cross,-422+d,d))
+        self.assertTrue(has_point(cross,-407,15))
+        self.assertTrue(has_point(side, d,362-d))
+        # Each bar is symmetrical through Y=-25.5, covering -33..-18:
+        # it lies before the glass whose front is at -18.
+        places=[c["params"] for c in actions()
+                if c["command"]=="occurrence.move"
+                and c["params"]["occurrence"] in
+                ("GlassSideStrip:1","GlassCrossStrip:1")]
+        self.assertEqual(len(places),2)
+        self.assertEqual(places[0]["translate"],[-422.0,-25.5,0.0])
+        self.assertEqual(places[1]["translate"],[0.0,-25.5,0.0])
+        for part in (GlassSideStrip,GlassCrossStrip):
+            self.assertEqual(part.corner_radius,radius)
+
+    def test_back_board_ends_below_roof(self):
+        commands=actions()
+        back=next(c["params"] for c in commands if
+                  c["command"]=="occurrence.move" and
+                  c["params"]["occurrence"]=="BackBoard:1")
+        self.assertEqual(back["translate"],[0.0,79.5,-15.0])
+        # BackBoard height 377: -15+377 = 362, roof starts at 362.
+        self.assertEqual(back["translate"][2]+BackBoard.height,362.0)
 
     def test_roof_is_horizontal_and_corner_bracket_has_four_holes(self):
         commands=actions()

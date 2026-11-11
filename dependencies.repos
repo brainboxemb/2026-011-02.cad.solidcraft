@@ -1,6 +1,6 @@
-# vcs2l: exact SCPF library source commit (post-split library API-only commit)
+# vcs2l: exact SCPF library source commit (includes relative occurrence.copy translation fix (PR #37))
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.git
-    version: aec569c3bbd53c8a7ba9b0ff4fb1d0065dcb38e4
+    version: 1594757308c635a989be86668ebf7d042c8f29b9

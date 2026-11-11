@@ -48,33 +48,42 @@ class WoodBoxFrame:
         # Rear: 9 mm behind the principal 100 mm body, still vertical.
         frame = frame + Back().move(
             y=self.front_y + self.depth + BackBoard.thickness / 2,
-            z=(self.height - BackBoard.height) / 2,
+            # Back is 377 mm high, so its bottom follows the cabinet
+            # bottom at -15 and its top STOPS at Z=362 under the roof.
+            z=-self.plywood,
         )
         return frame.group("WoodBoxFrame")
 
 
 class WoodGlassFrame:
-    """Four rectangular wooden 15x15 retainers behind the plexiglass.
+    """Four 45°-mitred glazing strips IN FRONT of the plexiglass.
 
-    The glass itself is a separate component at Y=-18..-14.
-    Retainers are at Y=-14..1, touching the *rear* of the glass,
-    with no overlap with the active 800x320 panel grid.
+    The rear of the wooden frame touches the front glass face at Y=-18.
+    All four strips are 15 mm wide/deep, from Y=-33 to -18. The
+    outside XY/XZ mitered corners have a common R4 outer contour.
     """
     opening_width = 844.0
     opening_height = 362.0
     strip = 15.0
-    glass_rear_y = -14.0
+    glass_front_y = -18.0
 
     def build(self):
-        x = (self.opening_width - self.strip) / 2
-        y = self.glass_rear_y + self.strip / 2
-        left = GlassSide().move(x=-x, y=y)
-        frame = left + left.copy().move(x=2*x)
-        bottom = GlassCross().move(y=y)
-        frame = frame + bottom + bottom.copy().move(
-            z=self.opening_height - self.strip
+        half = self.opening_width / 2
+        y = self.glass_front_y - self.strip / 2
+        # The profile has its outer face at local x=0. On the right, the
+        # 180° Z turn mirrors X while preserving the same Z height.
+        left = GlassSide().move(x=-half, y=y)
+        right = left.copy().move(x=self.opening_width).rotate(
+            axis=(0, 0, 1), degrees=180
         )
-        return frame.group("WoodGlassFrame")
+        # The bottom profile is centred on X and its outside edge Z=0.
+        # A 180° X turn changes bottom -> top without changing the mitre
+        # line; symmetric Y extrusion makes reversal harmless.
+        bottom = GlassCross().move(y=y)
+        top = bottom.copy().move(z=self.opening_height).rotate(
+            axis=(1, 0, 0), degrees=180
+        )
+        return (left + right + bottom + top).group("WoodGlassFrame")
 
 
 class CornerBrackets:

@@ -18,7 +18,7 @@ Reference: [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2D
 | **Horizontal** roof | 874 × 124 × 15 | `parts/wood.py` |
 | Rear board | 874 × 377 × 9 | `parts/wood.py` |
 | Plexiglass | 840 × 360 × 4 | `parts/wood.py` |
-| 4 glazing strips | 2 × 15×15×362 and 2 × 814×15×15 | `parts/wood.py` |
+| 4 mitred, R4 glazing strips | 2 × 15×15×362 and 2 × 844×15×15 (including mitre tips) | `parts/wood.py` |
 | 4 four-hole corner brackets | 24 mm extrusion, 12 mm wall, 60 mm arms | `components/corner_bracket.py` |
 
 **Geometry axes:** X is screen width, Y depth (front at negative Y), Z
@@ -31,9 +31,19 @@ identical Y and Z positions; no rotated copies stick out of the frame.
 The roof extends in Y from -25 to +99 and in Z from 362 to 377, with
 its **15 mm thickness vertical**. The back board is behind the main
 100 mm-deep case, at Y=75..84. Plexiglass is at Y=-18..-14.
-Four provisional 15×15 mm wood strips hold the glass from behind
-at Y=-14..1. These strips are real parts but require future mechanical
-fit, fastening and sealing verification.
+Four 15×15 mm wooden glass retainers now lie **in front of the
+plexiglass** at Y=-33..-18, touching its front face. Each end is
+**mitred at 45°** against its neighbour. The assembled rectangular frame
+has a rounded external corner of **R4**, matching
+`CornerBracket.inside_corner_radius`. The side and cross pieces split
+the *same* circular contour along the 45° joining line, so the corners
+meet without overlapping or leaving a triangular gap. This is expressed
+as an editable XZ polygonal contour extruded along Y (not a decorative
+post-render rounding). The curved cut uses short straight segments
+and still requires a real cutting/fastening test.
+
+The rear board starts at Z=-15 and ends at **Z=362**, so it now
+fits **under** the roof instead of crossing it.
 
 The four **shared CornerBracket** instances sit on the OUTSIDE wood
 corners (X=±437, Z=-15/377), Y=-13. Unlike an internal-corner position

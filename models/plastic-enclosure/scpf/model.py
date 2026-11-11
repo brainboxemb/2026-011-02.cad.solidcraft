@@ -49,7 +49,7 @@ class Enclosure:
             enclosure,
             parent=Anchor.INNER_BOTTOM,
         )
-        enclosure + rest
+        return enclosure + rest
 
 
 Enclosure()

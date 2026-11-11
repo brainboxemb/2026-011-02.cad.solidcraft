@@ -1,7 +1,6 @@
-@dataclass
 class Bracket:
-    width: float = 60
-    thickness: float = 6
+    width = 60
+    thickness = 6
 
     def build(self):
         profile = Polygon2D(
@@ -15,7 +14,7 @@ class Bracket:
 
         for y in (-15, -45):
             body = body + Hole(d=8, depth=self.thickness).at(25, y, 0)
-        body
+        return body
 
 
 Bracket()

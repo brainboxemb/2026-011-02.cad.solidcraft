@@ -15,3 +15,13 @@ Every model below is owned by this CAD repository, not by `lib.py.solidcraft`. R
 | [csg-cube](csg-cube/README.md) | CSG reference and cross-CAD comparison |
 
 A model generates native command JSON using `python -m scpf models/<slug>/scpf/model.py --out output/<slug>.json`. See `scripts/qualify-solidcraft.ps1` for native SolidCraft CLI execution.
+
+## SCPF source conventions
+
+Models are ordinary Python classes, without `@dataclass` or required
+`float` annotations. Numeric class attributes become editable SolidCraft
+parameters automatically. Each `build(self)` ends with an **explicit**
+`return` of the Shape or assembly. This is more familiar to Python readers
+than relying on an implicit final expression and preserves the same native
+commands and parameter names. Root scripts end in `ModelName()` (no
+`main()` or `show()`).

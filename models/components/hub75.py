@@ -2,7 +2,7 @@
 
 Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
 The current CAD body is still an approximate rear-tapered envelope with
-mounting holes, not a complete PCB / connector / rear-rail construction.
+rear-side blind mounting bores, not a complete PCB / connector / rear-rail construction.
 """
 from scpf import Box, Hole
 
@@ -27,11 +27,21 @@ class Hub75Panel:
             from_z=self.front_depth, inset=self.rear_inset,
         )
 
+        # The mounting bores are at the BACK of the mechanical housing.
+        # Our first envelope model previously cut all the way through the
+        # 2 mm front mask / PCB stack. The real panel must have a solid
+        # front face: stop the six bores at the START of the rear housing,
+        # Z=front_depth, without opening the front at Z=0.
+        #
+        # OpenSCAD builds separate mounting tubes and front layers. A blind
+        # bore in the simplified single-body envelope preserves that
+        # mechanical intent without inventing the missing rear structure.
+        rear_bore_depth = self.depth - self.front_depth
         for x in (-self.mount_x, self.mount_x):
             for y in (-self.mount_y, 0, self.mount_y):
                 body = body + Hole(
                     d=self.hole_diameter,
-                    depth=self.depth + 0.5,
+                    depth=rear_bore_depth,
                     direction=(0, 0, -1),
                 ).at(x, y, self.depth)
 

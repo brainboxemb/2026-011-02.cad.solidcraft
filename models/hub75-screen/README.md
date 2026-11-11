@@ -18,7 +18,7 @@ This is a nominal **800 × 320 mm** panel grid. The SCPF panel front plane is **
 
 The first occurrence is the *middle* panel at X=0; `copy()` adds the other four placements. The two alternating rotations are native absolute `occurrence.move` placements. All five share one component definition/feature history.
 
-**Scope:** this phase verifies only five real placements, rotation, the existing rear loft, six mounting bores, and one grey housing material. It does **not** yet build rear bays, connector/PCB bodies, brackets or native exploded views. The source's annotations and physical connector roles are documented, not claimed to be displayed in SolidCraft.
+**Scope:** this phase verifies only five real placements, rotation, the existing rear loft, six **blind rear-facing mounting bores** (front face stays intact), and one grey housing material. It does **not** yet build rear bays, connector/PCB bodies, brackets or native exploded views. The source's annotations and physical connector roles are documented, not claimed to be displayed in SolidCraft.
 
 ## Build
 

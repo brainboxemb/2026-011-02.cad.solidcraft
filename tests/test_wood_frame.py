@@ -42,6 +42,63 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(kinds.count("occurrence.move"),11) # 2 panel rotations, 6 initial part poses, 3 rotated corners
         self.assertEqual(kinds.count("solid.extrude"),7)
 
+    def test_wooden_box_has_real_z_up_geometry(self):
+        commands = run_script(ROOT / "models/hub75-wood-frame/scpf/model.py")["commands"]
+
+        def component(name):
+            start = next(i for i, command in enumerate(commands)
+                         if command["command"] == "component.create"
+                         and command["params"]["name"] == name)
+            end = next(i for i in range(start + 1, len(commands))
+                       if commands[i]["command"] == "component.activate"
+                       and commands[i]["params"]["component"] == "root")
+            return commands[start:end]
+
+        # The thin front-to-back depth belongs in the XY sketch footprint;
+        # the 319.71 mm height is the actual Z-up extrude distance.
+        panel = component("Hub75PanelBasic")
+        footprint = next(c["params"] for c in panel
+                         if c["command"] == "sketch.rectangle.two_point")
+        self.assertIn("Hub75PanelBasic_width", str(footprint))
+        self.assertIn("Hub75PanelBasic_depth", str(footprint))
+        self.assertNotIn("Hub75PanelBasic_height", str(footprint))
+        self.assertEqual(next(c["params"]["distance"] for c in panel
+                              if c["command"] == "solid.extrude"),
+                         "Hub75PanelBasic_height")
+
+        for name in ("SideWall", "BackBoard", "Window"):
+            part = component(name)
+            self.assertEqual(next(c["params"]["distance"] for c in part
+                                  if c["command"] == "solid.extrude"),
+                             name + "_height")
+
+        corner = component("CornerRailConcept")
+        self.assertEqual(
+            next(c["params"]["plane"] for c in corner
+                 if c["command"] == "sketch.create"), "XZ")
+
+        placements = [c["params"] for c in commands
+                      if c["command"] == "occurrence.move"]
+        panel_moves = [c for c in placements
+                       if c["occurrence"].startswith("Hub75PanelBasic:")]
+        self.assertEqual(len(panel_moves), 3)
+        self.assertEqual(panel_moves[0]["translate"], [0.0, 7.25, 21.145])
+        rotations = [p["to"] for p in panel_moves[1:]]
+        self.assertEqual([p["angle"] for p in rotations],
+                         ["180 deg", "180 deg"])
+        self.assertTrue(all(p["axis"] == [0.0, 1.0, 0.0] for p in rotations))
+        self.assertEqual([round(p["position"][2], 3) for p in rotations],
+                         [340.855, 340.855])
+
+        corners = [c for c in placements
+                   if c["occurrence"].startswith("CornerRailConcept:")]
+        self.assertEqual(len(corners), 4)
+        self.assertEqual(corners[0]["translate"], [-437.0, 75.0, -15.0])
+        self.assertEqual([c["to"]["angle"] for c in corners[1:]],
+                         ["-90 deg", "180 deg", "90 deg"])
+        self.assertTrue(all(c["to"]["axis"] == [0.0, 1.0, 0.0]
+                            for c in corners[1:]))
+
     def test_advanced_panel_retains_bays_and_blind_bores(self):
         commands = run_script(ROOT / "models/hub75-panel/scpf/model.py")["commands"]
         kinds = [c["command"] for c in commands]

@@ -9,9 +9,12 @@ MODEL = ROOT / "models/component-examples/hub75-panel/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
-    def test_five_panel_screen_compiles_native_upright_poses(self):
-        """Verify actual v0.30.1 matrix placements, not silently ignored 'to'."""
-        from scpf.assembly import _times
+    def test_five_panel_screen_uses_native_rotations_and_independent_positions(self):
+        """Copies first, then move each independently with SolidCraft 0.30.1.
+
+        No Python matrix calculations, and no unsupported 'to' parameter.
+        The native CI separately checks actual saved SolidCraft transforms.
+        """
         commands = run_script(ROOT / "models/advanced/hub75-screen/scpf/model.py")["commands"]
         def of(kind):
             return [item["params"] for item in commands if item["command"] == kind]
@@ -22,23 +25,31 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(of("solid.loft")), 1)
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(len(of("material.create")), 1)
-        self.assertTrue(all("translate" not in copy for copy in of("occurrence.copy")))
-        moves = of("occurrence.move")
-        self.assertEqual([m["occurrence"] for m in moves],
-                         [f"Hub75Panel:{n}" for n in range(1, 6)])
-        self.assertTrue(all("to" not in m and "matrix" in m for m in moves))
-        # Wire format is column-vector; document.json stores the transpose.
-        internal = lambda m: [list(row) for row in zip(*m)]
-        base = internal(moves[0]["matrix"])
-        self.assertAlmostEqual(base[1][2], 1.0, places=6)
-        self.assertAlmostEqual(base[2][1], -1.0, places=6)
-        poses = [base] + [_times(internal(m["matrix"]), base) for m in moves[1:]]
-        for index, pose in enumerate(poses):
-            self.assertAlmostEqual(pose[3][0], [0, -320, -160, 160, 320][index], places=6)
-            self.assertAlmostEqual(pose[3][2], 160.0, places=6)
-            sign = -1 if index in (2, 3) else 1
-            self.assertAlmostEqual(pose[1][2], sign, places=6)
-            self.assertAlmostEqual(pose[2][1], -1.0, places=6)
+
+        # A copied native component inherits its source transform.
+        # Therefore, create all copies BEFORE applying any placement.
+        copy_indices = [i for i, row in enumerate(commands)
+                        if row["command"] == "occurrence.copy"]
+        move_indices = [i for i, row in enumerate(commands)
+                        if row["command"] == "occurrence.move"]
+        self.assertLess(max(copy_indices), min(move_indices))
+        self.assertTrue(all(p == {"component": "Hub75Panel"}
+                            for p in of("occurrence.copy")))
+
+        placements = of("occurrence.move")
+        self.assertEqual([p["occurrence"] for p in placements],
+                         [f"Hub75Panel:{i}" for i in range(1, 6)])
+        self.assertEqual([p["translate"] for p in placements],
+                         [[0., 0., 160.], [-320., 0., 160.],
+                          [-160., 0., 160.], [160., 0., 160.],
+                          [320., 0., 160.]])
+        for i, pose in enumerate(placements):
+            axis = [0., 1., -1.] if i in (2, 3) else [1., 0., 0.]
+            angle = "180 deg" if i in (2, 3) else "90 deg"
+            self.assertEqual(pose["axis"], axis)
+            self.assertEqual(pose["angle"], angle)
+            self.assertNotIn("matrix", pose)
+            self.assertNotIn("to", pose)
 
     def test_single_panel_and_screen_import_the_same_definition(self):
         from components.hub75 import Hub75Panel as PanelDefinition
@@ -69,11 +80,10 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(moved), 1)
         self.assertTrue(moved[0]["move_grounded"])
         self.assertNotIn("to", moved[0])
-        matrix = moved[0]["matrix"]
-        self.assertAlmostEqual(matrix[1][2], -1.0, places=6)
-        self.assertAlmostEqual(matrix[2][1], 1.0, places=6)
-        self.assertEqual(matrix[3], [0.0, 0.0, 0.0, 1.0])
-        self.assertEqual([matrix[i][3] for i in range(3)], [0.0, 0.0, 160.0])
+        self.assertEqual(moved[0]["translate"], [0., 0., 160.])
+        self.assertEqual(moved[0]["axis"], [1., 0., 0.])
+        self.assertEqual(moved[0]["angle"], "90 deg")
+        self.assertNotIn("matrix", moved[0])
         self.assertEqual(of("joint.create"), [])
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(

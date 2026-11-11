@@ -732,7 +732,7 @@
       "params": {
         "name": "LIGHTPLY glazing side strip",
         "density_g_cm3": 0.55,
-        "color": "#C89D61"
+        "color": "#A9793E"
       }
     },
     {
@@ -914,7 +914,7 @@
       "params": {
         "name": "LIGHTPLY glazing cross strip",
         "density_g_cm3": 0.55,
-        "color": "#C89D61"
+        "color": "#E3BF80"
       }
     },
     {

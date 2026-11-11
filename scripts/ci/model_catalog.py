@@ -21,11 +21,11 @@ SOURCES = {
 }
 SECTIONS = {
     "basic": ("Basic Models", "Small, transparent models used to develop and verify SCPF features.",
-              ("plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure")),
+              ("plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi")),
     "components": ("Components", "Reusable physical parts; example scripts import the same shared definition.",
                    ("corner-bracket", "hub75-panel")),
     "advanced": ("Advanced Models", "Full designs and nested native assemblies built from reusable components.",
-                 ("plastic-enclosure-pi", "hub75-screen", "hub75-wood-frame")),
+                 ("hub75-screen", "hub75-wood-frame")),
 }
 
 

@@ -243,6 +243,22 @@ jobs:
               ((.bbox.min[1] + 10) | fabs) < 0.001 and
               ((.bbox.max[1] + 6) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
+          # Rear bracket sidewall alignment is a physical requirement.
+          # Sidewalls stop at Y=75; the attached backboard occupies Y=75..84.
+          # The four rear brackets must stop at Y=75 (start at Y=51),
+          # rather than overlap the 9 mm backboard as they used to.
+          jq -e '
+            ([.bodies[] | select(.name | startswith("CornerBracket"))] | length) == 8 and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+               and .bbox.min[1] > 0)] | length) == 4 and
+            (all(.bodies[] | select((.name | startswith("CornerBracket"))
+               and .bbox.min[1] > 0);
+               ((.bbox.min[1] - 51) | fabs) < 0.001 and
+               ((.bbox.max[1] - 75) | fabs) < 0.001)) and
+            (all(.bodies[] | select((.name | startswith("BackBoard")));
+               ((.bbox.min[1] - 75) | fabs) < 0.001 and
+               ((.bbox.max[1] - 84) | fabs) < 0.001))
+          ' output/native/hub75-wood-frame/measurements.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
           jq -e '
             ([.commands[] | select(.command == "solid.extrude") |

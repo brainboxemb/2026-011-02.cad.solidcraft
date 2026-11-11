@@ -18,7 +18,7 @@ class CADModelRegressions(unittest.TestCase):
     def test_model_scripts_use_plain_classes_and_explicit_returns(self):
         """No dataclass/type ceremony or implicit last geometry expression."""
         scripts = sorted((ROOT / "models").glob("*/scpf/model.py"))
-        scripts.append(ROOT / "models/components/hub75.py")
+        scripts.extend(sorted((ROOT / "models/components").glob("*.py")))
         self.assertGreaterEqual(len(scripts), 10)
         for script in scripts:
             with self.subTest(model=str(script.relative_to(ROOT))):

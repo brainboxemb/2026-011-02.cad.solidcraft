@@ -50,13 +50,13 @@ jobs:
           grep -F " $ARCHIVE" SHA256SUMS.txt | sha256sum --check
           tar -xzf "$ARCHIVE"
           echo "$RUNNER_TEMP/solidcraft-${SOLIDCRAFT_VERSION}-linux-x86_64/bin" >> "$GITHUB_PATH"
-      - name: Compile and evaluate all nine project CAD models
+      - name: Compile and evaluate all ten project CAD models
         shell: bash
         run: |
           set -euo pipefail
           unset PYTHONPATH
           solidcraft-cli --version
-          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             mkdir -p "output/native/$model"
             python -m scpf "models/$model/scpf/model.py" --out "output/native/$model/commands.json"
             solidcraft-cli run "output/native/$model/commands.json" \
@@ -145,17 +145,17 @@ jobs:
             --arg version "$SOLIDCRAFT_VERSION" --arg run "$GITHUB_RUN_ID" \
             '{source_commit:$source,scpf_commit:$scpf,solidcraft_version:$version,workflow_run:$run,verified:true}' \
             > output/native/verification.json
-          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
+          for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             python -m scpf "models/$model/scpf/model.py" \
               --out "output/models/$model/scpf/solidcraft.json"
           done
           python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
-          for model in plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen; do
+          for model in plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             test -s "output/site/models/$model/native.png"
           done
           jq -e --arg scpf "$SCPF_COMMIT" --arg source "$GITHUB_SHA" \
-            '.scpf_commit == $scpf and .source_commit == $source and (.native_verified_models | length)  >= 8' \
+            '.scpf_commit == $scpf and .source_commit == $source and (.native_verified_models | length)  >= 9' \
             output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()

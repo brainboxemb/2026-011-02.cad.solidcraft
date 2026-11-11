@@ -43,7 +43,7 @@ def check(site, commit):
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert provenance["scpf_commit"] in text
-    for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
+    for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug
         assert (model / "model.py").is_file(), slug

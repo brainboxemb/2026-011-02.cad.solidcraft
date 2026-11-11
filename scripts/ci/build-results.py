@@ -65,6 +65,19 @@ MODELS = {
                    "Chamfer — print-face elephant-foot relief",
                    "Four countersinks — single hole feature per location"],
     },
+    "hub75-wood-frame": {
+        "title": "WoodenHub75BasicBox",
+        "tagline": "Fast wooden enclosure and four external corner couplers",
+        "description": "Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, and four provisional 3D-printed external L corner rails. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.",
+        "parameters": "Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels",
+        "diagram": "hub75-wood-frame",
+        "stages": ["Create one lightweight bounding-box panel",
+                   "Place five native panel occurrences on the 160 mm grid",
+                   "Add two 15 mm side boards and bottom/roof",
+                   "Place separate 9 mm back and 4 mm window",
+                   "Place four reusable L-shaped external corner concepts",
+                   "Keep advanced HUB75 and exact bolt geometry separate"],
+    },
     "hub75-screen": {
         "title": "BasicHub75Screen",
         "tagline": "Five shared native HUB75 occurrences with two 180° rotations",
@@ -133,6 +146,14 @@ DIAGRAMS = {
     "csg": """<path d="M130 68 250 15 376 68 376 188 250 241 130 188Z" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M130 68 250 125 376 68 M250 125 V241" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="250" cy="129" rx="39" ry="37" fill="#f1f6fc" stroke="#285785" stroke-width="5"/><ellipse cx="250" cy="130" rx="14" ry="34" fill="#acc6e3" stroke="#285785" stroke-width="3"/><path d="M196 90 307 162 M185 155 310 100" stroke="#285785" stroke-width="4" stroke-dasharray="8 8"/>""",
     "bracket": """<path d="M104 195 104 34 145 34 145 163 388 163 388 207 104 207Z" fill="#b4cde9" stroke="#285785" stroke-width="5"/><path d="M145 163 174 188 407 188 388 163 M388 207 407 188" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="230" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/><ellipse cx="330" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/>""",
     "hub75": """<rect x="130" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><rect x="250" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><g fill="#f5f5f5" stroke="#374151" stroke-width="2"><circle cx="145" cy="42" r="3"/><circle cx="227" cy="42" r="3"/><circle cx="145" cy="130" r="3"/><circle cx="227" cy="130" r="3"/><circle cx="145" cy="218" r="3"/><circle cx="227" cy="218" r="3"/><circle cx="265" cy="42" r="3"/><circle cx="347" cy="42" r="3"/><circle cx="265" cy="130" r="3"/><circle cx="347" cy="130" r="3"/><circle cx="265" cy="218" r="3"/><circle cx="347" cy="218" r="3"/></g>""",
+    "hub75-wood-frame": """<g stroke="#75532a" stroke-width="4" fill="#d6b17b">
+<rect x="45" y="18" width="410" height="230" rx="2"/>
+</g><g fill="#29323b" stroke="#151a21" stroke-width="1.5">
+<rect x="76" y="43" width="68" height="180"/><rect x="145" y="43" width="68" height="180"/>
+<rect x="214" y="43" width="68" height="180"/><rect x="283" y="43" width="68" height="180"/>
+<rect x="352" y="43" width="68" height="180"/></g><g stroke="#d65a3f" stroke-width="7" fill="none">
+<path d="M45 43 V18 H73"/><path d="M427 18 H455 V43"/>
+<path d="M45 222 V248 H73"/><path d="M427 248 H455 V222"/></g>""",
     "hub75-screen": """<g fill="#b8b8b8" stroke="#374151" stroke-width="3"><rect x="24" y="32" width="84" height="192" rx="2"/><rect x="116" y="32" width="84" height="192" rx="2"/><rect x="208" y="32" width="84" height="192" rx="2"/><rect x="300" y="32" width="84" height="192" rx="2"/><rect x="392" y="32" width="84" height="192" rx="2"/></g><g fill="#f5f5f5" stroke="#374151" stroke-width="1.5"><circle cx="34" cy="44" r="3"/><circle cx="98" cy="44" r="3"/><circle cx="126" cy="44" r="3"/><circle cx="190" cy="44" r="3"/><circle cx="218" cy="44" r="3"/><circle cx="282" cy="44" r="3"/><circle cx="310" cy="44" r="3"/><circle cx="374" cy="44" r="3"/><circle cx="402" cy="44" r="3"/><circle cx="466" cy="44" r="3"/></g>""",
     "plastic-enclosure": """<path d="M82 78 250 25 420 78 420 185 250 238 82 185Z" fill="#a8c5e2" stroke="#285785" stroke-width="5"/><path d="M107 91 250 48 394 91 394 169 250 211 107 169Z" fill="#eef4fb" stroke="#285785" stroke-width="4"/><path d="M82 78 107 91 M420 78 394 91 M82 185 107 169 M420 185 394 169" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="153" rx="13" ry="9" fill="#7ba4cc" stroke="#285785" stroke-width="3"/><ellipse cx="345" cy="118" rx="13" ry="9" fill="#7ba4cc" stroke="#285785" stroke-width="3"/><rect x="218" y="128" width="64" height="38" rx="5" fill="#8db2d5" stroke="#285785" stroke-width="3"/><path d="M248 70 V128 M248 70 266 77 266 91" fill="none" stroke="#285785" stroke-width="5"/>""",
 }
@@ -166,7 +187,7 @@ def screenshot_info(native_root, commit, model, scpf_commit):
             or metadata.get("scpf_commit") != scpf_commit
             or metadata.get("verified") is not True):
         return None
-    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "hub75-screen": "hub75-screen/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
+    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "hub75-screen": "hub75-screen/model.png", "hub75-wood-frame": "hub75-wood-frame/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
     if not rel:
         return None
     candidate = native_root / rel
@@ -317,12 +338,12 @@ Native qualification is reported only when the matching verified image exists.</
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
     home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
-<p>Explore nine CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
+<p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>
 <div class="grid">{''.join(cards)}</div><h2>How it works</h2>
-<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a Python dataclass and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
+<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>

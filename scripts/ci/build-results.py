@@ -301,8 +301,14 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         if has_native:
             verified_count += 1
             verified_models.append(slug)
-        photo = ('<img src="native.png" alt="SolidCraft CAD render">' if preview_image
-                 else diagram(slug))
+        photo = (
+            '<a class="preview-fullsize" href="native.png" '
+            'target="_blank" rel="noopener noreferrer" '
+            'aria-label="Open native CAD screenshot at full size">'
+            '<img src="native.png" alt="Native SolidCraft CAD model, '
+            'full-size image available"></a>'
+            if preview_image else diagram(slug)
+        )
         status = ("Native verified · snapshot from matching run" if has_native
                   else "Previously verified render from main · not verified for this PR"
                   if previously_verified else
@@ -314,8 +320,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
 <span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span></div>
-<div class="two"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
-<p class="small muted">{"Native SolidCraft image, matching this source revision." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
+<p class="small muted">{"Native SolidCraft image, matching this source revision. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
 <p>{esc(info["description"])}</p></section>
 <section class="panel"><h2>Files</h2><p>Download the source and the generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>

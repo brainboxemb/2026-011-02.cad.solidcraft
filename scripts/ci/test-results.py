@@ -59,6 +59,10 @@ def check(site, commit):
         assert "<details>" not in page
         assert "&quot;command&quot;" in page and "&quot;params&quot;" in page
         assert "Construction stages" in page
+        assert 'class="two model-preview-layout"' in page
+        if (model / "native.png").is_file():
+            assert 'class="preview-fullsize"' in page
+            assert 'href="native.png"' in page
         assert "Native SolidCraft image" not in page or (model / "native.png").is_file()
         assert "Schematic drawing only" not in page or "not a SolidCraft geometry render" in page
         if "Previously verified render from main" in page:

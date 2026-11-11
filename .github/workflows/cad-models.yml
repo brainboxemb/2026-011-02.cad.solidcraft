@@ -22,10 +22,9 @@ jobs:
           python -m pip install vcs2l==1.1.7
           mkdir -p ext
           vcs import --input dependencies.repos ext
-          expected="$(sed -n 's/^[[:space:]]*version:[[:space:]]*\([0-9a-f]\{40\}\)[[:space:]]*$/\1/p' dependencies.repos)"
-          actual="$(git -C ext/scpf rev-parse HEAD)"
-          test -n "$expected" && test "$expected" = "$actual"
+          python scripts/ci/check-pins.py
           python -m pip install -e ext/scpf/scpf
+          python -m pip install -e ext/scpc
       - name: Compile project models with installed SCPF (no PYTHONPATH)
         shell: bash
         run: |
@@ -60,6 +59,15 @@ jobs:
           assert max(i for i,k in enumerate(kinds) if k=='occurrence.copy') < (
                  min(i for i,k in enumerate(kinds) if k=='occurrence.move'))
           PY
+      - name: Compile independent SCPC command models
+        shell: bash
+        run: |
+          set -euo pipefail
+          unset PYTHONPATH
+          for model in plate corner-bracket; do
+            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" --out "output/models/$model/scpc/solidcraft.json"
+            python -m json.tool "output/models/$model/scpc/solidcraft.json" >/dev/null
+          done
       - name: Run project model regressions against installed SCPF
         shell: bash
         run: |

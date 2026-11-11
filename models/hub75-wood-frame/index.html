@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WoodenHub75BasicBox · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<title>WoodenHub75Box · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
 <body><header class="top"><div class="wrap nav">
 <a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
 <nav aria-label="Main"><a href="../../">Models</a>
@@ -9,67 +9,331 @@
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
-<h1>WoodenHub75BasicBox</h1><p>Upright wooden enclosure with four hole-free corner brackets</p></div></section>
+<h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">136 commands</span><span class="badge">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">152 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, four rounded corner brackets without screw holes and four 15 × 15 mm wooden glazing retainers. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.</p></section>
+<p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Create one lightweight bounding-box panel</li><li>Place five native panel occurrences on the 160 mm grid</li><li>Add two 15 mm side boards and bottom/roof</li><li>Place separate 9 mm back and 4 mm window</li><li>Place four hole-free CornerBracket occurrences under one native parent</li><li>Keep advanced HUB75 PCB and connector details separate</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Define one central parameter set and the wooden component types</li><li>Place five lightweight HUB75 panel occurrences on the 160 mm grid</li><li>Place 12 mm sidewalls, R4 bottom and roof with 10/1 mm overhang</li><li>Attach the 9 mm back board and place the 4 mm window behind the strips</li><li>Create two length variants of ONE GlassStrip type and place four mitred pieces</li><li>Place eight shared hole-free CornerBracket occurrences, front and rear</li><li>Verify actual native positions and dimensions in SolidCraft 0.30.1</li></ol></section></div>
 
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;HUB75 wooden enclosure: grouped geometry, physically upright (Z up).
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Wooden HUB75 Basic Box — one readable, parametrized SolidCraft assembly.
 
-Source: 55th-edition Basic Box v29, 874 x 392 mm external.
-Basic modules are coplanar rectangular envelopes. The detailed HUB75
-reference independently retains PCB/connector orientations.
+All design dimensions are in millimetres and collected on WoodenHub75Box.
+Only the general-purpose Hub75PanelBasic and CornerBracket live in the
+shared components/ package; wood and glazing are defined *here*, where
+they belong. SCPF describes the placement; SolidCraft builds the geometry.
+
+Coordinate system:
+    X = left/right across the display
+    Y = front (-) / rear (+)
+    Z = vertical; inner opening starts at Z=0
+
+Parts shown are a design concept; fastening details remain to be verified.
 &quot;&quot;&quot;
-from pathlib import Path
-import sys
-from scpf import component
+from scpf import Box, Polygon2D, Direction, component
+from scpf.core import value_of
+from components.hub75_basic import Hub75PanelBasic
+from components.corner_bracket import CornerBracket
 
-# The CAD directory is kebab-case; only the importable package is snake_case.
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from hub75_wood_frame.assemblies.hub75_panels import HUB75Panels
-from hub75_wood_frame.parts.wood import Window as WindowDefinition
-from hub75_wood_frame.assemblies.wood_frames import WoodBoxFrame, WoodGlassFrame, CornerBrackets
-
-Glass = component(WindowDefinition)
+Panel = component(Hub75PanelBasic)
+Bracket = component(CornerBracket)
 
 
-class WoodenHub75BasicBox:
-    internal_width = 844.0
-    internal_height = 362.0
-    plywood = 15.0
-    overall_width = 874.0
-    overall_height = 392.0
-    panel_pitch = 160.0
-    front_depth = -25.0
-    cabinet_depth = 100.0
+class SideWall:
+    &quot;&quot;&quot;One vertical sheet: thickness × cabinet depth × opening height.&quot;&quot;&quot;
+    thickness = 12.0
+    depth = 100.0
+    height = 362.0
 
     def build(self):
-        # Native model-browser groups, not a flattened CSG assembly:
-        panels = HUB75Panels(
-            opening_height=self.internal_height, pitch=self.panel_pitch
-        ).build()
-        box = WoodBoxFrame(
-            width=self.internal_width, height=self.internal_height,
-            plywood=self.plywood, front_y=self.front_depth,
-            depth=self.cabinet_depth,
-        ).build()
-        glass_frame = WoodGlassFrame().build()
-        brackets = CornerBrackets().build()
-
-        # Plexiglass is separate from the wooden strips for real assembly.
-        # Glass thickness Y=-18..-14, opening between Z=1..361.
-        window = Glass().move(y=-16, z=1)
-        return panels + box + glass_frame + brackets + window
+        return Box(self.thickness, self.depth, self.height).with_material(
+            &quot;LIGHTPLY side wall&quot;, density_g_cm3=0.55, color=&quot;#CBA36B&quot;
+        )
 
 
-WoodenHub75BasicBox()
+class BottomBoard:
+    &quot;&quot;&quot;The outside bottom corners need R4 to clear the bracket&#x27;s R4 fillet.&quot;&quot;&quot;
+    width = 868.0
+    depth = 100.0
+    thickness = 12.0
+    corner_radius = 4.0
+
+    def build(self):
+        # Box spans X=-width/2..+width/2 and Z=0..thickness.
+        # These Y-parallel outside edges mate with the printed brackets.
+        half = value_of(self.width) / 2
+        body = Box(self.width, self.depth, self.thickness)
+        body = body.fillet(self.corner_radius, edges=[
+            [-half, 0, 0], [half, 0, 0],
+        ])
+        return body.with_material(
+            &quot;LIGHTPLY bottom&quot;, density_g_cm3=0.55, color=&quot;#CBA36B&quot;
+        )
+
+
+class RoofBoard:
+    &quot;&quot;&quot;12 mm roof, with R4 only at the two top outer Y-parallel edges.&quot;&quot;&quot;
+    width = 868.0
+    depth = 120.0
+    thickness = 12.0
+    corner_radius = 4.0
+
+    def build(self):
+        half = value_of(self.width) / 2
+        height = value_of(self.thickness)
+        body = Box(self.width, self.depth, self.thickness)
+        body = body.fillet(self.corner_radius, edges=[
+            [-half, 0, height], [half, 0, height],
+        ])
+        return body.with_material(
+            &quot;LIGHTPLY roof&quot;, density_g_cm3=0.55, color=&quot;#CBA36B&quot;
+        )
+
+
+class BackBoard:
+    &quot;&quot;&quot;One 9 mm sheet on the REAR of the 100 mm-deep frame.&quot;&quot;&quot;
+    width = 868.0
+    height = 374.0
+    thickness = 9.0
+
+    def build(self):
+        return Box(self.width, self.thickness, self.height).with_material(
+            &quot;LIGHTPLY rear&quot;, density_g_cm3=0.55, color=&quot;#A87D4D&quot;
+        )
+
+
+class Window:
+    &quot;&quot;&quot;4 mm glass panel, separate from its four wooden retainers.&quot;&quot;&quot;
+    width = 840.0
+    height = 360.0
+    thickness = 4.0
+
+    def build(self):
+        return Box(self.width, self.thickness, self.height).with_material(
+            &quot;Plexiglass&quot;, density_g_cm3=1.19, color=&quot;#B7DAEF&quot;
+        )
+
+
+class GlassStrip:
+    &quot;&quot;&quot;ONE mitred retaining-strip type, used vertically and horizontally.
+
+    The long dimension is local X; the 15 mm trim width is local Z.
+    The XY-independent section lies in XZ and extrudes symmetrically in Y.
+
+    Both end cuts are straight 45-degree mitres: NO rounded corners here.
+    `finish=1` is a darker visual finish for vertical strips; `finish=0`
+    is lighter for horizontal strips. It is not a prescribed timber species.
+    The assembly, not this component, determines the final orientation.
+    &quot;&quot;&quot;
+    length = 844.0
+    width = 15.0
+    depth = 15.0
+    finish = 0
+
+    def build(self):
+        if not 0 &lt; value_of(self.width) &lt; value_of(self.length) / 2:
+            raise ValueError(&quot;GlassStrip width must be less than half its length&quot;)
+        # Keep the actual native SolidCraft sketch symbolic: editing the
+        # native GlassStrip_length / GlassStrip_width parameters changes
+        # the corresponding XZ profile, not merely the Python preview.
+        half = self.length / 2
+        inset = half - self.width
+        # Outside edge z=0, both end cuts retreat by &#x27;width&#x27; at z=width.
+        profile = Polygon2D([
+            (-half, 0), (half, 0),
+            (inset, self.width), (-inset, self.width),
+        ], plane=&quot;XZ&quot;, world=True)
+        dark = value_of(self.finish) &gt;= 0.5
+        return profile.extrude(
+            self.depth, direction=Direction.SYMMETRIC,
+        ).with_material(
+            &quot;LIGHTPLY glazing vertical&quot; if dark else &quot;LIGHTPLY glazing horizontal&quot;,
+            density_g_cm3=0.55,
+            color=&quot;#A9793E&quot; if dark else &quot;#E3BF80&quot;,
+        )
+
+
+class WoodenHub75Box:
+    &quot;&quot;&quot;Central design parameters. All part sizes and positions derive here.
+
+    Change these values to resize the complete frame. Component classes
+    above are simple reusable *types*; the assembly passes their dimensions.
+
+    Cabinet front and rear refer to the sidewall surfaces. Rear ply is
+    attached *behind* the sidewalls. Roof overhangs are measured from
+    the OUTER face of the front wood and the OUTER face of the rear ply.
+    &quot;&quot;&quot;
+
+    # Display / inside opening
+    opening_width = 844.0
+    opening_height = 362.0
+    panel_count = 5
+    panel_pitch = 160.0
+
+    # Wood
+    wood_thickness = 12.0
+    back_thickness = 9.0
+    cabinet_depth = 100.0
+    frame_front_y = -25.0
+    roof_front_overhang = 10.0
+    roof_rear_overhang = 1.0
+    corner_radius = 4.0
+
+    # Window and mitred glazing
+    glass_width = 840.0
+    glass_height = 360.0
+    glass_thickness = 4.0
+    glass_bottom_clearance = 1.0
+    glazing_width = 15.0
+    glazing_depth = 15.0
+
+    def build(self):
+        # Extract ordinary numeric values only for CAD occurrence placement.
+        # No custom rotations, transformation matrices or inverse transforms.
+        w = value_of(self.opening_width)
+        h = value_of(self.opening_height)
+        ply = value_of(self.wood_thickness)
+        back_t = value_of(self.back_thickness)
+        depth = value_of(self.cabinet_depth)
+        front = value_of(self.frame_front_y)
+        rear = front + depth
+        back_outer = rear + back_t
+        roof_front = front - value_of(self.roof_front_overhang)
+        roof_rear = back_outer + value_of(self.roof_rear_overhang)
+        outer_width = w + 2 * ply
+        outer_half = outer_width / 2
+        radius = value_of(self.corner_radius)
+        glass_t = value_of(self.glass_thickness)
+        trim_w = value_of(self.glazing_width)
+        trim_d = value_of(self.glazing_depth)
+        top_z = h + ply
+        bottom_z = -ply
+        body_y = (front + rear) / 2
+
+        # 1. Five identical lightweight HUB75 placements, one definition.
+        #    Their flat front faces lie in world XZ; Z is up.
+        panel_y = Hub75PanelBasic.depth / 2
+        panel_z = (h - Hub75PanelBasic.height) / 2
+        middle = Panel().move(y=panel_y, z=panel_z)
+        panels = middle
+        count = int(value_of(self.panel_count))
+        if count &lt; 1 or count % 2 != 1:
+            raise ValueError(&quot;panel_count must be a positive odd number&quot;)
+        pitch = value_of(self.panel_pitch)
+        for col in range(count):
+            if col == count // 2:
+                continue
+            x = (col - count // 2) * pitch
+            panels = panels + middle.copy().move(x=x)
+        panels = panels.group(&quot;HUB75Panels&quot;)
+
+        # 2. Main 12 mm plywood frame, with a 9 mm back glued/fastened
+        #    behind it. The roof extends 10 mm at the front and 1 mm
+        #    beyond the back board, rather than beyond the bare sidewall.
+        left = SideWall(
+            thickness=ply, depth=depth, height=h,
+        ).move(x=-(w / 2 + ply / 2), y=body_y)
+        sides = left + left.copy().move(x=outer_width - ply)
+        bottom = BottomBoard(
+            width=outer_width, depth=depth, thickness=ply,
+            corner_radius=radius,
+        ).move(y=body_y, z=bottom_z)
+        roof = RoofBoard(
+            width=outer_width, depth=roof_rear - roof_front,
+            thickness=ply, corner_radius=radius,
+        ).move(y=(roof_front + roof_rear) / 2, z=h)
+        back = BackBoard(
+            width=outer_width, height=h + ply, thickness=back_t,
+        ).move(y=rear + back_t / 2, z=bottom_z)
+        box = (sides + bottom + roof + back).group(&quot;WoodBoxFrame&quot;)
+
+        # 3. One GlassStrip class used for all four trims.
+        #    Both local profiles point along X; turn the two vertical
+        #    occurrences around world Y. Their 45° mitres meet exactly.
+        #    Glass strips start FLUSH with the sidewall&#x27;s front (Y=front),
+        #    so they do not protrude from the wooden box.
+        trim_y = front + trim_d / 2
+        horizontal = GlassStrip(
+            length=w, width=trim_w, depth=trim_d, finish=0,
+        )
+        bottom_trim = horizontal.move(y=trim_y)
+        top_trim = horizontal.copy().rotate(
+            axis=(1, 0, 0), degrees=180
+        ).move(y=trim_y, z=h)
+
+        vertical = GlassStrip(
+            length=h, width=trim_w, depth=trim_d, finish=1,
+        )
+        left_trim = vertical.rotate(
+            axis=(0, 1, 0), degrees=90,
+        ).move(x=-w / 2, y=trim_y, z=h / 2)
+        right_trim = vertical.copy().rotate(
+            axis=(0, 1, 0), degrees=-90,
+        ).move(x=w / 2, y=trim_y, z=h / 2)
+        # Put the two horizontal occurrences first in the native browser.
+        # They become GlassStrip:1/2; the vertical length is GlassStrip 2.
+        glazing = (
+            bottom_trim + top_trim + left_trim + right_trim
+        ).group(&quot;WoodGlassFrame&quot;)
+
+        # Glass is directly behind the retaining strips. With front=-25
+        # and trim_d=15, the strip ends at Y=-10 and the glass occupies
+        # Y=-10..-6: still clear of the display front at Y=0.
+        glass_front = front + trim_d
+        glass = Window(
+            width=value_of(self.glass_width),
+            height=value_of(self.glass_height),
+            thickness=glass_t,
+        ).move(y=glass_front + glass_t / 2,
+               z=value_of(self.glass_bottom_clearance))
+
+        # 4. EIGHT hole-free brackets: two on each physical X/Z corner.
+        #    Front brackets start with the sidewall at Y=front.
+        #    Rear brackets END with the sidewall at Y=rear, BEFORE the
+        #    separately attached 9 mm backboard (Y=rear..back_outer).
+        #    Each bracket is 24 mm wide in Y; none intersects the backboard.
+        #    Shared source: components/corner_bracket.py.
+        bracket_half = CornerBracket.bracket_width / 2
+        front_bracket_y = front + bracket_half
+        rear_bracket_y = rear - bracket_half
+        upper_left = Bracket().move(
+            x=-outer_half, y=front_bracket_y, z=top_z
+        )
+        brackets = upper_left
+        corner_poses = (
+            # X, Z, rotation axis, angle
+            (outer_half, top_z, (0, 0, 1), 180),
+            (-outer_half, bottom_z, (1, 0, 0), 180),
+            (outer_half, bottom_z, (0, 1, 0), 180),
+        )
+        for x, z, axis, angle in corner_poses:
+            brackets = brackets + upper_left.copy().move(
+                x=x + outer_half, z=z - top_z
+            ).rotate(axis=axis, degrees=angle)
+        for x, z, axis, angle in (
+            (-outer_half, top_z, None, 0), *corner_poses
+        ):
+            rear_occurrence = upper_left.copy().move(
+                x=x + outer_half,
+                y=rear_bracket_y - front_bracket_y,
+                z=z - top_z,
+            )
+            if axis is not None:
+                rear_occurrence = rear_occurrence.rotate(
+                    axis=axis, degrees=angle,
+                )
+            brackets = brackets + rear_occurrence
+        brackets = brackets.group(&quot;CornerBrackets&quot;)
+
+        return panels + box + glazing + brackets + glass
+
+
+WoodenHub75Box()
 </code></pre>
 <h2>Native SolidCraft command sequence</h2><section class="panel"><ol class="timeline"><li><strong>Create reusable component</strong><small>component.create · name: HUB75Panels</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
@@ -272,7 +536,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;SideWall_thickness&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -365,7 +629,7 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;SideWall:1&quot;,
     &quot;translate&quot;: [
-      -429.5,
+      -428.0,
       25.0,
       0.0
     ]
@@ -376,7 +640,7 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;SideWall:2&quot;,
     &quot;translate&quot;: [
-      429.5,
+      428.0,
       25.0,
       0.0
     ]
@@ -386,7 +650,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;BottomBoard_width&quot;,
-    &quot;expression&quot;: &quot;874&quot;,
+    &quot;expression&quot;: &quot;868&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -402,7 +666,15 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;BottomBoard_thickness&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: BottomBoard_corner_radius</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;BottomBoard_corner_radius&quot;,
+    &quot;expression&quot;: &quot;4&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -445,6 +717,25 @@ WoodenHub75BasicBox()
     &quot;body_name&quot;: &quot;BottomBoard&quot;
   }
 }</code></pre></li>
+<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
+  &quot;command&quot;: &quot;solid.fillet&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        -434.0,
+        0.0,
+        0.0
+      ],
+      [
+        434.0,
+        0.0,
+        0.0
+      ]
+    ],
+    &quot;radius&quot;: 4.0,
+    &quot;body&quot;: &quot;BottomBoard&quot;
+  }
+}</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY bottom</small><pre><code>{
   &quot;command&quot;: &quot;material.create&quot;,
   &quot;params&quot;: {
@@ -475,7 +766,7 @@ WoodenHub75BasicBox()
     &quot;translate&quot;: [
       0.0,
       25.0,
-      -15.0
+      -12.0
     ]
   }
 }</code></pre></li>
@@ -483,7 +774,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;RoofBoard_width&quot;,
-    &quot;expression&quot;: &quot;874&quot;,
+    &quot;expression&quot;: &quot;868&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -491,7 +782,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;RoofBoard_depth&quot;,
-    &quot;expression&quot;: &quot;124&quot;,
+    &quot;expression&quot;: &quot;120&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -499,7 +790,15 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;RoofBoard_thickness&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_corner_radius</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;RoofBoard_corner_radius&quot;,
+    &quot;expression&quot;: &quot;4&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -542,6 +841,25 @@ WoodenHub75BasicBox()
     &quot;body_name&quot;: &quot;RoofBoard&quot;
   }
 }</code></pre></li>
+<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
+  &quot;command&quot;: &quot;solid.fillet&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        -434.0,
+        0.0,
+        12.0
+      ],
+      [
+        434.0,
+        0.0,
+        12.0
+      ]
+    ],
+    &quot;radius&quot;: 4.0,
+    &quot;body&quot;: &quot;RoofBoard&quot;
+  }
+}</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY roof</small><pre><code>{
   &quot;command&quot;: &quot;material.create&quot;,
   &quot;params&quot;: {
@@ -571,7 +889,7 @@ WoodenHub75BasicBox()
     &quot;occurrence&quot;: &quot;RoofBoard:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      37.0,
+      25.0,
       362.0
     ]
   }
@@ -580,7 +898,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;BackBoard_width&quot;,
-    &quot;expression&quot;: &quot;874&quot;,
+    &quot;expression&quot;: &quot;868&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -596,7 +914,7 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;BackBoard_height&quot;,
-    &quot;expression&quot;: &quot;377&quot;,
+    &quot;expression&quot;: &quot;374&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -669,22 +987,38 @@ WoodenHub75BasicBox()
     &quot;translate&quot;: [
       0.0,
       79.5,
-      -15.0
+      -12.0
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassSideStrip_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassSideStrip_depth&quot;,
+    &quot;name&quot;: &quot;GlassStrip_depth&quot;,
     &quot;expression&quot;: &quot;15&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: GlassSideStrip</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip_length&quot;,
+    &quot;expression&quot;: &quot;844&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip_width&quot;,
+    &quot;expression&quot;: &quot;15&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create reusable component</strong><small>component.create · name: GlassStrip</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassSideStrip&quot;,
+    &quot;name&quot;: &quot;GlassStrip&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodGlassFrame&quot;
   }
@@ -701,250 +1035,20 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        0,
-        -4.0
-      ],
-      [
-        0,
-        -358.0
-      ],
-      [
-        0.03422055450475847,
-        -358.5221047688802
-      ],
-      [
-        0.1362966948437272,
-        -359.0352761804101
-      ],
-      [
-        0.30448186995485305,
-        -359.53073372946034
-      ],
-      [
-        0.5358983848622452,
-        -360.0
-      ],
-      [
-        0.8265866388350598,
-        -360.4350457160349
-      ],
-      [
-        1.1715728752538102,
-        -360.8284271247462
-      ],
-      [
-        15.0,
-        -347.0
-      ],
-      [
-        15.0,
-        -15.0
-      ],
-      [
-        1.1715728752538093,
-        -1.1715728752538102
-      ],
-      [
-        0.8265866388350593,
-        -1.5649542839651174
-      ],
-      [
-        0.5358983848622456,
-        -1.9999999999999996
-      ],
-      [
-        0.3044818699548526,
-        -2.4692662705396415
-      ],
-      [
-        0.13629669484372675,
-        -2.964723819589917
-      ],
-      [
-        0.03422055450475803,
-        -3.4778952311197946
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;a&quot;,
-      &quot;b&quot;,
-      &quot;c&quot;,
-      &quot;d&quot;,
-      &quot;e&quot;,
-      &quot;f&quot;,
-      &quot;g&quot;,
-      &quot;h&quot;,
-      &quot;i&quot;,
-      &quot;j&quot;,
-      &quot;k&quot;,
-      &quot;l&quot;,
-      &quot;m&quot;,
-      &quot;n&quot;,
-      &quot;o&quot;,
-      &quot;p&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassSideStrip</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassSideStrip_depth&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;GlassSideStrip&quot;
-  }
-}</code></pre></li>
-<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY glazing side strip</small><pre><code>{
-  &quot;command&quot;: &quot;material.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;LIGHTPLY glazing side strip&quot;,
-    &quot;density_g_cm3&quot;: 0.55,
-    &quot;color&quot;: &quot;#A9793E&quot;
-  }
-}</code></pre></li>
-<li><strong>Assign material</strong><small>material.assign</small><pre><code>{
-  &quot;command&quot;: &quot;material.assign&quot;,
-  &quot;params&quot;: {
-    &quot;bodies&quot;: [
-      &quot;GlassSideStrip&quot;
-    ],
-    &quot;material&quot;: &quot;LIGHTPLY glazing side strip&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;GlassSideStrip&quot;
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;GlassSideStrip:1&quot;,
-    &quot;translate&quot;: [
-      -422.0,
-      -25.5,
-      0.0
-    ]
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;GlassSideStrip:2&quot;,
-    &quot;translate&quot;: [
-      422.0,
-      -25.5,
-      0.0
-    ],
-    &quot;axis&quot;: [
-      0.0,
-      0.0,
-      1.0
-    ],
-    &quot;angle&quot;: &quot;180 deg&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassCrossStrip_depth</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassCrossStrip_depth&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: GlassCrossStrip</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassCrossStrip&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;WoodGlassFrame&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        -420.8284271247462,
-        -1.1715728752538102
-      ],
-      [
-        -420.4350457160349,
-        -0.8265866388350602
-      ],
-      [
-        -420.0,
-        -0.5358983848622465
-      ],
-      [
-        -419.53073372946034,
-        -0.3044818699548526
-      ],
-      [
-        -419.0352761804101,
-        -0.13629669484372675
-      ],
-      [
-        -418.5221047688802,
-        -0.03422055450475847
-      ],
-      [
-        -418.0,
-        -0.0
-      ],
-      [
-        418.0,
+        &quot;-(GlassStrip_length / 2)&quot;,
         0
       ],
       [
-        418.5221047688802,
-        -0.03422055450475803
+        &quot;GlassStrip_length / 2&quot;,
+        0
       ],
       [
-        419.0352761804101,
-        -0.1362966948437263
+        &quot;(GlassStrip_length / 2) - (GlassStrip_width)&quot;,
+        &quot;-(GlassStrip_width)&quot;
       ],
       [
-        419.53073372946034,
-        -0.3044818699548535
-      ],
-      [
-        420.0,
-        -0.5358983848622456
-      ],
-      [
-        420.4350457160349,
-        -0.8265866388350593
-      ],
-      [
-        420.8284271247462,
-        -1.1715728752538093
-      ],
-      [
-        407.0,
-        -15.0
-      ],
-      [
-        -407.0,
-        -15.0
+        &quot;-((GlassStrip_length / 2) - (GlassStrip_width))&quot;,
+        &quot;-(GlassStrip_width)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -952,19 +1056,7 @@ WoodenHub75BasicBox()
       &quot;a&quot;,
       &quot;b&quot;,
       &quot;c&quot;,
-      &quot;d&quot;,
-      &quot;e&quot;,
-      &quot;f&quot;,
-      &quot;g&quot;,
-      &quot;h&quot;,
-      &quot;i&quot;,
-      &quot;j&quot;,
-      &quot;k&quot;,
-      &quot;l&quot;,
-      &quot;m&quot;,
-      &quot;n&quot;,
-      &quot;o&quot;,
-      &quot;p&quot;
+      &quot;d&quot;
     ]
   }
 }</code></pre></li>
@@ -972,18 +1064,18 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassCrossStrip</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassCrossStrip_depth&quot;,
+    &quot;distance&quot;: &quot;GlassStrip_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;GlassCrossStrip&quot;
+    &quot;body_name&quot;: &quot;GlassStrip&quot;
   }
 }</code></pre></li>
-<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY glazing cross strip</small><pre><code>{
+<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY glazing horizontal</small><pre><code>{
   &quot;command&quot;: &quot;material.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;LIGHTPLY glazing cross strip&quot;,
+    &quot;name&quot;: &quot;LIGHTPLY glazing horizontal&quot;,
     &quot;density_g_cm3&quot;: 0.55,
     &quot;color&quot;: &quot;#E3BF80&quot;
   }
@@ -992,9 +1084,9 @@ WoodenHub75BasicBox()
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;GlassCrossStrip&quot;
+      &quot;GlassStrip&quot;
     ],
-    &quot;material&quot;: &quot;LIGHTPLY glazing cross strip&quot;
+    &quot;material&quot;: &quot;LIGHTPLY glazing horizontal&quot;
   }
 }</code></pre></li>
 <li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
@@ -1006,16 +1098,16 @@ WoodenHub75BasicBox()
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
-    &quot;component&quot;: &quot;GlassCrossStrip&quot;
+    &quot;component&quot;: &quot;GlassStrip&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;GlassCrossStrip:1&quot;,
+    &quot;occurrence&quot;: &quot;GlassStrip:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      -25.5,
+      -17.5,
       0.0
     ]
   }
@@ -1023,10 +1115,10 @@ WoodenHub75BasicBox()
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;GlassCrossStrip:2&quot;,
+    &quot;occurrence&quot;: &quot;GlassStrip:2&quot;,
     &quot;translate&quot;: [
       0.0,
-      -25.5,
+      -17.5,
       362.0
     ],
     &quot;axis&quot;: [
@@ -1035,6 +1127,150 @@ WoodenHub75BasicBox()
       0.0
     ],
     &quot;angle&quot;: &quot;180 deg&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip_2_depth&quot;,
+    &quot;expression&quot;: &quot;15&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip_2_length&quot;,
+    &quot;expression&quot;: &quot;362&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip_2_width&quot;,
+    &quot;expression&quot;: &quot;15&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create reusable component</strong><small>component.create · name: GlassStrip 2</small><pre><code>{
+  &quot;command&quot;: &quot;component.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;GlassStrip 2&quot;,
+    &quot;grounded&quot;: false,
+    &quot;parent&quot;: &quot;WoodGlassFrame&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Profile&quot;
+  }
+}</code></pre></li>
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
+  &quot;params&quot;: {
+    &quot;points&quot;: [
+      [
+        &quot;-(GlassStrip_2_length / 2)&quot;,
+        0
+      ],
+      [
+        &quot;GlassStrip_2_length / 2&quot;,
+        0
+      ],
+      [
+        &quot;(GlassStrip_2_length / 2) - (GlassStrip_2_width)&quot;,
+        &quot;-(GlassStrip_2_width)&quot;
+      ],
+      [
+        &quot;-((GlassStrip_2_length / 2) - (GlassStrip_2_width))&quot;,
+        &quot;-(GlassStrip_2_width)&quot;
+      ]
+    ],
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;a&quot;,
+      &quot;b&quot;,
+      &quot;c&quot;,
+      &quot;d&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip_2</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;GlassStrip_2_depth&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;body_name&quot;: &quot;GlassStrip_2&quot;
+  }
+}</code></pre></li>
+<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY glazing vertical</small><pre><code>{
+  &quot;command&quot;: &quot;material.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;LIGHTPLY glazing vertical&quot;,
+    &quot;density_g_cm3&quot;: 0.55,
+    &quot;color&quot;: &quot;#A9793E&quot;
+  }
+}</code></pre></li>
+<li><strong>Assign material</strong><small>material.assign</small><pre><code>{
+  &quot;command&quot;: &quot;material.assign&quot;,
+  &quot;params&quot;: {
+    &quot;bodies&quot;: [
+      &quot;GlassStrip_2&quot;
+    ],
+    &quot;material&quot;: &quot;LIGHTPLY glazing vertical&quot;
+  }
+}</code></pre></li>
+<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
+  &quot;command&quot;: &quot;component.activate&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;root&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;GlassStrip 2&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;GlassStrip 2:1&quot;,
+    &quot;translate&quot;: [
+      -422.0,
+      -17.5,
+      181.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;GlassStrip 2:2&quot;,
+    &quot;translate&quot;: [
+      422.0,
+      -17.5,
+      181.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;-90 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_bracket_width</small><pre><code>{
@@ -1346,14 +1582,38 @@ WoodenHub75BasicBox()
     &quot;component&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
     &quot;translate&quot;: [
-      -437.0,
+      -434.0,
       -13.0,
-      377.0
+      374.0
     ]
   }
 }</code></pre></li>
@@ -1362,9 +1622,9 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
     &quot;translate&quot;: [
-      437.0,
+      434.0,
       -13.0,
-      377.0
+      374.0
     ],
     &quot;axis&quot;: [
       0.0,
@@ -1379,9 +1639,9 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
     &quot;translate&quot;: [
-      -437.0,
+      -434.0,
       -13.0,
-      -15.0
+      -12.0
     ],
     &quot;axis&quot;: [
       1.0,
@@ -1396,9 +1656,71 @@ WoodenHub75BasicBox()
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
     &quot;translate&quot;: [
-      437.0,
+      434.0,
       -13.0,
-      -15.0
+      -12.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
+    &quot;translate&quot;: [
+      -434.0,
+      63.0,
+      374.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
+    &quot;translate&quot;: [
+      434.0,
+      63.0,
+      374.0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      0.0,
+      1.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
+    &quot;translate&quot;: [
+      -434.0,
+      63.0,
+      -12.0
+    ],
+    &quot;axis&quot;: [
+      1.0,
+      0.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
+    &quot;translate&quot;: [
+      434.0,
+      63.0,
+      -12.0
     ],
     &quot;axis&quot;: [
       0.0,
@@ -1499,7 +1821,7 @@ WoodenHub75BasicBox()
     &quot;occurrence&quot;: &quot;Window:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      -16.0,
+      -8.0,
       1.0
     ]
   }

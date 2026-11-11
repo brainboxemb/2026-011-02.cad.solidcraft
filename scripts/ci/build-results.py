@@ -11,6 +11,7 @@ import json
 import re
 import shutil
 from pathlib import Path
+from model_catalog import SOURCES, SECTIONS, source_path
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -55,7 +56,7 @@ MODELS = {
     "corner-bracket": {
         "title": "CornerBracket",
         "tagline": "24 mm plywood corner bracket with four countersunk mounting holes",
-        "description": "The default SCPF model uses one native 90° countersink per hole. The old recessed-hole experiment remains as model_reference.py; this fast variant has a larger tapered opening instead of a flat-bottom head seat. Remaining arm-end points are tracked in issue #20.",
+        "description": "One shared CornerBracket definition is used by this standalone model and the wooden HUB75 enclosure. Current 90° countersinks approximate the older flat-bottom screw-seat recess; see the bracket README for remaining geometry differences.",
         "parameters": "24 mm width, 12 mm wall, 60 mm arms; four Ø5.4 mm holes",
         "diagram": "bracket",
         "stages": ["Profile — 2D L outline with arm-end bevels",
@@ -67,16 +68,16 @@ MODELS = {
     },
     "hub75-wood-frame": {
         "title": "WoodenHub75BasicBox",
-        "tagline": "Fast wooden enclosure and four external corner couplers",
-        "description": "Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, and four provisional 3D-printed external L corner rails. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.",
+        "tagline": "Upright wooden enclosure with real four-hole corner brackets",
+        "description": "Basic Box prototype with five lightweight HUB75 envelopes, 15 mm plywood sides/bottom/roof, a 9 mm back, a 4 mm window, four real four-hole corner brackets and four 15 × 15 mm wooden glazing retainers. The detailed rear PCB and electronic bays belong to the advanced panel model. Hardware dimensions and fit remain to be validated.",
         "parameters": "Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels",
         "diagram": "hub75-wood-frame",
         "stages": ["Create one lightweight bounding-box panel",
                    "Place five native panel occurrences on the 160 mm grid",
                    "Add two 15 mm side boards and bottom/roof",
                    "Place separate 9 mm back and 4 mm window",
-                   "Place four reusable L-shaped external corner concepts",
-                   "Keep advanced HUB75 and exact bolt geometry separate"],
+                   "Place four shared CornerBracket occurrences under one native parent",
+                   "Keep advanced HUB75 PCB and connector details separate"],
     },
     "hub75-screen": {
         "title": "BasicHub75Screen",
@@ -271,14 +272,14 @@ def copy_if_exists(source, target):
 def build(out, commit, native_root=None, generated_root=None, previous_site=None):
     out.mkdir(parents=True, exist_ok=True)
     copy_if_exists(ROOT / "site/results.css", out / "results.css")
-    cards = []
+    cards = {key: [] for key in SECTIONS}
     scpf_commit = library_revision()
     verified_models = []
     verified_count = 0
     for slug, info in MODELS.items():
         work = out / "models" / slug
         work.mkdir(parents=True, exist_ok=True)
-        source = ROOT / "models" / slug / "scpf" / "model.py"
+        source = source_path(ROOT, slug)
         command_file = ((generated_root / slug / "scpf" / "solidcraft.json")
                         if generated_root is not None else
                         ROOT / "models" / slug / "scpf" / "solidcraft.json")
@@ -331,19 +332,25 @@ Native qualification is reported only when the matching verified image exists.</
             layout(info["title"], view, "../../results.css", "../../"),
             encoding="utf-8",
         )
-        cards.append(f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
+        group = next(key for key, (_, _, names) in SECTIONS.items() if slug in names)
+        cards[group].append(f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
 <div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Render from main' if previously_verified else 'Command plan available'}</span>
 <h3><a href="models/{slug}/">{esc(info["title"])}</a></h3><p>{esc(info["tagline"])}</p>
 <p class="small muted">{esc(info["parameters"])}</p>
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
+    sections_html = "".join(
+        f'<section class="model-category" id="{key}"><h2>{esc(title)}</h2>'
+        f'<p class="muted">{esc(description)}</p><div class="grid">{"".join(cards[key])}</div></section>'
+        for key, (title, description, _names) in SECTIONS.items()
+    )
     home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>
-<div class="grid">{''.join(cards)}</div><h2>How it works</h2>
-<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
+{sections_html}<h2>How it works</h2>
+<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> and with an explicit <code>return</code>.</p>
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>

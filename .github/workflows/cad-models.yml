@@ -32,7 +32,7 @@ jobs:
           set -euo pipefail
           unset PYTHONPATH
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
-            python -m scpf "models/$model/scpf/model.py" --out "output/models/$model/scpf/solidcraft.json"
+            python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/models/$model/scpf/solidcraft.json"
             python -m json.tool "output/models/$model/scpf/solidcraft.json" >/dev/null
           done
           python - <<'PY'

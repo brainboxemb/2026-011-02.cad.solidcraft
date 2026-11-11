@@ -17,8 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class CADModelRegressions(unittest.TestCase):
     def test_model_scripts_use_plain_classes_and_explicit_returns(self):
         """No dataclass/type ceremony or implicit last geometry expression."""
-        scripts = sorted((ROOT / "models").glob("*/scpf/model.py"))
-        scripts.extend(sorted((ROOT / "models/components").glob("*.py")))
+        scripts = sorted((ROOT / "models").glob("**/scpf/model.py"))
+        scripts.extend(sorted((ROOT / "components").glob("*.py")))
+        scripts.extend(sorted((ROOT / "models/advanced/hub75_wood_frame").glob("**/*.py")))
         self.assertGreaterEqual(len(scripts), 10)
         for script in scripts:
             with self.subTest(model=str(script.relative_to(ROOT))):
@@ -35,16 +36,16 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_csg_cube_matches_reviewed_native_commands(self):
-        generated = run_script(ROOT / "models/csg-cube/scpf/model.py")
-        expected = json.loads((ROOT / "models/csg-cube/scpf/reference.json").read_text())
+        generated = run_script(ROOT / "models/basic/csg-cube/scpf/model.py")
+        expected = json.loads((ROOT / "models/basic/csg-cube/scpf/reference.json").read_text())
         self.assertEqual(generated, expected)
         self.assertEqual(generated["commands"][0]["params"]["name"], "size")
         self.assertEqual(generated["commands"][1]["params"]["radius"], "size / 1.5")
 
 
     def test_plate_uses_generic_box_and_native_holes(self):
-        generated = run_script(ROOT / "models/plate/scpf/model.py")
-        expected = json.loads((ROOT / "models/plate/scpf/reference.json").read_text())
+        generated = run_script(ROOT / "models/basic/plate/scpf/model.py")
+        expected = json.loads((ROOT / "models/basic/plate/scpf/reference.json").read_text())
         self.assertEqual(generated, expected)
         commands = generated["commands"]
         self.assertEqual([c["params"]["name"] for c in commands[:3]],
@@ -64,14 +65,14 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_bracket_matches_corrected_native_commands(self):
-        generated = run_script(ROOT / "models/bracket/scpf/model.py")
+        generated = run_script(ROOT / "models/basic/bracket/scpf/model.py")
         expected = json.loads(
-            (ROOT / "models/bracket/scpf/solidcraft.json").read_text()
+            (ROOT / "models/basic/bracket/scpf/solidcraft.json").read_text()
         )
         self.assertEqual(generated, expected)
 
         original = json.loads(
-            (ROOT / "models/bracket/source/bracket.json").read_text()
+            (ROOT / "models/basic/bracket/source/bracket.json").read_text()
         )
         # The profile/extrusion agree with the source; fillet selection
         # explicitly names the target body rather than relying on GUI state.
@@ -91,7 +92,7 @@ class CADModelRegressions(unittest.TestCase):
 
     def test_bracket_width_and_thickness_override(self):
         with tempfile.TemporaryDirectory() as directory:
-            source = (ROOT / "models/bracket/scpf/model.py").read_text()
+            source = (ROOT / "models/basic/bracket/scpf/model.py").read_text()
             file = Path(directory) / "model.py"
             file.write_text(source.replace("Bracket()", "Bracket(70, 8)"))
             generated = run_script(file)
@@ -102,7 +103,7 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_sample_plate_preserves_original_sketch_and_feature_names(self):
-        commands = run_script(ROOT / "models/sample-plate/scpf/model.py")["commands"]
+        commands = run_script(ROOT / "models/basic/sample-plate/scpf/model.py")["commands"]
         self.assertEqual(
             [c["params"]["name"] for c in commands if c["command"] == "sketch.create"],
             ["Base", "Holes", "Boss", "Bore"],
@@ -136,7 +137,7 @@ class CADModelRegressions(unittest.TestCase):
 
     def test_sample_plate_parameter_override_preserves_sketch_centres(self):
         with tempfile.TemporaryDirectory() as directory:
-            source = (ROOT / "models/sample-plate/scpf/model.py").read_text()
+            source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
             script = Path(directory) / "model.py"
             script.write_text(source.replace(
                 "SamplePlate()", "SamplePlate(width=100, depth=60, thickness=10)"))
@@ -152,14 +153,14 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_sample_plate_uses_edge_enum(self):
-        source = (ROOT / "models/sample-plate/scpf/model.py").read_text()
+        source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
         self.assertIn("edges=Edges.VERTICAL", source)
-        run_script(ROOT / "models/sample-plate/scpf/model.py")
+        run_script(ROOT / "models/basic/sample-plate/scpf/model.py")
 
 
     def test_plastic_enclosure_compiles_to_sketch_base_and_native_plastic_features(self):
         commands = run_script(
-            ROOT / "models/plastic-enclosure/scpf/model.py"
+            ROOT / "models/basic/plastic-enclosure/scpf/model.py"
         )["commands"]
         feature_commands = [c for c in commands
                             if c["command"] != "parameters.add"]
@@ -199,7 +200,7 @@ class CADModelRegressions(unittest.TestCase):
 
     def test_plastic_enclosure_pi_video_feature_sequence(self):
         commands = run_script(
-            ROOT / "models/plastic-enclosure-pi/scpf/model.py"
+            ROOT / "models/basic/plastic-enclosure-pi/scpf/model.py"
         )["commands"]
         self.assertEqual(
             [c["params"]["name"] for c in commands

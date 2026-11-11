@@ -42,6 +42,9 @@ def check(site, commit):
     assert "SCPF" in text and "SCRF" not in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
+    assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
+    for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
+        assert name in text, name
     assert provenance["scpf_commit"] in text
     for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug

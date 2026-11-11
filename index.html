@@ -10,10 +10,10 @@
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
-<p>Explore nine CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
+<p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
-<p><span class="badge">9 models</span> <span class="badge verified">9 matching native screenshots</span></p></section>
+<p><span class="badge">10 models</span> <span class="badge verified">10 matching native screenshots</span></p></section>
 <div class="grid"><article class="card"><div class="picture"><img src="models/plate/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/plate/">Plate</a></h3><p>A rounded plate with four holes</p>
@@ -34,7 +34,11 @@
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/corner-bracket/">CornerBracket</a></h3><p>24 mm plywood corner bracket with four countersunk mounting holes</p>
 <p class="small muted">24 mm width, 12 mm wall, 60 mm arms; four Ø5.4 mm holes</p>
-<a class="btn" href="models/corner-bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-screen/native.png" alt="SolidCraft model render"></div>
+<a class="btn" href="models/corner-bracket/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-wood-frame/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/hub75-wood-frame/">WoodenHub75BasicBox</a></h3><p>Fast wooden enclosure and four external corner couplers</p>
+<p class="small muted">Overall 874 × 392 mm; window 840 × 360 × 4 mm; five nominal 160 mm-pitch panels</p>
+<a class="btn" href="models/hub75-wood-frame/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/hub75-screen/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/hub75-screen/">BasicHub75Screen</a></h3><p>Five shared native HUB75 occurrences with two 180° rotations</p>
 <p class="small muted">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</p>
@@ -51,11 +55,11 @@
 <h3><a href="models/plastic-enclosure/">Plastic Enclosure</a></h3><p>A shelled enclosure with native plastic design features</p>
 <p class="small muted">80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses</p>
 <a class="btn" href="models/plastic-enclosure/">Explore model →</a></div></article></div><h2>How it works</h2>
-<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a Python dataclass and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
+<div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> or explicit <code>return</code>.</p>
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
-<p class="small muted">CAD source revision: <code>2a6ec7d95742f2919e372ac24c245390f3216817</code><br>
+<p class="small muted">CAD source revision: <code>16dc662575bbae59d93e26b1f748d1a3138f3db5</code><br>
 SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/eee05ee3f252b903a2e744802378f0f47bfe9cb1"><code>eee05ee3f252b903a2e744802378f0f47bfe9cb1</code></a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
 <a href="https://brainboxemb.github.io/lib.py.solidcraft/">SCPF examples &amp; cheatsheet →</a></div></footer>
 </body></html>

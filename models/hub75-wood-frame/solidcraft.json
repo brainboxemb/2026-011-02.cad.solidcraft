@@ -1,0 +1,882 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Hub75PanelBasic_width",
+        "expression": "159.7",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Hub75PanelBasic_height",
+        "expression": "319.71",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Hub75PanelBasic_depth",
+        "expression": "14.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75PanelBasic",
+        "grounded": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Hub75PanelBasic footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-Hub75PanelBasic_width / 2",
+          "-Hub75PanelBasic_height / 2"
+        ],
+        "p1": [
+          "Hub75PanelBasic_width / 2",
+          "Hub75PanelBasic_height / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "Hub75PanelBasic_depth",
+        "body_name": "Hub75PanelBasic"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LED panel envelope",
+        "density_g_cm3": 1.2,
+        "color": "#242B32"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Hub75PanelBasic"
+        ],
+        "material": "LED panel envelope"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic",
+        "translate": [
+          -320.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic",
+        "translate": [
+          -160.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Hub75PanelBasic:3",
+        "to": {
+          "position": [
+            -160.0,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "180 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic",
+        "translate": [
+          160.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Hub75PanelBasic:4",
+        "to": {
+          "position": [
+            160.0,
+            0.0,
+            0.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "180 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75PanelBasic",
+        "translate": [
+          320.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "SideWall_thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "SideWall_height",
+        "expression": "362",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "SideWall_depth",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "SideWall",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "SideWall footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-SideWall_thickness / 2",
+          "-SideWall_height / 2"
+        ],
+        "p1": [
+          "SideWall_thickness / 2",
+          "SideWall_height / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "SideWall_depth",
+        "body_name": "SideWall"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY side wall",
+        "density_g_cm3": 0.55,
+        "color": "#CBA36B"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "SideWall"
+        ],
+        "material": "LIGHTPLY side wall"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "SideWall:1",
+        "translate": [
+          -429.5,
+          0.0,
+          -25.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "SideWall",
+        "translate": [
+          429.5,
+          0.0,
+          -25.0
+        ]
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BottomBoard_width",
+        "expression": "874",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BottomBoard_thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BottomBoard_depth",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BottomBoard",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "BottomBoard footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-BottomBoard_width / 2",
+          "-BottomBoard_thickness / 2"
+        ],
+        "p1": [
+          "BottomBoard_width / 2",
+          "BottomBoard_thickness / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "BottomBoard_depth",
+        "body_name": "BottomBoard"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY bottom",
+        "density_g_cm3": 0.55,
+        "color": "#CBA36B"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "BottomBoard"
+        ],
+        "material": "LIGHTPLY bottom"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "BottomBoard:1",
+        "translate": [
+          0.0,
+          -188.5,
+          -25.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "RoofBoard_width",
+        "expression": "874",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "RoofBoard_thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "RoofBoard_depth",
+        "expression": "124",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "RoofBoard",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "RoofBoard footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-RoofBoard_width / 2",
+          "-RoofBoard_thickness / 2"
+        ],
+        "p1": [
+          "RoofBoard_width / 2",
+          "RoofBoard_thickness / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "RoofBoard_depth",
+        "body_name": "RoofBoard"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY roof",
+        "density_g_cm3": 0.55,
+        "color": "#CBA36B"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "RoofBoard"
+        ],
+        "material": "LIGHTPLY roof"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "RoofBoard:1",
+        "translate": [
+          0.0,
+          188.5,
+          -25.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BackBoard_width",
+        "expression": "874",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BackBoard_height",
+        "expression": "377",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "BackBoard_thickness",
+        "expression": "9",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BackBoard",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "BackBoard footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-BackBoard_width / 2",
+          "-BackBoard_height / 2"
+        ],
+        "p1": [
+          "BackBoard_width / 2",
+          "BackBoard_height / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "BackBoard_thickness",
+        "body_name": "BackBoard"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "LIGHTPLY rear",
+        "density_g_cm3": 0.55,
+        "color": "#A87D4D"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "BackBoard"
+        ],
+        "material": "LIGHTPLY rear"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "BackBoard:1",
+        "translate": [
+          0.0,
+          0.0,
+          75.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Window_width",
+        "expression": "840",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Window_height",
+        "expression": "360",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "Window_thickness",
+        "expression": "4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Window",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Window footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "-Window_width / 2",
+          "-Window_height / 2"
+        ],
+        "p1": [
+          "Window_width / 2",
+          "Window_height / 2"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "Window_thickness",
+        "body_name": "Window"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Plexiglass",
+        "density_g_cm3": 1.19,
+        "color": "#B7DAEF"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Window"
+        ],
+        "material": "Plexiglass"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Window:1",
+        "translate": [
+          0.0,
+          0.0,
+          -18.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerRailConcept_depth",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerRailConcept_arm_length",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerRailConcept_wall",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerRailConcept",
+        "grounded": false
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            100.0,
+            0.0
+          ],
+          [
+            100.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            6.0,
+            100.0
+          ],
+          [
+            0.0,
+            100.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "CornerRailConcept_depth",
+        "direction": "positive",
+        "body_name": "CornerRailConcept"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Printed corner connector concept",
+        "density_g_cm3": 1.25,
+        "color": "#D65A3F"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "CornerRailConcept"
+        ],
+        "material": "Printed corner connector concept"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerRailConcept:1",
+        "translate": [
+          -437.0,
+          -196.0,
+          -25.0
+        ],
+        "move_grounded": false
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerRailConcept",
+        "translate": [
+          437.0,
+          -196.0,
+          -25.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerRailConcept:2",
+        "to": {
+          "position": [
+            437.0,
+            -196.0,
+            -25.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "90 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerRailConcept",
+        "translate": [
+          437.0,
+          196.0,
+          -25.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerRailConcept:3",
+        "to": {
+          "position": [
+            437.0,
+            196.0,
+            -25.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "180 deg"
+        }
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "CornerRailConcept",
+        "translate": [
+          -437.0,
+          196.0,
+          -25.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "CornerRailConcept:4",
+        "to": {
+          "position": [
+            -437.0,
+            196.0,
+            -25.0
+          ],
+          "axis": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "angle": "270 deg"
+        }
+      }
+    }
+  ]
+}

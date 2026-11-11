@@ -5,6 +5,7 @@
     "sample-plate",
     "bracket",
     "corner-bracket",
+    "hub75-wood-frame",
     "hub75-screen",
     "hub75-panel",
     "plastic-enclosure-pi",
@@ -12,6 +13,6 @@
   ],
   "scpf_commit": "eee05ee3f252b903a2e744802378f0f47bfe9cb1",
   "solidcraft_version": "0.30.1",
-  "source_commit": "2a6ec7d95742f2919e372ac24c245390f3216817",
-  "workflow_run": "43018484994"
+  "source_commit": "16dc662575bbae59d93e26b1f748d1a3138f3db5",
+  "workflow_run": "43021823332"
 }

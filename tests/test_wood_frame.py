@@ -115,6 +115,17 @@ class WoodenFrameTests(unittest.TestCase):
 
         # One fillet for each plywood board and one for shared bracket.
         self.assertEqual(len(of(cmd, "solid.fillet")), 3)
+        # The length and width are NOT flattened into literal sketch
+        # coordinates. Their native SolidCraft parameters control the
+        # actual editable 45° profile geometry for each length variant.
+        parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
+        for part in ("GlassStrip", "GlassStrip_2"):
+            self.assertTrue({part + "_length", part + "_width",
+                             part + "_depth"}.issubset(parameter_names))
+        sketch_points = " ".join(str(p["points"]) for p in of(cmd, "sketch.line"))
+        for name in ("GlassStrip_length", "GlassStrip_width",
+                     "GlassStrip_2_length", "GlassStrip_2_width"):
+            self.assertIn(name, sketch_points)
         materials = {p["name"]: p["color"]
                      for p in of(cmd, "material.create")}
         self.assertEqual(materials["LIGHTPLY glazing vertical"], "#A9793E")

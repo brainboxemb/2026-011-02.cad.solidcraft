@@ -30,10 +30,10 @@ CAMERAS = {
         "fov": 0,
     },
     "hub75-panel": {
-        "target": [80, 0, 8],
-        "yaw": -0.33,
-        "pitch": 1.05,
-        "distance": 565,
+        "target": [0, -7.25, 160],
+        "yaw": 3.141592653589793,
+        "pitch": 0.12,
+        "distance": 460,
         "fov": 0,
     },
 }

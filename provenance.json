@@ -1,0 +1,16 @@
+{
+  "native_verified_models": [
+    "plate",
+    "csg-cube",
+    "sample-plate",
+    "bracket",
+    "corner-bracket",
+    "hub75-panel",
+    "plastic-enclosure-pi",
+    "plastic-enclosure"
+  ],
+  "scpf_commit": "2ead82ea0b676aba758900be474486cfe592e854",
+  "solidcraft_version": "0.30.1",
+  "source_commit": "6cfa981a7892c15d7fce0af1299a9c02907dc53e",
+  "workflow_run": "43002650705"
+}

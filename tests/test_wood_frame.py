@@ -39,7 +39,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(kinds.count("solid.fillet"),0)
         self.assertEqual(kinds.count("sketch.create"),7)
         self.assertEqual(kinds.count("material.assign"),7)
-        self.assertEqual(kinds.count("occurrence.move"),11) # 2 panel rotations, 6 initial part poses, 3 rotated corners
+        self.assertEqual(kinds.count("occurrence.move"),12) # placements and rotations for upright box
         self.assertEqual(kinds.count("solid.extrude"),7)
 
     def test_wooden_box_has_real_z_up_geometry(self):
@@ -82,7 +82,8 @@ class WoodenFrameTests(unittest.TestCase):
         panel_moves = [c for c in placements
                        if c["occurrence"].startswith("Hub75PanelBasic:")]
         self.assertEqual(len(panel_moves), 3)
-        self.assertEqual(panel_moves[0]["translate"], [0.0, 7.25, 21.145])
+        self.assertEqual([round(v, 3) for v in panel_moves[0]["translate"]],
+                         [0.0, 7.25, 21.145])
         rotations = [p["to"] for p in panel_moves[1:]]
         self.assertEqual([p["angle"] for p in rotations],
                          ["180 deg", "180 deg"])

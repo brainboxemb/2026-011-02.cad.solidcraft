@@ -88,7 +88,7 @@ class PlasticEnclosurePi:
         enclosure = enclosure.with_material(
             "PETG", density_g_cm3=1.27, color="#2a8696"
         )
-        enclosure
+        return enclosure
 
 
 PlasticEnclosurePi()

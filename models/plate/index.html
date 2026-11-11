@@ -20,11 +20,10 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Sketch the rectangle</li><li>Extrude the base</li><li>Fillet vertical corners</li><li>Sketch four hole centres</li><li>Cut the holes</li></ol></section></div>
-<h2>Python model</h2><pre><code>@dataclass
-class Plate:
-    length: float = 100
-    width: float = 60
-    thickness: float = 10
+<h2>Python model</h2><pre><code>class Plate:
+    length = 100
+    width = 60
+    thickness = 10
 
     def build(self):
         body = Box(self.length, self.width, self.thickness)
@@ -35,7 +34,7 @@ class Plate:
             body = body + Hole(
                 d=8, depth=Depth.THROUGH_ALL
             ).at(x, y, self.thickness)
-        body
+        return body
 
 
 Plate()

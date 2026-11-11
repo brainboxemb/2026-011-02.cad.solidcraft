@@ -20,10 +20,9 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Draw the L profile</li><li>Extrude its width</li><li>Round an exposed edge</li><li>Sketch mounting holes</li><li>Cut through the flange</li></ol></section></div>
-<h2>Python model</h2><pre><code>@dataclass
-class Bracket:
-    width: float = 60
-    thickness: float = 6
+<h2>Python model</h2><pre><code>class Bracket:
+    width = 60
+    thickness = 6
 
     def build(self):
         profile = Polygon2D(
@@ -37,7 +36,7 @@ class Bracket:
 
         for y in (-15, -45):
             body = body + Hole(d=8, depth=self.thickness).at(25, y, 0)
-        body
+        return body
 
 
 Bracket()

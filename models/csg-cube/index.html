@@ -20,14 +20,13 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create the sphere</li><li>Intersect with a cube</li><li>Cut along X, Y and Z</li></ol></section></div>
-<h2>Python model</h2><pre><code>@dataclass
-class CsgCube:
-    size: float = 50
+<h2>Python model</h2><pre><code>class CsgCube:
+    size = 50
 
     def build(self):
         body = Sphere(self.size / 1.5) &amp; Box(self.size, self.size, self.size)
         holes = Cylinder(d=self.size / 1.5, h=self.size).orient(X, Y, Z)
-        body - holes
+        return body - holes
 
 
 CsgCube()

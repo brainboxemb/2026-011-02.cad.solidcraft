@@ -29,9 +29,11 @@ component and never reimplement its sketch or features.
 - [Five-panel screen](advanced/hub75-screen/README.md)
 - [Wooden HUB75 Basic Box](advanced/hub75-wood-frame/README.md)
 
-Parts specific to the wooden case are in its own `parts/` directory,
-and combinations (including `WoodBoxFrame`, `WoodGlassFrame` and
-`HUB75Panels`) are in its `assemblies/` directory.
+The wooden enclosure keeps its case-specific parts and assembly in **one**
+[parameterized `model.py`](advanced/hub75-wood-frame/scpf/model.py).
+It uses one `GlassStrip` type for the four differently oriented retainers.
+Only the generically reusable HUB75 module and CornerBracket remain in
+`components/`. There is no separate `parts/` or `assemblies/` layer.
 
 ## Running a model
 

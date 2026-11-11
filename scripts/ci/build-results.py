@@ -153,8 +153,8 @@ def diagram(model):
 def layout(title, body, css_path, home_path):
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{esc(title)} · SolidCraft CAD experiments</title><link rel="stylesheet" href="{esc(css_path)}"></head>
-<body><header class="top"><div class="wrap"><nav><a class="brand" href="{esc(home_path)}">SolidCraft · CAD experiments</a>
+<title>{esc(title)} · SolidCraft CAD projects</title><link rel="stylesheet" href="{esc(css_path)}"></head>
+<body><header class="top"><div class="wrap"><nav><a class="brand" href="{esc(home_path)}">SolidCraft · CAD projects</a>
 <a href="{esc(home_path)}">Models</a><a href="{esc(home_path)}cheatsheet/">SCPF cheatsheet</a><a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source on GitHub</a></nav></div></header>
 {body}<footer><div class="wrap">SCPF Python models produce native SolidCraft commands. SolidCraft builds all geometry.</div></footer>
 </body></html>"""
@@ -222,10 +222,10 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
     for slug, info in MODELS.items():
         work = out / "models" / slug
         work.mkdir(parents=True, exist_ok=True)
-        source = ROOT / "examples" / slug / "scpf" / "model.py"
+        source = ROOT / "models" / slug / "scpf" / "model.py"
         command_file = ((generated_root / slug / "scpf" / "solidcraft.json")
                         if generated_root is not None else
-                        ROOT / "examples" / slug / "scpf" / "solidcraft.json")
+                        ROOT / "models" / slug / "scpf" / "solidcraft.json")
         commands = read_json(command_file)["commands"]
         copy_if_exists(source, work / "model.py")
         copy_if_exists(command_file, work / "solidcraft.json")
@@ -281,7 +281,7 @@ Native qualification is reported only when the matching verified image exists.</
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
     home = f"""<section class="hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
-<p>Explore six small CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
+<p>Explore eight CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
 <p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>
@@ -361,11 +361,11 @@ def make_cheatsheet(out):
         ]),
         ("Run and inspect", [
             ("python -m scpf model.py --out out.json", "Compile commands without starting SolidCraft.",
-             "python -m scpf examples/sample-plate/scpf/model.py --out output/sample.json"),
+             "python -m scpf models/sample-plate/scpf/model.py --out output/sample.json"),
             ("python -m scpf model.py --connect", "Apply commands to an already open, empty SolidCraft GUI document.",
-             "python -m scpf examples/sample-plate/scpf/model.py --connect"),
+             "python -m scpf models/sample-plate/scpf/model.py --connect"),
             ("python -m scpf replay file.json", "Execute an existing command JSON unchanged in SolidCraft.",
-             "python -m scpf replay examples/bracket/scpf/solidcraft.json"),
+             "python -m scpf replay models/bracket/scpf/solidcraft.json"),
         ]),
     ]
     blocks = []
@@ -389,7 +389,7 @@ def make_cheatsheet(out):
         + "".join(blocks) +
         '<section><h2>Next iteration · not implemented</h2><p>Generic object-relative anchors,'
         ' face/edge references and fully associative SolidCraft constraints are tracked in'
-        ' <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/5">issue #5</a>.'
+        ' <a href="https://github.com/brainboxemb/lib.py.solidcraft/issues/5">issue #5</a>.'
         ' The current coordinate-based examples are not equivalent to fully constrained features.</p></section>'
         '<p><a href="../">← Back to model catalog</a></p></main>'
     )
@@ -407,7 +407,7 @@ def main():
     parser.add_argument("--previous-site", type=Path,
                         help="Published main site renders for non-verified previews")
     parser.add_argument("--generated", type=Path,
-                        help="Root of freshly compiled output/examples")
+                        help="Root of freshly compiled output/models")
     args = parser.parse_args()
     build(args.out, args.commit, args.native, args.generated, args.previous_site)
 

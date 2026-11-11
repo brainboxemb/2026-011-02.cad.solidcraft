@@ -26,19 +26,18 @@ The original 0.6 mm **tip elephant-foot cuts are not in the polygon**: a separat
 
 Named-edge selection is currently implemented for **symmetric XZ polygon extrusions only**. The remaining irregularities at the arm tips are a separate follow-up in issue #20.
 
-For local GUI testing from the repository root:
+For local GUI testing from the repository root after `./bootstrap.ps1`:
 
 ```powershell
-$env:PYTHONPATH = "scpf"
-python -m scpf examples/corner-bracket/scpf/model.py --connect
+python -m scpf models/corner-bracket/scpf/model.py --connect
 ```
 
 Open an empty SolidCraft document and enable external Assistant control before running. To generate commands without touching the GUI:
 
 ```powershell
-python -m scpf examples/corner-bracket/scpf/model.py --out output/corner-bracket.json
+python -m scpf models/corner-bracket/scpf/model.py --out output/corner-bracket.json
 ```
 
-The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/exp.2026-011.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.
+The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/lib.py.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.
 
 Original geometry reference: `brainboxemb/2026-011-01.cad.model-archive`, `models/corner_bracket/v0.1/scad/corner_bracket.scad`.

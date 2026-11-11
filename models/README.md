@@ -1,5 +1,16 @@
-# Project-owned CAD models
+# CAD model catalog
 
-The initial migration intentionally preserves the original `examples/<model>/scpf/model.py` paths while verifying the full results-site pipeline. Move the verified models here in a separate change together with the build-path updates; do not silently break references or native source manifests.
+Every model below is owned by this CAD repository, not by `lib.py.solidcraft`. Run `./bootstrap.ps1` once to install the pinned SCPF package.
 
-Planned: `corner-bracket/`, `hub75-panel/`, `assemblies/`.
+| Model | Purpose |
+| --- | --- |
+| [corner-bracket](corner-bracket/README.md) | L-shaped plywood bracket, native fillets/chamfers/countersinks |
+| [hub75-panel](hub75-panel/README.md) | Measured P5 panel with native loft and two component occurrences |
+| [plastic-enclosure-pi](plastic-enclosure-pi/README.md) | Raspberry Pi enclosure with shell, ports and vents |
+| [plastic-enclosure](plastic-enclosure/README.md) | Shell, lip, snap, bosses and rest |
+| [sample-plate](sample-plate/scpf/model.py) | Four-sketch native history (Base/Holes/Boss/Bore) |
+| [plate](plate/README.md) | Rounded plate and mounting holes |
+| [bracket](bracket/README.md) | L extrusion and holes |
+| [csg-cube](csg-cube/README.md) | CSG reference and cross-CAD comparison |
+
+A model generates native command JSON using `python -m scpf models/<slug>/scpf/model.py --out output/<slug>.json`. See `scripts/qualify-solidcraft.ps1` for native SolidCraft CLI execution.

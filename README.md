@@ -1,30 +1,38 @@
 # 2026-011-02.cad.solidcraft
 
-SolidCraft CAD models, assemblies and native verification. The reusable Python interface and compiler live in [lib.py.solidcraft](https://github.com/brainboxemb/lib.py.solidcraft).
+CAD projects and native SolidCraft verification. The Python interface/compiler lives in [lib.py.solidcraft](https://github.com/brainboxemb/lib.py.solidcraft), not here.
 
-## Getting started (Windows)
+## Start on Windows
 
-Activate the shared `brainboxemb-dev-tools` Conda environment, then:
+Activate the shared `brainboxemb-dev-tools` Conda environment, then run from the repository root:
 
 ```powershell
 .\bootstrap.ps1
-python -m scpf examples/hub75-panel/scpf/model.py --out output/hub75-panel.json
+python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
+.\scripts\qualify-solidcraft.ps1 -Model models/hub75-panel/scpf/model.py -Snapshot
 ```
 
-The project uses [vcs2l](https://github.com/ros-infrastructure/vcs2l) with an exact commit in `dependencies.repos` to fetch `ext/scpf/`. The `ext/` directory is ignored by Git; **no Git submodule** and no `PYTHONPATH` setup are required. `bootstrap.ps1` installs `ext/scpf/scpf` editable in the active Python environment.
+`bootstrap.ps1` uses [vcs2l](https://github.com/ros-infrastructure/vcs2l) to import the **exact** commit declared in [dependencies.repos](dependencies.repos) into ignored `ext/scpf/`, checks the checkout SHA, and installs the external `scpf` Python package editable into the active environment. No submodule, source copying, manually created `ext/` or `PYTHONPATH` changes are needed.
 
-## Structure and migration
+## Project structure
 
-- `examples/` — original CAD models and model references, retained at their current paths so website/build scripts continue working during migration.
-- `models/` — new project model structure, to be introduced after CI establishes parity.
-- `scripts/ci/` — static results site generator and smoke tests.
-- `site/` — results website styling.
-- `dependencies.repos` — immutable SCPF dependency pin.
+- `models/<name>/scpf/model.py` — project-owned CAD models and assembly sources.
+- `models/<name>/README.md` — model design notes and geometry references.
+- `models/<name>/source/` — original SolidCraft command/document references where available.
+- `examples/` — small retained API qualification fixtures; reusable API tests live in the library.
+- `scripts/ci/` and `site/` — source-matched result pages and checks.
+- `.github/workflows/cad-models.yml` — Python package install, command-plan qualification and site smoke tests.
+- `.github/workflows/native-cad.yml` — native CLI model qualification, STEP/native documents, screenshots and Pages branch publication.
 
-First milestone: compile all migrated model command documents and validate the static website **without replacing the old live GitHub Pages site**. Native rendering and publishing are separate acceptance gates. The old site stays available until the new site passes native checks. See [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25).
+## Main models
 
-## Project models
+- [Corner Bracket](models/corner-bracket/README.md)
+- [HUB75 Panel / two occurrences](models/hub75-panel/README.md)
+- [Plastic Enclosure Pi](models/plastic-enclosure-pi/README.md)
+- [Plate](models/plate/README.md) and [CSG comparison](models/csg-cube/README.md)
 
-- [Corner Bracket](examples/corner-bracket/README.md)
-- [HUB75 Panel](examples/hub75-panel/README.md)
-- [Plastic Enclosure Pi](examples/plastic-enclosure-pi/README.md)
+## Publication and migration
+
+Native-qualified results are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+
+Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.

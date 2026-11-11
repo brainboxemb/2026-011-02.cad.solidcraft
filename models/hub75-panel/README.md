@@ -33,10 +33,9 @@ not an associative SolidCraft constraint or an editable native design
 parameter. Rotations, five occurrences, and the detailed body/PCB/connector
 colors are separate follow-ups in issue #16.
 
-Generate and inspect:
+Generate and inspect after running `./bootstrap.ps1`:
 
 ```powershell
-$env:PYTHONPATH = "scpf"
-python -m scpf examples/hub75-panel/scpf/model.py --out output/hub75.json
+python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
 solidcraft-cli run output/hub75.json --param-check strict --results --save output/hub75.sc
 ```

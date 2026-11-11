@@ -1,0 +1,6 @@
+# vcs2l: exact SCPF library source commit (PR #27 squash merge)
+repositories:
+  scpf:
+    type: git
+    url: https://github.com/brainboxemb/lib.py.solidcraft.git
+    version: 2ead82ea0b676aba758900be474486cfe592e854

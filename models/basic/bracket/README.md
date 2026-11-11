@@ -26,14 +26,14 @@ From the repository root:
 
 ```powershell
 $env:PYTHONPATH = "scpf"
-python -m scpf examples/bracket/scpf/model.py --out output/examples/bracket/scpf/solidcraft.json
-code output/examples/bracket/scpf/solidcraft.json
+python -m scpf models/basic/bracket/scpf/model.py --out output/models/basic/bracket/scpf/solidcraft.json
+code output/models/basic/bracket/scpf/solidcraft.json
 ```
 
 To replay the **original command JSON without translating it**:
 
 ```powershell
-python -m scpf replay examples/bracket/source/bracket.json
+python -m scpf replay models/basic/bracket/source/bracket.json
 ```
 
 The original file starts with `parameters.change`, so `width` and
@@ -41,14 +41,14 @@ The original file starts with `parameters.change`, so `width` and
 design, replay the standalone SCPF file instead:
 
 ```powershell
-python -m scpf replay examples/bracket/scpf/solidcraft.json
+python -m scpf replay models/basic/bracket/scpf/solidcraft.json
 ```
 
 To send commands to an **already open SolidCraft** instance, first open a
 new empty design and enable external Assistant control:
 
 ```powershell
-python -m scpf examples/bracket/scpf/model.py --connect
+python -m scpf models/basic/bracket/scpf/model.py --connect
 ```
 
 A live batch does not write a file. The existing design may be modified.
@@ -57,7 +57,7 @@ If the build fails, the control request asks SolidCraft to roll back.
 For native CLI evaluation without a GUI connection:
 
 ```powershell
-solidcraft-cli run output/examples/bracket/scpf/solidcraft.json --param-check strict --save output/bracket.sc
+solidcraft-cli run output/models/basic/bracket/scpf/solidcraft.json --param-check strict --save output/bracket.sc
 ```
 
 Open `output/bracket.sc` in SolidCraft. Native execution of this particular

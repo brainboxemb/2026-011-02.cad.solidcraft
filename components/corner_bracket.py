@@ -1,12 +1,13 @@
-"""Fast CornerBracket variant: one native countersink per mounting hole.
+"""One reusable, editable four-hole CornerBracket geometry definition.
 
-Temporary GUI-performance experiment.  Unlike the production reference, the
-counterbore/recess and the 0.2 mm hole-edge relief cuts are omitted.  The
-larger countersink mouth is intentional; it is NOT an exact geometrical
-replacement for a flat-bottom recessed screw-head seat.
+Shared between the standalone reference and the wooden HUB75 enclosure.
+This keeps the reviewed sketch, four mounting holes and all edge treatments
+in one file. It is the FAST countersink approximation, not the older
+flat-bottom recess reconstruction.
 """
+from scpf import Polygon2D, Direction, Edges, Hole
 
-class CornerBracketFast:
+class CornerBracket:
     bracket_width = 24.0
     wall_thickness = 12.0
     horizontal_arm_length = 60.0
@@ -120,4 +121,3 @@ class CornerBracketFast:
         return body
 
 
-CornerBracketFast()

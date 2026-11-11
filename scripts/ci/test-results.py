@@ -33,15 +33,20 @@ def check(site, commit):
     cheatsheet = site / "cheatsheet" / "index.html"
     assert cheatsheet.is_file()
     guide = cheatsheet.read_text(encoding="utf-8")
-    for term in ("Rectangle2D", "Circle2D", "Cylinder(d=", "extrude", "issue #5"):
-        assert term in guide, term
+    library_url = "https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"
+    assert f'http-equiv="refresh" content="0; url={library_url}"' in guide
+    assert f'rel="canonical" href="{library_url}"' in guide
+    assert "Rectangle2D" not in guide  # no duplicated API reference
 
     text = homepage.read_text(encoding="utf-8")
     assert commit in text, "site must identify its source commit"
-    assert 'href="cheatsheet/"' in text
+    assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
+    assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
+    for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
+        assert name in text, name
     assert provenance["scpf_commit"] in text
     for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug

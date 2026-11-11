@@ -3,7 +3,7 @@
 No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The basic representation
 stands upright in XZ (Z is world up, Y is front-to-back). Use Hub75Panel
-(advanced) from models.components.hub75 for real module mounting details.
+(advanced) from components.hub75 for real module mounting details.
 """
 from scpf import Box
 

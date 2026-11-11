@@ -1,6 +1,6 @@
 # Corner Bracket — SCPF
 
-The default `scpf/model.py` is the **fast four-hole version**, using one native countersink per bolt. It avoids the coincident faces and repeated Boolean retries of the earlier recessed/countersunk-hole reconstruction.
+The standalone model imports the **single shared `CornerBracket` geometry** from repository-root `components/corner_bracket.py`. Its current native implementation is the **four-hole countersink version**, using one native countersink per bolt. It avoids the coincident faces and repeated Boolean retries of the earlier recessed/countersunk-hole reconstruction.
 
 The original 42-command experiment is retained as `scpf/model_reference.py`. It is **not used as the default**. The fast countersink has a larger tapered opening and does not reproduce the original flat-bottom head recess or the tiny 0.2 mm hole-edge reliefs exactly.
 
@@ -29,13 +29,13 @@ Named-edge selection is currently implemented for **symmetric XZ polygon extrusi
 For local GUI testing from the repository root after `./bootstrap.ps1`:
 
 ```powershell
-python -m scpf models/corner-bracket/scpf/model.py --connect
+python -m scpf models/component-examples/corner-bracket/scpf/model.py --connect
 ```
 
 Open an empty SolidCraft document and enable external Assistant control before running. To generate commands without touching the GUI:
 
 ```powershell
-python -m scpf models/corner-bracket/scpf/model.py --out output/corner-bracket.json
+python -m scpf models/component-examples/corner-bracket/scpf/model.py --out output/corner-bracket.json
 ```
 
 The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/lib.py.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.

@@ -2,14 +2,14 @@
 
 Reference: Batavierenrace 55th edition Basic Box / LIGHTPLY concept (v29).
 The class names describe individual manufacturing pieces. In this concept
-the four corner rails represent the external 3D-printed corner connections,
-NOT the final corner_bracket geometry from the OpenSCAD archive.
+the four printed corner connectors are sourced from the shared
+CornerBracket model, not placeholder 100 mm L-rails.
 
 WORLD: X = screen width, Y = screen depth, Z = vertical (up).
 All wooden parts are native SolidCraft solids standing upright, not
 a horizontal XY layout rotated only in the camera.
 """
-from scpf import Box, Polygon2D
+from scpf import Box
 
 
 class SideWall:
@@ -40,7 +40,7 @@ class RoofBoard:
     depth = 124.0
 
     def build(self):
-        return Box(self.width, self.thickness, self.depth).with_material(
+        return Box(self.width, self.depth, self.thickness).with_material(
             "LIGHTPLY roof", density_g_cm3=0.55, color="#CBA36B"
         )
 
@@ -68,25 +68,25 @@ class Window:
         )
 
 
-class CornerRailConcept:
-    arm_length = 100.0
-    wall = 6.0
-    depth = 100.0
+class GlassSideStrip:
+    """A 15 x 15 mm wooden retaining strip running vertically."""
+    width = 15.0
+    depth = 15.0
+    height = 362.0
 
     def build(self):
-        # External, full-depth L-shaped coupling. Prototype: no bolts,
-        # chamfers, elephant-foot relief or exact panel-attachment seats.
-        # Both arms are in the upright XZ/front plane; the profile
-        # extrudes 100 mm in the front-to-back direction (-Y).
-        # world=True maps intuitive (X, Z) coordinates to SolidCraft's
-        # local XZ sketch coordinate convention.
-        outline = Polygon2D([
-            (0, 0), (self.arm_length, 0),
-            (self.arm_length, self.wall),
-            (self.wall, self.wall),
-            (self.wall, self.arm_length), (0, self.arm_length),
-        ], plane="XZ", world=True)
-        return outline.extrude(self.depth).with_material(
-            "Printed corner connector concept",
-            density_g_cm3=1.25, color="#D65A3F"
+        return Box(self.width, self.depth, self.height).with_material(
+            "LIGHTPLY glazing side strip", density_g_cm3=0.55, color="#C89D61"
+        )
+
+
+class GlassCrossStrip:
+    """Retaining strip between the vertical strips, top or bottom."""
+    length = 814.0
+    depth = 15.0
+    thickness = 15.0
+
+    def build(self):
+        return Box(self.length, self.depth, self.thickness).with_material(
+            "LIGHTPLY glazing cross strip", density_g_cm3=0.55, color="#C89D61"
         )

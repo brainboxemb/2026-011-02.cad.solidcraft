@@ -8,6 +8,7 @@ proves it belongs to exactly this source commit.
 import argparse
 import html
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -130,16 +131,27 @@ def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def screenshot_info(native_root, commit, model):
+def library_revision():
+    """Exact external SCPF SHA from this project's vcs2l manifest."""
+    manifest = (ROOT / "dependencies.repos").read_text(encoding="utf-8")
+    matches = re.findall(r"^\s*version:\s*([0-9a-f]{40})\s*$", manifest, re.MULTILINE)
+    if len(matches) != 1:
+        raise ValueError("Expected one exact SCPF SHA in dependencies.repos")
+    return matches[0]
+
+
+def screenshot_info(native_root, commit, model, scpf_commit):
     if native_root is None:
         return None
     manifest = native_root / "verification.json"
     if not manifest.is_file():
         return None
     metadata = read_json(manifest)
-    if metadata.get("source_commit") != commit or metadata.get("verified") is not True:
+    if (metadata.get("source_commit") != commit
+            or metadata.get("scpf_commit") != scpf_commit
+            or metadata.get("verified") is not True):
         return None
-    rel = {"plate": "plate.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
+    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
     if not rel:
         return None
     candidate = native_root / rel
@@ -218,6 +230,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
     out.mkdir(parents=True, exist_ok=True)
     copy_if_exists(ROOT / "site/results.css", out / "results.css")
     cards = []
+    scpf_commit = library_revision()
+    verified_models = []
     verified_count = 0
     for slug, info in MODELS.items():
         work = out / "models" / slug
@@ -229,7 +243,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         commands = read_json(command_file)["commands"]
         copy_if_exists(source, work / "model.py")
         copy_if_exists(command_file, work / "solidcraft.json")
-        screenshot = screenshot_info(native_root, commit, slug)
+        screenshot = screenshot_info(native_root, commit, slug, scpf_commit)
         has_native = screenshot is not None
         # A lightweight preview may reuse a published render as an illustration,
         # but MUST NOT report that older render as verified for this PR revision.
@@ -243,6 +257,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             copy_if_exists(preview_image, work / "native.png")
         if has_native:
             verified_count += 1
+            verified_models.append(slug)
         photo = ('<img src="native.png" alt="SolidCraft CAD render">' if preview_image
                  else diagram(slug))
         status = ("Native verified · snapshot from matching run" if has_native
@@ -290,7 +305,22 @@ Native qualification is reported only when the matching verified image exists.</
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
-<p class="small muted">Source revision: <code>{esc(commit)}</code></p></main>"""
+<p class="small muted">CAD source revision: <code>{esc(commit)}</code><br>
+SCPF library revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a></p></main>"""
+    provenance = {
+        "source_commit": commit,
+        "scpf_commit": scpf_commit,
+        "native_verified_models": verified_models,
+    }
+    if native_root is not None and (native_root / "verification.json").is_file():
+        verified = read_json(native_root / "verification.json")
+        if verified.get("source_commit") == commit and verified.get("scpf_commit") == scpf_commit:
+            provenance["solidcraft_version"] = verified.get("solidcraft_version")
+            provenance["workflow_run"] = verified.get("workflow_run")
+    (out / "provenance.json").write_text(
+        json.dumps(provenance, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
     (out / "index.html").write_text(
         layout("Models", home, "results.css", "./"), encoding="utf-8"
     )

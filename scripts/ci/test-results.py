@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Lightweight site smoke checks: content, links and provenance labelling."""
 import html.parser
+import json
+import re
 import sys
 from pathlib import Path
 
@@ -23,6 +25,11 @@ def check(site, commit):
     homepage = site / "index.html"
     assert homepage.is_file()
     assert (site / "results.css").is_file()
+    provenance = json.loads((site / "provenance.json").read_text(encoding="utf-8"))
+    assert provenance["source_commit"] == commit
+    assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpf_commit"])
+    assert isinstance(provenance["native_verified_models"], list)
+    assert len(set(provenance["native_verified_models"])) == len(provenance["native_verified_models"])
     cheatsheet = site / "cheatsheet" / "index.html"
     assert cheatsheet.is_file()
     guide = cheatsheet.read_text(encoding="utf-8")
@@ -33,6 +40,7 @@ def check(site, commit):
     assert commit in text, "site must identify its source commit"
     assert 'href="cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
+    assert provenance["scpf_commit"] in text
     for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug

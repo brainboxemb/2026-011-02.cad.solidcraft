@@ -33,6 +33,6 @@ python -m scpf models/hub75-panel/scpf/model.py --out output/hub75.json
 
 ## Publication and migration
 
-Native-qualified results are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+All eight models are compiled against one pinned SCPF library revision. Seven primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
 
 Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.

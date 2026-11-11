@@ -4,7 +4,7 @@ HUB75Panels is separate. These native parent components keep the browser
 clean and let each manufactured part be selected individually:
   WoodBoxFrame   -- sides, floor, roof, back
   WoodGlassFrame -- four 15x15 mm glazing retainers (glass is separate)
-  CornerBrackets -- four occurrences of the REAL fast four-hole bracket
+  CornerBrackets -- four occurrences of the same shared, hole-free CornerBracket
 
 World X = width, Y = depth (front -Y), Z = up.
 """
@@ -93,7 +93,8 @@ class CornerBrackets:
     horizontal wing rests above/below the top/bottom board, and the
     vertical wing lies left/right of the side board. Arms point inward
     along the board surfaces, rather than intersecting solid plywood.
-    Screws through the bracket's X/Z walls then enter the wood.
+    No screw holes are cut while the native warning-producing hole geometry
+    is deferred; the outer form and orientation remain unchanged.
     """
     opening_width = 844.0
     opening_height = 362.0
@@ -108,7 +109,7 @@ class CornerBrackets:
         # At top-left, local horizontal +X wing lies ON top of the roof
         # and the local vertical -Z wing lies OUTSIDE the left side board.
         front_band_y = self.front_y + CornerBracket.bracket_width / 2
-        top_left = Bracket(plywood_thickness=self.plywood).move(
+        top_left = Bracket().move(
             x=-outer_half, y=front_band_y, z=top_z
         )
         corners = top_left

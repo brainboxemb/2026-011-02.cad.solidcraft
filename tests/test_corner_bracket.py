@@ -9,15 +9,19 @@ EXAMPLE = ROOT / "models" / "component-examples" / "corner-bracket" / "scpf"
 
 
 class CornerBracketTests(unittest.TestCase):
-    def test_default_is_fast_four_countersinks(self):
+    def test_default_bracket_is_hole_free_and_retains_all_edge_features(self):
         commands = run_script(EXAMPLE / "model.py")["commands"]
-        holes = [c for c in commands if c["command"] == "solid.hole"]
-        self.assertEqual(len(holes), 4)
-        self.assertTrue(all(c["params"].get("type") == "countersink" for c in holes))
+        # Current reusable component deliberately does not cut any mounting
+        # holes; the archived model_reference.py is a different experiment.
+        self.assertFalse(any(c["command"] == "solid.hole" for c in commands))
         self.assertEqual(len([c for c in commands if c["command"] == "solid.chamfer"]), 3)
         self.assertEqual(len([c for c in commands if c["command"] == "solid.fillet"]), 1)
-        # 18 params + 4 sketch/extrude + 4 edge modifiers + 4 holes.
-        self.assertEqual(len(commands), 30)
+        # Nine geometry parameters + four sketch/extrude + four edge features.
+        self.assertEqual(len(commands), 17)
+        names = [c["params"]["name"] for c in commands
+                 if c["command"] == "parameters.add"]
+        self.assertFalse(any("bolt" in name or "head" in name or
+                             "plywood" in name for name in names))
 
     def test_named_polygon_vertices_generate_sketch_ids(self):
         from scpf.core import Polygon2D

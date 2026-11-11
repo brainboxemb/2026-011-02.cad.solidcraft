@@ -124,7 +124,7 @@ class WoodenFrameTests(unittest.TestCase):
         # BackBoard height 377: -15+377 = 362, roof starts at 362.
         self.assertEqual(back["translate"][2]+BackBoard.height,362.0)
 
-    def test_roof_is_horizontal_and_corner_bracket_has_four_holes(self):
+    def test_roof_and_corner_bracket_are_editable_without_holes(self):
         commands=actions()
         def features(name,operation):
             start=next(i for i,c in enumerate(commands)
@@ -139,7 +139,11 @@ class WoodenFrameTests(unittest.TestCase):
                          "RoofBoard_thickness")
         self.assertEqual(features("Hub75PanelBasic","solid.extrude")[0]["distance"],
                          "Hub75PanelBasic_height")
-        self.assertEqual(len(features("CornerBracket","solid.hole")),4)
+        # No native mounting holes in ANY corner-bracket occurrence.
+        self.assertEqual(len(features("CornerBracket","solid.hole")),0)
+        self.assertFalse(any(c["command"] == "solid.hole" and
+                             "CornerBracket" in str(c["params"])
+                             for c in commands))
         self.assertEqual(len(features("CornerBracket","solid.fillet")),1)
         self.assertEqual(len(features("CornerBracket","solid.chamfer")),3)
         self.assertEqual(CornerBracket.bracket_width,24)

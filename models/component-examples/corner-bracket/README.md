@@ -1,8 +1,19 @@
 # Corner Bracket — SCPF
 
-The standalone model imports the **single shared `CornerBracket` geometry** from repository-root `components/corner_bracket.py`. Its current native implementation is the **four-hole countersink version**, using one native countersink per bolt. It avoids the coincident faces and repeated Boolean retries of the earlier recessed/countersunk-hole reconstruction.
+The standalone model imports the **single shared `CornerBracket` shape**
+from `components/corner_bracket.py`. The default component is deliberately
+**without screw holes**. The earlier countersink operations caused warnings
+in native SolidCraft, especially when the same component was used four times
+inside the wooden HUB75 frame.
 
-The original 42-command experiment is retained as `scpf/model_reference.py`. It is **not used as the default**. The fast countersink has a larger tapered opening and does not reproduce the original flat-bottom head recess or the tiny 0.2 mm hole-edge reliefs exactly.
+Only the screw-hole features have been removed. The L outline, inside R4
+fillet, outer chamfers and elephant-foot reliefs are all still separate,
+editable native features.
+
+The original **42-command, hole-containing** exploration is preserved as
+`scpf/model_reference.py` for study, but is **not the default model** and is
+**not used by the wooden enclosure**. Hole geometry and fixing methods can be
+reintroduced later, after they can be built without native warnings.
 
 ## Named profile and explicit reliefs
 
@@ -22,7 +33,7 @@ The name belongs to the **vertex** and becomes the sketch-line ID for the **segm
 
 `Edges.from_profile("o_*")` selects named profile segments on the two broad faces. `Edges.from_vertices("o_hor_tip", "v_tip")` instead selects the extrusion-direction edges starting at those vertices. SCPF translates both selectors to edge-pick points because SolidCraft 0.30.1's fillet/chamfer commands do not directly accept sketch-line IDs.
 
-The original 0.6 mm **tip elephant-foot cuts are not in the polygon**: a separate native chamfer removes them at the two tip edges. Another chamfer produces the relief along the inside horizontal edge. The inside fillet, both reliefs, side chamfers, and holes remain separate editable features.
+The original 0.6 mm **tip elephant-foot cuts are not in the polygon**: a separate native chamfer removes them at the two tip edges. Another chamfer produces the relief along the inside horizontal edge. The inside fillet, both reliefs and side chamfers remain separate editable features. No mounting holes are created in the default model.
 
 Named-edge selection is currently implemented for **symmetric XZ polygon extrusions only**. The remaining irregularities at the arm tips are a separate follow-up in issue #20.
 

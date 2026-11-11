@@ -19,7 +19,7 @@ Reference: [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2D
 | Rear board | 874 × 377 × 9 | `parts/wood.py` |
 | Plexiglass | 840 × 360 × 4 | `parts/wood.py` |
 | 4 mitred, R4 glazing strips | 2 × 15×15×362 and 2 × 844×15×15 (including mitre tips) | `parts/wood.py` |
-| 4 four-hole corner brackets | 24 mm extrusion, 12 mm wall, 60 mm arms | `components/corner_bracket.py` |
+| 4 corner brackets (no screw holes) | 24 mm extrusion, 12 mm wall, 60 mm arms | `components/corner_bracket.py` |
 
 **Geometry axes:** X is screen width, Y depth (front at negative Y), Z
 height/up. Outside plywood spans X=-437..437 and Z=-15..377.

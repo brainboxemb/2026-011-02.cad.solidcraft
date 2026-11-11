@@ -116,6 +116,21 @@ jobs:
           ' output/native/hub75-screen/commands.json
           unzip -p output/native/hub75-screen/model.sc document.json > output/native/hub75-screen/document.json
           jq -e '(.components | length) == 1 and (.occurrences | length) == 5' output/native/hub75-screen/document.json
+          # The shared CornerBracket is intentionally hole-free.
+          # Verify native feature plans for the standalone definition and
+          # full wooden assembly, while leaving HUB75 panel bores intact.
+          jq -e '
+            ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
+            ([.commands[] | select(.command == "solid.fillet")] | length) == 1 and
+            ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
+          ' output/native/corner-bracket/commands.json
+          jq -e '
+            ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
+            ([.commands[] | select(.command == "component.create"
+               and .params.name == "CornerBracket")] | length) == 1 and
+            ([.commands[] | select(.command == "occurrence.copy"
+               and .params.component == "CornerBracket")] | length) == 3
+          ' output/native/hub75-wood-frame/commands.json
           # SolidCraft stores an actual expandable HUB75Panels component.
           # Child definition and four copies must have the same native parent.
           jq -e '

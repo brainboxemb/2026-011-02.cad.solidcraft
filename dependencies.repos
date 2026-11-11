@@ -1,6 +1,11 @@
-# Exact SCPF revision: native SolidCraft placement without Python matrix algebra (library PR #42)
+# Exact revisions of independent Forge (SCPF) and Commands (SCPC) libraries.
+# Both can be checked out reproducibly under ext/ using vcs2l.
 repositories:
   scpf:
     type: git
-    url: https://github.com/brainboxemb/lib.py.solidcraft.git
+    url: https://github.com/brainboxemb/lib.py.solidcraft.forge.git
     version: f9ee5ce2b95f42f7547b208c6c934d7d85d2e2b3
+  scpc:
+    type: git
+    url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git
+    version: 69237a9afcbf454d174ef45d1c83c54727ac74e8

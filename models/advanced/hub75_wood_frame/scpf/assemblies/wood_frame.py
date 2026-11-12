@@ -34,7 +34,7 @@ class WoodFrame:
             x_position=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
             y_position=0.0,
             z_position=opening_bottom,
-        )
+        ).group("WoodBoxFrame")
         right = RightBoard(
             thickness=self.frame_wood_thickness,
             depth=self.cabinet_depth,
@@ -42,7 +42,7 @@ class WoodFrame:
             x_position=self.opening_width / 2 + self.frame_wood_thickness / 2,
             y_position=0.0,
             z_position=opening_bottom,
-        )
+        ).group("WoodBoxFrame")
         sides = left + right
 
         bottom = BottomBoard(
@@ -51,7 +51,7 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             y_position=0.0,
             corner_radius=self.corner_radius,
-        )
+        ).group("WoodBoxFrame")
 
         roof = RoofBoard(
             width=outer_width,
@@ -60,14 +60,14 @@ class WoodFrame:
             y_position=roof_front,
             z_position=opening_top,
             corner_radius=self.corner_radius,
-        )
+        ).group("WoodBoxFrame")
 
         rear_board = BackBoard(
             width=outer_width,
             height=opening_top,
             thickness=self.panel_wood_thickness,
             y_position=rear,
-        )
+        ).group("WoodBoxFrame")
 
         brackets = attach_corner_brackets(
             roof=roof,
@@ -79,5 +79,5 @@ class WoodFrame:
             panel_wood_thickness=self.panel_wood_thickness,
         )
 
-        boards = (sides + bottom + roof + rear_board).group("WoodBoxFrame")
+        boards = sides + bottom + roof + rear_board
         return boards + brackets

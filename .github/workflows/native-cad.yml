@@ -158,19 +158,20 @@ jobs:
             ([.commands[] | select(.command == "solid.fillet")] | length) == 1 and
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
-          # All eight brackets keep their X/Y/Z datum relationships in
-          # native symbolic geometry. No bracket placement may be frozen into
-          # occurrence copies or moves.
+          # One reusable CornerBracket definition is attached eight times
+          # to real RoofBoard/BottomBoard corner references. Initial occurrence
+          # moves only seed the solver; the native rigid joints own the relation.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"
-               and (.params.name == "CornerBracket"
-                    or (.params.name | startswith("CornerBracket "))))] | length) == 8 and
+               and .params.name == "CornerBracket")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy"
-               and (.params.component | startswith("CornerBracket")))] | length) == 0 and
-            ([.commands[] | select(.command == "occurrence.move"
-               and (.params.occurrence | startswith("CornerBracket")))] | length) == 0 and
-            ([.commands[] | select(.command == "solid.fillet")] | length) == 10
+               and .params.component == "CornerBracket")] | length) == 7 and
+            ([.commands[] | select(.command == "joint.create"
+               and (.params.name | startswith("Attach CornerBracket:")))] | length) == 8 and
+            ([.commands[] | select(.command == "joint.origin"
+               and (.params.name | startswith("CornerBracket:")))] | length) == 16 and
+            ([.commands[] | select(.command == "solid.fillet")] | length) == 3
           ' output/native/hub75-wood-frame/commands.json
           # Four native groups and five lightweight panels; no additional
           # duplicate component definitions from the removed modules.

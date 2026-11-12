@@ -16,7 +16,7 @@ class ParallelModelTests(unittest.TestCase):
     def test_plate_and_corner_bracket_have_independent_native_scripts(self):
         for slug, base in (
             ("plate", ROOT / "models/basic/plate"),
-            ("corner-bracket", ROOT / "models/component-examples/corner-bracket"),
+            ("corner-bracket", ROOT / "models/components/corner-bracket"),
         ):
             with self.subTest(slug=slug):
                 forge = base / "scpf/model.py"

@@ -34,7 +34,7 @@ does not contain any replacement geometry calculations.
 The normal workflow is to send your Python model to the **open SolidCraft
 GUI**. You do **not** need to save an intermediate JSON command file.
 
-1. Open SolidCraft and create a **new empty design**.
+1. Open SolidCraft.
 2. Enable **Preferences → Assistant → Let AI agents connect** in SolidCraft.
 3. Open PowerShell in this repository's root (the folder containing
    `bootstrap.ps1` and `models/`).
@@ -50,20 +50,20 @@ Then choose **one** model to send to the active SolidCraft design:
 
 ```powershell
 # Wooden frame + five basic HUB75 modules + shared printed corner brackets
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
 
 # Detailed HUB75 panel, original two-occurrence regression
-python -m scpf models/components/hub75-panel/scpf/model.py --connect
+python -m scpf models/components/hub75-panel/scpf/model.py --connect --new
 
 # Five detailed HUB75 panel occurrences
-python -m scpf models/advanced/hub75-screen/scpf/model.py --connect
+python -m scpf models/advanced/hub75-screen/scpf/model.py --connect --new
 ```
 
-`--connect` compiles the Python script and sends its native commands through
-SolidCraft's authenticated local control channel. It changes the **active
-design**, but it **does not** launch SolidCraft, create a new document or
-automatically save the design. Save it yourself in SolidCraft. Before running
-another model, create a new empty design to avoid mixing geometries.
+`--connect --new` first asks SolidCraft 0.30.1 to replace the active design
+with a new empty design using its native `file.new` command, then sends the
+compiled model through the authenticated local control channel. It does
+**not** launch or automatically save SolidCraft. Plain `--connect` remains
+available when you deliberately want to add to the active design.
 
 ### Update the CAD models and both Python libraries
 
@@ -97,22 +97,21 @@ in `dependencies.repos`. The exact value changes whenever the CAD project
 updates its library pin. `bootstrap.ps1` fails safely if you have changed
 tracked files in the external SCPF checkout; preserve those changes first.
 
-After updating, open a **new empty SolidCraft document** and run, from the
-repository root:
+After updating, keep SolidCraft open and run, from the repository root:
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
 ```
 
 Alternatively, if you are already in the model's own directory:
 
 ```powershell
 cd models\hub75-wood-frame\scpf
-python -m scpf model.py --connect
+python -m scpf model.py --connect --new
 ```
 
-`--connect` applies the model to the active SolidCraft GUI document; it
-does **not** need an intermediate JSON file.
+`--connect --new` starts from a clean SolidCraft design and then applies the
+model; it does **not** need an intermediate JSON file.
 
 `bootstrap.ps1` normally needs to run only once per environment or when
 the pinned dependency is updated. It uses [vcs2l](https://github.com/ros-infrastructure/vcs2l)

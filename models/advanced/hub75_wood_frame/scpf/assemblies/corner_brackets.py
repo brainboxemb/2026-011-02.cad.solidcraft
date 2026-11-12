@@ -40,71 +40,62 @@ class CornerBrackets:
             self.panel_wood_thickness + self.roof_rear_overhang + half
         )
 
-        def attached(parent, parent_anchor, child_anchor, gap, angle):
-            return bracket.copy().attach(
-                parent,
-                parent=parent_anchor,
-                child=child_anchor,
-                gap=gap,
-                angle=angle,
-            )
-
-        top_left_front = attached(
+        top_left_front = bracket.copy().attach(
             roof,
-            Anchor.FRONT_TOP_LEFT,
-            "front_mount",
-            roof_front_gap,
-            90,
+            parent=Anchor.FRONT_TOP_LEFT,
+            child="front_mount",
+            gap=roof_front_gap,
+            angle=90,
         )
-        top_right_front = attached(
+        top_right_front = bracket.copy().attach(
             roof,
-            Anchor.FRONT_TOP_RIGHT,
-            "front_mount",
-            roof_front_gap,
-            90,
+            parent=Anchor.FRONT_TOP_RIGHT,
+            child="front_mount",
+            gap=roof_front_gap,
+            angle=90,
         )
-        bottom_right_front = attached(
+        bottom_right_front = bracket.copy().attach(
             bottom,
-            Anchor.FRONT_BOTTOM_RIGHT,
-            "front_mount",
-            bottom_gap,
-            90,
+            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            child="front_mount",
+            gap=bottom_gap,
+            angle=90,
         )
-        bottom_left_front = attached(
+        bottom_left_front = bracket.copy().attach(
             bottom,
-            Anchor.FRONT_BOTTOM_LEFT,
-            "front_mount",
-            bottom_gap,
-            90,
+            parent=Anchor.FRONT_BOTTOM_LEFT,
+            child="front_mount",
+            gap=bottom_gap,
+            angle=90,
         )
 
-        top_left_rear = attached(
+        top_left_rear = bracket.copy().attach(
             roof,
-            Anchor.BACK_TOP_LEFT,
-            "rear_mount",
-            roof_rear_gap,
-            0,
+            parent=Anchor.BACK_TOP_LEFT,
+            child="rear_mount",
+            gap=roof_rear_gap,
+            angle=0,
         )
-        top_right_rear = attached(
+        top_right_rear = bracket.copy().attach(
             roof,
-            Anchor.BACK_TOP_RIGHT,
-            "rear_mount",
-            roof_rear_gap,
-            0,
+            parent=Anchor.BACK_TOP_RIGHT,
+            child="rear_mount",
+            gap=roof_rear_gap,
+            angle=0,
         )
-        bottom_right_rear = attached(
+        bottom_right_rear = bracket.copy().attach(
             bottom,
-            Anchor.BACK_BOTTOM_RIGHT,
-            "rear_mount",
-            bottom_gap,
-            0,
+            parent=Anchor.BACK_BOTTOM_RIGHT,
+            child="rear_mount",
+            gap=bottom_gap,
+            angle=0,
         )
-        bottom_left_rear = attached(
+        bottom_left_rear = bracket.copy().attach(
             bottom,
-            Anchor.BACK_BOTTOM_LEFT,
-            "rear_mount",
-            bottom_gap,
-            0,
+            parent=Anchor.BACK_BOTTOM_LEFT,
+            child="rear_mount",
+            gap=bottom_gap,
+            angle=0,
         )
 
         return (

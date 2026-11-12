@@ -78,7 +78,7 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(
             board_classes,
-            ["Board", "SideWall", "BottomBoard", "RoofBoard", "BackBoard"],
+            ["Board", "SideBoard", "LeftBoard", "RightBoard", "BottomBoard", "RoofBoard", "BackBoard"],
         )
 
         glass_classes = [
@@ -156,7 +156,7 @@ class WoodenFrameTests(unittest.TestCase):
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
         names = [p["name"] for p in of(cmd, "component.create")]
-        self.assertEqual(len(names), 13)
+        self.assertEqual(len(names), 14)
 
         for name in (
             "HUB75Panels",
@@ -164,7 +164,8 @@ class WoodenFrameTests(unittest.TestCase):
             "WoodGlassFrame",
             "CornerBrackets",
             "Hub75PanelBasic",
-            "SideWall",
+            "LeftBoard",
+            "RightBoard",
             "BottomBoard",
             "RoofBoard",
             "BackBoard",
@@ -178,7 +179,6 @@ class WoodenFrameTests(unittest.TestCase):
         copies = of(cmd, "occurrence.copy")
         for name, count in [
             ("Hub75PanelBasic", 4),
-            ("SideWall", 1),
             ("GlassStrip", 1),
             ("GlassStrip 2", 1),
             ("CornerBracket", 7),
@@ -210,8 +210,12 @@ class WoodenFrameTests(unittest.TestCase):
     def test_all_part_positions_derived_from_central_dimensions(self):
         cmd = commands()
         self.assertEqual(
-            [p["translate"] for p in moved(cmd, "SideWall")],
-            [[-428.0, 50.0, 0.0], [428.0, 50.0, 0.0]],
+            moved(cmd, "LeftBoard")[0]["translate"],
+            [-428.0, 50.0, 0.0],
+        )
+        self.assertEqual(
+            moved(cmd, "RightBoard")[0]["translate"],
+            [428.0, 50.0, 0.0],
         )
         self.assertEqual(
             moved(cmd, "BottomBoard")[0]["translate"],
@@ -326,7 +330,7 @@ class WoodenFrameTests(unittest.TestCase):
             "#E3BF80",
         )
         self.assertEqual(
-            materials["LIGHTPLY side wall"],
+            materials["LIGHTPLY side board"],
             "#CBA36B",
         )
 
@@ -383,8 +387,8 @@ class WoodenFrameTests(unittest.TestCase):
         cmd = commands(opening_width=850, frame_wood_thickness=13)
 
         side_x = [
-            p["translate"][0]
-            for p in moved(cmd, "SideWall")
+            moved(cmd, "LeftBoard")[0]["translate"][0],
+            moved(cmd, "RightBoard")[0]["translate"][0],
         ]
         bracket_x = sorted({
             p["translate"][0]
@@ -412,7 +416,6 @@ class WoodenFrameTests(unittest.TestCase):
             "CornerBracket",
             "GlassStrip",
             "GlassStrip 2",
-            "SideWall",
             "Hub75PanelBasic",
         ):
             copy_idx = [

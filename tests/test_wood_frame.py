@@ -10,7 +10,7 @@ from scpf.runner import ModelParameterWarning, run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCPF_DIR = ROOT / "models/advanced/hub75-wood-frame/scpf"
+SCPF_DIR = ROOT / "models/advanced/hub75_wood_frame/scpf"
 MODEL = SCPF_DIR / "model.py"
 BOARD = SCPF_DIR / "parts/board.py"
 GLASS_STRIP = SCPF_DIR / "parts/glass_strip.py"

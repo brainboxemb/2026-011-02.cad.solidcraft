@@ -11,17 +11,17 @@ class GlassFrame:
     opening_height = 362.0
     opening_bottom_z = 12.0
     glazing_wood_width = 12.0
-    glazing_wood_depth = 12.0
+    _glazing_wood_depth = 12.0
 
     def build(self):
-        trim_y = self.glazing_wood_depth / 2
+        trim_y = self._glazing_wood_depth / 2
         opening_bottom = self.opening_bottom_z
         opening_top = opening_bottom + self.opening_height
 
         bottom = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
-            depth=self.glazing_wood_depth,
+            depth=self._glazing_wood_depth,
             length_center=0,
             width_base=opening_bottom,
             finish=0,
@@ -30,7 +30,7 @@ class GlassFrame:
         top = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
-            depth=self.glazing_wood_depth,
+            depth=self._glazing_wood_depth,
             length_center=0,
             width_base=-opening_top,
             finish=0,
@@ -39,7 +39,7 @@ class GlassFrame:
         left = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
-            depth=self.glazing_wood_depth,
+            depth=self._glazing_wood_depth,
             length_center=-(self.opening_height / 2) - opening_bottom,
             width_base=-(self.opening_width / 2),
             finish=1,
@@ -48,7 +48,7 @@ class GlassFrame:
         right = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
-            depth=self.glazing_wood_depth,
+            depth=self._glazing_wood_depth,
             length_center=self.opening_height / 2 + opening_bottom,
             width_base=-(self.opening_width / 2),
             finish=1,

@@ -91,7 +91,7 @@ class WoodenHub75Box:
 
         window = Window(
             opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
+            opening_bottom_z=self.frame_wood_thickness,
         ).move(
             y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
         )

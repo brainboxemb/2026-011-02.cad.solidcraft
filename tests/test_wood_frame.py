@@ -463,6 +463,24 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertIn("corner_radius", parameter_names)
 
+    def test_side_boards_are_connected_to_bottom_board(self):
+        source = (
+            ASSEMBLIES / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("parent=Anchor.FRONT_TOP_LEFT", source)
+        self.assertIn("child=Anchor.FRONT_BOTTOM_LEFT", source)
+        self.assertIn("parent=Anchor.FRONT_TOP_RIGHT", source)
+        self.assertIn("child=Anchor.FRONT_BOTTOM_RIGHT", source)
+
+        cmd = commands()
+        frame_joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach Board")
+            and not p["name"].startswith("Attach CornerBracket")
+        ]
+        self.assertEqual(len(frame_joints), 2)
+        self.assertTrue(all(p["type"] == "rigid" for p in frame_joints))
+
     def test_corner_bracket_is_neutral_and_assembly_owns_placement(self):
         source = (
             ROOT / "models" / "components" / "corner_bracket" / "scpf" / "model.py"

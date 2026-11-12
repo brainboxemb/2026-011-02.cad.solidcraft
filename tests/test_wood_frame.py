@@ -16,6 +16,7 @@ GLASS_STRIP = SCPF_DIR / "parts/glass_strip.py"
 WINDOW = SCPF_DIR / "parts/window.py"
 ASSEMBLIES = SCPF_DIR / "assemblies"
 GLASS_FRAME = ASSEMBLIES / "glass_frame.py"
+HUB75_PANELS = ASSEMBLIES / "hub75_panels.py"
 
 
 def commands(**overrides):
@@ -172,6 +173,71 @@ class WoodenFrameTests(unittest.TestCase):
             model_source,
         )
         self.assertIn("opening_bottom_z=opening_bottom_z", model_source)
+
+    def test_parameter_intent_matches_native_parameter_list(self):
+        model_source = MODEL.read_text(encoding="utf-8")
+        panel_source = HUB75_PANELS.read_text(encoding="utf-8")
+
+        self.assertIn("PANEL_COUNT = 5", panel_source)
+        self.assertIn("PANEL_PITCH = 160.0", panel_source)
+        self.assertNotIn("panel_count =", model_source)
+        self.assertNotIn("panel_pitch =", model_source)
+        self.assertIn("_panel_recess_depth = 25.0", model_source)
+
+        parameter_names = {
+            p["name"] for p in of(commands(), "parameters.add")
+        }
+        self.assertEqual(
+            parameter_names,
+            {
+                "opening_width",
+                "opening_height",
+                "frame_wood_thickness",
+                "panel_wood_thickness",
+                "cabinet_depth",
+                "roof_front_overhang",
+                "roof_rear_overhang",
+                "corner_radius",
+                "bracket_width",
+                "glazing_wood_width",
+                "glazing_wood_depth",
+            },
+        )
+
+    def test_bracket_width_and_corner_radius_are_shared_model_parameters(self):
+        cmd = commands(bracket_width=30, corner_radius=6)
+        parameter_names = [p["name"] for p in of(cmd, "parameters.add")]
+
+        self.assertEqual(parameter_names.count("bracket_width"), 1)
+        self.assertEqual(parameter_names.count("corner_radius"), 1)
+        self.assertFalse(
+            any(name.startswith("CornerBracket_") for name in parameter_names)
+        )
+
+        bracket_names = [
+            p["name"] for p in of(cmd, "component.create")
+            if p["name"] == "CornerBracket"
+            or p["name"].startswith("CornerBracket ")
+        ]
+        self.assertEqual(len(bracket_names), 8)
+
+        for name in bracket_names:
+            part = component_commands(cmd, name)
+            extrusion = next(
+                item["params"] for item in part
+                if item["command"] == "solid.extrude"
+            )
+            sketch = next(
+                item["params"] for item in part
+                if item["command"] == "sketch.create"
+            )
+            fillet = next(
+                item["params"] for item in part
+                if item["command"] == "solid.fillet"
+            )
+            self.assertEqual(extrusion["distance"], "bracket_width")
+            self.assertIn("bracket_width", str(sketch.get("offset", 0)))
+            self.assertEqual(fillet["radius"], "corner_radius")
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
@@ -514,7 +580,8 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("panel_wood_thickness = 9.0", source)
         self.assertIn("roof_front_overhang = 10.0", source)
         self.assertIn("roof_rear_overhang = 1.0", source)
-        self.assertIn("panel_recess_depth = 25.0", source)
+        self.assertIn("_panel_recess_depth = 25.0", source)
+        self.assertIn("bracket_width = 24.0", source)
         self.assertNotIn("frame_front_y_position", source)
         self.assertEqual(
             (-10.0, 110.0),

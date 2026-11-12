@@ -3,46 +3,6 @@
 from scpf import Direction, Edges, Polygon2D, component, pv
 
 
-def _build_board(
-    width, depth, height, *,
-    x_position=0.0,
-    y_position=0.0,
-    z_position=0.0,
-    corner_radius=0.0,
-    fillet_vertices=(),
-    material_name="LIGHTPLY",
-    density_g_cm3=0.55,
-    color="#CBA36B",
-):
-    """Build one rectangular XZ board from a world-Y datum plane."""
-    half = width / 2
-    center = width * 0 + x_position
-    left = center - half
-    right = center + half
-    bottom = z_position
-    top = bottom + height
-    profile = Polygon2D([
-        ("lower_left", (left, bottom)),
-        ("lower_right", (right, bottom)),
-        ("upper_right", (right, top)),
-        ("upper_left", (left, top)),
-    ], plane="XZ", world=True).at(y=y_position)
-    body = profile.extrude(
-        depth,
-        direction=Direction.POSITIVE,
-    )
-    if fillet_vertices and pv(corner_radius) > 0:
-        body = body.fillet(
-            corner_radius,
-            edges=Edges.from_vertices(*fillet_vertices),
-        )
-    return body.with_material(
-        material_name,
-        density_g_cm3=density_g_cm3,
-        color=color,
-    )
-
-
 class SideBoard:
     thickness = 12.0
     depth = 100.0
@@ -131,3 +91,43 @@ class BackBoard:
             material_name="LIGHTPLY rear",
             color="#A87D4D",
         )
+
+
+def _build_board(
+    width, depth, height, *,
+    x_position=0.0,
+    y_position=0.0,
+    z_position=0.0,
+    corner_radius=0.0,
+    fillet_vertices=(),
+    material_name="LIGHTPLY",
+    density_g_cm3=0.55,
+    color="#CBA36B",
+):
+    """Build one rectangular XZ board from a world-Y datum plane."""
+    half = width / 2
+    center = width * 0 + x_position
+    left = center - half
+    right = center + half
+    bottom = z_position
+    top = bottom + height
+    profile = Polygon2D([
+        ("lower_left", (left, bottom)),
+        ("lower_right", (right, bottom)),
+        ("upper_right", (right, top)),
+        ("upper_left", (left, top)),
+    ], plane="XZ", world=True).at(y=y_position)
+    body = profile.extrude(
+        depth,
+        direction=Direction.POSITIVE,
+    )
+    if fillet_vertices and pv(corner_radius) > 0:
+        body = body.fillet(
+            corner_radius,
+            edges=Edges.from_vertices(*fillet_vertices),
+        )
+    return body.with_material(
+        material_name,
+        density_g_cm3=density_g_cm3,
+        color=color,
+    )

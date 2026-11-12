@@ -42,7 +42,7 @@ class WoodenHub75Box:
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0
-    _panel_recess_depth = 25.0
+    panel_recess_depth = 25.0
 
     # Wood
     frame_wood_thickness = 12.0
@@ -65,7 +65,7 @@ class WoodenHub75Box:
         panels = HUB75Panels(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-            _panel_recess_depth=self._panel_recess_depth,
+            panel_recess_depth=self.panel_recess_depth,
         )
 
         frame = WoodFrame(

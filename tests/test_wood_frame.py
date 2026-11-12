@@ -208,7 +208,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             moved(cmd, "Window")[0]["translate"],
-            [0.0, -8.0, 1.0],
+            [0.0, -11.0, 1.0],
         )
         self.assertEqual(
             sorted(
@@ -227,11 +227,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(len(vertical), 2)
         self.assertEqual(
             [p["translate"] for p in horizontal],
-            [[0.0, -17.5, 0.0], [0.0, -17.5, 362.0]],
+            [[0.0, -19.0, 0.0], [0.0, -19.0, 362.0]],
         )
         self.assertEqual(
             [p["translate"] for p in vertical],
-            [[-422.0, -17.5, 181.0], [422.0, -17.5, 181.0]],
+            [[-422.0, -19.0, 181.0], [422.0, -19.0, 181.0]],
         )
         self.assertEqual(vertical[0]["axis"], [0.0, 1.0, 0.0])
         self.assertEqual(vertical[0]["angle"], "90 deg")

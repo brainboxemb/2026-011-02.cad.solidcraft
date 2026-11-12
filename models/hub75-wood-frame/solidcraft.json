@@ -35,6 +35,14 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "frame_wood_thickness",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "opening_height",
         "expression": "362",
         "unit": "mm"
@@ -61,19 +69,19 @@
         "points": [
           [
             -79.85,
-            "-((opening_height - 319.71 mm) / 2)"
+            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))"
           ],
           [
             79.85,
-            "-((opening_height - 319.71 mm) / 2)"
+            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))"
           ],
           [
             79.85,
-            "-((opening_height - 319.71 mm) / 2 + 319.71 mm)"
+            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)"
           ],
           [
             -79.85,
-            "-((opening_height - 319.71 mm) / 2 + 319.71 mm)"
+            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)"
           ]
         ],
         "closed": true,
@@ -202,24 +210,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "cabinet_depth",
-        "expression": "100",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "frame_wood_thickness",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "opening_width",
         "expression": "844",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "cabinet_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
@@ -235,7 +235,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": 0.0
       }
     },
     {
@@ -244,19 +245,19 @@
         "points": [
           [
             "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) - (frame_wood_thickness / 2)",
-            -0.0
+            "-(frame_wood_thickness)"
           ],
           [
             "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) + (frame_wood_thickness / 2)",
-            -0.0
+            "-(frame_wood_thickness)"
           ],
           [
             "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) + (frame_wood_thickness / 2)",
-            "-(opening_height + 0 mm)"
+            "-(frame_wood_thickness + (opening_height))"
           ],
           [
             "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) - (frame_wood_thickness / 2)",
-            "-(opening_height + 0 mm)"
+            "-(frame_wood_thickness + (opening_height))"
           ]
         ],
         "closed": true,
@@ -276,7 +277,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "cabinet_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "LeftBoard"
       }
     },
@@ -304,17 +305,6 @@
       }
     },
     {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "LeftBoard:1",
-        "translate": [
-          0.0,
-          50.0,
-          0.0
-        ]
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "RightBoard",
@@ -326,7 +316,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": 0.0
       }
     },
     {
@@ -335,19 +326,19 @@
         "points": [
           [
             "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) - (frame_wood_thickness / 2)",
-            -0.0
+            "-(frame_wood_thickness)"
           ],
           [
             "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) + (frame_wood_thickness / 2)",
-            -0.0
+            "-(frame_wood_thickness)"
           ],
           [
             "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) + (frame_wood_thickness / 2)",
-            "-(opening_height + 0 mm)"
+            "-(frame_wood_thickness + (opening_height))"
           ],
           [
             "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) - (frame_wood_thickness / 2)",
-            "-(opening_height + 0 mm)"
+            "-(frame_wood_thickness + (opening_height))"
           ]
         ],
         "closed": true,
@@ -367,7 +358,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "cabinet_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "RightBoard"
       }
     },
@@ -384,17 +375,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "RightBoard:1",
-        "translate": [
-          0.0,
-          50.0,
-          0.0
-        ]
       }
     },
     {
@@ -417,7 +397,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": 0.0
       }
     },
     {
@@ -458,7 +439,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "cabinet_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "BottomBoard"
       }
     },
@@ -468,12 +449,12 @@
         "edges": [
           [
             -434.0,
-            0.0,
+            50.0,
             0.0
           ],
           [
             434.0,
-            0.0,
+            50.0,
             0.0
           ]
         ],
@@ -505,14 +486,11 @@
       }
     },
     {
-      "command": "occurrence.move",
+      "command": "parameters.add",
       "params": {
-        "occurrence": "BottomBoard:1",
-        "translate": [
-          0.0,
-          50.0,
-          -12.0
-        ]
+        "name": "roof_front_overhang",
+        "expression": "10",
+        "unit": "mm"
       }
     },
     {
@@ -532,14 +510,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "roof_front_overhang",
-        "expression": "10",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "RoofBoard",
@@ -551,7 +521,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "-(roof_front_overhang)"
       }
     },
     {
@@ -560,19 +531,19 @@
         "points": [
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height)"
+            "-(frame_wood_thickness + (opening_height))"
           ],
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height)"
+            "-(frame_wood_thickness + (opening_height))"
           ],
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height + (frame_wood_thickness))"
+            "-((frame_wood_thickness + (opening_height)) + (frame_wood_thickness))"
           ],
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height + (frame_wood_thickness))"
+            "-((frame_wood_thickness + (opening_height)) + (frame_wood_thickness))"
           ]
         ],
         "closed": true,
@@ -592,7 +563,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "RoofBoard"
       }
     },
@@ -602,13 +573,13 @@
         "edges": [
           [
             434.0,
-            0.0,
-            374.0
+            50.0,
+            386.0
           ],
           [
             -434.0,
-            0.0,
-            374.0
+            50.0,
+            386.0
           ]
         ],
         "radius": "corner_radius",
@@ -639,17 +610,6 @@
       }
     },
     {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "RoofBoard:1",
-        "translate": [
-          0.0,
-          50.0,
-          0.0
-        ]
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "BackBoard",
@@ -661,7 +621,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "cabinet_depth"
       }
     },
     {
@@ -678,11 +639,11 @@
           ],
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-(frame_wood_thickness + (opening_height) + 0 mm)"
           ],
           [
             "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-(frame_wood_thickness + (opening_height) + 0 mm)"
           ]
         ],
         "closed": true,
@@ -702,7 +663,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "panel_wood_thickness",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "BackBoard"
       }
     },
@@ -727,17 +688,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "BackBoard:1",
-        "translate": [
-          0.0,
-          104.5,
-          -12.0
-        ]
       }
     },
     {
@@ -777,19 +727,19 @@
         "points": [
           [
             "(opening_width * 0 + 0 mm) - (opening_width / 2)",
-            "-(opening_width * 0 + 0 mm)"
+            "-((opening_width * 0) + (frame_wood_thickness))"
           ],
           [
             "(opening_width * 0 + 0 mm) + (opening_width / 2)",
-            "-(opening_width * 0 + 0 mm)"
+            "-((opening_width * 0) + (frame_wood_thickness))"
           ],
           [
             "((opening_width * 0 + 0 mm) + (opening_width / 2)) - (glazing_wood_width)",
-            "-((opening_width * 0 + 0 mm) + (glazing_wood_width))"
+            "-(((opening_width * 0) + (frame_wood_thickness)) + (glazing_wood_width))"
           ],
           [
             "((opening_width * 0 + 0 mm) - (opening_width / 2)) + (glazing_wood_width)",
-            "-((opening_width * 0 + 0 mm) + (glazing_wood_width))"
+            "-(((opening_width * 0) + (frame_wood_thickness)) + (glazing_wood_width))"
           ]
         ],
         "closed": true,
@@ -868,19 +818,19 @@
         "points": [
           [
             "(opening_width * 0 + 0 mm) - (opening_width / 2)",
-            "-((opening_width * 0) + (-(opening_height)))"
+            "-((opening_width * 0) + (-(frame_wood_thickness + (opening_height))))"
           ],
           [
             "(opening_width * 0 + 0 mm) + (opening_width / 2)",
-            "-((opening_width * 0) + (-(opening_height)))"
+            "-((opening_width * 0) + (-(frame_wood_thickness + (opening_height))))"
           ],
           [
             "((opening_width * 0 + 0 mm) + (opening_width / 2)) - (glazing_wood_width)",
-            "-(((opening_width * 0) + (-(opening_height))) + (glazing_wood_width))"
+            "-(((opening_width * 0) + (-(frame_wood_thickness + (opening_height)))) + (glazing_wood_width))"
           ],
           [
             "((opening_width * 0 + 0 mm) - (opening_width / 2)) + (glazing_wood_width)",
-            "-(((opening_width * 0) + (-(opening_height))) + (glazing_wood_width))"
+            "-(((opening_width * 0) + (-(frame_wood_thickness + (opening_height)))) + (glazing_wood_width))"
           ]
         ],
         "closed": true,
@@ -956,19 +906,19 @@
       "params": {
         "points": [
           [
-            "((opening_height * 0) + (-(opening_height / 2))) - (opening_height / 2)",
+            "((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) - (opening_height / 2)",
             "-((opening_height * 0) + (-(opening_width / 2)))"
           ],
           [
-            "((opening_height * 0) + (-(opening_height / 2))) + (opening_height / 2)",
+            "((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) + (opening_height / 2)",
             "-((opening_height * 0) + (-(opening_width / 2)))"
           ],
           [
-            "(((opening_height * 0) + (-(opening_height / 2))) + (opening_height / 2)) - (glazing_wood_width)",
+            "(((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) + (opening_height / 2)) - (glazing_wood_width)",
             "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
           ],
           [
-            "(((opening_height * 0) + (-(opening_height / 2))) - (opening_height / 2)) + (glazing_wood_width)",
+            "(((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) - (opening_height / 2)) + (glazing_wood_width)",
             "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
           ]
         ],
@@ -1053,19 +1003,19 @@
       "params": {
         "points": [
           [
-            "((opening_height * 0) + (opening_height / 2)) - (opening_height / 2)",
+            "((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) - (opening_height / 2)",
             "-((opening_height * 0) + (-(opening_width / 2)))"
           ],
           [
-            "((opening_height * 0) + (opening_height / 2)) + (opening_height / 2)",
+            "((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) + (opening_height / 2)",
             "-((opening_height * 0) + (-(opening_width / 2)))"
           ],
           [
-            "(((opening_height * 0) + (opening_height / 2)) + (opening_height / 2)) - (glazing_wood_width)",
+            "(((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) + (opening_height / 2)) - (glazing_wood_width)",
             "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
           ],
           [
-            "(((opening_height * 0) + (opening_height / 2)) - (opening_height / 2)) + (glazing_wood_width)",
+            "(((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) - (opening_height / 2)) + (glazing_wood_width)",
             "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
           ]
         ],
@@ -1134,7 +1084,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": 12.0
       }
     },
     {
@@ -1143,39 +1094,39 @@
         "points": [
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
-            "-(opening_height + (frame_wood_thickness) + 9 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 9 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm",
-            "-(opening_height + (frame_wood_thickness) + 12 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm",
-            "-(opening_height + (frame_wood_thickness) + 12 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
-            "-(opening_height + (frame_wood_thickness) + 6 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 6 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
-            "-(opening_height + (frame_wood_thickness) + -57 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -57 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm",
-            "-(opening_height + (frame_wood_thickness) + -60 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
-            "-(opening_height + (frame_wood_thickness) + -60 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ]
         ],
         "closed": true,
@@ -1210,8 +1161,8 @@
         "edges": [
           [
             -434.0,
-            0.0,
-            374.0
+            12.0,
+            386.0
           ]
         ],
         "radius": "corner_radius",
@@ -1224,13 +1175,13 @@
         "edges": [
           [
             -374.0,
-            0.0,
-            374.0
+            12.0,
+            386.0
           ],
           [
             -434.0,
-            0.0,
-            314.0
+            12.0,
+            326.0
           ]
         ],
         "distance": 0.6,
@@ -1243,73 +1194,73 @@
         "edges": [
           [
             -374.0,
-            -12.0,
-            378.5
+            0.0,
+            390.5
           ],
           [
             -375.5,
-            -12.0,
-            384.5
+            0.0,
+            396.5
           ],
           [
             -408.5,
-            -12.0,
-            386.0
+            0.0,
+            398.0
           ],
           [
             -443.0,
-            -12.0,
-            383.0
+            0.0,
+            395.0
           ],
           [
             -446.0,
-            -12.0,
-            348.5
+            0.0,
+            360.5
           ],
           [
             -444.5,
-            -12.0,
-            315.5
+            0.0,
+            327.5
           ],
           [
             -438.5,
-            -12.0,
-            314.0
+            0.0,
+            326.0
           ],
           [
             -374.0,
-            12.0,
-            378.5
+            24.0,
+            390.5
           ],
           [
             -375.5,
-            12.0,
-            384.5
+            24.0,
+            396.5
           ],
           [
             -408.5,
-            12.0,
-            386.0
+            24.0,
+            398.0
           ],
           [
             -443.0,
-            12.0,
-            383.0
+            24.0,
+            395.0
           ],
           [
             -446.0,
-            12.0,
-            348.5
+            24.0,
+            360.5
           ],
           [
             -444.5,
-            12.0,
-            315.5
+            24.0,
+            327.5
           ],
           [
             -438.5,
-            12.0,
-            314.0
+            24.0,
+            326.0
           ]
         ],
         "distance": 2.0,
@@ -1322,13 +1273,13 @@
         "edges": [
           [
             -404.0,
-            -12.0,
-            374.0
+            0.0,
+            386.0
           ],
           [
             -404.0,
-            12.0,
-            374.0
+            24.0,
+            386.0
           ]
         ],
         "distance": 0.6,
@@ -1339,34 +1290,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:1",
-        "translate": [
-          0.0,
-          12.0,
-          0.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:2",
-        "translate": [
-          0.0,
-          88.0,
-          0.0
-        ]
       }
     },
     {
@@ -1381,7 +1304,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "cabinet_depth - 12 mm"
       }
     },
     {
@@ -1389,40 +1313,40 @@
       "params": {
         "points": [
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
-            "-(opening_height + (frame_wood_thickness) + 0 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
-            "-(opening_height + (frame_wood_thickness) + 9 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 9 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm",
-            "-(opening_height + (frame_wood_thickness) + 12 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm",
-            "-(opening_height + (frame_wood_thickness) + 12 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
-            "-(opening_height + (frame_wood_thickness) + 6 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 6 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
-            "-(opening_height + (frame_wood_thickness) + -57 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -57 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm",
-            "-(opening_height + (frame_wood_thickness) + -60 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ],
           [
-            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
-            "-(opening_height + (frame_wood_thickness) + -60 mm)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ]
         ],
         "closed": true,
@@ -1456,9 +1380,9 @@
       "params": {
         "edges": [
           [
-            434.0,
-            0.0,
-            374.0
+            -434.0,
+            88.0,
+            386.0
           ]
         ],
         "radius": "corner_radius",
@@ -1470,14 +1394,14 @@
       "params": {
         "edges": [
           [
-            374.0,
-            0.0,
-            374.0
+            -374.0,
+            88.0,
+            386.0
           ],
           [
-            434.0,
-            0.0,
-            314.0
+            -434.0,
+            88.0,
+            326.0
           ]
         ],
         "distance": 0.6,
@@ -1489,74 +1413,74 @@
       "params": {
         "edges": [
           [
-            374.0,
-            -12.0,
-            378.5
+            -374.0,
+            76.0,
+            390.5
           ],
           [
-            375.5,
-            -12.0,
-            384.5
+            -375.5,
+            76.0,
+            396.5
           ],
           [
-            408.5,
-            -12.0,
-            386.0
+            -408.5,
+            76.0,
+            398.0
           ],
           [
-            443.0,
-            -12.0,
-            383.0
+            -443.0,
+            76.0,
+            395.0
           ],
           [
-            446.0,
-            -12.0,
-            348.5
+            -446.0,
+            76.0,
+            360.5
           ],
           [
-            444.5,
-            -12.0,
-            315.5
+            -444.5,
+            76.0,
+            327.5
           ],
           [
-            438.5,
-            -12.0,
-            314.0
+            -438.5,
+            76.0,
+            326.0
           ],
           [
-            374.0,
-            12.0,
-            378.5
+            -374.0,
+            100.0,
+            390.5
           ],
           [
-            375.5,
-            12.0,
-            384.5
+            -375.5,
+            100.0,
+            396.5
           ],
           [
-            408.5,
-            12.0,
-            386.0
+            -408.5,
+            100.0,
+            398.0
           ],
           [
-            443.0,
-            12.0,
-            383.0
+            -443.0,
+            100.0,
+            395.0
           ],
           [
-            446.0,
-            12.0,
-            348.5
+            -446.0,
+            100.0,
+            360.5
           ],
           [
-            444.5,
-            12.0,
-            315.5
+            -444.5,
+            100.0,
+            327.5
           ],
           [
-            438.5,
-            12.0,
-            314.0
+            -438.5,
+            100.0,
+            326.0
           ]
         ],
         "distance": 2.0,
@@ -1568,14 +1492,14 @@
       "params": {
         "edges": [
           [
-            404.0,
-            -12.0,
-            374.0
+            -404.0,
+            76.0,
+            386.0
           ],
           [
-            404.0,
-            12.0,
-            374.0
+            -404.0,
+            100.0,
+            386.0
           ]
         ],
         "distance": 0.6,
@@ -1586,34 +1510,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket 2"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket 2:1",
-        "translate": [
-          0.0,
-          12.0,
-          0.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket 2:2",
-        "translate": [
-          0.0,
-          88.0,
-          0.0
-        ]
       }
     },
     {
@@ -1628,7 +1524,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": 12.0
       }
     },
     {
@@ -1636,40 +1533,40 @@
       "params": {
         "points": [
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
-            "-(-(frame_wood_thickness) + -0 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
-            "-(-(frame_wood_thickness) + -0 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
-            "-(-(frame_wood_thickness) + -9 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 9 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm",
-            "-(-(frame_wood_thickness) + -12 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm",
-            "-(-(frame_wood_thickness) + -12 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
-            "-(-(frame_wood_thickness) + -6 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + 6 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
-            "-(-(frame_wood_thickness) + 57 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -57 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm",
-            "-(-(frame_wood_thickness) + 60 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ],
           [
-            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
-            "-(-(frame_wood_thickness) + 60 mm)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ]
         ],
         "closed": true,
@@ -1703,9 +1600,9 @@
       "params": {
         "edges": [
           [
-            -434.0,
-            0.0,
-            -12.0
+            434.0,
+            12.0,
+            386.0
           ]
         ],
         "radius": "corner_radius",
@@ -1717,14 +1614,14 @@
       "params": {
         "edges": [
           [
-            -374.0,
-            0.0,
-            -12.0
+            374.0,
+            12.0,
+            386.0
           ],
           [
-            -434.0,
-            0.0,
-            48.0
+            434.0,
+            12.0,
+            326.0
           ]
         ],
         "distance": 0.6,
@@ -1736,74 +1633,74 @@
       "params": {
         "edges": [
           [
-            -374.0,
-            -12.0,
-            -16.5
+            374.0,
+            0.0,
+            390.5
           ],
           [
-            -375.5,
-            -12.0,
-            -22.5
+            375.5,
+            0.0,
+            396.5
           ],
           [
-            -408.5,
-            -12.0,
-            -24.0
+            408.5,
+            0.0,
+            398.0
           ],
           [
-            -443.0,
-            -12.0,
-            -21.0
+            443.0,
+            0.0,
+            395.0
           ],
           [
-            -446.0,
-            -12.0,
-            13.5
+            446.0,
+            0.0,
+            360.5
           ],
           [
-            -444.5,
-            -12.0,
-            46.5
+            444.5,
+            0.0,
+            327.5
           ],
           [
-            -438.5,
-            -12.0,
-            48.0
+            438.5,
+            0.0,
+            326.0
           ],
           [
-            -374.0,
-            12.0,
-            -16.5
+            374.0,
+            24.0,
+            390.5
           ],
           [
-            -375.5,
-            12.0,
-            -22.5
+            375.5,
+            24.0,
+            396.5
           ],
           [
-            -408.5,
-            12.0,
-            -24.0
+            408.5,
+            24.0,
+            398.0
           ],
           [
-            -443.0,
-            12.0,
-            -21.0
+            443.0,
+            24.0,
+            395.0
           ],
           [
-            -446.0,
-            12.0,
-            13.5
+            446.0,
+            24.0,
+            360.5
           ],
           [
-            -444.5,
-            12.0,
-            46.5
+            444.5,
+            24.0,
+            327.5
           ],
           [
-            -438.5,
-            12.0,
-            48.0
+            438.5,
+            24.0,
+            326.0
           ]
         ],
         "distance": 2.0,
@@ -1815,14 +1712,14 @@
       "params": {
         "edges": [
           [
-            -404.0,
-            -12.0,
-            -12.0
+            404.0,
+            0.0,
+            386.0
           ],
           [
-            -404.0,
-            12.0,
-            -12.0
+            404.0,
+            24.0,
+            386.0
           ]
         ],
         "distance": 0.6,
@@ -1833,34 +1730,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "CornerBracket 3"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket 3:1",
-        "translate": [
-          0.0,
-          12.0,
-          0.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket 3:2",
-        "translate": [
-          0.0,
-          88.0,
-          0.0
-        ]
       }
     },
     {
@@ -1875,7 +1744,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "cabinet_depth - 12 mm"
       }
     },
     {
@@ -1884,39 +1754,39 @@
         "points": [
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
-            "-(-(frame_wood_thickness) + -0 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
-            "-(-(frame_wood_thickness) + -0 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 0 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
-            "-(-(frame_wood_thickness) + -9 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 9 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm",
-            "-(-(frame_wood_thickness) + -12 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm",
-            "-(-(frame_wood_thickness) + -12 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 12 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
-            "-(-(frame_wood_thickness) + -6 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + 6 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
-            "-(-(frame_wood_thickness) + 57 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -57 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm",
-            "-(-(frame_wood_thickness) + 60 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
-            "-(-(frame_wood_thickness) + 60 mm)"
+            "-(opening_height + (frame_wood_thickness * 2) + -60 mm)"
           ]
         ],
         "closed": true,
@@ -1951,8 +1821,8 @@
         "edges": [
           [
             434.0,
-            0.0,
-            -12.0
+            88.0,
+            386.0
           ]
         ],
         "radius": "corner_radius",
@@ -1965,13 +1835,13 @@
         "edges": [
           [
             374.0,
-            0.0,
-            -12.0
+            88.0,
+            386.0
           ],
           [
             434.0,
-            0.0,
-            48.0
+            88.0,
+            326.0
           ]
         ],
         "distance": 0.6,
@@ -1984,73 +1854,73 @@
         "edges": [
           [
             374.0,
-            -12.0,
-            -16.5
+            76.0,
+            390.5
           ],
           [
             375.5,
-            -12.0,
-            -22.5
+            76.0,
+            396.5
           ],
           [
             408.5,
-            -12.0,
-            -24.0
+            76.0,
+            398.0
           ],
           [
             443.0,
-            -12.0,
-            -21.0
+            76.0,
+            395.0
           ],
           [
             446.0,
-            -12.0,
-            13.5
+            76.0,
+            360.5
           ],
           [
             444.5,
-            -12.0,
-            46.5
+            76.0,
+            327.5
           ],
           [
             438.5,
-            -12.0,
-            48.0
+            76.0,
+            326.0
           ],
           [
             374.0,
-            12.0,
-            -16.5
+            100.0,
+            390.5
           ],
           [
             375.5,
-            12.0,
-            -22.5
+            100.0,
+            396.5
           ],
           [
             408.5,
-            12.0,
-            -24.0
+            100.0,
+            398.0
           ],
           [
             443.0,
-            12.0,
-            -21.0
+            100.0,
+            395.0
           ],
           [
             446.0,
-            12.0,
-            13.5
+            100.0,
+            360.5
           ],
           [
             444.5,
-            12.0,
-            46.5
+            100.0,
+            327.5
           ],
           [
             438.5,
-            12.0,
-            48.0
+            100.0,
+            326.0
           ]
         ],
         "distance": 2.0,
@@ -2063,13 +1933,13 @@
         "edges": [
           [
             404.0,
-            -12.0,
-            -12.0
+            76.0,
+            386.0
           ],
           [
             404.0,
-            12.0,
-            -12.0
+            100.0,
+            386.0
           ]
         ],
         "distance": 0.6,
@@ -2083,31 +1953,883 @@
       }
     },
     {
-      "command": "occurrence.copy",
+      "command": "component.create",
       "params": {
-        "component": "CornerBracket 4"
+        "name": "CornerBracket 5",
+        "grounded": false,
+        "parent": "CornerBrackets"
       }
     },
     {
-      "command": "occurrence.move",
+      "command": "sketch.create",
       "params": {
-        "occurrence": "CornerBracket 4:1",
-        "translate": [
-          0.0,
-          12.0,
-          0.0
+        "plane": "XZ",
+        "name": "Profile",
+        "offset": 12.0
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            -0.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            -0.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            9.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm",
+            12.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm",
+            12.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            6.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            -57.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm",
+            -60.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            -60.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "v_tip"
         ]
       }
     },
     {
-      "command": "occurrence.move",
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
       "params": {
-        "occurrence": "CornerBracket 4:2",
-        "translate": [
-          0.0,
-          88.0,
-          0.0
+        "distance": 24.0,
+        "direction": "symmetric",
+        "body_name": "CornerBracket_5"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            -434.0,
+            12.0,
+            0.0
+          ]
+        ],
+        "radius": "corner_radius",
+        "body": "CornerBracket_5"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -374.0,
+            12.0,
+            0.0
+          ],
+          [
+            -434.0,
+            12.0,
+            60.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_5"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -374.0,
+            0.0,
+            -4.5
+          ],
+          [
+            -375.5,
+            0.0,
+            -10.5
+          ],
+          [
+            -408.5,
+            0.0,
+            -12.0
+          ],
+          [
+            -443.0,
+            0.0,
+            -9.0
+          ],
+          [
+            -446.0,
+            0.0,
+            25.5
+          ],
+          [
+            -444.5,
+            0.0,
+            58.5
+          ],
+          [
+            -438.5,
+            0.0,
+            60.0
+          ],
+          [
+            -374.0,
+            24.0,
+            -4.5
+          ],
+          [
+            -375.5,
+            24.0,
+            -10.5
+          ],
+          [
+            -408.5,
+            24.0,
+            -12.0
+          ],
+          [
+            -443.0,
+            24.0,
+            -9.0
+          ],
+          [
+            -446.0,
+            24.0,
+            25.5
+          ],
+          [
+            -444.5,
+            24.0,
+            58.5
+          ],
+          [
+            -438.5,
+            24.0,
+            60.0
+          ]
+        ],
+        "distance": 2.0,
+        "body": "CornerBracket_5"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -404.0,
+            0.0,
+            0.0
+          ],
+          [
+            -404.0,
+            24.0,
+            0.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_5"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerBracket 6",
+        "grounded": false,
+        "parent": "CornerBrackets"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile",
+        "offset": "cabinet_depth - 12 mm"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            -0.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            -0.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm",
+            9.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm",
+            12.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm",
+            12.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            6.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm",
+            -57.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm",
+            -60.0
+          ],
+          [
+            "-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm",
+            -60.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "v_tip"
         ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 24.0,
+        "direction": "symmetric",
+        "body_name": "CornerBracket_6"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            -434.0,
+            88.0,
+            0.0
+          ]
+        ],
+        "radius": "corner_radius",
+        "body": "CornerBracket_6"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -374.0,
+            88.0,
+            0.0
+          ],
+          [
+            -434.0,
+            88.0,
+            60.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_6"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -374.0,
+            76.0,
+            -4.5
+          ],
+          [
+            -375.5,
+            76.0,
+            -10.5
+          ],
+          [
+            -408.5,
+            76.0,
+            -12.0
+          ],
+          [
+            -443.0,
+            76.0,
+            -9.0
+          ],
+          [
+            -446.0,
+            76.0,
+            25.5
+          ],
+          [
+            -444.5,
+            76.0,
+            58.5
+          ],
+          [
+            -438.5,
+            76.0,
+            60.0
+          ],
+          [
+            -374.0,
+            100.0,
+            -4.5
+          ],
+          [
+            -375.5,
+            100.0,
+            -10.5
+          ],
+          [
+            -408.5,
+            100.0,
+            -12.0
+          ],
+          [
+            -443.0,
+            100.0,
+            -9.0
+          ],
+          [
+            -446.0,
+            100.0,
+            25.5
+          ],
+          [
+            -444.5,
+            100.0,
+            58.5
+          ],
+          [
+            -438.5,
+            100.0,
+            60.0
+          ]
+        ],
+        "distance": 2.0,
+        "body": "CornerBracket_6"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -404.0,
+            76.0,
+            0.0
+          ],
+          [
+            -404.0,
+            100.0,
+            0.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_6"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerBracket 7",
+        "grounded": false,
+        "parent": "CornerBrackets"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile",
+        "offset": 12.0
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            -0.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            -0.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            9.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm",
+            12.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm",
+            12.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            6.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            -57.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm",
+            -60.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            -60.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "v_tip"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 24.0,
+        "direction": "symmetric",
+        "body_name": "CornerBracket_7"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            434.0,
+            12.0,
+            0.0
+          ]
+        ],
+        "radius": "corner_radius",
+        "body": "CornerBracket_7"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            374.0,
+            12.0,
+            0.0
+          ],
+          [
+            434.0,
+            12.0,
+            60.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_7"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            374.0,
+            0.0,
+            -4.5
+          ],
+          [
+            375.5,
+            0.0,
+            -10.5
+          ],
+          [
+            408.5,
+            0.0,
+            -12.0
+          ],
+          [
+            443.0,
+            0.0,
+            -9.0
+          ],
+          [
+            446.0,
+            0.0,
+            25.5
+          ],
+          [
+            444.5,
+            0.0,
+            58.5
+          ],
+          [
+            438.5,
+            0.0,
+            60.0
+          ],
+          [
+            374.0,
+            24.0,
+            -4.5
+          ],
+          [
+            375.5,
+            24.0,
+            -10.5
+          ],
+          [
+            408.5,
+            24.0,
+            -12.0
+          ],
+          [
+            443.0,
+            24.0,
+            -9.0
+          ],
+          [
+            446.0,
+            24.0,
+            25.5
+          ],
+          [
+            444.5,
+            24.0,
+            58.5
+          ],
+          [
+            438.5,
+            24.0,
+            60.0
+          ]
+        ],
+        "distance": 2.0,
+        "body": "CornerBracket_7"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            404.0,
+            0.0,
+            0.0
+          ],
+          [
+            404.0,
+            24.0,
+            0.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_7"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "CornerBracket 8",
+        "grounded": false,
+        "parent": "CornerBrackets"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile",
+        "offset": "cabinet_depth - 12 mm"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            -0.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            -0.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm",
+            9.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm",
+            12.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm",
+            12.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            6.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm",
+            -57.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm",
+            -60.0
+          ],
+          [
+            "(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm",
+            -60.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "v_tip"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 24.0,
+        "direction": "symmetric",
+        "body_name": "CornerBracket_8"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            434.0,
+            88.0,
+            0.0
+          ]
+        ],
+        "radius": "corner_radius",
+        "body": "CornerBracket_8"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            374.0,
+            88.0,
+            0.0
+          ],
+          [
+            434.0,
+            88.0,
+            60.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_8"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            374.0,
+            76.0,
+            -4.5
+          ],
+          [
+            375.5,
+            76.0,
+            -10.5
+          ],
+          [
+            408.5,
+            76.0,
+            -12.0
+          ],
+          [
+            443.0,
+            76.0,
+            -9.0
+          ],
+          [
+            446.0,
+            76.0,
+            25.5
+          ],
+          [
+            444.5,
+            76.0,
+            58.5
+          ],
+          [
+            438.5,
+            76.0,
+            60.0
+          ],
+          [
+            374.0,
+            100.0,
+            -4.5
+          ],
+          [
+            375.5,
+            100.0,
+            -10.5
+          ],
+          [
+            408.5,
+            100.0,
+            -12.0
+          ],
+          [
+            443.0,
+            100.0,
+            -9.0
+          ],
+          [
+            446.0,
+            100.0,
+            25.5
+          ],
+          [
+            444.5,
+            100.0,
+            58.5
+          ],
+          [
+            438.5,
+            100.0,
+            60.0
+          ]
+        ],
+        "distance": 2.0,
+        "body": "CornerBracket_8"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            404.0,
+            76.0,
+            0.0
+          ],
+          [
+            404.0,
+            100.0,
+            0.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "CornerBracket_8"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
       }
     },
     {
@@ -2130,19 +2852,19 @@
         "points": [
           [
             -420.0,
-            "-((opening_height - 360 mm) / 2)"
+            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2))"
           ],
           [
             420.0,
-            "-((opening_height - 360 mm) / 2)"
+            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2))"
           ],
           [
             420.0,
-            "-((opening_height - 360 mm) / 2 + 360 mm)"
+            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2) + 360 mm)"
           ],
           [
             -420.0,
-            "-((opening_height - 360 mm) / 2 + 360 mm)"
+            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2) + 360 mm)"
           ]
         ],
         "closed": true,

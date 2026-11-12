@@ -10,6 +10,30 @@ from parts.window import GLASS_THICKNESS, Window
 class WoodenHub75Box:
     """Top-level adjustable design parameters and composition."""
 
+    # Coordinate / datum conventions
+    #
+    # X = 0 : horizontal centre of the cabinet/opening.
+    #           Changing frame wood thickness grows the cabinet outwards in ±X;
+    #           the opening itself stays centred and keeps opening_width.
+    # Y = 0 : front face of the wooden cabinet.
+    #           cabinet_depth grows only towards +Y. The rear sidewall face is
+    #           Y=cabinet_depth and the back board starts at that same plane.
+    # Z = 0 : outside bottom face of the wooden cabinet.
+    #           frame_wood_thickness grows upwards from here; the opening starts
+    #           at Z=frame_wood_thickness and keeps opening_height.
+    #
+    # Derived reference planes:
+    #   opening X = ±opening_width / 2
+    #   cabinet X = ±(opening_width / 2 + frame_wood_thickness)
+    #   opening Z = frame_wood_thickness ..
+    #               frame_wood_thickness + opening_height
+    #   cabinet rear Y = cabinet_depth
+    #   back board front Y = cabinet_depth
+    #   roof front Y = -roof_front_overhang (the deliberate front exception)
+    #
+    # Parameter rule: dimensions may move these reference planes, but no
+    # dependent part may freeze such a relationship into an occurrence.move.
+
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0
@@ -30,8 +54,11 @@ class WoodenHub75Box:
     glazing_wood_depth = 12.0
 
     def build(self):
+        opening_bottom_z = self.frame_wood_thickness
+
         panels = HUB75Panels(
             opening_height=self.opening_height,
+            opening_bottom_z=opening_bottom_z,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
             panel_recess_depth=self.panel_recess_depth,
@@ -51,6 +78,7 @@ class WoodenHub75Box:
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
+            opening_bottom_z=opening_bottom_z,
             glazing_wood_width=self.glazing_wood_width,
             glazing_wood_depth=self.glazing_wood_depth,
         )
@@ -65,6 +93,7 @@ class WoodenHub75Box:
 
         window = Window(
             opening_height=self.opening_height,
+            opening_bottom_z=opening_bottom_z,
         ).move(
             y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
         )

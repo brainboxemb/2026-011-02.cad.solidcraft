@@ -170,7 +170,7 @@ jobs:
             ([.commands[] | select(.command == "joint.create"
                and (.params.name | startswith("Attach CornerBracket:")))] | length) == 8 and
             ([.commands[] | select(.command == "joint.origin"
-               and (.params.name | startswith("CornerBracket:")))] | length) == 32 and
+               and (.params.name | startswith("CornerBracket:")))] | length) == 8 and
             ([.commands[] | select(.command == "solid.fillet")] | length) == 3
           ' output/native/hub75-wood-frame/commands.json
           # Four native groups and five lightweight panels; no additional

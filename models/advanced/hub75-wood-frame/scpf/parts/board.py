@@ -29,8 +29,9 @@ class Board:
 
     def build(self):
         half = self.width / 2
-        left = self.x_position - half
-        right = self.x_position + half
+        center = self.width * 0 + self.x_position
+        left = center - half
+        right = center + half
         bottom = self.z_position
         top = bottom + self.height
         profile = Polygon2D([

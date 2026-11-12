@@ -103,6 +103,3 @@ class WoodenHub75Box:
         )
 
         return panels + frame + glazing + brackets + window
-
-
-WoodenHub75Box()

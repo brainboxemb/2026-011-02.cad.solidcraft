@@ -13,6 +13,3 @@ class Plate:
                 d=8, depth=Depth.THROUGH_ALL
             ).at(x, y, self.thickness)
         return body
-
-
-Plate()

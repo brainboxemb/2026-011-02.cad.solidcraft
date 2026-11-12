@@ -53,6 +53,3 @@ class BasicHub75Screen:
             screen = screen + occurrence
 
         return screen
-
-
-BasicHub75Screen()

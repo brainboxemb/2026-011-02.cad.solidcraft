@@ -38,9 +38,6 @@
                 d=8, depth=Depth.THROUGH_ALL
             ).at(x, y, self.thickness)
         return body
-
-
-Plate()
 </code></pre>
 <section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;Plate described with native SolidCraft commands, independent of SCPF.
 

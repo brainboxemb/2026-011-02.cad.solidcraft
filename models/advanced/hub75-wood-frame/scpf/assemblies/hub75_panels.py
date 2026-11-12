@@ -24,9 +24,11 @@ class HUB75Panels:
         if count < 1 or count % 2 != 1:
             raise ValueError("panel_count must be a positive odd number")
 
-        panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
         panel_z = (self.opening_height - HUB75_PANEL_HEIGHT) / 2
-        middle = Panel().move(y=panel_y, z=panel_z)
+        middle = Panel(
+            y_position=self.panel_recess_depth,
+            z_position=panel_z,
+        )
         panels = middle
 
         for column in range(count):

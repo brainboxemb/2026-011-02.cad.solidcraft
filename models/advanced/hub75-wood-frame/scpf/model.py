@@ -57,7 +57,10 @@ class WoodenHub75Box:
 
     # Glazing retainers
     glazing_wood_width = 12.0
-    glazing_wood_depth = 12.0
+    # Depth still participates in occurrence Y placement, which SolidCraft
+    # 0.30.1 receives as a concrete transform. Keep it explicitly build-time
+    # until that placement can remain associative.
+    _glazing_wood_depth = 12.0
 
     def build(self):
         opening_bottom_z = self.frame_wood_thickness
@@ -84,7 +87,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
             glazing_wood_width=self.glazing_wood_width,
-            glazing_wood_depth=self.glazing_wood_depth,
+            _glazing_wood_depth=self._glazing_wood_depth,
         )
 
         brackets = CornerBrackets(
@@ -100,7 +103,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
         ).move(
-            y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
+            y=self._glazing_wood_depth + GLASS_THICKNESS / 2,
         )
 
         return panels + frame + glazing + brackets + window

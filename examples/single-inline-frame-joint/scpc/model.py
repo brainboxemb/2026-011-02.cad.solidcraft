@@ -36,7 +36,7 @@ script.add("component.activate", component="root")
 script.add(
     "occurrence.move",
     occurrence="Child:1",
-    translate=[80, 0, 80],
+    translate=[40, -20, 80],
 )
 
 # Parent: the same persistent edge/on/corner reference as
@@ -51,13 +51,13 @@ script.add(
     name="Inline custom frame",
     a={
         "occurrence": "Base:1",
-        "edge": [80, 0, 40],
-        "on": [40, 0, 40],
-        "corner": [80, 0, 80],
+        "edge": [40, -20, 40],
+        "on": [0, -20, 40],
+        "corner": [40, -20, 80],
     },
     b={
         "occurrence": "Child:1",
-        "point": [80, 0, 80],
+        "point": [40, -20, 80],
         "z": [0, 1, 0],
         "x": [1, 0, 0],
     },

@@ -53,7 +53,7 @@ Then choose **one** model to send to the active SolidCraft design:
 python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
 
 # Detailed HUB75 panel, original two-occurrence regression
-python -m scpf models/component-examples/hub75-panel/scpf/model.py --connect
+python -m scpf models/components/hub75-panel/scpf/model.py --connect
 
 # Five detailed HUB75 panel occurrences
 python -m scpf models/advanced/hub75-screen/scpf/model.py --connect
@@ -147,7 +147,7 @@ The Models website shows **Basic Models → Components → Advanced Models**.
 - `components/`: genuinely reusable geometry, such as
   `CornerBracket`, `Hub75Panel` and `Hub75PanelBasic`.
 - `models/basic/`: compact design/test examples for developing SCPF.
-- `models/component-examples/`: standalone example wrappers importing
+- `models/components/`: standalone example wrappers importing
   the shared component definitions; **no duplicate geometry**.
 - `models/advanced/`: complete projects with private `parts/` and
   `assemblies/` next to their model script.
@@ -170,8 +170,8 @@ the old CAD cheatsheet URL redirects there.
 
 ## Main models
 
-- [Corner Bracket](models/component-examples/corner-bracket/README.md)
-- [HUB75 Panel / two occurrences and four rear bays](models/component-examples/hub75-panel/README.md)
+- [Corner Bracket](models/components/corner-bracket/README.md)
+- [HUB75 Panel / two occurrences and four rear bays](models/components/hub75-panel/README.md)
 - [Basic HUB75 Screen / five occurrences](models/advanced/hub75-screen/README.md)
 - [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/advanced/hub75-wood-frame/README.md)
 - [Plastic Enclosure Pi](models/basic/plastic-enclosure-pi/README.md)

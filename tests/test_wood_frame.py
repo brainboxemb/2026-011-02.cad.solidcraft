@@ -15,6 +15,7 @@ BOARD = SCPF_DIR / "parts/board.py"
 GLASS_STRIP = SCPF_DIR / "parts/glass_strip.py"
 WINDOW = SCPF_DIR / "parts/window.py"
 ASSEMBLIES = SCPF_DIR / "assemblies"
+GLASS_FRAME = ASSEMBLIES / "glass_frame.py"
 
 
 def commands(**overrides):
@@ -142,15 +143,15 @@ class WoodenFrameTests(unittest.TestCase):
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
-        self.assertIn("BottomBoard_corner_radius", parameter_names)
-        self.assertIn("RoofBoard_corner_radius", parameter_names)
+        self.assertIn("corner_radius", parameter_names)
+        self.assertNotIn("BottomBoard_corner_radius", parameter_names)
+        self.assertNotIn("RoofBoard_corner_radius", parameter_names)
 
-        radii = {
+        radii = [
             params["radius"]
             for params in of(cmd, "solid.fillet")
-        }
-        self.assertIn("BottomBoard_corner_radius", radii)
-        self.assertIn("RoofBoard_corner_radius", radii)
+        ]
+        self.assertGreaterEqual(radii.count("corner_radius"), 2)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
@@ -219,6 +220,14 @@ class WoodenFrameTests(unittest.TestCase):
             all(p["translate"][1] == 32.25 for p in panels)
         )
 
+    def test_glass_frame_uses_named_axis_rotation(self):
+        source = GLASS_FRAME.read_text(encoding="utf-8")
+        self.assertIn("rotate(X, 180)", source)
+        self.assertIn("rotate(Y, 90)", source)
+        self.assertIn("rotate(Y, -90)", source)
+        self.assertNotIn("axis=(1, 0, 0)", source)
+        self.assertNotIn("axis=(0, 1, 0)", source)
+
     def test_glassstrip_two_lengths_four_placements_no_corner_fillet(self):
         cmd = commands()
         horizontal = moved(cmd, "GlassStrip")
@@ -252,26 +261,39 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(len(of(cmd, "solid.fillet")), 3)
 
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
-        for part in ("GlassStrip", "GlassStrip_2"):
-            self.assertTrue(
-                {
-                    part + "_length",
-                    part + "_width",
-                    part + "_depth",
-                }.issubset(parameter_names)
-            )
+        for duplicated in (
+            "GlassStrip_length",
+            "GlassStrip_width",
+            "GlassStrip_depth",
+            "GlassStrip_2_length",
+            "GlassStrip_2_width",
+            "GlassStrip_2_depth",
+        ):
+            self.assertNotIn(duplicated, parameter_names)
+
+        for source_parameter in (
+            "opening_width",
+            "opening_height",
+            "glazing_wood_width",
+            "glazing_wood_depth",
+        ):
+            self.assertIn(source_parameter, parameter_names)
 
         sketch_points = " ".join(
             str(p["points"])
             for p in of(cmd, "sketch.line")
         )
         for name in (
-            "GlassStrip_length",
-            "GlassStrip_width",
-            "GlassStrip_2_length",
-            "GlassStrip_2_width",
+            "opening_width",
+            "opening_height",
+            "glazing_wood_width",
         ):
             self.assertIn(name, sketch_points)
+
+        self.assertNotIn("GlassStrip_length", sketch_points)
+        self.assertNotIn("GlassStrip_width", sketch_points)
+        self.assertNotIn("GlassStrip_2_length", sketch_points)
+        self.assertNotIn("GlassStrip_2_width", sketch_points)
 
         materials = {
             p["name"]: p["color"]

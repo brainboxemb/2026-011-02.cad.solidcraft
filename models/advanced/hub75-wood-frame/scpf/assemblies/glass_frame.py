@@ -1,6 +1,6 @@
 """Four-piece mitred glazing-frame subassembly."""
 
-from scpf import assembly
+from scpf import X, Y, assembly
 
 from parts.glass_strip import GlassStrip
 
@@ -22,10 +22,7 @@ class GlassFrame:
             finish=0,
         )
         bottom = horizontal.move(y=trim_y)
-        top = horizontal.copy().rotate(
-            axis=(1, 0, 0),
-            degrees=180,
-        ).move(
+        top = horizontal.copy().rotate(X, 180).move(
             y=trim_y,
             z=self.opening_height,
         )
@@ -36,18 +33,12 @@ class GlassFrame:
             depth=self.glazing_wood_depth,
             finish=1,
         )
-        left = vertical.rotate(
-            axis=(0, 1, 0),
-            degrees=90,
-        ).move(
+        left = vertical.rotate(Y, 90).move(
             x=-self.opening_width / 2,
             y=trim_y,
             z=self.opening_height / 2,
         )
-        right = vertical.copy().rotate(
-            axis=(0, 1, 0),
-            degrees=-90,
-        ).move(
+        right = vertical.copy().rotate(Y, -90).move(
             x=self.opening_width / 2,
             y=trim_y,
             z=self.opening_height / 2,

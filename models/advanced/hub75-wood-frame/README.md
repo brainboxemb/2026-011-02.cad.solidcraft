@@ -105,6 +105,10 @@ The assembly creates two length variants from the same class:
   at X=−422 and X=422. The left and right copies turn +90° and −90°
   about Y to stand upright.
 
+The assembly uses Forge's named-axis occurrence syntax, so these placements
+read directly as `rotate(X, 180)`, `rotate(Y, 90)` and
+`rotate(Y, -90)` instead of raw XYZ axis tuples.
+
 They are four individual manufactured parts in SolidCraft, not
 four different Python classes. The two lengths require two native
 component definitions, each shared by its pair of occurrences.

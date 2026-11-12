@@ -1,16 +1,11 @@
 """Main plywood frame subassembly."""
 
-from scpf import component
+from scpf import assembly
 
 from parts.board import BackBoard, BottomBoard, RoofBoard, SideWall
 
 
-Side = component(SideWall)
-Bottom = component(BottomBoard)
-Roof = component(RoofBoard)
-Back = component(BackBoard)
-
-
+@assembly
 class WoodFrame:
     opening_width = 844.0
     opening_height = 362.0
@@ -30,7 +25,7 @@ class WoodFrame:
         outer_width = self.opening_width + 2 * self.wood_thickness
         body_y = (self.frame_front_y + rear) / 2
 
-        left = Side(
+        left = SideWall(
             thickness=self.wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
@@ -42,7 +37,7 @@ class WoodFrame:
             x=outer_width - self.wood_thickness
         )
 
-        bottom = Bottom(
+        bottom = BottomBoard(
             width=outer_width,
             depth=self.cabinet_depth,
             thickness=self.wood_thickness,
@@ -52,7 +47,7 @@ class WoodFrame:
             z=-self.wood_thickness,
         )
 
-        roof = Roof(
+        roof = RoofBoard(
             width=outer_width,
             depth=roof_rear - roof_front,
             thickness=self.wood_thickness,
@@ -62,7 +57,7 @@ class WoodFrame:
             z=self.opening_height,
         )
 
-        rear_board = Back(
+        rear_board = BackBoard(
             width=outer_width,
             height=self.opening_height + self.wood_thickness,
             thickness=self.back_thickness,

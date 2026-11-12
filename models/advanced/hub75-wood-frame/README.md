@@ -180,13 +180,16 @@ imported panel and bracket remain in `components/hub75_basic.py` and
 
 ## Test locally
 
-After `./bootstrap.ps1` and `git pull`, open a blank design in
-SolidCraft 0.30.1 and enable **Preferences → Assistant →
-Let AI agents connect**:
+After `./bootstrap.ps1` and `git pull`, open SolidCraft 0.30.1 and
+enable **Preferences → Assistant → Let AI agents connect**:
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
 ```
+
+`--new` replaces the active design with a clean empty design before the
+model batch is sent. Leave it off only when you intentionally want to build
+into the current design.
 
 To inspect only the generated command JSON:
 

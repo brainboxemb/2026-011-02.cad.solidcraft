@@ -4,6 +4,7 @@ import ast
 from pathlib import Path
 import tempfile
 import unittest
+import warnings
 
 from scpf.runner import run_script
 
@@ -202,6 +203,19 @@ class WoodenFrameTests(unittest.TestCase):
                 "glazing_wood_width",
                 "glazing_wood_depth",
             },
+        )
+
+    def test_parameter_intent_has_no_lost_native_parameter_warnings(self):
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            commands()
+
+        self.assertFalse(
+            any(
+                "no native SolidCraft dependency" in str(item.message)
+                for item in caught
+            ),
+            [str(item.message) for item in caught],
         )
 
     def test_bracket_width_and_corner_radius_are_shared_model_parameters(self):
@@ -498,11 +512,25 @@ class WoodenFrameTests(unittest.TestCase):
             )
             offsets.append(sketch.get("offset", 0))
 
-        self.assertEqual(sum(offset == 12.0 for offset in offsets), 4)
-        rear_offsets = [offset for offset in offsets if offset != 12.0]
+        front_offsets = [
+            offset for offset in offsets
+            if "cabinet_depth" not in str(offset)
+        ]
+        rear_offsets = [
+            offset for offset in offsets
+            if "cabinet_depth" in str(offset)
+        ]
+        self.assertEqual(len(front_offsets), 4)
         self.assertEqual(len(rear_offsets), 4)
         self.assertTrue(
-            all("cabinet_depth" in str(offset) for offset in rear_offsets)
+            all("bracket_width" in str(offset) for offset in front_offsets)
+        )
+        self.assertTrue(
+            all(
+                "bracket_width" in str(offset)
+                and "cabinet_depth" in str(offset)
+                for offset in rear_offsets
+            )
         )
 
     def test_roof_z_is_symbolic_geometry_not_fixed_occurrence_move(self):

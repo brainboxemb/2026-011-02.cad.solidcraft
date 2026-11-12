@@ -6,7 +6,7 @@ from pathlib import Path
 from scpf.runner import ModelParameterWarning, run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / "models/components/hub75-panel/scpf/model.py"
+MODEL = ROOT / "components/hub75.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
@@ -100,30 +100,29 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(duplicate.translation, (24, 0, 0))
         self.assertIsNone(duplicate.attachment)
 
-    def test_single_panel_has_one_upright_occurrence(self):
+    def test_single_panel_runs_shared_component_directly_in_local_axes(self):
+        source = MODEL.read_text(encoding="utf-8")
+        self.assertIn("class Hub75Panel:", source)
+        self.assertNotIn("class SingleHub75Panel", source)
+        self.assertNotIn("Hub75Panel()", source)
+
         commands = run_script(MODEL)["commands"]
+
         def of(kind):
             return [c["params"] for c in commands if c["command"] == kind]
 
-        self.assertEqual([c["name"] for c in of("component.create")], ["Hub75Panel"])
+        self.assertEqual(of("component.create"), [])
         self.assertEqual(of("occurrence.copy"), [])
-        moved = of("occurrence.move")
-        self.assertEqual(len(moved), 1)
-        self.assertTrue(moved[0]["move_grounded"])
-        self.assertNotIn("to", moved[0])
-        self.assertEqual(moved[0]["translate"], [0., 0., 160.])
-        self.assertEqual(moved[0]["axis"], [1., 0., 0.])
-        self.assertEqual(moved[0]["angle"], "90 deg")
-        self.assertNotIn("matrix", moved[0])
+        self.assertEqual(of("occurrence.move"), [])
         self.assertEqual(of("joint.create"), [])
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(
-            [c["name"] for c in of("parameters.add")],
-            ["Hub75Panel_width", "Hub75Panel_height", "Hub75Panel_depth",
-             "Hub75Panel_front_depth", "Hub75Panel_rear_inset",
-             "Hub75Panel_rear_side_rail", "Hub75Panel_rear_crossbar",
-             "Hub75Panel_rear_end_rail", "Hub75Panel_hole_diameter",
-             "Hub75Panel_mount_x", "Hub75Panel_mount_y"],
+            {c["name"] for c in of("parameters.add")},
+            {
+                "width", "height", "depth", "front_depth", "rear_inset",
+                "mount_x", "mount_y", "hole_diameter", "rear_side_rail",
+                "rear_end_rail", "rear_crossbar",
+            },
         )
 
     def test_rear_taper_uses_editable_native_loft(self):
@@ -140,8 +139,8 @@ class Hub75PanelTests(unittest.TestCase):
         planes = [c["params"] for c in commands if c["command"] == "sketch.create"]
         self.assertEqual(
             [p.get("offset", 0) for p in planes],
-            [0, "Hub75Panel_front_depth", "Hub75Panel_depth",
-             "(Hub75Panel_depth)"],
+            [0, "front_depth", "depth",
+             "(depth)"],
         )
 
     def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
@@ -155,7 +154,7 @@ class Hub75PanelTests(unittest.TestCase):
                    if c["command"] == "sketch.create"
                    and c["params"]["name"] == "Rear electronics bays")
         self.assertEqual(commands[idx]["params"]["offset"],
-                         "(Hub75Panel_depth)")
+                         "(depth)")
         rectangles = []
         for operation in commands[idx + 1:]:
             if operation["command"] == "sketch.finish":
@@ -169,8 +168,8 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(cuts), 1)
         self.assertEqual(cuts[0]["direction"], "negative")
         self.assertEqual(cuts[0]["name"], "Rear electronics bays")
-        self.assertIn("Hub75Panel_depth", str(cuts[0]["distance"]))
-        self.assertIn("Hub75Panel_front_depth", str(cuts[0]["distance"]))
+        self.assertIn("depth", str(cuts[0]["distance"]))
+        self.assertIn("front_depth", str(cuts[0]["distance"]))
 
         # Drawing and STEP values; coordinates are measured, not guessed.
         panel = Hub75Panel()
@@ -220,8 +219,8 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(reference.depth - reference.front_depth, 12.5)
         for bore in holes:
             depth_expression = str(bore["depth"])
-            self.assertIn("Hub75Panel_depth", depth_expression)
-            self.assertIn("Hub75Panel_front_depth", depth_expression)
+            self.assertIn("depth", depth_expression)
+            self.assertIn("front_depth", depth_expression)
             self.assertNotIn("15", depth_expression)
         self.assertEqual(len(holes), 6)
         self.assertTrue(all(h["targets"] == ["Hub75Panel"] for h in holes))

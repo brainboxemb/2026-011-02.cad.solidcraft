@@ -1,4 +1,4 @@
-# HUB75 Panel — one upright native SolidCraft component
+# HUB75 Panel — one shared native SolidCraft component
 
 ## Source shown on the model website
 
@@ -6,11 +6,12 @@ The website shows the **real shared component source first**, not just the
 short model entry script. The complete editable profile, extrusions and
 features are in `components/hub75.py`.
 
-The separate `scpf/model.py` is the **entry point**: it loads the shared
-component and asks SCPF to create or position it. Keeping the geometry
-in one shared file means the standalone example and the larger assembly
-use the same design. Both Python files can be viewed and downloaded
-individually from the model page.
+`components/hub75.py` is both the reusable definition and the standalone
+SCPF model. Forge runs it directly because it contains exactly one public
+model class with `build()`. There is no `scpf/model.py` launcher, no
+standalone wrapper class and no alternate geometry path. The five-panel screen
+imports that exact class and is solely responsible for rotating/placing
+occurrences.
 
 Source of measured geometry: `brainboxemb/2026-006-01.cad.HUB75-display-frame`,
 `v1.2/cad/components/hub75_panel.scad` (portrait 64×32 P5 panel).
@@ -61,25 +62,26 @@ The source OpenSCAD model used X/Z for the front and Y for depth.
 
 ## One physical panel, one reusable component
 
-This model creates **one Hub75Panel component and one occurrence**, rather than
-two copies. Its geometry is authored in local XY with rear depth in local +Z.
-The occurrence is rotated **+90° around X** into the upright world **XZ** plane
-and placed at **world Z=160 mm**. The front face points toward **world +Y**;
-the rear with electronics pockets faces **world −Y**.
+The standalone model now executes the shared `Hub75Panel` class **directly**.
+Its local component axes are therefore visible without any presentation
+transform:
 
-SolidCraft 0.30.1 handles the occurrence placement directly using native
-`translate`, `axis` and `angle` parameters. SCPF does not calculate its own
-rotation matrices. This is important: the later absolute `to` syntax was
-silently ignored by SolidCraft 0.30.1, so a syntactically valid JSON did
-not previously prove that the panel stood upright.
+- X = physical panel width (159.70 mm)
+- Y = physical panel height (319.71 mm)
+- Z = rear depth (14.50 mm), with the front at Z=0
+
+This is intentional CAD behavior: a reusable part owns geometry in its local
+coordinate system; an assembly owns placement. The standalone entry point does
+not rotate the part merely to make it look like the assembled screen.
 
 The [five-panel screen](../../advanced/hub75-screen/README.md) imports the
-same [Hub75Panel class](../../../components/hub75.py) but creates four
-additional occurrences as a separate assembly model.
+same [Hub75Panel class](../../../components/hub75.py), creates its occurrences,
+and rotates them into world XZ. There is no separate "standalone panel"
+geometry definition.
 
 The [published model page](https://brainboxemb.github.io/2026-011-02.cad.solidcraft/models/hub75-panel/)
-shows independent native **front** and **rear** snapshots when SolidCraft
-verification succeeds, including a visible rear electronics-bay layout.
+shows independent native **front** and **rear** snapshots of the same local
+component when SolidCraft verification succeeds, including the rear electronics-bay layout.
 
 ## Open in SolidCraft
 

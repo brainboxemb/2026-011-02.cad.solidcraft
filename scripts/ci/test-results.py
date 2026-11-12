@@ -7,7 +7,9 @@ import sys
 import zipfile
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
-from model_catalog import COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, COMMAND_SOURCES
+from model_catalog import (
+    SOURCES, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, COMMAND_SOURCES,
+)
 
 
 class Parser(html.parser.HTMLParser):
@@ -70,22 +72,31 @@ def check(site, commit):
         assert 'class="two model-preview-layout"' in page
         component_source = COMPONENT_SOURCES.get(slug)
         if component_source is not None:
-            # The prominent code sample must be the real shared part,
-            # not only the tiny wrapper that imports the shared class.
-            source_file = model / "source" / component_source
-            assert source_file.is_file(), (slug, component_source)
             actual = Path(__file__).resolve().parents[2] / component_source
-            assert source_file.read_bytes() == actual.read_bytes(), slug
-            assert 'href="source/' + component_source + '"' in page
+            direct_component_root = SOURCES[slug] == component_source
             assert '<h2>Python component — actual geometry</h2>' in page
-            assert '<h2>Model script — how the component is used</h2>' in page
-            geometry_index = page.index('<h2>Python component — actual geometry</h2>')
-            launcher_index = page.index('<h2>Model script — how the component is used</h2>')
-            if slug in COMPONENT_DEFINITION_PRIMARY:
-                assert geometry_index < launcher_index, slug
+
+            if direct_component_root:
+                # The model download is the exact shared component file. There
+                # must be no duplicate source copy and no fake launcher section.
+                assert (model / "model.py").read_bytes() == actual.read_bytes(), slug
+                assert '<h2>Model script — how the component is used</h2>' not in page
+                assert "There is no launcher or standalone wrapper model." in page
+                assert 'href="model.py"' in page, slug
+                assert not (model / "source" / component_source).exists(), slug
             else:
-                assert launcher_index < geometry_index, slug
-            assert 'href="model.py"' in page, slug
+                source_file = model / "source" / component_source
+                assert source_file.is_file(), (slug, component_source)
+                assert source_file.read_bytes() == actual.read_bytes(), slug
+                assert 'href="source/' + component_source + '"' in page
+                assert '<h2>Model script — how the component is used</h2>' in page
+                geometry_index = page.index('<h2>Python component — actual geometry</h2>')
+                launcher_index = page.index('<h2>Model script — how the component is used</h2>')
+                if slug in COMPONENT_DEFINITION_PRIMARY:
+                    assert geometry_index < launcher_index, slug
+                else:
+                    assert launcher_index < geometry_index, slug
+                assert 'href="model.py"' in page, slug
         else:
             assert "<h2>Python model</h2>" in page, slug
         if (model / "native.png").is_file():
@@ -157,7 +168,7 @@ def check(site, commit):
                 assert (model / filename).is_file()
                 assert f'href="{filename}"' in page
                 assert f'src="{filename}"' in page
-            assert "Front and rear of the same upright panel" in page
+            assert "Front and rear of the same local component" in page
         parser = Parser()
         parser.feed(page)
         for href in parser.links:

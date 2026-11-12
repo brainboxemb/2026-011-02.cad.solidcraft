@@ -25,6 +25,32 @@ class CADModelRegressions(unittest.TestCase):
             with self.subTest(model=str(script.relative_to(ROOT))):
                 module = ast.parse(script.read_text(encoding="utf-8"))
                 classes = [node for node in module.body if isinstance(node, ast.ClassDef)]
+                public_models = [
+                    cls for cls in classes
+                    if not cls.name.startswith("_")
+                    and any(
+                        isinstance(member, ast.FunctionDef)
+                        and member.name == "build"
+                        for member in cls.body
+                    )
+                ]
+                if len(public_models) == 1:
+                    root_name = public_models[0].name
+                    redundant_calls = [
+                        node for node in module.body
+                        if isinstance(node, ast.Expr)
+                        and isinstance(node.value, ast.Call)
+                        and isinstance(node.value.func, ast.Name)
+                        and node.value.func.id == root_name
+                        and not node.value.args
+                        and not node.value.keywords
+                    ]
+                    self.assertEqual(
+                        redundant_calls,
+                        [],
+                        f"{script}: single-class SCPF files use the implicit root",
+                    )
+
                 for cls in classes:
                     decorators = {
                         item.id

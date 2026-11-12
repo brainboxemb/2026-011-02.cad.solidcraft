@@ -4,9 +4,9 @@
 
 The website shows the **real shared component source first**, not just the
 short model entry script. The complete editable profile, extrusions and
-features are in `models/components/corner_bracket/model.py`.
+features are in `models/components/corner_bracket/scpf/model.py`.
 
-`models/components/corner_bracket/model.py` is both the reusable component
+`models/components/corner_bracket/scpf/model.py` is both the reusable component
 definition and the standalone SCPF model. Forge runs that file directly;
 the HUB75 assembly imports the exact same `CornerBracket` class. There is
 no launcher file, wrapper model or second copy of the geometry.
@@ -20,7 +20,7 @@ fillet, outer chamfers and elephant-foot reliefs are all still separate,
 editable native features.
 
 The original **42-command, hole-containing** exploration is preserved as
-`reference.py` for study, but is **not the default model** and is
+`scpf/reference.py` for study, but is **not the default model** and is
 **not used by the wooden enclosure**. Hole geometry and fixing methods can be
 reintroduced later, after they can be built without native warnings.
 
@@ -49,13 +49,13 @@ Named-edge selection is currently implemented for **symmetric XZ polygon extrusi
 For local GUI testing from the repository root after `./bootstrap.ps1`:
 
 ```powershell
-python -m scpf models/components/corner_bracket/model.py --connect
+python -m scpf models/components/corner_bracket/scpf/model.py --connect
 ```
 
 Open an empty SolidCraft document and enable external Assistant control before running. To generate commands without touching the GUI:
 
 ```powershell
-python -m scpf models/components/corner_bracket/model.py --out output/corner-bracket.json
+python -m scpf models/components/corner_bracket/scpf/model.py --out output/corner-bracket.json
 ```
 
 The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/lib.py.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.
@@ -65,7 +65,7 @@ Original geometry reference: `brainboxemb/2026-011-01.cad.model-archive`, `model
 
 ## Two scripts: Forge and native commands
 
-- [SCPF model](model.py) is the shared parametric `CornerBracket` definition itself.
+- [SCPF model](scpf/model.py) is the shared parametric `CornerBracket` definition itself.
 - [SCPC model](scpc/model.py) independently lists all **17 native SolidCraft commands**, including named XZ sketch points, extrusion, R4 fillet and three chamfers.
 
 This is useful for understanding exactly what SolidCraft receives. SCPC does **not** read Forge's JSON. Its explicit edge selectors describe the current reference dimensions (60 mm arms, 12 mm wall, 24 mm extrusion); when those dimensions change, review the sample coordinates as well. Native CI runs both and compares the final geometry and feature history.

@@ -34,20 +34,26 @@ class WoodenHub75Box:
     # Parameter rule: dimensions may move these reference planes, but no
     # dependent part may freeze such a relationship into an occurrence.move.
 
+    # Parameter intent:
+    #   lower_case  = native editable SolidCraft model parameter
+    #   _lower_case = Forge/build-time input; intentionally not native
+    #   UPPER_CASE  = fixed constants in the owning part/assembly module
+    #
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0
-    panel_count = 5
-    panel_pitch = 160.0
+    _panel_recess_depth = 25.0
 
     # Wood
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    panel_recess_depth = 25.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
+
+    # Printed corner brackets
+    bracket_width = 24.0
 
     # Glazing retainers
     glazing_wood_width = 12.0
@@ -59,9 +65,7 @@ class WoodenHub75Box:
         panels = HUB75Panels(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-            panel_count=self.panel_count,
-            panel_pitch=self.panel_pitch,
-            panel_recess_depth=self.panel_recess_depth,
+            _panel_recess_depth=self._panel_recess_depth,
         )
 
         frame = WoodFrame(
@@ -88,6 +92,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            bracket_width=self.bracket_width,
             corner_radius=self.corner_radius,
         )
 

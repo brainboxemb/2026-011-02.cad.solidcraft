@@ -203,7 +203,7 @@ jobs:
               and .params.translate[0] == 428)] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
               and .params.occurrence == "BackBoard:1"
-              and .params.translate == [0,79.5,-12])] | length) == 1 and
+              and .params.translate == [0,104.5,-12])] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
               and (.params | has("matrix") or has("to")))] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
@@ -228,35 +228,38 @@ jobs:
           jq -e '
             .body_count == 23 and
             (all(.bodies[] | select(.name | startswith("GlassStrip"));
-              ((.bbox.min[1] + 25) | fabs) < 0.001 and
-              ((.bbox.max[1] + 10) | fabs) < 0.001)) and
+              ((.bbox.min[1] - 0) | fabs) < 0.001 and
+              ((.bbox.max[1] - 12) | fabs) < 0.001)) and
             (all(.bodies[] | select(.name | startswith("RoofBoard"));
-              ((.bbox.min[1] + 35) | fabs) < 0.001 and
-              ((.bbox.max[1] - 85) | fabs) < 0.001 and
+              ((.bbox.min[1] + 10) | fabs) < 0.001 and
+              ((.bbox.max[1] - 110) | fabs) < 0.001 and
               ((.bbox.min[2] - 362) | fabs) < 0.001 and
               ((.bbox.max[2] - 374) | fabs) < 0.001)) and
             (all(.bodies[] | select(.name | startswith("BackBoard"));
-              ((.bbox.min[1] - 75) | fabs) < 0.001 and
-              ((.bbox.max[1] - 84) | fabs) < 0.001)) and
+              ((.bbox.min[1] - 100) | fabs) < 0.001 and
+              ((.bbox.max[1] - 109) | fabs) < 0.001)) and
             (all(.bodies[] | select(.name | startswith("Window"));
-              ((.bbox.min[1] + 10) | fabs) < 0.001 and
-              ((.bbox.max[1] + 6) | fabs) < 0.001))
+              ((.bbox.min[1] - 12) | fabs) < 0.001 and
+              ((.bbox.max[1] - 16) | fabs) < 0.001)) and
+            (all(.bodies[] | select(.name | startswith("Hub75PanelBasic"));
+              ((.bbox.min[1] - 25) | fabs) < 0.001 and
+              ((.bbox.max[1] - 39.5) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
           # Rear bracket sidewall alignment is a physical requirement.
-          # Sidewalls stop at Y=75; the attached backboard occupies Y=75..84.
-          # The four rear brackets must stop at Y=75 (start at Y=51),
+          # Sidewalls stop at Y=100; the attached backboard occupies Y=100..109.
+          # The four rear brackets must stop at Y=100 (start at Y=76),
           # rather than overlap the 9 mm backboard as they used to.
           jq -e '
             ([.bodies[] | select(.name | startswith("CornerBracket"))] | length) == 8 and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
-               and .bbox.min[1] > 0)] | length) == 4 and
+               and .bbox.min[1] > 50)] | length) == 4 and
             (all(.bodies[] | select((.name | startswith("CornerBracket"))
-               and .bbox.min[1] > 0);
-               ((.bbox.min[1] - 51) | fabs) < 0.001 and
-               ((.bbox.max[1] - 75) | fabs) < 0.001)) and
+               and .bbox.min[1] > 50);
+               ((.bbox.min[1] - 76) | fabs) < 0.001 and
+               ((.bbox.max[1] - 100) | fabs) < 0.001)) and
             (all(.bodies[] | select((.name | startswith("BackBoard")));
-               ((.bbox.min[1] - 75) | fabs) < 0.001 and
-               ((.bbox.max[1] - 84) | fabs) < 0.001))
+               ((.bbox.min[1] - 100) | fabs) < 0.001 and
+               ((.bbox.max[1] - 109) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
           jq -e '

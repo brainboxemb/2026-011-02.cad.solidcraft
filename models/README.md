@@ -76,14 +76,14 @@ with an independent repository and fixed version.
 
 ## Running a model
 
-Run `./bootstrap.ps1` after `git pull`. Open an empty design in
-SolidCraft and enable **Preferences → Assistant → Let AI agents connect**.
+Run `./bootstrap.ps1` after `git pull`. Open SolidCraft and enable
+**Preferences → Assistant → Let AI agents connect**.
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect
+python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
 ```
 
-`--connect` sends native commands to the GUI. `--out output/model.json`
+`--connect --new` starts with a new empty design and sends native commands to the GUI. `--out output/model.json`
 only compiles JSON. See the [root README](../README.md).
 
 ## Source conventions

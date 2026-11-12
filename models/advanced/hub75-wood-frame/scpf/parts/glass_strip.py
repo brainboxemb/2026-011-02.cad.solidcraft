@@ -8,8 +8,8 @@ class GlassStrip:
     """One strip type for both horizontal and vertical retainers."""
 
     length = 844.0
-    width = 15.0
-    depth = 15.0
+    width = 12.0
+    depth = 12.0
     finish = 0
 
     def build(self):

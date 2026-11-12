@@ -25,6 +25,32 @@ class CADModelRegressions(unittest.TestCase):
             with self.subTest(model=str(script.relative_to(ROOT))):
                 module = ast.parse(script.read_text(encoding="utf-8"))
                 classes = [node for node in module.body if isinstance(node, ast.ClassDef)]
+                public_models = [
+                    cls for cls in classes
+                    if not cls.name.startswith("_")
+                    and any(
+                        isinstance(member, ast.FunctionDef)
+                        and member.name == "build"
+                        for member in cls.body
+                    )
+                ]
+                if len(public_models) == 1:
+                    root_name = public_models[0].name
+                    redundant_calls = [
+                        node for node in module.body
+                        if isinstance(node, ast.Expr)
+                        and isinstance(node.value, ast.Call)
+                        and isinstance(node.value.func, ast.Name)
+                        and node.value.func.id == root_name
+                        and not node.value.args
+                        and not node.value.keywords
+                    ]
+                    self.assertEqual(
+                        redundant_calls,
+                        [],
+                        f"{script}: single-class SCPF files use the implicit root",
+                    )
+
                 for cls in classes:
                     decorators = {
                         item.id
@@ -120,7 +146,7 @@ class CADModelRegressions(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             source = (ROOT / "models/basic/bracket/scpf/model.py").read_text()
             file = Path(directory) / "model.py"
-            file.write_text(source.replace("Bracket()", "Bracket(70, 8)"))
+            file.write_text(source + "\nBracket(70, 8)\n")
             generated = run_script(file)
         self.assertEqual(generated["commands"][0]["params"]["expression"], "70")
         self.assertEqual(generated["commands"][1]["params"]["expression"], "8")
@@ -170,8 +196,9 @@ class CADModelRegressions(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
             script = Path(directory) / "model.py"
-            script.write_text(source.replace(
-                "SamplePlate()", "SamplePlate(width=100, depth=60, thickness=10)"))
+            script.write_text(
+                source + "\nSamplePlate(width=100, depth=60, thickness=10)\n"
+            )
             commands = run_script(script)["commands"]
         self.assertEqual([c["params"]["expression"] for c in commands[:3]],
                          ["100", "60", "10"])

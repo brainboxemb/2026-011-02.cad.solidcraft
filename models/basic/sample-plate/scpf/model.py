@@ -28,6 +28,3 @@ class SamplePlate:
             parent=Anchor.TOP,
         )
         return plate + bore
-
-
-SamplePlate()

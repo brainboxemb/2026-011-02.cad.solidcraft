@@ -50,6 +50,3 @@ class Enclosure:
             parent=Anchor.INNER_BOTTOM,
         )
         return enclosure + rest
-
-
-Enclosure()

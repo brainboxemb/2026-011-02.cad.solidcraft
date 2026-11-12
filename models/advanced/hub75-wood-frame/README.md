@@ -33,7 +33,7 @@ class WoodenHub75Box:
     bracket_width = 24.0
 
     glazing_wood_width = 12.0
-    glazing_wood_depth = 12.0
+    _glazing_wood_depth = 12.0
 ```
 
 Change these values at their owning level, **not** the placement coordinates
@@ -50,6 +50,14 @@ The five-panel layout is fixed here: `HUB75Panels` owns
 `_panel_recess_depth` because occurrence Y placement is still build-time;
 publishing it as a native parameter would misleadingly suggest that changing
 it in SolidCraft moves the panels.
+
+The same rule currently applies to `_glazing_wood_depth`. That value controls
+the physical retainer depth, but it also determines the Y placement of the
+retainers and plexiglass through occurrence transforms. Forge  now warns when a
+public model parameter is used in such a partly associative placement, so the
+leading underscore makes the limitation explicit rather than exposing a
+misleading SolidCraft runtime parameter. `glazing_wood_width` remains fully
+native and editable.
 
 Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains

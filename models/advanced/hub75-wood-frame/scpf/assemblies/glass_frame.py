@@ -9,13 +9,13 @@ from parts.glass_strip import GlassStrip
 class GlassFrame:
     opening_width = 844.0
     opening_height = 362.0
-    frame_wood_thickness = 12.0
+    opening_bottom_z = 12.0
     glazing_wood_width = 12.0
     glazing_wood_depth = 12.0
 
     def build(self):
         trim_y = self.glazing_wood_depth / 2
-        opening_bottom = self.frame_wood_thickness
+        opening_bottom = self.opening_bottom_z
         opening_top = opening_bottom + self.opening_height
 
         bottom = GlassStrip(

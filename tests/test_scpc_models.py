@@ -14,20 +14,40 @@ from scpc import load_script as native_script
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def resolve_fillet_radius(document):
-    """Normalize only the intentional symbolic-vs-literal fillet difference."""
+def normalize_native_plan(document):
+    """Normalize representation details that do not change the native design."""
     result = deepcopy(document)
     parameters = {
         command["params"]["name"]: float(command["params"]["expression"])
         for command in result["commands"]
         if command["command"] == "parameters.add"
     }
-    for command in result["commands"]:
-        if command["command"] != "solid.fillet":
-            continue
-        radius = command["params"].get("radius")
-        if isinstance(radius, str) and radius in parameters:
-            command["params"]["radius"] = parameters[radius]
+
+    parameter_commands = sorted(
+        (
+            command for command in result["commands"]
+            if command["command"] == "parameters.add"
+        ),
+        key=lambda command: command["params"]["name"],
+    )
+    feature_commands = [
+        command for command in result["commands"]
+        if command["command"] != "parameters.add"
+    ]
+
+    for command in feature_commands:
+        params = command["params"]
+        if command["command"] == "solid.fillet":
+            radius = params.get("radius")
+            if isinstance(radius, str) and radius in parameters:
+                params["radius"] = parameters[radius]
+
+        # A positioned XZ sketch at the component origin is equivalent to
+        # the unpositioned default plane used by the independent SCPC script.
+        if command["command"] == "sketch.create" and params.get("offset") == 0:
+            params.pop("offset")
+
+    result["commands"] = parameter_commands + feature_commands
     return result
 
 
@@ -53,13 +73,12 @@ class ParallelModelTests(unittest.TestCase):
                 scpc_doc = native_script(native).to_dict()
                 scpf_doc = forge_script(forge)
 
-                # Plate currently lowers identically. CornerBracket deliberately
-                # differs only because Forge preserves inside_corner_radius as
-                # an editable named CAD parameter in solid.fillet, while the
-                # independent SCPC script writes the same current value (4).
+                # Compare the native design, not incidental parameter-add
+                # ordering. The independent SCPC script and Forge model must
+                # still describe the same parameters, sketch and features.
                 self.assertEqual(
-                    resolve_fillet_radius(scpc_doc),
-                    resolve_fillet_radius(scpf_doc),
+                    normalize_native_plan(scpc_doc),
+                    normalize_native_plan(scpf_doc),
                 )
                 self.assertEqual(
                     len(scpc_doc["commands"]),

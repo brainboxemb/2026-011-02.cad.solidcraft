@@ -78,7 +78,7 @@ class Hub75PanelTests(unittest.TestCase):
             row["params"]["name"]
             for row in commands
             if row["command"] == "parameters.add"
-            and not row["params"]["name"].startswith("")
+            and not row["params"]["name"].startswith("Hub75Panel_")
         ]
         self.assertEqual(root_parameters, [])
 

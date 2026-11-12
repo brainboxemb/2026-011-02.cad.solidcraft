@@ -1,6 +1,6 @@
-"""Eight placements of one reusable printed corner bracket."""
+"""Attach eight reusable corner brackets to the actual frame boards."""
 
-from scpf import assembly, component, pv
+from scpf import Anchor, component
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -8,57 +8,72 @@ from models.components.corner_bracket.scpf.model import CornerBracket
 Bracket = component(CornerBracket)
 
 
-@assembly
-class CornerBrackets:
-    opening_width = 844.0
-    opening_height = 362.0
-    frame_wood_thickness = 12.0
-    cabinet_depth = 100.0
-    bracket_width = 24.0
-    corner_radius = 4.0
+def attach_corner_brackets(
+    *,
+    roof,
+    bottom,
+    bracket_width,
+    corner_radius,
+    roof_front_overhang,
+    roof_rear_overhang,
+    panel_wood_thickness,
+):
+    """Build eight fixed bracket attachments from real board references."""
 
-    def build(self):
-        outer_width = self.opening_width + 2 * self.frame_wood_thickness
-        outer_half = outer_width / 2
-        top_z = self.opening_height + 2 * self.frame_wood_thickness
+    bracket = Bracket(
+        bracket_width=bracket_width,
+        inside_corner_radius=corner_radius,
+    )
 
-        bracket_half = self.bracket_width / 2
-        front_y = bracket_half
-        rear_y = self.cabinet_depth - bracket_half
+    # The bracket origin is its inside XZ corner and lies at the centre of
+    # bracket_width. Native corner origins already follow board width/height.
+    # Only Y needs an inward offset from the selected front/back board face.
+    half = bracket_width / 2
+    bottom_gap = -half
+    roof_front_gap = -(roof_front_overhang + half)
+    roof_rear_gap = -(panel_wood_thickness + roof_rear_overhang + half)
 
-        # CornerBracket is modelled once in its neutral top-left orientation.
-        # Seen from the front, the four cabinet corners are just quarter-turns
-        # around Y: 0, 90, 180 and 270 degrees.
-        bracket = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
+    def attached(parent, parent_anchor, child_anchor, gap):
+        return bracket.copy().attach(
+            parent,
+            parent=parent_anchor,
+            child=child_anchor,
+            gap=gap,
         )
 
-        def place(x, y, z, angle):
-            occurrence = bracket.copy()
-            if angle:
-                occurrence = occurrence.rotate("Y", angle)
-            return occurrence.move(x=pv(x), y=pv(y), z=pv(z))
+    top_left_front = attached(
+        roof, Anchor.FRONT_TOP_LEFT, "front_mount", roof_front_gap
+    )
+    top_right_front = attached(
+        roof, Anchor.FRONT_TOP_RIGHT, "front_mount", roof_front_gap
+    )
+    bottom_right_front = attached(
+        bottom, Anchor.FRONT_BOTTOM_RIGHT, "front_mount", bottom_gap
+    )
+    bottom_left_front = attached(
+        bottom, Anchor.FRONT_BOTTOM_LEFT, "front_mount", bottom_gap
+    )
 
-        top_left_front = place(-outer_half, front_y, top_z, 0)
-        top_left_rear = place(-outer_half, rear_y, top_z, 0)
+    top_left_rear = attached(
+        roof, Anchor.BACK_TOP_LEFT, "rear_mount", roof_rear_gap
+    )
+    top_right_rear = attached(
+        roof, Anchor.BACK_TOP_RIGHT, "rear_mount", roof_rear_gap
+    )
+    bottom_right_rear = attached(
+        bottom, Anchor.BACK_BOTTOM_RIGHT, "rear_mount", bottom_gap
+    )
+    bottom_left_rear = attached(
+        bottom, Anchor.BACK_BOTTOM_LEFT, "rear_mount", bottom_gap
+    )
 
-        top_right_front = place(outer_half, front_y, top_z, 90)
-        top_right_rear = place(outer_half, rear_y, top_z, 90)
-
-        bottom_right_front = place(outer_half, front_y, 0, 180)
-        bottom_right_rear = place(outer_half, rear_y, 0, 180)
-
-        bottom_left_front = place(-outer_half, front_y, 0, 270)
-        bottom_left_rear = place(-outer_half, rear_y, 0, 270)
-
-        return (
-            top_left_front
-            + top_left_rear
-            + top_right_front
-            + top_right_rear
-            + bottom_right_front
-            + bottom_right_rear
-            + bottom_left_front
-            + bottom_left_rear
-        ).group("CornerBrackets")
+    return (
+        top_left_front
+        + top_left_rear
+        + top_right_front
+        + top_right_rear
+        + bottom_right_front
+        + bottom_right_rear
+        + bottom_left_front
+        + bottom_left_rear
+    ).group("CornerBrackets")

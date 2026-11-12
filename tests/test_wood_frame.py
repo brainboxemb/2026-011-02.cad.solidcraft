@@ -165,7 +165,7 @@ class WoodenFrameTests(unittest.TestCase):
             params["radius"]
             for params in of(cmd, "solid.fillet")
         ]
-        self.assertEqual(radii.count("corner_radius"), 6)
+        self.assertEqual(radii.count("corner_radius"), 10)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
@@ -294,8 +294,8 @@ class WoodenFrameTests(unittest.TestCase):
             4,
         )
 
-        # Bottom board, roof board and four bracket corner definitions.
-        self.assertEqual(len(of(cmd, "solid.fillet")), 6)
+        # Bottom board, roof board and eight parameterized bracket definitions.
+        self.assertEqual(len(of(cmd, "solid.fillet")), 10)
 
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
         for duplicated in (
@@ -377,7 +377,7 @@ class WoodenFrameTests(unittest.TestCase):
             params for params in of(cmd, "solid.fillet")
             if params["body"].startswith("CornerBracket")
         ]
-        self.assertEqual(len(bracket_fillet), 4)
+        self.assertEqual(len(bracket_fillet), 8)
         self.assertTrue(
             all(item["radius"] == "corner_radius" for item in bracket_fillet)
         )
@@ -386,7 +386,8 @@ class WoodenFrameTests(unittest.TestCase):
         cmd = commands()
         bracket_names = [
             p["name"] for p in of(cmd, "component.create")
-            if p["name"].startswith("CornerBracket")
+            if p["name"] == "CornerBracket"
+            or p["name"].startswith("CornerBracket ")
         ]
         self.assertEqual(len(bracket_names), 8)
         self.assertFalse(
@@ -501,13 +502,9 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, "LeftBoard"), [])
         self.assertEqual(moved(cmd, "RightBoard"), [])
 
-        bracket_moves = [
-            p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("CornerBracket")
-        ]
-        self.assertEqual(len(bracket_moves), 8)
-        self.assertTrue(
-            all(p["translate"][0] == 0.0 for p in bracket_moves)
+        self.assertFalse(
+            any(p["occurrence"].startswith("CornerBracket")
+                for p in of(cmd, "occurrence.move"))
         )
 
         points = " ".join(
@@ -563,7 +560,8 @@ class WoodenFrameTests(unittest.TestCase):
         bracket_offsets = []
         for name in (
             p["name"] for p in of(cmd, "component.create")
-            if p["name"].startswith("CornerBracket")
+            if p["name"] == "CornerBracket"
+            or p["name"].startswith("CornerBracket ")
         ):
             sketch = next(
                 item["params"] for item in component_commands(cmd, name)

@@ -7,7 +7,8 @@ parameters and composition. Case-specific geometry is split into
 `scpf/assemblies/`.
 
 Only the cross-model parts — `Hub75PanelBasic` and `CornerBracket` —
-come from the top-level `components/` directory.
+come from `models/components/`: the basic HUB75 variant under
+`hub75_panel/basic/scpf/` and the Forge bracket under `corner_bracket/scpf/`.
 
 **Reference:** [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view).
 These figures reflect the **corrected design choices** below, not necessarily
@@ -219,8 +220,8 @@ plus the semantic wooden part classes. Parts use `@component`; subassemblies use
 `@assembly`. That lets the top-level model compose them directly as
 `Window()`, `WoodFrame()`, `GlassFrame()`, `HUB75Panels()` and
 `CornerBrackets()`, without procedural `build_*` wrappers. The generic
-imported panel and bracket remain in `components/hub75_basic.py` and
-`components/corner_bracket.py`.
+imported panel and bracket remain in `models/components/hub75_panel/basic/scpf/model.py` and
+`models/components/corner_bracket/scpf/model.py`.
 
 ## Test locally
 
@@ -228,7 +229,7 @@ After `./bootstrap.ps1` and `git pull`, open SolidCraft 0.30.1 and
 enable **Preferences → Assistant → Let AI agents connect**:
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect --new
 ```
 
 `--new` replaces the active design with a clean empty design before the
@@ -238,7 +239,7 @@ into the current design.
 To inspect only the generated command JSON:
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --out output/wood-frame.json
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --out output/wood-frame.json
 ```
 
 The native CI separately checks that SolidCraft can evaluate the assembly.

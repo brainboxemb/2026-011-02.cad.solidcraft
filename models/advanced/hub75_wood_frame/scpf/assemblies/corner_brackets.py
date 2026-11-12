@@ -34,23 +34,24 @@ class CornerBrackets:
             inside_corner_radius=self.corner_radius,
         )
 
-        def place(x, y, z, angle):
+        def place(x, y, z, rotation=None):
             occurrence = bracket.copy()
-            if angle:
-                occurrence = occurrence.rotate("Y", angle)
+            if rotation is not None:
+                axis, angle = rotation
+                occurrence = occurrence.rotate(axis, angle)
             return occurrence.move(x=pv(x), y=pv(y), z=pv(z))
 
         top_left_front = place(-outer_half, front_y, top_z, 0)
         top_left_rear = place(-outer_half, rear_y, top_z, 0)
 
-        top_right_front = place(outer_half, front_y, top_z, 90)
-        top_right_rear = place(outer_half, rear_y, top_z, 90)
+        top_right_front = place(outer_half, front_y, top_z, ("Z", 180))
+        top_right_rear = place(outer_half, rear_y, top_z, ("Z", 180))
 
-        bottom_right_front = place(outer_half, front_y, 0, 180)
-        bottom_right_rear = place(outer_half, rear_y, 0, 180)
+        bottom_right_front = place(outer_half, front_y, 0, ("Y", 180))
+        bottom_right_rear = place(outer_half, rear_y, 0, ("Y", 180))
 
-        bottom_left_front = place(-outer_half, front_y, 0, 270)
-        bottom_left_rear = place(-outer_half, rear_y, 0, 270)
+        bottom_left_front = place(-outer_half, front_y, 0, ("X", 180))
+        bottom_left_rear = place(-outer_half, rear_y, 0, ("X", 180))
 
         return (
             top_left_front

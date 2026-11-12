@@ -28,7 +28,7 @@ class CornerBracket:
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
         ef = self.elephant_foot_relief
-        z = getattr(self, "z_position", 0.0)
+        z = getattr(self, "z_position", self.wall_thickness * 0)
 
         # L profile in the XZ plane (+Z up, +X right; not to scale):
         #

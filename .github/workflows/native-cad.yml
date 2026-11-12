@@ -334,9 +334,11 @@ jobs:
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
 
             # Bottom, roof and rear panel span the full 1024 mm outside width.
-            (all(.bodies[] | select(.name | startswith("BottomBoard")
-                                  or .name | startswith("RoofBoard")
-                                  or .name | startswith("BackBoard"));
+            (all(.bodies[] | select(
+                (.name | startswith("BottomBoard"))
+                or (.name | startswith("RoofBoard"))
+                or (.name | startswith("BackBoard"))
+              );
               ((.bbox.min[0] + 512) | fabs) < 0.001 and
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
 

@@ -189,6 +189,24 @@ class WoodenFrameTests(unittest.TestCase):
                 name,
             )
 
+    def test_basic_hub75_envelope_uses_fixed_constants(self):
+        from components.hub75_basic import (
+            HUB75_PANEL_DEPTH,
+            HUB75_PANEL_HEIGHT,
+            HUB75_PANEL_WIDTH,
+        )
+
+        self.assertEqual(HUB75_PANEL_WIDTH, 159.70)
+        self.assertEqual(HUB75_PANEL_HEIGHT, 319.71)
+        self.assertEqual(HUB75_PANEL_DEPTH, 14.50)
+
+        parameter_names = {
+            p["name"] for p in of(commands(), "parameters.add")
+        }
+        self.assertFalse(
+            any(name.startswith("Hub75PanelBasic_") for name in parameter_names)
+        )
+
     def test_all_part_positions_derived_from_central_dimensions(self):
         cmd = commands()
         self.assertEqual(

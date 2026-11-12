@@ -2,7 +2,11 @@
 
 from scpf import assembly, component, pv
 
-from components.hub75_basic import Hub75PanelBasic
+from components.hub75_basic import (
+    HUB75_PANEL_DEPTH,
+    HUB75_PANEL_HEIGHT,
+    Hub75PanelBasic,
+)
 
 
 Panel = component(Hub75PanelBasic)
@@ -20,8 +24,8 @@ class HUB75Panels:
         if count < 1 or count % 2 != 1:
             raise ValueError("panel_count must be a positive odd number")
 
-        panel_y = self.panel_recess_depth + Hub75PanelBasic.depth / 2
-        panel_z = (self.opening_height - Hub75PanelBasic.height) / 2
+        panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
+        panel_z = (self.opening_height - HUB75_PANEL_HEIGHT) / 2
         middle = Panel().move(y=panel_y, z=panel_z)
         panels = middle
 

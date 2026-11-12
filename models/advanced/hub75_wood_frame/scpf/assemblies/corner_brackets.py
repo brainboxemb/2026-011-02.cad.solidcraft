@@ -1,4 +1,4 @@
-"""Eight corner brackets attached to an existing WoodFrame assembly."""
+"""Eight corner brackets attached outside an existing WoodFrame."""
 
 from scpf import Anchor, assembly, component
 
@@ -10,7 +10,7 @@ Bracket = component(CornerBracket)
 
 @assembly
 class CornerBrackets:
-    """Attach brackets to the four inside corners of the side boards."""
+    """Attach brackets around the four outside corners of the side boards."""
 
     wood_frame = None
     bracket_width = 24.0
@@ -28,66 +28,67 @@ class CornerBrackets:
             inside_corner_radius=self.corner_radius,
         )
 
-        # The side-board corners define X and Z. The front/rear faces define Y;
-        # half the bracket width moves each symmetric bracket fully inside.
+        # Front/rear position is centred inside the cabinet depth. X/Z are
+        # derived from the sharp outside corners of the side boards; the
+        # component-local mount references compensate the 12 mm frame layer.
         gap = -(self.bracket_width / 2)
 
         top_left_front = bracket.copy().attach(
             left,
-            parent=Anchor.FRONT_TOP_RIGHT,
-            child="front_mount",
+            parent=Anchor.FRONT_TOP_LEFT,
+            child="front_mount_a",
             gap=gap,
-            angle=180,
+            angle=0,
         )
         top_right_front = bracket.copy().attach(
             right,
-            parent=Anchor.FRONT_TOP_LEFT,
-            child="front_mount",
+            parent=Anchor.FRONT_TOP_RIGHT,
+            child="front_mount_b",
             gap=gap,
             angle=0,
         )
         bottom_right_front = bracket.copy().attach(
             right,
-            parent=Anchor.FRONT_BOTTOM_LEFT,
-            child="front_mount",
+            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            child="front_mount_a",
             gap=gap,
-            angle=180,
+            angle=0,
         )
         bottom_left_front = bracket.copy().attach(
             left,
-            parent=Anchor.FRONT_BOTTOM_RIGHT,
-            child="front_mount",
+            parent=Anchor.FRONT_BOTTOM_LEFT,
+            child="front_mount_b",
             gap=gap,
             angle=0,
         )
 
         top_left_rear = bracket.copy().attach(
             left,
-            parent=Anchor.BACK_TOP_RIGHT,
-            child="rear_mount",
+            parent=Anchor.BACK_TOP_LEFT,
+            child="rear_mount_a",
             gap=gap,
-            angle=270,
+            angle=0,
         )
         top_right_rear = bracket.copy().attach(
             right,
-            parent=Anchor.BACK_TOP_LEFT,
-            child="rear_mount",
+            parent=Anchor.BACK_TOP_RIGHT,
+            child="rear_mount_b",
             gap=gap,
-            angle=90,
+            angle=0,
         )
         bottom_right_rear = bracket.copy().attach(
             right,
-            parent=Anchor.BACK_BOTTOM_LEFT,
-            child="rear_mount",
+            parent=Anchor.BACK_BOTTOM_RIGHT,
+            child="rear_mount_a",
             gap=gap,
-            angle=270,
+            angle=0,
         )
         bottom_left_rear = bracket.copy().attach(
             left,
-            parent=Anchor.BACK_BOTTOM_RIGHT,
-            child="rear_mount",
+            parent=Anchor.BACK_BOTTOM_LEFT,
+            child="rear_mount_b",
             gap=gap,
-            angle=90,
+            angle=0,
         )
 
         return (

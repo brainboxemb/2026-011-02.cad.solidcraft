@@ -580,7 +580,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             sorted(p["angle"] for p in joints),
-            [0, 0, 90, 90, 180, 180, 270, 270],
+            [0, 0, 0, 0, 0, 0, 0, 0],
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
@@ -680,8 +680,8 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(
             sorted(p["a"]["corner"][0] for p in joints),
-            [-500.0, -500.0, -500.0, -500.0,
-             500.0, 500.0, 500.0, 500.0],
+            [-512.0, -512.0, -512.0, -512.0,
+             512.0, 512.0, 512.0, 512.0],
         )
 
         points = " ".join(

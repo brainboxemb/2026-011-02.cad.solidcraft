@@ -1,6 +1,6 @@
 """Five-panel HUB75 subassembly."""
 
-from scpf import assembly, component, pv
+from scpf import assembly, component
 
 from components.hub75_basic import (
     HUB75_PANEL_DEPTH,
@@ -11,21 +11,20 @@ from components.hub75_basic import (
 
 Panel = component(Hub75PanelBasic)
 
+# This model is specifically the five-panel display. Count and pitch define
+# that fixed product layout; they are not editable SolidCraft parameters.
+PANEL_COUNT = 5
+PANEL_PITCH = 160.0
+
 
 @assembly
 class HUB75Panels:
     opening_height = 362.0
     opening_bottom_z = 12.0
-    panel_count = 5
-    panel_pitch = 160.0
-    panel_recess_depth = 25.0
+    _panel_recess_depth = 25.0
 
     def build(self):
-        count = int(pv(self.panel_count))
-        if count < 1 or count % 2 != 1:
-            raise ValueError("panel_count must be a positive odd number")
-
-        panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
+        panel_y = self._panel_recess_depth + HUB75_PANEL_DEPTH / 2
         panel_z = (
             self.opening_bottom_z
             + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
@@ -37,10 +36,10 @@ class HUB75Panels:
         )
         panels = middle
 
-        for column in range(count):
-            if column == count // 2:
+        for column in range(PANEL_COUNT):
+            if column == PANEL_COUNT // 2:
                 continue
-            x = (column - count // 2) * self.panel_pitch
+            x = (column - PANEL_COUNT // 2) * PANEL_PITCH
             panels = panels + middle.copy().move(x=x)
 
         return panels.group("HUB75Panels")

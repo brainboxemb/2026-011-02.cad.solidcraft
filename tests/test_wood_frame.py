@@ -234,30 +234,17 @@ class WoodenFrameTests(unittest.TestCase):
             any(name.startswith("CornerBracket_") for name in parameter_names)
         )
 
-        bracket_names = [
-            p["name"] for p in of(cmd, "component.create")
-            if p["name"] == "CornerBracket"
-            or p["name"].startswith("CornerBracket ")
-        ]
-        self.assertEqual(len(bracket_names), 8)
-
-        for name in bracket_names:
-            part = component_commands(cmd, name)
-            extrusion = next(
-                item["params"] for item in part
-                if item["command"] == "solid.extrude"
-            )
-            sketch = next(
-                item["params"] for item in part
-                if item["command"] == "sketch.create"
-            )
-            fillet = next(
-                item["params"] for item in part
-                if item["command"] == "solid.fillet"
-            )
-            self.assertEqual(extrusion["distance"], "bracket_width")
-            self.assertIn("bracket_width", str(sketch.get("offset", 0)))
-            self.assertEqual(fillet["radius"], "corner_radius")
+        part = component_commands(cmd, "CornerBracket")
+        extrusion = next(
+            item["params"] for item in part
+            if item["command"] == "solid.extrude"
+        )
+        fillet = next(
+            item["params"] for item in part
+            if item["command"] == "solid.fillet"
+        )
+        self.assertEqual(extrusion["distance"], "bracket_width")
+        self.assertEqual(fillet["radius"], "corner_radius")
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
@@ -276,12 +263,12 @@ class WoodenFrameTests(unittest.TestCase):
             params["radius"]
             for params in of(cmd, "solid.fillet")
         ]
-        self.assertEqual(radii.count("corner_radius"), 10)
+        self.assertEqual(radii.count("corner_radius"), 3)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
         names = [p["name"] for p in of(cmd, "component.create")]
-        self.assertEqual(len(names), 23)
+        self.assertEqual(len(names), 16)
 
         for name in (
             "HUB75Panels",
@@ -300,19 +287,13 @@ class WoodenFrameTests(unittest.TestCase):
             "GlassStrip 3",
             "GlassStrip 4",
             "CornerBracket",
-            "CornerBracket 2",
-            "CornerBracket 3",
-            "CornerBracket 4",
-            "CornerBracket 5",
-            "CornerBracket 6",
-            "CornerBracket 7",
-            "CornerBracket 8",
         ):
             self.assertIn(name, names)
 
         copies = of(cmd, "occurrence.copy")
         for name, count in [
             ("Hub75PanelBasic", 4),
+            ("CornerBracket", 7),
         ]:
             self.assertEqual(
                 sum(p["component"] == name for p in copies),
@@ -407,8 +388,8 @@ class WoodenFrameTests(unittest.TestCase):
             4,
         )
 
-        # Bottom board, roof board and eight parameterized bracket definitions.
-        self.assertEqual(len(of(cmd, "solid.fillet")), 10)
+        # Bottom board, roof board and one reusable CornerBracket definition.
+        self.assertEqual(len(of(cmd, "solid.fillet")), 3)
 
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
         for duplicated in (
@@ -484,7 +465,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertIn("corner_radius", parameter_names)
 
-    def test_corner_bracket_placement_inputs_stay_private_but_symbolic(self):
+    def test_corner_bracket_is_neutral_and_assembly_owns_placement(self):
         source = (
             ROOT / "models" / "components" / "corner_bracket" / "scpf" / "model.py"
         ).read_text(encoding="utf-8")
@@ -498,38 +479,39 @@ class WoodenFrameTests(unittest.TestCase):
             "_z_position",
             "_x_sign",
             "_z_sign",
+            "def placed",
         ):
-            self.assertIn(name + " =", source)
-            self.assertIn(name + "=", assembly_source)
+            self.assertNotIn(name, source)
 
-        self.assertNotIn("hasattr(", source)
-        self.assertNotIn("getattr(", source)
+        self.assertIn('rotate("Y", angle)', assembly_source)
+        for angle in ("0)", "90)", "180)", "270)"):
+            self.assertIn(angle, assembly_source)
 
-        cmd = commands(opening_width=1000, opening_height=400)
-        names = {
-            p["name"] for p in of(cmd, "parameters.add")
-        }
-        self.assertFalse(
-            any(name.startswith("CornerBracket_") for name in names)
+        cmd = commands()
+        creates = [
+            p for p in of(cmd, "component.create")
+            if p["name"] == "CornerBracket"
+        ]
+        self.assertEqual(len(creates), 1)
+        self.assertEqual(
+            sum(
+                p["component"] == "CornerBracket"
+                for p in of(cmd, "occurrence.copy")
+            ),
+            7,
         )
 
-        bracket_names = [
-            p["name"] for p in of(cmd, "component.create")
-            if p["name"] == "CornerBracket"
-            or p["name"].startswith("CornerBracket ")
-        ]
-        profiles = []
-        for name in bracket_names:
-            profile = next(
-                item["params"]
-                for item in component_commands(cmd, name)
-                if item["command"] == "sketch.line"
-            )
-            profiles.append(str(profile["points"]))
-
-        joined = " ".join(profiles)
-        self.assertIn("opening_width", joined)
-        self.assertIn("opening_height", joined)
+        moves = moved(cmd, "CornerBracket")
+        self.assertEqual(len(moves), 8)
+        rotations = sorted(
+            p.get("angle", "0 deg")
+            for p in moves
+        )
+        self.assertEqual(
+            rotations,
+            ["0 deg", "0 deg", "90 deg", "90 deg",
+             "180 deg", "180 deg", "270 deg", "270 deg"],
+        )
 
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
@@ -537,55 +519,34 @@ class WoodenFrameTests(unittest.TestCase):
             params for params in of(cmd, "solid.fillet")
             if params["body"].startswith("CornerBracket")
         ]
-        self.assertEqual(len(bracket_fillet), 8)
+        self.assertEqual(len(bracket_fillet), 1)
         self.assertTrue(
             all(item["radius"] == "corner_radius" for item in bracket_fillet)
         )
 
     def test_eight_brackets_front_and_back(self):
         cmd = commands()
-        bracket_names = [
-            p["name"] for p in of(cmd, "component.create")
+        creates = [
+            p for p in of(cmd, "component.create")
             if p["name"] == "CornerBracket"
-            or p["name"].startswith("CornerBracket ")
         ]
-        self.assertEqual(len(bracket_names), 8)
-        self.assertFalse(
-            any(p["occurrence"].startswith("CornerBracket")
-                for p in of(cmd, "occurrence.move"))
+        self.assertEqual(len(creates), 1)
+        self.assertEqual(
+            sum(
+                p["component"] == "CornerBracket"
+                for p in of(cmd, "occurrence.copy")
+            ),
+            7,
+        )
+
+        moves = moved(cmd, "CornerBracket")
+        self.assertEqual(len(moves), 8)
+        self.assertEqual(
+            sorted(p["translate"][1] for p in moves),
+            [12.0, 12.0, 12.0, 12.0, 88.0, 88.0, 88.0, 88.0],
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
-        )
-
-        offsets = []
-        for name in bracket_names:
-            sketch = next(
-                item["params"]
-                for item in component_commands(cmd, name)
-                if item["command"] == "sketch.create"
-            )
-            offsets.append(sketch.get("offset", 0))
-
-        front_offsets = [
-            offset for offset in offsets
-            if "cabinet_depth" not in str(offset)
-        ]
-        rear_offsets = [
-            offset for offset in offsets
-            if "cabinet_depth" in str(offset)
-        ]
-        self.assertEqual(len(front_offsets), 4)
-        self.assertEqual(len(rear_offsets), 4)
-        self.assertTrue(
-            all("bracket_width" in str(offset) for offset in front_offsets)
-        )
-        self.assertTrue(
-            all(
-                "bracket_width" in str(offset)
-                and "cabinet_depth" in str(offset)
-                for offset in rear_offsets
-            )
         )
 
     def test_roof_z_is_symbolic_geometry_not_fixed_occurrence_move(self):
@@ -641,15 +602,11 @@ class WoodenFrameTests(unittest.TestCase):
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)
 
-        # No dependent component may freeze the edited opening height into a
-        # vertical occurrence translation.
-        for params in of(cmd, "occurrence.move"):
-            if (
-                params["occurrence"].startswith("GlassStrip")
-                or params["occurrence"].startswith("Hub75PanelBasic")
-                or params["occurrence"].startswith("CornerBracket:")
-            ):
-                self.assertEqual(params["translate"][2], 0.0)
+        bracket_moves = moved(cmd, "CornerBracket")
+        self.assertEqual(
+            sorted(p["translate"][2] for p in bracket_moves),
+            [0.0, 0.0, 0.0, 0.0, 424.0, 424.0, 424.0, 424.0],
+        )
 
         points = " ".join(
             str(params["points"]) for params in of(cmd, "sketch.line")
@@ -677,9 +634,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, "LeftBoard"), [])
         self.assertEqual(moved(cmd, "RightBoard"), [])
 
-        self.assertFalse(
-            any(p["occurrence"].startswith("CornerBracket")
-                for p in of(cmd, "occurrence.move"))
+        bracket_moves = moved(cmd, "CornerBracket")
+        self.assertEqual(
+            sorted(p["translate"][0] for p in bracket_moves),
+            [-512.0, -512.0, -512.0, -512.0,
+             512.0, 512.0, 512.0, 512.0],
         )
 
         points = " ".join(
@@ -732,20 +691,10 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertIn(parameter, str(roof_extrusion["distance"]))
 
-        bracket_offsets = []
-        for name in (
-            p["name"] for p in of(cmd, "component.create")
-            if p["name"] == "CornerBracket"
-            or p["name"].startswith("CornerBracket ")
-        ):
-            sketch = next(
-                item["params"] for item in component_commands(cmd, name)
-                if item["command"] == "sketch.create"
-            )
-            bracket_offsets.append(sketch.get("offset", 0))
+        bracket_moves = moved(cmd, "CornerBracket")
         self.assertEqual(
-            sum("cabinet_depth" in str(offset) for offset in bracket_offsets),
-            4,
+            sorted(p["translate"][1] for p in bracket_moves),
+            [12.0, 12.0, 12.0, 12.0, 108.0, 108.0, 108.0, 108.0],
         )
 
     def test_parameter_override_changes_all_dependents(self):
@@ -755,9 +704,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, "RightBoard"), [])
         self.assertEqual(moved(cmd, "BottomBoard"), [])
         self.assertEqual(moved(cmd, "RoofBoard"), [])
-        self.assertFalse(
-            any(p["occurrence"].startswith("CornerBracket")
-                for p in of(cmd, "occurrence.move"))
+        bracket_moves = moved(cmd, "CornerBracket")
+        self.assertEqual(
+            sorted(p["translate"][0] for p in bracket_moves),
+            [-438.0, -438.0, -438.0, -438.0,
+             438.0, 438.0, 438.0, 438.0],
         )
         sketch_points = " ".join(
             str(p["points"]) for p in of(cmd, "sketch.line")
@@ -768,6 +719,7 @@ class WoodenFrameTests(unittest.TestCase):
         cmd = commands()
         for name in (
             "Hub75PanelBasic",
+            "CornerBracket",
         ):
             copy_idx = [
                 i for i, command in enumerate(cmd)

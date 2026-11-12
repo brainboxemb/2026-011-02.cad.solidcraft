@@ -4,7 +4,7 @@ The standalone demonstration and wooden HUB75 assembly import this single
 geometry definition. While the screw-hole operations are producing native
 SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
-experiments remain only in the standalone model_reference.py, not here.
+experiments remain only in the standalone reference.py, not here.
 """
 from scpf import Polygon2D, Direction, Edges
 
@@ -20,14 +20,6 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
-    # Parent-owned placement inputs. Their defaults stay private when this
-    # component is opened standalone; an assembly may bind parent parameters
-    # into them without creating separate CornerBracket_* parameters.
-    _x_position = 0.0
-    _y_position = 0.0
-    _z_position = 0.0
-    _x_sign = 1.0
-    _z_sign = 1.0
 
     def build(self):
         w = self.wall_thickness
@@ -35,9 +27,8 @@ class CornerBracket:
         v = self.vertical_arm_length
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
-        ef = self.elephant_foot_relief
 
-        # L profile in the XZ plane (+Z up, +X right; not to scale):
+        # One neutral local model in the XZ plane (+Z up, +X right).
         #
         #       D--------------------------------C
         #      /                                  \
@@ -54,46 +45,31 @@ class CornerBracket:
         # D o_corner     E o_vert       F o_vert_bevel
         # G o_vert_end   H v_tip        I i_corner
         #
-        # Start at I, the inside corner and sketch origin (0, 0).
-        # Polygon order: I -> A -> B -> C -> D -> E -> F -> G -> H -> I.
-        # Each label names its point and the segment starting at that point.
-        # Elephant-foot relief is NOT part of this sketch: it comes later.
-        # The geometry path is identical standalone and in an assembly.
-        # Placement is expressed through private parent-owned inputs rather
-        # than through a second "used model" code path.
-        x0 = self._x_position
-        z0 = self._z_position
-        sx = self._x_sign
-        sz = self._z_sign
-
-        def placed(x, z):
-            return (x0 + sx * x, z0 + sz * z)
-
+        # I is always the component origin. Assemblies place and rotate
+        # occurrences of this geometry; this model never knows where it is used.
         points = [
-            ("i_corner", placed(0, 0)),
-            ("o_hor_tip", placed(h, 0)),
-            ("o_hor_bevel", placed(h, w - end)),
-            ("o_hor", placed(h - end, w)),
-            ("o_corner", placed(-w + outer, w)),
-            ("o_vert", placed(-w, w - outer)),
-            ("o_vert_bevel", placed(-w, -v + end)),
-            ("o_vert_end", placed(-w + end, -v)),
-            ("v_tip", placed(0, -v)),
+            ("i_corner", (0, 0)),
+            ("o_hor_tip", (h, 0)),
+            ("o_hor_bevel", (h, w - end)),
+            ("o_hor", (h - end, w)),
+            ("o_corner", (-w + outer, w)),
+            ("o_vert", (-w, w - outer)),
+            ("o_vert_bevel", (-w, -v + end)),
+            ("o_vert_end", (-w + end, -v)),
+            ("v_tip", (0, -v)),
         ]
 
         profile = Polygon2D(
             points,
             plane="XZ",
             world=True,
-        ).at(y=self._y_position)
+        )
 
         body = profile.extrude(
             self.bracket_width,
             direction=Direction.SYMMETRIC,
         )
 
-        # Round the inside, then remove printing relief from the two tip
-        # edges (parallel to the extrusion direction).
         body = body.fillet(
             self.inside_corner_radius,
             edges=Edges.from_vertices("i_corner"),
@@ -106,7 +82,6 @@ class CornerBracket:
             self.side_edge_chamfer,
             edges=Edges.from_profile("o_*", sides="both"),
         )
-        # Inner relief along both broad faces, independent of the 2D outline.
         body = body.chamfer(
             self.elephant_foot_relief,
             edges=Edges.from_profile("i_corner", sides="both"),
@@ -114,8 +89,7 @@ class CornerBracket:
 
         # No mounting holes in this version. The historical four-hole
         # geometry caused warnings in native SolidCraft when replayed
-        # inside the larger wooden frame. Keep this bracket reliable as a
-        # positioned/rounded solid while the mounting approach is reviewed.
-        # Do not reintroduce holes through model-specific workarounds.
+        # inside the larger wooden frame. Keep this bracket reliable while
+        # the mounting approach is reviewed.
 
         return body

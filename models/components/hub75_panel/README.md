@@ -4,9 +4,9 @@
 
 The website shows the **real shared component source first**, not just the
 short model entry script. The complete editable profile, extrusions and
-features are in `models/components/hub75_panel/model.py`.
+features are in `models/components/hub75_panel/scpf/model.py`.
 
-`models/components/hub75_panel/model.py` is both the reusable definition and the standalone
+`models/components/hub75_panel/scpf/model.py` is both the reusable definition and the standalone
 SCPF model. Forge runs it directly because it contains exactly one public
 model class with `build()`. There is no `scpf/model.py` launcher, no
 standalone wrapper class and no alternate geometry path. The five-panel screen
@@ -75,7 +75,7 @@ coordinate system; an assembly owns placement. The standalone entry point does
 not rotate the part merely to make it look like the assembled screen.
 
 The [five-panel screen](../../advanced/hub75-screen/README.md) imports the
-same [Hub75Panel class](model.py), creates its occurrences,
+same [Hub75Panel class](scpf/model.py), creates its occurrences,
 and rotates them into world XZ. There is no separate "standalone panel"
 geometry definition.
 
@@ -89,7 +89,7 @@ With the GUI running, a **new empty design** active, and
 **Preferences → Assistant → Let AI agents connect** enabled:
 
 ```powershell
-python -m scpf models/components/hub75_panel/model.py --connect
+python -m scpf models/components/hub75_panel/scpf/model.py --connect
 ```
 
 This is the default interactive workflow: it creates the editable native
@@ -98,6 +98,6 @@ model in the already open design; save it in SolidCraft.
 For **optional** command-JSON generation and headless verification:
 
 ```powershell
-python -m scpf models/components/hub75_panel/model.py --out output/hub75.json
+python -m scpf models/components/hub75_panel/scpf/model.py --out output/hub75.json
 solidcraft-cli run output/hub75.json --param-check strict --results --save output/hub75.sc
 ```

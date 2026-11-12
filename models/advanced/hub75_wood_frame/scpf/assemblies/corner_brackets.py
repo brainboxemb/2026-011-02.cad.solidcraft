@@ -28,7 +28,8 @@ class CornerBrackets:
 
         # CornerBracket is modelled once in its neutral top-left orientation:
         # horizontal arm +X, vertical arm -Z. The other cabinet corners are
-        # placements of the same component, rotated around its local Y axis.
+        # placements of the same component. 180-degree rotations around X, Y
+        # or Z select the other three XZ corner orientations without mirroring.
         bracket = Bracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,

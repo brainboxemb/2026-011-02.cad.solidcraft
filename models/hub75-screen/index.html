@@ -17,7 +17,7 @@
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Five panels on the source project&#x27;s 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 reverse direction around the assembled front-to-back axis for the rear data chain, and all occurrences stand upright in XZ. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
-<div class="links"><a class="btn" href="source/components/hub75.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<div class="links"><a class="btn" href="source/models/components/hub75.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create the reusable tapered HUB75 component</li><li>Make six blind M3 rear bores and assign material once</li><li>Ground the middle occurrence at X=0</li><li>Place four copies on the 160 mm nominal grid</li><li>Place native occurrences with translate, axis and angle</li><li>Verify five saved native occurrences</li></ol></section></div>
@@ -40,13 +40,13 @@ Rotations and positions are applied with SolidCraft&#x27;s native commands, not
 custom matrix arithmetic.
 &quot;&quot;&quot;
 from scpf import component
-from components.hub75 import Hub75Panel as Hub75PanelDefinition
+from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 
 # This model represents one fixed five-panel 160 x 320 mm nominal grid.
 # These dimensions define the product layout; they are not editable native
-# SolidCraft parameters. The physical panel envelope remains in hub75.py.
+# SolidCraft parameters. The physical panel envelope remains in models/components/hub75.py.
 NOMINAL_PITCH_X = 160.0
 NOMINAL_HEIGHT = 320.0
 
@@ -78,7 +78,7 @@ class BasicHub75Screen:
             screen = screen + occurrence
 
         return screen
-</code></pre></section><section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>components/hub75.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/components/hub75.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Single measured HUB75 panel reused in the regression and screen assembly.
+</code></pre></section><section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>models/components/hub75.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/models/components/hub75.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Single measured HUB75 panel reused in the regression and screen assembly.
 
 Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
 The current CAD body is still an approximate rear-tapered envelope with

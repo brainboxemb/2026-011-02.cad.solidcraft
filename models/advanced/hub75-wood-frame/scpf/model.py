@@ -54,9 +54,11 @@ class WoodenHub75Box:
     glazing_wood_depth = 12.0
 
     def build(self):
+        opening_bottom_z = self.frame_wood_thickness
+
         panels = HUB75Panels(
             opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
+            opening_bottom_z=opening_bottom_z,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
             panel_recess_depth=self.panel_recess_depth,
@@ -76,7 +78,7 @@ class WoodenHub75Box:
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
+            opening_bottom_z=opening_bottom_z,
             glazing_wood_width=self.glazing_wood_width,
             glazing_wood_depth=self.glazing_wood_depth,
         )
@@ -91,7 +93,7 @@ class WoodenHub75Box:
 
         window = Window(
             opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
+            opening_bottom_z=opening_bottom_z,
         ).move(
             y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
         )

@@ -42,16 +42,18 @@ separate board. Adjustable model/CAD parameters use `lower_case`.
 
 Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains
-`GLASS_WIDTH`, `GLASS_HEIGHT`, `GLASS_THICKNESS` and
-`GLASS_BOTTOM_CLEARANCE`; they are deliberately not editable CAD
-parameters. Changing `opening_height` does not resize the plexiglass, but
-the fixed 360 mm-high sheet stays vertically centred in the opening. At the
-default 362 mm opening it spans Z=1..361 mm; at 400 mm it spans Z=20..380 mm.
+`GLASS_WIDTH`, `GLASS_HEIGHT` and `GLASS_THICKNESS`; they are deliberately
+not editable CAD parameters. Changing `opening_height` does not resize the plexiglass, but
+the fixed 360 mm-high sheet stays vertically centred in the opening. The
+`Window` itself only receives `opening_bottom_z` and `opening_height`; it does
+not know how the wooden frame derives that datum. At the default dimensions it
+spans Z=13..373 mm.
 
-Geometry stays symbolic inside the part definitions. In particular the
-shared `Board` helper uses `self.width / 2`, named profile vertices and
-`self.corner_radius`; it does not turn those values into fixed Python
-coordinates. Reusable component defaults stay internal unless explicitly
+Geometry stays symbolic inside the part definitions. In particular
+`parts/board.py` uses the internal `_build_board()` function for shared board
+geometry. The actual wooden CAD parts remain the semantic component classes
+such as `LeftBoard`, `BottomBoard` and `RoofBoard`; there is no generic
+`Board` component/class in the model. Reusable component defaults stay internal unless explicitly
 published or linked to a parent parameter.
 
 The design therefore has one `corner_radius`: BottomBoard, RoofBoard and
@@ -106,9 +108,11 @@ It defines a long strip with **straight 45° cuts at both ends**.
 The assembly creates two length variants from the same class:
 
 - **Horizontal:** length 844 mm, lighter wood finish; two occurrences
-  at Z=0 and Z=362. The top copy turns 180° about X.
+  at the bottom and top of the opening (Z=12 and Z=374 by default). The top
+  copy turns 180° about X.
 - **Vertical:** length 362 mm, darker wood finish; two occurrences
-  at X=−422 and X=422. The left and right copies turn +90° and −90°
+  at X=−422 and X=422, starting from the same opening-bottom datum. The left
+  and right copies turn +90° and −90°
   about Y to stand upright.
 
 The assembly uses Forge's named-axis occurrence syntax, so these placements
@@ -182,8 +186,8 @@ scpf/
     └── corner_brackets.py
 ```
 
-`parts/board.py` contains one shared `Board` geometry helper plus the
-semantic wooden part classes. Parts use `@component`; subassemblies use
+`parts/board.py` contains the internal `_build_board()` geometry function
+plus the semantic wooden part classes. Parts use `@component`; subassemblies use
 `@assembly`. That lets the top-level model compose them directly as
 `Window()`, `WoodFrame()`, `GlassFrame()`, `HUB75Panels()` and
 `CornerBrackets()`, without procedural `build_*` wrappers. The generic

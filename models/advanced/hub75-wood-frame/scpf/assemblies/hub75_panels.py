@@ -15,7 +15,7 @@ Panel = component(Hub75PanelBasic)
 @assembly
 class HUB75Panels:
     opening_height = 362.0
-    frame_wood_thickness = 12.0
+    opening_bottom_z = 12.0
     panel_count = 5
     panel_pitch = 160.0
     panel_recess_depth = 25.0
@@ -27,7 +27,7 @@ class HUB75Panels:
 
         panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
         panel_z = (
-            self.frame_wood_thickness
+            self.opening_bottom_z
             + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
         )
         middle = Panel(

@@ -92,8 +92,15 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(
             board_classes,
-            ["Board", "SideBoard", "LeftBoard", "RightBoard", "BottomBoard", "RoofBoard", "BackBoard"],
+            ["SideBoard", "LeftBoard", "RightBoard", "BottomBoard", "RoofBoard", "BackBoard"],
         )
+        board_functions = [
+            obj.name for obj in ast.parse(
+                BOARD.read_text(encoding="utf-8")
+            ).body
+            if isinstance(obj, ast.FunctionDef)
+        ]
+        self.assertIn("_build_board", board_functions)
 
         glass_classes = [
             obj.name for obj in ast.parse(
@@ -147,12 +154,30 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
         self.assertIn("opening_height", parameter_names)
         self.assertIn("(self.opening_height - GLASS_HEIGHT) / 2", window_source)
+        self.assertIn("opening_bottom_z = 12.0", window_source)
+        self.assertNotIn("frame_wood_thickness", window_source)
+
+    def test_opening_consumers_do_not_know_about_wood_thickness(self):
+        model_source = MODEL.read_text(encoding="utf-8")
+        panel_source = (ASSEMBLIES / "hub75_panels.py").read_text(encoding="utf-8")
+        glass_source = GLASS_FRAME.read_text(encoding="utf-8")
+        window_source = WINDOW.read_text(encoding="utf-8")
+
+        for source in (panel_source, glass_source, window_source):
+            self.assertIn("opening_bottom_z", source)
+            self.assertNotIn("frame_wood_thickness", source)
+
+        self.assertIn(
+            "opening_bottom_z = self.frame_wood_thickness",
+            model_source,
+        )
+        self.assertIn("opening_bottom_z=opening_bottom_z", model_source)
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
-        self.assertIn("half = self.width / 2", source)
-        self.assertNotIn("pv(self.width)", source)
-        self.assertNotIn("pv(self.height)", source)
+        self.assertIn("half = width / 2", source)
+        self.assertNotIn("pv(width)", source)
+        self.assertNotIn("pv(height)", source)
         self.assertIn("Edges.from_vertices", source)
 
         cmd = commands()

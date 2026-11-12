@@ -15,13 +15,13 @@ Rotations and positions are applied with SolidCraft's native commands, not
 custom matrix arithmetic.
 """
 from scpf import component
-from components.hub75 import Hub75Panel as Hub75PanelDefinition
+from models.components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 
 # This model represents one fixed five-panel 160 x 320 mm nominal grid.
 # These dimensions define the product layout; they are not editable native
-# SolidCraft parameters. The physical panel envelope remains in hub75.py.
+# SolidCraft parameters. The physical panel envelope remains in models/components/hub75.py.
 NOMINAL_PITCH_X = 160.0
 NOMINAL_HEIGHT = 320.0
 

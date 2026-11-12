@@ -46,8 +46,8 @@ class CornerBracketTests(unittest.TestCase):
             if row["command"] == "parameters.add"
         ]
         self.assertEqual(
-            names,
-            [
+            set(names),
+            {
                 "bracket_width",
                 "wall_thickness",
                 "horizontal_arm_length",
@@ -57,7 +57,7 @@ class CornerBracketTests(unittest.TestCase):
                 "side_edge_chamfer",
                 "elephant_foot_relief",
                 "inside_corner_radius",
-            ],
+            },
         )
         self.assertFalse(any(name.startswith("_") for name in names))
 

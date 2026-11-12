@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">158 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">150 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -1084,198 +1084,6 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:1.front_mount_a</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:1.front_mount_a&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        -12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:2.rear_mount_a</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:2.rear_mount_a&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        -12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:3.front_mount_b</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:3.front_mount_b&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        12.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:4.rear_mount_b</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:4.rear_mount_b&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        12.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:5.front_mount_a</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:5.front_mount_a&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        -12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:6.rear_mount_a</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:6.rear_mount_a&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        -12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:7.front_mount_b</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:7.front_mount_b&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        12.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    }
-  }
-}</code></pre></li>
-<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:8.rear_mount_b</small><pre><code>{
-  &quot;command&quot;: &quot;joint.origin&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket:8.rear_mount_b&quot;,
-    &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
-    &quot;frame&quot;: {
-      &quot;origin&quot;: [
-        12.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    }
-  }
-}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
@@ -1856,7 +1664,24 @@ class WoodenHub75Box:
         374.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:1.front_mount_a&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
+      &quot;point&quot;: [
+        -434.0,
+        0.0,
+        374.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -1884,7 +1709,24 @@ class WoodenHub75Box:
         374.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:2.rear_mount_a&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
+      &quot;point&quot;: [
+        -434.0,
+        100.0,
+        374.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -1912,7 +1754,24 @@ class WoodenHub75Box:
         374.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:3.front_mount_b&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
+      &quot;point&quot;: [
+        434.0,
+        0.0,
+        374.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -1940,7 +1799,24 @@ class WoodenHub75Box:
         374.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:4.rear_mount_b&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
+      &quot;point&quot;: [
+        434.0,
+        100.0,
+        374.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -1968,7 +1844,24 @@ class WoodenHub75Box:
         12.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:5.front_mount_a&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
+      &quot;point&quot;: [
+        434.0,
+        0.0,
+        12.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -1996,7 +1889,24 @@ class WoodenHub75Box:
         12.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:6.rear_mount_a&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
+      &quot;point&quot;: [
+        434.0,
+        100.0,
+        12.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -2024,7 +1934,24 @@ class WoodenHub75Box:
         12.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:7.front_mount_b&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
+      &quot;point&quot;: [
+        -434.0,
+        0.0,
+        12.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }
@@ -2052,7 +1979,24 @@ class WoodenHub75Box:
         12.0
       ]
     },
-    &quot;b&quot;: &quot;CornerBracket:8.rear_mount_b&quot;,
+    &quot;b&quot;: {
+      &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
+      &quot;point&quot;: [
+        -434.0,
+        100.0,
+        12.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
     &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
     &quot;angle&quot;: 0.0
   }

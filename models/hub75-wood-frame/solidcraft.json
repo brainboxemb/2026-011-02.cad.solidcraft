@@ -958,198 +958,6 @@
       }
     },
     {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:1.front_mount_a",
-        "occurrence": "CornerBracket:1",
-        "frame": {
-          "origin": [
-            0.0,
-            0.0,
-            -12.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:2.rear_mount_a",
-        "occurrence": "CornerBracket:2",
-        "frame": {
-          "origin": [
-            0.0,
-            0.0,
-            -12.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:3.front_mount_b",
-        "occurrence": "CornerBracket:3",
-        "frame": {
-          "origin": [
-            12.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:4.rear_mount_b",
-        "occurrence": "CornerBracket:4",
-        "frame": {
-          "origin": [
-            12.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:5.front_mount_a",
-        "occurrence": "CornerBracket:5",
-        "frame": {
-          "origin": [
-            0.0,
-            0.0,
-            -12.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:6.rear_mount_a",
-        "occurrence": "CornerBracket:6",
-        "frame": {
-          "origin": [
-            0.0,
-            0.0,
-            -12.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:7.front_mount_b",
-        "occurrence": "CornerBracket:7",
-        "frame": {
-          "origin": [
-            12.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        }
-      }
-    },
-    {
-      "command": "joint.origin",
-      "params": {
-        "name": "CornerBracket:8.rear_mount_b",
-        "occurrence": "CornerBracket:8",
-        "frame": {
-          "origin": [
-            12.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        }
-      }
-    },
-    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "CornerBracket:1",
@@ -1729,7 +1537,24 @@
             374.0
           ]
         },
-        "b": "CornerBracket:1.front_mount_a",
+        "b": {
+          "occurrence": "CornerBracket:1",
+          "point": [
+            -434.0,
+            0.0,
+            374.0
+          ],
+          "z": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1757,7 +1582,24 @@
             374.0
           ]
         },
-        "b": "CornerBracket:2.rear_mount_a",
+        "b": {
+          "occurrence": "CornerBracket:2",
+          "point": [
+            -434.0,
+            100.0,
+            374.0
+          ],
+          "z": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1785,7 +1627,24 @@
             374.0
           ]
         },
-        "b": "CornerBracket:3.front_mount_b",
+        "b": {
+          "occurrence": "CornerBracket:3",
+          "point": [
+            434.0,
+            0.0,
+            374.0
+          ],
+          "z": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1813,7 +1672,24 @@
             374.0
           ]
         },
-        "b": "CornerBracket:4.rear_mount_b",
+        "b": {
+          "occurrence": "CornerBracket:4",
+          "point": [
+            434.0,
+            100.0,
+            374.0
+          ],
+          "z": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1841,7 +1717,24 @@
             12.0
           ]
         },
-        "b": "CornerBracket:5.front_mount_a",
+        "b": {
+          "occurrence": "CornerBracket:5",
+          "point": [
+            434.0,
+            0.0,
+            12.0
+          ],
+          "z": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1869,7 +1762,24 @@
             12.0
           ]
         },
-        "b": "CornerBracket:6.rear_mount_a",
+        "b": {
+          "occurrence": "CornerBracket:6",
+          "point": [
+            434.0,
+            100.0,
+            12.0
+          ],
+          "z": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1897,7 +1807,24 @@
             12.0
           ]
         },
-        "b": "CornerBracket:7.front_mount_b",
+        "b": {
+          "occurrence": "CornerBracket:7",
+          "point": [
+            -434.0,
+            0.0,
+            12.0
+          ],
+          "z": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
@@ -1925,7 +1852,24 @@
             12.0
           ]
         },
-        "b": "CornerBracket:8.rear_mount_b",
+        "b": {
+          "occurrence": "CornerBracket:8",
+          "point": [
+            -434.0,
+            100.0,
+            12.0
+          ],
+          "z": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }

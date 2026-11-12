@@ -331,11 +331,11 @@ class WoodenFrameTests(unittest.TestCase):
             for p in of(cmd, "material.create")
         }
         self.assertEqual(
-            materials["LIGHTPLY glazing vertical"],
+            materials["PINE glazing vertical"],
             "#A9793E",
         )
         self.assertEqual(
-            materials["LIGHTPLY glazing horizontal"],
+            materials["PINE glazing horizontal"],
             "#E3BF80",
         )
         self.assertEqual(

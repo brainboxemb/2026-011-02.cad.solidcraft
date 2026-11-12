@@ -6,8 +6,7 @@ import tempfile
 import unittest
 import warnings
 
-from scpf import ModelParameterWarning
-from scpf.runner import run_script
+from scpf.runner import ModelParameterWarning, run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]

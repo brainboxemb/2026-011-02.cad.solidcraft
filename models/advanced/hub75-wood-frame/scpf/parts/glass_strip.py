@@ -1,8 +1,9 @@
 """Mitred wooden glazing retainer."""
 
-from scpf import Direction, Polygon2D, pv
+from scpf import Direction, Polygon2D, component, pv
 
 
+@component
 class GlassStrip:
     """One strip type for both horizontal and vertical retainers."""
 

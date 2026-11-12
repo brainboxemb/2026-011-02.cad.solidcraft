@@ -232,10 +232,12 @@ def layout(title, body, css_path, home_path):
 <nav aria-label="Main"><a href="{esc(home_path)}">Models</a>
 <a href="{LIBRARY_CHEATSHEET}">Cheatsheet</a>
 <a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 {body}<footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
-<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a></div></footer>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
 </body></html>"""
 
 

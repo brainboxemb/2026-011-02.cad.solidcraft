@@ -109,7 +109,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("GlassCrossStrip", sources)
         self.assertNotIn("def build_window", sources)
         self.assertNotIn("def build_wood_frame", sources)
-        self.assertIn("window = Window().move(", MODEL.read_text(encoding="utf-8"))
+        self.assertIn("window = Window(", MODEL.read_text(encoding="utf-8"))
 
     def test_adjustable_parameters_are_lowercase_and_fixed_glass_is_uppercase(self):
         model_source = MODEL.read_text(encoding="utf-8")
@@ -119,7 +119,6 @@ class WoodenFrameTests(unittest.TestCase):
             "GLASS_WIDTH",
             "GLASS_HEIGHT",
             "GLASS_THICKNESS",
-            "GLASS_BOTTOM_CLEARANCE",
         ):
             self.assertIn(name + " =", window_source)
 
@@ -127,12 +126,12 @@ class WoodenFrameTests(unittest.TestCase):
             "glass_width =",
             "glass_height =",
             "glass_thickness =",
-            "glass_bottom_clearance =",
         ):
             self.assertNotIn(old_parameter, model_source)
 
         parameter_names = {p["name"] for p in of(commands(), "parameters.add")}
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
+        self.assertIn("opening_height", parameter_names)
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
@@ -151,12 +150,12 @@ class WoodenFrameTests(unittest.TestCase):
             params["radius"]
             for params in of(cmd, "solid.fillet")
         ]
-        self.assertEqual(radii.count("corner_radius"), 3)
+        self.assertEqual(radii.count("corner_radius"), 4)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
         names = [p["name"] for p in of(cmd, "component.create")]
-        self.assertEqual(len(names), 14)
+        self.assertEqual(len(names), 17)
 
         for name in (
             "HUB75Panels",
@@ -172,16 +171,18 @@ class WoodenFrameTests(unittest.TestCase):
             "Window",
             "GlassStrip",
             "GlassStrip 2",
+            "GlassStrip 3",
+            "GlassStrip 4",
             "CornerBracket",
+            "CornerBracket 2",
         ):
             self.assertIn(name, names)
 
         copies = of(cmd, "occurrence.copy")
         for name, count in [
             ("Hub75PanelBasic", 4),
-            ("GlassStrip", 1),
-            ("GlassStrip 2", 1),
-            ("CornerBracket", 7),
+            ("CornerBracket", 3),
+            ("CornerBracket 2", 3),
         ]:
             self.assertEqual(
                 sum(p["component"] == name for p in copies),
@@ -229,17 +230,14 @@ class WoodenFrameTests(unittest.TestCase):
             moved(cmd, "BackBoard")[0]["translate"],
             [0.0, 104.5, -12.0],
         )
-        self.assertEqual(
-            moved(cmd, "Window")[0]["translate"],
-            [0.0, 14.0, 1.0],
-        )
+        self.assertEqual(moved(cmd, "Window"), [])
         panels = moved(cmd, "Hub75PanelBasic")
         self.assertEqual(
             sorted(p["translate"][0] for p in panels),
-            [-320.0, -160.0, 0.0, 160.0, 320.0],
+            [-320.0, -160.0, 160.0, 320.0],
         )
         self.assertTrue(
-            all(p["translate"][1] == 32.25 for p in panels)
+            all(p["translate"][1:] == [0.0, 0.0] for p in panels)
         )
 
     def test_glass_frame_uses_named_axis_rotation(self):
@@ -252,35 +250,39 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_glassstrip_two_lengths_four_placements_no_corner_fillet(self):
         cmd = commands()
-        horizontal = moved(cmd, "GlassStrip")
-        vertical = moved(cmd, "GlassStrip 2")
+        strip_moves = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("GlassStrip")
+        ]
+        self.assertEqual(len(strip_moves), 4)
+        self.assertTrue(
+            all(p["translate"] == [0.0, 6.0, 0.0] for p in strip_moves)
+        )
 
-        self.assertEqual(len(horizontal), 2)
-        self.assertEqual(len(vertical), 2)
+        rotations = {
+            (tuple(p.get("axis", [])), p.get("angle"))
+            for p in strip_moves
+            if "axis" in p
+        }
         self.assertEqual(
-            [p["translate"] for p in horizontal],
-            [[0.0, 6.0, 0.0], [0.0, 6.0, 362.0]],
+            rotations,
+            {
+                ((1.0, 0.0, 0.0), "180 deg"),
+                ((0.0, 1.0, 0.0), "90 deg"),
+                ((0.0, 1.0, 0.0), "-90 deg"),
+            },
         )
-        self.assertEqual(
-            [p["translate"] for p in vertical],
-            [[-422.0, 6.0, 181.0], [422.0, 6.0, 181.0]],
-        )
-        self.assertEqual(vertical[0]["axis"], [0.0, 1.0, 0.0])
-        self.assertEqual(vertical[0]["angle"], "90 deg")
-        self.assertEqual(vertical[1]["angle"], "-90 deg")
-        self.assertEqual(horizontal[1]["axis"], [1.0, 0.0, 0.0])
-        self.assertEqual(horizontal[1]["angle"], "180 deg")
 
         self.assertEqual(
             sum(
-                "GlassStrip" in p["name"]
+                p["name"].startswith("GlassStrip")
                 for p in of(cmd, "component.create")
             ),
-            2,
+            4,
         )
 
-        # Bottom board, roof board and shared CornerBracket.
-        self.assertEqual(len(of(cmd, "solid.fillet")), 3)
+        # Bottom board, roof board and two bracket orientation definitions.
+        self.assertEqual(len(of(cmd, "solid.fillet")), 4)
 
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
         for duplicated in (
@@ -362,29 +364,31 @@ class WoodenFrameTests(unittest.TestCase):
             params for params in of(cmd, "solid.fillet")
             if params["body"].startswith("CornerBracket")
         ]
-        self.assertEqual(len(bracket_fillet), 1)
-        self.assertEqual(bracket_fillet[0]["radius"], "corner_radius")
+        self.assertEqual(len(bracket_fillet), 2)
+        self.assertTrue(
+            all(item["radius"] == "corner_radius" for item in bracket_fillet)
+        )
 
     def test_eight_brackets_front_and_back(self):
         cmd = commands()
-        brackets = moved(cmd, "CornerBracket")
+        brackets = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
+        ]
         self.assertEqual(len(brackets), 8)
 
-        coords = {
-            (
-                p["translate"][0],
-                p["translate"][1],
-                p["translate"][2],
-            )
-            for p in brackets
-        }
-        expected = {
-            (x, y, z)
-            for x in (-434.0, 434.0)
-            for y in (12.0, 88.0)
-            for z in (-12.0, 374.0)
-        }
-        self.assertEqual(coords, expected)
+        top = [
+            p for p in brackets
+            if p["occurrence"].startswith("CornerBracket:")
+        ]
+        bottom = [
+            p for p in brackets
+            if p["occurrence"].startswith("CornerBracket 2:")
+        ]
+        self.assertEqual(len(top), 4)
+        self.assertEqual(len(bottom), 4)
+        self.assertTrue(all(p["translate"][2] == 0.0 for p in top))
+        self.assertTrue(all(p["translate"][2] == -12.0 for p in bottom))
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
         )
@@ -427,6 +431,25 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("opening_height", points)
         self.assertNotIn("RoofBoard_z_position", points)
 
+    def test_opening_height_drives_all_vertical_dependents_symbolically(self):
+        cmd = commands(opening_height=400)
+
+        # No dependent component may freeze the edited opening height into a
+        # vertical occurrence translation.
+        for params in of(cmd, "occurrence.move"):
+            if (
+                params["occurrence"].startswith("GlassStrip")
+                or params["occurrence"].startswith("Hub75PanelBasic")
+                or params["occurrence"].startswith("Window")
+                or params["occurrence"].startswith("CornerBracket:")
+            ):
+                self.assertEqual(params["translate"][2], 0.0)
+
+        points = " ".join(
+            str(params["points"]) for params in of(cmd, "sketch.line")
+        )
+        self.assertIn("opening_height", points)
+
     def test_wood_dimensions_and_roof_overhang(self):
         source = MODEL.read_text(encoding="utf-8")
         self.assertIn("frame_wood_thickness = 12.0", source)
@@ -449,7 +472,8 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         bracket_x = sorted({
             p["translate"][0]
-            for p in moved(cmd, "CornerBracket")
+            for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
         })
 
         self.assertEqual(side_x, [-431.5, 431.5])
@@ -462,17 +486,16 @@ class WoodenFrameTests(unittest.TestCase):
             moved(cmd, "RoofBoard")[0]["translate"][2],
             0.0,
         )
-        self.assertEqual(
-            moved(cmd, "GlassStrip 2")[0]["translate"][0],
-            -425.0,
+        sketch_points = " ".join(
+            str(p["points"]) for p in of(cmd, "sketch.line")
         )
+        self.assertIn("opening_width", sketch_points)
 
     def test_all_copies_created_before_native_placements(self):
         cmd = commands()
         for name in (
             "CornerBracket",
-            "GlassStrip",
-            "GlassStrip 2",
+            "CornerBracket 2",
             "Hub75PanelBasic",
         ):
             copy_idx = [

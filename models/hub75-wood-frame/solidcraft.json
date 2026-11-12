@@ -1468,30 +1468,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "Window_width",
-        "expression": "840",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "Window_thickness",
-        "expression": "4",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "Window_height",
-        "expression": "360",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "Window",
@@ -1509,12 +1485,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-Window_width / 2",
-          "-Window_thickness / 2"
+          -420.0,
+          -2.0
         ],
         "p1": [
-          "Window_width / 2",
-          "Window_thickness / 2"
+          420.0,
+          2.0
         ]
       }
     },
@@ -1525,7 +1501,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "Window_height",
+        "distance": 360.0,
         "body_name": "Window"
       }
     },

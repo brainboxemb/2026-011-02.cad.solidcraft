@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">152 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">149 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -22,17 +22,17 @@
 <h3>Construction stages</h3><ol><li>Define one central parameter set and the wooden component types</li><li>Place five lightweight HUB75 panel occurrences on the 160 mm grid</li><li>Place 12 mm sidewalls, R4 bottom and roof with 10/1 mm overhang</li><li>Attach the 9 mm back board and place the 4 mm window behind the strips</li><li>Create two length variants of ONE GlassStrip type and place four mitred pieces</li><li>Place eight shared hole-free CornerBracket occurrences, front and rear</li><li>Verify actual native positions and dimensions in SolidCraft 0.30.1</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fhub75-wood-frame%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in SolidCraft 0.30.1.</p></section>
 
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;Wooden HUB75 display assembled from separate part and assembly modules.&quot;&quot;&quot;
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Wooden HUB75 display assembled from named parts and subassemblies.&quot;&quot;&quot;
 
-from assemblies.corner_brackets import build_corner_brackets
-from assemblies.glass_frame import build_glass_frame
-from assemblies.hub75_panels import build_hub75_panels
-from assemblies.window import build_window
-from assemblies.wood_frame import build_wood_frame
+from assemblies.corner_brackets import CornerBrackets
+from assemblies.glass_frame import GlassFrame
+from assemblies.hub75_panels import HUB75Panels
+from assemblies.wood_frame import WoodFrame
+from parts.window import GLASS_BOTTOM_CLEARANCE, GLASS_THICKNESS, Window
 
 
 class WoodenHub75Box:
-    &quot;&quot;&quot;Top-level design parameters and composition only.&quot;&quot;&quot;
+    &quot;&quot;&quot;Top-level adjustable design parameters and composition.&quot;&quot;&quot;
 
     # Display / inside opening
     opening_width = 844.0
@@ -49,22 +49,18 @@ class WoodenHub75Box:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Window and mitred glazing
-    glass_width = 840.0
-    glass_height = 360.0
-    glass_thickness = 4.0
-    glass_bottom_clearance = 1.0
+    # Glazing retainers
     glazing_width = 15.0
     glazing_depth = 15.0
 
     def build(self):
-        panels = build_hub75_panels(
+        panels = HUB75Panels(
             opening_height=self.opening_height,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
         )
 
-        frame = build_wood_frame(
+        frame = WoodFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             wood_thickness=self.wood_thickness,
@@ -76,7 +72,7 @@ class WoodenHub75Box:
             corner_radius=self.corner_radius,
         )
 
-        glazing = build_glass_frame(
+        glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             frame_front_y=self.frame_front_y,
@@ -84,7 +80,7 @@ class WoodenHub75Box:
             glazing_depth=self.glazing_depth,
         )
 
-        brackets = build_corner_brackets(
+        brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             wood_thickness=self.wood_thickness,
@@ -92,13 +88,9 @@ class WoodenHub75Box:
             frame_front_y=self.frame_front_y,
         )
 
-        window = build_window(
-            glass_width=self.glass_width,
-            glass_height=self.glass_height,
-            glass_thickness=self.glass_thickness,
-            glass_bottom_clearance=self.glass_bottom_clearance,
-            frame_front_y=self.frame_front_y,
-            glazing_depth=self.glazing_depth,
+        window = Window().move(
+            y=self.frame_front_y + self.glazing_depth + GLASS_THICKNESS / 2,
+            z=GLASS_BOTTOM_CLEARANCE,
         )
 
         return panels + frame + glazing + brackets + window
@@ -1574,30 +1566,6 @@ WoodenHub75Box()
     &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Window_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Window_width&quot;,
-    &quot;expression&quot;: &quot;840&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Window_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Window_thickness&quot;,
-    &quot;expression&quot;: &quot;4&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Window_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Window_height&quot;,
-    &quot;expression&quot;: &quot;360&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Window</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -1616,12 +1584,12 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;-Window_width / 2&quot;,
-      &quot;-Window_thickness / 2&quot;
+      -420.0,
+      -2.0
     ],
     &quot;p1&quot;: [
-      &quot;Window_width / 2&quot;,
-      &quot;Window_thickness / 2&quot;
+      420.0,
+      2.0
     ]
   }
 }</code></pre></li>
@@ -1632,7 +1600,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: Window</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;Window_height&quot;,
+    &quot;distance&quot;: 360.0,
     &quot;body_name&quot;: &quot;Window&quot;
   }
 }</code></pre></li>

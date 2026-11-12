@@ -90,7 +90,12 @@ only compiles JSON. See the [root README](../README.md).
 
 Use plain Python classes, numeric class attributes instead of
 `@dataclass` and `: float`, and an explicit `return` from every
-`build()`. Root files end in `ModelName()`, no `show()` or `main()`.
+`build()`. Reusable parts can use `@component`; subassemblies can use
+`@assembly`. Root files end in `ModelName()`, no `show()` or `main()`.
+
+Adjustable model/CAD parameters use **lower_case** names. Fixed product or
+part dimensions use **UPPER_CASE** constants, so the source makes the
+difference visible immediately.
 
 ## Directory and Python naming convention
 

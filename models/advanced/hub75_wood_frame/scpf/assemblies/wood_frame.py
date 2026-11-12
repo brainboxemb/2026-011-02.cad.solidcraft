@@ -2,6 +2,7 @@
 
 from scpf import assembly
 
+from assemblies.corner_brackets import attach_corner_brackets
 from parts.board import BackBoard, BottomBoard, LeftBoard, RightBoard, RoofBoard
 
 
@@ -15,6 +16,7 @@ class WoodFrame:
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
+    bracket_width = 24.0
 
     def build(self):
         rear = self.cabinet_depth
@@ -67,4 +69,15 @@ class WoodFrame:
             y_position=rear,
         )
 
-        return (sides + bottom + roof + rear_board).group("WoodBoxFrame")
+        brackets = attach_corner_brackets(
+            roof=roof,
+            bottom=bottom,
+            bracket_width=self.bracket_width,
+            corner_radius=self.corner_radius,
+            roof_front_overhang=self.roof_front_overhang,
+            roof_rear_overhang=self.roof_rear_overhang,
+            panel_wood_thickness=self.panel_wood_thickness,
+        )
+
+        boards = (sides + bottom + roof + rear_board).group("WoodBoxFrame")
+        return boards + brackets

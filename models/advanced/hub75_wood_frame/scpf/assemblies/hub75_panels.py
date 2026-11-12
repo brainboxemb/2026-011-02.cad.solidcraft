@@ -1,15 +1,12 @@
 """Five-panel HUB75 subassembly."""
 
-from scpf import assembly, component
+from scpf import assembly
 
 from models.components.hub75_panel.basic.scpf.model import (
     HUB75_PANEL_DEPTH,
     HUB75_PANEL_HEIGHT,
     Hub75PanelBasic,
 )
-
-
-Panel = component(Hub75PanelBasic)
 
 # This model is specifically the five-panel display. Count and pitch define
 # that fixed product layout; they are not editable SolidCraft parameters.
@@ -29,7 +26,7 @@ class HUB75Panels:
             self.opening_bottom_z
             + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
         )
-        middle = Panel(
+        middle = Hub75PanelBasic(
             y_center=panel_y,
             z_position=panel_z,
         )

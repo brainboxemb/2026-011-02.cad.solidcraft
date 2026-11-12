@@ -14,10 +14,7 @@ SCPF creates all native copies before asking SolidCraft to place them.
 Rotations and positions are applied with SolidCraft's native commands, not
 custom matrix arithmetic.
 """
-from scpf import component
-from models.components.hub75_panel.detailed.scpf.model import Hub75Panel as Hub75PanelDefinition
-
-Hub75Panel = component(Hub75PanelDefinition)
+from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 
 # This model represents one fixed five-panel 160 x 320 mm nominal grid.
 # These dimensions define the product layout; they are not editable native

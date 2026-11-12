@@ -8,6 +8,7 @@ class Board:
 
     def __init__(
         self, width, depth, height, *,
+        x_position=0.0,
         z_position=0.0,
         corner_radius=0.0,
         fillet_vertices=(),
@@ -18,6 +19,7 @@ class Board:
         self.width = width
         self.depth = depth
         self.height = height
+        self.x_position = x_position
         self.z_position = z_position
         self.corner_radius = corner_radius
         self.fillet_vertices = tuple(fillet_vertices)
@@ -27,13 +29,16 @@ class Board:
 
     def build(self):
         half = self.width / 2
+        center = self.width * 0 + self.x_position
+        left = center - half
+        right = center + half
         bottom = self.z_position
         top = bottom + self.height
         profile = Polygon2D([
-            ("lower_left", (-half, bottom)),
-            ("lower_right", (half, bottom)),
-            ("upper_right", (half, top)),
-            ("upper_left", (-half, top)),
+            ("lower_left", (left, bottom)),
+            ("lower_right", (right, bottom)),
+            ("upper_right", (right, top)),
+            ("upper_left", (left, top)),
         ], plane="XZ", world=True)
         body = profile.extrude(
             self.depth,
@@ -55,12 +60,14 @@ class SideBoard:
     thickness = 12.0
     depth = 100.0
     height = 362.0
+    x_position = 0.0
 
     def build(self):
         return Board(
             width=self.thickness,
             depth=self.depth,
             height=self.height,
+            x_position=self.x_position,
             material_name="LIGHTPLY side board",
         ).build()
 

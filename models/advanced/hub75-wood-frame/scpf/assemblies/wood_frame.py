@@ -28,16 +28,16 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
+            x_position=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
         ).move(
-            x=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
             y=body_y,
         )
         right = RightBoard(
             thickness=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
+            x_position=self.opening_width / 2 + self.frame_wood_thickness / 2,
         ).move(
-            x=self.opening_width / 2 + self.frame_wood_thickness / 2,
             y=body_y,
         )
         sides = left + right

@@ -21,18 +21,17 @@ PANEL_PITCH = 160.0
 class HUB75Panels:
     opening_height = 362.0
     opening_bottom_z = 12.0
-    _panel_recess_depth = 25.0
+    panel_recess_depth = 25.0
 
     def build(self):
-        panel_y = self._panel_recess_depth + HUB75_PANEL_DEPTH / 2
+        panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
         panel_z = (
             self.opening_bottom_z
             + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
         )
         middle = Panel(
+            y_center=panel_y,
             z_position=panel_z,
-        ).move(
-            y=panel_y,
         )
         panels = middle
 

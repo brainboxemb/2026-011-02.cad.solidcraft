@@ -1,6 +1,6 @@
-"""Eight printed corner-bracket occurrences."""
+"""Eight placements of one reusable printed corner bracket."""
 
-from scpf import assembly, component
+from scpf import assembly, component, pv
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -21,95 +21,44 @@ class CornerBrackets:
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         outer_half = outer_width / 2
         top_z = self.opening_height + 2 * self.frame_wood_thickness
-        bottom_z = 0.0
 
         bracket_half = self.bracket_width / 2
         front_y = bracket_half
         rear_y = self.cabinet_depth - bracket_half
 
-        top_left_front = Bracket(
+        # CornerBracket is modelled once in its neutral top-left orientation:
+        # horizontal arm +X, vertical arm -Z. The other cabinet corners are
+        # placements of the same component, rotated around its local Y axis.
+        bracket = Bracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
-            _x_position=-outer_half,
-            _y_position=front_y,
-            _z_position=top_z,
-            _x_sign=1,
-            _z_sign=1,
-        )
-        top_left_rear = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=-outer_half,
-            _y_position=rear_y,
-            _z_position=top_z,
-            _x_sign=1,
-            _z_sign=1,
         )
 
-        top_right_front = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=outer_half,
-            _y_position=front_y,
-            _z_position=top_z,
-            _x_sign=-1,
-            _z_sign=1,
-        )
-        top_right_rear = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=outer_half,
-            _y_position=rear_y,
-            _z_position=top_z,
-            _x_sign=-1,
-            _z_sign=1,
-        )
+        def place(x, y, z, angle):
+            occurrence = bracket.copy()
+            if angle:
+                occurrence = occurrence.rotate("Y", angle)
+            return occurrence.move(x=pv(x), y=pv(y), z=pv(z))
 
-        bottom_left_front = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=-outer_half,
-            _y_position=front_y,
-            _z_position=bottom_z,
-            _x_sign=1,
-            _z_sign=-1,
-        )
-        bottom_left_rear = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=-outer_half,
-            _y_position=rear_y,
-            _z_position=bottom_z,
-            _x_sign=1,
-            _z_sign=-1,
-        )
+        top_left_front = place(-outer_half, front_y, top_z, 0)
+        top_left_rear = place(-outer_half, rear_y, top_z, 0)
 
-        bottom_right_front = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=outer_half,
-            _y_position=front_y,
-            _z_position=bottom_z,
-            _x_sign=-1,
-            _z_sign=-1,
-        )
-        bottom_right_rear = Bracket(
-            bracket_width=self.bracket_width,
-            inside_corner_radius=self.corner_radius,
-            _x_position=outer_half,
-            _y_position=rear_y,
-            _z_position=bottom_z,
-            _x_sign=-1,
-            _z_sign=-1,
-        )
+        top_right_front = place(outer_half, front_y, top_z, 90)
+        top_right_rear = place(outer_half, rear_y, top_z, 90)
+
+        bottom_right_front = place(outer_half, front_y, 0, 180)
+        bottom_right_rear = place(outer_half, rear_y, 0, 180)
+
+        bottom_left_front = place(-outer_half, front_y, 0, 270)
+        bottom_left_rear = place(-outer_half, rear_y, 0, 270)
 
         return (
             top_left_front
             + top_left_rear
             + top_right_front
             + top_right_rear
-            + bottom_left_front
-            + bottom_left_rear
             + bottom_right_front
             + bottom_right_rear
+            + bottom_left_front
+            + bottom_left_rear
         ).group("CornerBrackets")

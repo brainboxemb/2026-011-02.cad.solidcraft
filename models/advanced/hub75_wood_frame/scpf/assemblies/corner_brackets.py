@@ -40,12 +40,13 @@ class CornerBrackets:
             self.panel_wood_thickness + self.roof_rear_overhang + half
         )
 
-        def attached(parent, parent_anchor, child_anchor, gap):
+        def attached(parent, parent_anchor, child_anchor, gap, angle):
             return bracket.copy().attach(
                 parent,
                 parent=parent_anchor,
                 child=child_anchor,
                 gap=gap,
+                angle=angle,
             )
 
         top_left_front = attached(
@@ -53,24 +54,28 @@ class CornerBrackets:
             Anchor.FRONT_TOP_LEFT,
             "front_mount",
             roof_front_gap,
+            90,
         )
         top_right_front = attached(
             roof,
             Anchor.FRONT_TOP_RIGHT,
             "front_mount",
             roof_front_gap,
+            90,
         )
         bottom_right_front = attached(
             bottom,
             Anchor.FRONT_BOTTOM_RIGHT,
             "front_mount",
             bottom_gap,
+            90,
         )
         bottom_left_front = attached(
             bottom,
             Anchor.FRONT_BOTTOM_LEFT,
             "front_mount",
             bottom_gap,
+            90,
         )
 
         top_left_rear = attached(
@@ -78,24 +83,28 @@ class CornerBrackets:
             Anchor.BACK_TOP_LEFT,
             "rear_mount",
             roof_rear_gap,
+            0,
         )
         top_right_rear = attached(
             roof,
             Anchor.BACK_TOP_RIGHT,
             "rear_mount",
             roof_rear_gap,
+            0,
         )
         bottom_right_rear = attached(
             bottom,
             Anchor.BACK_BOTTOM_RIGHT,
             "rear_mount",
             bottom_gap,
+            0,
         )
         bottom_left_rear = attached(
             bottom,
             Anchor.BACK_BOTTOM_LEFT,
             "rear_mount",
             bottom_gap,
+            0,
         )
 
         return (

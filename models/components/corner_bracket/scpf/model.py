@@ -6,7 +6,7 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 """
-from scpf import Polygon2D, Direction, Edges
+from scpf import AnchorFrame, Polygon2D, Direction, Edges
 
 
 class CornerBracket:
@@ -20,6 +20,25 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
+
+    def anchors(self):
+        """Local attachment frames at the bracket's inside corner.
+
+        The bracket is symmetric through Y. Front and rear use opposite frame
+        normals while the actual geometry remains one neutral component.
+        """
+        return {
+            "front_mount": AnchorFrame(
+                origin=(0, 0, 0),
+                z=(0, 1, 0),
+                x=(1, 0, 0),
+            ),
+            "rear_mount": AnchorFrame(
+                origin=(0, 0, 0),
+                z=(0, -1, 0),
+                x=(1, 0, 0),
+            ),
+        }
 
     def build(self):
         w = self.wall_thickness

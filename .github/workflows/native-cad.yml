@@ -159,7 +159,7 @@ jobs:
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
           # One reusable CornerBracket definition is attached eight times
-          # to real RoofBoard/BottomBoard corner references. Initial occurrence
+          # to the named roof/bottom Board corner references. Initial occurrence
           # moves only seed the solver; the native rigid joints own the relation.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
@@ -194,11 +194,7 @@ jobs:
             ([.commands[] | select(.command == "occurrence.copy"
               and (.params.component | startswith("GlassStrip")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
-              and ((.params.occurrence | startswith("LeftBoard"))
-                or (.params.occurrence | startswith("RightBoard"))
-                or (.params.occurrence | startswith("BottomBoard"))
-                or (.params.occurrence | startswith("RoofBoard"))
-                or (.params.occurrence | startswith("BackBoard"))))] | length) == 0 and
+              and (.params.occurrence | startswith("Board")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
               and (.params.occurrence | startswith("GlassStrip"))
               and .params.translate[2] != 0)] | length) == 0 and

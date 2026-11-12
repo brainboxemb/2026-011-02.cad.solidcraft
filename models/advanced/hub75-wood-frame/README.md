@@ -63,7 +63,7 @@ The short `pv(...)` helper is only used where Python itself needs a concrete
 number for control flow or assembly placement. It is not used to flatten the
 board dimensions inside the CAD geometry.
 
-World axes: **X** left/right, **Y** front-to-back, **Z** upward. The front face of the sidewalls is the Y=0 reference plane. **Z=0 is the outside bottom face of the wooden enclosure.** The wood opening therefore starts at `frame_wood_thickness` and keeps its own fixed `opening_height`. At the default 12 mm wood thickness the opening spans X=−422..422 and Z=12..374 mm.
+World axes: **X** left/right, **Y** front-to-back, **Z** upward. **Y=0 is the front face of the wooden cabinet** and **Z=0 is its outside bottom face**. `cabinet_depth` grows only towards +Y: the sidewalls and bottom start at Y=0, the rear face is Y=`cabinet_depth`, the back board starts on that same plane, and the rear brackets remain flush with it. The roof is the deliberate exception at the front and starts at Y=`-roof_front_overhang`. The wood opening starts at Z=`frame_wood_thickness` and keeps its own fixed `opening_height`. At the default 12 mm wood thickness the opening spans X=−422..422 and Z=12..374 mm.
 
 The HUB75 modules are recessed **25 mm** from the sidewall front, so their front faces start at Y=25. This is the explicit `panel_recess_depth` design parameter; it replaces the previous arbitrary negative frame origin.
 
@@ -135,8 +135,10 @@ Every outside X/Z corner has **two CornerBracket occurrences**:
 - Four at the rear, in the **Y=76..100** band, entirely on the sidewalls.
 
 The four X/Z corner positions are **X=±434** and **Z=0 or 386 mm**.
-All eight reuse the **same shared CornerBracket component** with
-its existing R4 inside fillet. At the rear, the bracket's back edge is
+All eight use the same shared `CornerBracket` geometry class. Their X/Z/Y
+placement is kept in the native symbolic geometry, so front and rear
+placements compile as separate native definitions instead of fixed
+occurrence translations. At the rear, the bracket's back edge is
 flush with the **rear face of the sidewall (Y=100)**. The 9 mm backboard
 starts there and occupies Y=100..109, so no corner bracket overlaps it.
 This is independent of the roof's 1 mm overhang *past* the backboard.

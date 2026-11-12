@@ -29,10 +29,11 @@ CAMERAS = {
         "distance": 920,
         "fov": 0,
     },
+    # Standalone detailed panel stays in local XY with rear depth along +Z.
     "hub75-panel": {
-        "target": [0, -7.25, 160],
-        "yaw": 3.141592653589793,
-        "pitch": 0.12,
+        "target": [0, 0, 7.25],
+        "yaw": -0.40,
+        "pitch": 0.65,
         "distance": 460,
         "fov": 0,
     },

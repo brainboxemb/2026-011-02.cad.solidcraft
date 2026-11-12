@@ -45,7 +45,7 @@ class CornerBrackets:
             parent=Anchor.FRONT_TOP_LEFT,
             child="front_mount",
             gap=roof_front_gap,
-            angle=90,
+            angle=0,
         )
         top_right_front = bracket.copy().attach(
             roof,
@@ -59,14 +59,14 @@ class CornerBrackets:
             parent=Anchor.FRONT_BOTTOM_RIGHT,
             child="front_mount",
             gap=bottom_gap,
-            angle=90,
+            angle=180,
         )
         bottom_left_front = bracket.copy().attach(
             bottom,
             parent=Anchor.FRONT_BOTTOM_LEFT,
             child="front_mount",
             gap=bottom_gap,
-            angle=90,
+            angle=270,
         )
 
         top_left_rear = bracket.copy().attach(
@@ -81,21 +81,21 @@ class CornerBrackets:
             parent=Anchor.BACK_TOP_RIGHT,
             child="rear_mount",
             gap=roof_rear_gap,
-            angle=0,
+            angle=90,
         )
         bottom_right_rear = bracket.copy().attach(
             bottom,
             parent=Anchor.BACK_BOTTOM_RIGHT,
             child="rear_mount",
             gap=bottom_gap,
-            angle=0,
+            angle=180,
         )
         bottom_left_rear = bracket.copy().attach(
             bottom,
             parent=Anchor.BACK_BOTTOM_LEFT,
             child="rear_mount",
             gap=bottom_gap,
-            angle=0,
+            angle=270,
         )
 
         return (

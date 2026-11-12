@@ -369,6 +369,35 @@ jobs:
               and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-width-1000.json
 
+          # Shared bracket parameters: one native bracket_width controls
+          # all eight bracket bodies/attachment bands, while corner_radius is
+          # shared by the wooden and printed-part fillets.
+          cat > output/native/hub75-wood-frame/change-bracket-params.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"bracket_width","expression":"30 mm"
+            }},
+            {"command":"parameters.change","params":{
+              "name":"corner_radius","expression":"6 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-bracket-params.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-bracket-params.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-bracket-params.sc \
+            --json-out output/native/hub75-wood-frame/measurements-bracket-params.json
+          jq -e '
+            (.timeline | all(.error == null)) and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[1] - 0) | fabs) < 0.001
+              and ((.bbox.max[1] - 30) | fabs) < 0.001)] | length) == 4 and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[1] - 70) | fabs) < 0.001
+              and ((.bbox.max[1] - 100) | fabs) < 0.001)] | length) == 4
+          ' output/native/hub75-wood-frame/measurements-bracket-params.json
+
           # Parameter-edit regression: cabinet_depth grows only towards +Y.
           # The front datum stays at Y=0, while the rear board, roof and four
           # rear brackets follow the new Y=120 rear plane.

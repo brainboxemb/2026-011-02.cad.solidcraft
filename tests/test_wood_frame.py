@@ -6,6 +6,7 @@ import tempfile
 import unittest
 import warnings
 
+from scpf import ModelParameterWarning
 from scpf.runner import run_script
 
 
@@ -184,6 +185,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("panel_count =", model_source)
         self.assertNotIn("panel_pitch =", model_source)
         self.assertIn("_panel_recess_depth = 25.0", model_source)
+        self.assertIn("_glazing_wood_depth = 12.0", model_source)
 
         parameter_names = {
             p["name"] for p in of(commands(), "parameters.add")
@@ -201,21 +203,22 @@ class WoodenFrameTests(unittest.TestCase):
                 "corner_radius",
                 "bracket_width",
                 "glazing_wood_width",
-                "glazing_wood_depth",
             },
         )
 
-    def test_parameter_intent_has_no_lost_native_parameter_warnings(self):
+    def test_parameter_intent_has_no_model_parameter_warnings(self):
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always")
             commands()
 
-        self.assertFalse(
-            any(
-                "no native SolidCraft dependency" in str(item.message)
-                for item in caught
-            ),
-            [str(item.message) for item in caught],
+        parameter_warnings = [
+            item for item in caught
+            if issubclass(item.category, ModelParameterWarning)
+        ]
+        self.assertEqual(
+            parameter_warnings,
+            [],
+            [str(item.message) for item in parameter_warnings],
         )
 
     def test_bracket_width_and_corner_radius_are_shared_model_parameters(self):
@@ -417,9 +420,10 @@ class WoodenFrameTests(unittest.TestCase):
             "opening_width",
             "opening_height",
             "glazing_wood_width",
-            "glazing_wood_depth",
         ):
             self.assertIn(source_parameter, parameter_names)
+        self.assertNotIn("_glazing_wood_depth", parameter_names)
+        self.assertNotIn("glazing_wood_depth", parameter_names)
 
         sketch_points = " ".join(
             str(p["points"])
@@ -610,6 +614,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("roof_rear_overhang = 1.0", source)
         self.assertIn("_panel_recess_depth = 25.0", source)
         self.assertIn("bracket_width = 24.0", source)
+        self.assertIn("_glazing_wood_depth = 12.0", source)
         self.assertNotIn("frame_front_y_position", source)
         self.assertEqual(
             (-10.0, 110.0),

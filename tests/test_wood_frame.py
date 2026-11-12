@@ -467,19 +467,24 @@ class WoodenFrameTests(unittest.TestCase):
         source = (
             ASSEMBLIES / "wood_frame.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("parent=Anchor.FRONT_TOP_LEFT", source)
-        self.assertIn("child=Anchor.FRONT_BOTTOM_LEFT", source)
-        self.assertIn("parent=Anchor.FRONT_TOP_RIGHT", source)
-        self.assertIn("child=Anchor.FRONT_BOTTOM_RIGHT", source)
+        self.assertEqual(source.count("as_built=True"), 2)
+        self.assertNotIn("Anchor.", source)
 
         cmd = commands()
         frame_joints = [
-            p for p in of(cmd, "joint.create")
+            p for p in of(cmd, "joint.as_built")
             if p["name"].startswith("Attach Board")
-            and not p["name"].startswith("Attach CornerBracket")
         ]
         self.assertEqual(len(frame_joints), 2)
         self.assertTrue(all(p["type"] == "rigid" for p in frame_joints))
+        self.assertEqual(
+            {p["a"] for p in frame_joints},
+            {"Board 3:1"},
+        )
+        self.assertEqual(
+            {p["b"] for p in frame_joints},
+            {"Board:1", "Board 2:1"},
+        )
 
     def test_corner_bracket_is_neutral_and_assembly_owns_placement(self):
         source = (

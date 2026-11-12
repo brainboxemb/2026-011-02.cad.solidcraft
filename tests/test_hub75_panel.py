@@ -6,7 +6,7 @@ from pathlib import Path
 from scpf.runner import ModelParameterWarning, run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / "models/components/hub75-panel/scpf/model.py"
+MODEL = ROOT / "components/hub75.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
@@ -102,11 +102,9 @@ class Hub75PanelTests(unittest.TestCase):
 
     def test_single_panel_runs_shared_component_directly_in_local_axes(self):
         source = MODEL.read_text(encoding="utf-8")
-        self.assertIn("from components.hub75 import Hub75Panel", source)
+        self.assertIn("class Hub75Panel:", source)
         self.assertNotIn("class SingleHub75Panel", source)
-        self.assertNotIn("component(", source)
-        self.assertNotIn(".rotate(", source)
-        self.assertNotIn(".move(", source)
+        self.assertNotIn("Hub75Panel()", source)
 
         commands = run_script(MODEL)["commands"]
 

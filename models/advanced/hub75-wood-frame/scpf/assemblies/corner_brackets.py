@@ -12,16 +12,16 @@ Bracket = component(CornerBracket)
 class CornerBrackets:
     opening_width = 844.0
     opening_height = 362.0
-    wood_thickness = 12.0
+    frame_wood_thickness = 12.0
     cabinet_depth = 100.0
     frame_front_y = -25.0
 
     def build(self):
         rear = self.frame_front_y + self.cabinet_depth
-        outer_width = self.opening_width + 2 * self.wood_thickness
+        outer_width = self.opening_width + 2 * self.frame_wood_thickness
         outer_half = outer_width / 2
-        top_z = self.opening_height + self.wood_thickness
-        bottom_z = -self.wood_thickness
+        top_z = self.opening_height + self.frame_wood_thickness
+        bottom_z = -self.frame_wood_thickness
 
         bracket_half = CornerBracket.bracket_width / 2
         front_y = self.frame_front_y + bracket_half

@@ -15,7 +15,6 @@ class GlassStrip:
     # strip is used by itself, but parent Parameter/Expression bindings remain
     # symbolic when GlassFrame positions the four manufactured pieces.
     _x_position = 0.0
-    _y_position = 0.0
     _z_position = 0.0
     _vertical = 0
     _width_sign = 1
@@ -50,7 +49,7 @@ class GlassStrip:
             placed(end, 0),
             placed(inner_end, self.width),
             placed(inner_start, self.width),
-        ], plane="XZ", world=True).at(y=self._y_position)
+        ], plane="XZ", world=True)
 
         dark = pv(self._finish) >= 0.5
         return profile.extrude(self.depth).with_material(

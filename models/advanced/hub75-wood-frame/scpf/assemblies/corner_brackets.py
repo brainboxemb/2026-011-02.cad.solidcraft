@@ -14,6 +14,7 @@ class CornerBrackets:
     opening_height = 362.0
     frame_wood_thickness = 12.0
     cabinet_depth = 100.0
+    corner_radius = 4.0
 
     def build(self):
         rear = self.cabinet_depth
@@ -26,7 +27,9 @@ class CornerBrackets:
         front_y = bracket_half
         rear_y = rear - bracket_half
 
-        upper_left = Bracket().move(
+        upper_left = Bracket(
+            inside_corner_radius=self.corner_radius,
+        ).move(
             x=-outer_half,
             y=front_y,
             z=top_z,

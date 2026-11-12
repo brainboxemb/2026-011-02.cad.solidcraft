@@ -191,15 +191,14 @@ jobs:
           # is handled by SolidCraft, never by custom Python matrices.
           jq -e '
             ([.commands[] | select(.command == "occurrence.copy"
-              and (.params.component == "SideWall"
-                or .params.component == "GlassStrip"
+              and (.params.component == "GlassStrip"
                 or .params.component == "GlassStrip 2")
-              and (.params | has("translate") | not))] | length) == 3 and
+              and (.params | has("translate") | not))] | length) == 2 and
             ([.commands[] | select(.command == "occurrence.move"
-              and .params.occurrence == "SideWall:1"
+              and .params.occurrence == "LeftBoard:1"
               and .params.translate[0] == -428)] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
-              and .params.occurrence == "SideWall:2"
+              and .params.occurrence == "RightBoard:1"
               and .params.translate[0] == 428)] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
               and .params.occurrence == "BackBoard:1"

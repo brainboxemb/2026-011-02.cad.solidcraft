@@ -2,7 +2,7 @@
 
 from scpf import assembly
 
-from parts.board import BackBoard, BottomBoard, RoofBoard, SideWall
+from parts.board import BackBoard, BottomBoard, LeftBoard, RightBoard, RoofBoard
 
 
 @assembly
@@ -24,7 +24,7 @@ class WoodFrame:
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         body_y = self.cabinet_depth / 2
 
-        left = SideWall(
+        left = LeftBoard(
             thickness=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
@@ -32,9 +32,15 @@ class WoodFrame:
             x=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
             y=body_y,
         )
-        sides = left + left.copy().move(
-            x=outer_width - self.frame_wood_thickness
+        right = RightBoard(
+            thickness=self.frame_wood_thickness,
+            depth=self.cabinet_depth,
+            height=self.opening_height,
+        ).move(
+            x=self.opening_width / 2 + self.frame_wood_thickness / 2,
+            y=body_y,
         )
+        sides = left + right
 
         bottom = BottomBoard(
             width=outer_width,

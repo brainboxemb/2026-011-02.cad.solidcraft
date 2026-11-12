@@ -12,8 +12,8 @@
     "plastic-enclosure"
   ],
   "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
-  "scpf_commit": "f7309d606d3a6cd84eb81d18c5f97a8687eebb4d",
+  "scpf_commit": "d7243e4b227c7cc8f3d2ea36048bcd868fac30ad",
   "solidcraft_version": "0.30.1",
-  "source_commit": "ec8bc945a651c9a4c32d587c467d5a9eb4be8a23",
-  "workflow_run": "43227611977"
+  "source_commit": "ad60579b50357311d5616717e4093ed9c24b24e6",
+  "workflow_run": "43231124831"
 }

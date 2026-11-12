@@ -143,15 +143,15 @@ class WoodenFrameTests(unittest.TestCase):
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
-        self.assertIn("BottomBoard_corner_radius", parameter_names)
-        self.assertIn("RoofBoard_corner_radius", parameter_names)
+        self.assertIn("corner_radius", parameter_names)
+        self.assertNotIn("BottomBoard_corner_radius", parameter_names)
+        self.assertNotIn("RoofBoard_corner_radius", parameter_names)
 
-        radii = {
+        radii = [
             params["radius"]
             for params in of(cmd, "solid.fillet")
-        }
-        self.assertIn("BottomBoard_corner_radius", radii)
-        self.assertIn("RoofBoard_corner_radius", radii)
+        ]
+        self.assertGreaterEqual(radii.count("corner_radius"), 2)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()

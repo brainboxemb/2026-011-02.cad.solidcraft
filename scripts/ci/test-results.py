@@ -157,7 +157,7 @@ def check(site, commit):
                 assert (model / filename).is_file()
                 assert f'href="{filename}"' in page
                 assert f'src="{filename}"' in page
-            assert "Front and rear of the same upright panel" in page
+            assert "Front and rear of the same local component" in page
         parser = Parser()
         parser.feed(page)
         for href in parser.links:

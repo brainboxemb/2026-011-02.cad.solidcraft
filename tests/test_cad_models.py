@@ -83,9 +83,26 @@ class CADModelRegressions(unittest.TestCase):
         original = json.loads(
             (ROOT / "models/basic/bracket/source/bracket.json").read_text()
         )
-        # The profile/extrusion agree with the source; fillet selection
-        # explicitly names the target body rather than relying on GUI state.
-        self.assertEqual(generated["commands"][2:6], original["commands"][2:6])
+        # SCPF intentionally improves on the literal source profile: points
+        # controlled by thickness remain native parameter expressions instead
+        # of freezing the default 6 mm into the sketch. The extrusion still
+        # follows the same negative-XZ construction intent.
+        self.assertEqual(
+            generated["commands"][2]["params"],
+            original["commands"][2]["params"],
+        )
+        self.assertEqual(
+            generated["commands"][4:6],
+            original["commands"][4:6],
+        )
+        self.assertEqual(
+            generated["commands"][3]["params"]["points"],
+            [
+                [0, 0], [40, 0], [40, "thickness"],
+                ["thickness", "thickness"],
+                ["thickness", 30], [0, 30],
+            ],
+        )
         self.assertEqual(generated["commands"][6]["params"]["body"], "Bracket")
         self.assertEqual([c["command"] for c in generated["commands"][7:]],
                          ["solid.hole", "solid.hole"])
@@ -107,7 +124,12 @@ class CADModelRegressions(unittest.TestCase):
             generated = run_script(file)
         self.assertEqual(generated["commands"][0]["params"]["expression"], "70")
         self.assertEqual(generated["commands"][1]["params"]["expression"], "8")
-        self.assertEqual(generated["commands"][3]["params"]["points"][2], [40, 8])
+        # The override changes the parameter value, while the sketch keeps
+        # referring to the parameter name for later native edits.
+        self.assertEqual(
+            generated["commands"][3]["params"]["points"][2],
+            [40, "thickness"],
+        )
         self.assertEqual(generated["commands"][6]["params"]["edges"], [[40, -35, -8]])
 
 

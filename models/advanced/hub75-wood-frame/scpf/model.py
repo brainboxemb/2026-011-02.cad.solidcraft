@@ -28,6 +28,11 @@ class WoodenHub75Box:
     #   opening Z = frame_wood_thickness ..
     #               frame_wood_thickness + opening_height
     #   cabinet rear Y = cabinet_depth
+    #   back board front Y = cabinet_depth
+    #   roof front Y = -roof_front_overhang (the deliberate front exception)
+    #
+    # Parameter rule: dimensions may move these reference planes, but no
+    # dependent part may freeze such a relationship into an occurrence.move.
 
     # Display / inside opening
     opening_width = 844.0

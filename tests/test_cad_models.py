@@ -120,7 +120,7 @@ class CADModelRegressions(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             source = (ROOT / "models/basic/bracket/scpf/model.py").read_text()
             file = Path(directory) / "model.py"
-            file.write_text(source.replace("Bracket()", "Bracket(70, 8)"))
+            file.write_text(source + "\nBracket(70, 8)\n")
             generated = run_script(file)
         self.assertEqual(generated["commands"][0]["params"]["expression"], "70")
         self.assertEqual(generated["commands"][1]["params"]["expression"], "8")
@@ -170,8 +170,9 @@ class CADModelRegressions(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
             script = Path(directory) / "model.py"
-            script.write_text(source.replace(
-                "SamplePlate()", "SamplePlate(width=100, depth=60, thickness=10)"))
+            script.write_text(
+                source + "\nSamplePlate(width=100, depth=60, thickness=10)\n"
+            )
             commands = run_script(script)["commands"]
         self.assertEqual([c["params"]["expression"] for c in commands[:3]],
                          ["100", "60", "10"])

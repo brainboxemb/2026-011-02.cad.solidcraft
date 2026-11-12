@@ -327,8 +327,8 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_wood_dimensions_and_roof_overhang(self):
         source = MODEL.read_text(encoding="utf-8")
-        self.assertIn("wood_thickness = 12.0", source)
-        self.assertIn("back_thickness = 9.0", source)
+        self.assertIn("frame_wood_thickness = 12.0", source)
+        self.assertIn("panel_wood_thickness = 9.0", source)
         self.assertIn("roof_front_overhang = 10.0", source)
         self.assertIn("roof_rear_overhang = 1.0", source)
         self.assertEqual(
@@ -337,7 +337,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
 
     def test_parameter_override_changes_all_dependents(self):
-        cmd = commands(opening_width=850, wood_thickness=13)
+        cmd = commands(opening_width=850, frame_wood_thickness=13)
 
         side_x = [
             p["translate"][0]

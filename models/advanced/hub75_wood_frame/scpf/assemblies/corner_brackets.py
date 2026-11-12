@@ -26,33 +26,31 @@ class CornerBrackets:
         front_y = bracket_half
         rear_y = self.cabinet_depth - bracket_half
 
-        # CornerBracket is modelled once in its neutral top-left orientation:
-        # horizontal arm +X, vertical arm -Z. The other cabinet corners are
-        # placements of the same component. 180-degree rotations around X, Y
-        # or Z select the other three XZ corner orientations without mirroring.
+        # CornerBracket is modelled once in its neutral top-left orientation.
+        # Seen from the front, the four cabinet corners are just quarter-turns
+        # around Y: 0, 90, 180 and 270 degrees.
         bracket = Bracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )
 
-        def place(x, y, z, rotation=None):
+        def place(x, y, z, angle):
             occurrence = bracket.copy()
-            if rotation is not None:
-                axis, angle = rotation
-                occurrence = occurrence.rotate(axis, angle)
+            if angle:
+                occurrence = occurrence.rotate("Y", angle)
             return occurrence.move(x=pv(x), y=pv(y), z=pv(z))
 
         top_left_front = place(-outer_half, front_y, top_z, 0)
         top_left_rear = place(-outer_half, rear_y, top_z, 0)
 
-        top_right_front = place(outer_half, front_y, top_z, ("Z", 180))
-        top_right_rear = place(outer_half, rear_y, top_z, ("Z", 180))
+        top_right_front = place(outer_half, front_y, top_z, 90)
+        top_right_rear = place(outer_half, rear_y, top_z, 90)
 
-        bottom_right_front = place(outer_half, front_y, 0, ("Y", 180))
-        bottom_right_rear = place(outer_half, rear_y, 0, ("Y", 180))
+        bottom_right_front = place(outer_half, front_y, 0, 180)
+        bottom_right_rear = place(outer_half, rear_y, 0, 180)
 
-        bottom_left_front = place(-outer_half, front_y, 0, ("X", 180))
-        bottom_left_rear = place(-outer_half, rear_y, 0, ("X", 180))
+        bottom_left_front = place(-outer_half, front_y, 0, 270)
+        bottom_left_rear = place(-outer_half, rear_y, 0, 270)
 
         return (
             top_left_front

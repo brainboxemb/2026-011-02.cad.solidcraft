@@ -192,30 +192,31 @@ class WoodenFrameTests(unittest.TestCase):
         cmd = commands()
         self.assertEqual(
             [p["translate"] for p in moved(cmd, "SideWall")],
-            [[-428.0, 25.0, 0.0], [428.0, 25.0, 0.0]],
+            [[-428.0, 50.0, 0.0], [428.0, 50.0, 0.0]],
         )
         self.assertEqual(
             moved(cmd, "BottomBoard")[0]["translate"],
-            [0.0, 25.0, -12.0],
+            [0.0, 50.0, -12.0],
         )
         self.assertEqual(
             moved(cmd, "RoofBoard")[0]["translate"],
-            [0.0, 25.0, 362.0],
+            [0.0, 50.0, 362.0],
         )
         self.assertEqual(
             moved(cmd, "BackBoard")[0]["translate"],
-            [0.0, 79.5, -12.0],
+            [0.0, 104.5, -12.0],
         )
         self.assertEqual(
             moved(cmd, "Window")[0]["translate"],
-            [0.0, -11.0, 1.0],
+            [0.0, 14.0, 1.0],
         )
+        panels = moved(cmd, "Hub75PanelBasic")
         self.assertEqual(
-            sorted(
-                p["translate"][0]
-                for p in moved(cmd, "Hub75PanelBasic")
-            ),
+            sorted(p["translate"][0] for p in panels),
             [-320.0, -160.0, 0.0, 160.0, 320.0],
+        )
+        self.assertTrue(
+            all(p["translate"][1] == 32.25 for p in panels)
         )
 
     def test_glassstrip_two_lengths_four_placements_no_corner_fillet(self):
@@ -227,11 +228,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(len(vertical), 2)
         self.assertEqual(
             [p["translate"] for p in horizontal],
-            [[0.0, -19.0, 0.0], [0.0, -19.0, 362.0]],
+            [[0.0, 6.0, 0.0], [0.0, 6.0, 362.0]],
         )
         self.assertEqual(
             [p["translate"] for p in vertical],
-            [[-422.0, -19.0, 181.0], [422.0, -19.0, 181.0]],
+            [[-422.0, 6.0, 181.0], [422.0, 6.0, 181.0]],
         )
         self.assertEqual(vertical[0]["axis"], [0.0, 1.0, 0.0])
         self.assertEqual(vertical[0]["angle"], "90 deg")
@@ -305,7 +306,7 @@ class WoodenFrameTests(unittest.TestCase):
         expected = {
             (x, y, z)
             for x in (-434.0, 434.0)
-            for y in (-13.0, 63.0)
+            for y in (12.0, 88.0)
             for z in (-12.0, 374.0)
         }
         self.assertEqual(coords, expected)
@@ -314,7 +315,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
 
         bracket_width = 24.0
-        back_start_y = 75.0
+        back_start_y = 100.0
         rear_brackets = [
             p for p in brackets
             if p["translate"][1] > 0
@@ -331,9 +332,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("panel_wood_thickness = 9.0", source)
         self.assertIn("roof_front_overhang = 10.0", source)
         self.assertIn("roof_rear_overhang = 1.0", source)
+        self.assertIn("panel_recess_depth = 25.0", source)
+        self.assertNotIn("frame_front_y_position", source)
         self.assertEqual(
-            (-35.0, 85.0),
-            (-25.0 - 10.0, 75.0 + 9.0 + 1.0),
+            (-10.0, 110.0),
+            (-10.0, 100.0 + 9.0 + 1.0),
         )
 
     def test_parameter_override_changes_all_dependents(self):

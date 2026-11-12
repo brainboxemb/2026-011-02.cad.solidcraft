@@ -90,8 +90,10 @@ only compiles JSON. See the [root README](../README.md).
 
 Use plain Python classes, numeric class attributes instead of
 `@dataclass` and `: float`, and an explicit `return` from every
-`build()`. Reusable parts can use `@component`; subassemblies can use
-`@assembly`. Root files end in `ModelName()`, no `show()` or `main()`.
+`build()`. Reusable cross-model parts use `@component`; subassemblies use
+`@assembly`. A file containing one reusable `@component` class is directly
+runnable as a standalone model through the implicit root. Multi-class design
+roots use an explicit final `ModelName()` call; no `show()` or `main()`.
 
 Adjustable model/CAD parameters use **lower_case** names. Fixed product or
 part dimensions use **UPPER_CASE** constants, so the source makes the

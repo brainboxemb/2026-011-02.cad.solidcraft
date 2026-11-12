@@ -52,13 +52,13 @@ Named-edge selection is currently implemented for **symmetric XZ polygon extrusi
 For local GUI testing from the repository root after `./bootstrap.ps1`:
 
 ```powershell
-python -m scpf models/component-examples/corner-bracket/scpf/model.py --connect
+python -m scpf models/components/corner-bracket/scpf/model.py --connect
 ```
 
 Open an empty SolidCraft document and enable external Assistant control before running. To generate commands without touching the GUI:
 
 ```powershell
-python -m scpf models/component-examples/corner-bracket/scpf/model.py --out output/corner-bracket.json
+python -m scpf models/components/corner-bracket/scpf/model.py --out output/corner-bracket.json
 ```
 
 The uncorrected small pointed corners at the arm ends are tracked separately in [issue #20](https://github.com/brainboxemb/lib.py.solidcraft/issues/20). This issue is intentionally deferred, not a blocker for this initial SCPF model.

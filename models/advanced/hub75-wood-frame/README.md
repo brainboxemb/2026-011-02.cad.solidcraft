@@ -1,13 +1,13 @@
 # Wooden HUB75 Basic Box — one parametrized assembly
 
 This model is a wooden enclosure for five upright P5 HUB75 LED modules.
-Everything specific to this wooden enclosure is defined in
-[`scpf/model.py`](scpf/model.py): the boards, glazing retainers, glass,
-assembly and their placements.
+[`scpf/model.py`](scpf/model.py) now contains only the top-level design
+parameters and composition. Case-specific geometry is split into
+`scpf/parts/`, while each logical subassembly has its own file under
+`scpf/assemblies/`.
 
-Only the general reusable parts — `Hub75PanelBasic` and `CornerBracket` —
-come from the top-level `components/` directory. There is no separate
-`wood.py` or `wood_frames.py` abstraction to chase through.
+Only the cross-model parts — `Hub75PanelBasic` and `CornerBracket` —
+come from the top-level `components/` directory.
 
 **Reference:** [55th-edition Basic Box v29](https://drive.google.com/file/d/1f8JHa2DvL3FM0qgE_fydy4XPOtCT3QLH/view).
 These figures reflect the **corrected design choices** below, not necessarily
@@ -42,15 +42,19 @@ class WoodenHub75Box:
 ```
 
 Change these parameters, **not** the placement coordinates of every
-separate board. In `build()` the dimensions are derived and passed to the
-individual components.
+separate board. The assembly modules derive positions from them and pass the
+required dimensions to the individual part components.
 
-These are **Python model parameters**: change them and regenerate the
-SolidCraft model. Do not assume a change to one parameter in an already-open
-SolidCraft assembly will automatically reposition every separate occurrence.
-Within each individual `GlassStrip`, however, the native sketch uses
-**symbolic length and width parameters**, so those are real editable CAD
-dimensions, not hardcoded polygon points.
+Geometry stays symbolic inside the part definitions. In particular the
+shared `Board` helper uses `self.width / 2`, named profile vertices and
+`self.corner_radius`; it does not turn those values into fixed Python
+coordinates. The generated BottomBoard and RoofBoard fillets therefore use
+named SolidCraft parameters such as `BottomBoard_corner_radius` and
+`RoofBoard_corner_radius`.
+
+The short `pv(...)` helper is only used where Python itself needs a concrete
+number for control flow or assembly placement. It is not used to flatten the
+board dimensions inside the CAD geometry.
 
 World axes: **X** left/right, **Y** front-to-back (front is negative Y),
 **Z** upward. The wood opening spans X=−422..422 and Z=0..362 mm.
@@ -149,10 +153,28 @@ WoodenHub75Box
 └── Window (plexiglass)
 ```
 
-All seven wooden-case Python classes are located in the model's own
-`scpf/model.py`. The generic imported panel and bracket are located in
-`components/hub75_basic.py` and `components/corner_bracket.py`.
-This structure keeps the full model readable in one place.
+The source is split by responsibility:
+
+```text
+scpf/
+├── model.py
+├── parts/
+│   ├── board.py
+│   ├── glass_strip.py
+│   └── window.py
+└── assemblies/
+    ├── hub75_panels.py
+    ├── wood_frame.py
+    ├── glass_frame.py
+    ├── corner_brackets.py
+    └── window.py
+```
+
+`parts/board.py` contains one shared `Board` geometry helper plus the
+semantic wooden part classes. Each assembly file is responsible only for
+creating and positioning its occurrences. The generic imported panel and
+bracket remain in `components/hub75_basic.py` and
+`components/corner_bracket.py`.
 
 ## Test locally
 

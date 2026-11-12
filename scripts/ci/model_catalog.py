@@ -14,8 +14,8 @@ SOURCES = {
     "sample-plate": "models/basic/sample-plate/scpf/model.py",
     "plastic-enclosure": "models/basic/plastic-enclosure/scpf/model.py",
     "plastic-enclosure-pi": "models/basic/plastic-enclosure-pi/scpf/model.py",
-    "corner-bracket": "models/component-examples/corner-bracket/scpf/model.py",
-    "hub75-panel": "models/component-examples/hub75-panel/scpf/model.py",
+    "corner-bracket": "models/components/corner-bracket/scpf/model.py",
+    "hub75-panel": "models/components/hub75-panel/scpf/model.py",
     "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
 }
@@ -30,7 +30,7 @@ SOURCES = {
 # Start with Plate and CornerBracket; expand only after native comparison.
 COMMAND_SOURCES = {
     "plate": "models/basic/plate/scpc/model.py",
-    "corner-bracket": "models/component-examples/corner-bracket/scpc/model.py",
+    "corner-bracket": "models/components/corner-bracket/scpc/model.py",
 }
 
 COMPONENT_SOURCES = {

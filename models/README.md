@@ -14,14 +14,14 @@ perceived level of geometric complexity.
 
 - [CornerBracket](../components/corner_bracket.py) has **one** shape
   definition, reused by the
-  [standalone example](component-examples/corner-bracket/README.md)
+  [standalone example](components/corner-bracket/README.md)
   and the wooden display.
 - [Hub75Panel](../components/hub75.py) is the detailed panel with
   rear electronics bays; [Hub75PanelBasic](../components/hub75_basic.py)
   is the faster envelope.
 
 These live in top-level `components/`. The standalone demonstration
-scripts in `models/component-examples/` import the corresponding
+scripts in `models/components/` import the corresponding
 component and never reimplement its sketch or features.
 
 ## Parallel Python interfaces — Forge and native Commands
@@ -35,7 +35,7 @@ models/basic/plate/
 ```
 
 The first parallel models are [Plate](basic/plate/README.md) and
-[CornerBracket](component-examples/corner-bracket/README.md).
+[CornerBracket](components/corner-bracket/README.md).
 They are compiled from distinct sources and compared using the native
 SolidCraft engine. **SCPC does not reuse SCPF-generated JSON.**
 
@@ -50,11 +50,12 @@ native parameter/edge-selector semantics.
 - [Five-panel screen](advanced/hub75-screen/README.md)
 - [Wooden HUB75 Basic Box](advanced/hub75-wood-frame/README.md)
 
-The wooden enclosure keeps its case-specific parts and assembly in **one**
-[parameterized `model.py`](advanced/hub75-wood-frame/scpf/model.py).
-It uses one `GlassStrip` type for the four differently oriented retainers.
-Only the generically reusable HUB75 module and CornerBracket remain in
-`components/`. There is no separate `parts/` or `assemblies/` layer.
+The wooden enclosure keeps its top-level dimensions and composition in
+[parameterized `model.py`](advanced/hub75-wood-frame/scpf/model.py), while
+case-specific geometry lives in `scpf/parts/` and each subassembly lives in
+its own `scpf/assemblies/` module. A shared `Board` helper defines the
+wooden board geometry once; `SideWall`, `BottomBoard`, `RoofBoard` and
+`BackBoard` only map their named parameters onto that geometry.
 
 ## Open a verified model with the SolidCraft web application
 
@@ -94,7 +95,7 @@ Use plain Python classes, numeric class attributes instead of
 ## Directory and Python naming convention
 
 - CAD model directories and published URLs use **kebab-case**, e.g. `hub75-wood-frame`.
-- When a separate Python module is actually needed, it uses **snake_case**. The current wooden HUB75 design keeps all its case-specific classes directly in one `scpf/model.py`, without a `hub75_wood_frame` package.
-- Python classes use **PascalCase**, e.g. `WoodenHub75Box`, `GlassStrip`.
-- A CAD directory is not necessarily a Python package. Reusable cross-model components live in root `components/`; model-specific wood parts and their assembly belong together in the wooden model's own `scpf/model.py`.
+- Separate Python modules use **snake_case**, e.g. `parts/glass_strip.py` and `assemblies/wood_frame.py`.
+- Python classes use **PascalCase**, e.g. `WoodenHub75Box`, `Board`, `GlassStrip`.
+- Reusable cross-model components live in root `components/`. Model-specific parts and assemblies stay inside that model's own `scpf/` directory.
 - Published slugs remain unchanged when internal directories move.

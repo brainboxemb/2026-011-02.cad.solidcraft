@@ -11,6 +11,7 @@
 param([string]$CondaExe) # Old optional argument accepted for compatibility.
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
+
 $manifest = Join-Path $root 'dependencies.repos'
 $ext = Join-Path $root 'ext'
 if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {

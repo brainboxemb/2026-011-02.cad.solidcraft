@@ -5,7 +5,7 @@ from pathlib import Path
 from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / "models/component-examples/hub75-panel/scpf/model.py"
+MODEL = ROOT / "models/components/hub75-panel/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):

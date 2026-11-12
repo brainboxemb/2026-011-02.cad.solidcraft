@@ -52,6 +52,33 @@ def normalize_native_plan(document):
     return result
 
 
+class InlineFrameDiagnosticTests(unittest.TestCase):
+    def test_inline_frame_example_has_no_joint_origin(self):
+        native = ROOT / "examples/single-inline-frame-joint/scpc/model.py"
+        document = native_script(native).to_dict()
+
+        origins = [
+            command for command in document["commands"]
+            if command["command"] == "joint.origin"
+        ]
+        joints = [
+            command["params"] for command in document["commands"]
+            if command["command"] == "joint.create"
+        ]
+
+        self.assertEqual(origins, [])
+        self.assertEqual(len(joints), 1)
+        self.assertEqual(
+            joints[0]["b"],
+            {
+                "occurrence": "Child:1",
+                "point": [80, 0, 80],
+                "z": [0, 1, 0],
+                "x": [1, 0, 0],
+            },
+        )
+
+
 class ParallelModelTests(unittest.TestCase):
     def test_plate_and_corner_bracket_have_independent_native_scripts(self):
         for slug in ("plate", "corner-bracket"):

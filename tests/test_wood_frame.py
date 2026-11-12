@@ -284,12 +284,16 @@ class WoodenFrameTests(unittest.TestCase):
             for p in of(cmd, "sketch.line")
         )
         for name in (
-            "GlassStrip_length",
-            "GlassStrip_width",
-            "GlassStrip_2_length",
-            "GlassStrip_2_width",
+            "opening_width",
+            "opening_height",
+            "glazing_wood_width",
         ):
             self.assertIn(name, sketch_points)
+
+        self.assertNotIn("GlassStrip_length", sketch_points)
+        self.assertNotIn("GlassStrip_width", sketch_points)
+        self.assertNotIn("GlassStrip_2_length", sketch_points)
+        self.assertNotIn("GlassStrip_2_width", sketch_points)
 
         materials = {
             p["name"]: p["color"]

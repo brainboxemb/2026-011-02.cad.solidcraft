@@ -1,8 +1,9 @@
 """First real-model regression for SCPF reusable components."""
 import unittest
+import warnings
 from pathlib import Path
 
-from scpf.runner import run_script
+from scpf.runner import ModelParameterWarning, run_script
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "models/components/hub75-panel/scpf/model.py"
@@ -50,6 +51,36 @@ class Hub75PanelTests(unittest.TestCase):
             self.assertEqual(pose["angle"], angle)
             self.assertNotIn("matrix", pose)
             self.assertNotIn("to", pose)
+
+    def test_screen_layout_uses_constants_and_emits_no_parameter_warning(self):
+        source = (
+            ROOT / "models/advanced/hub75-screen/scpf/model.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("NOMINAL_PITCH_X = 160.0", source)
+        self.assertIn("NOMINAL_HEIGHT = 320.0", source)
+        self.assertNotIn("nominal_pitch_x =", source)
+        self.assertNotIn("nominal_height =", source)
+
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            commands = run_script(
+                ROOT / "models/advanced/hub75-screen/scpf/model.py"
+            )["commands"]
+
+        self.assertFalse(
+            any(
+                issubclass(item.category, ModelParameterWarning)
+                for item in caught
+            ),
+            [str(item.message) for item in caught],
+        )
+        root_parameters = [
+            row["params"]["name"]
+            for row in commands
+            if row["command"] == "parameters.add"
+            and not row["params"]["name"].startswith("Hub75Panel_")
+        ]
+        self.assertEqual(root_parameters, [])
 
     def test_single_panel_and_screen_import_the_same_definition(self):
         from components.hub75 import Hub75Panel as PanelDefinition

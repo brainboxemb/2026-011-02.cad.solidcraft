@@ -170,7 +170,8 @@ jobs:
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"
-               and (.params.name | startswith("CornerBracket")))] | length) == 2 and
+               and (.params.name == "CornerBracket"
+                    or .params.name == "CornerBracket 2"))] | length) == 2 and
             ([.commands[] | select(.command == "occurrence.copy"
                and (.params.component | startswith("CornerBracket")))] | length) == 6 and
             ([.commands[] | select(.command == "occurrence.move"

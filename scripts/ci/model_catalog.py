@@ -15,7 +15,7 @@ SOURCES = {
     "plastic-enclosure": "models/basic/plastic-enclosure/scpf/model.py",
     "plastic-enclosure-pi": "models/basic/plastic-enclosure-pi/scpf/model.py",
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
-    "hub75-panel": "models/components/hub75_panel/scpf/model.py",
+    "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
     "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
 }
@@ -37,8 +37,8 @@ COMMAND_SOURCES = {
 
 COMPONENT_SOURCES = {
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
-    "hub75-panel": "models/components/hub75_panel/scpf/model.py",
-    "hub75-screen": "models/components/hub75_panel/scpf/model.py",
+    "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
+    "hub75-screen": "models/components/hub75_panel/detailed/scpf/model.py",
 }
 
 # Component examples display their real source first. Assemblies are primarily

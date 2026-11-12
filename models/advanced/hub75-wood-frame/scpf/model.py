@@ -26,8 +26,8 @@ class WoodenHub75Box:
     corner_radius = 4.0
 
     # Glazing retainers
-    glazing_width = 15.0
-    glazing_depth = 15.0
+    glazing_width = 12.0
+    glazing_depth = 12.0
 
     def build(self):
         panels = HUB75Panels(

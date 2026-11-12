@@ -8,6 +8,7 @@ class Board:
 
     def __init__(
         self, width, depth, height, *,
+        z_position=0.0,
         corner_radius=0.0,
         fillet_vertices=(),
         material_name="LIGHTPLY",
@@ -17,6 +18,7 @@ class Board:
         self.width = width
         self.depth = depth
         self.height = height
+        self.z_position = z_position
         self.corner_radius = corner_radius
         self.fillet_vertices = tuple(fillet_vertices)
         self.material_name = material_name
@@ -25,11 +27,13 @@ class Board:
 
     def build(self):
         half = self.width / 2
+        bottom = self.z_position
+        top = bottom + self.height
         profile = Polygon2D([
-            ("lower_left", (-half, 0)),
-            ("lower_right", (half, 0)),
-            ("upper_right", (half, self.height)),
-            ("upper_left", (-half, self.height)),
+            ("lower_left", (-half, bottom)),
+            ("lower_right", (half, bottom)),
+            ("upper_right", (half, top)),
+            ("upper_left", (-half, top)),
         ], plane="XZ", world=True)
         body = profile.extrude(
             self.depth,
@@ -94,6 +98,7 @@ class RoofBoard:
     width = 868.0
     depth = 120.0
     thickness = 12.0
+    z_position = 362.0
     corner_radius = 4.0
 
     def build(self):
@@ -101,6 +106,7 @@ class RoofBoard:
             width=self.width,
             depth=self.depth,
             height=self.thickness,
+            z_position=self.z_position,
             corner_radius=self.corner_radius,
             fillet_vertices=("upper_left", "upper_right"),
             material_name="LIGHTPLY roof",

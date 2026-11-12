@@ -44,8 +44,9 @@ Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains
 `GLASS_WIDTH`, `GLASS_HEIGHT`, `GLASS_THICKNESS` and
 `GLASS_BOTTOM_CLEARANCE`; they are deliberately not editable CAD
-parameters. Changing `opening_height` does not resize or vertically move
-the plexiglass: it remains at Z=1..361 mm.
+parameters. Changing `opening_height` does not resize the plexiglass, but
+the fixed 360 mm-high sheet stays vertically centred in the opening. At the
+default 362 mm opening it spans Z=1..361 mm; at 400 mm it spans Z=20..380 mm.
 
 Geometry stays symbolic inside the part definitions. In particular the
 shared `Board` helper uses `self.width / 2`, named profile vertices and

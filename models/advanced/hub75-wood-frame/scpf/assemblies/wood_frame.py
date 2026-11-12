@@ -56,10 +56,10 @@ class WoodFrame:
             width=outer_width,
             depth=roof_rear - roof_front,
             thickness=self.frame_wood_thickness,
+            z_position=self.opening_height,
             corner_radius=self.corner_radius,
         ).move(
             y=(roof_front + roof_rear) / 2,
-            z=self.opening_height,
         )
 
         rear_board = BackBoard(

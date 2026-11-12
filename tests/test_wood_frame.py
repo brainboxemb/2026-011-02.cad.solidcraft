@@ -25,9 +25,10 @@ def commands(**overrides):
         return run_script(MODEL)["commands"]
 
     text = MODEL.read_text(encoding="utf-8")
-    assert text.rstrip().endswith("WoodenHub75Box()")
     args = ", ".join(f"{key}={value!r}" for key, value in overrides.items())
-    changed = text.rstrip()[:-len("WoodenHub75Box()")] + f"WoodenHub75Box({args})\n"
+    # Normal model files use Forge's implicit single-class root. For a test
+    # override, append one explicit call with the requested parameter values.
+    changed = text.rstrip() + f"\n\nWoodenHub75Box({args})\n"
 
     # Keep the temporary entrypoint beside model.py so its local
     # parts/ and assemblies/ imports resolve exactly as in normal use.

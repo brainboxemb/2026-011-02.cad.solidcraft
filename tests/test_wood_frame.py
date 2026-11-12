@@ -616,10 +616,13 @@ class WoodenFrameTests(unittest.TestCase):
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)
 
-        bracket_moves = moved(cmd, "CornerBracket")
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
         self.assertEqual(
-            sorted(p["translate"][2] for p in bracket_moves),
-            [0.0, 0.0, 0.0, 0.0, 424.0, 424.0, 424.0, 424.0],
+            sorted(p["a"]["corner"][2] for p in joints),
+            [12.0, 12.0, 12.0, 12.0, 412.0, 412.0, 412.0, 412.0],
         )
 
         points = " ".join(
@@ -648,11 +651,14 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, BOARD_COMPONENTS["left"]), [])
         self.assertEqual(moved(cmd, BOARD_COMPONENTS["right"]), [])
 
-        bracket_moves = moved(cmd, "CornerBracket")
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
         self.assertEqual(
-            sorted(p["translate"][0] for p in bracket_moves),
-            [-512.0, -512.0, -512.0, -512.0,
-             512.0, 512.0, 512.0, 512.0],
+            sorted(p["a"]["corner"][0] for p in joints),
+            [-500.0, -500.0, -500.0, -500.0,
+             500.0, 500.0, 500.0, 500.0],
         )
 
         points = " ".join(

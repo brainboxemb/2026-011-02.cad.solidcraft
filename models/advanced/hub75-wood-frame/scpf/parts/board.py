@@ -61,6 +61,7 @@ class SideBoard:
     depth = 100.0
     height = 362.0
     x_position = 0.0
+    z_position = 0.0
 
     def build(self):
         return Board(
@@ -68,6 +69,7 @@ class SideBoard:
             depth=self.depth,
             height=self.height,
             x_position=self.x_position,
+            z_position=self.z_position,
             material_name="LIGHTPLY side board",
         ).build()
 

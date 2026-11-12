@@ -19,11 +19,14 @@ class GlassStrip:
             raise ValueError("GlassStrip width must be less than half its length")
 
         half = self.length / 2
-        start = self.length_center - half
-        end = self.length_center + half
+        zero = self.length * 0
+        center = zero + self.length_center
+        outer = zero + self.width_base
+
+        start = center - half
+        end = center + half
         inner_start = start + self.width
         inner_end = end - self.width
-        outer = self.width_base
         inner = outer + self.width
 
         profile = Polygon2D([

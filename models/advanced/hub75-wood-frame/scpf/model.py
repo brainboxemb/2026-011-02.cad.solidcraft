@@ -4,7 +4,7 @@ from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
 from assemblies.wood_frame import WoodFrame
-from parts.window import GLASS_THICKNESS, Window
+from parts.window import Window
 
 
 class WoodenHub75Box:
@@ -57,10 +57,7 @@ class WoodenHub75Box:
 
     # Glazing retainers
     glazing_wood_width = 12.0
-    # Depth still participates in occurrence Y placement, which SolidCraft
-    # 0.30.1 receives as a concrete transform. Keep it explicitly build-time
-    # until that placement can remain associative.
-    _glazing_wood_depth = 12.0
+    glazing_wood_depth = 12.0
 
     def build(self):
         opening_bottom_z = self.frame_wood_thickness
@@ -87,7 +84,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
             glazing_wood_width=self.glazing_wood_width,
-            _glazing_wood_depth=self._glazing_wood_depth,
+            glazing_wood_depth=self.glazing_wood_depth,
         )
 
         brackets = CornerBrackets(
@@ -102,8 +99,7 @@ class WoodenHub75Box:
         window = Window(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-        ).move(
-            y=self._glazing_wood_depth + GLASS_THICKNESS / 2,
+            front_y=self.glazing_wood_depth,
         )
 
         return panels + frame + glazing + brackets + window

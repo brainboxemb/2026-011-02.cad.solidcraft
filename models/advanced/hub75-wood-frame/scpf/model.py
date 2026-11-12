@@ -63,7 +63,9 @@ class WoodenHub75Box:
             corner_radius=self.corner_radius,
         )
 
-        window = Window().move(
+        window = Window(
+            opening_height=self.opening_height,
+        ).move(
             y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
         )
 

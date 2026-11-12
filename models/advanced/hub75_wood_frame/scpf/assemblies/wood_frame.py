@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import assembly
+from scpf import Anchor, assembly
 
 from parts.board import Board
 
@@ -25,6 +25,17 @@ class WoodFrame:
         opening_bottom = self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
 
+        bottom = Board(
+            name="bottom",
+            width=outer_width,
+            depth=self.cabinet_depth,
+            height=self.frame_wood_thickness,
+            y_position=0.0,
+            corner_radius=self.corner_radius,
+            fillet="bottom",
+            material_name="LIGHTPLY bottom",
+        ).group("WoodBoxFrame")
+
         left = Board(
             name="left",
             width=self.frame_wood_thickness,
@@ -37,6 +48,10 @@ class WoodFrame:
             y_position=0.0,
             z_position=opening_bottom,
             material_name="LIGHTPLY side board",
+        ).attach(
+            bottom,
+            parent=Anchor.FRONT_TOP_LEFT,
+            child=Anchor.FRONT_BOTTOM_LEFT,
         ).group("WoodBoxFrame")
 
         right = Board(
@@ -51,18 +66,12 @@ class WoodFrame:
             y_position=0.0,
             z_position=opening_bottom,
             material_name="LIGHTPLY side board",
+        ).attach(
+            bottom,
+            parent=Anchor.FRONT_TOP_RIGHT,
+            child=Anchor.FRONT_BOTTOM_RIGHT,
         ).group("WoodBoxFrame")
 
-        bottom = Board(
-            name="bottom",
-            width=outer_width,
-            depth=self.cabinet_depth,
-            height=self.frame_wood_thickness,
-            y_position=0.0,
-            corner_radius=self.corner_radius,
-            fillet="bottom",
-            material_name="LIGHTPLY bottom",
-        ).group("WoodBoxFrame")
 
         roof = Board(
             name="roof",

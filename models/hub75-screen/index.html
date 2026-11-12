@@ -44,21 +44,27 @@ from components.hub75 import Hub75Panel as Hub75PanelDefinition
 
 Hub75Panel = component(Hub75PanelDefinition)
 
+# This model represents one fixed five-panel 160 x 320 mm nominal grid.
+# These dimensions define the product layout; they are not editable native
+# SolidCraft parameters. The physical panel envelope remains in hub75.py.
+NOMINAL_PITCH_X = 160.0
+NOMINAL_HEIGHT = 320.0
+
 
 class BasicHub75Screen:
-    nominal_pitch_x = 160.0
-    nominal_height = 320.0
-
     def build(self):
         # The native panel has its display face in XY and its rear in +Z.
         # Rotate to XZ so the 319.71 mm long side points upwards in world Z.
         # The master is X=0 and Z=160; all native copies start unplaced.
         # SolidCraft applies each occurrence&#x27;s intended pose once.
-        central = Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
+        central = Hub75Panel().rotate(
+            axis=(1, 0, 0),
+            degrees=90,
+        ).move(z=NOMINAL_HEIGHT / 2)
         screen = central
 
         for index in (0, 1, 3, 4):
-            x = (index - 2) * self.nominal_pitch_x
+            x = (index - 2) * NOMINAL_PITCH_X
             occurrence = central.copy()
             if index in (1, 3):
                 # Compose the upright X+90 and world Y+180 rotations as ONE

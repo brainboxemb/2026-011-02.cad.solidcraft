@@ -67,7 +67,7 @@ class WoodenHub75Box:
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0
-    _panel_recess_depth = 25.0
+    panel_recess_depth = 25.0
 
     # Wood
     frame_wood_thickness = 12.0
@@ -90,7 +90,7 @@ class WoodenHub75Box:
         panels = HUB75Panels(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-            _panel_recess_depth=self._panel_recess_depth,
+            panel_recess_depth=self.panel_recess_depth,
         )
 
         frame = WoodFrame(
@@ -181,6 +181,14 @@ WoodenHub75Box()
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_recess_depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;panel_recess_depth&quot;,
+    &quot;expression&quot;: &quot;25&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Hub75PanelBasic</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -193,7 +201,8 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;
+    &quot;name&quot;: &quot;Profile&quot;,
+    &quot;offset&quot;: &quot;panel_recess_depth + 7.25 mm&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -288,21 +297,10 @@ WoodenHub75Box()
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75PanelBasic:1&quot;,
-    &quot;translate&quot;: [
-      0.0,
-      32.25,
-      0.0
-    ]
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:2&quot;,
     &quot;translate&quot;: [
       -320.0,
-      32.25,
+      0.0,
       0.0
     ]
   }
@@ -313,7 +311,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:3&quot;,
     &quot;translate&quot;: [
       -160.0,
-      32.25,
+      0.0,
       0.0
     ]
   }
@@ -324,7 +322,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:4&quot;,
     &quot;translate&quot;: [
       160.0,
-      32.25,
+      0.0,
       0.0
     ]
   }
@@ -335,7 +333,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:5&quot;,
     &quot;translate&quot;: [
       320.0,
-      32.25,
+      0.0,
       0.0
     ]
   }

@@ -49,6 +49,14 @@
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "panel_recess_depth",
+        "expression": "25",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "component.create",
       "params": {
         "name": "Hub75PanelBasic",
@@ -60,7 +68,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "panel_recess_depth + 7.25 mm"
       }
     },
     {
@@ -155,21 +164,10 @@
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75PanelBasic:1",
-        "translate": [
-          0.0,
-          32.25,
-          0.0
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
         "occurrence": "Hub75PanelBasic:2",
         "translate": [
           -320.0,
-          32.25,
+          0.0,
           0.0
         ]
       }
@@ -180,7 +178,7 @@
         "occurrence": "Hub75PanelBasic:3",
         "translate": [
           -160.0,
-          32.25,
+          0.0,
           0.0
         ]
       }
@@ -191,7 +189,7 @@
         "occurrence": "Hub75PanelBasic:4",
         "translate": [
           160.0,
-          32.25,
+          0.0,
           0.0
         ]
       }
@@ -202,7 +200,7 @@
         "occurrence": "Hub75PanelBasic:5",
         "translate": [
           320.0,
-          32.25,
+          0.0,
           0.0
         ]
       }

@@ -31,9 +31,10 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 &quot;&quot;&quot;
-from scpf import AnchorFrame, Polygon2D, Direction, Edges, pv
+from scpf import AnchorFrame, Polygon2D, Direction, Edges, pv, component
 
 
+@component
 class CornerBracket:
     bracket_width = 24.0
     wall_thickness = 12.0

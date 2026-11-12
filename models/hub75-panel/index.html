@@ -31,9 +31,10 @@ four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
 bay edges, tubes, PCB and connectors still need distinct features.
 &quot;&quot;&quot;
-from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component
 
 
+@component
 class Hub75Panel:
     width = 159.70
     height = 319.71

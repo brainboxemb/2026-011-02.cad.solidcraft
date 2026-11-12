@@ -72,6 +72,36 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
+    def test_reusable_component_sources_own_component_decorator(self):
+        reusable = (
+            ("models/components/corner_bracket/scpf/model.py", "CornerBracket"),
+            ("models/components/hub75_panel/basic/scpf/model.py", "Hub75PanelBasic"),
+            ("models/components/hub75_panel/detailed/scpf/model.py", "Hub75Panel"),
+        )
+        for relative, class_name in reusable:
+            source = (ROOT / relative).read_text(encoding="utf-8")
+            module = ast.parse(source)
+            cls = next(
+                node for node in module.body
+                if isinstance(node, ast.ClassDef) and node.name == class_name
+            )
+            decorators = {
+                item.id
+                for item in cls.decorator_list
+                if isinstance(item, ast.Name)
+            }
+            self.assertIn("component", decorators, relative)
+
+        callers = (
+            "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py",
+            "models/advanced/hub75_wood_frame/scpf/assemblies/hub75_panels.py",
+            "models/advanced/hub75_screen/scpf/model.py",
+        )
+        for relative in callers:
+            source = (ROOT / relative).read_text(encoding="utf-8")
+            self.assertNotIn("component(", source, relative)
+
+
     def test_single_joint_example_has_one_direct_face_joint(self):
         commands = run_script(
             ROOT / "examples/single-joint/scpf/model.py"

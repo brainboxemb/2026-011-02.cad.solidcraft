@@ -1,14 +1,14 @@
-"""Wooden HUB75 display assembled from separate part and assembly modules."""
+"""Wooden HUB75 display assembled from named parts and subassemblies."""
 
-from assemblies.corner_brackets import build_corner_brackets
-from assemblies.glass_frame import build_glass_frame
-from assemblies.hub75_panels import build_hub75_panels
-from assemblies.window import build_window
-from assemblies.wood_frame import build_wood_frame
+from assemblies.corner_brackets import CornerBrackets
+from assemblies.glass_frame import GlassFrame
+from assemblies.hub75_panels import HUB75Panels
+from assemblies.wood_frame import WoodFrame
+from parts.window import GLASS_BOTTOM_CLEARANCE, GLASS_THICKNESS, Window
 
 
 class WoodenHub75Box:
-    """Top-level design parameters and composition only."""
+    """Top-level adjustable design parameters and composition."""
 
     # Display / inside opening
     opening_width = 844.0
@@ -25,22 +25,18 @@ class WoodenHub75Box:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Window and mitred glazing
-    glass_width = 840.0
-    glass_height = 360.0
-    glass_thickness = 4.0
-    glass_bottom_clearance = 1.0
+    # Glazing retainers
     glazing_width = 15.0
     glazing_depth = 15.0
 
     def build(self):
-        panels = build_hub75_panels(
+        panels = HUB75Panels(
             opening_height=self.opening_height,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
         )
 
-        frame = build_wood_frame(
+        frame = WoodFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             wood_thickness=self.wood_thickness,
@@ -52,7 +48,7 @@ class WoodenHub75Box:
             corner_radius=self.corner_radius,
         )
 
-        glazing = build_glass_frame(
+        glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             frame_front_y=self.frame_front_y,
@@ -60,7 +56,7 @@ class WoodenHub75Box:
             glazing_depth=self.glazing_depth,
         )
 
-        brackets = build_corner_brackets(
+        brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             wood_thickness=self.wood_thickness,
@@ -68,13 +64,9 @@ class WoodenHub75Box:
             frame_front_y=self.frame_front_y,
         )
 
-        window = build_window(
-            glass_width=self.glass_width,
-            glass_height=self.glass_height,
-            glass_thickness=self.glass_thickness,
-            glass_bottom_clearance=self.glass_bottom_clearance,
-            frame_front_y=self.frame_front_y,
-            glazing_depth=self.glazing_depth,
+        window = Window().move(
+            y=self.frame_front_y + self.glazing_depth + GLASS_THICKNESS / 2,
+            z=GLASS_BOTTOM_CLEARANCE,
         )
 
         return panels + frame + glazing + brackets + window

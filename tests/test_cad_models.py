@@ -26,7 +26,16 @@ class CADModelRegressions(unittest.TestCase):
                 module = ast.parse(script.read_text(encoding="utf-8"))
                 classes = [node for node in module.body if isinstance(node, ast.ClassDef)]
                 for cls in classes:
-                    self.assertFalse(cls.decorator_list, cls.name)
+                    decorators = {
+                        item.id
+                        for item in cls.decorator_list
+                        if isinstance(item, ast.Name)
+                    }
+                    self.assertEqual(
+                        decorators,
+                        decorators & {"component", "assembly"},
+                        cls.name,
+                    )
                     # SCPF class parameters are simple numeric class attributes.
                     for statement in cls.body:
                         self.assertNotIsInstance(statement, ast.AnnAssign, cls.name)

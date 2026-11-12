@@ -96,7 +96,6 @@ class WoodenFrameTests(unittest.TestCase):
                 "wood_frame.py",
                 "glass_frame.py",
                 "corner_brackets.py",
-                "window.py",
             },
         )
 
@@ -107,6 +106,32 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("value_of", sources)
         self.assertNotIn("GlassSideStrip", sources)
         self.assertNotIn("GlassCrossStrip", sources)
+        self.assertNotIn("def build_window", sources)
+        self.assertNotIn("def build_wood_frame", sources)
+        self.assertIn("window = Window().move(", MODEL.read_text(encoding="utf-8"))
+
+    def test_adjustable_parameters_are_lowercase_and_fixed_glass_is_uppercase(self):
+        model_source = MODEL.read_text(encoding="utf-8")
+        window_source = WINDOW.read_text(encoding="utf-8")
+
+        for name in (
+            "GLASS_WIDTH",
+            "GLASS_HEIGHT",
+            "GLASS_THICKNESS",
+            "GLASS_BOTTOM_CLEARANCE",
+        ):
+            self.assertIn(name + " =", window_source)
+
+        for old_parameter in (
+            "glass_width =",
+            "glass_height =",
+            "glass_thickness =",
+            "glass_bottom_clearance =",
+        ):
+            self.assertNotIn(old_parameter, model_source)
+
+        parameter_names = {p["name"] for p in of(commands(), "parameters.add")}
+        self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")

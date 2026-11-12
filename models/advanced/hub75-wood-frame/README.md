@@ -33,17 +33,18 @@ class WoodenHub75Box:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    glass_width = 840.0
-    glass_height = 360.0
-    glass_thickness = 4.0
-    glass_bottom_clearance = 1.0
     glazing_width = 15.0
     glazing_depth = 15.0
 ```
 
 Change these parameters, **not** the placement coordinates of every
-separate board. The assembly modules derive positions from them and pass the
-required dimensions to the individual part components.
+separate board. Adjustable model/CAD parameters use `lower_case`.
+
+Fixed product or part dimensions use `UPPER_CASE` constants instead. The
+plexiglass sheet is fixed in this design, so `parts/window.py` contains
+`GLASS_WIDTH`, `GLASS_HEIGHT`, `GLASS_THICKNESS` and
+`GLASS_BOTTOM_CLEARANCE`; they are deliberately not editable CAD
+parameters.
 
 Geometry stays symbolic inside the part definitions. In particular the
 shared `Board` helper uses `self.width / 2`, named profile vertices and
@@ -166,14 +167,15 @@ scpf/
     ├── hub75_panels.py
     ├── wood_frame.py
     ├── glass_frame.py
-    ├── corner_brackets.py
-    └── window.py
+    └── corner_brackets.py
 ```
 
 `parts/board.py` contains one shared `Board` geometry helper plus the
-semantic wooden part classes. Each assembly file is responsible only for
-creating and positioning its occurrences. The generic imported panel and
-bracket remain in `components/hub75_basic.py` and
+semantic wooden part classes. Parts use `@component`; subassemblies use
+`@assembly`. That lets the top-level model compose them directly as
+`Window()`, `WoodFrame()`, `GlassFrame()`, `HUB75Panels()` and
+`CornerBrackets()`, without procedural `build_*` wrappers. The generic
+imported panel and bracket remain in `components/hub75_basic.py` and
 `components/corner_bracket.py`.
 
 ## Test locally

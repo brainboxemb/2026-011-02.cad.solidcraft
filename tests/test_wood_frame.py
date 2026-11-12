@@ -555,6 +555,10 @@ class WoodenFrameTests(unittest.TestCase):
             sum("rear_mount" in str(p["b"]) for p in joints),
             4,
         )
+        self.assertEqual(
+            sorted(p["angle"] for p in joints),
+            [0, 0, 0, 0, 90, 90, 90, 90],
+        )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
         )

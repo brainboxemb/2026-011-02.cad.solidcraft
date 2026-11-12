@@ -87,7 +87,7 @@ With the GUI running, a **new empty design** active, and
 **Preferences → Assistant → Let AI agents connect** enabled:
 
 ```powershell
-python -m scpf models/component-examples/hub75-panel/scpf/model.py --connect
+python -m scpf models/components/hub75-panel/scpf/model.py --connect
 ```
 
 This is the default interactive workflow: it creates the editable native
@@ -96,6 +96,6 @@ model in the already open design; save it in SolidCraft.
 For **optional** command-JSON generation and headless verification:
 
 ```powershell
-python -m scpf models/component-examples/hub75-panel/scpf/model.py --out output/hub75.json
+python -m scpf models/components/hub75-panel/scpf/model.py --out output/hub75.json
 solidcraft-cli run output/hub75.json --param-check strict --results --save output/hub75.sc
 ```

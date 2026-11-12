@@ -14,6 +14,18 @@
 | 4 | +160 mm | 2 | Bottom | 180° |
 | 5 | +320 mm | 1 | Top | 0° |
 
+The 160 × 320 mm grid is intentionally a fixed property of this model, not a
+runtime SolidCraft parameter. In `scpf/model.py` it is therefore written as:
+
+```python
+NOMINAL_PITCH_X = 160.0
+NOMINAL_HEIGHT = 320.0
+```
+
+Changing the number/layout of panel occurrences requires rebuilding the Python
+assembly, so exposing these values as editable SolidCraft parameters would be
+misleading.
+
 This is a nominal **800 × 320 mm** panel grid. The detailed component's **native** front plane is XY, depth is Z. In the **assembly**, each occurrence is rotated +90° about world X so its front plane is **XZ** (standing upright), depth is along world Y and the 319.71 mm dimension points up along Z. Alternating panel orientations combine the upright X+90° with a world Y+180° turn as one absolute axis-angle pose (180° about the diagonal [0, 1, -1]), because SCPF does not compose consecutive rotate calls. The centre height is world Z=160 mm (nominal 320 mm panel grid). Column X translations happen last.
 
 The first occurrence is the *middle* panel at X=0; `copy()` adds the other four placements. Every panel has a vertical Z axis; SCPF creates the four native copies at the origin first, then asks SolidCraft to apply each occurrence's position and rotation using its native `translate`, `axis` and `angle` parameters. All five share one component definition/feature history.

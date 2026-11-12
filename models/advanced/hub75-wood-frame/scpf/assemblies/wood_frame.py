@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import component, pv
+from scpf import component
 
 from parts.board import BackBoard, BottomBoard, RoofBoard, SideWall
 
@@ -11,72 +11,64 @@ Roof = component(RoofBoard)
 Back = component(BackBoard)
 
 
-def build_wood_frame(
-    *,
-    opening_width,
-    opening_height,
-    wood_thickness,
-    back_thickness,
-    cabinet_depth,
-    frame_front_y,
-    roof_front_overhang,
-    roof_rear_overhang,
-    corner_radius,
-):
-    width = pv(opening_width)
-    height = pv(opening_height)
-    ply = pv(wood_thickness)
-    back = pv(back_thickness)
-    depth = pv(cabinet_depth)
-    front = pv(frame_front_y)
-    front_overhang = pv(roof_front_overhang)
-    rear_overhang = pv(roof_rear_overhang)
-    radius = pv(corner_radius)
+class WoodFrame:
+    opening_width = 844.0
+    opening_height = 362.0
+    wood_thickness = 12.0
+    back_thickness = 9.0
+    cabinet_depth = 100.0
+    frame_front_y = -25.0
+    roof_front_overhang = 10.0
+    roof_rear_overhang = 1.0
+    corner_radius = 4.0
 
-    rear = front + depth
-    back_outer = rear + back
-    roof_front = front - front_overhang
-    roof_rear = back_outer + rear_overhang
-    outer_width = width + 2 * ply
-    body_y = (front + rear) / 2
+    def build(self):
+        rear = self.frame_front_y + self.cabinet_depth
+        back_outer = rear + self.back_thickness
+        roof_front = self.frame_front_y - self.roof_front_overhang
+        roof_rear = back_outer + self.roof_rear_overhang
+        outer_width = self.opening_width + 2 * self.wood_thickness
+        body_y = (self.frame_front_y + rear) / 2
 
-    left = Side(
-        thickness=ply,
-        depth=depth,
-        height=height,
-    ).move(
-        x=-(width / 2 + ply / 2),
-        y=body_y,
-    )
-    sides = left + left.copy().move(x=outer_width - ply)
+        left = Side(
+            thickness=self.wood_thickness,
+            depth=self.cabinet_depth,
+            height=self.opening_height,
+        ).move(
+            x=-(self.opening_width / 2 + self.wood_thickness / 2),
+            y=body_y,
+        )
+        sides = left + left.copy().move(
+            x=outer_width - self.wood_thickness
+        )
 
-    bottom = Bottom(
-        width=outer_width,
-        depth=depth,
-        thickness=ply,
-        corner_radius=radius,
-    ).move(
-        y=body_y,
-        z=-ply,
-    )
+        bottom = Bottom(
+            width=outer_width,
+            depth=self.cabinet_depth,
+            thickness=self.wood_thickness,
+            corner_radius=self.corner_radius,
+        ).move(
+            y=body_y,
+            z=-self.wood_thickness,
+        )
 
-    roof = Roof(
-        width=outer_width,
-        depth=roof_rear - roof_front,
-        thickness=ply,
-        corner_radius=radius,
-    ).move(
-        y=(roof_front + roof_rear) / 2,
-        z=height,
-    )
+        roof = Roof(
+            width=outer_width,
+            depth=roof_rear - roof_front,
+            thickness=self.wood_thickness,
+            corner_radius=self.corner_radius,
+        ).move(
+            y=(roof_front + roof_rear) / 2,
+            z=self.opening_height,
+        )
 
-    rear_board = Back(
-        width=outer_width,
-        height=height + ply,
-        thickness=back,
-    ).move(
-        y=rear + back / 2,
-        z=-ply,
-    )
+        rear_board = Back(
+            width=outer_width,
+            height=self.opening_height + self.wood_thickness,
+            thickness=self.back_thickness,
+        ).move(
+            y=rear + self.back_thickness / 2,
+            z=-self.wood_thickness,
+        )
 
-    return (sides + bottom + roof + rear_board).group("WoodBoxFrame")
+        return (sides + bottom + roof + rear_board).group("WoodBoxFrame")

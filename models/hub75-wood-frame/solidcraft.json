@@ -148,7 +148,7 @@
         "occurrence": "Hub75PanelBasic:1",
         "translate": [
           0.0,
-          7.25,
+          32.25,
           21.14500000000001
         ]
       }
@@ -159,7 +159,7 @@
         "occurrence": "Hub75PanelBasic:2",
         "translate": [
           -320.0,
-          7.25,
+          32.25,
           21.14500000000001
         ]
       }
@@ -170,7 +170,7 @@
         "occurrence": "Hub75PanelBasic:3",
         "translate": [
           -160.0,
-          7.25,
+          32.25,
           21.14500000000001
         ]
       }
@@ -181,7 +181,7 @@
         "occurrence": "Hub75PanelBasic:4",
         "translate": [
           160.0,
-          7.25,
+          32.25,
           21.14500000000001
         ]
       }
@@ -192,7 +192,7 @@
         "occurrence": "Hub75PanelBasic:5",
         "translate": [
           320.0,
-          7.25,
+          32.25,
           21.14500000000001
         ]
       }
@@ -313,7 +313,7 @@
         "occurrence": "SideWall:1",
         "translate": [
           -428.0,
-          25.0,
+          50.0,
           0.0
         ]
       }
@@ -324,7 +324,7 @@
         "occurrence": "SideWall:2",
         "translate": [
           428.0,
-          25.0,
+          50.0,
           0.0
         ]
       }
@@ -466,7 +466,7 @@
         "occurrence": "BottomBoard:1",
         "translate": [
           0.0,
-          25.0,
+          50.0,
           -12.0
         ]
       }
@@ -608,7 +608,7 @@
         "occurrence": "RoofBoard:1",
         "translate": [
           0.0,
-          25.0,
+          50.0,
           362.0
         ]
       }
@@ -723,7 +723,7 @@
         "occurrence": "BackBoard:1",
         "translate": [
           0.0,
-          79.5,
+          104.5,
           -12.0
         ]
       }
@@ -732,7 +732,7 @@
       "command": "parameters.add",
       "params": {
         "name": "GlassStrip_depth",
-        "expression": "15",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -748,7 +748,7 @@
       "command": "parameters.add",
       "params": {
         "name": "GlassStrip_width",
-        "expression": "15",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -844,7 +844,7 @@
         "occurrence": "GlassStrip:1",
         "translate": [
           0.0,
-          -17.5,
+          6.0,
           0.0
         ]
       }
@@ -855,7 +855,7 @@
         "occurrence": "GlassStrip:2",
         "translate": [
           0.0,
-          -17.5,
+          6.0,
           362.0
         ],
         "axis": [
@@ -870,7 +870,7 @@
       "command": "parameters.add",
       "params": {
         "name": "GlassStrip_2_depth",
-        "expression": "15",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -886,7 +886,7 @@
       "command": "parameters.add",
       "params": {
         "name": "GlassStrip_2_width",
-        "expression": "15",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -982,7 +982,7 @@
         "occurrence": "GlassStrip 2:1",
         "translate": [
           -422.0,
-          -17.5,
+          6.0,
           181.0
         ],
         "axis": [
@@ -999,7 +999,7 @@
         "occurrence": "GlassStrip 2:2",
         "translate": [
           422.0,
-          -17.5,
+          6.0,
           181.0
         ],
         "axis": [
@@ -1349,7 +1349,7 @@
         "occurrence": "CornerBracket:1",
         "translate": [
           -434.0,
-          -13.0,
+          12.0,
           374.0
         ]
       }
@@ -1360,7 +1360,7 @@
         "occurrence": "CornerBracket:2",
         "translate": [
           434.0,
-          -13.0,
+          12.0,
           374.0
         ],
         "axis": [
@@ -1377,7 +1377,7 @@
         "occurrence": "CornerBracket:3",
         "translate": [
           -434.0,
-          -13.0,
+          12.0,
           -12.0
         ],
         "axis": [
@@ -1394,7 +1394,7 @@
         "occurrence": "CornerBracket:4",
         "translate": [
           434.0,
-          -13.0,
+          12.0,
           -12.0
         ],
         "axis": [
@@ -1411,7 +1411,7 @@
         "occurrence": "CornerBracket:5",
         "translate": [
           -434.0,
-          63.0,
+          88.0,
           374.0
         ]
       }
@@ -1422,7 +1422,7 @@
         "occurrence": "CornerBracket:6",
         "translate": [
           434.0,
-          63.0,
+          88.0,
           374.0
         ],
         "axis": [
@@ -1439,7 +1439,7 @@
         "occurrence": "CornerBracket:7",
         "translate": [
           -434.0,
-          63.0,
+          88.0,
           -12.0
         ],
         "axis": [
@@ -1456,7 +1456,7 @@
         "occurrence": "CornerBracket:8",
         "translate": [
           434.0,
-          63.0,
+          88.0,
           -12.0
         ],
         "axis": [
@@ -1534,7 +1534,7 @@
         "occurrence": "Window:1",
         "translate": [
           0.0,
-          -8.0,
+          14.0,
           1.0
         ]
       }

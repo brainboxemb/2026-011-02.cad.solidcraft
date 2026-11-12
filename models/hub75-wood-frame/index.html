@@ -41,32 +41,32 @@ class WoodenHub75Box:
     panel_pitch = 160.0
 
     # Wood
-    wood_thickness = 12.0
-    back_thickness = 9.0
+    frame_wood_thickness = 12.0
+    panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    frame_front_y = -25.0
+    panel_recess_depth = 25.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
     # Glazing retainers
-    glazing_width = 15.0
-    glazing_depth = 15.0
+    glazing_wood_width = 12.0
+    glazing_wood_depth = 12.0
 
     def build(self):
         panels = HUB75Panels(
             opening_height=self.opening_height,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
+            panel_recess_depth=self.panel_recess_depth,
         )
 
         frame = WoodFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            wood_thickness=self.wood_thickness,
-            back_thickness=self.back_thickness,
+            frame_wood_thickness=self.frame_wood_thickness,
+            panel_wood_thickness=self.panel_wood_thickness,
             cabinet_depth=self.cabinet_depth,
-            frame_front_y=self.frame_front_y,
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
@@ -75,21 +75,19 @@ class WoodenHub75Box:
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            frame_front_y=self.frame_front_y,
-            glazing_width=self.glazing_width,
-            glazing_depth=self.glazing_depth,
+            glazing_wood_width=self.glazing_wood_width,
+            glazing_wood_depth=self.glazing_wood_depth,
         )
 
         brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            wood_thickness=self.wood_thickness,
+            frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
-            frame_front_y=self.frame_front_y,
         )
 
         window = Window().move(
-            y=self.frame_front_y + self.glazing_depth + GLASS_THICKNESS / 2,
+            y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
             z=GLASS_BOTTOM_CLEARANCE,
         )
 
@@ -247,7 +245,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      7.25,
+      32.25,
       21.14500000000001
     ]
   }
@@ -258,7 +256,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:2&quot;,
     &quot;translate&quot;: [
       -320.0,
-      7.25,
+      32.25,
       21.14500000000001
     ]
   }
@@ -269,7 +267,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:3&quot;,
     &quot;translate&quot;: [
       -160.0,
-      7.25,
+      32.25,
       21.14500000000001
     ]
   }
@@ -280,7 +278,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:4&quot;,
     &quot;translate&quot;: [
       160.0,
-      7.25,
+      32.25,
       21.14500000000001
     ]
   }
@@ -291,7 +289,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:5&quot;,
     &quot;translate&quot;: [
       320.0,
-      7.25,
+      32.25,
       21.14500000000001
     ]
   }
@@ -412,7 +410,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;SideWall:1&quot;,
     &quot;translate&quot;: [
       -428.0,
-      25.0,
+      50.0,
       0.0
     ]
   }
@@ -423,7 +421,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;SideWall:2&quot;,
     &quot;translate&quot;: [
       428.0,
-      25.0,
+      50.0,
       0.0
     ]
   }
@@ -565,7 +563,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;BottomBoard:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      25.0,
+      50.0,
       -12.0
     ]
   }
@@ -707,7 +705,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;RoofBoard:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      25.0,
+      50.0,
       362.0
     ]
   }
@@ -822,7 +820,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;BackBoard:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      79.5,
+      104.5,
       -12.0
     ]
   }
@@ -831,7 +829,7 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassStrip_depth&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -847,7 +845,7 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassStrip_width&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -943,7 +941,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      -17.5,
+      6.0,
       0.0
     ]
   }
@@ -954,7 +952,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip:2&quot;,
     &quot;translate&quot;: [
       0.0,
-      -17.5,
+      6.0,
       362.0
     ],
     &quot;axis&quot;: [
@@ -969,7 +967,7 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassStrip_2_depth&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -985,7 +983,7 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;GlassStrip_2_width&quot;,
-    &quot;expression&quot;: &quot;15&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -1081,7 +1079,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip 2:1&quot;,
     &quot;translate&quot;: [
       -422.0,
-      -17.5,
+      6.0,
       181.0
     ],
     &quot;axis&quot;: [
@@ -1098,7 +1096,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip 2:2&quot;,
     &quot;translate&quot;: [
       422.0,
-      -17.5,
+      6.0,
       181.0
     ],
     &quot;axis&quot;: [
@@ -1448,7 +1446,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
     &quot;translate&quot;: [
       -434.0,
-      -13.0,
+      12.0,
       374.0
     ]
   }
@@ -1459,7 +1457,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
     &quot;translate&quot;: [
       434.0,
-      -13.0,
+      12.0,
       374.0
     ],
     &quot;axis&quot;: [
@@ -1476,7 +1474,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
     &quot;translate&quot;: [
       -434.0,
-      -13.0,
+      12.0,
       -12.0
     ],
     &quot;axis&quot;: [
@@ -1493,7 +1491,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
     &quot;translate&quot;: [
       434.0,
-      -13.0,
+      12.0,
       -12.0
     ],
     &quot;axis&quot;: [
@@ -1510,7 +1508,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
     &quot;translate&quot;: [
       -434.0,
-      63.0,
+      88.0,
       374.0
     ]
   }
@@ -1521,7 +1519,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
     &quot;translate&quot;: [
       434.0,
-      63.0,
+      88.0,
       374.0
     ],
     &quot;axis&quot;: [
@@ -1538,7 +1536,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
     &quot;translate&quot;: [
       -434.0,
-      63.0,
+      88.0,
       -12.0
     ],
     &quot;axis&quot;: [
@@ -1555,7 +1553,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
     &quot;translate&quot;: [
       434.0,
-      63.0,
+      88.0,
       -12.0
     ],
     &quot;axis&quot;: [
@@ -1633,7 +1631,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;Window:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      -8.0,
+      14.0,
       1.0
     ]
   }

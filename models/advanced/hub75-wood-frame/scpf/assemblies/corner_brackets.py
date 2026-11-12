@@ -14,6 +14,7 @@ class CornerBrackets:
     opening_height = 362.0
     frame_wood_thickness = 12.0
     cabinet_depth = 100.0
+    bracket_width = 24.0
     corner_radius = 4.0
 
     def build(self):
@@ -22,11 +23,12 @@ class CornerBrackets:
         top_z = self.opening_height + 2 * self.frame_wood_thickness
         bottom_z = 0.0
 
-        bracket_half = CornerBracket.bracket_width / 2
+        bracket_half = self.bracket_width / 2
         front_y = bracket_half
         rear_y = self.cabinet_depth - bracket_half
 
         top_left_front = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
             y_position=front_y,
@@ -35,6 +37,7 @@ class CornerBrackets:
             z_sign=1,
         )
         top_left_rear = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
             y_position=rear_y,
@@ -44,6 +47,7 @@ class CornerBrackets:
         )
 
         top_right_front = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
             y_position=front_y,
@@ -52,6 +56,7 @@ class CornerBrackets:
             z_sign=1,
         )
         top_right_rear = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
             y_position=rear_y,
@@ -61,6 +66,7 @@ class CornerBrackets:
         )
 
         bottom_left_front = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
             y_position=front_y,
@@ -69,6 +75,7 @@ class CornerBrackets:
             z_sign=-1,
         )
         bottom_left_rear = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
             y_position=rear_y,
@@ -78,6 +85,7 @@ class CornerBrackets:
         )
 
         bottom_right_front = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
             y_position=front_y,
@@ -86,6 +94,7 @@ class CornerBrackets:
             z_sign=-1,
         )
         bottom_right_rear = Bracket(
+            bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
             y_position=rear_y,

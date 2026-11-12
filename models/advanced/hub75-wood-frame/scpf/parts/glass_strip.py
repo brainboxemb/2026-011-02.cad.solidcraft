@@ -41,7 +41,7 @@ class GlassStrip:
             self.depth,
             direction=Direction.SYMMETRIC,
         ).with_material(
-            "LIGHTPLY glazing vertical" if dark else "LIGHTPLY glazing horizontal",
+            "PINE glazing vertical" if dark else "PINE glazing horizontal",
             density_g_cm3=0.55,
             color="#A9793E" if dark else "#E3BF80",
         )

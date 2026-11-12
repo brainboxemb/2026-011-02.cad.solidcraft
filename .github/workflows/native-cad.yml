@@ -221,10 +221,10 @@ jobs:
               and (.params.occurrence | startswith("GlassStrip")));
               .params.translate == [0,6,0])) and
             ([.commands[] | select(.command == "material.create"
-              and .params.name == "LIGHTPLY glazing vertical"
+              and .params.name == "PINE glazing vertical"
               and .params.color == "#A9793E")] | length) == 1 and
             ([.commands[] | select(.command == "material.create"
-              and .params.name == "LIGHTPLY glazing horizontal"
+              and .params.name == "PINE glazing horizontal"
               and .params.color == "#E3BF80")] | length) == 1
           ' output/native/hub75-wood-frame/commands.json
           # Verify actual SolidCraft BRep bounds; a green JSON command

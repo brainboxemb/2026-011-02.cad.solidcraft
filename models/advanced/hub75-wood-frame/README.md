@@ -77,7 +77,7 @@ The HUB75 modules are recessed **25 mm** from the sidewall front, so their front
 | Rear board | **868 × 374 × 9 mm** | Y=100..109, fixed to the rear |
 | Plexiglass | **840 × 360 × 4 mm** | Y=12..16; Z=1..361 |
 | Five basic panels | 159.70 × 319.71 × 14.50 mm | X pitch 160 |
-| Four glass retainers | Two lengths: **844** and **362 mm** | **12 × 12 mm**, straight mitres |
+| Four glass retainers | Two lengths: **844** and **362 mm** | **12 × 12 mm pine (grenen)**, straight mitres |
 | Eight corner brackets | 24 mm Y width, 12 mm wall | Two per corner, no screw holes |
 
 **Roof front:** the sidewall front is the Y=0 reference plane, while the roof starts at Y=−10. That is a **10 mm front overhang**.

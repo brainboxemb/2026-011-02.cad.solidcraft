@@ -17,7 +17,6 @@ class CornerBrackets:
     corner_radius = 4.0
 
     def build(self):
-        rear = self.cabinet_depth
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         outer_half = outer_width / 2
         top_z = self.opening_height + 2 * self.frame_wood_thickness
@@ -25,44 +24,75 @@ class CornerBrackets:
 
         bracket_half = CornerBracket.bracket_width / 2
         front_y = bracket_half
-        rear_y = rear - bracket_half
-        rear_offset = rear_y - front_y
+        rear_y = self.cabinet_depth - bracket_half
 
         top_left_front = Bracket(
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
+            y_position=front_y,
             z_position=top_z,
             x_sign=1,
             z_sign=1,
-        ).move(y=front_y)
-        top_left_rear = top_left_front.copy().move(y=rear_offset)
+        )
+        top_left_rear = Bracket(
+            inside_corner_radius=self.corner_radius,
+            x_position=-outer_half,
+            y_position=rear_y,
+            z_position=top_z,
+            x_sign=1,
+            z_sign=1,
+        )
 
         top_right_front = Bracket(
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
+            y_position=front_y,
             z_position=top_z,
             x_sign=-1,
             z_sign=1,
-        ).move(y=front_y)
-        top_right_rear = top_right_front.copy().move(y=rear_offset)
+        )
+        top_right_rear = Bracket(
+            inside_corner_radius=self.corner_radius,
+            x_position=outer_half,
+            y_position=rear_y,
+            z_position=top_z,
+            x_sign=-1,
+            z_sign=1,
+        )
 
         bottom_left_front = Bracket(
             inside_corner_radius=self.corner_radius,
             x_position=-outer_half,
+            y_position=front_y,
             z_position=bottom_z,
             x_sign=1,
             z_sign=-1,
-        ).move(y=front_y)
-        bottom_left_rear = bottom_left_front.copy().move(y=rear_offset)
+        )
+        bottom_left_rear = Bracket(
+            inside_corner_radius=self.corner_radius,
+            x_position=-outer_half,
+            y_position=rear_y,
+            z_position=bottom_z,
+            x_sign=1,
+            z_sign=-1,
+        )
 
         bottom_right_front = Bracket(
             inside_corner_radius=self.corner_radius,
             x_position=outer_half,
+            y_position=front_y,
             z_position=bottom_z,
             x_sign=-1,
             z_sign=-1,
-        ).move(y=front_y)
-        bottom_right_rear = bottom_right_front.copy().move(y=rear_offset)
+        )
+        bottom_right_rear = Bracket(
+            inside_corner_radius=self.corner_radius,
+            x_position=outer_half,
+            y_position=rear_y,
+            z_position=bottom_z,
+            x_sign=-1,
+            z_sign=-1,
+        )
 
         return (
             top_left_front

@@ -6,7 +6,8 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone model_reference.py, not here.
 """
-from scpf import Polygon2D, Direction, Edges
+from scpf import Polygon2D, Direction, Edges, pv
+
 
 class CornerBracket:
     bracket_width = 24.0
@@ -20,6 +21,7 @@ class CornerBracket:
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
     x_position = 0.0
+    y_position = 0.0
     z_position = 0.0
     x_sign = 1.0
     z_sign = 1.0
@@ -89,8 +91,13 @@ class CornerBracket:
             ]
 
         profile = Polygon2D(points, plane="XZ", world=True)
+        if hasattr(self, "y_position") and pv(self.y_position) != 0:
+            profile = profile.at(y=self.y_position)
 
-        body = profile.extrude(self.bracket_width, direction=Direction.SYMMETRIC)
+        body = profile.extrude(
+            self.bracket_width,
+            direction=Direction.SYMMETRIC,
+        )
 
         # Round the inside, then remove printing relief from the two tip
         # edges (parallel to the extrusion direction).
@@ -119,5 +126,3 @@ class CornerBracket:
         # Do not reintroduce holes through model-specific workarounds.
 
         return body
-
-

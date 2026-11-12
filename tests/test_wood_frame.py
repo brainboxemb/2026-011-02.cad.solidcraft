@@ -702,12 +702,12 @@ class WoodenFrameTests(unittest.TestCase):
             if p["name"].startswith("Attach CornerBracket:")
         ]
         self.assertEqual(len(joints), 8)
+        self.assertEqual(
+            sum("rear_mount" in str(p["b"]) for p in joints),
+            4,
+        )
         self.assertTrue(
-            any("cabinet_depth" in str(p["a"]) or "cabinet_depth" in str(p.get("offset", ""))
-                for p in joints)
-            or "cabinet_depth" in " ".join(
-                str(p["points"]) for p in of(cmd, "sketch.line")
-            )
+            all("corner" in p["a"] and "edge" in p["a"] for p in joints)
         )
 
     def test_parameter_override_changes_all_dependents(self):

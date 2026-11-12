@@ -14,14 +14,14 @@ perceived level of geometric complexity.
 
 - [CornerBracket](../components/corner_bracket.py) has **one** shape
   definition, reused by the
-  [standalone example](component-examples/corner-bracket/README.md)
+  [standalone example](components/corner-bracket/README.md)
   and the wooden display.
 - [Hub75Panel](../components/hub75.py) is the detailed panel with
   rear electronics bays; [Hub75PanelBasic](../components/hub75_basic.py)
   is the faster envelope.
 
 These live in top-level `components/`. The standalone demonstration
-scripts in `models/component-examples/` import the corresponding
+scripts in `models/components/` import the corresponding
 component and never reimplement its sketch or features.
 
 ## Parallel Python interfaces — Forge and native Commands
@@ -35,7 +35,7 @@ models/basic/plate/
 ```
 
 The first parallel models are [Plate](basic/plate/README.md) and
-[CornerBracket](component-examples/corner-bracket/README.md).
+[CornerBracket](components/corner-bracket/README.md).
 They are compiled from distinct sources and compared using the native
 SolidCraft engine. **SCPC does not reuse SCPF-generated JSON.**
 

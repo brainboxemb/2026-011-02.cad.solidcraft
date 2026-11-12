@@ -218,19 +218,19 @@
         "points": [
           [
             "-(frame_wood_thickness / 2)",
-            0
+            -0.0
           ],
           [
             "frame_wood_thickness / 2",
-            0
+            -0.0
           ],
           [
             "frame_wood_thickness / 2",
-            "-(opening_height)"
+            "-(opening_height + 0 mm)"
           ],
           [
             "-(frame_wood_thickness / 2)",
-            "-(opening_height)"
+            "-(opening_height + 0 mm)"
           ]
         ],
         "closed": true,
@@ -309,19 +309,19 @@
         "points": [
           [
             "-(frame_wood_thickness / 2)",
-            0
+            -0.0
           ],
           [
             "frame_wood_thickness / 2",
-            0
+            -0.0
           ],
           [
             "frame_wood_thickness / 2",
-            "-(opening_height)"
+            "-(opening_height + 0 mm)"
           ],
           [
             "-(frame_wood_thickness / 2)",
-            "-(opening_height)"
+            "-(opening_height + 0 mm)"
           ]
         ],
         "closed": true,
@@ -408,19 +408,19 @@
         "points": [
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            0
+            -0.0
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            0
+            -0.0
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            "-(frame_wood_thickness)"
+            "-(frame_wood_thickness + 0 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness)"
+            "-(frame_wood_thickness + 0 mm)"
           ]
         ],
         "closed": true,
@@ -451,12 +451,12 @@
           [
             -434.0,
             0.0,
-            -0.0
+            0.0
           ],
           [
             434.0,
             0.0,
-            -0.0
+            0.0
           ]
         ],
         "radius": "corner_radius",
@@ -542,19 +542,19 @@
         "points": [
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            0
+            "-(opening_height)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            0
+            "-(opening_height)"
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            "-(frame_wood_thickness)"
+            "-(opening_height + (frame_wood_thickness))"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness)"
+            "-(opening_height + (frame_wood_thickness))"
           ]
         ],
         "closed": true,
@@ -585,12 +585,12 @@
           [
             434.0,
             0.0,
-            12.0
+            374.0
           ],
           [
             -434.0,
             0.0,
-            12.0
+            374.0
           ]
         ],
         "radius": "corner_radius",
@@ -627,7 +627,7 @@
         "translate": [
           0.0,
           50.0,
-          362.0
+          0.0
         ]
       }
     },
@@ -652,19 +652,19 @@
         "points": [
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            0
+            -0.0
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            0
+            -0.0
           ],
           [
             "(opening_width + (frame_wood_thickness * 2)) / 2",
-            "-(opening_height + (frame_wood_thickness))"
+            "-(opening_height + (frame_wood_thickness) + 0 mm)"
           ],
           [
             "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(opening_height + (frame_wood_thickness))"
+            "-(opening_height + (frame_wood_thickness) + 0 mm)"
           ]
         ],
         "closed": true,

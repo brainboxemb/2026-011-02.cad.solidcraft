@@ -483,6 +483,53 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertIn("corner_radius", parameter_names)
 
+    def test_corner_bracket_placement_inputs_stay_private_but_symbolic(self):
+        source = (
+            ROOT / "components" / "corner_bracket.py"
+        ).read_text(encoding="utf-8")
+        assembly_source = (
+            ASSEMBLIES / "corner_brackets.py"
+        ).read_text(encoding="utf-8")
+
+        for name in (
+            "_x_position",
+            "_y_position",
+            "_z_position",
+            "_x_sign",
+            "_z_sign",
+        ):
+            self.assertIn(name + " =", source)
+            self.assertIn(name + "=", assembly_source)
+
+        self.assertNotIn("hasattr(", source)
+        self.assertNotIn("getattr(", source)
+
+        cmd = commands(opening_width=1000, opening_height=400)
+        names = {
+            p["name"] for p in of(cmd, "parameters.add")
+        }
+        self.assertFalse(
+            any(name.startswith("CornerBracket_") for name in names)
+        )
+
+        bracket_names = [
+            p["name"] for p in of(cmd, "component.create")
+            if p["name"] == "CornerBracket"
+            or p["name"].startswith("CornerBracket ")
+        ]
+        profiles = []
+        for name in bracket_names:
+            profile = next(
+                item["params"]
+                for item in component_commands(cmd, name)
+                if item["command"] == "sketch.line"
+            )
+            profiles.append(str(profile["points"]))
+
+        joined = " ".join(profiles)
+        self.assertIn("opening_width", joined)
+        self.assertIn("opening_height", joined)
+
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
         bracket_fillet = [

@@ -6,7 +6,7 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone model_reference.py, not here.
 """
-from scpf import Polygon2D, Direction, Edges, pv
+from scpf import Polygon2D, Direction, Edges
 
 
 class CornerBracket:
@@ -20,11 +20,14 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
-    x_position = 0.0
-    y_position = 0.0
-    z_position = 0.0
-    x_sign = 1.0
-    z_sign = 1.0
+    # Parent-owned placement inputs. Their defaults stay private when this
+    # component is opened standalone; an assembly may bind parent parameters
+    # into them without creating separate CornerBracket_* parameters.
+    _x_position = 0.0
+    _y_position = 0.0
+    _z_position = 0.0
+    _x_sign = 1.0
+    _z_sign = 1.0
 
     def build(self):
         w = self.wall_thickness
@@ -55,44 +58,34 @@ class CornerBracket:
         # Polygon order: I -> A -> B -> C -> D -> E -> F -> G -> H -> I.
         # Each label names its point and the segment starting at that point.
         # Elephant-foot relief is NOT part of this sketch: it comes later.
-        if hasattr(self, "z_position"):
-            x0 = getattr(self, "x_position", 0)
-            z0 = self.z_position
-            sx = getattr(self, "x_sign", 1)
-            sz = getattr(self, "z_sign", 1)
+        # The geometry path is identical standalone and in an assembly.
+        # Placement is expressed through private parent-owned inputs rather
+        # than through a second "used model" code path.
+        x0 = self._x_position
+        z0 = self._z_position
+        sx = self._x_sign
+        sz = self._z_sign
 
-            def placed(x, z):
-                return (x0 + sx * x, z0 + sz * z)
+        def placed(x, z):
+            return (x0 + sx * x, z0 + sz * z)
 
-            points = [
-                ("i_corner", placed(0, 0)),
-                ("o_hor_tip", placed(h, 0)),
-                ("o_hor_bevel", placed(h, w - end)),
-                ("o_hor", placed(h - end, w)),
-                ("o_corner", placed(-w + outer, w)),
-                ("o_vert", placed(-w, w - outer)),
-                ("o_vert_bevel", placed(-w, -v + end)),
-                ("o_vert_end", placed(-w + end, -v)),
-                ("v_tip", placed(0, -v)),
-            ]
-        else:
-            # Keep the standalone CornerBracket command plan byte-for-byte
-            # compatible with the independent SCPC reference model.
-            points = [
-                ("i_corner", (0, 0)),
-                ("o_hor_tip", (h, 0)),
-                ("o_hor_bevel", (h, w - end)),
-                ("o_hor", (h - end, w)),
-                ("o_corner", (-w + outer, w)),
-                ("o_vert", (-w, w - outer)),
-                ("o_vert_bevel", (-w, -v + end)),
-                ("o_vert_end", (-w + end, -v)),
-                ("v_tip", (0, -v)),
-            ]
+        points = [
+            ("i_corner", placed(0, 0)),
+            ("o_hor_tip", placed(h, 0)),
+            ("o_hor_bevel", placed(h, w - end)),
+            ("o_hor", placed(h - end, w)),
+            ("o_corner", placed(-w + outer, w)),
+            ("o_vert", placed(-w, w - outer)),
+            ("o_vert_bevel", placed(-w, -v + end)),
+            ("o_vert_end", placed(-w + end, -v)),
+            ("v_tip", placed(0, -v)),
+        ]
 
-        profile = Polygon2D(points, plane="XZ", world=True)
-        if hasattr(self, "y_position") and pv(self.y_position) != 0:
-            profile = profile.at(y=self.y_position)
+        profile = Polygon2D(
+            points,
+            plane="XZ",
+            world=True,
+        ).at(y=self._y_position)
 
         body = profile.extrude(
             self.bracket_width,

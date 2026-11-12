@@ -1,8 +1,10 @@
 """Compare native SolidCraft results for two *independent* Python scripts.
 
-Command JSON equivalence is checked in unit tests. Native SolidCraft
-evaluates both models and this script compares BRep measurements and
-editable feature histories. No custom geometry or transformations.
+Unit tests compare the independent command plans at the appropriate level:
+exact lowering where representation is identical, and the same parameter /
+feature contract where Forge keeps algebraically equivalent expressions.
+Native SolidCraft evaluates both models here; BRep measurements and editable
+feature histories are the geometry proof. No custom geometry or transforms.
 """
 import json
 from math import isclose

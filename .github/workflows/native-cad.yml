@@ -297,13 +297,14 @@ jobs:
               ((.bbox.min[2] - 52.145) | fabs) < 0.001 and
               ((.bbox.max[2] - 371.855) | fabs) < 0.001)) and
 
-            # Four top brackets move with the roof; four bottom brackets stay.
+            # Four top brackets follow the side-board top inside corners;
+            # four bottom brackets follow their bottom inside corners.
             ([.bodies[] | select((.name | startswith("CornerBracket"))
-              and ((.bbox.min[2] - 364) | fabs) < 0.001
-              and ((.bbox.max[2] - 436) | fabs) < 0.001)] | length) == 4 and
+              and ((.bbox.min[2] - 352) | fabs) < 0.001
+              and ((.bbox.max[2] - 424) | fabs) < 0.001)] | length) == 4 and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
-              and ((.bbox.min[2] + 12) | fabs) < 0.001
-              and ((.bbox.max[2] - 60) | fabs) < 0.001)] | length) == 4
+              and ((.bbox.min[2] - 0) | fabs) < 0.001
+              and ((.bbox.max[2] - 72) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-height-400.json
 
           # Parameter-edit regression: change opening_width in the SAVED
@@ -355,13 +356,14 @@ jobs:
               and (((.bbox.max[0] - .bbox.min[0]) - 1000) | fabs) < 0.001)]
               | length) == 2 and
 
-            # Four brackets follow each outside edge of the wider frame.
+            # Brackets follow the side-board inside corners and finish at
+            # the same outside X planes as the wooden frame.
             ([.bodies[] | select((.name | startswith("CornerBracket"))
               and .bbox.max[0] < 0
-              and ((.bbox.min[0] + 524) | fabs) < 0.001)] | length) == 4 and
+              and ((.bbox.min[0] + 512) | fabs) < 0.001)] | length) == 4 and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
               and .bbox.min[0] > 0
-              and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
+              and ((.bbox.max[0] - 512) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-width-1000.json
 
           # Panel recess is a native sketch-plane datum, not an occurrence

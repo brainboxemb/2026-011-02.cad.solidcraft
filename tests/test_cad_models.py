@@ -108,6 +108,39 @@ class CADModelRegressions(unittest.TestCase):
         )
 
 
+    def test_single_corner_joint_uses_edge_on_corner_reference(self):
+        commands = run_script(
+            ROOT / "examples/single-corner-joint/scpf/model.py"
+        )["commands"]
+
+        joints = [
+            command["params"]
+            for command in commands
+            if command["command"] == "joint.create"
+        ]
+        origins = [
+            command
+            for command in commands
+            if command["command"] == "joint.origin"
+        ]
+
+        self.assertEqual(len(joints), 1)
+        self.assertEqual(origins, [])
+        self.assertEqual(
+            joints[0]["a"],
+            {
+                "occurrence": "Base:1",
+                "edge": [80.0, 0.0, 40.0],
+                "on": [40.0, 0.0, 40.0],
+                "corner": [80.0, 0.0, 80.0],
+            },
+        )
+        self.assertEqual(
+            joints[0]["b"],
+            {"occurrence": "Child:1", "face": [80.0, 0.0, 80.0]},
+        )
+
+
     def test_csg_cube_matches_reviewed_native_commands(self):
         generated = run_script(ROOT / "models/basic/csg_cube/scpf/model.py")
         expected = json.loads((ROOT / "models/basic/csg_cube/scpf/reference.json").read_text())

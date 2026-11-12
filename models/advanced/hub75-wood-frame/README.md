@@ -21,7 +21,7 @@ At the bottom of the source, `WoodenHub75Box` has the design parameters:
 class WoodenHub75Box:
     opening_width = 844.0
     opening_height = 362.0
-    _panel_recess_depth = 25.0
+    panel_recess_depth = 25.0
 
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
@@ -46,10 +46,13 @@ of every separate board. This model follows Forge's parameter-intent naming:
 - `UPPER_CASE` is a fixed design/product constant.
 
 The five-panel layout is fixed here: `HUB75Panels` owns
-`PANEL_COUNT = 5` and `PANEL_PITCH = 160.0`. The panel recess is currently
-`_panel_recess_depth` because occurrence Y placement is still build-time;
-publishing it as a native parameter would misleadingly suggest that changing
-it in SolidCraft moves the panels.
+`PANEL_COUNT = 5` and `PANEL_PITCH = 160.0`. Those values determine the
+assembly topology and fixed product grid, so they are constants. In contrast,
+`panel_recess_depth` is a genuine native model parameter: the lightweight
+panel definition places its XZ sketch on
+`y_center = panel_recess_depth + HUB75_PANEL_DEPTH / 2` and extrudes
+symmetrically. Changing the recess in SolidCraft therefore moves all five
+panel envelopes in depth without rebuilding the Python assembly.
 
 `glazing_wood_depth` remains a native model parameter. The retainers now
 extrude directly from the Y=0 front datum instead of being centred and moved
@@ -89,9 +92,9 @@ board dimensions inside the CAD geometry.
 World axes: **X** left/right, **Y** front-to-back, **Z** upward. **Y=0 is the front face of the wooden cabinet** and **Z=0 is its outside bottom face**. `cabinet_depth` grows only towards +Y: the sidewalls and bottom start at Y=0, the rear face is Y=`cabinet_depth`, the back board starts on that same plane, and the rear brackets remain flush with it. The roof is the deliberate exception at the front and starts at Y=`-roof_front_overhang`. The wood opening starts at Z=`frame_wood_thickness` and keeps its own fixed `opening_height`. At the default 12 mm wood thickness the opening spans X=−422..422 and Z=12..374 mm.
 
 The HUB75 modules are recessed **25 mm** from the sidewall front, so their
-front faces start at Y=25. This remains an explicit Forge/build input
-(`_panel_recess_depth`) until occurrence translation can preserve that
-relationship as a native SolidCraft parameter.
+front faces start at Y=25. `panel_recess_depth` is native and associative:
+the panel sketch plane carries the depth datum, so no panel Y occurrence move
+is needed.
 
 ## Wood dimensions and the roof overhang
 

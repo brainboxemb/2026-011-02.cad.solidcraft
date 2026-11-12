@@ -183,7 +183,8 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("PANEL_PITCH = 160.0", panel_source)
         self.assertNotIn("panel_count =", model_source)
         self.assertNotIn("panel_pitch =", model_source)
-        self.assertIn("_panel_recess_depth = 25.0", model_source)
+        self.assertIn("panel_recess_depth = 25.0", model_source)
+        self.assertNotIn("_panel_recess_depth", model_source)
         self.assertIn("glazing_wood_depth = 12.0", model_source)
 
         parameter_names = {
@@ -197,6 +198,7 @@ class WoodenFrameTests(unittest.TestCase):
                 "frame_wood_thickness",
                 "panel_wood_thickness",
                 "cabinet_depth",
+                "panel_recess_depth",
                 "roof_front_overhang",
                 "roof_rear_overhang",
                 "corner_radius",
@@ -346,17 +348,22 @@ class WoodenFrameTests(unittest.TestCase):
             self.assertEqual(moved(cmd, name), [])
 
         self.assertEqual(moved(cmd, "Window"), [])
+        # Panel depth belongs to the native component sketch plane.
+        # Only the four fixed-pitch X copies need occurrence translations.
         panels = moved(cmd, "Hub75PanelBasic")
         self.assertEqual(
             sorted(p["translate"][0] for p in panels),
-            [-320.0, -160.0, 0.0, 160.0, 320.0],
+            [-320.0, -160.0, 160.0, 320.0],
         )
-        self.assertTrue(
-            all(p["translate"][1] == 32.25 for p in panels)
+        self.assertTrue(all(p["translate"][1] == 0.0 for p in panels))
+        self.assertTrue(all(p["translate"][2] == 0.0 for p in panels))
+
+        panel = component_commands(cmd, "Hub75PanelBasic")
+        sketch = next(
+            item["params"] for item in panel
+            if item["command"] == "sketch.create"
         )
-        self.assertTrue(
-            all(p["translate"][2] == 0.0 for p in panels)
-        )
+        self.assertIn("panel_recess_depth", str(sketch["offset"]))
 
     def test_glass_frame_uses_named_axis_rotation(self):
         source = GLASS_FRAME.read_text(encoding="utf-8")
@@ -607,7 +614,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("panel_wood_thickness = 9.0", source)
         self.assertIn("roof_front_overhang = 10.0", source)
         self.assertIn("roof_rear_overhang = 1.0", source)
-        self.assertIn("_panel_recess_depth = 25.0", source)
+        self.assertIn("panel_recess_depth = 25.0", source)
         self.assertIn("bracket_width = 24.0", source)
         self.assertIn("glazing_wood_depth = 12.0", source)
         self.assertNotIn("frame_front_y_position", source)

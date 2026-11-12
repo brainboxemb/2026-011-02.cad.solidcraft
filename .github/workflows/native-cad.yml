@@ -187,7 +187,10 @@ jobs:
                 .params.name == "Hub75PanelBasic" and
                 .params.parent == "HUB75Panels")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy" and
-                .params.component == "Hub75PanelBasic")] | length) == 4
+                .params.component == "Hub75PanelBasic")] | length) == 4 and
+            ([.commands[] | select(.command == "occurrence.move"
+                and (.params.occurrence | startswith("Hub75PanelBasic"))
+                and .params.translate[1] != 0)] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
           # Wooden frame placement is native symbolic geometry as well.
           # Only the glazing/panel occurrences retain their intentional fixed
@@ -369,6 +372,29 @@ jobs:
               and .bbox.min[0] > 0
               and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-width-1000.json
+
+          # Panel recess is a native sketch-plane datum, not an occurrence
+          # translation. Moving it from 25 to 35 mm must shift every panel
+          # envelope 10 mm towards the rear while preserving its 14.5 mm depth.
+          cat > output/native/hub75-wood-frame/change-panel-recess.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"panel_recess_depth","expression":"35 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-panel-recess.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-panel-recess-35.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-panel-recess-35.sc \
+            --json-out output/native/hub75-wood-frame/measurements-panel-recess-35.json
+          jq -e '
+            (.timeline | all(.error == null)) and
+            (all(.bodies[] | select(.name | startswith("Hub75PanelBasic"));
+              ((.bbox.min[1] - 35) | fabs) < 0.001 and
+              ((.bbox.max[1] - 49.5) | fabs) < 0.001))
+          ' output/native/hub75-wood-frame/measurements-panel-recess-35.json
 
           # Glazing depth is one native runtime parameter: changing it must
           # deepen all four pine retainers from the fixed Y=0 front datum and

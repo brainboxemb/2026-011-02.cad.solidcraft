@@ -321,7 +321,7 @@ class WoodenFrameTests(unittest.TestCase):
             )
 
     def test_basic_hub75_envelope_uses_fixed_constants(self):
-        from models.components.hub75_panel.scpf.basic import (
+        from models.components.hub75_panel.basic.scpf.model import (
             HUB75_PANEL_DEPTH,
             HUB75_PANEL_HEIGHT,
             HUB75_PANEL_WIDTH,

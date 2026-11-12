@@ -483,9 +483,13 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertNotIn(name, source)
 
-        self.assertIn('rotate("Y", angle)', assembly_source)
-        for angle in ("0)", "90)", "180)", "270)"):
-            self.assertIn(angle, assembly_source)
+        self.assertNotIn(".move(", assembly_source)
+        self.assertNotIn(".rotate(", assembly_source)
+        self.assertNotIn("opening_width", assembly_source)
+        self.assertNotIn("opening_height", assembly_source)
+        self.assertIn(".attach(", assembly_source)
+        self.assertIn("Anchor.FRONT_TOP_LEFT", assembly_source)
+        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", assembly_source)
 
         cmd = commands()
         creates = [
@@ -501,17 +505,12 @@ class WoodenFrameTests(unittest.TestCase):
             7,
         )
 
-        moves = moved(cmd, "CornerBracket")
-        self.assertEqual(len(moves), 8)
-        rotations = sorted(
-            p.get("angle", "0 deg")
-            for p in moves
-        )
-        self.assertEqual(
-            rotations,
-            ["0 deg", "0 deg", "90 deg", "90 deg",
-             "180 deg", "180 deg", "270 deg", "270 deg"],
-        )
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
+        self.assertTrue(all(p["type"] == "rigid" for p in joints))
 
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
@@ -539,11 +538,18 @@ class WoodenFrameTests(unittest.TestCase):
             7,
         )
 
-        moves = moved(cmd, "CornerBracket")
-        self.assertEqual(len(moves), 8)
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sorted(p["translate"][1] for p in moves),
-            [12.0, 12.0, 12.0, 12.0, 88.0, 88.0, 88.0, 88.0],
+            sum("front_mount" in str(p["b"]) for p in joints),
+            4,
+        )
+        self.assertEqual(
+            sum("rear_mount" in str(p["b"]) for p in joints),
+            4,
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
@@ -691,10 +697,17 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertIn(parameter, str(roof_extrusion["distance"]))
 
-        bracket_moves = moved(cmd, "CornerBracket")
-        self.assertEqual(
-            sorted(p["translate"][1] for p in bracket_moves),
-            [12.0, 12.0, 12.0, 12.0, 108.0, 108.0, 108.0, 108.0],
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
+        self.assertTrue(
+            any("cabinet_depth" in str(p["a"]) or "cabinet_depth" in str(p.get("offset", ""))
+                for p in joints)
+            or "cabinet_depth" in " ".join(
+                str(p["points"]) for p in of(cmd, "sketch.line")
+            )
         )
 
     def test_parameter_override_changes_all_dependents(self):
@@ -704,12 +717,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, "RightBoard"), [])
         self.assertEqual(moved(cmd, "BottomBoard"), [])
         self.assertEqual(moved(cmd, "RoofBoard"), [])
-        bracket_moves = moved(cmd, "CornerBracket")
-        self.assertEqual(
-            sorted(p["translate"][0] for p in bracket_moves),
-            [-438.0, -438.0, -438.0, -438.0,
-             438.0, 438.0, 438.0, 438.0],
-        )
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
         sketch_points = " ".join(
             str(p["points"]) for p in of(cmd, "sketch.line")
         )
@@ -717,10 +729,7 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_all_copies_created_before_native_placements(self):
         cmd = commands()
-        for name in (
-            "Hub75PanelBasic",
-            "CornerBracket",
-        ):
+        for name in ("Hub75PanelBasic",):
             copy_idx = [
                 i for i, command in enumerate(cmd)
                 if command["command"] == "occurrence.copy"

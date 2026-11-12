@@ -10,6 +10,25 @@ from parts.window import GLASS_THICKNESS, Window
 class WoodenHub75Box:
     """Top-level adjustable design parameters and composition."""
 
+    # Coordinate / datum conventions
+    #
+    # X = 0 : horizontal centre of the cabinet/opening.
+    #           Changing frame wood thickness grows the cabinet outwards in ±X;
+    #           the opening itself stays centred and keeps opening_width.
+    # Y = 0 : front face of the wooden cabinet.
+    #           cabinet_depth grows only towards +Y. The rear sidewall face is
+    #           Y=cabinet_depth and the back board starts at that same plane.
+    # Z = 0 : outside bottom face of the wooden cabinet.
+    #           frame_wood_thickness grows upwards from here; the opening starts
+    #           at Z=frame_wood_thickness and keeps opening_height.
+    #
+    # Derived reference planes:
+    #   opening X = ±opening_width / 2
+    #   cabinet X = ±(opening_width / 2 + frame_wood_thickness)
+    #   opening Z = frame_wood_thickness ..
+    #               frame_wood_thickness + opening_height
+    #   cabinet rear Y = cabinet_depth
+
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0

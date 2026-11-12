@@ -36,7 +36,7 @@ COMMAND_SOURCES = {
 }
 
 COMPONENT_SOURCES = {
-    "corner-bracket": "models/components/corner_bracket.py",
+    "corner-bracket": "models/components/corner_bracket/scpf/model.py",
     "hub75-panel": "models/components/hub75_panel/scpf/model.py",
     "hub75-screen": "models/components/hub75_panel/scpf/model.py",
 }

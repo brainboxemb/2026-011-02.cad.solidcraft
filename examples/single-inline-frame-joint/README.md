@@ -9,7 +9,7 @@ child frame directly in `joint.create`:
 ```text
 b = {
   occurrence: Child:1,
-  point: [80, 0, 80],
+  point: [40, -20, 80],
   z: [0, 1, 0],
   x: [1, 0, 0]
 }

@@ -83,9 +83,6 @@ class WoodenHub75Box:
             wood_frame=frame,
             bracket_width=self.bracket_width,
             corner_radius=self.corner_radius,
-            roof_front_overhang=self.roof_front_overhang,
-            roof_rear_overhang=self.roof_rear_overhang,
-            panel_wood_thickness=self.panel_wood_thickness,
         )
 
         glazing = GlassFrame(

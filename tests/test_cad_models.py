@@ -72,6 +72,42 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
+    def test_single_joint_example_has_one_direct_face_joint(self):
+        commands = run_script(
+            ROOT / "examples/single-joint/scpf/model.py"
+        )["commands"]
+
+        joints = [
+            command["params"]
+            for command in commands
+            if command["command"] == "joint.create"
+        ]
+        origins = [
+            command
+            for command in commands
+            if command["command"] == "joint.origin"
+        ]
+
+        self.assertEqual(len(joints), 1)
+        self.assertEqual(origins, [])
+        self.assertEqual(joints[0]["type"], "rigid")
+        self.assertEqual(
+            joints[0]["a"],
+            {"occurrence": "Base:1", "face": [80.0, 20.0, 10.0]},
+        )
+        self.assertEqual(
+            joints[0]["b"],
+            {"occurrence": "Child:1", "face": [80.0, 10.0, 10.0]},
+        )
+        self.assertEqual(
+            commands[-1],
+            {
+                "command": "browser.visibility",
+                "params": {"folder": "joints", "visible": False},
+            },
+        )
+
+
     def test_csg_cube_matches_reviewed_native_commands(self):
         generated = run_script(ROOT / "models/basic/csg_cube/scpf/model.py")
         expected = json.loads((ROOT / "models/basic/csg_cube/scpf/reference.json").read_text())

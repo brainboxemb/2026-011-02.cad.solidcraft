@@ -1,14 +1,10 @@
 """Shared board geometry plus semantic wooden case parts."""
 
-from scpf import Direction, Edges, Polygon2D, pv
+from scpf import Direction, Edges, Polygon2D, component, pv
 
 
 class Board:
-    """One rectangular board extruded symmetrically through local Y.
-
-    Board is a geometry helper, not a standalone component definition.
-    The semantic part classes below own the named SolidCraft parameters.
-    """
+    """One rectangular board extruded symmetrically through local Y."""
 
     def __init__(
         self, width, depth, height, *,
@@ -51,6 +47,7 @@ class Board:
         )
 
 
+@component
 class SideWall:
     thickness = 12.0
     depth = 100.0
@@ -65,6 +62,7 @@ class SideWall:
         ).build()
 
 
+@component
 class BottomBoard:
     width = 868.0
     depth = 100.0
@@ -82,6 +80,7 @@ class BottomBoard:
         ).build()
 
 
+@component
 class RoofBoard:
     width = 868.0
     depth = 120.0
@@ -99,6 +98,7 @@ class RoofBoard:
         ).build()
 
 
+@component
 class BackBoard:
     width = 868.0
     height = 374.0

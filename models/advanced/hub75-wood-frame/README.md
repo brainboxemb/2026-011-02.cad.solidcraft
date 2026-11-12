@@ -53,7 +53,7 @@ it in SolidCraft moves the panels.
 
 The same rule currently applies to `_glazing_wood_depth`. That value controls
 the physical retainer depth, but it also determines the Y placement of the
-retainers and plexiglass through occurrence transforms. Forge  now warns when a
+retainers and plexiglass through occurrence transforms. Forge now warns when a
 public model parameter is used in such a partly associative placement, so the
 leading underscore makes the limitation explicit rather than exposing a
 misleading SolidCraft runtime parameter. `glazing_wood_width` remains fully

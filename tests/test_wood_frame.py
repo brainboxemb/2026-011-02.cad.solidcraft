@@ -230,14 +230,20 @@ class WoodenFrameTests(unittest.TestCase):
             moved(cmd, "BackBoard")[0]["translate"],
             [0.0, 104.5, -12.0],
         )
-        self.assertEqual(moved(cmd, "Window"), [])
+        self.assertEqual(
+            moved(cmd, "Window")[0]["translate"],
+            [0.0, 14.0, 0.0],
+        )
         panels = moved(cmd, "Hub75PanelBasic")
         self.assertEqual(
             sorted(p["translate"][0] for p in panels),
-            [-320.0, -160.0, 160.0, 320.0],
+            [-320.0, -160.0, 0.0, 160.0, 320.0],
         )
         self.assertTrue(
-            all(p["translate"][1:] == [0.0, 0.0] for p in panels)
+            all(p["translate"][1] == 32.25 for p in panels)
+        )
+        self.assertTrue(
+            all(p["translate"][2] == 0.0 for p in panels)
         )
 
     def test_glass_frame_uses_named_axis_rotation(self):

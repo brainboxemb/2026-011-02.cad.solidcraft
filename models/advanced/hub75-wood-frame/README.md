@@ -24,8 +24,8 @@ class WoodenHub75Box:
     panel_count = 5
     panel_pitch = 160.0
 
-    wood_thickness = 12.0
-    back_thickness = 9.0
+    frame_wood_thickness = 12.0
+    panel_wood_thickness = 9.0
     cabinet_depth = 100.0
     frame_front_y = -25.0
 
@@ -33,8 +33,8 @@ class WoodenHub75Box:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    glazing_width = 12.0
-    glazing_depth = 12.0
+    glazing_wood_width = 12.0
+    glazing_wood_depth = 12.0
 ```
 
 Change these parameters, **not** the placement coordinates of every

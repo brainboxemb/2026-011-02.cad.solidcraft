@@ -289,10 +289,10 @@ jobs:
               and ((.bbox.min[2] - 388) | fabs) < 0.001
               and ((.bbox.max[2] - 400) | fabs) < 0.001)] | length) == 1 and
 
-            # Fixed 360 mm plexiglass remains centred: 20 mm top/bottom.
+            # Fixed plexiglass does not follow opening_height.
             (all(.bodies[] | select(.name | startswith("Window"));
-              ((.bbox.min[2] - 20) | fabs) < 0.001 and
-              ((.bbox.max[2] - 380) | fabs) < 0.001)) and
+              ((.bbox.min[2] - 1) | fabs) < 0.001 and
+              ((.bbox.max[2] - 361) | fabs) < 0.001)) and
 
             # Fixed 319.71 mm HUB75 panels stay centred in the 400 mm opening.
             (all(.bodies[] | select(.name | startswith("Hub75PanelBasic"));

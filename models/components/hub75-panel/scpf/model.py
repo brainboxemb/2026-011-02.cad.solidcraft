@@ -1,20 +1,10 @@
-"""One reusable HUB75 mechanical component, shown upright in world XZ.
+"""Standalone entry point for the shared HUB75 mechanical component.
 
-A single panel is a component. A screen assembly is responsible for copies.
-The detailed panel definition stays native XY with rear depth in +Z; its
-occurrence stands upright with +90 degrees about X, front facing world +Y.
+Opening the panel by itself runs the exact same Hub75Panel class that screen
+assemblies import. The part keeps its own local CAD axes: front face in XY,
+rear depth along +Z. Assemblies are responsible for world placement/rotation.
 """
-from scpf import component
-from components.hub75 import Hub75Panel as Hub75PanelDefinition
-
-Hub75Panel = component(Hub75PanelDefinition, include="*")
+from components.hub75 import Hub75Panel
 
 
-class SingleHub75Panel:
-    def build(self):
-        # Native panel height is centred around Y=0; rotate that height into
-        # vertical world Z, then centre it in the 320 mm nominal display grid.
-        return Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
-
-
-SingleHub75Panel()
+Hub75Panel()

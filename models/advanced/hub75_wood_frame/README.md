@@ -122,43 +122,56 @@ the rounded inside corners of the printed brackets.
 
 ## One GlassStrip class, four pieces
 
-The wooden retaining frame has only **one Python type**:
+A glass retainer is intentionally modelled as something simple: **one wooden
+strip with two 45° mitred ends**. There is one `GlassStrip` class for all
+four manufactured pieces.
+
+Its public geometry is only:
 
 ```python
 class GlassStrip:
     length = 844.0
     width = 12.0
     depth = 12.0
-    finish = 0
 ```
 
-It defines a long strip with **straight 45° cuts at both ends**.
-The assembly creates two length variants from the same class:
+The assembly supplies parent-owned private placement inputs, in the same style
+as `CornerBracket`:
 
-- **Horizontal:** length 844 mm, lighter wood finish; two occurrences
-  at the bottom and top of the opening (Z=12 and Z=374 by default). The top
-  copy turns 180° about X.
-- **Vertical:** length 362 mm, darker wood finish; two occurrences
-  at X=−422 and X=422, starting from the same opening-bottom datum. The left
-  and right copies turn +90° and −90°
-  about Y to stand upright.
+```python
+bottom = GlassStrip(
+    length=self.opening_width,
+    width=self.glazing_wood_width,
+    depth=self.glazing_wood_depth,
+    _x_position=0,
+    _z_position=opening_bottom,
+    _vertical=0,
+    _width_sign=1,
+    _finish=0,
+)
+```
 
-The assembly uses Forge's named-axis occurrence syntax, so these placements
-read directly as `rotate(X, 180)`, `rotate(Y, 90)` and
-`rotate(Y, -90)` instead of raw XYZ axis tuples.
+The four-point XZ profile is just the rectangular strip with both end corners
+cut back by `width`, which makes the two straight 45° mitres. Forge currently
+cannot place a `Box` symbolically without flattening parent placement, so this
+small profile preserves the native `opening_width`/`opening_height`
+relationships without introducing a separate placement workaround.
 
-They are four individual manufactured parts in SolidCraft, not
-four different Python classes. The two lengths require two native
-component definitions, each shared by its pair of occurrences.
+The four pieces are:
 
-**Do not round the glass retaining strips.** Their ends are mitred,
-not filleted. The R4 rounding belongs to the **roof and bottom boards**.
+- bottom: horizontal, width grows upward from the opening bottom;
+- top: horizontal, width grows downward from the opening top;
+- left: vertical, width grows right from the left opening edge;
+- right: vertical, width grows left from the right opening edge.
 
-The retaining strips are authored directly from **Y=0**, aligned flush with
-the sidewalls; no Y occurrence translation is required. They are 12 mm deep
-and end at Y=12. The glass touches their
-rear faces and occupies Y=12..16. The glass and its retainers therefore
-stay within the box's front plane, rather than sticking out.
+There are **no GlassStrip occurrence rotations or translations**. The private
+`_x_position`, `_z_position`, `_vertical` and `_width_sign` inputs place
+the native profile directly. All strips extrude from Y=0 towards +Y by
+`glazing_wood_depth`; the plexiglass starts on their rear face.
+
+The horizontal pair uses the lighter pine finish and the vertical pair the
+darker pine finish. The strips are not filleted: their corners are mitred. The
+R4 fillets belong only to the roof/bottom boards and printed brackets.
 
 ## Eight printed corner brackets
 

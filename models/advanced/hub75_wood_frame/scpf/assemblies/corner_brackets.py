@@ -20,8 +20,11 @@ class CornerBrackets:
     panel_wood_thickness = 9.0
 
     def build(self):
-        roof = self._part(self.wood_frame, "RoofBoard")
-        bottom = self._part(self.wood_frame, "BottomBoard")
+        if self.wood_frame is None:
+            raise ValueError("CornerBrackets requires wood_frame")
+
+        roof = self.wood_frame.roof
+        bottom = self.wood_frame.bottom
 
         bracket = Bracket(
             bracket_width=self.bracket_width,
@@ -105,19 +108,3 @@ class CornerBrackets:
             + bottom_left_front
             + bottom_left_rear
         ).group("CornerBrackets")
-
-    @staticmethod
-    def _part(wood_frame, class_name):
-        if wood_frame is None:
-            raise ValueError("CornerBrackets requires wood_frame")
-
-        matches = [
-            instance
-            for instance in wood_frame.instances
-            if instance.definition.class_name == class_name
-        ]
-        if len(matches) != 1:
-            raise ValueError(
-                f"WoodFrame must contain exactly one {class_name}"
-            )
-        return matches[0]

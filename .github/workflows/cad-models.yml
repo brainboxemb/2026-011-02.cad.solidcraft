@@ -39,8 +39,9 @@ jobs:
           from pathlib import Path
           data=json.loads(Path('output/models/hub75-panel/scpf/solidcraft.json').read_text())
           commands=[x['command'] for x in data['commands']]
-          for command in ('component.create','occurrence.move','solid.loft'):
-              assert commands.count(command)==1, (command, commands.count(command))
+          assert commands.count('component.create') == 0
+          assert commands.count('occurrence.move') == 0
+          assert commands.count('solid.loft') == 1
           assert commands.count('sketch.rectangle.two_point') == 7
           assert commands.count('occurrence.copy') == 0
           assert commands.count('solid.hole') == 6

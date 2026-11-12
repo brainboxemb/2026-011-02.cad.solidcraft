@@ -186,9 +186,8 @@ jobs:
                 and (.params.occurrence | startswith("Hub75PanelBasic"))
                 and .params.translate[1] != 0)] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
-          # Wooden frame placement is native symbolic geometry as well.
-          # Only the glazing/panel occurrences retain their intentional fixed
-          # depth/orientation moves.
+          # Wooden frame and glazing placement are native symbolic geometry.
+          # Only the fixed-pitch panel copies retain occurrence placement.
           jq -e '
             ([.commands[] | select(.command == "occurrence.copy"
               and (.params.component | startswith("GlassStrip")))] | length) == 0 and
@@ -199,23 +198,18 @@ jobs:
                 or (.params.occurrence | startswith("RoofBoard"))
                 or (.params.occurrence | startswith("BackBoard"))))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
-              and (.params.occurrence | startswith("GlassStrip"))
-              and .params.translate[2] != 0)] | length) == 0 and
+              and (.params.occurrence | startswith("GlassStrip")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
               and (.params | has("matrix") or has("to")))] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
-          # One GlassStrip Python class produces four native profile variants.
-          # Y placement lives in the extrusion direction itself. Only the
-          # top/left/right orientation needs an occurrence move; translations
-          # stay at the origin.
+          # One simple GlassStrip class produces four native placed profiles.
+          # Position and orientation are parent-owned private inputs in the
+          # profile itself; no GlassStrip occurrence move/rotation is needed.
           jq -e '
             ([.commands[] | select(.command == "component.create"
               and (.params.name | startswith("GlassStrip")))] | length) == 4 and
             ([.commands[] | select(.command == "occurrence.move"
-              and (.params.occurrence | startswith("GlassStrip")))] | length) == 3 and
-            (all(.commands[] | select(.command == "occurrence.move"
-              and (.params.occurrence | startswith("GlassStrip")));
-              .params.translate == [0,0,0])) and
+              and (.params.occurrence | startswith("GlassStrip")))] | length) == 0 and
             ([.commands[] | select(.command == "material.create"
               and .params.name == "PINE glazing vertical"
               and .params.color == "#A9793E")] | length) == 1 and

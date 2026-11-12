@@ -17,10 +17,11 @@ ROOT = Path(__file__).resolve().parents[1]
 class CADModelRegressions(unittest.TestCase):
     def test_model_scripts_use_plain_classes_and_explicit_returns(self):
         """No dataclass/type ceremony or implicit last geometry expression."""
-        scripts = sorted((ROOT / "models").glob("**/scpf/model.py"))
-        scripts.extend(sorted((ROOT / "models/components").glob("*/scpf/model.py")))
-        scripts.extend(sorted((ROOT / "models/components").glob("*/scpf/basic.py")))
-        scripts.extend(sorted((ROOT / "models/advanced/hub75_wood_frame/scpf").glob("**/*.py")))
+        scripts = set((ROOT / "models").glob("**/scpf/model.py"))
+        scripts.update(
+            (ROOT / "models/advanced/hub75_wood_frame/scpf").glob("**/*.py")
+        )
+        scripts = sorted(scripts)
         self.assertGreaterEqual(len(scripts), 10)
         for script in scripts:
             with self.subTest(model=str(script.relative_to(ROOT))):

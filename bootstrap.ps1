@@ -11,6 +11,20 @@
 param([string]$CondaExe) # Old optional argument accepted for compatibility.
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
+
+# Keep the project tree clean while running Python from this terminal.
+# SCPF also suppresses bytecode for model-local imports, but remove caches
+# left by earlier runs before that behavior existed.
+$env:PYTHONDONTWRITEBYTECODE = '1'
+foreach ($sourceDir in @('models', 'components', 'examples', 'tests', 'scripts')) {
+    $sourceRoot = Join-Path $root $sourceDir
+    if (-not (Test-Path -LiteralPath $sourceRoot)) { continue }
+    Get-ChildItem -LiteralPath $sourceRoot -Directory -Filter '__pycache__' -Recurse -Force -ErrorAction SilentlyContinue |
+        Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+    Get-ChildItem -LiteralPath $sourceRoot -File -Filter '*.pyc' -Recurse -Force -ErrorAction SilentlyContinue |
+        Remove-Item -Force -ErrorAction SilentlyContinue
+}
+
 $manifest = Join-Path $root 'dependencies.repos'
 $ext = Join-Path $root 'ext'
 if (-not (Test-Path -LiteralPath $manifest -PathType Leaf)) {

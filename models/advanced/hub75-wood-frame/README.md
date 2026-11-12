@@ -33,7 +33,7 @@ class WoodenHub75Box:
     bracket_width = 24.0
 
     glazing_wood_width = 12.0
-    _glazing_wood_depth = 12.0
+    glazing_wood_depth = 12.0
 ```
 
 Change these values at their owning level, **not** the placement coordinates
@@ -51,13 +51,13 @@ The five-panel layout is fixed here: `HUB75Panels` owns
 publishing it as a native parameter would misleadingly suggest that changing
 it in SolidCraft moves the panels.
 
-The same rule currently applies to `_glazing_wood_depth`. That value controls
-the physical retainer depth, but it also determines the Y placement of the
-retainers and plexiglass through occurrence transforms. Forge now warns when a
-public model parameter is used in such a partly associative placement, so the
-leading underscore makes the limitation explicit rather than exposing a
-misleading SolidCraft runtime parameter. `glazing_wood_width` remains fully
-native and editable.
+`glazing_wood_depth` remains a native model parameter. The retainers now
+extrude directly from the Y=0 front datum instead of being centred and moved
+afterwards. The plexiglass receives the semantic front datum
+`front_y=glazing_wood_depth` and is built directly from that native sketch
+plane. Therefore changing `glazing_wood_depth` in SolidCraft updates both the
+retainer depth and the plexiglass Y position without a frozen occurrence
+translation.
 
 Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains
@@ -150,8 +150,9 @@ component definitions, each shared by its pair of occurrences.
 **Do not round the glass retaining strips.** Their ends are mitred,
 not filleted. The R4 rounding belongs to the **roof and bottom boards**.
 
-The retaining strips begin at **Y=0**, aligned flush with the
-sidewalls. They are 12 mm deep and end at Y=12. The glass touches their
+The retaining strips are authored directly from **Y=0**, aligned flush with
+the sidewalls; no Y occurrence translation is required. They are 12 mm deep
+and end at Y=12. The glass touches their
 rear faces and occupies Y=12..16. The glass and its retainers therefore
 stay within the box's front plane, rather than sticking out.
 

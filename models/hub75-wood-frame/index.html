@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">196 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">194 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -29,7 +29,7 @@ from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
 from assemblies.wood_frame import WoodFrame
-from parts.window import GLASS_THICKNESS, Window
+from parts.window import Window
 
 
 class WoodenHub75Box:
@@ -124,8 +124,7 @@ class WoodenHub75Box:
         window = Window(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-        ).move(
-            y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
+            front_y=self.glazing_wood_depth,
         )
 
         return panels + frame + glazing + brackets + window
@@ -889,11 +888,11 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: GlassStrip</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
     &quot;body_name&quot;: &quot;GlassStrip&quot;
   }
 }</code></pre></li>
@@ -918,17 +917,6 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;component.activate&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;GlassStrip:1&quot;,
-    &quot;translate&quot;: [
-      0.0,
-      6.0,
-      0.0
-    ]
   }
 }</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: GlassStrip 2</small><pre><code>{
@@ -980,11 +968,11 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip_2</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: negative, body_name: GlassStrip_2</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;direction&quot;: &quot;negative&quot;,
     &quot;body_name&quot;: &quot;GlassStrip_2&quot;
   }
 }</code></pre></li>
@@ -1009,7 +997,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip 2:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      6.0,
+      0.0,
       0.0
     ],
     &quot;axis&quot;: [
@@ -1069,11 +1057,11 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip_3</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: GlassStrip_3</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
     &quot;body_name&quot;: &quot;GlassStrip_3&quot;
   }
 }</code></pre></li>
@@ -1106,7 +1094,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip 3:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      6.0,
+      0.0,
       0.0
     ],
     &quot;axis&quot;: [
@@ -1166,11 +1154,11 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip_4</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: GlassStrip_4</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
     &quot;body_name&quot;: &quot;GlassStrip_4&quot;
   }
 }</code></pre></li>
@@ -1195,7 +1183,7 @@ WoodenHub75Box()
     &quot;occurrence&quot;: &quot;GlassStrip 4:1&quot;,
     &quot;translate&quot;: [
       0.0,
-      6.0,
+      0.0,
       0.0
     ],
     &quot;axis&quot;: [
@@ -2985,7 +2973,8 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;
+    &quot;name&quot;: &quot;Profile&quot;,
+    &quot;offset&quot;: &quot;glazing_wood_depth&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -3022,11 +3011,11 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: Window</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Window</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: 4.0,
-    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
     &quot;body_name&quot;: &quot;Window&quot;
   }
 }</code></pre></li>
@@ -3051,17 +3040,6 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;component.activate&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Window:1&quot;,
-    &quot;translate&quot;: [
-      0.0,
-      14.0,
-      0.0
-    ]
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

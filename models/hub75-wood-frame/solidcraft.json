@@ -759,7 +759,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "glazing_wood_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "GlassStrip"
       }
     },
@@ -784,17 +784,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip:1",
-        "translate": [
-          0.0,
-          6.0,
-          0.0
-        ]
       }
     },
     {
@@ -850,7 +839,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "glazing_wood_depth",
-        "direction": "symmetric",
+        "direction": "negative",
         "body_name": "GlassStrip_2"
       }
     },
@@ -875,7 +864,7 @@
         "occurrence": "GlassStrip 2:1",
         "translate": [
           0.0,
-          6.0,
+          0.0,
           0.0
         ],
         "axis": [
@@ -939,7 +928,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "glazing_wood_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "GlassStrip_3"
       }
     },
@@ -972,7 +961,7 @@
         "occurrence": "GlassStrip 3:1",
         "translate": [
           0.0,
-          6.0,
+          0.0,
           0.0
         ],
         "axis": [
@@ -1036,7 +1025,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "glazing_wood_depth",
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "GlassStrip_4"
       }
     },
@@ -1061,7 +1050,7 @@
         "occurrence": "GlassStrip 4:1",
         "translate": [
           0.0,
-          6.0,
+          0.0,
           0.0
         ],
         "axis": [
@@ -2851,7 +2840,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "offset": "glazing_wood_depth"
       }
     },
     {
@@ -2892,7 +2882,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": 4.0,
-        "direction": "symmetric",
+        "direction": "positive",
         "body_name": "Window"
       }
     },
@@ -2917,17 +2907,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Window:1",
-        "translate": [
-          0.0,
-          14.0,
-          0.0
-        ]
       }
     }
   ]

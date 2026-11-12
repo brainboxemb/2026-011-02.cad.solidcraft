@@ -3,59 +3,44 @@
 from scpf import Direction, Edges, Polygon2D, component, pv
 
 
-class Board:
-    """One rectangular XZ board extruded from a world-Y datum plane."""
-
-    def __init__(
-        self, width, depth, height, *,
-        x_position=0.0,
-        y_position=0.0,
-        z_position=0.0,
-        corner_radius=0.0,
-        fillet_vertices=(),
-        material_name="LIGHTPLY",
-        density_g_cm3=0.55,
-        color="#CBA36B",
-    ):
-        self.width = width
-        self.depth = depth
-        self.height = height
-        self.x_position = x_position
-        self.y_position = y_position
-        self.z_position = z_position
-        self.corner_radius = corner_radius
-        self.fillet_vertices = tuple(fillet_vertices)
-        self.material_name = material_name
-        self.density_g_cm3 = density_g_cm3
-        self.color = color
-
-    def build(self):
-        half = self.width / 2
-        center = self.width * 0 + self.x_position
-        left = center - half
-        right = center + half
-        bottom = self.z_position
-        top = bottom + self.height
-        profile = Polygon2D([
-            ("lower_left", (left, bottom)),
-            ("lower_right", (right, bottom)),
-            ("upper_right", (right, top)),
-            ("upper_left", (left, top)),
-        ], plane="XZ", world=True).at(y=self.y_position)
-        body = profile.extrude(
-            self.depth,
-            direction=Direction.POSITIVE,
+def _build_board(
+    width, depth, height, *,
+    x_position=0.0,
+    y_position=0.0,
+    z_position=0.0,
+    corner_radius=0.0,
+    fillet_vertices=(),
+    material_name="LIGHTPLY",
+    density_g_cm3=0.55,
+    color="#CBA36B",
+):
+    """Build one rectangular XZ board from a world-Y datum plane."""
+    half = width / 2
+    center = width * 0 + x_position
+    left = center - half
+    right = center + half
+    bottom = z_position
+    top = bottom + height
+    profile = Polygon2D([
+        ("lower_left", (left, bottom)),
+        ("lower_right", (right, bottom)),
+        ("upper_right", (right, top)),
+        ("upper_left", (left, top)),
+    ], plane="XZ", world=True).at(y=y_position)
+    body = profile.extrude(
+        depth,
+        direction=Direction.POSITIVE,
+    )
+    if fillet_vertices and pv(corner_radius) > 0:
+        body = body.fillet(
+            corner_radius,
+            edges=Edges.from_vertices(*fillet_vertices),
         )
-        if self.fillet_vertices and pv(self.corner_radius) > 0:
-            body = body.fillet(
-                self.corner_radius,
-                edges=Edges.from_vertices(*self.fillet_vertices),
-            )
-        return body.with_material(
-            self.material_name,
-            density_g_cm3=self.density_g_cm3,
-            color=self.color,
-        )
+    return body.with_material(
+        material_name,
+        density_g_cm3=density_g_cm3,
+        color=color,
+    )
 
 
 class SideBoard:
@@ -67,7 +52,7 @@ class SideBoard:
     z_position = 0.0
 
     def build(self):
-        return Board(
+        return _build_board(
             width=self.thickness,
             depth=self.depth,
             height=self.height,
@@ -75,7 +60,7 @@ class SideBoard:
             y_position=self.y_position,
             z_position=self.z_position,
             material_name="LIGHTPLY side board",
-        ).build()
+        )
 
 
 @component
@@ -97,7 +82,7 @@ class BottomBoard:
     corner_radius = 4.0
 
     def build(self):
-        return Board(
+        return _build_board(
             width=self.width,
             depth=self.depth,
             height=self.thickness,
@@ -105,7 +90,7 @@ class BottomBoard:
             corner_radius=self.corner_radius,
             fillet_vertices=("lower_left", "lower_right"),
             material_name="LIGHTPLY bottom",
-        ).build()
+        )
 
 
 @component
@@ -118,7 +103,7 @@ class RoofBoard:
     corner_radius = 4.0
 
     def build(self):
-        return Board(
+        return _build_board(
             width=self.width,
             depth=self.depth,
             height=self.thickness,
@@ -127,7 +112,7 @@ class RoofBoard:
             corner_radius=self.corner_radius,
             fillet_vertices=("upper_left", "upper_right"),
             material_name="LIGHTPLY roof",
-        ).build()
+        )
 
 
 @component
@@ -138,11 +123,11 @@ class BackBoard:
     y_position = 100.0
 
     def build(self):
-        return Board(
+        return _build_board(
             width=self.width,
             depth=self.thickness,
             height=self.height,
             y_position=self.y_position,
             material_name="LIGHTPLY rear",
             color="#A87D4D",
-        ).build()
+        )

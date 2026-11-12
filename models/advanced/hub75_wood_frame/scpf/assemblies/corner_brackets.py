@@ -1,6 +1,6 @@
 """Eight corner brackets attached to an existing WoodFrame assembly."""
 
-from scpf import Anchor, component
+from scpf import Anchor, assembly, component
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -8,34 +8,33 @@ from models.components.corner_bracket.scpf.model import CornerBracket
 Bracket = component(CornerBracket)
 
 
+@assembly
 class CornerBrackets:
     """Construct the bracket assembly from an existing wood frame."""
 
-    def __new__(
-        cls,
-        *,
-        wood_frame,
-        bracket_width,
-        corner_radius,
-        roof_front_overhang,
-        roof_rear_overhang,
-        panel_wood_thickness,
-    ):
-        roof = cls._part(wood_frame, "RoofBoard")
-        bottom = cls._part(wood_frame, "BottomBoard")
+    wood_frame = None
+    bracket_width = 24.0
+    corner_radius = 4.0
+    roof_front_overhang = 10.0
+    roof_rear_overhang = 1.0
+    panel_wood_thickness = 9.0
+
+    def build(self):
+        roof = self._part(self.wood_frame, "RoofBoard")
+        bottom = self._part(self.wood_frame, "BottomBoard")
 
         bracket = Bracket(
-            bracket_width=bracket_width,
-            inside_corner_radius=corner_radius,
+            bracket_width=self.bracket_width,
+            inside_corner_radius=self.corner_radius,
         )
 
         # X and Z come from the actual board corners. The remaining Y offset
         # places the symmetric bracket body inside the cabinet depth.
-        half = bracket_width / 2
+        half = self.bracket_width / 2
         bottom_gap = -half
-        roof_front_gap = -(roof_front_overhang + half)
+        roof_front_gap = -(self.roof_front_overhang + half)
         roof_rear_gap = -(
-            panel_wood_thickness + roof_rear_overhang + half
+            self.panel_wood_thickness + self.roof_rear_overhang + half
         )
 
         def attached(parent, parent_anchor, child_anchor, gap):
@@ -109,6 +108,9 @@ class CornerBrackets:
 
     @staticmethod
     def _part(wood_frame, class_name):
+        if wood_frame is None:
+            raise ValueError("CornerBrackets requires wood_frame")
+
         matches = [
             instance
             for instance in wood_frame.instances

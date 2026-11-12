@@ -10,92 +10,84 @@ Bracket = component(CornerBracket)
 
 @assembly
 class CornerBrackets:
-    """Construct the bracket assembly from an existing wood frame."""
+    """Attach brackets to the four inside corners of the side boards."""
 
     wood_frame = None
     bracket_width = 24.0
     corner_radius = 4.0
-    roof_front_overhang = 10.0
-    roof_rear_overhang = 1.0
-    panel_wood_thickness = 9.0
 
     def build(self):
         if self.wood_frame is None:
             raise ValueError("CornerBrackets requires wood_frame")
 
-        roof = self.wood_frame.roof
-        bottom = self.wood_frame.bottom
+        left = self.wood_frame.left
+        right = self.wood_frame.right
 
         bracket = Bracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )
 
-        # X and Z come from the actual board corners. The remaining Y offset
-        # places the symmetric bracket body inside the cabinet depth.
-        half = self.bracket_width / 2
-        bottom_gap = -half
-        roof_front_gap = -(self.roof_front_overhang + half)
-        roof_rear_gap = -(
-            self.panel_wood_thickness + self.roof_rear_overhang + half
-        )
+        # The side-board corners define X and Z. The front/rear faces define Y;
+        # half the bracket width moves each symmetric bracket fully inside.
+        gap = -(self.bracket_width / 2)
 
         top_left_front = bracket.copy().attach(
-            roof,
-            parent=Anchor.FRONT_TOP_LEFT,
-            child="front_mount",
-            gap=roof_front_gap,
-            angle=0,
-        )
-        top_right_front = bracket.copy().attach(
-            roof,
+            left,
             parent=Anchor.FRONT_TOP_RIGHT,
             child="front_mount",
-            gap=roof_front_gap,
-            angle=90,
+            gap=gap,
+            angle=180,
+        )
+        top_right_front = bracket.copy().attach(
+            right,
+            parent=Anchor.FRONT_TOP_LEFT,
+            child="front_mount",
+            gap=gap,
+            angle=0,
         )
         bottom_right_front = bracket.copy().attach(
-            bottom,
-            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            right,
+            parent=Anchor.FRONT_BOTTOM_LEFT,
             child="front_mount",
-            gap=bottom_gap,
+            gap=gap,
             angle=180,
         )
         bottom_left_front = bracket.copy().attach(
-            bottom,
-            parent=Anchor.FRONT_BOTTOM_LEFT,
+            left,
+            parent=Anchor.FRONT_BOTTOM_RIGHT,
             child="front_mount",
-            gap=bottom_gap,
-            angle=270,
+            gap=gap,
+            angle=0,
         )
 
         top_left_rear = bracket.copy().attach(
-            roof,
-            parent=Anchor.BACK_TOP_LEFT,
-            child="rear_mount",
-            gap=roof_rear_gap,
-            angle=0,
-        )
-        top_right_rear = bracket.copy().attach(
-            roof,
+            left,
             parent=Anchor.BACK_TOP_RIGHT,
             child="rear_mount",
-            gap=roof_rear_gap,
+            gap=gap,
+            angle=270,
+        )
+        top_right_rear = bracket.copy().attach(
+            right,
+            parent=Anchor.BACK_TOP_LEFT,
+            child="rear_mount",
+            gap=gap,
             angle=90,
         )
         bottom_right_rear = bracket.copy().attach(
-            bottom,
-            parent=Anchor.BACK_BOTTOM_RIGHT,
-            child="rear_mount",
-            gap=bottom_gap,
-            angle=180,
-        )
-        bottom_left_rear = bracket.copy().attach(
-            bottom,
+            right,
             parent=Anchor.BACK_BOTTOM_LEFT,
             child="rear_mount",
-            gap=bottom_gap,
+            gap=gap,
             angle=270,
+        )
+        bottom_left_rear = bracket.copy().attach(
+            left,
+            parent=Anchor.BACK_BOTTOM_RIGHT,
+            child="rear_mount",
+            gap=gap,
+            angle=90,
         )
 
         return (

@@ -1,6 +1,6 @@
-"""Eight placements of one reusable printed corner bracket."""
+"""Eight corner brackets attached to an existing WoodFrame assembly."""
 
-from scpf import assembly, component, pv
+from scpf import Anchor, assembly, component
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -10,47 +10,85 @@ Bracket = component(CornerBracket)
 
 @assembly
 class CornerBrackets:
-    opening_width = 844.0
-    opening_height = 362.0
-    frame_wood_thickness = 12.0
-    cabinet_depth = 100.0
+    """Attach brackets to the four inside corners of the side boards."""
+
+    wood_frame = None
     bracket_width = 24.0
     corner_radius = 4.0
 
     def build(self):
-        outer_width = self.opening_width + 2 * self.frame_wood_thickness
-        outer_half = outer_width / 2
-        top_z = self.opening_height + 2 * self.frame_wood_thickness
+        if self.wood_frame is None:
+            raise ValueError("CornerBrackets requires wood_frame")
 
-        bracket_half = self.bracket_width / 2
-        front_y = bracket_half
-        rear_y = self.cabinet_depth - bracket_half
+        left = self.wood_frame.left
+        right = self.wood_frame.right
 
-        # CornerBracket is modelled once in its neutral top-left orientation.
-        # Seen from the front, the four cabinet corners are just quarter-turns
-        # around Y: 0, 90, 180 and 270 degrees.
         bracket = Bracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )
 
-        def place(x, y, z, angle):
-            occurrence = bracket.copy()
-            if angle:
-                occurrence = occurrence.rotate("Y", angle)
-            return occurrence.move(x=pv(x), y=pv(y), z=pv(z))
+        # The side-board corners define X and Z. The front/rear faces define Y;
+        # half the bracket width moves each symmetric bracket fully inside.
+        gap = -(self.bracket_width / 2)
 
-        top_left_front = place(-outer_half, front_y, top_z, 0)
-        top_left_rear = place(-outer_half, rear_y, top_z, 0)
+        top_left_front = bracket.copy().attach(
+            left,
+            parent=Anchor.FRONT_TOP_RIGHT,
+            child="front_mount",
+            gap=gap,
+            angle=180,
+        )
+        top_right_front = bracket.copy().attach(
+            right,
+            parent=Anchor.FRONT_TOP_LEFT,
+            child="front_mount",
+            gap=gap,
+            angle=0,
+        )
+        bottom_right_front = bracket.copy().attach(
+            right,
+            parent=Anchor.FRONT_BOTTOM_LEFT,
+            child="front_mount",
+            gap=gap,
+            angle=180,
+        )
+        bottom_left_front = bracket.copy().attach(
+            left,
+            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            child="front_mount",
+            gap=gap,
+            angle=0,
+        )
 
-        top_right_front = place(outer_half, front_y, top_z, 90)
-        top_right_rear = place(outer_half, rear_y, top_z, 90)
-
-        bottom_right_front = place(outer_half, front_y, 0, 180)
-        bottom_right_rear = place(outer_half, rear_y, 0, 180)
-
-        bottom_left_front = place(-outer_half, front_y, 0, 270)
-        bottom_left_rear = place(-outer_half, rear_y, 0, 270)
+        top_left_rear = bracket.copy().attach(
+            left,
+            parent=Anchor.BACK_TOP_RIGHT,
+            child="rear_mount",
+            gap=gap,
+            angle=270,
+        )
+        top_right_rear = bracket.copy().attach(
+            right,
+            parent=Anchor.BACK_TOP_LEFT,
+            child="rear_mount",
+            gap=gap,
+            angle=90,
+        )
+        bottom_right_rear = bracket.copy().attach(
+            right,
+            parent=Anchor.BACK_BOTTOM_LEFT,
+            child="rear_mount",
+            gap=gap,
+            angle=270,
+        )
+        bottom_left_rear = bracket.copy().attach(
+            left,
+            parent=Anchor.BACK_BOTTOM_RIGHT,
+            child="rear_mount",
+            gap=gap,
+            angle=90,
+        )
 
         return (
             top_left_front

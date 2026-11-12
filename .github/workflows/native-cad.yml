@@ -158,19 +158,20 @@ jobs:
             ([.commands[] | select(.command == "solid.fillet")] | length) == 1 and
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
-          # All eight brackets keep their X/Y/Z datum relationships in
-          # native symbolic geometry. No bracket placement may be frozen into
-          # occurrence copies or moves.
+          # One reusable CornerBracket definition is attached eight times
+          # to the named roof/bottom Board corner references. Initial occurrence
+          # moves only seed the solver; the native rigid joints own the relation.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"
-               and (.params.name == "CornerBracket"
-                    or (.params.name | startswith("CornerBracket "))))] | length) == 8 and
+               and .params.name == "CornerBracket")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy"
-               and (.params.component | startswith("CornerBracket")))] | length) == 0 and
-            ([.commands[] | select(.command == "occurrence.move"
-               and (.params.occurrence | startswith("CornerBracket")))] | length) == 0 and
-            ([.commands[] | select(.command == "solid.fillet")] | length) == 10
+               and .params.component == "CornerBracket")] | length) == 7 and
+            ([.commands[] | select(.command == "joint.create"
+               and (.params.name | startswith("Attach CornerBracket:")))] | length) == 8 and
+            ([.commands[] | select(.command == "joint.origin"
+               and (.params.name | startswith("CornerBracket:")))] | length) == 16 and
+            ([.commands[] | select(.command == "solid.fillet")] | length) == 3
           ' output/native/hub75-wood-frame/commands.json
           # Four native groups and five lightweight panels; no additional
           # duplicate component definitions from the removed modules.
@@ -193,11 +194,7 @@ jobs:
             ([.commands[] | select(.command == "occurrence.copy"
               and (.params.component | startswith("GlassStrip")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
-              and ((.params.occurrence | startswith("LeftBoard"))
-                or (.params.occurrence | startswith("RightBoard"))
-                or (.params.occurrence | startswith("BottomBoard"))
-                or (.params.occurrence | startswith("RoofBoard"))
-                or (.params.occurrence | startswith("BackBoard"))))] | length) == 0 and
+              and (.params.occurrence | startswith("Board")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
               and (.params.occurrence | startswith("GlassStrip"))
               and .params.translate[2] != 0)] | length) == 0 and
@@ -230,12 +227,12 @@ jobs:
             (all(.bodies[] | select(.name | startswith("GlassStrip"));
               ((.bbox.min[1] - 0) | fabs) < 0.001 and
               ((.bbox.max[1] - 12) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("RoofBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[1] + 10) | fabs) < 0.001 and
               ((.bbox.max[1] - 110) | fabs) < 0.001 and
               ((.bbox.min[2] - 374) | fabs) < 0.001 and
               ((.bbox.max[2] - 386) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("BackBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[1] - 100) | fabs) < 0.001 and
               ((.bbox.max[1] - 109) | fabs) < 0.001)) and
             (all(.bodies[] | select(.name | startswith("Window"));
@@ -267,12 +264,12 @@ jobs:
             --json-out output/native/hub75-wood-frame/measurements-height-400.json
           jq -e '
             # Roof follows the new opening top.
-            (all(.bodies[] | select(.name | startswith("RoofBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[2] - 412) | fabs) < 0.001 and
               ((.bbox.max[2] - 424) | fabs) < 0.001)) and
 
             # Backboard follows the complete outside height to the roof plane.
-            (all(.bodies[] | select(.name | startswith("BackBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[2] - 0) | fabs) < 0.001 and
               ((.bbox.max[2] - 412) | fabs) < 0.001)) and
 
@@ -300,13 +297,14 @@ jobs:
               ((.bbox.min[2] - 52.145) | fabs) < 0.001 and
               ((.bbox.max[2] - 371.855) | fabs) < 0.001)) and
 
-            # Four top brackets move with the roof; four bottom brackets stay.
+            # Four top brackets follow the side-board top inside corners;
+            # four bottom brackets follow their bottom inside corners.
             ([.bodies[] | select((.name | startswith("CornerBracket"))
-              and ((.bbox.min[2] - 364) | fabs) < 0.001
-              and ((.bbox.max[2] - 436) | fabs) < 0.001)] | length) == 4 and
+              and ((.bbox.min[2] - 352) | fabs) < 0.001
+              and ((.bbox.max[2] - 424) | fabs) < 0.001)] | length) == 4 and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
-              and ((.bbox.min[2] + 12) | fabs) < 0.001
-              and ((.bbox.max[2] - 60) | fabs) < 0.001)] | length) == 4
+              and ((.bbox.min[2] - 0) | fabs) < 0.001
+              and ((.bbox.max[2] - 72) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-height-400.json
 
           # Parameter-edit regression: change opening_width in the SAVED
@@ -326,18 +324,18 @@ jobs:
             --json-out output/native/hub75-wood-frame/measurements-width-1000.json
           jq -e '
             # Side boards follow the new opening edges.
-            (all(.bodies[] | select(.name | startswith("LeftBoard"));
+            (all(.bodies[] | select(.name == "Board");
               ((.bbox.min[0] + 512) | fabs) < 0.001 and
               ((.bbox.max[0] + 500) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("RightBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_2"));
               ((.bbox.min[0] - 500) | fabs) < 0.001 and
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
 
             # Bottom, roof and rear panel span the full 1024 mm outside width.
             (all(.bodies[] | select(
-                (.name | startswith("BottomBoard"))
-                or (.name | startswith("RoofBoard"))
-                or (.name | startswith("BackBoard"))
+                (.name | startswith("Board_3"))
+                or (.name | startswith("Board_4"))
+                or (.name | startswith("Board_5"))
               );
               ((.bbox.min[0] + 512) | fabs) < 0.001 and
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
@@ -358,13 +356,14 @@ jobs:
               and (((.bbox.max[0] - .bbox.min[0]) - 1000) | fabs) < 0.001)]
               | length) == 2 and
 
-            # Four brackets follow each outside edge of the wider frame.
+            # Brackets follow the side-board inside corners and finish at
+            # the same outside X planes as the wooden frame.
             ([.bodies[] | select((.name | startswith("CornerBracket"))
               and .bbox.max[0] < 0
-              and ((.bbox.min[0] + 524) | fabs) < 0.001)] | length) == 4 and
+              and ((.bbox.min[0] + 512) | fabs) < 0.001)] | length) == 4 and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
               and .bbox.min[0] > 0
-              and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
+              and ((.bbox.max[0] - 512) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-width-1000.json
 
           # Panel recess is a native sketch-plane datum, not an occurrence
@@ -463,16 +462,16 @@ jobs:
             --json-out output/native/hub75-wood-frame/measurements-depth-120.json
           jq -e '
             (all(.bodies[] | select(
-                (.name | startswith("LeftBoard"))
-                or (.name | startswith("RightBoard"))
-                or (.name | startswith("BottomBoard"))
+                (.name == "Board")
+                or (.name | startswith("Board_2"))
+                or (.name | startswith("Board_3"))
               );
               ((.bbox.min[1] - 0) | fabs) < 0.001 and
               ((.bbox.max[1] - 120) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("BackBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[1] - 120) | fabs) < 0.001 and
               ((.bbox.max[1] - 129) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("RoofBoard"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[1] + 10) | fabs) < 0.001 and
               ((.bbox.max[1] - 130) | fabs) < 0.001)) and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
@@ -495,7 +494,7 @@ jobs:
                and .bbox.min[1] > 50);
                ((.bbox.min[1] - 76) | fabs) < 0.001 and
                ((.bbox.max[1] - 100) | fabs) < 0.001)) and
-            (all(.bodies[] | select((.name | startswith("BackBoard")));
+            (all(.bodies[] | select((.name | startswith("Board_5")));
                ((.bbox.min[1] - 100) | fabs) < 0.001 and
                ((.bbox.max[1] - 109) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json

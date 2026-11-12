@@ -19,6 +19,14 @@ ASSEMBLIES = SCPF_DIR / "assemblies"
 GLASS_FRAME = ASSEMBLIES / "glass_frame.py"
 HUB75_PANELS = ASSEMBLIES / "hub75_panels.py"
 
+BOARD_COMPONENTS = {
+    "left": "Board",
+    "right": "Board 2",
+    "bottom": "Board 3",
+    "roof": "Board 4",
+    "rear": "Board 5",
+}
+
 
 def commands(**overrides):
     if not overrides:
@@ -93,17 +101,14 @@ class WoodenFrameTests(unittest.TestCase):
             ).body
             if isinstance(obj, ast.ClassDef)
         ]
-        self.assertEqual(
-            board_classes,
-            ["SideBoard", "LeftBoard", "RightBoard", "BottomBoard", "RoofBoard", "BackBoard"],
-        )
+        self.assertEqual(board_classes, ["Board"])
         board_functions = [
             obj.name for obj in ast.parse(
                 BOARD.read_text(encoding="utf-8")
             ).body
             if isinstance(obj, ast.FunctionDef)
         ]
-        self.assertIn("_build_board", board_functions)
+        self.assertEqual(board_functions, [])
 
         glass_classes = [
             obj.name for obj in ast.parse(
@@ -248,16 +253,15 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
-        self.assertIn("half = width / 2", source)
-        self.assertNotIn("pv(width)", source)
-        self.assertNotIn("pv(height)", source)
+        self.assertIn("half = self.width / 2", source)
+        self.assertNotIn("pv(self.width)", source)
+        self.assertNotIn("pv(self.height)", source)
         self.assertIn("Edges.from_vertices", source)
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
         self.assertIn("corner_radius", parameter_names)
-        self.assertNotIn("BottomBoard_corner_radius", parameter_names)
-        self.assertNotIn("RoofBoard_corner_radius", parameter_names)
+        self.assertFalse(any(name.startswith("Board") for name in parameter_names))
 
         radii = [
             params["radius"]
@@ -276,11 +280,11 @@ class WoodenFrameTests(unittest.TestCase):
             "WoodGlassFrame",
             "CornerBrackets",
             "Hub75PanelBasic",
-            "LeftBoard",
-            "RightBoard",
-            "BottomBoard",
-            "RoofBoard",
-            "BackBoard",
+            "Board",
+            "Board 2",
+            "Board 3",
+            "Board 4",
+            "Board 5",
             "Window",
             "GlassStrip",
             "GlassStrip 2",
@@ -324,9 +328,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         # Wood placement is part of the native sketch geometry. It must not
         # be frozen into occurrence translations.
-        for name in (
-            "LeftBoard", "RightBoard", "BottomBoard", "RoofBoard", "BackBoard"
-        ):
+        for name in BOARD_COMPONENTS.values():
             self.assertEqual(moved(cmd, name), [])
 
         self.assertEqual(moved(cmd, "Window"), [])
@@ -450,11 +452,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         for prefix in (
             "CornerBracket_",
-            "LeftBoard_",
-            "RightBoard_",
-            "BottomBoard_",
-            "RoofBoard_",
-            "BackBoard_",
+            "Board_",
             "GlassStrip_",
             "Hub75PanelBasic_",
         ):
@@ -464,6 +462,29 @@ class WoodenFrameTests(unittest.TestCase):
             )
 
         self.assertIn("corner_radius", parameter_names)
+
+    def test_side_boards_are_connected_to_bottom_board(self):
+        source = (
+            ASSEMBLIES / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+        self.assertEqual(source.count("as_built=True"), 2)
+        self.assertNotIn("Anchor.", source)
+
+        cmd = commands()
+        frame_joints = [
+            p for p in of(cmd, "joint.as_built")
+            if p["name"].startswith("Attach Board")
+        ]
+        self.assertEqual(len(frame_joints), 2)
+        self.assertTrue(all(p["type"] == "rigid" for p in frame_joints))
+        self.assertEqual(
+            {p["a"] for p in frame_joints},
+            {"Board 3:1"},
+        )
+        self.assertEqual(
+            {p["b"] for p in frame_joints},
+            {"Board:1", "Board 2:1"},
+        )
 
     def test_corner_bracket_is_neutral_and_assembly_owns_placement(self):
         source = (
@@ -483,9 +504,19 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertNotIn(name, source)
 
-        self.assertIn('rotate("Y", angle)', assembly_source)
-        for angle in ("0)", "90)", "180)", "270)"):
-            self.assertIn(angle, assembly_source)
+        self.assertIn("@assembly", assembly_source)
+        self.assertIn("class CornerBrackets:", assembly_source)
+        self.assertIn("wood_frame = None", assembly_source)
+        self.assertIn("def build(self):", assembly_source)
+        self.assertNotIn("def __new__", assembly_source)
+        self.assertNotIn("attach_corner_brackets", assembly_source)
+        self.assertNotIn(".move(", assembly_source)
+        self.assertNotIn(".rotate(", assembly_source)
+        self.assertNotIn("opening_width", assembly_source)
+        self.assertNotIn("opening_height", assembly_source)
+        self.assertIn(".attach(", assembly_source)
+        self.assertIn("Anchor.FRONT_TOP_LEFT", assembly_source)
+        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", assembly_source)
 
         cmd = commands()
         creates = [
@@ -501,17 +532,12 @@ class WoodenFrameTests(unittest.TestCase):
             7,
         )
 
-        moves = moved(cmd, "CornerBracket")
-        self.assertEqual(len(moves), 8)
-        rotations = sorted(
-            p.get("angle", "0 deg")
-            for p in moves
-        )
-        self.assertEqual(
-            rotations,
-            ["0 deg", "0 deg", "90 deg", "90 deg",
-             "180 deg", "180 deg", "270 deg", "270 deg"],
-        )
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
+        self.assertTrue(all(p["type"] == "rigid" for p in joints))
 
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
@@ -539,11 +565,22 @@ class WoodenFrameTests(unittest.TestCase):
             7,
         )
 
-        moves = moved(cmd, "CornerBracket")
-        self.assertEqual(len(moves), 8)
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sorted(p["translate"][1] for p in moves),
-            [12.0, 12.0, 12.0, 12.0, 88.0, 88.0, 88.0, 88.0],
+            sum("front_mount" in str(p["b"]) for p in joints),
+            4,
+        )
+        self.assertEqual(
+            sum("rear_mount" in str(p["b"]) for p in joints),
+            4,
+        )
+        self.assertEqual(
+            sorted(p["angle"] for p in joints),
+            [0, 0, 90, 90, 180, 180, 270, 270],
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)
@@ -552,12 +589,12 @@ class WoodenFrameTests(unittest.TestCase):
     def test_roof_z_is_symbolic_geometry_not_fixed_occurrence_move(self):
         cmd = commands(opening_height=400)
 
-        self.assertEqual(moved(cmd, "RoofBoard"), [])
+        self.assertEqual(moved(cmd, BOARD_COMPONENTS["roof"]), [])
 
         create_index = next(
             i for i, command in enumerate(cmd)
             if command["command"] == "component.create"
-            and command["params"]["name"] == "RoofBoard"
+            and command["params"]["name"] == BOARD_COMPONENTS["roof"]
         )
         activate_index = next(
             i for i in range(create_index + 1, len(cmd))
@@ -572,7 +609,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         points = str(roof_profile["points"])
         self.assertIn("opening_height", points)
-        self.assertNotIn("RoofBoard_z_position", points)
+        self.assertNotIn("Board_4_z_position", points)
 
     def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)
@@ -602,10 +639,13 @@ class WoodenFrameTests(unittest.TestCase):
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)
 
-        bracket_moves = moved(cmd, "CornerBracket")
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
         self.assertEqual(
-            sorted(p["translate"][2] for p in bracket_moves),
-            [0.0, 0.0, 0.0, 0.0, 424.0, 424.0, 424.0, 424.0],
+            sorted(p["a"]["corner"][2] for p in joints),
+            [12.0, 12.0, 12.0, 12.0, 412.0, 412.0, 412.0, 412.0],
         )
 
         points = " ".join(
@@ -631,14 +671,17 @@ class WoodenFrameTests(unittest.TestCase):
     def test_opening_width_drives_sideboards_and_brackets_symbolically(self):
         cmd = commands(opening_width=1000)
 
-        self.assertEqual(moved(cmd, "LeftBoard"), [])
-        self.assertEqual(moved(cmd, "RightBoard"), [])
+        self.assertEqual(moved(cmd, BOARD_COMPONENTS["left"]), [])
+        self.assertEqual(moved(cmd, BOARD_COMPONENTS["right"]), [])
 
-        bracket_moves = moved(cmd, "CornerBracket")
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
         self.assertEqual(
-            sorted(p["translate"][0] for p in bracket_moves),
-            [-512.0, -512.0, -512.0, -512.0,
-             512.0, 512.0, 512.0, 512.0],
+            sorted(p["a"]["corner"][0] for p in joints),
+            [-500.0, -500.0, -500.0, -500.0,
+             500.0, 500.0, 500.0, 500.0],
         )
 
         points = " ".join(
@@ -649,11 +692,11 @@ class WoodenFrameTests(unittest.TestCase):
     def test_cabinet_depth_uses_front_datum_and_moves_rear_symbolically(self):
         cmd = commands(cabinet_depth=120)
 
-        for name in ("LeftBoard", "RightBoard", "BottomBoard", "BackBoard", "RoofBoard"):
+        for name in BOARD_COMPONENTS.values():
             self.assertEqual(moved(cmd, name), [])
 
-        for name in ("LeftBoard", "RightBoard", "BottomBoard"):
-            part = component_commands(cmd, name)
+        for role in ("left", "right", "bottom"):
+            part = component_commands(cmd, BOARD_COMPONENTS[role])
             sketch = next(
                 item["params"] for item in part
                 if item["command"] == "sketch.create"
@@ -666,14 +709,14 @@ class WoodenFrameTests(unittest.TestCase):
             self.assertEqual(extrusion["direction"], "positive")
             self.assertEqual(extrusion["distance"], "cabinet_depth")
 
-        back = component_commands(cmd, "BackBoard")
+        back = component_commands(cmd, BOARD_COMPONENTS["rear"])
         back_sketch = next(
             item["params"] for item in back
             if item["command"] == "sketch.create"
         )
         self.assertEqual(back_sketch["offset"], "cabinet_depth")
 
-        roof = component_commands(cmd, "RoofBoard")
+        roof = component_commands(cmd, BOARD_COMPONENTS["roof"])
         roof_sketch = next(
             item["params"] for item in roof
             if item["command"] == "sketch.create"
@@ -691,25 +734,29 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertIn(parameter, str(roof_extrusion["distance"]))
 
-        bracket_moves = moved(cmd, "CornerBracket")
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sorted(p["translate"][1] for p in bracket_moves),
-            [12.0, 12.0, 12.0, 12.0, 108.0, 108.0, 108.0, 108.0],
+            sum("rear_mount" in str(p["b"]) for p in joints),
+            4,
+        )
+        self.assertTrue(
+            all("corner" in p["a"] and "edge" in p["a"] for p in joints)
         )
 
     def test_parameter_override_changes_all_dependents(self):
         cmd = commands(opening_width=850, frame_wood_thickness=13)
 
-        self.assertEqual(moved(cmd, "LeftBoard"), [])
-        self.assertEqual(moved(cmd, "RightBoard"), [])
-        self.assertEqual(moved(cmd, "BottomBoard"), [])
-        self.assertEqual(moved(cmd, "RoofBoard"), [])
-        bracket_moves = moved(cmd, "CornerBracket")
-        self.assertEqual(
-            sorted(p["translate"][0] for p in bracket_moves),
-            [-438.0, -438.0, -438.0, -438.0,
-             438.0, 438.0, 438.0, 438.0],
-        )
+        for role in ("left", "right", "bottom", "roof"):
+            self.assertEqual(moved(cmd, BOARD_COMPONENTS[role]), [])
+        joints = [
+            p for p in of(cmd, "joint.create")
+            if p["name"].startswith("Attach CornerBracket:")
+        ]
+        self.assertEqual(len(joints), 8)
         sketch_points = " ".join(
             str(p["points"]) for p in of(cmd, "sketch.line")
         )
@@ -717,10 +764,7 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_all_copies_created_before_native_placements(self):
         cmd = commands()
-        for name in (
-            "Hub75PanelBasic",
-            "CornerBracket",
-        ):
+        for name in ("Hub75PanelBasic",):
             copy_idx = [
                 i for i, command in enumerate(cmd)
                 if command["command"] == "occurrence.copy"

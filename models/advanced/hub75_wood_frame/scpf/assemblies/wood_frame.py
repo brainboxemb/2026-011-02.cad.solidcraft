@@ -2,7 +2,7 @@
 
 from scpf import assembly
 
-from parts.board import BackBoard, BottomBoard, LeftBoard, RightBoard, RoofBoard
+from parts.board import Board
 
 
 @assembly
@@ -17,54 +17,80 @@ class WoodFrame:
     corner_radius = 4.0
 
     def build(self):
-        rear = self.cabinet_depth
-        back_outer = rear + self.panel_wood_thickness
+        rear_y = self.cabinet_depth
+        back_outer = rear_y + self.panel_wood_thickness
         roof_front = -self.roof_front_overhang
         roof_rear = back_outer + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         opening_bottom = self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
 
-        left = LeftBoard(
-            thickness=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
-            height=self.opening_height,
-            x_position=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
-            y_position=0.0,
-            z_position=opening_bottom,
-        )
-        right = RightBoard(
-            thickness=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
-            height=self.opening_height,
-            x_position=self.opening_width / 2 + self.frame_wood_thickness / 2,
-            y_position=0.0,
-            z_position=opening_bottom,
-        )
-        sides = left + right
-
-        bottom = BottomBoard(
+        bottom = Board(
+            name="bottom",
             width=outer_width,
             depth=self.cabinet_depth,
-            thickness=self.frame_wood_thickness,
+            height=self.frame_wood_thickness,
             y_position=0.0,
             corner_radius=self.corner_radius,
-        )
+            fillet="bottom",
+            material_name="LIGHTPLY bottom",
+        ).group("WoodBoxFrame")
 
-        roof = RoofBoard(
+        left = Board(
+            name="left",
+            width=self.frame_wood_thickness,
+            depth=self.cabinet_depth,
+            height=self.opening_height,
+            x_position=-(
+                self.opening_width / 2
+                + self.frame_wood_thickness / 2
+            ),
+            y_position=0.0,
+            z_position=opening_bottom,
+            material_name="LIGHTPLY side board",
+        ).attach(
+            bottom,
+            as_built=True,
+        ).group("WoodBoxFrame")
+
+        right = Board(
+            name="right",
+            width=self.frame_wood_thickness,
+            depth=self.cabinet_depth,
+            height=self.opening_height,
+            x_position=(
+                self.opening_width / 2
+                + self.frame_wood_thickness / 2
+            ),
+            y_position=0.0,
+            z_position=opening_bottom,
+            material_name="LIGHTPLY side board",
+        ).attach(
+            bottom,
+            as_built=True,
+        ).group("WoodBoxFrame")
+
+
+        roof = Board(
+            name="roof",
             width=outer_width,
             depth=roof_rear - roof_front,
-            thickness=self.frame_wood_thickness,
+            height=self.frame_wood_thickness,
             y_position=roof_front,
             z_position=opening_top,
             corner_radius=self.corner_radius,
-        )
+            fillet="top",
+            material_name="LIGHTPLY roof",
+        ).group("WoodBoxFrame")
 
-        rear_board = BackBoard(
+        rear = Board(
+            name="rear",
             width=outer_width,
+            depth=self.panel_wood_thickness,
             height=opening_top,
-            thickness=self.panel_wood_thickness,
-            y_position=rear,
-        )
+            y_position=rear_y,
+            material_name="LIGHTPLY rear",
+            color="#A87D4D",
+        ).group("WoodBoxFrame")
 
-        return (sides + bottom + roof + rear_board).group("WoodBoxFrame")
+        return left + right + bottom + roof + rear

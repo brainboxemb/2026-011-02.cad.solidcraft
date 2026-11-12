@@ -366,13 +366,28 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertIn("panel_recess_depth", str(sketch["offset"]))
 
-    def test_glass_frame_uses_named_axis_rotation(self):
+    def test_glass_frame_uses_private_native_placement_not_occurrence_rotation(self):
         source = GLASS_FRAME.read_text(encoding="utf-8")
-        self.assertIn("rotate(X, 180)", source)
-        self.assertIn("rotate(Y, 90)", source)
-        self.assertIn("rotate(Y, -90)", source)
-        self.assertNotIn("axis=(1, 0, 0)", source)
-        self.assertNotIn("axis=(0, 1, 0)", source)
+        strip_source = GLASS_STRIP.read_text(encoding="utf-8")
+
+        self.assertNotIn(".rotate(", source)
+        for old_name in ("length_center", "width_base", "depth_sign"):
+            self.assertNotIn(old_name, source)
+            self.assertNotIn(old_name, strip_source)
+
+        for name in (
+            "_x_position",
+            "_z_position",
+            "_vertical",
+            "_width_sign",
+        ):
+            self.assertIn(name + "=", source)
+            self.assertIn(name + " =", strip_source)
+
+        self.assertIn("placed(start, 0)", strip_source)
+        self.assertIn("placed(end, 0)", strip_source)
+        self.assertIn("placed(inner_end, self.width)", strip_source)
+        self.assertIn("placed(inner_start, self.width)", strip_source)
 
     def test_glassstrip_two_lengths_four_placements_no_corner_fillet(self):
         cmd = commands()
@@ -380,24 +395,7 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "occurrence.move")
             if p["occurrence"].startswith("GlassStrip")
         ]
-        self.assertEqual(len(strip_moves), 3)
-        self.assertTrue(
-            all(p["translate"] == [0.0, 0.0, 0.0] for p in strip_moves)
-        )
-
-        rotations = {
-            (tuple(p.get("axis", [])), p.get("angle"))
-            for p in strip_moves
-            if "axis" in p
-        }
-        self.assertEqual(
-            rotations,
-            {
-                ((1.0, 0.0, 0.0), "180 deg"),
-                ((0.0, 1.0, 0.0), "90 deg"),
-                ((0.0, 1.0, 0.0), "-90 deg"),
-            },
-        )
+        self.assertEqual(strip_moves, [])
 
         self.assertEqual(
             sum(

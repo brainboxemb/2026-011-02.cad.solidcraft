@@ -21,9 +21,7 @@ At the bottom of the source, `WoodenHub75Box` has the design parameters:
 class WoodenHub75Box:
     opening_width = 844.0
     opening_height = 362.0
-    panel_count = 5
-    panel_pitch = 160.0
-    panel_recess_depth = 25.0
+    _panel_recess_depth = 25.0
 
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
@@ -32,13 +30,26 @@ class WoodenHub75Box:
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
+    bracket_width = 24.0
 
     glazing_wood_width = 12.0
     glazing_wood_depth = 12.0
 ```
 
-Change these parameters, **not** the placement coordinates of every
-separate board. Adjustable model/CAD parameters use `lower_case`.
+Change these values at their owning level, **not** the placement coordinates
+of every separate board. This model follows Forge's parameter-intent naming:
+
+- `lower_case` is a native editable SolidCraft model parameter.
+- `_lower_case` is a Forge/build-time input. It can be changed when the
+  Python model is generated, but is deliberately not shown as a SolidCraft
+  parameter.
+- `UPPER_CASE` is a fixed design/product constant.
+
+The five-panel layout is fixed here: `HUB75Panels` owns
+`PANEL_COUNT = 5` and `PANEL_PITCH = 160.0`. The panel recess is currently
+`_panel_recess_depth` because occurrence Y placement is still build-time;
+publishing it as a native parameter would misleadingly suggest that changing
+it in SolidCraft moves the panels.
 
 Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains
@@ -57,7 +68,9 @@ such as `LeftBoard`, `BottomBoard` and `RoofBoard`; there is no generic
 published or linked to a parent parameter.
 
 The design therefore has one `corner_radius`: BottomBoard, RoofBoard and
-the CornerBracket inside fillet all reference that same parameter. Internal
+all eight CornerBracket inside fillets reference that same native parameter.
+Likewise, one top-level `bracket_width` controls the Y width of all eight
+brackets and their front/rear attachment bands. Internal
 CornerBracket defaults do not appear as separate `CornerBracket_*`
 parameters in the wooden-display design.
 
@@ -67,7 +80,10 @@ board dimensions inside the CAD geometry.
 
 World axes: **X** left/right, **Y** front-to-back, **Z** upward. **Y=0 is the front face of the wooden cabinet** and **Z=0 is its outside bottom face**. `cabinet_depth` grows only towards +Y: the sidewalls and bottom start at Y=0, the rear face is Y=`cabinet_depth`, the back board starts on that same plane, and the rear brackets remain flush with it. The roof is the deliberate exception at the front and starts at Y=`-roof_front_overhang`. The wood opening starts at Z=`frame_wood_thickness` and keeps its own fixed `opening_height`. At the default 12 mm wood thickness the opening spans X=−422..422 and Z=12..374 mm.
 
-The HUB75 modules are recessed **25 mm** from the sidewall front, so their front faces start at Y=25. This is the explicit `panel_recess_depth` design parameter; it replaces the previous arbitrary negative frame origin.
+The HUB75 modules are recessed **25 mm** from the sidewall front, so their
+front faces start at Y=25. This remains an explicit Forge/build input
+(`_panel_recess_depth`) until occurrence translation can preserve that
+relationship as a native SolidCraft parameter.
 
 ## Wood dimensions and the roof overhang
 
@@ -80,7 +96,7 @@ The HUB75 modules are recessed **25 mm** from the sidewall front, so their front
 | Plexiglass | **840 × 360 × 4 mm** | Y=12..16; Z=13..373 |
 | Five basic panels | 159.70 × 319.71 × 14.50 mm | X pitch 160 |
 | Four glass retainers | Two lengths: **844** and **362 mm** | **12 × 12 mm pine (grenen)**, straight mitres |
-| Eight corner brackets | 24 mm Y width, 12 mm wall | Two per corner, no screw holes |
+| Eight corner brackets | **24 mm Y width** (editable `bracket_width`), 12 mm wall | Two per corner, no screw holes |
 
 **Roof front:** the sidewall front is the Y=0 reference plane, while the roof starts at Y=−10. That is a **10 mm front overhang**.
 

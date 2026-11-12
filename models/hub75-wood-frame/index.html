@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">149 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">139 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -294,26 +294,26 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: SideWall_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: cabinet_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;SideWall_depth&quot;,
+    &quot;name&quot;: &quot;cabinet_depth&quot;,
     &quot;expression&quot;: &quot;100&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: SideWall_thickness</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: frame_wood_thickness</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;SideWall_thickness&quot;,
+    &quot;name&quot;: &quot;frame_wood_thickness&quot;,
     &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: SideWall_height</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_height</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;SideWall_height&quot;,
+    &quot;name&quot;: &quot;opening_height&quot;,
     &quot;expression&quot;: &quot;362&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
@@ -338,20 +338,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(SideWall_thickness / 2)&quot;,
+        &quot;-(frame_wood_thickness / 2)&quot;,
         0
       ],
       [
-        &quot;SideWall_thickness / 2&quot;,
+        &quot;frame_wood_thickness / 2&quot;,
         0
       ],
       [
-        &quot;SideWall_thickness / 2&quot;,
-        &quot;-(SideWall_height)&quot;
+        &quot;frame_wood_thickness / 2&quot;,
+        &quot;-(opening_height)&quot;
       ],
       [
-        &quot;-(SideWall_thickness / 2)&quot;,
-        &quot;-(SideWall_height)&quot;
+        &quot;-(frame_wood_thickness / 2)&quot;,
+        &quot;-(opening_height)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -370,7 +370,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: SideWall</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;SideWall_depth&quot;,
+    &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;SideWall&quot;
   }
@@ -426,34 +426,18 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BottomBoard_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;BottomBoard_depth&quot;,
-    &quot;expression&quot;: &quot;100&quot;,
+    &quot;name&quot;: &quot;opening_width&quot;,
+    &quot;expression&quot;: &quot;844&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BottomBoard_width</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: corner_radius</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;BottomBoard_width&quot;,
-    &quot;expression&quot;: &quot;868&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BottomBoard_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;BottomBoard_thickness&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BottomBoard_corner_radius</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;BottomBoard_corner_radius&quot;,
+    &quot;name&quot;: &quot;corner_radius&quot;,
     &quot;expression&quot;: &quot;4&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
@@ -478,20 +462,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(BottomBoard_width / 2)&quot;,
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
         0
       ],
       [
-        &quot;BottomBoard_width / 2&quot;,
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
         0
       ],
       [
-        &quot;BottomBoard_width / 2&quot;,
-        &quot;-(BottomBoard_thickness)&quot;
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
+        &quot;-(frame_wood_thickness)&quot;
       ],
       [
-        &quot;-(BottomBoard_width / 2)&quot;,
-        &quot;-(BottomBoard_thickness)&quot;
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
+        &quot;-(frame_wood_thickness)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -510,7 +494,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: BottomBoard</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;BottomBoard_depth&quot;,
+    &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;BottomBoard&quot;
   }
@@ -530,7 +514,7 @@ WoodenHub75Box()
         -0.0
       ]
     ],
-    &quot;radius&quot;: &quot;BottomBoard_corner_radius&quot;,
+    &quot;radius&quot;: &quot;corner_radius&quot;,
     &quot;body&quot;: &quot;BottomBoard&quot;
   }
 }</code></pre></li>
@@ -568,35 +552,27 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_wood_thickness</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;RoofBoard_depth&quot;,
-    &quot;expression&quot;: &quot;120&quot;,
+    &quot;name&quot;: &quot;panel_wood_thickness&quot;,
+    &quot;expression&quot;: &quot;9&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_width</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: roof_rear_overhang</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;RoofBoard_width&quot;,
-    &quot;expression&quot;: &quot;868&quot;,
+    &quot;name&quot;: &quot;roof_rear_overhang&quot;,
+    &quot;expression&quot;: &quot;1&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_thickness</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: roof_front_overhang</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;RoofBoard_thickness&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: RoofBoard_corner_radius</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;RoofBoard_corner_radius&quot;,
-    &quot;expression&quot;: &quot;4&quot;,
+    &quot;name&quot;: &quot;roof_front_overhang&quot;,
+    &quot;expression&quot;: &quot;10&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -620,20 +596,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(RoofBoard_width / 2)&quot;,
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
         0
       ],
       [
-        &quot;RoofBoard_width / 2&quot;,
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
         0
       ],
       [
-        &quot;RoofBoard_width / 2&quot;,
-        &quot;-(RoofBoard_thickness)&quot;
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
+        &quot;-(frame_wood_thickness)&quot;
       ],
       [
-        &quot;-(RoofBoard_width / 2)&quot;,
-        &quot;-(RoofBoard_thickness)&quot;
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
+        &quot;-(frame_wood_thickness)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -652,7 +628,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: RoofBoard</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;RoofBoard_depth&quot;,
+    &quot;distance&quot;: &quot;((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;RoofBoard&quot;
   }
@@ -672,7 +648,7 @@ WoodenHub75Box()
         12.0
       ]
     ],
-    &quot;radius&quot;: &quot;RoofBoard_corner_radius&quot;,
+    &quot;radius&quot;: &quot;corner_radius&quot;,
     &quot;body&quot;: &quot;RoofBoard&quot;
   }
 }</code></pre></li>
@@ -710,30 +686,6 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BackBoard_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;BackBoard_thickness&quot;,
-    &quot;expression&quot;: &quot;9&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BackBoard_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;BackBoard_width&quot;,
-    &quot;expression&quot;: &quot;868&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: BackBoard_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;BackBoard_height&quot;,
-    &quot;expression&quot;: &quot;374&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: BackBoard</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -754,20 +706,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(BackBoard_width / 2)&quot;,
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
         0
       ],
       [
-        &quot;BackBoard_width / 2&quot;,
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
         0
       ],
       [
-        &quot;BackBoard_width / 2&quot;,
-        &quot;-(BackBoard_height)&quot;
+        &quot;(opening_width + (frame_wood_thickness * 2)) / 2&quot;,
+        &quot;-(opening_height + (frame_wood_thickness))&quot;
       ],
       [
-        &quot;-(BackBoard_width / 2)&quot;,
-        &quot;-(BackBoard_height)&quot;
+        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2)&quot;,
+        &quot;-(opening_height + (frame_wood_thickness))&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -786,7 +738,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: BackBoard</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;BackBoard_thickness&quot;,
+    &quot;distance&quot;: &quot;panel_wood_thickness&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;BackBoard&quot;
   }
@@ -825,26 +777,18 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: glazing_wood_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_depth&quot;,
+    &quot;name&quot;: &quot;glazing_wood_depth&quot;,
     &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_length</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: glazing_wood_width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_length&quot;,
-    &quot;expression&quot;: &quot;844&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_width&quot;,
+    &quot;name&quot;: &quot;glazing_wood_width&quot;,
     &quot;expression&quot;: &quot;12&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
@@ -869,20 +813,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(GlassStrip_length / 2)&quot;,
+        &quot;-(opening_width / 2)&quot;,
         0
       ],
       [
-        &quot;GlassStrip_length / 2&quot;,
+        &quot;opening_width / 2&quot;,
         0
       ],
       [
-        &quot;(GlassStrip_length / 2) - (GlassStrip_width)&quot;,
-        &quot;-(GlassStrip_width)&quot;
+        &quot;(opening_width / 2) - (glazing_wood_width)&quot;,
+        &quot;-(glazing_wood_width)&quot;
       ],
       [
-        &quot;-((GlassStrip_length / 2) - (GlassStrip_width))&quot;,
-        &quot;-(GlassStrip_width)&quot;
+        &quot;-((opening_width / 2) - (glazing_wood_width))&quot;,
+        &quot;-(glazing_wood_width)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -901,7 +845,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassStrip_depth&quot;,
+    &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;GlassStrip&quot;
   }
@@ -963,30 +907,6 @@ WoodenHub75Box()
     &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_depth</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_2_depth&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_2_length&quot;,
-    &quot;expression&quot;: &quot;362&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: GlassStrip_2_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;GlassStrip_2_width&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: GlassStrip 2</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -1007,20 +927,20 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        &quot;-(GlassStrip_2_length / 2)&quot;,
+        &quot;-(opening_height / 2)&quot;,
         0
       ],
       [
-        &quot;GlassStrip_2_length / 2&quot;,
+        &quot;opening_height / 2&quot;,
         0
       ],
       [
-        &quot;(GlassStrip_2_length / 2) - (GlassStrip_2_width)&quot;,
-        &quot;-(GlassStrip_2_width)&quot;
+        &quot;(opening_height / 2) - (glazing_wood_width)&quot;,
+        &quot;-(glazing_wood_width)&quot;
       ],
       [
-        &quot;-((GlassStrip_2_length / 2) - (GlassStrip_2_width))&quot;,
-        &quot;-(GlassStrip_2_width)&quot;
+        &quot;-((opening_height / 2) - (glazing_wood_width))&quot;,
+        &quot;-(glazing_wood_width)&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -1039,7 +959,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GlassStrip_2</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;GlassStrip_2_depth&quot;,
+    &quot;distance&quot;: &quot;glazing_wood_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;GlassStrip_2&quot;
   }

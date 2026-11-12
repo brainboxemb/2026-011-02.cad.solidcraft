@@ -200,7 +200,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_depth",
+        "name": "cabinet_depth",
         "expression": "100",
         "unit": "mm"
       }
@@ -208,7 +208,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_thickness",
+        "name": "frame_wood_thickness",
         "expression": "12",
         "unit": "mm"
       }
@@ -216,7 +216,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_height",
+        "name": "opening_height",
         "expression": "362",
         "unit": "mm"
       }
@@ -241,20 +241,20 @@
       "params": {
         "points": [
           [
-            "-(SideWall_thickness / 2)",
+            "-(frame_wood_thickness / 2)",
             0
           ],
           [
-            "SideWall_thickness / 2",
+            "frame_wood_thickness / 2",
             0
           ],
           [
-            "SideWall_thickness / 2",
-            "-(SideWall_height)"
+            "frame_wood_thickness / 2",
+            "-(opening_height)"
           ],
           [
-            "-(SideWall_thickness / 2)",
-            "-(SideWall_height)"
+            "-(frame_wood_thickness / 2)",
+            "-(opening_height)"
           ]
         ],
         "closed": true,
@@ -273,7 +273,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "SideWall_depth",
+        "distance": "cabinet_depth",
         "direction": "symmetric",
         "body_name": "SideWall"
       }
@@ -332,31 +332,15 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_depth",
-        "expression": "100",
+        "name": "opening_width",
+        "expression": "844",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_width",
-        "expression": "868",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "BottomBoard_thickness",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "BottomBoard_corner_radius",
+        "name": "corner_radius",
         "expression": "4",
         "unit": "mm"
       }
@@ -381,20 +365,20 @@
       "params": {
         "points": [
           [
-            "-(BottomBoard_width / 2)",
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
             0
           ],
           [
-            "BottomBoard_width / 2",
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
             0
           ],
           [
-            "BottomBoard_width / 2",
-            "-(BottomBoard_thickness)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
+            "-(frame_wood_thickness)"
           ],
           [
-            "-(BottomBoard_width / 2)",
-            "-(BottomBoard_thickness)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+            "-(frame_wood_thickness)"
           ]
         ],
         "closed": true,
@@ -413,7 +397,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BottomBoard_depth",
+        "distance": "cabinet_depth",
         "direction": "symmetric",
         "body_name": "BottomBoard"
       }
@@ -433,7 +417,7 @@
             -0.0
           ]
         ],
-        "radius": "BottomBoard_corner_radius",
+        "radius": "corner_radius",
         "body": "BottomBoard"
       }
     },
@@ -474,32 +458,24 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_depth",
-        "expression": "120",
+        "name": "panel_wood_thickness",
+        "expression": "9",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_width",
-        "expression": "868",
+        "name": "roof_rear_overhang",
+        "expression": "1",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_thickness",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "RoofBoard_corner_radius",
-        "expression": "4",
+        "name": "roof_front_overhang",
+        "expression": "10",
         "unit": "mm"
       }
     },
@@ -523,20 +499,20 @@
       "params": {
         "points": [
           [
-            "-(RoofBoard_width / 2)",
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
             0
           ],
           [
-            "RoofBoard_width / 2",
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
             0
           ],
           [
-            "RoofBoard_width / 2",
-            "-(RoofBoard_thickness)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
+            "-(frame_wood_thickness)"
           ],
           [
-            "-(RoofBoard_width / 2)",
-            "-(RoofBoard_thickness)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+            "-(frame_wood_thickness)"
           ]
         ],
         "closed": true,
@@ -555,7 +531,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "RoofBoard_depth",
+        "distance": "((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))",
         "direction": "symmetric",
         "body_name": "RoofBoard"
       }
@@ -575,7 +551,7 @@
             12.0
           ]
         ],
-        "radius": "RoofBoard_corner_radius",
+        "radius": "corner_radius",
         "body": "RoofBoard"
       }
     },
@@ -614,30 +590,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "BackBoard_thickness",
-        "expression": "9",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "BackBoard_width",
-        "expression": "868",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "BackBoard_height",
-        "expression": "374",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "BackBoard",
@@ -657,20 +609,20 @@
       "params": {
         "points": [
           [
-            "-(BackBoard_width / 2)",
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
             0
           ],
           [
-            "BackBoard_width / 2",
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
             0
           ],
           [
-            "BackBoard_width / 2",
-            "-(BackBoard_height)"
+            "(opening_width + (frame_wood_thickness * 2)) / 2",
+            "-(opening_height + (frame_wood_thickness))"
           ],
           [
-            "-(BackBoard_width / 2)",
-            "-(BackBoard_height)"
+            "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+            "-(opening_height + (frame_wood_thickness))"
           ]
         ],
         "closed": true,
@@ -689,7 +641,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BackBoard_thickness",
+        "distance": "panel_wood_thickness",
         "direction": "symmetric",
         "body_name": "BackBoard"
       }
@@ -731,7 +683,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "GlassStrip_depth",
+        "name": "glazing_wood_depth",
         "expression": "12",
         "unit": "mm"
       }
@@ -739,15 +691,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "GlassStrip_length",
-        "expression": "844",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassStrip_width",
+        "name": "glazing_wood_width",
         "expression": "12",
         "unit": "mm"
       }
@@ -772,20 +716,20 @@
       "params": {
         "points": [
           [
-            "-(GlassStrip_length / 2)",
+            "-(opening_width / 2)",
             0
           ],
           [
-            "GlassStrip_length / 2",
+            "opening_width / 2",
             0
           ],
           [
-            "(GlassStrip_length / 2) - (GlassStrip_width)",
-            "-(GlassStrip_width)"
+            "(opening_width / 2) - (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ],
           [
-            "-((GlassStrip_length / 2) - (GlassStrip_width))",
-            "-(GlassStrip_width)"
+            "-((opening_width / 2) - (glazing_wood_width))",
+            "-(glazing_wood_width)"
           ]
         ],
         "closed": true,
@@ -804,7 +748,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "GlassStrip_depth",
+        "distance": "glazing_wood_depth",
         "direction": "symmetric",
         "body_name": "GlassStrip"
       }
@@ -867,30 +811,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassStrip_2_depth",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassStrip_2_length",
-        "expression": "362",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "GlassStrip_2_width",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "GlassStrip 2",
@@ -910,20 +830,20 @@
       "params": {
         "points": [
           [
-            "-(GlassStrip_2_length / 2)",
+            "-(opening_height / 2)",
             0
           ],
           [
-            "GlassStrip_2_length / 2",
+            "opening_height / 2",
             0
           ],
           [
-            "(GlassStrip_2_length / 2) - (GlassStrip_2_width)",
-            "-(GlassStrip_2_width)"
+            "(opening_height / 2) - (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ],
           [
-            "-((GlassStrip_2_length / 2) - (GlassStrip_2_width))",
-            "-(GlassStrip_2_width)"
+            "-((opening_height / 2) - (glazing_wood_width))",
+            "-(glazing_wood_width)"
           ]
         ],
         "closed": true,
@@ -942,7 +862,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "GlassStrip_2_depth",
+        "distance": "glazing_wood_depth",
         "direction": "symmetric",
         "body_name": "GlassStrip_2"
       }

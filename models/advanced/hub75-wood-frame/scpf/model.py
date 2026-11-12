@@ -17,8 +17,8 @@ class WoodenHub75Box:
     panel_pitch = 160.0
 
     # Wood
-    wood_thickness = 12.0
-    back_thickness = 9.0
+    frame_wood_thickness = 12.0
+    panel_wood_thickness = 9.0
     cabinet_depth = 100.0
     frame_front_y = -25.0
     roof_front_overhang = 10.0
@@ -26,8 +26,8 @@ class WoodenHub75Box:
     corner_radius = 4.0
 
     # Glazing retainers
-    glazing_width = 12.0
-    glazing_depth = 12.0
+    glazing_wood_width = 12.0
+    glazing_wood_depth = 12.0
 
     def build(self):
         panels = HUB75Panels(
@@ -39,8 +39,8 @@ class WoodenHub75Box:
         frame = WoodFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            wood_thickness=self.wood_thickness,
-            back_thickness=self.back_thickness,
+            frame_wood_thickness=self.frame_wood_thickness,
+            panel_wood_thickness=self.panel_wood_thickness,
             cabinet_depth=self.cabinet_depth,
             frame_front_y=self.frame_front_y,
             roof_front_overhang=self.roof_front_overhang,
@@ -52,20 +52,20 @@ class WoodenHub75Box:
             opening_width=self.opening_width,
             opening_height=self.opening_height,
             frame_front_y=self.frame_front_y,
-            glazing_width=self.glazing_width,
-            glazing_depth=self.glazing_depth,
+            glazing_wood_width=self.glazing_wood_width,
+            glazing_wood_depth=self.glazing_wood_depth,
         )
 
         brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            wood_thickness=self.wood_thickness,
+            frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
             frame_front_y=self.frame_front_y,
         )
 
         window = Window().move(
-            y=self.frame_front_y + self.glazing_depth + GLASS_THICKNESS / 2,
+            y=self.frame_front_y + self.glazing_wood_depth + GLASS_THICKNESS / 2,
             z=GLASS_BOTTOM_CLEARANCE,
         )
 

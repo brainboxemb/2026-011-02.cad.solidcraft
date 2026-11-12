@@ -49,9 +49,13 @@ parameters.
 Geometry stays symbolic inside the part definitions. In particular the
 shared `Board` helper uses `self.width / 2`, named profile vertices and
 `self.corner_radius`; it does not turn those values into fixed Python
-coordinates. The generated BottomBoard and RoofBoard fillets therefore use
-named SolidCraft parameters such as `BottomBoard_corner_radius` and
-`RoofBoard_corner_radius`.
+coordinates. Reusable component defaults stay internal unless explicitly
+published or linked to a parent parameter.
+
+The design therefore has one `corner_radius`: BottomBoard, RoofBoard and
+the CornerBracket inside fillet all reference that same parameter. Internal
+CornerBracket defaults do not appear as separate `CornerBracket_*`
+parameters in the wooden-display design.
 
 The short `pv(...)` helper is only used where Python itself needs a concrete
 number for control flow or assembly placement. It is not used to flatten the

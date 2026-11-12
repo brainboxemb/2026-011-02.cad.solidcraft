@@ -119,7 +119,6 @@ class WoodenFrameTests(unittest.TestCase):
             "GLASS_WIDTH",
             "GLASS_HEIGHT",
             "GLASS_THICKNESS",
-            "GLASS_BOTTOM_CLEARANCE",
         ):
             self.assertIn(name + " =", window_source)
 
@@ -132,7 +131,8 @@ class WoodenFrameTests(unittest.TestCase):
 
         parameter_names = {p["name"] for p in of(commands(), "parameters.add")}
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
-        self.assertNotIn("opening_height", window_source)
+        self.assertIn("opening_height", parameter_names)
+        self.assertIn("(self.opening_height - GLASS_HEIGHT) / 2", window_source)
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
@@ -438,7 +438,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("opening_height", points)
         self.assertNotIn("RoofBoard_z_position", points)
 
-    def test_window_height_and_z_position_are_fixed(self):
+    def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)
 
         window_move = moved(cmd, "Window")[0]
@@ -461,9 +461,8 @@ class WoodenFrameTests(unittest.TestCase):
             if command["command"] == "sketch.line"
         )
 
-        self.assertNotIn("opening_height", points)
-        self.assertIn("1.0", points)
-        self.assertIn("361.0", points)
+        self.assertIn("opening_height", points)
+        self.assertIn("360.0", points)
 
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)

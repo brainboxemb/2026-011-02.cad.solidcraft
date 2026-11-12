@@ -47,8 +47,7 @@ class Board:
         )
 
 
-@component
-class SideWall:
+class SideBoard:
     thickness = 12.0
     depth = 100.0
     height = 362.0
@@ -58,8 +57,18 @@ class SideWall:
             width=self.thickness,
             depth=self.depth,
             height=self.height,
-            material_name="LIGHTPLY side wall",
+            material_name="LIGHTPLY side board",
         ).build()
+
+
+@component
+class LeftBoard(SideBoard):
+    pass
+
+
+@component
+class RightBoard(SideBoard):
+    pass
 
 
 @component

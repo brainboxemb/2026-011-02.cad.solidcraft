@@ -321,7 +321,7 @@ class WoodenFrameTests(unittest.TestCase):
             )
 
     def test_basic_hub75_envelope_uses_fixed_constants(self):
-        from models.components.hub75_panel.basic import (
+        from models.components.hub75_panel.scpf.basic import (
             HUB75_PANEL_DEPTH,
             HUB75_PANEL_HEIGHT,
             HUB75_PANEL_WIDTH,
@@ -486,7 +486,7 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_corner_bracket_placement_inputs_stay_private_but_symbolic(self):
         source = (
-            ROOT / "models" / "components" / "corner_bracket" / "model.py"
+            ROOT / "models" / "components" / "corner_bracket" / "scpf" / "model.py"
         ).read_text(encoding="utf-8")
         assembly_source = (
             ASSEMBLIES / "corner_brackets.py"

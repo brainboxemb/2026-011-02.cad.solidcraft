@@ -20,7 +20,7 @@ class WoodenHub75Box:
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    frame_front_y_position = -25.0
+    panel_recess_depth = 25.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
@@ -34,6 +34,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             panel_count=self.panel_count,
             panel_pitch=self.panel_pitch,
+            panel_recess_depth=self.panel_recess_depth,
         )
 
         frame = WoodFrame(
@@ -42,7 +43,6 @@ class WoodenHub75Box:
             frame_wood_thickness=self.frame_wood_thickness,
             panel_wood_thickness=self.panel_wood_thickness,
             cabinet_depth=self.cabinet_depth,
-            frame_front_y_position=self.frame_front_y_position,
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
@@ -51,7 +51,6 @@ class WoodenHub75Box:
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
-            frame_front_y_position=self.frame_front_y_position,
             glazing_wood_width=self.glazing_wood_width,
             glazing_wood_depth=self.glazing_wood_depth,
         )
@@ -61,11 +60,10 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
-            frame_front_y_position=self.frame_front_y_position,
         )
 
         window = Window().move(
-            y=self.frame_front_y_position + self.glazing_wood_depth + GLASS_THICKNESS / 2,
+            y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
             z=GLASS_BOTTOM_CLEARANCE,
         )
 

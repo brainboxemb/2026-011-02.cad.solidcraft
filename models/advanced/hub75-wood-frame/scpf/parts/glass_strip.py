@@ -10,6 +10,8 @@ class GlassStrip:
     length = 844.0
     width = 12.0
     depth = 12.0
+    length_center = 0.0
+    width_base = 0.0
     finish = 0
 
     def build(self):
@@ -17,12 +19,18 @@ class GlassStrip:
             raise ValueError("GlassStrip width must be less than half its length")
 
         half = self.length / 2
-        inset = half - self.width
+        start = self.length_center - half
+        end = self.length_center + half
+        inner_start = start + self.width
+        inner_end = end - self.width
+        outer = self.width_base
+        inner = outer + self.width
+
         profile = Polygon2D([
-            (-half, 0),
-            (half, 0),
-            (inset, self.width),
-            (-inset, self.width),
+            (start, outer),
+            (end, outer),
+            (inner_end, inner),
+            (inner_start, inner),
         ], plane="XZ", world=True)
 
         dark = pv(self.finish) >= 0.5

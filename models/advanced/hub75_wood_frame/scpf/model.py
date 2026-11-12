@@ -1,5 +1,6 @@
 """Wooden HUB75 display assembled from named parts and subassemblies."""
 
+from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
 from assemblies.wood_frame import WoodFrame
@@ -76,7 +77,15 @@ class WoodenHub75Box:
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
+        )
+
+        brackets = CornerBrackets(
+            wood_frame=frame,
             bracket_width=self.bracket_width,
+            corner_radius=self.corner_radius,
+            roof_front_overhang=self.roof_front_overhang,
+            roof_rear_overhang=self.roof_rear_overhang,
+            panel_wood_thickness=self.panel_wood_thickness,
         )
 
         glazing = GlassFrame(
@@ -93,4 +102,4 @@ class WoodenHub75Box:
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + glazing + window
+        return panels + frame + brackets + glazing + window

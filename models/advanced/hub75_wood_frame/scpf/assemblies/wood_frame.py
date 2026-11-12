@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import Anchor, assembly
+from scpf import assembly
 
 from parts.board import Board
 
@@ -50,8 +50,7 @@ class WoodFrame:
             material_name="LIGHTPLY side board",
         ).attach(
             bottom,
-            parent=Anchor.FRONT_TOP_LEFT,
-            child=Anchor.FRONT_BOTTOM_LEFT,
+            as_built=True,
         ).group("WoodBoxFrame")
 
         right = Board(
@@ -68,8 +67,7 @@ class WoodFrame:
             material_name="LIGHTPLY side board",
         ).attach(
             bottom,
-            parent=Anchor.FRONT_TOP_RIGHT,
-            child=Anchor.FRONT_BOTTOM_RIGHT,
+            as_built=True,
         ).group("WoodBoxFrame")
 
 

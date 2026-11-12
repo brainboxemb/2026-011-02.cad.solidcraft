@@ -6,7 +6,7 @@ from pathlib import Path
 from scpf.runner import ModelParameterWarning, run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / "models/components/hub75.py"
+MODEL = ROOT / "models/components/hub75_panel/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
@@ -83,7 +83,7 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(root_parameters, [])
 
     def test_single_panel_and_screen_import_the_same_definition(self):
-        from models.components.hub75 import Hub75Panel as PanelDefinition
+        from models.components.hub75_panel.model import Hub75Panel as PanelDefinition
         from scpf import component
         panel = component(PanelDefinition)()
         self.assertIs(panel.definition.shape, panel.copy().definition.shape)
@@ -144,7 +144,7 @@ class Hub75PanelTests(unittest.TestCase):
         )
 
     def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
-        from models.components.hub75 import Hub75Panel
+        from models.components.hub75_panel.model import Hub75Panel
 
         commands = run_script(MODEL)["commands"]
         named = [c for c in commands if c["command"] == "sketch.create"]
@@ -214,7 +214,7 @@ class Hub75PanelTests(unittest.TestCase):
         # Every bore must start at the REAR and terminate at Z=2 mm.
         # An old through-hole depth of 15 mm would pierce the front face.
         # Native input preserves expressions in the parameterized model.
-        from models.components.hub75 import Hub75Panel
+        from models.components.hub75_panel.model import Hub75Panel
         reference = Hub75Panel()
         self.assertEqual(reference.depth - reference.front_depth, 12.5)
         for bore in holes:

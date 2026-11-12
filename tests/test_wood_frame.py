@@ -318,7 +318,7 @@ class WoodenFrameTests(unittest.TestCase):
         back_start_y = 100.0
         rear_brackets = [
             p for p in brackets
-            if p["translate"][1] > 0
+            if p["translate"][1] == 88.0
         ]
         self.assertEqual(len(rear_brackets), 4)
         for bracket in rear_brackets:

@@ -208,16 +208,17 @@ jobs:
               and (.params | has("matrix") or has("to")))] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
           # One GlassStrip Python class produces four native profile variants.
-          # Their X/Z positions are symbolic geometry; only Y/orientation uses
-          # fixed occurrence placement.
+          # Y placement lives in the extrusion direction itself. Only the
+          # top/left/right orientation needs an occurrence move; translations
+          # stay at the origin.
           jq -e '
             ([.commands[] | select(.command == "component.create"
               and (.params.name | startswith("GlassStrip")))] | length) == 4 and
             ([.commands[] | select(.command == "occurrence.move"
-              and (.params.occurrence | startswith("GlassStrip")))] | length) == 4 and
+              and (.params.occurrence | startswith("GlassStrip")))] | length) == 3 and
             (all(.commands[] | select(.command == "occurrence.move"
               and (.params.occurrence | startswith("GlassStrip")));
-              .params.translate == [0,6,0])) and
+              .params.translate == [0,0,0])) and
             ([.commands[] | select(.command == "material.create"
               and .params.name == "PINE glazing vertical"
               and .params.color == "#A9793E")] | length) == 1 and

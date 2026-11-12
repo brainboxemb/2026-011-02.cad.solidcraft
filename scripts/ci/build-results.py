@@ -425,41 +425,62 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             python_source = f"<h2>Python model</h2><pre><code>{launcher_code}</code></pre>"
             source_links = '<a class="btn" href="model.py">SCPF source</a>'
         else:
-            # Display and publish the actual imported source. Merely showing
-            # model.py hides the entire sketch/feature construction from readers.
             component_file = ROOT / component_path
             if not component_file.is_file():
                 raise FileNotFoundError(f"Missing shared CAD component: {component_file}")
-            downloadable = "source/" + component_path
-            copy_if_exists(component_file, work / downloadable)
+
             component_code = esc(component_file.read_text(encoding="utf-8"))
             component_label = esc(component_path)
-            definition_section = (
-                '<section class="source-section source-definition">'
-                '<h2>Python component — actual geometry</h2>'
-                f'<p>The sketch, extrusion, fillets and other editable CAD features live in '
-                f'<code>{component_label}</code>. This file is reused by other models.</p>'
-                f'<p><a class="btn secondary" href="{downloadable}">Download component source</a></p>'
-                f'<pre><code>{component_code}</code></pre></section>'
-            )
-            launcher_section = (
-                '<section class="source-section source-launcher">'
-                '<h2>Model script — how the component is used</h2>'
-                '<p><code>model.py</code> is the entry point that SCPF executes. '
-                'It imports and invokes the shared definition; an assembly may then '
-                'place that same component. It is not a second copy of the geometry.</p>'
-                '<p><a class="btn secondary" href="model.py">Download model.py</a></p>'
-                f'<pre><code>{launcher_code}</code></pre></section>'
-            )
-            python_source = (
-                definition_section + launcher_section
-                if slug in COMPONENT_DEFINITION_PRIMARY
-                else launcher_section + definition_section
-            )
-            source_links = (
-                f'<a class="btn" href="{downloadable}">Actual component source</a>'
-                '<a class="btn secondary" href="model.py">Model entry point</a>'
-            )
+            direct_component_root = source.resolve() == component_file.resolve()
+
+            if direct_component_root:
+                # The published model.py is simply the exact reusable component
+                # source compiled by SCPF. Do not invent a launcher section.
+                python_source = (
+                    '<section class="source-section source-definition">'
+                    '<h2>Python component — actual geometry</h2>'
+                    f'<p><code>{component_label}</code> is compiled directly by SCPF '
+                    'and imported unchanged by assemblies. There is no launcher or '
+                    'standalone wrapper model.</p>'
+                    '<p><a class="btn secondary" href="model.py">'
+                    'Download component source</a></p>'
+                    f'<pre><code>{component_code}</code></pre></section>'
+                )
+                source_links = (
+                    '<a class="btn" href="model.py">Component source</a>'
+                )
+            else:
+                # Assembly pages show both their composition script and the
+                # shared component geometry they import.
+                downloadable = "source/" + component_path
+                copy_if_exists(component_file, work / downloadable)
+                definition_section = (
+                    '<section class="source-section source-definition">'
+                    '<h2>Python component — actual geometry</h2>'
+                    f'<p>The sketch, extrusion, fillets and other editable CAD features live in '
+                    f'<code>{component_label}</code>. This file is reused by other models.</p>'
+                    f'<p><a class="btn secondary" href="{downloadable}">Download component source</a></p>'
+                    f'<pre><code>{component_code}</code></pre></section>'
+                )
+                launcher_section = (
+                    '<section class="source-section source-launcher">'
+                    '<h2>Model script — how the component is used</h2>'
+                    '<p><code>model.py</code> is the assembly entry point. It imports '
+                    'and places the shared definition; it is not a second copy of '
+                    'the component geometry.</p>'
+                    '<p><a class="btn secondary" href="model.py">'
+                    'Download model.py</a></p>'
+                    f'<pre><code>{launcher_code}</code></pre></section>'
+                )
+                python_source = (
+                    definition_section + launcher_section
+                    if slug in COMPONENT_DEFINITION_PRIMARY
+                    else launcher_section + definition_section
+                )
+                source_links = (
+                    f'<a class="btn" href="{downloadable}">Actual component source</a>'
+                    '<a class="btn secondary" href="model.py">Model entry point</a>'
+                )
         # When the CAD project has an independent, manually authored SCPC
         # variant, publish BOTH Python scripts and both command plans.
         # Never fabricate SCPC code by exporting or decompiling SCPF JSON.

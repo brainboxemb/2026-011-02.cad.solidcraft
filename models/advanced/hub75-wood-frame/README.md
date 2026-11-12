@@ -27,7 +27,7 @@ class WoodenHub75Box:
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    frame_front_y = -25.0
+    frame_front_y_position = -25.0
 
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0

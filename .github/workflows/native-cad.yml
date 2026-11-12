@@ -227,12 +227,12 @@ jobs:
             (all(.bodies[] | select(.name | startswith("GlassStrip"));
               ((.bbox.min[1] - 0) | fabs) < 0.001 and
               ((.bbox.max[1] - 12) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("Board 4"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[1] + 10) | fabs) < 0.001 and
               ((.bbox.max[1] - 110) | fabs) < 0.001 and
               ((.bbox.min[2] - 374) | fabs) < 0.001 and
               ((.bbox.max[2] - 386) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("Board 5"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[1] - 100) | fabs) < 0.001 and
               ((.bbox.max[1] - 109) | fabs) < 0.001)) and
             (all(.bodies[] | select(.name | startswith("Window"));
@@ -264,12 +264,12 @@ jobs:
             --json-out output/native/hub75-wood-frame/measurements-height-400.json
           jq -e '
             # Roof follows the new opening top.
-            (all(.bodies[] | select(.name | startswith("Board 4"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[2] - 412) | fabs) < 0.001 and
               ((.bbox.max[2] - 424) | fabs) < 0.001)) and
 
             # Backboard follows the complete outside height to the roof plane.
-            (all(.bodies[] | select(.name | startswith("Board 5"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[2] - 0) | fabs) < 0.001 and
               ((.bbox.max[2] - 412) | fabs) < 0.001)) and
 
@@ -326,15 +326,15 @@ jobs:
             (all(.bodies[] | select(.name == "Board");
               ((.bbox.min[0] + 512) | fabs) < 0.001 and
               ((.bbox.max[0] + 500) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("Board 2"));
+            (all(.bodies[] | select(.name | startswith("Board_2"));
               ((.bbox.min[0] - 500) | fabs) < 0.001 and
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
 
             # Bottom, roof and rear panel span the full 1024 mm outside width.
             (all(.bodies[] | select(
-                (.name | startswith("Board 3"))
-                or (.name | startswith("Board 4"))
-                or (.name | startswith("Board 5"))
+                (.name | startswith("Board_3"))
+                or (.name | startswith("Board_4"))
+                or (.name | startswith("Board_5"))
               );
               ((.bbox.min[0] + 512) | fabs) < 0.001 and
               ((.bbox.max[0] - 512) | fabs) < 0.001)) and
@@ -461,15 +461,15 @@ jobs:
           jq -e '
             (all(.bodies[] | select(
                 (.name == "Board")
-                or (.name | startswith("Board 2"))
-                or (.name | startswith("Board 3"))
+                or (.name | startswith("Board_2"))
+                or (.name | startswith("Board_3"))
               );
               ((.bbox.min[1] - 0) | fabs) < 0.001 and
               ((.bbox.max[1] - 120) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("Board 5"));
+            (all(.bodies[] | select(.name | startswith("Board_5"));
               ((.bbox.min[1] - 120) | fabs) < 0.001 and
               ((.bbox.max[1] - 129) | fabs) < 0.001)) and
-            (all(.bodies[] | select(.name | startswith("Board 4"));
+            (all(.bodies[] | select(.name | startswith("Board_4"));
               ((.bbox.min[1] + 10) | fabs) < 0.001 and
               ((.bbox.max[1] - 130) | fabs) < 0.001)) and
             ([.bodies[] | select((.name | startswith("CornerBracket"))
@@ -492,7 +492,7 @@ jobs:
                and .bbox.min[1] > 50);
                ((.bbox.min[1] - 76) | fabs) < 0.001 and
                ((.bbox.max[1] - 100) | fabs) < 0.001)) and
-            (all(.bodies[] | select((.name | startswith("Board 5")));
+            (all(.bodies[] | select((.name | startswith("Board_5")));
                ((.bbox.min[1] - 100) | fabs) < 0.001 and
                ((.bbox.max[1] - 109) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json

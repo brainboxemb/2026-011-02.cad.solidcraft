@@ -261,14 +261,23 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(len(of(cmd, "solid.fillet")), 3)
 
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
-        for part in ("GlassStrip", "GlassStrip_2"):
-            self.assertTrue(
-                {
-                    part + "_length",
-                    part + "_width",
-                    part + "_depth",
-                }.issubset(parameter_names)
-            )
+        for duplicated in (
+            "GlassStrip_length",
+            "GlassStrip_width",
+            "GlassStrip_depth",
+            "GlassStrip_2_length",
+            "GlassStrip_2_width",
+            "GlassStrip_2_depth",
+        ):
+            self.assertNotIn(duplicated, parameter_names)
+
+        for source_parameter in (
+            "opening_width",
+            "opening_height",
+            "glazing_wood_width",
+            "glazing_wood_depth",
+        ):
+            self.assertIn(source_parameter, parameter_names)
 
         sketch_points = " ".join(
             str(p["points"])

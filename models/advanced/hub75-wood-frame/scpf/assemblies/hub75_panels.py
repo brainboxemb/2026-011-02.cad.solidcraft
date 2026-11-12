@@ -1,6 +1,6 @@
 """Five-panel HUB75 subassembly."""
 
-from scpf import component, pv
+from scpf import assembly, component, pv
 
 from components.hub75_basic import Hub75PanelBasic
 
@@ -8,6 +8,7 @@ from components.hub75_basic import Hub75PanelBasic
 Panel = component(Hub75PanelBasic)
 
 
+@assembly
 class HUB75Panels:
     opening_height = 362.0
     panel_count = 5
@@ -19,14 +20,14 @@ class HUB75Panels:
             raise ValueError("panel_count must be a positive odd number")
 
         panel_y = Hub75PanelBasic.depth / 2
-        panel_z = (pv(self.opening_height) - Hub75PanelBasic.height) / 2
+        panel_z = (self.opening_height - Hub75PanelBasic.height) / 2
         middle = Panel().move(y=panel_y, z=panel_z)
         panels = middle
 
         for column in range(count):
             if column == count // 2:
                 continue
-            x = (column - count // 2) * pv(self.panel_pitch)
+            x = (column - count // 2) * self.panel_pitch
             panels = panels + middle.copy().move(x=x)
 
         return panels.group("HUB75Panels")

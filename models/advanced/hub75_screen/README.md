@@ -1,6 +1,6 @@
 # Basic HUB75 Screen — five panel occurrences
 
-[Issue #7](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/7). The component class is maintained in [components/hub75.py](../components/hub75.py), **not duplicated** between the existing two-panel regression and this assembly.
+[Issue #7](https://github.com/brainboxemb/2026-011-02.cad.solidcraft/issues/7). The component class is maintained in [detailed HUB75 component](../../components/hub75_panel/detailed/scpf/model.py), **not duplicated** between the existing two-panel regression and this assembly.
 
 ## Layout from the OpenSCAD reference
 

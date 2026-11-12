@@ -483,6 +483,12 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertNotIn(name, source)
 
+        self.assertIn("@assembly", assembly_source)
+        self.assertIn("class CornerBrackets:", assembly_source)
+        self.assertIn("wood_frame = None", assembly_source)
+        self.assertIn("def build(self):", assembly_source)
+        self.assertNotIn("def __new__", assembly_source)
+        self.assertNotIn("attach_corner_brackets", assembly_source)
         self.assertNotIn(".move(", assembly_source)
         self.assertNotIn(".rotate(", assembly_source)
         self.assertNotIn("opening_width", assembly_source)

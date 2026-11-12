@@ -16,7 +16,7 @@ class Hub75PanelTests(unittest.TestCase):
         No Python matrix calculations, and no unsupported 'to' parameter.
         The native CI separately checks actual saved SolidCraft transforms.
         """
-        commands = run_script(ROOT / "models/advanced/hub75-screen/scpf/model.py")["commands"]
+        commands = run_script(ROOT / "models/advanced/hub75_screen/scpf/model.py")["commands"]
         def of(kind):
             return [item["params"] for item in commands if item["command"] == kind]
 
@@ -54,7 +54,7 @@ class Hub75PanelTests(unittest.TestCase):
 
     def test_screen_layout_uses_constants_and_emits_no_parameter_warning(self):
         source = (
-            ROOT / "models/advanced/hub75-screen/scpf/model.py"
+            ROOT / "models/advanced/hub75_screen/scpf/model.py"
         ).read_text(encoding="utf-8")
         self.assertIn("NOMINAL_PITCH_X = 160.0", source)
         self.assertIn("NOMINAL_HEIGHT = 320.0", source)
@@ -64,7 +64,7 @@ class Hub75PanelTests(unittest.TestCase):
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always")
             commands = run_script(
-                ROOT / "models/advanced/hub75-screen/scpf/model.py"
+                ROOT / "models/advanced/hub75_screen/scpf/model.py"
             )["commands"]
 
         self.assertFalse(

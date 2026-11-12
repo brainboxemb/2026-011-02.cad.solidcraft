@@ -26,7 +26,11 @@ class HUB75Panels:
 
         panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
         panel_z = (self.opening_height - HUB75_PANEL_HEIGHT) / 2
-        middle = Panel().move(y=panel_y, z=panel_z)
+        middle = Panel(
+            z_position=panel_z,
+        ).move(
+            y=panel_y,
+        )
         panels = middle
 
         for column in range(count):

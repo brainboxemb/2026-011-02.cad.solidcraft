@@ -1,6 +1,6 @@
 """Eight printed corner-bracket occurrences."""
 
-from scpf import assembly, component
+from scpf import X, Y, Z, assembly, component
 
 from components.corner_bracket import CornerBracket
 
@@ -27,43 +27,55 @@ class CornerBrackets:
         front_y = bracket_half
         rear_y = rear - bracket_half
 
-        upper_left = Bracket(
+        top_left_front = Bracket(
             inside_corner_radius=self.corner_radius,
+            z_position=top_z,
         ).move(
             x=-outer_half,
             y=front_y,
-            z=top_z,
         )
-        brackets = upper_left
-
-        corner_poses = (
-            (outer_half, top_z, (0, 0, 1), 180),
-            (-outer_half, bottom_z, (1, 0, 0), 180),
-            (outer_half, bottom_z, (0, 1, 0), 180),
+        top_right_front = top_left_front.copy().move(
+            x=2 * outer_half,
+        ).rotate(Z, 180)
+        top_left_rear = top_left_front.copy().move(
+            y=rear_y - front_y,
         )
-        for x, z, axis, angle in corner_poses:
-            brackets = brackets + upper_left.copy().move(
-                x=x + outer_half,
-                z=z - top_z,
-            ).rotate(
-                axis=axis,
-                degrees=angle,
-            )
+        top_right_rear = top_left_front.copy().move(
+            x=2 * outer_half,
+            y=rear_y - front_y,
+        ).rotate(Z, 180)
 
-        for x, z, axis, angle in (
-            (-outer_half, top_z, None, 0),
-            *corner_poses,
-        ):
-            occurrence = upper_left.copy().move(
-                x=x + outer_half,
-                y=rear_y - front_y,
-                z=z - top_z,
-            )
-            if axis is not None:
-                occurrence = occurrence.rotate(
-                    axis=axis,
-                    degrees=angle,
-                )
-            brackets = brackets + occurrence
+        bottom_base = Bracket(
+            inside_corner_radius=self.corner_radius,
+        )
+        bottom_left_front = bottom_base.move(
+            x=-outer_half,
+            y=front_y,
+            z=bottom_z,
+        ).rotate(X, 180)
+        bottom_right_front = bottom_base.copy().move(
+            x=outer_half,
+            y=front_y,
+            z=bottom_z,
+        ).rotate(Y, 180)
+        bottom_left_rear = bottom_base.copy().move(
+            x=-outer_half,
+            y=rear_y,
+            z=bottom_z,
+        ).rotate(X, 180)
+        bottom_right_rear = bottom_base.copy().move(
+            x=outer_half,
+            y=rear_y,
+            z=bottom_z,
+        ).rotate(Y, 180)
 
-        return brackets.group("CornerBrackets")
+        return (
+            top_left_front
+            + top_right_front
+            + top_left_rear
+            + top_right_rear
+            + bottom_left_front
+            + bottom_right_front
+            + bottom_left_rear
+            + bottom_right_rear
+        ).group("CornerBrackets")

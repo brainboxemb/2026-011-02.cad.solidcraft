@@ -1,11 +1,10 @@
 """Lightweight HUB75 placement envelope for large wooden-box assemblies.
 
 No native loft, cutouts, rear PCB, or mounting bores: this component only
-occupies the measured external bounding volume. The basic representation
-stands upright in XZ (Z is world up, Y is front-to-back). Use Hub75Panel
-(advanced) from components.hub75 for real module mounting details.
+occupies the measured external bounding volume. The dimensions are fixed
+product constants; vertical placement may be linked to a parent parameter.
 """
-from scpf import Box
+from scpf import Direction, Polygon2D
 
 
 HUB75_PANEL_WIDTH = 159.70
@@ -14,11 +13,23 @@ HUB75_PANEL_DEPTH = 14.50
 
 
 class Hub75PanelBasic:
+    z_position = 0.0
+
     def build(self):
-        return Box(
-            HUB75_PANEL_WIDTH,
+        half_width = HUB75_PANEL_WIDTH / 2
+        bottom = self.z_position
+        top = bottom + HUB75_PANEL_HEIGHT
+
+        profile = Polygon2D([
+            (-half_width, bottom),
+            (half_width, bottom),
+            (half_width, top),
+            (-half_width, top),
+        ], plane="XZ", world=True)
+
+        return profile.extrude(
             HUB75_PANEL_DEPTH,
-            HUB75_PANEL_HEIGHT,
+            direction=Direction.SYMMETRIC,
         ).with_material(
             "LED panel envelope", density_g_cm3=1.2, color="#242B32"
         )

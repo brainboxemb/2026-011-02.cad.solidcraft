@@ -1,23 +1,34 @@
-"""Fixed plexiglass window part."""
+"""Fixed-size plexiglass window with parametric vertical centring."""
 
-from scpf import Box, component
+from scpf import Direction, Polygon2D, component
 
 
 GLASS_WIDTH = 840.0
 GLASS_HEIGHT = 360.0
 GLASS_THICKNESS = 4.0
-GLASS_BOTTOM_CLEARANCE = 1.0
 
 
 @component
 class Window:
-    """Fixed plexiglass sheet used by this display."""
+    """Fixed plexiglass sheet kept centred inside the opening."""
+
+    opening_height = 362.0
 
     def build(self):
-        return Box(
-            GLASS_WIDTH,
+        half_width = GLASS_WIDTH / 2
+        bottom = (self.opening_height - GLASS_HEIGHT) / 2
+        top = bottom + GLASS_HEIGHT
+
+        profile = Polygon2D([
+            (-half_width, bottom),
+            (half_width, bottom),
+            (half_width, top),
+            (-half_width, top),
+        ], plane="XZ", world=True)
+
+        return profile.extrude(
             GLASS_THICKNESS,
-            GLASS_HEIGHT,
+            direction=Direction.SYMMETRIC,
         ).with_material(
             "Plexiglass",
             density_g_cm3=1.19,

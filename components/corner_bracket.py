@@ -19,6 +19,7 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
+    z_position = 0.0
 
     def build(self):
         w = self.wall_thickness
@@ -49,17 +50,35 @@ class CornerBracket:
         # Polygon order: I -> A -> B -> C -> D -> E -> F -> G -> H -> I.
         # Each label names its point and the segment starting at that point.
         # Elephant-foot relief is NOT part of this sketch: it comes later.
-        profile = Polygon2D([
-            ("i_corner", (0, 0)),
-            ("o_hor_tip", (h, 0)),
-            ("o_hor_bevel", (h, w - end)),
-            ("o_hor", (h - end, w)),
-            ("o_corner", (-w + outer, w)),
-            ("o_vert", (-w, w - outer)),
-            ("o_vert_bevel", (-w, -v + end)),
-            ("o_vert_end", (-w + end, -v)),
-            ("v_tip", (0, -v)),
-        ], plane="XZ", world=True)
+        if hasattr(self, "z_position"):
+            z = self.z_position
+            points = [
+                ("i_corner", (0, z)),
+                ("o_hor_tip", (h, z)),
+                ("o_hor_bevel", (h, z + w - end)),
+                ("o_hor", (h - end, z + w)),
+                ("o_corner", (-w + outer, z + w)),
+                ("o_vert", (-w, z + w - outer)),
+                ("o_vert_bevel", (-w, z - v + end)),
+                ("o_vert_end", (-w + end, z - v)),
+                ("v_tip", (0, z - v)),
+            ]
+        else:
+            # Keep the standalone CornerBracket command plan byte-for-byte
+            # compatible with the independent SCPC reference model.
+            points = [
+                ("i_corner", (0, 0)),
+                ("o_hor_tip", (h, 0)),
+                ("o_hor_bevel", (h, w - end)),
+                ("o_hor", (h - end, w)),
+                ("o_corner", (-w + outer, w)),
+                ("o_vert", (-w, w - outer)),
+                ("o_vert_bevel", (-w, -v + end)),
+                ("o_vert_end", (-w + end, -v)),
+                ("v_tip", (0, -v)),
+            ]
+
+        profile = Polygon2D(points, plane="XZ", world=True)
 
         body = profile.extrude(self.bracket_width, direction=Direction.SYMMETRIC)
 

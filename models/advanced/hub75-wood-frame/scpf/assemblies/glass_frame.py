@@ -15,33 +15,40 @@ class GlassFrame:
     def build(self):
         trim_y = self.glazing_wood_depth / 2
 
-        horizontal = GlassStrip(
+        bottom = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
+            length_center=0,
+            width_base=0,
             finish=0,
-        )
-        bottom = horizontal.move(y=trim_y)
-        top = horizontal.copy().rotate(X, 180).move(
-            y=trim_y,
-            z=self.opening_height,
-        )
+        ).move(y=trim_y)
 
-        vertical = GlassStrip(
+        top = GlassStrip(
+            length=self.opening_width,
+            width=self.glazing_wood_width,
+            depth=self.glazing_wood_depth,
+            length_center=0,
+            width_base=-self.opening_height,
+            finish=0,
+        ).rotate(X, 180).move(y=trim_y)
+
+        left = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
+            length_center=-(self.opening_height / 2),
+            width_base=-(self.opening_width / 2),
             finish=1,
-        )
-        left = vertical.rotate(Y, 90).move(
-            x=-self.opening_width / 2,
-            y=trim_y,
-            z=self.opening_height / 2,
-        )
-        right = vertical.copy().rotate(Y, -90).move(
-            x=self.opening_width / 2,
-            y=trim_y,
-            z=self.opening_height / 2,
-        )
+        ).rotate(Y, 90).move(y=trim_y)
+
+        right = GlassStrip(
+            length=self.opening_height,
+            width=self.glazing_wood_width,
+            depth=self.glazing_wood_depth,
+            length_center=self.opening_height / 2,
+            width_base=-(self.opening_width / 2),
+            finish=1,
+        ).rotate(Y, -90).move(y=trim_y)
 
         return (bottom + top + left + right).group("WoodGlassFrame")

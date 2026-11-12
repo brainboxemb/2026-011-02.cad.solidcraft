@@ -462,7 +462,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
 
         self.assertIn("opening_height", points)
-        self.assertIn("360.0", points)
+        self.assertIn("360 mm", points)
 
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)

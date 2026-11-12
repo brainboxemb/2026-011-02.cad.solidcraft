@@ -1,6 +1,6 @@
 """Eight printed corner-bracket occurrences."""
 
-from scpf import component, pv
+from scpf import assembly, component
 
 from components.corner_bracket import CornerBracket
 
@@ -8,6 +8,7 @@ from components.corner_bracket import CornerBracket
 Bracket = component(CornerBracket)
 
 
+@assembly
 class CornerBrackets:
     opening_width = 844.0
     opening_height = 362.0
@@ -16,20 +17,14 @@ class CornerBrackets:
     frame_front_y = -25.0
 
     def build(self):
-        width = pv(self.opening_width)
-        height = pv(self.opening_height)
-        ply = pv(self.wood_thickness)
-        depth = pv(self.cabinet_depth)
-        front = pv(self.frame_front_y)
-
-        rear = front + depth
-        outer_width = width + 2 * ply
+        rear = self.frame_front_y + self.cabinet_depth
+        outer_width = self.opening_width + 2 * self.wood_thickness
         outer_half = outer_width / 2
-        top_z = height + ply
-        bottom_z = -ply
+        top_z = self.opening_height + self.wood_thickness
+        bottom_z = -self.wood_thickness
 
         bracket_half = CornerBracket.bracket_width / 2
-        front_y = front + bracket_half
+        front_y = self.frame_front_y + bracket_half
         rear_y = rear - bracket_half
 
         upper_left = Bracket().move(

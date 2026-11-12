@@ -65,7 +65,7 @@ The HUB75 modules are recessed **25 mm** from the sidewall front, so their front
 
 | Part | Size and placement | Notes |
 | --- | --- | --- |
-| Two sidewalls | **12 × 100 × 362 mm** | Front Y=0; rear Y=100 |
+| `LeftBoard` + `RightBoard` | **12 × 100 × 362 mm** each | Front Y=0; rear Y=100 |
 | Bottom board | **868 × 100 × 12 mm** | Z=−12..0; R4 at outer bottom edges |
 | Roof board | **868 × 120 × 12 mm** | Z=362..374; R4 at outer top edges |
 | Rear board | **868 × 374 × 9 mm** | Y=100..109, fixed to the rear |
@@ -146,7 +146,7 @@ WoodenHub75Box
 ├── HUB75Panels
 │   └── Hub75PanelBasic × 5
 ├── WoodBoxFrame
-│   ├── SideWall × 2
+│   ├── LeftBoard\n│   ├── RightBoard
 │   ├── BottomBoard
 │   ├── RoofBoard
 │   └── BackBoard

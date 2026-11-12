@@ -44,7 +44,10 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
+    x_position = 0.0
     z_position = 0.0
+    x_sign = 1.0
+    z_sign = 1.0
 
     def build(self):
         w = self.wall_thickness
@@ -76,17 +79,24 @@ class CornerBracket:
         # Each label names its point and the segment starting at that point.
         # Elephant-foot relief is NOT part of this sketch: it comes later.
         if hasattr(self, &quot;z_position&quot;):
-            z = self.z_position
+            x0 = getattr(self, &quot;x_position&quot;, 0)
+            z0 = self.z_position
+            sx = getattr(self, &quot;x_sign&quot;, 1)
+            sz = getattr(self, &quot;z_sign&quot;, 1)
+
+            def placed(x, z):
+                return (x0 + sx * x, z0 + sz * z)
+
             points = [
-                (&quot;i_corner&quot;, (0, z)),
-                (&quot;o_hor_tip&quot;, (h, z)),
-                (&quot;o_hor_bevel&quot;, (h, z + w - end)),
-                (&quot;o_hor&quot;, (h - end, z + w)),
-                (&quot;o_corner&quot;, (-w + outer, z + w)),
-                (&quot;o_vert&quot;, (-w, z + w - outer)),
-                (&quot;o_vert_bevel&quot;, (-w, z - v + end)),
-                (&quot;o_vert_end&quot;, (-w + end, z - v)),
-                (&quot;v_tip&quot;, (0, z - v)),
+                (&quot;i_corner&quot;, placed(0, 0)),
+                (&quot;o_hor_tip&quot;, placed(h, 0)),
+                (&quot;o_hor_bevel&quot;, placed(h, w - end)),
+                (&quot;o_hor&quot;, placed(h - end, w)),
+                (&quot;o_corner&quot;, placed(-w + outer, w)),
+                (&quot;o_vert&quot;, placed(-w, w - outer)),
+                (&quot;o_vert_bevel&quot;, placed(-w, -v + end)),
+                (&quot;o_vert_end&quot;, placed(-w + end, -v)),
+                (&quot;v_tip&quot;, placed(0, -v)),
             ]
         else:
             # Keep the standalone CornerBracket command plan byte-for-byte

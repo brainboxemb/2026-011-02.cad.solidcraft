@@ -6,7 +6,7 @@ import tempfile
 import unittest
 import warnings
 
-from scpf.runner import run_script
+from scpf.runner import ModelParameterWarning, run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -184,6 +184,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("panel_count =", model_source)
         self.assertNotIn("panel_pitch =", model_source)
         self.assertIn("_panel_recess_depth = 25.0", model_source)
+        self.assertIn("glazing_wood_depth = 12.0", model_source)
 
         parameter_names = {
             p["name"] for p in of(commands(), "parameters.add")
@@ -205,17 +206,19 @@ class WoodenFrameTests(unittest.TestCase):
             },
         )
 
-    def test_parameter_intent_has_no_lost_native_parameter_warnings(self):
+    def test_parameter_intent_has_no_model_parameter_warnings(self):
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always")
             commands()
 
-        self.assertFalse(
-            any(
-                "no native SolidCraft dependency" in str(item.message)
-                for item in caught
-            ),
-            [str(item.message) for item in caught],
+        parameter_warnings = [
+            item for item in caught
+            if issubclass(item.category, ModelParameterWarning)
+        ]
+        self.assertEqual(
+            parameter_warnings,
+            [],
+            [str(item.message) for item in parameter_warnings],
         )
 
     def test_bracket_width_and_corner_radius_are_shared_model_parameters(self):
@@ -342,10 +345,7 @@ class WoodenFrameTests(unittest.TestCase):
         ):
             self.assertEqual(moved(cmd, name), [])
 
-        self.assertEqual(
-            moved(cmd, "Window")[0]["translate"],
-            [0.0, 14.0, 0.0],
-        )
+        self.assertEqual(moved(cmd, "Window"), [])
         panels = moved(cmd, "Hub75PanelBasic")
         self.assertEqual(
             sorted(p["translate"][0] for p in panels),
@@ -372,9 +372,9 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "occurrence.move")
             if p["occurrence"].startswith("GlassStrip")
         ]
-        self.assertEqual(len(strip_moves), 4)
+        self.assertEqual(len(strip_moves), 3)
         self.assertTrue(
-            all(p["translate"] == [0.0, 6.0, 0.0] for p in strip_moves)
+            all(p["translate"] == [0.0, 0.0, 0.0] for p in strip_moves)
         )
 
         rotations = {
@@ -561,8 +561,7 @@ class WoodenFrameTests(unittest.TestCase):
     def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)
 
-        window_move = moved(cmd, "Window")[0]
-        self.assertEqual(window_move["translate"], [0.0, 14.0, 0.0])
+        self.assertEqual(moved(cmd, "Window"), [])
 
         create_index = next(
             i for i, command in enumerate(cmd)
@@ -610,6 +609,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("roof_rear_overhang = 1.0", source)
         self.assertIn("_panel_recess_depth = 25.0", source)
         self.assertIn("bracket_width = 24.0", source)
+        self.assertIn("glazing_wood_depth = 12.0", source)
         self.assertNotIn("frame_front_y_position", source)
         self.assertEqual(
             (-10.0, 110.0),

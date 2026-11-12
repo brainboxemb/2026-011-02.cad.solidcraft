@@ -13,6 +13,7 @@ class GlassStrip:
     length_center = 0.0
     width_base = 0.0
     finish = 0
+    depth_sign = 1
 
     def build(self):
         if not 0 < pv(self.width) < pv(self.length) / 2:
@@ -37,9 +38,14 @@ class GlassStrip:
         ], plane="XZ", world=True)
 
         dark = pv(self.finish) >= 0.5
+        direction = (
+            Direction.NEGATIVE
+            if pv(self.depth_sign) < 0
+            else Direction.POSITIVE
+        )
         return profile.extrude(
             self.depth,
-            direction=Direction.SYMMETRIC,
+            direction=direction,
         ).with_material(
             "PINE glazing vertical" if dark else "PINE glazing horizontal",
             density_g_cm3=0.55,

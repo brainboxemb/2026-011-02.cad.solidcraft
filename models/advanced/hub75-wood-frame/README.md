@@ -51,6 +51,14 @@ The five-panel layout is fixed here: `HUB75Panels` owns
 publishing it as a native parameter would misleadingly suggest that changing
 it in SolidCraft moves the panels.
 
+`glazing_wood_depth` remains a native model parameter. The retainers now
+extrude directly from the Y=0 front datum instead of being centred and moved
+afterwards. The plexiglass receives the semantic front datum
+`front_y=glazing_wood_depth` and is built directly from that native sketch
+plane. Therefore changing `glazing_wood_depth` in SolidCraft updates both the
+retainer depth and the plexiglass Y position without a frozen occurrence
+translation.
+
 Fixed product or part dimensions use `UPPER_CASE` constants instead. The
 plexiglass sheet is fixed in this design, so `parts/window.py` contains
 `GLASS_WIDTH`, `GLASS_HEIGHT` and `GLASS_THICKNESS`; they are deliberately
@@ -142,8 +150,9 @@ component definitions, each shared by its pair of occurrences.
 **Do not round the glass retaining strips.** Their ends are mitred,
 not filleted. The R4 rounding belongs to the **roof and bottom boards**.
 
-The retaining strips begin at **Y=0**, aligned flush with the
-sidewalls. They are 12 mm deep and end at Y=12. The glass touches their
+The retaining strips are authored directly from **Y=0**, aligned flush with
+the sidewalls; no Y occurrence translation is required. They are 12 mm deep
+and end at Y=12. The glass touches their
 rear faces and occupies Y=12..16. The glass and its retainers therefore
 stay within the box's front plane, rather than sticking out.
 

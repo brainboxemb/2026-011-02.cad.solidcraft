@@ -816,7 +816,7 @@
     {
       "command": "material.create",
       "params": {
-        "name": "LIGHTPLY glazing horizontal",
+        "name": "PINE glazing horizontal",
         "density_g_cm3": 0.55,
         "color": "#E3BF80"
       }
@@ -827,7 +827,7 @@
         "bodies": [
           "GlassStrip"
         ],
-        "material": "LIGHTPLY glazing horizontal"
+        "material": "PINE glazing horizontal"
       }
     },
     {
@@ -910,7 +910,7 @@
         "bodies": [
           "GlassStrip_2"
         ],
-        "material": "LIGHTPLY glazing horizontal"
+        "material": "PINE glazing horizontal"
       }
     },
     {
@@ -996,7 +996,7 @@
     {
       "command": "material.create",
       "params": {
-        "name": "LIGHTPLY glazing vertical",
+        "name": "PINE glazing vertical",
         "density_g_cm3": 0.55,
         "color": "#A9793E"
       }
@@ -1007,7 +1007,7 @@
         "bodies": [
           "GlassStrip_3"
         ],
-        "material": "LIGHTPLY glazing vertical"
+        "material": "PINE glazing vertical"
       }
     },
     {
@@ -1096,7 +1096,7 @@
         "bodies": [
           "GlassStrip_4"
         ],
-        "material": "LIGHTPLY glazing vertical"
+        "material": "PINE glazing vertical"
       }
     },
     {

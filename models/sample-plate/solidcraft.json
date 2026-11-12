@@ -81,7 +81,7 @@
             4.0
           ]
         ],
-        "radius": 6.0,
+        "radius": 6,
         "body": "SamplePlate"
       }
     },

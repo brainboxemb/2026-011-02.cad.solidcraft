@@ -156,7 +156,7 @@
             -0.0
           ]
         ],
-        "radius": 4.0,
+        "radius": "inside_corner_radius",
         "body": "CornerBracket"
       }
     },

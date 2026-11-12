@@ -200,16 +200,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_thickness",
-        "expression": "12",
+        "name": "SideWall_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "SideWall_depth",
-        "expression": "100",
+        "name": "SideWall_thickness",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -232,20 +232,37 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "SideWall footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-SideWall_thickness / 2",
-          "-SideWall_depth / 2"
+        "points": [
+          [
+            "-(SideWall_thickness / 2)",
+            0
+          ],
+          [
+            "SideWall_thickness / 2",
+            0
+          ],
+          [
+            "SideWall_thickness / 2",
+            "-(SideWall_height)"
+          ],
+          [
+            "-(SideWall_thickness / 2)",
+            "-(SideWall_height)"
+          ]
         ],
-        "p1": [
-          "SideWall_thickness / 2",
-          "SideWall_depth / 2"
+        "closed": true,
+        "ids": [
+          "lower_left",
+          "lower_right",
+          "upper_right",
+          "upper_left"
         ]
       }
     },
@@ -256,7 +273,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "SideWall_height",
+        "distance": "SideWall_depth",
+        "direction": "symmetric",
         "body_name": "SideWall"
       }
     },
@@ -314,16 +332,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_width",
-        "expression": "868",
+        "name": "BottomBoard_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "BottomBoard_depth",
-        "expression": "100",
+        "name": "BottomBoard_width",
+        "expression": "868",
         "unit": "mm"
       }
     },
@@ -354,20 +372,37 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "BottomBoard footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-BottomBoard_width / 2",
-          "-BottomBoard_depth / 2"
+        "points": [
+          [
+            "-(BottomBoard_width / 2)",
+            0
+          ],
+          [
+            "BottomBoard_width / 2",
+            0
+          ],
+          [
+            "BottomBoard_width / 2",
+            "-(BottomBoard_thickness)"
+          ],
+          [
+            "-(BottomBoard_width / 2)",
+            "-(BottomBoard_thickness)"
+          ]
         ],
-        "p1": [
-          "BottomBoard_width / 2",
-          "BottomBoard_depth / 2"
+        "closed": true,
+        "ids": [
+          "lower_left",
+          "lower_right",
+          "upper_right",
+          "upper_left"
         ]
       }
     },
@@ -378,7 +413,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BottomBoard_thickness",
+        "distance": "BottomBoard_depth",
+        "direction": "symmetric",
         "body_name": "BottomBoard"
       }
     },
@@ -389,15 +425,15 @@
           [
             -434.0,
             0.0,
-            0.0
+            -0.0
           ],
           [
             434.0,
             0.0,
-            0.0
+            -0.0
           ]
         ],
-        "radius": 4.0,
+        "radius": "BottomBoard_corner_radius",
         "body": "BottomBoard"
       }
     },
@@ -438,16 +474,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_width",
-        "expression": "868",
+        "name": "RoofBoard_depth",
+        "expression": "120",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "RoofBoard_depth",
-        "expression": "120",
+        "name": "RoofBoard_width",
+        "expression": "868",
         "unit": "mm"
       }
     },
@@ -478,20 +514,37 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "RoofBoard footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-RoofBoard_width / 2",
-          "-RoofBoard_depth / 2"
+        "points": [
+          [
+            "-(RoofBoard_width / 2)",
+            0
+          ],
+          [
+            "RoofBoard_width / 2",
+            0
+          ],
+          [
+            "RoofBoard_width / 2",
+            "-(RoofBoard_thickness)"
+          ],
+          [
+            "-(RoofBoard_width / 2)",
+            "-(RoofBoard_thickness)"
+          ]
         ],
-        "p1": [
-          "RoofBoard_width / 2",
-          "RoofBoard_depth / 2"
+        "closed": true,
+        "ids": [
+          "lower_left",
+          "lower_right",
+          "upper_right",
+          "upper_left"
         ]
       }
     },
@@ -502,7 +555,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "RoofBoard_thickness",
+        "distance": "RoofBoard_depth",
+        "direction": "symmetric",
         "body_name": "RoofBoard"
       }
     },
@@ -511,17 +565,17 @@
       "params": {
         "edges": [
           [
-            -434.0,
+            434.0,
             0.0,
             12.0
           ],
           [
-            434.0,
+            -434.0,
             0.0,
             12.0
           ]
         ],
-        "radius": 4.0,
+        "radius": "RoofBoard_corner_radius",
         "body": "RoofBoard"
       }
     },
@@ -562,16 +616,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "BackBoard_width",
-        "expression": "868",
+        "name": "BackBoard_thickness",
+        "expression": "9",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "BackBoard_thickness",
-        "expression": "9",
+        "name": "BackBoard_width",
+        "expression": "868",
         "unit": "mm"
       }
     },
@@ -594,20 +648,37 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "BackBoard footprint"
+        "plane": "XZ",
+        "name": "Profile"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "-BackBoard_width / 2",
-          "-BackBoard_thickness / 2"
+        "points": [
+          [
+            "-(BackBoard_width / 2)",
+            0
+          ],
+          [
+            "BackBoard_width / 2",
+            0
+          ],
+          [
+            "BackBoard_width / 2",
+            "-(BackBoard_height)"
+          ],
+          [
+            "-(BackBoard_width / 2)",
+            "-(BackBoard_height)"
+          ]
         ],
-        "p1": [
-          "BackBoard_width / 2",
-          "BackBoard_thickness / 2"
+        "closed": true,
+        "ids": [
+          "lower_left",
+          "lower_right",
+          "upper_right",
+          "upper_left"
         ]
       }
     },
@@ -618,7 +689,8 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "BackBoard_height",
+        "distance": "BackBoard_thickness",
+        "direction": "symmetric",
         "body_name": "BackBoard"
       }
     },
@@ -1102,7 +1174,7 @@
             -0.0
           ]
         ],
-        "radius": 4.0,
+        "radius": "CornerBracket_inside_corner_radius",
         "body": "CornerBracket"
       }
     },

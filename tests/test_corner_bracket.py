@@ -5,10 +5,9 @@ import unittest
 from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "models" / "components" / "corner_bracket.py"
+COMPONENT = ROOT / "models" / "components" / "corner_bracket" / "scpf" / "model.py"
 REFERENCE = (
-    ROOT / "models" / "components" / "corner-bracket" / "scpf"
-    / "model_reference.py"
+    ROOT / "models" / "components" / "corner_bracket" / "scpf" / "reference.py"
 )
 
 

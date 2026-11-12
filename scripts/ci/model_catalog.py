@@ -14,12 +14,12 @@ SOURCES = {
     "sample-plate": "models/basic/sample-plate/scpf/model.py",
     "plastic-enclosure": "models/basic/plastic-enclosure/scpf/model.py",
     "plastic-enclosure-pi": "models/basic/plastic-enclosure-pi/scpf/model.py",
-    "corner-bracket": "models/components/corner_bracket.py",
-    "hub75-panel": "models/components/hub75.py",
+    "corner-bracket": "models/components/corner_bracket/scpf/model.py",
+    "hub75-panel": "models/components/hub75_panel/scpf/model.py",
     "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
 }
-# Reusable component models are compiled directly from models/components/*.py.
+# Reusable component models are compiled directly from normalized models/components/<name>/scpf/model.py sources.
 # Assemblies import those exact classes; no SCPF launcher/wrapper file exists
 # for the standalone CornerBracket or Hub75Panel.
 #
@@ -32,13 +32,13 @@ SOURCES = {
 # Start with Plate and CornerBracket; expand only after native comparison.
 COMMAND_SOURCES = {
     "plate": "models/basic/plate/scpc/model.py",
-    "corner-bracket": "models/components/corner-bracket/scpc/model.py",
+    "corner-bracket": "models/components/corner_bracket/scpc/model.py",
 }
 
 COMPONENT_SOURCES = {
-    "corner-bracket": "models/components/corner_bracket.py",
-    "hub75-panel": "models/components/hub75.py",
-    "hub75-screen": "models/components/hub75.py",
+    "corner-bracket": "models/components/corner_bracket/scpf/model.py",
+    "hub75-panel": "models/components/hub75_panel/scpf/model.py",
+    "hub75-screen": "models/components/hub75_panel/scpf/model.py",
 }
 
 # Component examples display their real source first. Assemblies are primarily

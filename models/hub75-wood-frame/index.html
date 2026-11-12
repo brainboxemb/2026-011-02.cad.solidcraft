@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">195 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">196 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -59,20 +59,26 @@ class WoodenHub75Box:
     # Parameter rule: dimensions may move these reference planes, but no
     # dependent part may freeze such a relationship into an occurrence.move.
 
+    # Parameter intent:
+    #   lower_case  = native editable SolidCraft model parameter
+    #   _lower_case = Forge/build-time input; intentionally not native
+    #   UPPER_CASE  = fixed constants in the owning part/assembly module
+    #
     # Display / inside opening
     opening_width = 844.0
     opening_height = 362.0
-    panel_count = 5
-    panel_pitch = 160.0
+    _panel_recess_depth = 25.0
 
     # Wood
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    panel_recess_depth = 25.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
+
+    # Printed corner brackets
+    bracket_width = 24.0
 
     # Glazing retainers
     glazing_wood_width = 12.0
@@ -84,9 +90,7 @@ class WoodenHub75Box:
         panels = HUB75Panels(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
-            panel_count=self.panel_count,
-            panel_pitch=self.panel_pitch,
-            panel_recess_depth=self.panel_recess_depth,
+            _panel_recess_depth=self._panel_recess_depth,
         )
 
         frame = WoodFrame(
@@ -113,6 +117,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            bracket_width=self.bracket_width,
             corner_radius=self.corner_radius,
         )
 
@@ -1201,6 +1206,14 @@ WoodenHub75Box()
     &quot;angle&quot;: &quot;-90 deg&quot;
   }
 }</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;bracket_width&quot;,
+    &quot;expression&quot;: &quot;24&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -1214,7 +1227,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: 12.0
+    &quot;offset&quot;: &quot;bracket_width / 2&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -1279,7 +1292,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket&quot;
   }
@@ -1434,7 +1447,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - 12 mm&quot;
+    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -1499,7 +1512,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_2</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_2&quot;
   }
@@ -1654,7 +1667,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: 12.0
+    &quot;offset&quot;: &quot;bracket_width / 2&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -1719,7 +1732,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_3</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_3&quot;
   }
@@ -1874,7 +1887,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - 12 mm&quot;
+    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -1939,7 +1952,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_4</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_4&quot;
   }
@@ -2094,7 +2107,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: 12.0
+    &quot;offset&quot;: &quot;bracket_width / 2&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -2159,7 +2172,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_5</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_5&quot;
   }
@@ -2314,7 +2327,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - 12 mm&quot;
+    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -2379,7 +2392,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_6</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_6&quot;
   }
@@ -2534,7 +2547,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: 12.0
+    &quot;offset&quot;: &quot;bracket_width / 2&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -2599,7 +2612,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_7</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_7&quot;
   }
@@ -2754,7 +2767,7 @@ WoodenHub75Box()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
     &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - 12 mm&quot;
+    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -2819,7 +2832,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_8</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: 24.0,
+    &quot;distance&quot;: &quot;bracket_width&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket_8&quot;
   }

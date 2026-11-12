@@ -2,7 +2,7 @@
 
 from scpf import assembly, component
 
-from models.components.corner_bracket.model import CornerBracket
+from models.components.corner_bracket.scpf.model import CornerBracket
 
 
 Bracket = component(CornerBracket)

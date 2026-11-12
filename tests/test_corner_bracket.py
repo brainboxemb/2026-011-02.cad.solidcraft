@@ -23,6 +23,44 @@ class CornerBracketTests(unittest.TestCase):
         self.assertFalse(any("bolt" in name or "head" in name or
                              "plywood" in name for name in names))
 
+    def test_standalone_uses_exact_shared_component_class(self):
+        source = (EXAMPLE / "model.py").read_text(encoding="utf-8")
+        shared = (
+            ROOT / "components" / "corner_bracket.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn(
+            "from components.corner_bracket import CornerBracket",
+            source,
+        )
+        self.assertNotIn("class CornerBracket:", source)
+        self.assertNotIn("_Shared.build", source)
+        self.assertNotIn("hasattr(", shared)
+        self.assertNotIn("getattr(", shared)
+        self.assertEqual(shared.count("points = ["), 1)
+
+        commands = run_script(EXAMPLE / "model.py")["commands"]
+        names = [
+            row["params"]["name"]
+            for row in commands
+            if row["command"] == "parameters.add"
+        ]
+        self.assertEqual(
+            names,
+            [
+                "bracket_width",
+                "wall_thickness",
+                "horizontal_arm_length",
+                "vertical_arm_length",
+                "outer_corner_chamfer",
+                "arm_end_chamfer",
+                "side_edge_chamfer",
+                "elephant_foot_relief",
+                "inside_corner_radius",
+            ],
+        )
+        self.assertFalse(any(name.startswith("_") for name in names))
+
     def test_named_polygon_vertices_generate_sketch_ids(self):
         from scpf.core import Polygon2D
         profile = Polygon2D([

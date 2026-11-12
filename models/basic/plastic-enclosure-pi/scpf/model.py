@@ -89,6 +89,3 @@ class PlasticEnclosurePi:
             "PETG", density_g_cm3=1.27, color="#2a8696"
         )
         return enclosure
-
-
-PlasticEnclosurePi()

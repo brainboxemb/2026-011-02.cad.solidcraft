@@ -6,7 +6,7 @@ from pathlib import Path
 from scpf.runner import ModelParameterWarning, run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL = ROOT / "models/components/hub75_panel/scpf/model.py"
+MODEL = ROOT / "models/components/hub75_panel/detailed/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class Hub75PanelTests(unittest.TestCase):
         No Python matrix calculations, and no unsupported 'to' parameter.
         The native CI separately checks actual saved SolidCraft transforms.
         """
-        commands = run_script(ROOT / "models/advanced/hub75-screen/scpf/model.py")["commands"]
+        commands = run_script(ROOT / "models/advanced/hub75_screen/scpf/model.py")["commands"]
         def of(kind):
             return [item["params"] for item in commands if item["command"] == kind]
 
@@ -54,7 +54,7 @@ class Hub75PanelTests(unittest.TestCase):
 
     def test_screen_layout_uses_constants_and_emits_no_parameter_warning(self):
         source = (
-            ROOT / "models/advanced/hub75-screen/scpf/model.py"
+            ROOT / "models/advanced/hub75_screen/scpf/model.py"
         ).read_text(encoding="utf-8")
         self.assertIn("NOMINAL_PITCH_X = 160.0", source)
         self.assertIn("NOMINAL_HEIGHT = 320.0", source)
@@ -64,7 +64,7 @@ class Hub75PanelTests(unittest.TestCase):
         with warnings.catch_warnings(record=True) as caught:
             warnings.simplefilter("always")
             commands = run_script(
-                ROOT / "models/advanced/hub75-screen/scpf/model.py"
+                ROOT / "models/advanced/hub75_screen/scpf/model.py"
             )["commands"]
 
         self.assertFalse(
@@ -83,7 +83,7 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(root_parameters, [])
 
     def test_single_panel_and_screen_import_the_same_definition(self):
-        from models.components.hub75_panel.scpf.model import Hub75Panel as PanelDefinition
+        from models.components.hub75_panel.detailed.scpf.model import Hub75Panel as PanelDefinition
         from scpf import component
         panel = component(PanelDefinition)()
         self.assertIs(panel.definition.shape, panel.copy().definition.shape)
@@ -144,7 +144,7 @@ class Hub75PanelTests(unittest.TestCase):
         )
 
     def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
-        from models.components.hub75_panel.scpf.model import Hub75Panel
+        from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 
         commands = run_script(MODEL)["commands"]
         named = [c for c in commands if c["command"] == "sketch.create"]
@@ -214,7 +214,7 @@ class Hub75PanelTests(unittest.TestCase):
         # Every bore must start at the REAR and terminate at Z=2 mm.
         # An old through-hole depth of 15 mm would pierce the front face.
         # Native input preserves expressions in the parameterized model.
-        from models.components.hub75_panel.scpf.model import Hub75Panel
+        from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
         reference = Hub75Panel()
         self.assertEqual(reference.depth - reference.front_depth, 12.5)
         for bore in holes:

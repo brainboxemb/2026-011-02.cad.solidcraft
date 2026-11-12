@@ -7,7 +7,7 @@ The [reviewed native commands](scpf/reference.json) are regression
 fixtures for the SolidCraft Python compiler.
 
 ```powershell
-python -m scpf examples/csg-cube/scpf/model.py --out output/csg-cube.json
+python -m scpf models/basic/csg_cube/scpf/model.py --out output/csg-cube.json
 code output/csg-cube.json
 ```
 

@@ -10,7 +10,7 @@ from scpf.runner import ModelParameterWarning, run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SCPF_DIR = ROOT / "models/advanced/hub75-wood-frame/scpf"
+SCPF_DIR = ROOT / "models/advanced/hub75_wood_frame/scpf"
 MODEL = SCPF_DIR / "model.py"
 BOARD = SCPF_DIR / "parts/board.py"
 GLASS_STRIP = SCPF_DIR / "parts/glass_strip.py"
@@ -321,7 +321,7 @@ class WoodenFrameTests(unittest.TestCase):
             )
 
     def test_basic_hub75_envelope_uses_fixed_constants(self):
-        from models.components.hub75_panel.scpf.basic import (
+        from models.components.hub75_panel.basic.scpf.model import (
             HUB75_PANEL_DEPTH,
             HUB75_PANEL_HEIGHT,
             HUB75_PANEL_WIDTH,

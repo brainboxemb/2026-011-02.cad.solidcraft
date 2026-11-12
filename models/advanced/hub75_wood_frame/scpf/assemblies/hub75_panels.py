@@ -2,7 +2,7 @@
 
 from scpf import assembly, component
 
-from models.components.hub75_panel.scpf.basic import (
+from models.components.hub75_panel.basic.scpf.model import (
     HUB75_PANEL_DEPTH,
     HUB75_PANEL_HEIGHT,
     Hub75PanelBasic,

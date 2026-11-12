@@ -17,13 +17,13 @@
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
-<div class="links"><a class="btn" href="source/components/corner_bracket.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<div class="links"><a class="btn" href="model.py">Component source</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Solid bracket — mounting-hole features deliberately omitted</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fcorner-bracket%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in SolidCraft 0.30.1.</p></section>
 
-<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>components/corner_bracket.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/components/corner_bracket.py">Download component source</a></p><pre><code>&quot;&quot;&quot;One shared, editable CornerBracket shape WITHOUT screw holes.
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>components/corner_bracket.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;One shared, editable CornerBracket shape WITHOUT screw holes.
 
 The standalone demonstration and wooden HUB75 assembly import this single
 geometry definition. While the screw-hole operations are producing native
@@ -144,15 +144,6 @@ class CornerBracket:
         # Do not reintroduce holes through model-specific workarounds.
 
         return body
-</code></pre></section><section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the entry point that SCPF executes. It imports the shared definition and places it into the CAD model; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;Standalone native regression for the shared hole-free corner bracket.
-
-The standalone model imports and runs the exact same CornerBracket class used
-by assemblies. There is no wrapper class and no alternate geometry path.
-&quot;&quot;&quot;
-from components.corner_bracket import CornerBracket
-
-
-CornerBracket()
 </code></pre></section>
 <section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;CornerBracket in native SolidCraft commands (no dependency on SCPF).
 

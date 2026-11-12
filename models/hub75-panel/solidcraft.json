@@ -3,7 +3,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_width",
+        "name": "width",
         "expression": "159.7",
         "unit": "mm"
       }
@@ -11,7 +11,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_height",
+        "name": "height",
         "expression": "319.71",
         "unit": "mm"
       }
@@ -19,7 +19,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_depth",
+        "name": "depth",
         "expression": "14.5",
         "unit": "mm"
       }
@@ -27,7 +27,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_front_depth",
+        "name": "front_depth",
         "expression": "2",
         "unit": "mm"
       }
@@ -35,7 +35,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_rear_inset",
+        "name": "rear_inset",
         "expression": "1.25",
         "unit": "mm"
       }
@@ -43,7 +43,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_rear_side_rail",
+        "name": "rear_side_rail",
         "expression": "12.5",
         "unit": "mm"
       }
@@ -51,7 +51,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_rear_crossbar",
+        "name": "rear_crossbar",
         "expression": "20",
         "unit": "mm"
       }
@@ -59,7 +59,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_rear_end_rail",
+        "name": "rear_end_rail",
         "expression": "10.75",
         "unit": "mm"
       }
@@ -67,7 +67,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_hole_diameter",
+        "name": "hole_diameter",
         "expression": "3",
         "unit": "mm"
       }
@@ -75,7 +75,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_mount_x",
+        "name": "mount_x",
         "expression": "72",
         "unit": "mm"
       }
@@ -83,16 +83,9 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "Hub75Panel_mount_y",
+        "name": "mount_y",
         "expression": "152",
         "unit": "mm"
-      }
-    },
-    {
-      "command": "component.create",
-      "params": {
-        "name": "Hub75Panel",
-        "grounded": true
       }
     },
     {
@@ -106,12 +99,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-Hub75Panel_width / 2",
-          "-Hub75Panel_height / 2"
+          "-width / 2",
+          "-height / 2"
         ],
         "p1": [
-          "Hub75Panel_width / 2",
-          "Hub75Panel_height / 2"
+          "width / 2",
+          "height / 2"
         ]
       }
     },
@@ -122,7 +115,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "Hub75Panel_front_depth",
+        "distance": "front_depth",
         "body_name": "Hub75Panel"
       }
     },
@@ -131,19 +124,19 @@
       "params": {
         "plane": "XY",
         "name": "Hub75Panel rear start",
-        "offset": "Hub75Panel_front_depth"
+        "offset": "front_depth"
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-Hub75Panel_width / 2",
-          "-Hub75Panel_height / 2"
+          "-width / 2",
+          "-height / 2"
         ],
         "p1": [
-          "Hub75Panel_width / 2",
-          "Hub75Panel_height / 2"
+          "width / 2",
+          "height / 2"
         ]
       }
     },
@@ -156,19 +149,19 @@
       "params": {
         "plane": "XY",
         "name": "Hub75Panel rear perimeter",
-        "offset": "Hub75Panel_depth"
+        "offset": "depth"
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-Hub75Panel_width / 2) + (Hub75Panel_rear_inset)",
-          "(-Hub75Panel_height / 2) + (Hub75Panel_rear_inset)"
+          "(-width / 2) + (rear_inset)",
+          "(-height / 2) + (rear_inset)"
         ],
         "p1": [
-          "(Hub75Panel_width / 2) - (Hub75Panel_rear_inset)",
-          "(Hub75Panel_height / 2) - (Hub75Panel_rear_inset)"
+          "(width / 2) - (rear_inset)",
+          "(height / 2) - (rear_inset)"
         ]
       }
     },
@@ -198,19 +191,19 @@
       "params": {
         "plane": "XY",
         "name": "Rear electronics bays",
-        "offset": "(Hub75Panel_depth)"
+        "offset": "(depth)"
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)",
+          "((-(height)) / 2) + (height / 2) + (-(height / 2)) + (rear_end_rail * 0.999094)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))",
+          "((-(height)) / 2) + (height / 2) + (-(height / 2)) + (rear_end_rail * 0.999094) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))"
         ]
       }
     },
@@ -218,12 +211,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)",
+          "((-(height)) / 2) + (height / 2) + (-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))",
+          "((-(height)) / 2) + (height / 2) + (-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + (-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))"
         ]
       }
     },
@@ -231,12 +224,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)",
+          "((-(height)) / 2) + (height / 2) + ((rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))",
+          "((-(height)) / 2) + (height / 2) + ((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)"
         ]
       }
     },
@@ -244,12 +237,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)",
+          "((-(height)) / 2) + (height / 2) + (height / 4) + ((rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
+          "((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))",
+          "((-(height)) / 2) + (height / 2) + (height / 4) + ((rear_crossbar * 0.999094) / 2) + ((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))"
         ]
       }
     },
@@ -265,7 +258,7 @@
           "Hub75Panel"
         ],
         "name": "Rear electronics bays",
-        "distance": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "distance": "depth - (front_depth)",
         "direction": "negative"
       }
     },
@@ -273,15 +266,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(Hub75Panel_mount_x)",
-          "-(Hub75Panel_mount_y)",
-          "Hub75Panel_depth"
+          "-(mount_x)",
+          "-(mount_y)",
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -293,15 +286,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(Hub75Panel_mount_x)",
+          "-(mount_x)",
           0,
-          "Hub75Panel_depth"
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -313,15 +306,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(Hub75Panel_mount_x)",
-          "Hub75Panel_mount_y",
-          "Hub75Panel_depth"
+          "-(mount_x)",
+          "mount_y",
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -333,15 +326,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "Hub75Panel_mount_x",
-          "-(Hub75Panel_mount_y)",
-          "Hub75Panel_depth"
+          "mount_x",
+          "-(mount_y)",
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -353,15 +346,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "Hub75Panel_mount_x",
+          "mount_x",
           0,
-          "Hub75Panel_depth"
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -373,15 +366,15 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "Hub75Panel_mount_x",
-          "Hub75Panel_mount_y",
-          "Hub75Panel_depth"
+          "mount_x",
+          "mount_y",
+          "depth"
         ],
-        "diameter": "Hub75Panel_hole_diameter",
+        "diameter": "hole_diameter",
         "targets": [
           "Hub75Panel"
         ],
-        "depth": "Hub75Panel_depth - (Hub75Panel_front_depth)",
+        "depth": "depth - (front_depth)",
         "direction": [
           0.0,
           0.0,
@@ -404,30 +397,6 @@
           "Hub75Panel"
         ],
         "material": "HUB75 housing"
-      }
-    },
-    {
-      "command": "component.activate",
-      "params": {
-        "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75Panel:1",
-        "translate": [
-          0.0,
-          0.0,
-          160.0
-        ],
-        "axis": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "angle": "90 deg",
-        "move_grounded": true
       }
     }
   ]

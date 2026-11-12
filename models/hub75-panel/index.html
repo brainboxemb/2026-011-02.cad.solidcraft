@@ -10,20 +10,20 @@
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-panel</div>
-<h1>Hub75Panel</h1><p>One upright measured P5 HUB75 panel component</p></div></section>
+<h1>Hub75Panel</h1><p>One measured reusable P5 HUB75 panel component</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">40 commands</span><span class="badge">159.70 × 319.71 × 14.50 mm; six Ø3 holes; one upright occurrence</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">37 commands</span><span class="badge">159.70 × 319.71 × 14.50 mm; six Ø3 holes; direct shared component root</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. One native occurrence upright in XZ, with front/rear snapshots; rear-step/rounding details, PCB and connectors are future steps.</p></section>
+<p>Shared panel component from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. Standalone uses the component&#x27;s own local XY/Z axes; screen assemblies rotate the exact same class into world XZ.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
-<div class="links"><a class="btn" href="source/components/hub75.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+<div class="links"><a class="btn" href="model.py">Component source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Create Hub75Panel component</li><li>Sketch and extrude the physical front envelope</li><li>Cut four rear electronics bays from the rear plane</li><li>Cut six blind rear-side Ø3 mounting holes</li><li>Assign grey housing material</li><li>Rotate the single component into the upright XZ plane</li><li>Verify front and rear views in SolidCraft 0.30.1</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Run the shared Hub75Panel component directly</li><li>Sketch and extrude the physical front envelope</li><li>Cut four rear electronics bays from the rear plane</li><li>Cut six blind rear-side Ø3 mounting holes</li><li>Assign grey housing material</li><li>Keep the standalone part in its local CAD axes</li><li>Verify local front and rear views in SolidCraft 0.30.1</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fhub75-panel%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in SolidCraft 0.30.1.</p></section>
-<h2>Front and rear of the same upright panel</h2><div class="panel-views"><figure><a href="front.png" target="_blank" rel="noopener"><img src="front.png" alt="Native SolidCraft Front — LED mask"></a><figcaption>Front — LED mask</figcaption></figure><figure><a href="rear.png" target="_blank" rel="noopener"><img src="rear.png" alt="Native SolidCraft Rear — pockets and mounting bores"></a><figcaption>Rear — pockets and mounting bores</figcaption></figure></div><p class="small muted">Both are native SolidCraft snapshots of the same single-component design.</p>
-<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>components/hub75.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/components/hub75.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Single measured HUB75 panel reused in the regression and screen assembly.
+<h2>Front and rear of the same local component</h2><div class="panel-views"><figure><a href="front.png" target="_blank" rel="noopener"><img src="front.png" alt="Native SolidCraft Front — LED mask"></a><figcaption>Front — LED mask</figcaption></figure><figure><a href="rear.png" target="_blank" rel="noopener"><img src="rear.png" alt="Native SolidCraft Rear — pockets and mounting bores"></a><figcaption>Rear — pockets and mounting bores</figcaption></figure></div><p class="small muted">Both are native SolidCraft snapshots of the same single-component design.</p>
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>components/hub75.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Single measured HUB75 panel reused in the regression and screen assembly.
 
 Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
 The current CAD body is still an approximate rear-tapered envelope with
@@ -125,121 +125,94 @@ class Hub75Panel:
             &quot;HUB75 housing&quot;, density_g_cm3=1.20, color=&quot;#B8B8B8&quot;
         )
 
-</code></pre></section><section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the entry point that SCPF executes. It imports the shared definition and places it into the CAD model; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;One reusable HUB75 mechanical component, shown upright in world XZ.
-
-A single panel is a component. A screen assembly is responsible for copies.
-The detailed panel definition stays native XY with rear depth in +Z; its
-occurrence stands upright with +90 degrees about X, front facing world +Y.
-&quot;&quot;&quot;
-from scpf import component
-from components.hub75 import Hub75Panel as Hub75PanelDefinition
-
-Hub75Panel = component(Hub75PanelDefinition, include=&quot;*&quot;)
-
-
-class SingleHub75Panel:
-    def build(self):
-        # Native panel height is centred around Y=0; rotate that height into
-        # vertical world Z, then centre it in the 320 mm nominal display grid.
-        return Hub75Panel().rotate(axis=(1, 0, 0), degrees=90).move(z=160)
-
-
-SingleHub75Panel()
 </code></pre></section>
 
-<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_width</small><pre><code>{
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: width</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_width&quot;,
+    &quot;name&quot;: &quot;width&quot;,
     &quot;expression&quot;: &quot;159.7&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_height</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: height</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_height&quot;,
+    &quot;name&quot;: &quot;height&quot;,
     &quot;expression&quot;: &quot;319.71&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_depth&quot;,
+    &quot;name&quot;: &quot;depth&quot;,
     &quot;expression&quot;: &quot;14.5&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_front_depth</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: front_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_front_depth&quot;,
+    &quot;name&quot;: &quot;front_depth&quot;,
     &quot;expression&quot;: &quot;2&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_rear_inset</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: rear_inset</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_rear_inset&quot;,
+    &quot;name&quot;: &quot;rear_inset&quot;,
     &quot;expression&quot;: &quot;1.25&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_rear_side_rail</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: rear_side_rail</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_rear_side_rail&quot;,
+    &quot;name&quot;: &quot;rear_side_rail&quot;,
     &quot;expression&quot;: &quot;12.5&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_rear_crossbar</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: rear_crossbar</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_rear_crossbar&quot;,
+    &quot;name&quot;: &quot;rear_crossbar&quot;,
     &quot;expression&quot;: &quot;20&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_rear_end_rail</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: rear_end_rail</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_rear_end_rail&quot;,
+    &quot;name&quot;: &quot;rear_end_rail&quot;,
     &quot;expression&quot;: &quot;10.75&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_hole_diameter</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_diameter</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;name&quot;: &quot;hole_diameter&quot;,
     &quot;expression&quot;: &quot;3&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_mount_x</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: mount_x</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_mount_x&quot;,
+    &quot;name&quot;: &quot;mount_x&quot;,
     &quot;expression&quot;: &quot;72&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75Panel_mount_y</small><pre><code>{
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: mount_y</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel_mount_y&quot;,
+    &quot;name&quot;: &quot;mount_y&quot;,
     &quot;expression&quot;: &quot;152&quot;,
     &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: Hub75Panel</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75Panel&quot;,
-    &quot;grounded&quot;: true
   }
 }</code></pre></li>
 <li><strong>Create sketch</strong><small>sketch.create · name: Hub75Panel footprint, plane: XY</small><pre><code>{
@@ -253,12 +226,12 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;-Hub75Panel_width / 2&quot;,
-      &quot;-Hub75Panel_height / 2&quot;
+      &quot;-width / 2&quot;,
+      &quot;-height / 2&quot;
     ],
     &quot;p1&quot;: [
-      &quot;Hub75Panel_width / 2&quot;,
-      &quot;Hub75Panel_height / 2&quot;
+      &quot;width / 2&quot;,
+      &quot;height / 2&quot;
     ]
   }
 }</code></pre></li>
@@ -269,7 +242,7 @@ SingleHub75Panel()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: Hub75Panel</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;Hub75Panel_front_depth&quot;,
+    &quot;distance&quot;: &quot;front_depth&quot;,
     &quot;body_name&quot;: &quot;Hub75Panel&quot;
   }
 }</code></pre></li>
@@ -278,19 +251,19 @@ SingleHub75Panel()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XY&quot;,
     &quot;name&quot;: &quot;Hub75Panel rear start&quot;,
-    &quot;offset&quot;: &quot;Hub75Panel_front_depth&quot;
+    &quot;offset&quot;: &quot;front_depth&quot;
   }
 }</code></pre></li>
 <li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;-Hub75Panel_width / 2&quot;,
-      &quot;-Hub75Panel_height / 2&quot;
+      &quot;-width / 2&quot;,
+      &quot;-height / 2&quot;
     ],
     &quot;p1&quot;: [
-      &quot;Hub75Panel_width / 2&quot;,
-      &quot;Hub75Panel_height / 2&quot;
+      &quot;width / 2&quot;,
+      &quot;height / 2&quot;
     ]
   }
 }</code></pre></li>
@@ -303,19 +276,19 @@ SingleHub75Panel()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XY&quot;,
     &quot;name&quot;: &quot;Hub75Panel rear perimeter&quot;,
-    &quot;offset&quot;: &quot;Hub75Panel_depth&quot;
+    &quot;offset&quot;: &quot;depth&quot;
   }
 }</code></pre></li>
 <li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;(-Hub75Panel_width / 2) + (Hub75Panel_rear_inset)&quot;,
-      &quot;(-Hub75Panel_height / 2) + (Hub75Panel_rear_inset)&quot;
+      &quot;(-width / 2) + (rear_inset)&quot;,
+      &quot;(-height / 2) + (rear_inset)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;(Hub75Panel_width / 2) - (Hub75Panel_rear_inset)&quot;,
-      &quot;(Hub75Panel_height / 2) - (Hub75Panel_rear_inset)&quot;
+      &quot;(width / 2) - (rear_inset)&quot;,
+      &quot;(height / 2) - (rear_inset)&quot;
     ]
   }
 }</code></pre></li>
@@ -345,19 +318,19 @@ SingleHub75Panel()
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XY&quot;,
     &quot;name&quot;: &quot;Rear electronics bays&quot;,
-    &quot;offset&quot;: &quot;(Hub75Panel_depth)&quot;
+    &quot;offset&quot;: &quot;(depth)&quot;
   }
 }</code></pre></li>
 <li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (-(height / 2)) + (rear_end_rail * 0.999094)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (-(height / 2)) + (rear_end_rail * 0.999094) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))&quot;
     ]
   }
 }</code></pre></li>
@@ -365,12 +338,12 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (-(height / 4)) + ((rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + (-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))&quot;
     ]
   }
 }</code></pre></li>
@@ -378,12 +351,12 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + ((rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + ((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -391,12 +364,12 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125)&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (height / 4) + ((rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
+      &quot;((-(width)) / 2) + (width / 2) + ((-(width)) / 2) + (rear_side_rail * 0.998125) + (width - ((rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;((-(height)) / 2) + (height / 2) + (height / 4) + ((rear_crossbar * 0.999094) / 2) + ((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))&quot;
     ]
   }
 }</code></pre></li>
@@ -412,7 +385,7 @@ SingleHub75Panel()
       &quot;Hub75Panel&quot;
     ],
     &quot;name&quot;: &quot;Rear electronics bays&quot;,
-    &quot;distance&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;distance&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: &quot;negative&quot;
   }
 }</code></pre></li>
@@ -420,15 +393,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;-(Hub75Panel_mount_x)&quot;,
-      &quot;-(Hub75Panel_mount_y)&quot;,
-      &quot;Hub75Panel_depth&quot;
+      &quot;-(mount_x)&quot;,
+      &quot;-(mount_y)&quot;,
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -440,15 +413,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;-(Hub75Panel_mount_x)&quot;,
+      &quot;-(mount_x)&quot;,
       0,
-      &quot;Hub75Panel_depth&quot;
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -460,15 +433,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;-(Hub75Panel_mount_x)&quot;,
-      &quot;Hub75Panel_mount_y&quot;,
-      &quot;Hub75Panel_depth&quot;
+      &quot;-(mount_x)&quot;,
+      &quot;mount_y&quot;,
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -480,15 +453,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;Hub75Panel_mount_x&quot;,
-      &quot;-(Hub75Panel_mount_y)&quot;,
-      &quot;Hub75Panel_depth&quot;
+      &quot;mount_x&quot;,
+      &quot;-(mount_y)&quot;,
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -500,15 +473,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;Hub75Panel_mount_x&quot;,
+      &quot;mount_x&quot;,
       0,
-      &quot;Hub75Panel_depth&quot;
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -520,15 +493,15 @@ SingleHub75Panel()
   &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
     &quot;position&quot;: [
-      &quot;Hub75Panel_mount_x&quot;,
-      &quot;Hub75Panel_mount_y&quot;,
-      &quot;Hub75Panel_depth&quot;
+      &quot;mount_x&quot;,
+      &quot;mount_y&quot;,
+      &quot;depth&quot;
     ],
-    &quot;diameter&quot;: &quot;Hub75Panel_hole_diameter&quot;,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;targets&quot;: [
       &quot;Hub75Panel&quot;
     ],
-    &quot;depth&quot;: &quot;Hub75Panel_depth - (Hub75Panel_front_depth)&quot;,
+    &quot;depth&quot;: &quot;depth - (front_depth)&quot;,
     &quot;direction&quot;: [
       0.0,
       0.0,
@@ -551,30 +524,6 @@ SingleHub75Panel()
       &quot;Hub75Panel&quot;
     ],
     &quot;material&quot;: &quot;HUB75 housing&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.move&quot;,
-  &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:1&quot;,
-    &quot;translate&quot;: [
-      0.0,
-      0.0,
-      160.0
-    ],
-    &quot;axis&quot;: [
-      1.0,
-      0.0,
-      0.0
-    ],
-    &quot;angle&quot;: &quot;90 deg&quot;,
-    &quot;move_grounded&quot;: true
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

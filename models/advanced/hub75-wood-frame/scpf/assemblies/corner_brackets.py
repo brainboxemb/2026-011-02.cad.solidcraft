@@ -20,8 +20,8 @@ class CornerBrackets:
         rear = self.cabinet_depth
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         outer_half = outer_width / 2
-        top_z = self.opening_height + self.frame_wood_thickness
-        bottom_z = -self.frame_wood_thickness
+        top_z = self.opening_height + 2 * self.frame_wood_thickness
+        bottom_z = 0.0
 
         bracket_half = CornerBracket.bracket_width / 2
         front_y = bracket_half

@@ -323,13 +323,13 @@ jobs:
                ((.bbox.min[1] - 100) | fabs) < 0.001 and
                ((.bbox.max[1] - 109) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
-          # Hub75PanelBasic is a fixed 159.70 mm X extrusion of a YZ
-          # envelope whose Y/Z coordinates remain linked to parent parameters.
+          # Hub75PanelBasic is an XZ envelope with fixed 14.50 mm
+          # depth; its Z coordinates remain linked to opening_height.
           jq -e '
             (any(.commands[] | select(.command == "solid.extrude");
-              ((.params.distance - 159.70) | fabs) < 0.001)) and
+              ((.params.distance - 14.50) | fabs) < 0.001)) and
             ([.commands[] | select(.command == "sketch.create") |
-              .params.plane] | index("YZ")) != null
+              .params.plane] | index("XZ")) != null
           ' output/native/hub75-wood-frame/commands.json
           # Check representative editable SolidCraft feature histories, not just images.
           unzip -p output/native/sample-plate/model.sc document.json > output/native/sample-plate/document.json

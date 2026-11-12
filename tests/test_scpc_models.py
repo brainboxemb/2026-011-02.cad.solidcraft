@@ -10,6 +10,7 @@ import unittest
 
 from scpf.runner import run_script as forge_script
 from scpc import load_script as native_script
+from scripts.ci.model_catalog import source_path
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -53,13 +54,10 @@ def normalize_native_plan(document):
 
 class ParallelModelTests(unittest.TestCase):
     def test_plate_and_corner_bracket_have_independent_native_scripts(self):
-        for slug, base in (
-            ("plate", ROOT / "models/basic/plate"),
-            ("corner-bracket", ROOT / "models/components/corner-bracket"),
-        ):
+        for slug in ("plate", "corner-bracket"):
             with self.subTest(slug=slug):
-                forge = base / "scpf/model.py"
-                native = base / "scpc/model.py"
+                forge = source_path(ROOT, slug)
+                native = source_path(ROOT, slug, "scpc")
                 self.assertTrue(forge.is_file())
                 self.assertTrue(native.is_file())
 

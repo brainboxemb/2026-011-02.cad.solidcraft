@@ -223,7 +223,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             moved(cmd, "RoofBoard")[0]["translate"],
-            [0.0, 50.0, 362.0],
+            [0.0, 50.0, 0.0],
         )
         self.assertEqual(
             moved(cmd, "BackBoard")[0]["translate"],
@@ -401,6 +401,32 @@ class WoodenFrameTests(unittest.TestCase):
             self.assertAlmostEqual(last_y, back_start_y)
             self.assertLessEqual(last_y, back_start_y)
 
+    def test_roof_z_is_symbolic_geometry_not_fixed_occurrence_move(self):
+        cmd = commands(opening_height=400)
+
+        roof_move = moved(cmd, "RoofBoard")[0]
+        self.assertEqual(roof_move["translate"], [0.0, 50.0, 0.0])
+
+        create_index = next(
+            i for i, command in enumerate(cmd)
+            if command["command"] == "component.create"
+            and command["params"]["name"] == "RoofBoard"
+        )
+        activate_index = next(
+            i for i in range(create_index + 1, len(cmd))
+            if cmd[i]["command"] == "component.activate"
+            and cmd[i]["params"]["component"] == "root"
+        )
+        roof_commands = cmd[create_index:activate_index]
+        roof_profile = next(
+            command["params"] for command in roof_commands
+            if command["command"] == "sketch.line"
+        )
+
+        points = str(roof_profile["points"])
+        self.assertIn("opening_height", points)
+        self.assertNotIn("RoofBoard_z_position", points)
+
     def test_wood_dimensions_and_roof_overhang(self):
         source = MODEL.read_text(encoding="utf-8")
         self.assertIn("frame_wood_thickness = 12.0", source)
@@ -434,7 +460,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             moved(cmd, "RoofBoard")[0]["translate"][2],
-            362.0,
+            0.0,
         )
         self.assertEqual(
             moved(cmd, "GlassStrip 2")[0]["translate"][0],

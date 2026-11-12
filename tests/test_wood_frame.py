@@ -147,6 +147,8 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
         self.assertIn("opening_height", parameter_names)
         self.assertIn("(self.opening_height - GLASS_HEIGHT) / 2", window_source)
+        self.assertIn("opening_bottom_z = 12.0", window_source)
+        self.assertNotIn("frame_wood_thickness", window_source)
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")

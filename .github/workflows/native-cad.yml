@@ -164,19 +164,20 @@ jobs:
             ([.commands[] | select(.command == "solid.fillet")] | length) == 1 and
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
-          # Top and bottom bracket definitions share the same source shape.
-          # The top definition carries symbolic opening_height in its profile;
-          # both definitions still produce eight physical placements total.
+          # Four bracket corner definitions keep X/Z attachment points
+          # symbolic in their profiles; each rear bracket is a native copy.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"
-               and (.params.name == "CornerBracket"
-                    or .params.name == "CornerBracket 2"))] | length) == 2 and
+               and (.params.name | startswith("CornerBracket")))] | length) == 4 and
             ([.commands[] | select(.command == "occurrence.copy"
-               and (.params.component | startswith("CornerBracket")))] | length) == 6 and
+               and (.params.component | startswith("CornerBracket")))] | length) == 4 and
             ([.commands[] | select(.command == "occurrence.move"
                and (.params.occurrence | startswith("CornerBracket")))] | length) == 8 and
-            ([.commands[] | select(.command == "solid.fillet")] | length) == 4
+            (all(.commands[] | select(.command == "occurrence.move"
+               and (.params.occurrence | startswith("CornerBracket")));
+               .params.translate[0] == 0 and .params.translate[2] == 0)) and
+            ([.commands[] | select(.command == "solid.fillet")] | length) == 6
           ' output/native/hub75-wood-frame/commands.json
           # Four native groups and five lightweight panels; no additional
           # duplicate component definitions from the removed modules.
@@ -189,17 +190,17 @@ jobs:
             ([.commands[] | select(.command == "occurrence.copy" and
                 .params.component == "Hub75PanelBasic")] | length) == 4
           ' output/native/hub75-wood-frame/commands.json
-          # Parametric profiles avoid Z occurrence moves for height-dependent
-          # parts. No custom matrices or absolute placement workarounds.
+          # Width/height-dependent X/Z positions live in parametric profiles.
+          # Occurrence moves only handle fixed depth placement/orientation.
           jq -e '
             ([.commands[] | select(.command == "occurrence.copy"
               and (.params.component | startswith("GlassStrip")))] | length) == 0 and
             ([.commands[] | select(.command == "occurrence.move"
               and .params.occurrence == "LeftBoard:1"
-              and .params.translate[0] == -428)] | length) == 1 and
+              and .params.translate == [0,50,0])] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
               and .params.occurrence == "RightBoard:1"
-              and .params.translate[0] == 428)] | length) == 1 and
+              and .params.translate == [0,50,0])] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.move"
               and .params.occurrence == "BackBoard:1"
               and .params.translate == [0,104.5,-12])] | length) == 1 and
@@ -307,6 +308,62 @@ jobs:
               and ((.bbox.min[2] + 24) | fabs) < 0.001
               and ((.bbox.max[2] - 48) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-height-400.json
+
+          # Parameter-edit regression: change opening_width in the SAVED
+          # native design, exactly as the Parameters dialog does.
+          cat > output/native/hub75-wood-frame/change-opening-width.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"opening_width","expression":"1000 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-opening-width.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-width-1000.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-width-1000.sc \
+            --json-out output/native/hub75-wood-frame/measurements-width-1000.json
+          jq -e '
+            # Side boards follow the new opening edges.
+            (all(.bodies[] | select(.name | startswith("LeftBoard"));
+              ((.bbox.min[0] + 512) | fabs) < 0.001 and
+              ((.bbox.max[0] + 500) | fabs) < 0.001)) and
+            (all(.bodies[] | select(.name | startswith("RightBoard"));
+              ((.bbox.min[0] - 500) | fabs) < 0.001 and
+              ((.bbox.max[0] - 512) | fabs) < 0.001)) and
+
+            # Bottom, roof and rear panel span the full 1024 mm outside width.
+            (all(.bodies[] | select(.name | startswith("BottomBoard")
+                                  or .name | startswith("RoofBoard")
+                                  or .name | startswith("BackBoard"));
+              ((.bbox.min[0] + 512) | fabs) < 0.001 and
+              ((.bbox.max[0] - 512) | fabs) < 0.001)) and
+
+            # Fixed 840 mm plexiglass remains centred on X=0.
+            (all(.bodies[] | select(.name | startswith("Window"));
+              ((.bbox.min[0] + 420) | fabs) < 0.001 and
+              ((.bbox.max[0] - 420) | fabs) < 0.001)) and
+
+            # The five fixed-pitch HUB75 panels stay centred as one set.
+            (([.bodies[] | select(.name | startswith("Hub75PanelBasic"))
+               | .bbox.min[0]] | min) + 399.85 | fabs) < 0.001 and
+            (([.bodies[] | select(.name | startswith("Hub75PanelBasic"))
+               | .bbox.max[0]] | max) - 399.85 | fabs) < 0.001 and
+
+            # Horizontal pine retainers span the 1000 mm opening.
+            ([.bodies[] | select((.name | startswith("GlassStrip"))
+              and (((.bbox.max[0] - .bbox.min[0]) - 1000) | fabs) < 0.001)]
+              | length) == 2 and
+
+            # Four brackets follow each outside edge of the wider frame.
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and .bbox.max[0] < 0
+              and ((.bbox.min[0] + 524) | fabs) < 0.001)] | length) == 4 and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and .bbox.min[0] > 0
+              and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
+          ' output/native/hub75-wood-frame/measurements-width-1000.json
 
           # Rear bracket sidewall alignment is a physical requirement.
           # Sidewalls stop at Y=100; the attached backboard occupies Y=100..109.

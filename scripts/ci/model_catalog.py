@@ -9,15 +9,15 @@ import sys
 
 SOURCES = {
     "plate": "models/basic/plate/scpf/model.py",
-    "csg-cube": "models/basic/csg-cube/scpf/model.py",
+    "csg-cube": "models/basic/csg_cube/scpf/model.py",
     "bracket": "models/basic/bracket/scpf/model.py",
-    "sample-plate": "models/basic/sample-plate/scpf/model.py",
-    "plastic-enclosure": "models/basic/plastic-enclosure/scpf/model.py",
-    "plastic-enclosure-pi": "models/basic/plastic-enclosure-pi/scpf/model.py",
+    "sample-plate": "models/basic/sample_plate/scpf/model.py",
+    "plastic-enclosure": "models/basic/plastic_enclosure/scpf/model.py",
+    "plastic-enclosure-pi": "models/basic/plastic_enclosure_pi/scpf/model.py",
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
     "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
-    "hub75-screen": "models/advanced/hub75-screen/scpf/model.py",
-    "hub75-wood-frame": "models/advanced/hub75-wood-frame/scpf/model.py",
+    "hub75-screen": "models/advanced/hub75_screen/scpf/model.py",
+    "hub75-wood-frame": "models/advanced/hub75_wood_frame/scpf/model.py",
 }
 # Reusable component models are compiled directly from normalized models/components/<name>/scpf/model.py sources.
 # Assemblies import those exact classes; no SCPF launcher/wrapper file exists

@@ -15,6 +15,7 @@ BOARD = SCPF_DIR / "parts/board.py"
 GLASS_STRIP = SCPF_DIR / "parts/glass_strip.py"
 WINDOW = SCPF_DIR / "parts/window.py"
 ASSEMBLIES = SCPF_DIR / "assemblies"
+GLASS_FRAME = ASSEMBLIES / "glass_frame.py"
 
 
 def commands(**overrides):
@@ -218,6 +219,14 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertTrue(
             all(p["translate"][1] == 32.25 for p in panels)
         )
+
+    def test_glass_frame_uses_named_axis_rotation(self):
+        source = GLASS_FRAME.read_text(encoding="utf-8")
+        self.assertIn("rotate(X, 180)", source)
+        self.assertIn("rotate(Y, 90)", source)
+        self.assertIn("rotate(Y, -90)", source)
+        self.assertNotIn("axis=(1, 0, 0)", source)
+        self.assertNotIn("axis=(0, 1, 0)", source)
 
     def test_glassstrip_two_lengths_four_placements_no_corner_fillet(self):
         cmd = commands()

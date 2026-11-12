@@ -4,7 +4,7 @@ No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The dimensions are fixed
 product constants; depth and vertical placement may be linked to parent parameters.
 """
-from scpf import Direction, Polygon2D
+from scpf import Direction, Polygon2D, component
 
 
 HUB75_PANEL_WIDTH = 159.70
@@ -12,6 +12,7 @@ HUB75_PANEL_HEIGHT = 319.71
 HUB75_PANEL_DEPTH = 14.50
 
 
+@component
 class Hub75PanelBasic:
     y_center = 0.0
     z_position = 0.0

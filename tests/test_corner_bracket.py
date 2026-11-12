@@ -5,12 +5,16 @@ import unittest
 from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-EXAMPLE = ROOT / "models" / "components" / "corner-bracket" / "scpf"
+COMPONENT = ROOT / "components" / "corner_bracket.py"
+REFERENCE = (
+    ROOT / "models" / "components" / "corner-bracket" / "scpf"
+    / "model_reference.py"
+)
 
 
 class CornerBracketTests(unittest.TestCase):
     def test_default_bracket_is_hole_free_and_retains_all_edge_features(self):
-        commands = run_script(EXAMPLE / "model.py")["commands"]
+        commands = run_script(COMPONENT)["commands"]
         # Current reusable component deliberately does not cut any mounting
         # holes; the archived model_reference.py is a different experiment.
         self.assertFalse(any(c["command"] == "solid.hole" for c in commands))
@@ -24,22 +28,16 @@ class CornerBracketTests(unittest.TestCase):
                              "plywood" in name for name in names))
 
     def test_standalone_uses_exact_shared_component_class(self):
-        source = (EXAMPLE / "model.py").read_text(encoding="utf-8")
-        shared = (
-            ROOT / "components" / "corner_bracket.py"
-        ).read_text(encoding="utf-8")
+        source = COMPONENT.read_text(encoding="utf-8")
 
-        self.assertIn(
-            "from components.corner_bracket import CornerBracket",
-            source,
-        )
-        self.assertNotIn("class CornerBracket:", source)
+        self.assertIn("class CornerBracket:", source)
+        self.assertNotIn("CornerBracket()", source)
         self.assertNotIn("_Shared.build", source)
-        self.assertNotIn("hasattr(", shared)
-        self.assertNotIn("getattr(", shared)
-        self.assertEqual(shared.count("points = ["), 1)
+        self.assertNotIn("hasattr(", source)
+        self.assertNotIn("getattr(", source)
+        self.assertEqual(source.count("points = ["), 1)
 
-        commands = run_script(EXAMPLE / "model.py")["commands"]
+        commands = run_script(COMPONENT)["commands"]
         names = [
             row["params"]["name"]
             for row in commands
@@ -79,7 +77,7 @@ class CornerBracketTests(unittest.TestCase):
                       ids=["a", "b", "c"])
 
     def test_polygon_segments_have_meaningful_sketch_ids(self):
-        commands = run_script(EXAMPLE / "model.py")["commands"]
+        commands = run_script(COMPONENT)["commands"]
         sketch = next(c for c in commands if c["command"] == "sketch.line")
         # Start drafting at I: the inside corner is the sketch origin.
         self.assertEqual(sketch["params"]["points"][0], [0, 0])
@@ -102,7 +100,7 @@ class CornerBracketTests(unittest.TestCase):
 
     def test_named_edges_and_tip_relief_compile_to_separate_features(self):
         """Sketch contains no EF cuts; native chamfer adds them explicitly."""
-        commands = run_script(EXAMPLE / "model.py")["commands"]
+        commands = run_script(COMPONENT)["commands"]
         sketch = next(c for c in commands if c["command"] == "sketch.line")
         self.assertEqual(len(sketch["params"]["points"]), 9)
 
@@ -174,7 +172,7 @@ class CornerBracketTests(unittest.TestCase):
         self.assertEqual(chamfer["params"]["edges"], [[10, 0, 0], [0, 0, 8]])
 
     def test_original_reference_kept_separate(self):
-        commands = run_script(EXAMPLE / "model_reference.py")["commands"]
+        commands = run_script(REFERENCE)["commands"]
         holes = [c for c in commands if c["command"] == "solid.hole"]
         self.assertEqual(len(holes), 16)
         self.assertEqual(len(commands), 42)

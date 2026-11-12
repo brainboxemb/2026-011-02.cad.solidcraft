@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">139 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">136 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -129,30 +129,6 @@ WoodenHub75Box()
     &quot;grounded&quot;: false
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75PanelBasic_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75PanelBasic_width&quot;,
-    &quot;expression&quot;: &quot;159.7&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75PanelBasic_depth</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75PanelBasic_depth&quot;,
-    &quot;expression&quot;: &quot;14.5&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: Hub75PanelBasic_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;Hub75PanelBasic_height&quot;,
-    &quot;expression&quot;: &quot;319.71&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Hub75PanelBasic</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -172,12 +148,12 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;-Hub75PanelBasic_width / 2&quot;,
-      &quot;-Hub75PanelBasic_depth / 2&quot;
+      -79.85,
+      -7.25
     ],
     &quot;p1&quot;: [
-      &quot;Hub75PanelBasic_width / 2&quot;,
-      &quot;Hub75PanelBasic_depth / 2&quot;
+      79.85,
+      7.25
     ]
   }
 }</code></pre></li>
@@ -188,7 +164,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: Hub75PanelBasic</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;Hub75PanelBasic_height&quot;,
+    &quot;distance&quot;: 319.71,
     &quot;body_name&quot;: &quot;Hub75PanelBasic&quot;
   }
 }</code></pre></li>

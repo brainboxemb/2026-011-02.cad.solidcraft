@@ -33,30 +33,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "Hub75PanelBasic_width",
-        "expression": "159.7",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "Hub75PanelBasic_depth",
-        "expression": "14.5",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "Hub75PanelBasic_height",
-        "expression": "319.71",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "Hub75PanelBasic",
@@ -75,12 +51,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-Hub75PanelBasic_width / 2",
-          "-Hub75PanelBasic_depth / 2"
+          -79.85,
+          -7.25
         ],
         "p1": [
-          "Hub75PanelBasic_width / 2",
-          "Hub75PanelBasic_depth / 2"
+          79.85,
+          7.25
         ]
       }
     },
@@ -91,7 +67,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "Hub75PanelBasic_height",
+        "distance": 319.71,
         "body_name": "Hub75PanelBasic"
       }
     },

@@ -4,7 +4,7 @@ from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
 from assemblies.wood_frame import WoodFrame
-from parts.window import Window
+from parts.window import GLASS_THICKNESS, Window
 
 
 class WoodenHub75Box:
@@ -65,7 +65,8 @@ class WoodenHub75Box:
 
         window = Window(
             opening_height=self.opening_height,
-            glazing_wood_depth=self.glazing_wood_depth,
+        ).move(
+            y=self.glazing_wood_depth + GLASS_THICKNESS / 2,
         )
 
         return panels + frame + glazing + brackets + window

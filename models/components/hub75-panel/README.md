@@ -6,12 +6,12 @@ The website shows the **real shared component source first**, not just the
 short model entry script. The complete editable profile, extrusions and
 features are in `components/hub75.py`.
 
-The separate `scpf/model.py` is only the **entry point**. It imports the
-shared component and calls `Hub75Panel()` directly. There is no standalone
-wrapper class and no alternate geometry path. The five-panel screen imports
-the same class and is solely responsible for rotating/placing occurrences.
-Both Python files can be viewed and downloaded individually from the model
-page.
+`components/hub75.py` is both the reusable definition and the standalone
+SCPF model. Forge runs it directly because it contains exactly one public
+model class with `build()`. There is no `scpf/model.py` launcher, no
+standalone wrapper class and no alternate geometry path. The five-panel screen
+imports that exact class and is solely responsible for rotating/placing
+occurrences.
 
 Source of measured geometry: `brainboxemb/2026-006-01.cad.HUB75-display-frame`,
 `v1.2/cad/components/hub75_panel.scad` (portrait 64×32 P5 panel).

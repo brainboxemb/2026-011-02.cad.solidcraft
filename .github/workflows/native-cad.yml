@@ -262,9 +262,11 @@ jobs:
                ((.bbox.max[1] - 109) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
           # Geometry must physically stand in XZ, not only be camera-rotated.
+          # Hub75PanelBasic dimensions are fixed product constants, so its
+          # extrusion height is a literal rather than an editable parameter.
           jq -e '
-            ([.commands[] | select(.command == "solid.extrude") |
-              .params.distance] | index("Hub75PanelBasic_height")) != null and
+            (any(.commands[] | select(.command == "solid.extrude");
+              ((.params.distance - 319.71) | fabs) < 0.001)) and
             ([.commands[] | select(.command == "sketch.create") |
               .params.plane] | index("XZ")) != null
           ' output/native/hub75-wood-frame/commands.json

@@ -1,11 +1,8 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, assembly, component
+from scpf import Anchor, assembly
 
 from models.components.corner_bracket.scpf.model import CornerBracket
-
-
-Bracket = component(CornerBracket)
 
 
 @assembly
@@ -23,7 +20,7 @@ class CornerBrackets:
         left = self.wood_frame.left
         right = self.wood_frame.right
 
-        bracket = Bracket(
+        bracket = CornerBracket(
             bracket_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )

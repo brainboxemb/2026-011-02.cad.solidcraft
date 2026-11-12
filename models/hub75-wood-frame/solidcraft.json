@@ -1929,6 +1929,13 @@
         "offset": "-(bracket_width / 2)",
         "angle": 0.0
       }
+    },
+    {
+      "command": "browser.visibility",
+      "params": {
+        "folder": "joints",
+        "visible": false
+      }
     }
   ]
 }

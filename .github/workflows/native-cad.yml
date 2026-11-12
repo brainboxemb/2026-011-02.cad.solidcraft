@@ -244,6 +244,27 @@ jobs:
               ((.bbox.min[1] - 25) | fabs) < 0.001 and
               ((.bbox.max[1] - 39.5) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements.json
+          # Parameter-edit regression: changing opening_height in the saved
+          # native design must move the RoofBoard, not only resize walls.
+          cat > output/native/hub75-wood-frame/change-opening-height.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"opening_height","expression":"400 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-opening-height.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-height-400.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-height-400.sc \
+            --json-out output/native/hub75-wood-frame/measurements-height-400.json
+          jq -e '
+            (all(.bodies[] | select(.name | startswith("RoofBoard"));
+              ((.bbox.min[2] - 400) | fabs) < 0.001 and
+              ((.bbox.max[2] - 412) | fabs) < 0.001))
+          ' output/native/hub75-wood-frame/measurements-height-400.json
+
           # Rear bracket sidewall alignment is a physical requirement.
           # Sidewalls stop at Y=100; the attached backboard occupies Y=100..109.
           # The four rear brackets must stop at Y=100 (start at Y=76),

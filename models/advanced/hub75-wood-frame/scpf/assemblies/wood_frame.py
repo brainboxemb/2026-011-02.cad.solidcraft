@@ -12,18 +12,18 @@ class WoodFrame:
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
-    frame_front_y = -25.0
+    frame_front_y_position = -25.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
     def build(self):
-        rear = self.frame_front_y + self.cabinet_depth
+        rear = self.frame_front_y_position + self.cabinet_depth
         back_outer = rear + self.panel_wood_thickness
-        roof_front = self.frame_front_y - self.roof_front_overhang
+        roof_front = self.frame_front_y_position - self.roof_front_overhang
         roof_rear = back_outer + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
-        body_y = (self.frame_front_y + rear) / 2
+        body_y = (self.frame_front_y_position + rear) / 2
 
         left = SideWall(
             thickness=self.frame_wood_thickness,

@@ -132,6 +132,7 @@ class WoodenFrameTests(unittest.TestCase):
         parameter_names = {p["name"] for p in of(commands(), "parameters.add")}
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
         self.assertIn("opening_height", parameter_names)
+        self.assertIn("(self.opening_height - GLASS_HEIGHT) / 2", window_source)
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
@@ -437,6 +438,32 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("opening_height", points)
         self.assertNotIn("RoofBoard_z_position", points)
 
+    def test_window_size_is_fixed_but_position_stays_centred(self):
+        cmd = commands(opening_height=400)
+
+        window_move = moved(cmd, "Window")[0]
+        self.assertEqual(window_move["translate"], [0.0, 14.0, 0.0])
+
+        create_index = next(
+            i for i, command in enumerate(cmd)
+            if command["command"] == "component.create"
+            and command["params"]["name"] == "Window"
+        )
+        activate_index = next(
+            i for i in range(create_index + 1, len(cmd))
+            if cmd[i]["command"] == "component.activate"
+            and cmd[i]["params"]["component"] == "root"
+        )
+        window_commands = cmd[create_index:activate_index]
+        points = " ".join(
+            str(command["params"]["points"])
+            for command in window_commands
+            if command["command"] == "sketch.line"
+        )
+
+        self.assertIn("opening_height", points)
+        self.assertIn("360 mm", points)
+
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)
 
@@ -446,7 +473,6 @@ class WoodenFrameTests(unittest.TestCase):
             if (
                 params["occurrence"].startswith("GlassStrip")
                 or params["occurrence"].startswith("Hub75PanelBasic")
-                or params["occurrence"].startswith("Window")
                 or params["occurrence"].startswith("CornerBracket:")
             ):
                 self.assertEqual(params["translate"][2], 0.0)

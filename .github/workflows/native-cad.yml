@@ -289,7 +289,7 @@ jobs:
               and ((.bbox.min[2] - 388) | fabs) < 0.001
               and ((.bbox.max[2] - 400) | fabs) < 0.001)] | length) == 1 and
 
-            # Fixed 360 mm plexiglass remains centred: 20 mm top/bottom.
+            # Plexiglass remains fixed at 360 mm high but stays centred.
             (all(.bodies[] | select(.name | startswith("Window"));
               ((.bbox.min[2] - 20) | fabs) < 0.001 and
               ((.bbox.max[2] - 380) | fabs) < 0.001)) and

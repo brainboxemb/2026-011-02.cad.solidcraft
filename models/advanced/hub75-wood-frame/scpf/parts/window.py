@@ -1,4 +1,4 @@
-"""Fixed-size plexiglass window with parametric vertical centring."""
+"""Fixed-size plexiglass window, vertically centred in the opening."""
 
 from scpf import Direction, Polygon2D, component
 
@@ -10,7 +10,7 @@ GLASS_THICKNESS = 4.0
 
 @component
 class Window:
-    """Fixed plexiglass sheet kept centred inside the opening."""
+    """Fixed plexiglass sheet whose position follows the opening centre."""
 
     opening_height = 362.0
 

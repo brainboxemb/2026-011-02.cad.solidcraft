@@ -106,17 +106,17 @@ MODELS = {
     },
     "hub75-panel": {
         "title": "Hub75Panel",
-        "tagline": "One upright measured P5 HUB75 panel component",
-        "description": "First reusable panel assembly from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. One native occurrence upright in XZ, with front/rear snapshots; rear-step/rounding details, PCB and connectors are future steps.",
-        "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; one upright occurrence",
+        "tagline": "One measured reusable P5 HUB75 panel component",
+        "description": "Shared panel component from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. Standalone uses the component's own local XY/Z axes; screen assemblies rotate the exact same class into world XZ.",
+        "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; direct shared component root",
         "diagram": "hub75",
-        "stages": ["Create Hub75Panel component",
+        "stages": ["Run the shared Hub75Panel component directly",
                    "Sketch and extrude the physical front envelope",
                    "Cut four rear electronics bays from the rear plane",
                    "Cut six blind rear-side Ø3 mounting holes",
                    "Assign grey housing material",
-                   "Rotate the single component into the upright XZ plane",
-                   "Verify front and rear views in SolidCraft 0.30.1"],
+                   "Keep the standalone part in its local CAD axes",
+                   "Verify local front and rear views in SolidCraft 0.30.1"],
     },
     "plastic-enclosure-pi": {
         "title": "Plastic Enclosure Pi",
@@ -398,7 +398,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                     f'<img src="{filename}" alt="Native SolidCraft {esc(title)}">'
                     f'</a><figcaption>{esc(title)}</figcaption></figure>'
                 )
-            extra_views = ('<h2>Front and rear of the same upright panel</h2>'
+            extra_views = ('<h2>Front and rear of the same local component</h2>'
                            '<div class="panel-views">' + ''.join(faces) + '</div>'
                            '<p class="small muted">Both are native SolidCraft '
                            'snapshots of the same single-component design.</p>')
@@ -446,8 +446,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 '<section class="source-section source-launcher">'
                 '<h2>Model script — how the component is used</h2>'
                 '<p><code>model.py</code> is the entry point that SCPF executes. '
-                'It imports the shared definition and places it into the CAD model; '
-                'it is not a second copy of the component geometry.</p>'
+                'It imports and invokes the shared definition; an assembly may then '
+                'place that same component. It is not a second copy of the geometry.</p>'
                 '<p><a class="btn secondary" href="model.py">Download model.py</a></p>'
                 f'<pre><code>{launcher_code}</code></pre></section>'
             )

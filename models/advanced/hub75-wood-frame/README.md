@@ -63,7 +63,7 @@ The short `pv(...)` helper is only used where Python itself needs a concrete
 number for control flow or assembly placement. It is not used to flatten the
 board dimensions inside the CAD geometry.
 
-World axes: **X** left/right, **Y** front-to-back, **Z** upward. The front face of the sidewalls is the Y=0 reference plane. The wood opening spans X=−422..422 and Z=0..362 mm.
+World axes: **X** left/right, **Y** front-to-back, **Z** upward. The front face of the sidewalls is the Y=0 reference plane. **Z=0 is the outside bottom face of the wooden enclosure.** The wood opening therefore starts at `frame_wood_thickness` and keeps its own fixed `opening_height`. At the default 12 mm wood thickness the opening spans X=−422..422 and Z=12..374 mm.
 
 The HUB75 modules are recessed **25 mm** from the sidewall front, so their front faces start at Y=25. This is the explicit `panel_recess_depth` design parameter; it replaces the previous arbitrary negative frame origin.
 
@@ -72,10 +72,10 @@ The HUB75 modules are recessed **25 mm** from the sidewall front, so their front
 | Part | Size and placement | Notes |
 | --- | --- | --- |
 | `LeftBoard` + `RightBoard` | **12 × 100 × 362 mm** each | Front Y=0; rear Y=100 |
-| Bottom board | **868 × 100 × 12 mm** | Z=−12..0; R4 at outer bottom edges |
-| Roof board | **868 × 120 × 12 mm** | Z=362..374; R4 at outer top edges |
+| Bottom board | **868 × 100 × 12 mm** | Z=0..12; R4 at outer bottom edges |
+| Roof board | **868 × 120 × 12 mm** | Z=374..386; R4 at outer top edges |
 | Rear board | **868 × 374 × 9 mm** | Y=100..109, fixed to the rear |
-| Plexiglass | **840 × 360 × 4 mm** | Y=12..16; Z=1..361 |
+| Plexiglass | **840 × 360 × 4 mm** | Y=12..16; Z=13..373 |
 | Five basic panels | 159.70 × 319.71 × 14.50 mm | X pitch 160 |
 | Four glass retainers | Two lengths: **844** and **362 mm** | **12 × 12 mm pine (grenen)**, straight mitres |
 | Eight corner brackets | 24 mm Y width, 12 mm wall | Two per corner, no screw holes |
@@ -134,7 +134,7 @@ Every outside X/Z corner has **two CornerBracket occurrences**:
 - Four at the front, in the Y=0..24 band.
 - Four at the rear, in the **Y=76..100** band, entirely on the sidewalls.
 
-The four X/Z corner positions are **X=±434** and **Z=−12 or 374 mm**.
+The four X/Z corner positions are **X=±434** and **Z=0 or 386 mm**.
 All eight reuse the **same shared CornerBracket component** with
 its existing R4 inside fillet. At the rear, the bracket's back edge is
 flush with the **rear face of the sidewall (Y=100)**. The 9 mm backboard

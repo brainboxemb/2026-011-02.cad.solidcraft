@@ -15,6 +15,3 @@ class Bracket:
         for y in (-15, -45):
             body = body + Hole(d=8, depth=self.thickness).at(25, y, 0)
         return body
-
-
-Bracket()

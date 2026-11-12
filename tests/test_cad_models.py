@@ -20,7 +20,7 @@ class CADModelRegressions(unittest.TestCase):
         scripts = sorted((ROOT / "models").glob("**/scpf/model.py"))
         scripts.extend(sorted((ROOT / "models/components").glob("*/scpf/model.py")))
         scripts.extend(sorted((ROOT / "models/components").glob("*/scpf/basic.py")))
-        scripts.extend(sorted((ROOT / "models/advanced/hub75-wood-frame/scpf").glob("**/*.py")))
+        scripts.extend(sorted((ROOT / "models/advanced/hub75_wood_frame/scpf").glob("**/*.py")))
         self.assertGreaterEqual(len(scripts), 10)
         for script in scripts:
             with self.subTest(model=str(script.relative_to(ROOT))):
@@ -72,8 +72,8 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_csg_cube_matches_reviewed_native_commands(self):
-        generated = run_script(ROOT / "models/basic/csg-cube/scpf/model.py")
-        expected = json.loads((ROOT / "models/basic/csg-cube/scpf/reference.json").read_text())
+        generated = run_script(ROOT / "models/basic/csg_cube/scpf/model.py")
+        expected = json.loads((ROOT / "models/basic/csg_cube/scpf/reference.json").read_text())
         self.assertEqual(generated, expected)
         self.assertEqual(generated["commands"][0]["params"]["name"], "size")
         self.assertEqual(generated["commands"][1]["params"]["radius"], "size / 1.5")
@@ -161,7 +161,7 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_sample_plate_preserves_original_sketch_and_feature_names(self):
-        commands = run_script(ROOT / "models/basic/sample-plate/scpf/model.py")["commands"]
+        commands = run_script(ROOT / "models/basic/sample_plate/scpf/model.py")["commands"]
         self.assertEqual(
             [c["params"]["name"] for c in commands if c["command"] == "sketch.create"],
             ["Base", "Holes", "Boss", "Bore"],
@@ -195,7 +195,7 @@ class CADModelRegressions(unittest.TestCase):
 
     def test_sample_plate_parameter_override_preserves_sketch_centres(self):
         with tempfile.TemporaryDirectory() as directory:
-            source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
+            source = (ROOT / "models/basic/sample_plate/scpf/model.py").read_text()
             script = Path(directory) / "model.py"
             script.write_text(
                 source + "\nSamplePlate(width=100, depth=60, thickness=10)\n"
@@ -212,14 +212,14 @@ class CADModelRegressions(unittest.TestCase):
 
 
     def test_sample_plate_uses_edge_enum(self):
-        source = (ROOT / "models/basic/sample-plate/scpf/model.py").read_text()
+        source = (ROOT / "models/basic/sample_plate/scpf/model.py").read_text()
         self.assertIn("edges=Edges.VERTICAL", source)
-        run_script(ROOT / "models/basic/sample-plate/scpf/model.py")
+        run_script(ROOT / "models/basic/sample_plate/scpf/model.py")
 
 
     def test_plastic_enclosure_compiles_to_sketch_base_and_native_plastic_features(self):
         commands = run_script(
-            ROOT / "models/basic/plastic-enclosure/scpf/model.py"
+            ROOT / "models/basic/plastic_enclosure/scpf/model.py"
         )["commands"]
         feature_commands = [c for c in commands
                             if c["command"] != "parameters.add"]
@@ -259,7 +259,7 @@ class CADModelRegressions(unittest.TestCase):
 
     def test_plastic_enclosure_pi_video_feature_sequence(self):
         commands = run_script(
-            ROOT / "models/basic/plastic-enclosure-pi/scpf/model.py"
+            ROOT / "models/basic/plastic_enclosure_pi/scpf/model.py"
         )["commands"]
         self.assertEqual(
             [c["params"]["name"] for c in commands

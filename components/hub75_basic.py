@@ -8,12 +8,17 @@ stands upright in XZ (Z is world up, Y is front-to-back). Use Hub75Panel
 from scpf import Box
 
 
-class Hub75PanelBasic:
-    width = 159.70
-    height = 319.71
-    depth = 14.50
+HUB75_PANEL_WIDTH = 159.70
+HUB75_PANEL_HEIGHT = 319.71
+HUB75_PANEL_DEPTH = 14.50
 
+
+class Hub75PanelBasic:
     def build(self):
-        return Box(self.width, self.depth, self.height).with_material(
+        return Box(
+            HUB75_PANEL_WIDTH,
+            HUB75_PANEL_DEPTH,
+            HUB75_PANEL_HEIGHT,
+        ).with_material(
             "LED panel envelope", density_g_cm3=1.2, color="#242B32"
         )

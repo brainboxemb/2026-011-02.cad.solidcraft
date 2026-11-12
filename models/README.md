@@ -12,12 +12,12 @@ perceived level of geometric complexity.
 
 ## Components — reusable physical geometry
 
-- [CornerBracket](../components/corner_bracket.py) has **one** shape
+- [CornerBracket](components/corner_bracket/scpf/model.py) has **one** shape
   definition, reused by the
   [standalone example](components/corner-bracket/README.md)
   and the wooden display.
-- [Hub75Panel](../components/hub75.py) is the detailed panel with
-  rear electronics bays; [Hub75PanelBasic](../components/hub75_basic.py)
+- [Hub75Panel detailed](components/hub75_panel/detailed/scpf/model.py) is the detailed panel with
+  rear electronics bays; [Hub75Panel basic](components/hub75_panel/basic/scpf/model.py)
   is the faster envelope.
 
 These live in top-level `components/`. The standalone demonstration
@@ -80,7 +80,7 @@ Run `./bootstrap.ps1` after `git pull`. Open SolidCraft and enable
 **Preferences → Assistant → Let AI agents connect**.
 
 ```powershell
-python -m scpf models/advanced/hub75-wood-frame/scpf/model.py --connect --new
+python -m scpf models/advanced/hub75_wood_frame/scpf/model.py --connect --new
 ```
 
 `--connect --new` starts with a new empty design and sends native commands to the GUI. `--out output/model.json`

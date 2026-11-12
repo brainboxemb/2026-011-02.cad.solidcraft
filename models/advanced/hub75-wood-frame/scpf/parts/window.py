@@ -1,6 +1,6 @@
 """Fixed plexiglass window part."""
 
-from scpf import Box
+from scpf import Box, component
 
 
 GLASS_WIDTH = 840.0
@@ -9,6 +9,7 @@ GLASS_THICKNESS = 4.0
 GLASS_BOTTOM_CLEARANCE = 1.0
 
 
+@component
 class Window:
     """Fixed plexiglass sheet used by this display."""
 

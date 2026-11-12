@@ -54,7 +54,7 @@ The wooden enclosure keeps its top-level dimensions and composition in
 [parameterized `model.py`](advanced/hub75-wood-frame/scpf/model.py), while
 case-specific geometry lives in `scpf/parts/` and each subassembly lives in
 its own `scpf/assemblies/` module. A shared `Board` helper defines the
-wooden board geometry once; `SideWall`, `BottomBoard`, `RoofBoard` and
+wooden board geometry once; `LeftBoard`, `RightBoard`, `BottomBoard`, `RoofBoard` and
 `BackBoard` only map their named parameters onto that geometry.
 
 ## Open a verified model with the SolidCraft web application

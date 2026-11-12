@@ -33,8 +33,8 @@ class WoodenHub75Box:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    glazing_width = 15.0
-    glazing_depth = 15.0
+    glazing_width = 12.0
+    glazing_depth = 12.0
 ```
 
 Change these parameters, **not** the placement coordinates of every
@@ -68,9 +68,9 @@ World axes: **X** left/right, **Y** front-to-back (front is negative Y),
 | Bottom board | **868 × 100 × 12 mm** | Z=−12..0; R4 at outer bottom edges |
 | Roof board | **868 × 120 × 12 mm** | Z=362..374; R4 at outer top edges |
 | Rear board | **868 × 374 × 9 mm** | Y=75..84, fixed to the rear |
-| Plexiglass | **840 × 360 × 4 mm** | Y=−10..−6; Z=1..361 |
+| Plexiglass | **840 × 360 × 4 mm** | Y=−13..−9; Z=1..361 |
 | Five basic panels | 159.70 × 319.71 × 14.50 mm | X pitch 160 |
-| Four glass retainers | Two lengths: **844** and **362 mm** | 15 mm wide/deep, straight mitres |
+| Four glass retainers | Two lengths: **844** and **362 mm** | **12 × 12 mm**, straight mitres |
 | Eight corner brackets | 24 mm Y width, 12 mm wall | Two per corner, no screw holes |
 
 **Roof front:** the sidewall front is at Y=−25, while the roof starts at
@@ -91,8 +91,8 @@ The wooden retaining frame has only **one Python type**:
 ```python
 class GlassStrip:
     length = 844.0
-    width = 15.0
-    depth = 15.0
+    width = 12.0
+    depth = 12.0
     finish = 0
 ```
 
@@ -113,8 +113,8 @@ component definitions, each shared by its pair of occurrences.
 not filleted. The R4 rounding belongs to the **roof and bottom boards**.
 
 The retaining strips begin at **Y=−25**, aligned flush with the
-sidewalls. They are 15 mm deep and end at Y=−10. The glass touches their
-rear faces and occupies Y=−10..−6. The glass and its retainers therefore
+sidewalls. They are 12 mm deep and end at Y=−13. The glass touches their
+rear faces and occupies Y=−13..−9. The glass and its retainers therefore
 stay within the box's front plane, rather than sticking out.
 
 ## Eight printed corner brackets

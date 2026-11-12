@@ -22,6 +22,8 @@ class WoodFrame:
         roof_front = -self.roof_front_overhang
         roof_rear = back_outer + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
+        opening_bottom = self.frame_wood_thickness
+        opening_top = opening_bottom + self.opening_height
         body_y = self.cabinet_depth / 2
 
         left = LeftBoard(
@@ -29,6 +31,7 @@ class WoodFrame:
             depth=self.cabinet_depth,
             height=self.opening_height,
             x_position=-(self.opening_width / 2 + self.frame_wood_thickness / 2),
+            z_position=opening_bottom,
         ).move(
             y=body_y,
         )
@@ -37,6 +40,7 @@ class WoodFrame:
             depth=self.cabinet_depth,
             height=self.opening_height,
             x_position=self.opening_width / 2 + self.frame_wood_thickness / 2,
+            z_position=opening_bottom,
         ).move(
             y=body_y,
         )
@@ -49,14 +53,13 @@ class WoodFrame:
             corner_radius=self.corner_radius,
         ).move(
             y=body_y,
-            z=-self.frame_wood_thickness,
         )
 
         roof = RoofBoard(
             width=outer_width,
             depth=roof_rear - roof_front,
             thickness=self.frame_wood_thickness,
-            z_position=self.opening_height,
+            z_position=opening_top,
             corner_radius=self.corner_radius,
         ).move(
             y=(roof_front + roof_rear) / 2,
@@ -64,11 +67,10 @@ class WoodFrame:
 
         rear_board = BackBoard(
             width=outer_width,
-            height=self.opening_height + self.frame_wood_thickness,
+            height=opening_top,
             thickness=self.panel_wood_thickness,
         ).move(
             y=rear + self.panel_wood_thickness / 2,
-            z=-self.frame_wood_thickness,
         )
 
         return (sides + bottom + roof + rear_board).group("WoodBoxFrame")

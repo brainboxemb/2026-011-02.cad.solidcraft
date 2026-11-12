@@ -225,7 +225,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             moved(cmd, "BottomBoard")[0]["translate"],
-            [0.0, 50.0, -12.0],
+            [0.0, 50.0, 0.0],
         )
         self.assertEqual(
             moved(cmd, "RoofBoard")[0]["translate"],
@@ -233,7 +233,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             moved(cmd, "BackBoard")[0]["translate"],
-            [0.0, 104.5, -12.0],
+            [0.0, 104.5, 0.0],
         )
         self.assertEqual(
             moved(cmd, "Window")[0]["translate"],
@@ -536,7 +536,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(bracket_x, {0.0})
         self.assertEqual(
             moved(cmd, "BottomBoard")[0]["translate"][2],
-            -13.0,
+            0.0,
         )
         self.assertEqual(
             moved(cmd, "RoofBoard")[0]["translate"][2],

@@ -13,10 +13,14 @@ class Window:
     """Fixed plexiglass sheet whose position follows the opening centre."""
 
     opening_height = 362.0
+    frame_wood_thickness = 12.0
 
     def build(self):
         half_width = GLASS_WIDTH / 2
-        bottom = (self.opening_height - GLASS_HEIGHT) / 2
+        bottom = (
+            self.frame_wood_thickness
+            + (self.opening_height - GLASS_HEIGHT) / 2
+        )
         top = bottom + GLASS_HEIGHT
 
         profile = Polygon2D([

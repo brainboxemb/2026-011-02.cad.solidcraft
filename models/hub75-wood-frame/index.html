@@ -11,7 +11,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">136 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">133 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -84,6 +84,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            corner_radius=self.corner_radius,
         )
 
         window = Window().move(
@@ -294,10 +295,10 @@ WoodenHub75Box()
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: SideWall</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: LeftBoard</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;SideWall&quot;,
+    &quot;name&quot;: &quot;LeftBoard&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -343,18 +344,18 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: SideWall</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: LeftBoard</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;SideWall&quot;
+    &quot;body_name&quot;: &quot;LeftBoard&quot;
   }
 }</code></pre></li>
-<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY side wall</small><pre><code>{
+<li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY side board</small><pre><code>{
   &quot;command&quot;: &quot;material.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;LIGHTPLY side wall&quot;,
+    &quot;name&quot;: &quot;LIGHTPLY side board&quot;,
     &quot;density_g_cm3&quot;: 0.55,
     &quot;color&quot;: &quot;#CBA36B&quot;
   }
@@ -363,9 +364,9 @@ WoodenHub75Box()
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;SideWall&quot;
+      &quot;LeftBoard&quot;
     ],
-    &quot;material&quot;: &quot;LIGHTPLY side wall&quot;
+    &quot;material&quot;: &quot;LIGHTPLY side board&quot;
   }
 }</code></pre></li>
 <li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
@@ -374,16 +375,10 @@ WoodenHub75Box()
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
-  &quot;command&quot;: &quot;occurrence.copy&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;SideWall&quot;
-  }
-}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;SideWall:1&quot;,
+    &quot;occurrence&quot;: &quot;LeftBoard:1&quot;,
     &quot;translate&quot;: [
       -428.0,
       50.0,
@@ -391,10 +386,82 @@ WoodenHub75Box()
     ]
   }
 }</code></pre></li>
+<li><strong>Create reusable component</strong><small>component.create · name: RightBoard</small><pre><code>{
+  &quot;command&quot;: &quot;component.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;RightBoard&quot;,
+    &quot;grounded&quot;: false,
+    &quot;parent&quot;: &quot;WoodBoxFrame&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Profile&quot;
+  }
+}</code></pre></li>
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
+  &quot;params&quot;: {
+    &quot;points&quot;: [
+      [
+        &quot;-(frame_wood_thickness / 2)&quot;,
+        0
+      ],
+      [
+        &quot;frame_wood_thickness / 2&quot;,
+        0
+      ],
+      [
+        &quot;frame_wood_thickness / 2&quot;,
+        &quot;-(opening_height)&quot;
+      ],
+      [
+        &quot;-(frame_wood_thickness / 2)&quot;,
+        &quot;-(opening_height)&quot;
+      ]
+    ],
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;lower_left&quot;,
+      &quot;lower_right&quot;,
+      &quot;upper_right&quot;,
+      &quot;upper_left&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: RightBoard</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;cabinet_depth&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;body_name&quot;: &quot;RightBoard&quot;
+  }
+}</code></pre></li>
+<li><strong>Assign material</strong><small>material.assign</small><pre><code>{
+  &quot;command&quot;: &quot;material.assign&quot;,
+  &quot;params&quot;: {
+    &quot;bodies&quot;: [
+      &quot;RightBoard&quot;
+    ],
+    &quot;material&quot;: &quot;LIGHTPLY side board&quot;
+  }
+}</code></pre></li>
+<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
+  &quot;command&quot;: &quot;component.activate&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;root&quot;
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;SideWall:2&quot;,
+    &quot;occurrence&quot;: &quot;RightBoard:1&quot;,
     &quot;translate&quot;: [
       428.0,
       50.0,
@@ -1003,78 +1070,6 @@ WoodenHub75Box()
     &quot;angle&quot;: &quot;-90 deg&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_bracket_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_bracket_width&quot;,
-    &quot;expression&quot;: &quot;24&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_horizontal_arm_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_horizontal_arm_length&quot;,
-    &quot;expression&quot;: &quot;60&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_wall_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_wall_thickness&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_arm_end_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_arm_end_chamfer&quot;,
-    &quot;expression&quot;: &quot;3&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_outer_corner_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_outer_corner_chamfer&quot;,
-    &quot;expression&quot;: &quot;6&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_vertical_arm_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_vertical_arm_length&quot;,
-    &quot;expression&quot;: &quot;60&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_inside_corner_radius</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_inside_corner_radius&quot;,
-    &quot;expression&quot;: &quot;4&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_elephant_foot_relief</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
-    &quot;expression&quot;: &quot;0.6&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_side_edge_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
-    &quot;expression&quot;: &quot;2&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -1099,36 +1094,36 @@ WoodenHub75Box()
         0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length&quot;,
+        60.0,
         0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length&quot;,
-        &quot;-(CornerBracket_wall_thickness - (CornerBracket_arm_end_chamfer))&quot;
+        60.0,
+        -9.0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)&quot;,
-        &quot;-(CornerBracket_wall_thickness)&quot;
+        57.0,
+        -12.0
       ],
       [
-        &quot;(-(CornerBracket_wall_thickness)) + (CornerBracket_outer_corner_chamfer)&quot;,
-        &quot;-(CornerBracket_wall_thickness)&quot;
+        -6.0,
+        -12.0
       ],
       [
-        &quot;-(CornerBracket_wall_thickness)&quot;,
-        &quot;-(CornerBracket_wall_thickness - (CornerBracket_outer_corner_chamfer))&quot;
+        -12.0,
+        -6.0
       ],
       [
-        &quot;-(CornerBracket_wall_thickness)&quot;,
-        &quot;-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))&quot;
+        -12.0,
+        57.0
       ],
       [
-        &quot;(-(CornerBracket_wall_thickness)) + (CornerBracket_arm_end_chamfer)&quot;,
-        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
+        -9.0,
+        60.0
       ],
       [
         0,
-        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
+        60.0
       ]
     ],
     &quot;closed&quot;: true,
@@ -1152,7 +1147,7 @@ WoodenHub75Box()
 <li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
-    &quot;distance&quot;: &quot;CornerBracket_bracket_width&quot;,
+    &quot;distance&quot;: 24.0,
     &quot;direction&quot;: &quot;symmetric&quot;,
     &quot;body_name&quot;: &quot;CornerBracket&quot;
   }
@@ -1167,7 +1162,7 @@ WoodenHub75Box()
         -0.0
       ]
     ],
-    &quot;radius&quot;: &quot;CornerBracket_inside_corner_radius&quot;,
+    &quot;radius&quot;: &quot;corner_radius&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1186,7 +1181,7 @@ WoodenHub75Box()
         -60.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;distance&quot;: 0.6,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1265,7 +1260,7 @@ WoodenHub75Box()
         -60.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
+    &quot;distance&quot;: 2.0,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1284,7 +1279,7 @@ WoodenHub75Box()
         -0.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;distance&quot;: 0.6,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>

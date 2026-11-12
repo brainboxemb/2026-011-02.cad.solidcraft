@@ -60,6 +60,7 @@ class WoodenHub75Box:
             opening_height=self.opening_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            corner_radius=self.corner_radius,
         )
 
         window = Window().move(

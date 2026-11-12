@@ -7,7 +7,7 @@ occurrence stands upright with +90 degrees about X, front facing world +Y.
 from scpf import component
 from components.hub75 import Hub75Panel as Hub75PanelDefinition
 
-Hub75Panel = component(Hub75PanelDefinition)
+Hub75Panel = component(Hub75PanelDefinition, include="*")
 
 
 class SingleHub75Panel:

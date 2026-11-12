@@ -200,7 +200,7 @@
     {
       "command": "component.create",
       "params": {
-        "name": "SideWall",
+        "name": "LeftBoard",
         "grounded": false,
         "parent": "WoodBoxFrame"
       }
@@ -251,13 +251,13 @@
       "params": {
         "distance": "cabinet_depth",
         "direction": "symmetric",
-        "body_name": "SideWall"
+        "body_name": "LeftBoard"
       }
     },
     {
       "command": "material.create",
       "params": {
-        "name": "LIGHTPLY side wall",
+        "name": "LIGHTPLY side board",
         "density_g_cm3": 0.55,
         "color": "#CBA36B"
       }
@@ -266,9 +266,9 @@
       "command": "material.assign",
       "params": {
         "bodies": [
-          "SideWall"
+          "LeftBoard"
         ],
-        "material": "LIGHTPLY side wall"
+        "material": "LIGHTPLY side board"
       }
     },
     {
@@ -278,15 +278,9 @@
       }
     },
     {
-      "command": "occurrence.copy",
-      "params": {
-        "component": "SideWall"
-      }
-    },
-    {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "SideWall:1",
+        "occurrence": "LeftBoard:1",
         "translate": [
           -428.0,
           50.0,
@@ -295,9 +289,81 @@
       }
     },
     {
+      "command": "component.create",
+      "params": {
+        "name": "RightBoard",
+        "grounded": false,
+        "parent": "WoodBoxFrame"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(frame_wood_thickness / 2)",
+            0
+          ],
+          [
+            "frame_wood_thickness / 2",
+            0
+          ],
+          [
+            "frame_wood_thickness / 2",
+            "-(opening_height)"
+          ],
+          [
+            "-(frame_wood_thickness / 2)",
+            "-(opening_height)"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "lower_left",
+          "lower_right",
+          "upper_right",
+          "upper_left"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "cabinet_depth",
+        "direction": "symmetric",
+        "body_name": "RightBoard"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "RightBoard"
+        ],
+        "material": "LIGHTPLY side board"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "SideWall:2",
+        "occurrence": "RightBoard:1",
         "translate": [
           428.0,
           50.0,
@@ -907,78 +973,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_bracket_width",
-        "expression": "24",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_horizontal_arm_length",
-        "expression": "60",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_wall_thickness",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_arm_end_chamfer",
-        "expression": "3",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_outer_corner_chamfer",
-        "expression": "6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_vertical_arm_length",
-        "expression": "60",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_inside_corner_radius",
-        "expression": "4",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_elephant_foot_relief",
-        "expression": "0.6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_side_edge_chamfer",
-        "expression": "2",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "CornerBracket",
@@ -1002,36 +996,36 @@
             0
           ],
           [
-            "CornerBracket_horizontal_arm_length",
+            60.0,
             0
           ],
           [
-            "CornerBracket_horizontal_arm_length",
-            "-(CornerBracket_wall_thickness - (CornerBracket_arm_end_chamfer))"
+            60.0,
+            -9.0
           ],
           [
-            "CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)",
-            "-(CornerBracket_wall_thickness)"
+            57.0,
+            -12.0
           ],
           [
-            "(-(CornerBracket_wall_thickness)) + (CornerBracket_outer_corner_chamfer)",
-            "-(CornerBracket_wall_thickness)"
+            -6.0,
+            -12.0
           ],
           [
-            "-(CornerBracket_wall_thickness)",
-            "-(CornerBracket_wall_thickness - (CornerBracket_outer_corner_chamfer))"
+            -12.0,
+            -6.0
           ],
           [
-            "-(CornerBracket_wall_thickness)",
-            "-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))"
+            -12.0,
+            57.0
           ],
           [
-            "(-(CornerBracket_wall_thickness)) + (CornerBracket_arm_end_chamfer)",
-            "-(-(CornerBracket_vertical_arm_length))"
+            -9.0,
+            60.0
           ],
           [
             0,
-            "-(-(CornerBracket_vertical_arm_length))"
+            60.0
           ]
         ],
         "closed": true,
@@ -1055,7 +1049,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "CornerBracket_bracket_width",
+        "distance": 24.0,
         "direction": "symmetric",
         "body_name": "CornerBracket"
       }
@@ -1070,7 +1064,7 @@
             -0.0
           ]
         ],
-        "radius": "CornerBracket_inside_corner_radius",
+        "radius": "corner_radius",
         "body": "CornerBracket"
       }
     },
@@ -1089,7 +1083,7 @@
             -60.0
           ]
         ],
-        "distance": "CornerBracket_elephant_foot_relief",
+        "distance": 0.6,
         "body": "CornerBracket"
       }
     },
@@ -1168,7 +1162,7 @@
             -60.0
           ]
         ],
-        "distance": "CornerBracket_side_edge_chamfer",
+        "distance": 2.0,
         "body": "CornerBracket"
       }
     },
@@ -1187,7 +1181,7 @@
             -0.0
           ]
         ],
-        "distance": "CornerBracket_elephant_foot_relief",
+        "distance": 0.6,
         "body": "CornerBracket"
       }
     },

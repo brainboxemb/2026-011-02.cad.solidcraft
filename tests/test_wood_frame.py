@@ -151,7 +151,7 @@ class WoodenFrameTests(unittest.TestCase):
             params["radius"]
             for params in of(cmd, "solid.fillet")
         ]
-        self.assertGreaterEqual(radii.count("corner_radius"), 2)
+        self.assertEqual(radii.count("corner_radius"), 3)
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()
@@ -333,6 +333,37 @@ class WoodenFrameTests(unittest.TestCase):
             materials["LIGHTPLY side board"],
             "#CBA36B",
         )
+
+    def test_component_defaults_do_not_clutter_design_parameters(self):
+        parameter_names = {
+            p["name"] for p in of(commands(), "parameters.add")
+        }
+
+        for prefix in (
+            "CornerBracket_",
+            "LeftBoard_",
+            "RightBoard_",
+            "BottomBoard_",
+            "RoofBoard_",
+            "BackBoard_",
+            "GlassStrip_",
+            "Hub75PanelBasic_",
+        ):
+            self.assertFalse(
+                any(name.startswith(prefix) for name in parameter_names),
+                prefix,
+            )
+
+        self.assertIn("corner_radius", parameter_names)
+
+    def test_bracket_inside_radius_uses_frame_corner_radius(self):
+        cmd = commands()
+        bracket_fillet = [
+            params for params in of(cmd, "solid.fillet")
+            if params["body"].startswith("CornerBracket")
+        ]
+        self.assertEqual(len(bracket_fillet), 1)
+        self.assertEqual(bracket_fillet[0]["radius"], "corner_radius")
 
     def test_eight_brackets_front_and_back(self):
         cmd = commands()

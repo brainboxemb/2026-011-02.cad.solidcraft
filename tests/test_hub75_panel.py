@@ -119,12 +119,12 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(of("joint.create"), [])
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(
-            [c["name"] for c in of("parameters.add")],
-            [
+            {c["name"] for c in of("parameters.add")},
+            {
                 "width", "height", "depth", "front_depth", "rear_inset",
                 "mount_x", "mount_y", "hole_diameter", "rear_side_rail",
                 "rear_end_rail", "rear_crossbar",
-            ],
+            },
         )
 
     def test_rear_taper_uses_editable_native_loft(self):

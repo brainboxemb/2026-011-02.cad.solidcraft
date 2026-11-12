@@ -141,6 +141,38 @@ class CADModelRegressions(unittest.TestCase):
         )
 
 
+    def test_single_custom_anchor_joint_has_one_origin_and_one_joint(self):
+        commands = run_script(
+            ROOT / "examples/single-custom-anchor-joint/scpf/model.py"
+        )["commands"]
+
+        origins = [
+            command["params"]
+            for command in commands
+            if command["command"] == "joint.origin"
+        ]
+        joints = [
+            command["params"]
+            for command in commands
+            if command["command"] == "joint.create"
+        ]
+
+        self.assertEqual(len(origins), 1)
+        self.assertEqual(len(joints), 1)
+        self.assertEqual(origins[0]["name"], "Child:1.mount")
+        self.assertEqual(origins[0]["occurrence"], "Child:1")
+        self.assertEqual(
+            joints[0]["a"],
+            {
+                "occurrence": "Base:1",
+                "edge": [80.0, 0.0, 40.0],
+                "on": [40.0, 0.0, 40.0],
+                "corner": [80.0, 0.0, 80.0],
+            },
+        )
+        self.assertEqual(joints[0]["b"], "Child:1.mount")
+
+
     def test_csg_cube_matches_reviewed_native_commands(self):
         generated = run_script(ROOT / "models/basic/csg_cube/scpf/model.py")
         expected = json.loads((ROOT / "models/basic/csg_cube/scpf/reference.json").read_text())

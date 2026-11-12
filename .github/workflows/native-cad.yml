@@ -159,7 +159,7 @@ jobs:
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
           # One reusable CornerBracket definition is attached eight times
-          # to the named roof/bottom Board corner references. Initial occurrence
+          # to the named left/right Board outside-corner references. Initial occurrence
           # moves only seed the solver; the native rigid joints own the relation.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
@@ -170,7 +170,7 @@ jobs:
             ([.commands[] | select(.command == "joint.create"
                and (.params.name | startswith("Attach CornerBracket:")))] | length) == 8 and
             ([.commands[] | select(.command == "joint.origin"
-               and (.params.name | startswith("CornerBracket:")))] | length) == 16 and
+               and (.params.name | startswith("CornerBracket:")))] | length) == 32 and
             ([.commands[] | select(.command == "solid.fillet")] | length) == 3
           ' output/native/hub75-wood-frame/commands.json
           # Four native groups and five lightweight panels; no additional

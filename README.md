@@ -155,7 +155,7 @@ The Models website shows **Basic Models → Components → Advanced Models**.
   categories for every qualified model.
 
 The API cheatsheet lives only on the
-[SCPF library site](https://brainboxemb.github.io/lib.py.solidcraft/cheatsheet/);
+[SCPF library site](https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/);
 the old CAD cheatsheet URL redirects there.
 
 ## Project structure

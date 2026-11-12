@@ -1,13 +1,11 @@
 """Four-piece mitred glazing-frame subassembly."""
 
-from scpf import component
+from scpf import assembly
 
 from parts.glass_strip import GlassStrip
 
 
-Strip = component(GlassStrip)
-
-
+@assembly
 class GlassFrame:
     opening_width = 844.0
     opening_height = 362.0
@@ -18,7 +16,7 @@ class GlassFrame:
     def build(self):
         trim_y = self.frame_front_y + self.glazing_depth / 2
 
-        horizontal = Strip(
+        horizontal = GlassStrip(
             length=self.opening_width,
             width=self.glazing_width,
             depth=self.glazing_depth,
@@ -33,7 +31,7 @@ class GlassFrame:
             z=self.opening_height,
         )
 
-        vertical = Strip(
+        vertical = GlassStrip(
             length=self.opening_height,
             width=self.glazing_width,
             depth=self.glazing_depth,

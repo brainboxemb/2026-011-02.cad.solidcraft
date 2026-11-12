@@ -29,9 +29,9 @@ The standalone demonstration and wooden HUB75 assembly import this single
 geometry definition. While the screw-hole operations are producing native
 SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
-experiments remain only in the standalone model_reference.py, not here.
+experiments remain only in the standalone reference.py, not here.
 &quot;&quot;&quot;
-from scpf import Polygon2D, Direction, Edges
+from scpf import AnchorFrame, Polygon2D, Direction, Edges
 
 
 class CornerBracket:
@@ -45,14 +45,25 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
-    # Parent-owned placement inputs. Their defaults stay private when this
-    # component is opened standalone; an assembly may bind parent parameters
-    # into them without creating separate CornerBracket_* parameters.
-    _x_position = 0.0
-    _y_position = 0.0
-    _z_position = 0.0
-    _x_sign = 1.0
-    _z_sign = 1.0
+
+    def anchors(self):
+        &quot;&quot;&quot;Local attachment frames at the bracket&#x27;s inside corner.
+
+        The bracket is symmetric through Y. Front and rear use opposite frame
+        normals while the actual geometry remains one neutral component.
+        &quot;&quot;&quot;
+        return {
+            &quot;front_mount&quot;: AnchorFrame(
+                origin=(0, 0, 0),
+                z=(0, 1, 0),
+                x=(1, 0, 0),
+            ),
+            &quot;rear_mount&quot;: AnchorFrame(
+                origin=(0, 0, 0),
+                z=(0, -1, 0),
+                x=(1, 0, 0),
+            ),
+        }
 
     def build(self):
         w = self.wall_thickness
@@ -60,9 +71,8 @@ class CornerBracket:
         v = self.vertical_arm_length
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
-        ef = self.elephant_foot_relief
 
-        # L profile in the XZ plane (+Z up, +X right; not to scale):
+        # One neutral local model in the XZ plane (+Z up, +X right).
         #
         #       D--------------------------------C
         #      /                                  \
@@ -79,46 +89,31 @@ class CornerBracket:
         # D o_corner     E o_vert       F o_vert_bevel
         # G o_vert_end   H v_tip        I i_corner
         #
-        # Start at I, the inside corner and sketch origin (0, 0).
-        # Polygon order: I -&gt; A -&gt; B -&gt; C -&gt; D -&gt; E -&gt; F -&gt; G -&gt; H -&gt; I.
-        # Each label names its point and the segment starting at that point.
-        # Elephant-foot relief is NOT part of this sketch: it comes later.
-        # The geometry path is identical standalone and in an assembly.
-        # Placement is expressed through private parent-owned inputs rather
-        # than through a second &quot;used model&quot; code path.
-        x0 = self._x_position
-        z0 = self._z_position
-        sx = self._x_sign
-        sz = self._z_sign
-
-        def placed(x, z):
-            return (x0 + sx * x, z0 + sz * z)
-
+        # I is always the component origin. Assemblies place and rotate
+        # occurrences of this geometry; this model never knows where it is used.
         points = [
-            (&quot;i_corner&quot;, placed(0, 0)),
-            (&quot;o_hor_tip&quot;, placed(h, 0)),
-            (&quot;o_hor_bevel&quot;, placed(h, w - end)),
-            (&quot;o_hor&quot;, placed(h - end, w)),
-            (&quot;o_corner&quot;, placed(-w + outer, w)),
-            (&quot;o_vert&quot;, placed(-w, w - outer)),
-            (&quot;o_vert_bevel&quot;, placed(-w, -v + end)),
-            (&quot;o_vert_end&quot;, placed(-w + end, -v)),
-            (&quot;v_tip&quot;, placed(0, -v)),
+            (&quot;i_corner&quot;, (0, 0)),
+            (&quot;o_hor_tip&quot;, (h, 0)),
+            (&quot;o_hor_bevel&quot;, (h, w - end)),
+            (&quot;o_hor&quot;, (h - end, w)),
+            (&quot;o_corner&quot;, (-w + outer, w)),
+            (&quot;o_vert&quot;, (-w, w - outer)),
+            (&quot;o_vert_bevel&quot;, (-w, -v + end)),
+            (&quot;o_vert_end&quot;, (-w + end, -v)),
+            (&quot;v_tip&quot;, (0, -v)),
         ]
 
         profile = Polygon2D(
             points,
             plane=&quot;XZ&quot;,
             world=True,
-        ).at(y=self._y_position)
+        )
 
         body = profile.extrude(
             self.bracket_width,
             direction=Direction.SYMMETRIC,
         )
 
-        # Round the inside, then remove printing relief from the two tip
-        # edges (parallel to the extrusion direction).
         body = body.fillet(
             self.inside_corner_radius,
             edges=Edges.from_vertices(&quot;i_corner&quot;),
@@ -131,7 +126,6 @@ class CornerBracket:
             self.side_edge_chamfer,
             edges=Edges.from_profile(&quot;o_*&quot;, sides=&quot;both&quot;),
         )
-        # Inner relief along both broad faces, independent of the 2D outline.
         body = body.chamfer(
             self.elephant_foot_relief,
             edges=Edges.from_profile(&quot;i_corner&quot;, sides=&quot;both&quot;),
@@ -139,9 +133,8 @@ class CornerBracket:
 
         # No mounting holes in this version. The historical four-hole
         # geometry caused warnings in native SolidCraft when replayed
-        # inside the larger wooden frame. Keep this bracket reliable as a
-        # positioned/rounded solid while the mounting approach is reviewed.
-        # Do not reintroduce holes through model-specific workarounds.
+        # inside the larger wooden frame. Keep this bracket reliable while
+        # the mounting approach is reviewed.
 
         return body
 </code></pre></section>
@@ -215,7 +208,15 @@ script.add(&quot;solid.chamfer&quot;, edges=outside_edges,
 script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
            distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
 </code></pre></section>
-<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: horizontal_arm_length</small><pre><code>{
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;bracket_width&quot;,
+    &quot;expression&quot;: &quot;24&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: horizontal_arm_length</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;horizontal_arm_length&quot;,
@@ -255,14 +256,6 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;bracket_width&quot;,
-    &quot;expression&quot;: &quot;24&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: inside_corner_radius</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
@@ -291,8 +284,7 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: 0.0
+    &quot;name&quot;: &quot;Profile&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -300,40 +292,40 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
   &quot;params&quot;: {
     &quot;points&quot;: [
       [
-        0.0,
-        -0.0
+        0,
+        0
       ],
       [
-        &quot;horizontal_arm_length * 1 + 0 mm&quot;,
-        -0.0
+        &quot;horizontal_arm_length&quot;,
+        0
       ],
       [
-        &quot;horizontal_arm_length * 1 + 0 mm&quot;,
-        &quot;-((wall_thickness - (arm_end_chamfer)) * 1 + 0 mm)&quot;
+        &quot;horizontal_arm_length&quot;,
+        &quot;-(wall_thickness - (arm_end_chamfer))&quot;
       ],
       [
-        &quot;(horizontal_arm_length - (arm_end_chamfer)) * 1 + 0 mm&quot;,
-        &quot;-(wall_thickness * 1 + 0 mm)&quot;
+        &quot;horizontal_arm_length - (arm_end_chamfer)&quot;,
+        &quot;-(wall_thickness)&quot;
       ],
       [
-        &quot;((-(wall_thickness)) + (outer_corner_chamfer)) * 1 + 0 mm&quot;,
-        &quot;-(wall_thickness * 1 + 0 mm)&quot;
+        &quot;(-(wall_thickness)) + (outer_corner_chamfer)&quot;,
+        &quot;-(wall_thickness)&quot;
       ],
       [
-        &quot;(-(wall_thickness)) * 1 + 0 mm&quot;,
-        &quot;-((wall_thickness - (outer_corner_chamfer)) * 1 + 0 mm)&quot;
+        &quot;-(wall_thickness)&quot;,
+        &quot;-(wall_thickness - (outer_corner_chamfer))&quot;
       ],
       [
-        &quot;(-(wall_thickness)) * 1 + 0 mm&quot;,
-        &quot;-(((-(vertical_arm_length)) + (arm_end_chamfer)) * 1 + 0 mm)&quot;
+        &quot;-(wall_thickness)&quot;,
+        &quot;-((-(vertical_arm_length)) + (arm_end_chamfer))&quot;
       ],
       [
-        &quot;((-(wall_thickness)) + (arm_end_chamfer)) * 1 + 0 mm&quot;,
-        &quot;-((-(vertical_arm_length)) * 1 + 0 mm)&quot;
+        &quot;(-(wall_thickness)) + (arm_end_chamfer)&quot;,
+        &quot;-(-(vertical_arm_length))&quot;
       ],
       [
-        0.0,
-        &quot;-((-(vertical_arm_length)) * 1 + 0 mm)&quot;
+        0,
+        &quot;-(-(vertical_arm_length))&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -369,7 +361,7 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
       [
         0.0,
         0.0,
-        0.0
+        -0.0
       ]
     ],
     &quot;radius&quot;: &quot;inside_corner_radius&quot;,
@@ -383,7 +375,7 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
       [
         60.0,
         0.0,
-        0.0
+        -0.0
       ],
       [
         0.0,
@@ -481,12 +473,12 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
       [
         30.0,
         -12.0,
-        0.0
+        -0.0
       ],
       [
         30.0,
         12.0,
-        0.0
+        -0.0
       ]
     ],
     &quot;distance&quot;: &quot;elephant_foot_relief&quot;,

@@ -79,6 +79,12 @@ class WoodenHub75Box:
             corner_radius=self.corner_radius,
         )
 
+        brackets = CornerBrackets(
+            wood_frame=frame,
+            bracket_width=self.bracket_width,
+            corner_radius=self.corner_radius,
+        )
+
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
@@ -87,19 +93,10 @@ class WoodenHub75Box:
             glazing_wood_depth=self.glazing_wood_depth,
         )
 
-        brackets = CornerBrackets(
-            opening_width=self.opening_width,
-            opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
-            cabinet_depth=self.cabinet_depth,
-            bracket_width=self.bracket_width,
-            corner_radius=self.corner_radius,
-        )
-
         window = Window(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + glazing + brackets + window
+        return panels + frame + brackets + glazing + window

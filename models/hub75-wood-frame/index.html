@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">194 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">165 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -104,6 +104,12 @@ class WoodenHub75Box:
             corner_radius=self.corner_radius,
         )
 
+        brackets = CornerBrackets(
+            wood_frame=frame,
+            bracket_width=self.bracket_width,
+            corner_radius=self.corner_radius,
+        )
+
         glazing = GlassFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
@@ -112,22 +118,13 @@ class WoodenHub75Box:
             glazing_wood_depth=self.glazing_wood_depth,
         )
 
-        brackets = CornerBrackets(
-            opening_width=self.opening_width,
-            opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
-            cabinet_depth=self.cabinet_depth,
-            bracket_width=self.bracket_width,
-            corner_radius=self.corner_radius,
-        )
-
         window = Window(
             opening_height=self.opening_height,
             opening_bottom_z=opening_bottom_z,
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + glazing + brackets + window
+        return panels + frame + brackets + glazing + window
 </code></pre>
 
 <h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Create reusable component</strong><small>component.create · name: HUB75Panels</small><pre><code>{
@@ -146,18 +143,18 @@ class WoodenHub75Box:
     &quot;grounded&quot;: false
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: WoodGlassFrame</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;WoodGlassFrame&quot;,
-    &quot;activate&quot;: false,
-    &quot;grounded&quot;: false
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: CornerBrackets</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;CornerBrackets&quot;,
+    &quot;activate&quot;: false,
+    &quot;grounded&quot;: false
+  }
+}</code></pre></li>
+<li><strong>Create reusable component</strong><small>component.create · name: WoodGlassFrame</small><pre><code>{
+  &quot;command&quot;: &quot;component.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;WoodGlassFrame&quot;,
     &quot;activate&quot;: false,
     &quot;grounded&quot;: false
   }
@@ -351,10 +348,10 @@ class WoodenHub75Box:
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: LeftBoard</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: Board</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;LeftBoard&quot;,
+    &quot;name&quot;: &quot;Board&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -401,12 +398,12 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: LeftBoard</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Board</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;positive&quot;,
-    &quot;body_name&quot;: &quot;LeftBoard&quot;
+    &quot;body_name&quot;: &quot;Board&quot;
   }
 }</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY side board</small><pre><code>{
@@ -421,7 +418,7 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;LeftBoard&quot;
+      &quot;Board&quot;
     ],
     &quot;material&quot;: &quot;LIGHTPLY side board&quot;
   }
@@ -432,10 +429,10 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: RightBoard</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: Board 2</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;RightBoard&quot;,
+    &quot;name&quot;: &quot;Board 2&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -482,19 +479,19 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: RightBoard</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Board_2</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;positive&quot;,
-    &quot;body_name&quot;: &quot;RightBoard&quot;
+    &quot;body_name&quot;: &quot;Board_2&quot;
   }
 }</code></pre></li>
 <li><strong>Assign material</strong><small>material.assign</small><pre><code>{
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;RightBoard&quot;
+      &quot;Board_2&quot;
     ],
     &quot;material&quot;: &quot;LIGHTPLY side board&quot;
   }
@@ -513,10 +510,10 @@ class WoodenHub75Box:
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: BottomBoard</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: Board 3</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;BottomBoard&quot;,
+    &quot;name&quot;: &quot;Board 3&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -563,12 +560,12 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: BottomBoard</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Board_3</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;cabinet_depth&quot;,
     &quot;direction&quot;: &quot;positive&quot;,
-    &quot;body_name&quot;: &quot;BottomBoard&quot;
+    &quot;body_name&quot;: &quot;Board_3&quot;
   }
 }</code></pre></li>
 <li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
@@ -587,7 +584,7 @@ class WoodenHub75Box:
       ]
     ],
     &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;BottomBoard&quot;
+    &quot;body&quot;: &quot;Board_3&quot;
   }
 }</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY bottom</small><pre><code>{
@@ -602,7 +599,7 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;BottomBoard&quot;
+      &quot;Board_3&quot;
     ],
     &quot;material&quot;: &quot;LIGHTPLY bottom&quot;
   }
@@ -637,10 +634,10 @@ class WoodenHub75Box:
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: RoofBoard</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: Board 4</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;RoofBoard&quot;,
+    &quot;name&quot;: &quot;Board 4&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -687,12 +684,12 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: RoofBoard</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Board_4</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))&quot;,
     &quot;direction&quot;: &quot;positive&quot;,
-    &quot;body_name&quot;: &quot;RoofBoard&quot;
+    &quot;body_name&quot;: &quot;Board_4&quot;
   }
 }</code></pre></li>
 <li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
@@ -711,7 +708,7 @@ class WoodenHub75Box:
       ]
     ],
     &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;RoofBoard&quot;
+    &quot;body&quot;: &quot;Board_4&quot;
   }
 }</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY roof</small><pre><code>{
@@ -726,7 +723,7 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;RoofBoard&quot;
+      &quot;Board_4&quot;
     ],
     &quot;material&quot;: &quot;LIGHTPLY roof&quot;
   }
@@ -737,10 +734,10 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: BackBoard</small><pre><code>{
+<li><strong>Create reusable component</strong><small>component.create · name: Board 5</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;BackBoard&quot;,
+    &quot;name&quot;: &quot;Board 5&quot;,
     &quot;grounded&quot;: false,
     &quot;parent&quot;: &quot;WoodBoxFrame&quot;
   }
@@ -787,12 +784,12 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.finish&quot;,
   &quot;params&quot;: {}
 }</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: BackBoard</small><pre><code>{
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Board_5</small><pre><code>{
   &quot;command&quot;: &quot;solid.extrude&quot;,
   &quot;params&quot;: {
     &quot;distance&quot;: &quot;panel_wood_thickness&quot;,
     &quot;direction&quot;: &quot;positive&quot;,
-    &quot;body_name&quot;: &quot;BackBoard&quot;
+    &quot;body_name&quot;: &quot;Board_5&quot;
   }
 }</code></pre></li>
 <li><strong>Create physical material</strong><small>material.create · name: LIGHTPLY rear</small><pre><code>{
@@ -807,7 +804,7 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;material.assign&quot;,
   &quot;params&quot;: {
     &quot;bodies&quot;: [
-      &quot;BackBoard&quot;
+      &quot;Board_5&quot;
     ],
     &quot;material&quot;: &quot;LIGHTPLY rear&quot;
   }
@@ -816,6 +813,747 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;component.activate&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;root&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;bracket_width&quot;,
+    &quot;expression&quot;: &quot;24&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket</small><pre><code>{
+  &quot;command&quot;: &quot;component.create&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket&quot;,
+    &quot;grounded&quot;: false,
+    &quot;parent&quot;: &quot;CornerBrackets&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Profile&quot;
+  }
+}</code></pre></li>
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
+  &quot;params&quot;: {
+    &quot;points&quot;: [
+      [
+        0,
+        0
+      ],
+      [
+        60.0,
+        0
+      ],
+      [
+        60.0,
+        -9.0
+      ],
+      [
+        57.0,
+        -12.0
+      ],
+      [
+        -6.0,
+        -12.0
+      ],
+      [
+        -12.0,
+        -6.0
+      ],
+      [
+        -12.0,
+        57.0
+      ],
+      [
+        -9.0,
+        60.0
+      ],
+      [
+        0,
+        60.0
+      ]
+    ],
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;i_corner&quot;,
+      &quot;o_hor_tip&quot;,
+      &quot;o_hor_bevel&quot;,
+      &quot;o_hor&quot;,
+      &quot;o_corner&quot;,
+      &quot;o_vert&quot;,
+      &quot;o_vert_bevel&quot;,
+      &quot;o_vert_end&quot;,
+      &quot;v_tip&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;bracket_width&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;body_name&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
+  &quot;command&quot;: &quot;solid.fillet&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        0.0,
+        0.0,
+        -0.0
+      ]
+    ],
+    &quot;radius&quot;: &quot;corner_radius&quot;,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        60.0,
+        0.0,
+        -0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -60.0
+      ]
+    ],
+    &quot;distance&quot;: 0.6,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        60.0,
+        -12.0,
+        4.5
+      ],
+      [
+        58.5,
+        -12.0,
+        10.5
+      ],
+      [
+        25.5,
+        -12.0,
+        12.0
+      ],
+      [
+        -9.0,
+        -12.0,
+        9.0
+      ],
+      [
+        -12.0,
+        -12.0,
+        -25.5
+      ],
+      [
+        -10.5,
+        -12.0,
+        -58.5
+      ],
+      [
+        -4.5,
+        -12.0,
+        -60.0
+      ],
+      [
+        60.0,
+        12.0,
+        4.5
+      ],
+      [
+        58.5,
+        12.0,
+        10.5
+      ],
+      [
+        25.5,
+        12.0,
+        12.0
+      ],
+      [
+        -9.0,
+        12.0,
+        9.0
+      ],
+      [
+        -12.0,
+        12.0,
+        -25.5
+      ],
+      [
+        -10.5,
+        12.0,
+        -58.5
+      ],
+      [
+        -4.5,
+        12.0,
+        -60.0
+      ]
+    ],
+    &quot;distance&quot;: 2.0,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        30.0,
+        -12.0,
+        -0.0
+      ],
+      [
+        30.0,
+        12.0,
+        -0.0
+      ]
+    ],
+    &quot;distance&quot;: 0.6,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
+  &quot;command&quot;: &quot;component.activate&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;root&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.copy&quot;,
+  &quot;params&quot;: {
+    &quot;component&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:1.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:1.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:1.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:1.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:2.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:2.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:2.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:2.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:3.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:3.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:3.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:3.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:4.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:4.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:4.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:4.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:5.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:5.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:5.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:5.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:6.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:6.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:6.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:6.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:7.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:7.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:7.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:7.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:8.front_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:8.front_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>joint.origin</strong><small>joint.origin · name: CornerBracket:8.rear_mount</small><pre><code>{
+  &quot;command&quot;: &quot;joint.origin&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket:8.rear_mount&quot;,
+    &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
+    &quot;frame&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        0.0
+      ],
+      &quot;z&quot;: [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      &quot;x&quot;: [
+        1.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
+    &quot;translate&quot;: [
+      -422.0,
+      0.0,
+      374.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
+    &quot;translate&quot;: [
+      -422.0,
+      100.0,
+      374.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
+    &quot;translate&quot;: [
+      422.0,
+      0.0,
+      374.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
+    &quot;translate&quot;: [
+      422.0,
+      100.0,
+      374.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
+    &quot;translate&quot;: [
+      422.0,
+      0.0,
+      12.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
+    &quot;translate&quot;: [
+      422.0,
+      100.0,
+      12.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
+    &quot;translate&quot;: [
+      -422.0,
+      0.0,
+      12.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
+    &quot;translate&quot;: [
+      -422.0,
+      100.0,
+      12.0
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: glazing_wood_depth</small><pre><code>{
@@ -1189,1774 +1927,6 @@ class WoodenHub75Box:
     &quot;angle&quot;: &quot;-90 deg&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;bracket_width&quot;,
-    &quot;expression&quot;: &quot;24&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;bracket_width / 2&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 9 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 6 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -57 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -434.0,
-        12.0,
-        386.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        12.0,
-        386.0
-      ],
-      [
-        -434.0,
-        12.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        0.0,
-        390.5
-      ],
-      [
-        -375.5,
-        0.0,
-        396.5
-      ],
-      [
-        -408.5,
-        0.0,
-        398.0
-      ],
-      [
-        -443.0,
-        0.0,
-        395.0
-      ],
-      [
-        -446.0,
-        0.0,
-        360.5
-      ],
-      [
-        -444.5,
-        0.0,
-        327.5
-      ],
-      [
-        -438.5,
-        0.0,
-        326.0
-      ],
-      [
-        -374.0,
-        24.0,
-        390.5
-      ],
-      [
-        -375.5,
-        24.0,
-        396.5
-      ],
-      [
-        -408.5,
-        24.0,
-        398.0
-      ],
-      [
-        -443.0,
-        24.0,
-        395.0
-      ],
-      [
-        -446.0,
-        24.0,
-        360.5
-      ],
-      [
-        -444.5,
-        24.0,
-        327.5
-      ],
-      [
-        -438.5,
-        24.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -404.0,
-        0.0,
-        386.0
-      ],
-      [
-        -404.0,
-        24.0,
-        386.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 2</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 2&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 9 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 6 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -57 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_2</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_2&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -434.0,
-        88.0,
-        386.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_2&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        88.0,
-        386.0
-      ],
-      [
-        -434.0,
-        88.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_2&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        76.0,
-        390.5
-      ],
-      [
-        -375.5,
-        76.0,
-        396.5
-      ],
-      [
-        -408.5,
-        76.0,
-        398.0
-      ],
-      [
-        -443.0,
-        76.0,
-        395.0
-      ],
-      [
-        -446.0,
-        76.0,
-        360.5
-      ],
-      [
-        -444.5,
-        76.0,
-        327.5
-      ],
-      [
-        -438.5,
-        76.0,
-        326.0
-      ],
-      [
-        -374.0,
-        100.0,
-        390.5
-      ],
-      [
-        -375.5,
-        100.0,
-        396.5
-      ],
-      [
-        -408.5,
-        100.0,
-        398.0
-      ],
-      [
-        -443.0,
-        100.0,
-        395.0
-      ],
-      [
-        -446.0,
-        100.0,
-        360.5
-      ],
-      [
-        -444.5,
-        100.0,
-        327.5
-      ],
-      [
-        -438.5,
-        100.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_2&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -404.0,
-        76.0,
-        386.0
-      ],
-      [
-        -404.0,
-        100.0,
-        386.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_2&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 3</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 3&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;bracket_width / 2&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 9 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 6 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -57 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_3</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_3&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        434.0,
-        12.0,
-        386.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_3&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        12.0,
-        386.0
-      ],
-      [
-        434.0,
-        12.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_3&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        0.0,
-        390.5
-      ],
-      [
-        375.5,
-        0.0,
-        396.5
-      ],
-      [
-        408.5,
-        0.0,
-        398.0
-      ],
-      [
-        443.0,
-        0.0,
-        395.0
-      ],
-      [
-        446.0,
-        0.0,
-        360.5
-      ],
-      [
-        444.5,
-        0.0,
-        327.5
-      ],
-      [
-        438.5,
-        0.0,
-        326.0
-      ],
-      [
-        374.0,
-        24.0,
-        390.5
-      ],
-      [
-        375.5,
-        24.0,
-        396.5
-      ],
-      [
-        408.5,
-        24.0,
-        398.0
-      ],
-      [
-        443.0,
-        24.0,
-        395.0
-      ],
-      [
-        446.0,
-        24.0,
-        360.5
-      ],
-      [
-        444.5,
-        24.0,
-        327.5
-      ],
-      [
-        438.5,
-        24.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_3&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        404.0,
-        0.0,
-        386.0
-      ],
-      [
-        404.0,
-        24.0,
-        386.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_3&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 4</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 4&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 0 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 9 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 12 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + 6 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -57 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        &quot;-(opening_height + (frame_wood_thickness * 2) + -60 mm)&quot;
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_4</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_4&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        434.0,
-        88.0,
-        386.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_4&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        88.0,
-        386.0
-      ],
-      [
-        434.0,
-        88.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_4&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        76.0,
-        390.5
-      ],
-      [
-        375.5,
-        76.0,
-        396.5
-      ],
-      [
-        408.5,
-        76.0,
-        398.0
-      ],
-      [
-        443.0,
-        76.0,
-        395.0
-      ],
-      [
-        446.0,
-        76.0,
-        360.5
-      ],
-      [
-        444.5,
-        76.0,
-        327.5
-      ],
-      [
-        438.5,
-        76.0,
-        326.0
-      ],
-      [
-        374.0,
-        100.0,
-        390.5
-      ],
-      [
-        375.5,
-        100.0,
-        396.5
-      ],
-      [
-        408.5,
-        100.0,
-        398.0
-      ],
-      [
-        443.0,
-        100.0,
-        395.0
-      ],
-      [
-        446.0,
-        100.0,
-        360.5
-      ],
-      [
-        444.5,
-        100.0,
-        327.5
-      ],
-      [
-        438.5,
-        100.0,
-        326.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_4&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        404.0,
-        76.0,
-        386.0
-      ],
-      [
-        404.0,
-        100.0,
-        386.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_4&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 5</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 5&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;bracket_width / 2&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        9.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        6.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        -57.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm&quot;,
-        -60.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        -60.0
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_5</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_5&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -434.0,
-        12.0,
-        0.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_5&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        12.0,
-        0.0
-      ],
-      [
-        -434.0,
-        12.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_5&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        0.0,
-        -4.5
-      ],
-      [
-        -375.5,
-        0.0,
-        -10.5
-      ],
-      [
-        -408.5,
-        0.0,
-        -12.0
-      ],
-      [
-        -443.0,
-        0.0,
-        -9.0
-      ],
-      [
-        -446.0,
-        0.0,
-        25.5
-      ],
-      [
-        -444.5,
-        0.0,
-        58.5
-      ],
-      [
-        -438.5,
-        0.0,
-        60.0
-      ],
-      [
-        -374.0,
-        24.0,
-        -4.5
-      ],
-      [
-        -375.5,
-        24.0,
-        -10.5
-      ],
-      [
-        -408.5,
-        24.0,
-        -12.0
-      ],
-      [
-        -443.0,
-        24.0,
-        -9.0
-      ],
-      [
-        -446.0,
-        24.0,
-        25.5
-      ],
-      [
-        -444.5,
-        24.0,
-        58.5
-      ],
-      [
-        -438.5,
-        24.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_5&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -404.0,
-        0.0,
-        0.0
-      ],
-      [
-        -404.0,
-        24.0,
-        0.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_5&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 6</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 6&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 60 mm&quot;,
-        9.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 57 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -6 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        6.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -12 mm&quot;,
-        -57.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + -9 mm&quot;,
-        -60.0
-      ],
-      [
-        &quot;-((opening_width + (frame_wood_thickness * 2)) / 2) + 0 mm&quot;,
-        -60.0
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_6</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_6&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -434.0,
-        88.0,
-        0.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_6&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        88.0,
-        0.0
-      ],
-      [
-        -434.0,
-        88.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_6&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -374.0,
-        76.0,
-        -4.5
-      ],
-      [
-        -375.5,
-        76.0,
-        -10.5
-      ],
-      [
-        -408.5,
-        76.0,
-        -12.0
-      ],
-      [
-        -443.0,
-        76.0,
-        -9.0
-      ],
-      [
-        -446.0,
-        76.0,
-        25.5
-      ],
-      [
-        -444.5,
-        76.0,
-        58.5
-      ],
-      [
-        -438.5,
-        76.0,
-        60.0
-      ],
-      [
-        -374.0,
-        100.0,
-        -4.5
-      ],
-      [
-        -375.5,
-        100.0,
-        -10.5
-      ],
-      [
-        -408.5,
-        100.0,
-        -12.0
-      ],
-      [
-        -443.0,
-        100.0,
-        -9.0
-      ],
-      [
-        -446.0,
-        100.0,
-        25.5
-      ],
-      [
-        -444.5,
-        100.0,
-        58.5
-      ],
-      [
-        -438.5,
-        100.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_6&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        -404.0,
-        76.0,
-        0.0
-      ],
-      [
-        -404.0,
-        100.0,
-        0.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_6&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 7</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 7&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;bracket_width / 2&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        9.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        6.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        -57.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm&quot;,
-        -60.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        -60.0
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_7</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_7&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        434.0,
-        12.0,
-        0.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_7&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        12.0,
-        0.0
-      ],
-      [
-        434.0,
-        12.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_7&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        0.0,
-        -4.5
-      ],
-      [
-        375.5,
-        0.0,
-        -10.5
-      ],
-      [
-        408.5,
-        0.0,
-        -12.0
-      ],
-      [
-        443.0,
-        0.0,
-        -9.0
-      ],
-      [
-        446.0,
-        0.0,
-        25.5
-      ],
-      [
-        444.5,
-        0.0,
-        58.5
-      ],
-      [
-        438.5,
-        0.0,
-        60.0
-      ],
-      [
-        374.0,
-        24.0,
-        -4.5
-      ],
-      [
-        375.5,
-        24.0,
-        -10.5
-      ],
-      [
-        408.5,
-        24.0,
-        -12.0
-      ],
-      [
-        443.0,
-        24.0,
-        -9.0
-      ],
-      [
-        446.0,
-        24.0,
-        25.5
-      ],
-      [
-        444.5,
-        24.0,
-        58.5
-      ],
-      [
-        438.5,
-        24.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_7&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        404.0,
-        0.0,
-        0.0
-      ],
-      [
-        404.0,
-        24.0,
-        0.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_7&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Create reusable component</strong><small>component.create · name: CornerBracket 8</small><pre><code>{
-  &quot;command&quot;: &quot;component.create&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket 8&quot;,
-    &quot;grounded&quot;: false,
-    &quot;parent&quot;: &quot;CornerBrackets&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Profile, plane: XZ</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;cabinet_depth - (bracket_width / 2)&quot;
-  }
-}</code></pre></li>
-<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.line&quot;,
-  &quot;params&quot;: {
-    &quot;points&quot;: [
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        -0.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -60 mm&quot;,
-        9.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -57 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 6 mm&quot;,
-        12.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        6.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 12 mm&quot;,
-        -57.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + 9 mm&quot;,
-        -60.0
-      ],
-      [
-        &quot;(opening_width + (frame_wood_thickness * 2)) / 2 + -0 mm&quot;,
-        -60.0
-      ]
-    ],
-    &quot;closed&quot;: true,
-    &quot;ids&quot;: [
-      &quot;i_corner&quot;,
-      &quot;o_hor_tip&quot;,
-      &quot;o_hor_bevel&quot;,
-      &quot;o_hor&quot;,
-      &quot;o_corner&quot;,
-      &quot;o_vert&quot;,
-      &quot;o_vert_bevel&quot;,
-      &quot;o_vert_end&quot;,
-      &quot;v_tip&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: CornerBracket_8</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;bracket_width&quot;,
-    &quot;direction&quot;: &quot;symmetric&quot;,
-    &quot;body_name&quot;: &quot;CornerBracket_8&quot;
-  }
-}</code></pre></li>
-<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
-  &quot;command&quot;: &quot;solid.fillet&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        434.0,
-        88.0,
-        0.0
-      ]
-    ],
-    &quot;radius&quot;: &quot;corner_radius&quot;,
-    &quot;body&quot;: &quot;CornerBracket_8&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        88.0,
-        0.0
-      ],
-      [
-        434.0,
-        88.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_8&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        374.0,
-        76.0,
-        -4.5
-      ],
-      [
-        375.5,
-        76.0,
-        -10.5
-      ],
-      [
-        408.5,
-        76.0,
-        -12.0
-      ],
-      [
-        443.0,
-        76.0,
-        -9.0
-      ],
-      [
-        446.0,
-        76.0,
-        25.5
-      ],
-      [
-        444.5,
-        76.0,
-        58.5
-      ],
-      [
-        438.5,
-        76.0,
-        60.0
-      ],
-      [
-        374.0,
-        100.0,
-        -4.5
-      ],
-      [
-        375.5,
-        100.0,
-        -10.5
-      ],
-      [
-        408.5,
-        100.0,
-        -12.0
-      ],
-      [
-        443.0,
-        100.0,
-        -9.0
-      ],
-      [
-        446.0,
-        100.0,
-        25.5
-      ],
-      [
-        444.5,
-        100.0,
-        58.5
-      ],
-      [
-        438.5,
-        100.0,
-        60.0
-      ]
-    ],
-    &quot;distance&quot;: 2.0,
-    &quot;body&quot;: &quot;CornerBracket_8&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        404.0,
-        76.0,
-        0.0
-      ],
-      [
-        404.0,
-        100.0,
-        0.0
-      ]
-    ],
-    &quot;distance&quot;: 0.6,
-    &quot;body&quot;: &quot;CornerBracket_8&quot;
-  }
-}</code></pre></li>
-<li><strong>Activate component / root</strong><small>component.activate</small><pre><code>{
-  &quot;command&quot;: &quot;component.activate&quot;,
-  &quot;params&quot;: {
-    &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Window</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -3035,6 +2005,248 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;component.activate&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;root&quot;
+  }
+}</code></pre></li>
+<li><strong>joint.as_built</strong><small>joint.as_built · name: Attach Board:1 to Board 3:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.as_built&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach Board:1 to Board 3:1&quot;,
+    &quot;a&quot;: &quot;Board 3:1&quot;,
+    &quot;b&quot;: &quot;Board:1&quot;
+  }
+}</code></pre></li>
+<li><strong>joint.as_built</strong><small>joint.as_built · name: Attach Board 2:1 to Board 3:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.as_built&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach Board 2:1 to Board 3:1&quot;,
+    &quot;a&quot;: &quot;Board 3:1&quot;,
+    &quot;b&quot;: &quot;Board 2:1&quot;
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:1 to Board:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:1 to Board:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board:1&quot;,
+      &quot;edge&quot;: [
+        -422.0,
+        0.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        -428.0,
+        0.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        -422.0,
+        0.0,
+        374.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:1.front_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 180.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:2 to Board:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:2 to Board:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board:1&quot;,
+      &quot;edge&quot;: [
+        -422.0,
+        100.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        -428.0,
+        100.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        -422.0,
+        100.0,
+        374.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:2.rear_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 270.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:3 to Board 2:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:3 to Board 2:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board 2:1&quot;,
+      &quot;edge&quot;: [
+        422.0,
+        0.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        428.0,
+        0.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        422.0,
+        0.0,
+        374.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:3.front_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 0.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:4 to Board 2:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:4 to Board 2:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board 2:1&quot;,
+      &quot;edge&quot;: [
+        422.0,
+        100.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        428.0,
+        100.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        422.0,
+        100.0,
+        374.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:4.rear_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 90.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:5 to Board 2:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:5 to Board 2:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board 2:1&quot;,
+      &quot;edge&quot;: [
+        422.0,
+        0.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        428.0,
+        0.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        422.0,
+        0.0,
+        12.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:5.front_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 180.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:6 to Board 2:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:6 to Board 2:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board 2:1&quot;,
+      &quot;edge&quot;: [
+        422.0,
+        100.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        428.0,
+        100.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        422.0,
+        100.0,
+        12.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:6.rear_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 270.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:7 to Board:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:7 to Board:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board:1&quot;,
+      &quot;edge&quot;: [
+        -422.0,
+        0.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        -428.0,
+        0.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        -422.0,
+        0.0,
+        12.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:7.front_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 0.0
+  }
+}</code></pre></li>
+<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:8 to Board:1</small><pre><code>{
+  &quot;command&quot;: &quot;joint.create&quot;,
+  &quot;params&quot;: {
+    &quot;type&quot;: &quot;rigid&quot;,
+    &quot;name&quot;: &quot;Attach CornerBracket:8 to Board:1&quot;,
+    &quot;a&quot;: {
+      &quot;occurrence&quot;: &quot;Board:1&quot;,
+      &quot;edge&quot;: [
+        -422.0,
+        100.0,
+        193.0
+      ],
+      &quot;on&quot;: [
+        -428.0,
+        100.0,
+        193.0
+      ],
+      &quot;corner&quot;: [
+        -422.0,
+        100.0,
+        12.0
+      ]
+    },
+    &quot;b&quot;: &quot;CornerBracket:8.rear_mount&quot;,
+    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
+    &quot;angle&quot;: 90.0
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

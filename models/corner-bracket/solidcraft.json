@@ -3,6 +3,14 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "bracket_width",
+        "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "horizontal_arm_length",
         "expression": "60",
         "unit": "mm"
@@ -43,14 +51,6 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "bracket_width",
-        "expression": "24",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "inside_corner_radius",
         "expression": "4",
         "unit": "mm"
@@ -76,8 +76,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile",
-        "offset": 0.0
+        "name": "Profile"
       }
     },
     {
@@ -85,40 +84,40 @@
       "params": {
         "points": [
           [
-            0.0,
-            -0.0
+            0,
+            0
           ],
           [
-            "horizontal_arm_length * 1 + 0 mm",
-            -0.0
+            "horizontal_arm_length",
+            0
           ],
           [
-            "horizontal_arm_length * 1 + 0 mm",
-            "-((wall_thickness - (arm_end_chamfer)) * 1 + 0 mm)"
+            "horizontal_arm_length",
+            "-(wall_thickness - (arm_end_chamfer))"
           ],
           [
-            "(horizontal_arm_length - (arm_end_chamfer)) * 1 + 0 mm",
-            "-(wall_thickness * 1 + 0 mm)"
+            "horizontal_arm_length - (arm_end_chamfer)",
+            "-(wall_thickness)"
           ],
           [
-            "((-(wall_thickness)) + (outer_corner_chamfer)) * 1 + 0 mm",
-            "-(wall_thickness * 1 + 0 mm)"
+            "(-(wall_thickness)) + (outer_corner_chamfer)",
+            "-(wall_thickness)"
           ],
           [
-            "(-(wall_thickness)) * 1 + 0 mm",
-            "-((wall_thickness - (outer_corner_chamfer)) * 1 + 0 mm)"
+            "-(wall_thickness)",
+            "-(wall_thickness - (outer_corner_chamfer))"
           ],
           [
-            "(-(wall_thickness)) * 1 + 0 mm",
-            "-(((-(vertical_arm_length)) + (arm_end_chamfer)) * 1 + 0 mm)"
+            "-(wall_thickness)",
+            "-((-(vertical_arm_length)) + (arm_end_chamfer))"
           ],
           [
-            "((-(wall_thickness)) + (arm_end_chamfer)) * 1 + 0 mm",
-            "-((-(vertical_arm_length)) * 1 + 0 mm)"
+            "(-(wall_thickness)) + (arm_end_chamfer)",
+            "-(-(vertical_arm_length))"
           ],
           [
-            0.0,
-            "-((-(vertical_arm_length)) * 1 + 0 mm)"
+            0,
+            "-(-(vertical_arm_length))"
           ]
         ],
         "closed": true,
@@ -154,7 +153,7 @@
           [
             0.0,
             0.0,
-            0.0
+            -0.0
           ]
         ],
         "radius": "inside_corner_radius",
@@ -168,7 +167,7 @@
           [
             60.0,
             0.0,
-            0.0
+            -0.0
           ],
           [
             0.0,
@@ -266,12 +265,12 @@
           [
             30.0,
             -12.0,
-            0.0
+            -0.0
           ],
           [
             30.0,
             12.0,
-            0.0
+            -0.0
           ]
         ],
         "distance": "elephant_foot_relief",

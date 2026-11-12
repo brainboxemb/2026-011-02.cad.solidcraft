@@ -1,6 +1,6 @@
 # Plastic Enclosure Pi — Raspberry Pi 4 video reconstruction
 
-A practical SCPF example kept separate from [`history-policy`](../history-policy/).
+A practical SCPF example kept separate from [`history-policy`](../history_policy/).
 
 ## Upstream sources
 

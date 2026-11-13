@@ -141,7 +141,7 @@ class CornerBrackets:
         bottom_right_front = bracket.copy().attach(
             bottom_right_front_anchor.target,
             parent=bottom_right_front_anchor.reference,
-            child=front_mount_a,
+            child=front_mount_b,
             offset=bottom_right_front_offset,
             gap=gap,
             angle=0,
@@ -178,7 +178,7 @@ class CornerBrackets:
         bottom_right_rear = bracket.copy().attach(
             bottom_right_rear_anchor.target,
             parent=bottom_right_rear_anchor.reference,
-            child=rear_mount_a,
+            child=rear_mount_b,
             offset=bottom_right_rear_offset,
             gap=gap,
             angle=0,

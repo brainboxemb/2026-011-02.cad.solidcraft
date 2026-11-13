@@ -13,11 +13,11 @@ from scpc import Script
 script = Script()
 for name, value in (
     ("arm_width", 24),
-    ("horizontal_arm_length", 60),
     ("arm_height", 12),
+    ("horizontal_arm_length", 60),
+    ("vertical_arm_length", 60),
     ("arm_end_chamfer", 3),
     ("outer_corner_chamfer", 6),
-    ("vertical_arm_length", 60),
     ("inside_corner_radius", 4),
     ("elephant_foot_relief", 0.6),
     ("side_edge_chamfer", 2),

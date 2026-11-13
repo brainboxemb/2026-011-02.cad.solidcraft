@@ -1,8 +1,8 @@
 class CornerBracket:
     bracket_width = 24.0
     wall_thickness = 12.0
-    horizontal_arm_length = 60.0
-    vertical_arm_length = 60.0
+    arm_width = 60.0
+    arm_height = 60.0
 
     outer_corner_chamfer = 6.0
     arm_end_chamfer = 3.0
@@ -25,8 +25,8 @@ class CornerBracket:
 
     def build(self):
         w = self.wall_thickness
-        h = self.horizontal_arm_length
-        v = self.vertical_arm_length
+        h = self.arm_width
+        v = self.arm_height
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
         ef = self.elephant_foot_relief

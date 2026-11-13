@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import Anchor, assembly
+from scpf import assembly
 
 from parts.board import Board
 
@@ -93,44 +93,4 @@ class WoodFrame:
             color="#A87D4D",
         ).group("WoodBoxFrame")
 
-        frame = left + right + bottom + roof + rear
-
-        # These semantic anchors belong to WoodFrame, not to generic Board.
-        # Start at the actual top/bottom corner of each side board. The
-        # second in-plane joint axis follows that vertical edge toward the
-        # board interior, so a negative offset moves from the side-board edge
-        # outward by exactly one frame wood thickness.
-        #
-        #              top outside datum
-        #                    *
-        #                    |  frame_wood_thickness
-        # side-board top     *
-        #                    |
-        #                    |
-        # side-board bottom  *
-        #                    |  frame_wood_thickness
-        #                    *
-        #             bottom outside datum
-        #
-        # Keep this symbolic: SolidCraft re-evaluates the planar joint offset
-        # when frame_wood_thickness changes in the saved design.
-        outside_offset = (0, -self.frame_wood_thickness)
-
-        for name, target, reference in (
-            ("front_top_left", left, Anchor.FRONT_TOP_LEFT),
-            ("front_bottom_left", left, Anchor.FRONT_BOTTOM_LEFT),
-            ("front_top_right", right, Anchor.FRONT_TOP_RIGHT),
-            ("front_bottom_right", right, Anchor.FRONT_BOTTOM_RIGHT),
-            ("back_top_left", left, Anchor.BACK_TOP_LEFT),
-            ("back_bottom_left", left, Anchor.BACK_BOTTOM_LEFT),
-            ("back_top_right", right, Anchor.BACK_TOP_RIGHT),
-            ("back_bottom_right", right, Anchor.BACK_BOTTOM_RIGHT),
-        ):
-            frame = frame.with_anchor(
-                name,
-                target,
-                reference,
-                offset=outside_offset,
-            )
-
-        return frame
+        return left + right + bottom + roof + rear

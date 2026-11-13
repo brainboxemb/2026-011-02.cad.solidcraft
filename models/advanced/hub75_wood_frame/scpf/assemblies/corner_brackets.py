@@ -18,9 +18,6 @@ class CornerBrackets:
         if self.wood_frame is None:
             raise ValueError("CornerBrackets requires wood_frame")
 
-        left = self.wood_frame.left
-        right = self.wood_frame.right
-
         bracket = CornerBracket(
             arm_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
@@ -69,59 +66,67 @@ class CornerBrackets:
             self.frame_wood_thickness - self.corner_radius
         )
 
+        top_left_front_anchor = self.wood_frame.anchor("front_top_left")
         top_left_front = bracket.copy().attach(
-            left,
-            parent="front_top_left_vertical",
+            top_left_front_anchor.target,
+            parent=top_left_front_anchor.reference,
             child=tangent_negative_y,
             gap=tangent_gap,
             angle=0,
         )
+        top_right_front_anchor = self.wood_frame.anchor("front_top_right")
         top_right_front = bracket.copy().attach(
-            right,
-            parent="front_top_right_vertical",
+            top_right_front_anchor.target,
+            parent=top_right_front_anchor.reference,
             child=tangent_positive_y,
             gap=tangent_gap,
             angle=0,
         )
+        bottom_right_front_anchor = self.wood_frame.anchor("front_bottom_right")
         bottom_right_front = bracket.copy().attach(
-            right,
-            parent="front_bottom_right_vertical",
+            bottom_right_front_anchor.target,
+            parent=bottom_right_front_anchor.reference,
             child=tangent_negative_y,
             gap=tangent_gap,
             angle=0,
         )
+        bottom_left_front_anchor = self.wood_frame.anchor("front_bottom_left")
         bottom_left_front = bracket.copy().attach(
-            left,
-            parent="front_bottom_left_vertical",
+            bottom_left_front_anchor.target,
+            parent=bottom_left_front_anchor.reference,
             child=tangent_positive_y,
             gap=tangent_gap,
             angle=0,
         )
 
+        top_left_rear_anchor = self.wood_frame.anchor("back_top_left")
         top_left_rear = bracket.copy().attach(
-            left,
-            parent="back_top_left_vertical",
+            top_left_rear_anchor.target,
+            parent=top_left_rear_anchor.reference,
             child=tangent_positive_y,
             gap=tangent_gap,
             angle=0,
         )
+        top_right_rear_anchor = self.wood_frame.anchor("back_top_right")
         top_right_rear = bracket.copy().attach(
-            right,
-            parent="back_top_right_vertical",
+            top_right_rear_anchor.target,
+            parent=top_right_rear_anchor.reference,
             child=tangent_negative_y,
             gap=tangent_gap,
             angle=0,
         )
+        bottom_right_rear_anchor = self.wood_frame.anchor("back_bottom_right")
         bottom_right_rear = bracket.copy().attach(
-            right,
-            parent="back_bottom_right_vertical",
+            bottom_right_rear_anchor.target,
+            parent=bottom_right_rear_anchor.reference,
             child=tangent_positive_y,
             gap=tangent_gap,
             angle=0,
         )
+        bottom_left_rear_anchor = self.wood_frame.anchor("back_bottom_left")
         bottom_left_rear = bracket.copy().attach(
-            left,
-            parent="back_bottom_left_vertical",
+            bottom_left_rear_anchor.target,
+            parent=bottom_left_rear_anchor.reference,
             child=tangent_negative_y,
             gap=tangent_gap,
             angle=0,

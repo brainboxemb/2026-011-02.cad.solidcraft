@@ -12,12 +12,12 @@ from scpc import Script
 
 script = Script()
 for name, value in (
-    ("bracket_width", 24),
-    ("arm_width", 60),
-    ("wall_thickness", 12),
+    ("arm_width", 24),
+    ("horizontal_arm_length", 60),
+    ("arm_height", 12),
     ("arm_end_chamfer", 3),
     ("outer_corner_chamfer", 6),
-    ("arm_height", 60),
+    ("vertical_arm_length", 60),
     ("inside_corner_radius", 4),
     ("elephant_foot_relief", 0.6),
     ("side_edge_chamfer", 2),
@@ -30,21 +30,21 @@ script.add("sketch.create", plane="XZ", name="Profile")
 script.add("sketch.line",
     points=[
         [0, 0],
-        ["arm_width", 0],
-        ["arm_width", "-(wall_thickness - (arm_end_chamfer))"],
-        ["arm_width - (arm_end_chamfer)", "-(wall_thickness)"],
-        ["(-(wall_thickness)) + (outer_corner_chamfer)", "-(wall_thickness)"],
-        ["-(wall_thickness)", "-(wall_thickness - (outer_corner_chamfer))"],
-        ["-(wall_thickness)", "-((-(arm_height)) + (arm_end_chamfer))"],
-        ["(-(wall_thickness)) + (arm_end_chamfer)", "-(-(arm_height))"],
-        [0, "-(-(arm_height))"],
+        ["horizontal_arm_length", 0],
+        ["horizontal_arm_length", "-(arm_height - (arm_end_chamfer))"],
+        ["horizontal_arm_length - (arm_end_chamfer)", "-(arm_height)"],
+        ["(-(vertical_arm_length)) + (outer_corner_chamfer)", "-(arm_height)"],
+        ["-(arm_height)", "-(arm_height - (outer_corner_chamfer))"],
+        ["-(arm_height)", "-((-(vertical_arm_length)) + (arm_end_chamfer))"],
+        ["(-(vertical_arm_length)) + (arm_end_chamfer)", "-(-(vertical_arm_length))"],
+        [0, "-(-(vertical_arm_length))"],
     ],
     closed=True,
     ids=["i_corner", "o_hor_tip", "o_hor_bevel", "o_hor",
          "o_corner", "o_vert", "o_vert_bevel", "o_vert_end", "v_tip"],
 )
 script.add("sketch.finish")
-script.add("solid.extrude", distance="bracket_width",
+script.add("solid.extrude", distance="arm_width",
            direction="symmetric", body_name="CornerBracket")
 
 # One concave inner fillet and three native chamfers; no screw holes.

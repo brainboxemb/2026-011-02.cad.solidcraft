@@ -588,6 +588,10 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             sorted(p["values"][2] for p in joints),
+            [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        )
+        self.assertEqual(
+            sorted(p.get("angle", 0) for p in joints),
             [0, 0, 0, 0, 0, 0, 180, 180],
         )
         self.assertFalse(

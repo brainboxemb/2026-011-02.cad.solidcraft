@@ -79,25 +79,15 @@ class CornerBrackets:
         # normal. A/B plus the parent corner determine which of the four
         # clock positions the neutral L profile occupies.
         w = CornerBracket.arm_height
-        front_mount_a = AnchorFrame(
+        mount_a = AnchorFrame(
             origin=(0, 0, -w),
             z=(0, 1, 0),
             x=(0, 0, -1),
         )
-        front_mount_b = AnchorFrame(
+        mount_b = AnchorFrame(
             origin=(w, 0, 0),
             z=(0, 1, 0),
             x=(0, 0, -1),
-        )
-        rear_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
-        )
-        rear_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
         )
 
         # CornerBracket.arm_width is passed from self.bracket_width above.
@@ -123,7 +113,7 @@ class CornerBrackets:
         top_left_front = bracket.copy().attach(
             top_left_front_anchor.target,
             parent=top_left_front_anchor.reference,
-            child=front_mount_a,
+            child=mount_a,
             offset=top_left_front_offset,
             gap=gap,
             assembled_rotation=0,
@@ -133,7 +123,7 @@ class CornerBrackets:
         top_right_front = bracket.copy().attach(
             top_right_front_anchor.target,
             parent=top_right_front_anchor.reference,
-            child=front_mount_b,
+            child=mount_b,
             offset=top_right_front_offset,
             gap=gap,
             assembled_rotation=90,
@@ -143,7 +133,7 @@ class CornerBrackets:
         bottom_right_front = bracket.copy().attach(
             bottom_right_front_anchor.target,
             parent=bottom_right_front_anchor.reference,
-            child=front_mount_a,
+            child=mount_a,
             offset=bottom_right_front_offset,
             gap=gap,
             assembled_rotation=180,
@@ -153,7 +143,7 @@ class CornerBrackets:
         bottom_left_front = bracket.copy().attach(
             bottom_left_front_anchor.target,
             parent=bottom_left_front_anchor.reference,
-            child=front_mount_b,
+            child=mount_b,
             offset=bottom_left_front_offset,
             gap=gap,
             assembled_rotation=270,
@@ -164,7 +154,7 @@ class CornerBrackets:
         top_left_rear = bracket.copy().attach(
             top_left_rear_anchor.target,
             parent=top_left_rear_anchor.reference,
-            child=rear_mount_a,
+            child=mount_a,
             offset=top_left_rear_offset,
             gap=gap,
             assembled_rotation=0,
@@ -174,7 +164,7 @@ class CornerBrackets:
         top_right_rear = bracket.copy().attach(
             top_right_rear_anchor.target,
             parent=top_right_rear_anchor.reference,
-            child=rear_mount_b,
+            child=mount_b,
             offset=top_right_rear_offset,
             gap=gap,
             assembled_rotation=90,
@@ -184,7 +174,7 @@ class CornerBrackets:
         bottom_right_rear = bracket.copy().attach(
             bottom_right_rear_anchor.target,
             parent=bottom_right_rear_anchor.reference,
-            child=rear_mount_a,
+            child=mount_a,
             offset=bottom_right_rear_offset,
             gap=gap,
             assembled_rotation=180,
@@ -194,7 +184,7 @@ class CornerBrackets:
         bottom_left_rear = bracket.copy().attach(
             bottom_left_rear_anchor.target,
             parent=bottom_left_rear_anchor.reference,
-            child=rear_mount_b,
+            child=mount_b,
             offset=bottom_left_rear_offset,
             gap=gap,
             assembled_rotation=270,

@@ -97,8 +97,8 @@ class WoodFrame:
 
         # These semantic anchors belong to WoodFrame, not to generic Board.
         # Start at the actual top/bottom corner of each side board. The first
-        # in-plane joint axis follows that vertical edge toward the board
-        # interior, so a negative offset moves from the side-board edge
+        # second in-plane joint axis follows that vertical edge toward the
+        # board interior, so a negative offset moves from the side-board edge
         # outward by exactly one frame wood thickness.
         #
         #              top outside datum
@@ -114,7 +114,7 @@ class WoodFrame:
         #
         # Keep this symbolic: SolidCraft re-evaluates the planar joint offset
         # when frame_wood_thickness changes in the saved design.
-        outside_offset = (-self.frame_wood_thickness, 0)
+        outside_offset = (0, -self.frame_wood_thickness)
 
         for name, target, reference in (
             ("front_top_left", left, Anchor.FRONT_TOP_LEFT),

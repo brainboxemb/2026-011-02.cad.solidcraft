@@ -96,7 +96,7 @@ class WoodFrame:
         frame = left + right + bottom + roof + rear
 
         # These semantic anchors belong to WoodFrame, not to generic Board.
-        # Start at the actual top/bottom corner of each side board. The first
+        # Start at the actual top/bottom corner of each side board. The
         # second in-plane joint axis follows that vertical edge toward the
         # board interior, so a negative offset moves from the side-board edge
         # outward by exactly one frame wood thickness.

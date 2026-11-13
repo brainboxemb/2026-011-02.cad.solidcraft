@@ -92,12 +92,12 @@ class CornerBrackets:
         rear_mount_a = AnchorFrame(
             origin=(0, 0, -w),
             z=(0, -1, 0),
-            x=(1, 0, 0),
+            x=(0, 0, -1),
         )
         rear_mount_b = AnchorFrame(
             origin=(w, 0, 0),
             z=(0, -1, 0),
-            x=(1, 0, 0),
+            x=(0, 0, -1),
         )
 
         # CornerBracket.arm_width is passed from self.bracket_width above.

@@ -414,6 +414,54 @@ jobs:
               ((.bbox.max[1] - 20) | fabs) < 0.001))
           ' output/native/hub75-wood-frame/measurements-glazing-depth-16.json
 
+          # Parameter-edit regression: changing frame wood thickness must move
+          # the side walls/roof and keep every bracket tangent to the rounded
+          # outside wood corner. The joint offset is a native expression over
+          # frame_wood_thickness and corner_radius.
+          cat > output/native/hub75-wood-frame/change-frame-thickness.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"frame_wood_thickness","expression":"18 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-frame-thickness.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-frame-thickness-18.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-frame-thickness-18.sc \
+            --json-out output/native/hub75-wood-frame/measurements-frame-thickness-18.json
+          jq -e '
+            (.timeline | all(.error == null)) and
+
+            # Side walls move outwards and start on top of the 18 mm bottom.
+            (all(.bodies[] | select(.name == "Board");
+              ((.bbox.min[0] + 440) | fabs) < 0.001 and
+              ((.bbox.max[0] + 422) | fabs) < 0.001 and
+              ((.bbox.min[2] - 18) | fabs) < 0.001)) and
+            (all(.bodies[] | select(.name | startswith("Board_2"));
+              ((.bbox.min[0] - 422) | fabs) < 0.001 and
+              ((.bbox.max[0] - 440) | fabs) < 0.001 and
+              ((.bbox.min[2] - 18) | fabs) < 0.001)) and
+
+            # Bottom stays at Z=0; roof top becomes 362 + 2*18 = 398.
+            (all(.bodies[] | select(.name | startswith("Board_3"));
+              ((.bbox.min[2] - 0) | fabs) < 0.001 and
+              ((.bbox.max[2] - 18) | fabs) < 0.001)) and
+            (all(.bodies[] | select(.name | startswith("Board_4"));
+              ((.bbox.min[2] - 380) | fabs) < 0.001 and
+              ((.bbox.max[2] - 398) | fabs) < 0.001)) and
+
+            # Bottom brackets still wrap the Z=0 outside corner. Top brackets
+            # follow the new roof top at Z=398.
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[2] + 12) | fabs) < 0.001
+              and ((.bbox.max[2] - 60) | fabs) < 0.001)] | length) == 4 and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[2] - 338) | fabs) < 0.001
+              and ((.bbox.max[2] - 410) | fabs) < 0.001)] | length) == 4
+          ' output/native/hub75-wood-frame/measurements-frame-thickness-18.json
+
           # Shared bracket parameters: one native bracket_width controls
           # all eight bracket bodies/attachment bands, while corner_radius is
           # shared by the wooden and printed-part fillets.

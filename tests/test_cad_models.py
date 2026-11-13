@@ -145,6 +145,10 @@ class CADModelRegressions(unittest.TestCase):
             joint["b"]["z"] == [0.0, 0.0, -1.0]
             for joint in joints
         ))
+        self.assertEqual(
+            sorted(joint["angle"] for joint in joints),
+            [0, 0, 0, 0, 180, 180, 180, 180],
+        )
         self.assertFalse(any(
             command["command"] == "joint.origin"
             and "CornerBracket" in str(command["params"])

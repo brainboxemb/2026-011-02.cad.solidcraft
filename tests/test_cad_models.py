@@ -126,7 +126,7 @@ class CADModelRegressions(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertTrue(all(
-            joint["offset"] == "frame_wood_thickness - corner_radius"
+            joint["offset"] == "frame_wood_thickness - (corner_radius)"
             for joint in joints
         ))
         self.assertTrue(all("edge" in joint["a"] for joint in joints))

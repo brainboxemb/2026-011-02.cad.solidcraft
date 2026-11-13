@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import assembly
+from scpf import Anchor, assembly
 
 from parts.board import Board
 
@@ -93,4 +93,30 @@ class WoodFrame:
             color="#A87D4D",
         ).group("WoodBoxFrame")
 
-        return left + right + bottom + roof + rear
+        frame = left + right + bottom + roof + rear
+
+        # Expose the four side-board corner datums with a parametric world-Z
+        # relation to the outside of the frame.  The bracket assembly can add
+        # its own fixed mount correction without changing this WoodFrame
+        # definition.
+        top_offset = (0, 0, self.frame_wood_thickness)
+        bottom_offset = (0, 0, -self.frame_wood_thickness)
+
+        for name, target, reference, offset in (
+            ("front_top_left", left, Anchor.FRONT_TOP_LEFT, top_offset),
+            ("front_bottom_left", left, Anchor.FRONT_BOTTOM_LEFT, bottom_offset),
+            ("front_top_right", right, Anchor.FRONT_TOP_RIGHT, top_offset),
+            ("front_bottom_right", right, Anchor.FRONT_BOTTOM_RIGHT, bottom_offset),
+            ("back_top_left", left, Anchor.BACK_TOP_LEFT, top_offset),
+            ("back_bottom_left", left, Anchor.BACK_BOTTOM_LEFT, bottom_offset),
+            ("back_top_right", right, Anchor.BACK_TOP_RIGHT, top_offset),
+            ("back_bottom_right", right, Anchor.BACK_BOTTOM_RIGHT, bottom_offset),
+        ):
+            frame = frame.with_anchor(
+                name,
+                target,
+                reference,
+                offset=offset,
+            )
+
+        return frame

@@ -254,9 +254,13 @@ class WoodenFrameTests(unittest.TestCase):
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
         self.assertIn("half = self.width / 2", source)
-        self.assertNotIn("pv(self.width)", source)
-        self.assertNotIn("pv(self.height)", source)
+        build_source = source.split("    def build(self):", 1)[1]
+        self.assertNotIn("pv(self.width)", build_source)
+        self.assertNotIn("pv(self.height)", build_source)
         self.assertIn("Edges.from_vertices", source)
+        # anchors() may use concrete pick coordinates: SolidCraft stores the
+        # selected topology by name, while build() keeps geometry symbolic.
+        self.assertIn("AnchorTopology(", source)
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
@@ -515,8 +519,13 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("opening_width", assembly_source)
         self.assertNotIn("opening_height", assembly_source)
         self.assertIn(".attach(", assembly_source)
-        self.assertIn("Anchor.FRONT_TOP_LEFT", assembly_source)
-        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", assembly_source)
+        self.assertIn('parent="top_front_left"', assembly_source)
+        self.assertIn('parent="bottom_back_right"', assembly_source)
+        self.assertIn("AnchorTopology(", assembly_source)
+        self.assertIn(
+            "self.frame_wood_thickness - self.corner_radius",
+            assembly_source,
+        )
 
         cmd = commands()
         creates = [
@@ -571,11 +580,11 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("front_mount" in str(p["b"]) for p in joints),
+            sum(abs(p["a"]["corner"][1] - 0.0) < 1e-9 for p in joints),
             4,
         )
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(abs(p["a"]["corner"][1] - 100.0) < 1e-9 for p in joints),
             4,
         )
         self.assertEqual(
@@ -740,11 +749,14 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(abs(p["a"]["corner"][1] - 120.0) < 1e-9 for p in joints),
             4,
         )
         self.assertTrue(
             all("corner" in p["a"] and "edge" in p["a"] for p in joints)
+        )
+        self.assertTrue(
+            all("corner" in p["b"] and "edge" in p["b"] for p in joints)
         )
 
     def test_parameter_override_changes_all_dependents(self):

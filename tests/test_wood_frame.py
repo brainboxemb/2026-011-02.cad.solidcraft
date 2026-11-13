@@ -468,7 +468,8 @@ class WoodenFrameTests(unittest.TestCase):
             ASSEMBLIES / "wood_frame.py"
         ).read_text(encoding="utf-8")
         self.assertEqual(source.count("as_built=True"), 2)
-        self.assertNotIn("Anchor.", source)
+        self.assertIn("Anchor.FRONT_TOP_LEFT", source)
+        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", source)
 
         cmd = commands()
         frame_joints = [
@@ -515,8 +516,9 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn("opening_width", assembly_source)
         self.assertNotIn("opening_height", assembly_source)
         self.assertIn(".attach(", assembly_source)
-        self.assertIn('self.wood_frame.anchor("front_top_left")', assembly_source)
-        self.assertIn('self.wood_frame.anchor("back_bottom_right")', assembly_source)
+        self.assertIn("anchor = self.wood_frame.anchor(name)", assembly_source)
+        self.assertIn('parent_anchor("front_top_left")', assembly_source)
+        self.assertIn('parent_anchor("back_bottom_right")', assembly_source)
         self.assertIn("bracket_z_correction = CornerBracket.arm_height", assembly_source)
         frame_source = (ASSEMBLIES / "wood_frame.py").read_text(encoding="utf-8")
         self.assertIn("Anchor.FRONT_TOP_LEFT", frame_source)
@@ -542,7 +544,8 @@ class WoodenFrameTests(unittest.TestCase):
             if p["name"].startswith("Attach CornerBracket:")
         ]
         self.assertEqual(len(joints), 8)
-        self.assertTrue(all(p["type"] == "rigid" for p in joints))
+        self.assertTrue(all(p["type"] == "planar" for p in joints))
+        self.assertTrue(all(len(p["values"]) == 3 for p in joints))
 
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
@@ -576,15 +579,15 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("front_mount" in str(p["b"]) for p in joints),
+            sum(p["b"]["z"] == [0.0, 1.0, 0.0] for p in joints),
             4,
         )
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(p["b"]["z"] == [0.0, -1.0, 0.0] for p in joints),
             4,
         )
         self.assertEqual(
-            sorted(p["angle"] for p in joints),
+            sorted(p["values"][2] for p in joints),
             [0, 0, 0, 0, 0, 0, 0, 0],
         )
         self.assertFalse(
@@ -745,7 +748,7 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(p["b"]["z"] == [0.0, -1.0, 0.0] for p in joints),
             4,
         )
         self.assertTrue(

@@ -97,23 +97,63 @@ class CADModelRegressions(unittest.TestCase):
         self.assertNotIn("bracket_width", values)
         self.assertNotIn("wall_thickness", values)
 
-    def test_corner_bracket_has_no_hub75_mount_anchors(self):
+    def test_corner_bracket_keeps_hub75_mounting_out_of_component(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
         ).read_text(encoding="utf-8")
         self.assertNotIn("def anchors(", source)
-        self.assertNotIn("front_mount", source)
-        self.assertNotIn("rear_mount", source)
+        self.assertNotIn("frame_wood_thickness", source)
 
         assembly_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorFrame(", assembly_source)
-        self.assertIn("front_mount_a", assembly_source)
-        self.assertIn("rear_mount_a", assembly_source)
-        self.assertNotIn('child="front_mount', assembly_source)
-        self.assertNotIn('child="rear_mount', assembly_source)
+        self.assertIn("AnchorTopology(", assembly_source)
+        self.assertIn(
+            "self.frame_wood_thickness - self.corner_radius",
+            assembly_source,
+        )
+
+    def test_hub75_corner_brackets_use_parametric_tangent_gap(self):
+        commands = run_script(
+            ROOT / "models/advanced/hub75_wood_frame/scpf/model.py"
+        )["commands"]
+        joints = [
+            command["params"]
+            for command in commands
+            if command["command"] == "joint.create"
+            and command["params"]["name"].startswith("Attach CornerBracket")
+        ]
+        self.assertEqual(len(joints), 8)
+        self.assertTrue(all(
+            joint["offset"] == "frame_wood_thickness - (corner_radius)"
+            for joint in joints
+        ))
+        self.assertTrue(all("edge" in joint["a"] for joint in joints))
+        self.assertTrue(all("corner" in joint["a"] for joint in joints))
+        self.assertTrue(all("edge" in joint["b"] for joint in joints))
+        self.assertTrue(all("corner" in joint["b"] for joint in joints))
+        self.assertEqual(
+            sum(joint["a"]["z"] == [0.0, 0.0, 1.0] for joint in joints),
+            4,
+        )
+        self.assertEqual(
+            sum(joint["a"]["z"] == [0.0, 0.0, -1.0] for joint in joints),
+            4,
+        )
+        self.assertTrue(all(
+            joint["b"]["z"] == [0.0, 0.0, -1.0]
+            for joint in joints
+        ))
+        self.assertEqual(
+            sorted(joint["angle"] for joint in joints),
+            [0, 0, 0, 0, 180, 180, 180, 180],
+        )
+        self.assertFalse(any(
+            command["command"] == "joint.origin"
+            and "CornerBracket" in str(command["params"])
+            for command in commands
+        ))
 
 
     def test_reusable_component_sources_own_component_decorator(self):

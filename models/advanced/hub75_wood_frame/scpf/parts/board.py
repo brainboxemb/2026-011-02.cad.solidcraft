@@ -1,6 +1,6 @@
 """Generic rectangular wooden board component."""
 
-from scpf import Direction, Edges, Polygon2D, component, pv
+from scpf import AnchorTopology, Direction, Edges, Polygon2D, component, pv
 
 
 @component
@@ -17,6 +17,72 @@ class Board:
     fillet = None
     material_name = None
     color = None
+
+    def anchors(self):
+        """Topology-backed top/bottom corner datums for assembly joints.
+
+        These picks deliberately use the horizontal top/bottom face as the
+        anchor face. Its normal is therefore vertical, so a native joint gap
+        can express an associative vertical offset from the side board.
+        """
+        width = pv(self.width)
+        depth = pv(self.depth)
+        height = pv(self.height)
+        center_x = pv(self.x_position)
+        front = pv(self.y_position)
+        rear = front + depth
+        bottom = pv(self.z_position)
+        top = bottom + height
+
+        left = center_x - width / 2
+        right = center_x + width / 2
+        mid_y = (front + rear) / 2
+
+        def corner_anchor(*, z, y, x, top_face):
+            return AnchorTopology(
+                edge=(center_x, y, z),
+                on=(center_x, mid_y, z),
+                corner=(x, y, z),
+                # For an edge/corner origin SolidCraft derives the in-plane
+                # axes from topology. We only override z to make the native
+                # joint offset vertical.
+                z=(0, 0, 1 if top_face else -1),
+            )
+
+        return {
+            "bottom_front_left": corner_anchor(
+                z=bottom, y=front, x=left,
+                top_face=False,
+            ),
+            "bottom_front_right": corner_anchor(
+                z=bottom, y=front, x=right,
+                top_face=False,
+            ),
+            "bottom_back_left": corner_anchor(
+                z=bottom, y=rear, x=left,
+                top_face=False,
+            ),
+            "bottom_back_right": corner_anchor(
+                z=bottom, y=rear, x=right,
+                top_face=False,
+            ),
+            "top_front_left": corner_anchor(
+                z=top, y=front, x=left,
+                top_face=True,
+            ),
+            "top_front_right": corner_anchor(
+                z=top, y=front, x=right,
+                top_face=True,
+            ),
+            "top_back_left": corner_anchor(
+                z=top, y=rear, x=left,
+                top_face=True,
+            ),
+            "top_back_right": corner_anchor(
+                z=top, y=rear, x=right,
+                top_face=True,
+            ),
+        }
 
     def build(self):
         half = self.width / 2

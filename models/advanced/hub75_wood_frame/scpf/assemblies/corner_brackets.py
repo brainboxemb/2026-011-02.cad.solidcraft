@@ -1,6 +1,6 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, AnchorFrame, assembly
+from scpf import AnchorTopology, assembly, pv
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -10,6 +10,7 @@ class CornerBrackets:
     """Attach brackets around the four outside corners of the side boards."""
 
     wood_frame = None
+    frame_wood_thickness = 12.0
     bracket_width = 24.0
     corner_radius = 4.0
 
@@ -25,144 +26,123 @@ class CornerBrackets:
             inside_corner_radius=self.corner_radius,
         )
 
-        # Mounting orientation belongs to this HUB75 assembly, not to the
-        # reusable CornerBracket geometry. Read the existing bracket profile
-        # dimension; do not introduce a second assembly parameter for it.
+        # The wooden corner and the bracket share the same corner radius.
         #
-        # CornerBracket local side profile (XZ), looking along +Y:
+        # Side view in XZ, shown for a bottom corner:
         #
-        #                    +Z
-        #                     ^
-        #        +------------+--------------------------+
-        #        |            |        horizontal arm   |
-        #        |            |                         |
-        #        |            I----B--------------------+
-        #        |            |    B = (w, 0, 0)
-        #        |            |
-        #        |            A    A = (0, 0, -w)
-        #        |            |
-        #        +------------+
-        #                     +-------------------------> +X
+        #          side board
+        #              |
+        #              |  parent topology corner
+        #              P  z = frame_wood_thickness
+        #              |
+        #              |  gap = frame_wood_thickness - corner_radius
+        #              v
+        #              T)  wood fillet tangent
+        #            _/     z = corner_radius
+        #     ______/
         #
-        # I = the concave inside corner and component origin (0, 0, 0).
-        # A and B are NOT points stored by CornerBracket; they are mounting
-        # references chosen here by this assembly:
+        # The parent P stays on real side-board topology. SolidCraft keeps that
+        # edge/corner reference when the board changes size. The native rigid
+        # joint gap moves from P to tangent T and remains the parameter
+        # expression "frame_wood_thickness - corner_radius".
         #
-        #   mount_a origin = (0, 0, -w)
-        #       one arm_height below I, on the inside edge of the vertical arm.
-        #
-        #   mount_b origin = (w, 0, 0)
-        #       one arm_height right of I, on the inside edge of the
-        #       horizontal arm.
-        #
-        # Both origins have Y=0. The bracket itself is extruded symmetrically
-        # over arm_width, so its broad faces are at:
-        #
-        #             local Y / bracket width
-        #
-        #        front face       centre        rear face
-        #        Y=-arm_width/2    Y=0          Y=+arm_width/2
-        #             |             |                 |
-        #             +-------------+-----------------+
-        #             <--------- arm_width ----------->
-        #                           ^
-        #                           |
-        #                 AnchorFrame.origin
-        #
-        # The frame normal selects which side is front/rear:
-        #
-        #   front_mount_*: z = (0, +1, 0)
-        #   rear_mount_* : z = (0, -1, 0)
-        #
-        # The AnchorFrame itself therefore remains on the Y=0 centre plane.
-        # gap = -arm_width/2 below offsets the rigid joint along that normal:
-        # front -> Y=-arm_width/2, rear -> Y=+arm_width/2.
-        #
-        # x=... on each AnchorFrame fixes the remaining rotation around the
-        # normal. A/B plus the parent corner determine which of the four
-        # clock positions the neutral L profile occupies.
-        w = CornerBracket.arm_height
-        front_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
-            z=(0, 1, 0),
-            x=(0, 0, -1),
-        )
-        front_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
-            z=(0, 1, 0),
-            x=(0, 0, -1),
-        )
-        rear_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
-        )
-        rear_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
-        )
+        # The child reference is the matching tangent point on the bracket's
+        # inner fillet. It is selected from the straight inner vertical edge
+        # on the broad front/rear face. Because this is also topology-backed,
+        # changing bracket arm_width or inside_corner_radius moves the joint
+        # with the corresponding face/edge instead of freezing an XYZ point.
+        radius = pv(self.corner_radius)
+        arm_width = pv(self.bracket_width)
+        arm_height = CornerBracket.arm_height
+        vertical_length = CornerBracket.vertical_arm_length
 
-        # CornerBracket.arm_width is passed from self.bracket_width above.
-        # Keep the joint on the broad bracket face rather than its Y=0 centre.
-        gap = -(self.bracket_width / 2)
+        edge_z = -(radius + vertical_length) / 2
+        tangent_z = -radius
+        on_x = -arm_height / 2
 
+        def bracket_tangent(y):
+            return AnchorTopology(
+                edge=(0, y, edge_z),
+                on=(on_x, y, edge_z),
+                corner=(0, y, tangent_z),
+                # -Z follows the straight inner vertical edge. SolidCraft
+                # derives the in-plane frame axis from this edge/corner
+                # topology; the joint angle below selects the left/right
+                # clock orientation.
+                z=(0, 0, -1),
+            )
+
+        front_tangent = bracket_tangent(-arm_width / 2)
+        rear_tangent = bracket_tangent(arm_width / 2)
+
+        tangent_gap = self.frame_wood_thickness - self.corner_radius
+
+        # The topology frame fixes the tangent point and vertical normal.
+        # The remaining clock orientation is a native joint turn:
+        #
+        #   left  corners: 180 deg
+        #   right corners:   0 deg
+        #
+        # Which broad-face tangent is referenced depends on the clock
+        # position. This keeps front brackets at Y=-arm_width..0 and rear
+        # brackets at Y=cabinet_depth-arm_width..cabinet_depth without a
+        # separate Y gap.
         top_left_front = bracket.copy().attach(
             left,
-            parent=Anchor.FRONT_TOP_LEFT,
-            child=front_mount_a,
-            gap=gap,
-            angle=0,
+            parent="top_front_left",
+            child=rear_tangent,
+            gap=tangent_gap,
+            angle=180,
         )
         top_right_front = bracket.copy().attach(
             right,
-            parent=Anchor.FRONT_TOP_RIGHT,
-            child=front_mount_b,
-            gap=gap,
+            parent="top_front_right",
+            child=front_tangent,
+            gap=tangent_gap,
             angle=0,
         )
         bottom_right_front = bracket.copy().attach(
             right,
-            parent=Anchor.FRONT_BOTTOM_RIGHT,
-            child=front_mount_a,
-            gap=gap,
+            parent="bottom_front_right",
+            child=rear_tangent,
+            gap=tangent_gap,
             angle=0,
         )
         bottom_left_front = bracket.copy().attach(
             left,
-            parent=Anchor.FRONT_BOTTOM_LEFT,
-            child=front_mount_b,
-            gap=gap,
-            angle=0,
+            parent="bottom_front_left",
+            child=front_tangent,
+            gap=tangent_gap,
+            angle=180,
         )
 
         top_left_rear = bracket.copy().attach(
             left,
-            parent=Anchor.BACK_TOP_LEFT,
-            child=rear_mount_a,
-            gap=gap,
-            angle=0,
+            parent="top_back_left",
+            child=rear_tangent,
+            gap=tangent_gap,
+            angle=180,
         )
         top_right_rear = bracket.copy().attach(
             right,
-            parent=Anchor.BACK_TOP_RIGHT,
-            child=rear_mount_b,
-            gap=gap,
+            parent="top_back_right",
+            child=front_tangent,
+            gap=tangent_gap,
             angle=0,
         )
         bottom_right_rear = bracket.copy().attach(
             right,
-            parent=Anchor.BACK_BOTTOM_RIGHT,
-            child=rear_mount_a,
-            gap=gap,
+            parent="bottom_back_right",
+            child=rear_tangent,
+            gap=tangent_gap,
             angle=0,
         )
         bottom_left_rear = bracket.copy().attach(
             left,
-            parent=Anchor.BACK_BOTTOM_LEFT,
-            child=rear_mount_b,
-            gap=gap,
-            angle=0,
+            parent="bottom_back_left",
+            child=front_tangent,
+            gap=tangent_gap,
+            angle=180,
         )
 
         return (

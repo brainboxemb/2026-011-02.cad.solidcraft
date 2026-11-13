@@ -365,6 +365,52 @@ jobs:
               and ((.bbox.max[0] - 524) | fabs) < 0.001)] | length) == 4
           ' output/native/hub75-wood-frame/measurements-width-1000.json
 
+          # Frame wood thickness must move the cabinet outside planes and the
+          # bracket joints together. This reproduces the regression where the
+          # brackets moved sideways but stayed at the old Z height.
+          cat > output/native/hub75-wood-frame/change-frame-thickness.json <<'JSON'
+          {"commands":[
+            {"command":"parameters.change","params":{
+              "name":"frame_wood_thickness","expression":"18 mm"
+            }}
+          ]}
+          JSON
+          solidcraft-cli run output/native/hub75-wood-frame/change-frame-thickness.json \
+            --in output/native/hub75-wood-frame/model.sc \
+            --param-check strict \
+            --save output/native/hub75-wood-frame/model-frame-thickness-18.sc
+          solidcraft-cli eval output/native/hub75-wood-frame/model-frame-thickness-18.sc \
+            --json-out output/native/hub75-wood-frame/measurements-frame-thickness-18.json
+          jq -e '
+            (.timeline | all(.error == null)) and
+
+            # The roof follows the thicker bottom/side datum and is itself
+            # 18 mm thick: opening top 18+362=380, roof top=398.
+            (all(.bodies[] | select(.name | startswith("Board_4"));
+              ((.bbox.min[2] - 380) | fabs) < 0.001 and
+              ((.bbox.max[2] - 398) | fabs) < 0.001)) and
+
+            # Bottom bracket theoretical corner remains on Z=0. Its own
+            # geometry is unchanged: 12 mm below, 60 mm above.
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[2] + 12) | fabs) < 0.001
+              and ((.bbox.max[2] - 60) | fabs) < 0.001)] | length) == 4 and
+
+            # Top bracket theoretical corner follows the new roof top Z=398.
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and ((.bbox.min[2] - 338) | fabs) < 0.001
+              and ((.bbox.max[2] - 410) | fabs) < 0.001)] | length) == 4 and
+
+            # Opening stays 844 mm, so 18 mm side boards move the outside
+            # planes to +/-440. The 12 mm bracket arm reaches +/-452.
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and .bbox.max[0] < 0
+              and ((.bbox.min[0] + 452) | fabs) < 0.001)] | length) == 4 and
+            ([.bodies[] | select((.name | startswith("CornerBracket"))
+              and .bbox.min[0] > 0
+              and ((.bbox.max[0] - 452) | fabs) < 0.001)] | length) == 4
+          ' output/native/hub75-wood-frame/measurements-frame-thickness-18.json
+
           # Panel recess is a native sketch-plane datum, not an occurrence
           # translation. Moving it from 25 to 35 mm must shift every panel
           # envelope 10 mm towards the rear while preserving its 14.5 mm depth.

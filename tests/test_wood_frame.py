@@ -521,7 +521,7 @@ class WoodenFrameTests(unittest.TestCase):
         frame_source = (ASSEMBLIES / "wood_frame.py").read_text(encoding="utf-8")
         self.assertIn("Anchor.FRONT_TOP_LEFT", frame_source)
         self.assertIn("Anchor.BACK_BOTTOM_RIGHT", frame_source)
-        self.assertIn("outside_offset = (-self.frame_wood_thickness, 0)", frame_source)
+        self.assertIn("outside_offset = (0, -self.frame_wood_thickness)", frame_source)
 
         cmd = commands()
         creates = [

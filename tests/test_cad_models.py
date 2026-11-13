@@ -72,37 +72,33 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
-    def test_wood_frame_owns_corner_anchors_not_board(self):
+    def test_wood_frame_owns_semantic_corner_anchors(self):
         board_source = (
             ROOT / "models/advanced/hub75_wood_frame/scpf/parts/board.py"
         ).read_text(encoding="utf-8")
         self.assertNotIn("def anchors(", board_source)
-        self.assertNotIn("AnchorTopology", board_source)
+
+        bracket_source = (
+            ROOT / "models/components/corner_bracket/scpf/model.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("def anchors(", bracket_source)
 
         frame_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/wood_frame.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorTopology", frame_source)
         self.assertIn(".with_anchor(", frame_source)
-        for name in (
-            "front_bottom_left",
-            "front_top_left",
-            "front_bottom_right",
-            "front_top_right",
-            "back_bottom_left",
-            "back_top_left",
-            "back_bottom_right",
-            "back_top_right",
-        ):
-            self.assertIn(f'"{name}"', frame_source)
+        self.assertIn("outside_offset = (-self.frame_wood_thickness, 0)", frame_source)
+        self.assertNotIn("pv(self.opening_width)", frame_source)
+        self.assertNotIn("pv(self.opening_height)", frame_source)
 
-        bracket_source = (
+        assembly_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn('.anchor("front_top_left")', bracket_source)
-        self.assertIn('.anchor("back_bottom_right")', bracket_source)
+        self.assertIn("bracket_z_correction = CornerBracket.arm_height", assembly_source)
+        self.assertIn('self.wood_frame.anchor("front_top_left")', assembly_source)
+        self.assertIn("offset=", assembly_source)
 
 
     def test_corner_bracket_dimension_names_match_geometry(self):
@@ -130,20 +126,23 @@ class CADModelRegressions(unittest.TestCase):
         self.assertNotIn("bracket_width", values)
         self.assertNotIn("wall_thickness", values)
 
-    def test_corner_bracket_has_no_mounting_anchors(self):
+    def test_corner_bracket_has_no_hub75_mount_anchors(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
         ).read_text(encoding="utf-8")
         self.assertNotIn("def anchors(", source)
-        self.assertNotIn("AnchorTopology", source)
+        self.assertNotIn("front_mount", source)
+        self.assertNotIn("rear_mount", source)
 
         assembly_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorTopology(", assembly_source)
-        self.assertIn("tangent_negative_y", assembly_source)
-        self.assertIn("tangent_positive_y", assembly_source)
+        self.assertIn("AnchorFrame(", assembly_source)
+        self.assertIn("front_mount_a", assembly_source)
+        self.assertIn("rear_mount_a", assembly_source)
+        self.assertNotIn('child="front_mount', assembly_source)
+        self.assertNotIn('child="rear_mount', assembly_source)
 
 
     def test_reusable_component_sources_own_component_decorator(self):

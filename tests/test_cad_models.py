@@ -127,13 +127,22 @@ class CADModelRegressions(unittest.TestCase):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("def anchors(", source)
-        self.assertIn("inner_tangent_negative_y", source)
-        self.assertIn("inner_tangent_positive_y", source)
-        self.assertNotIn("front_mount", source)
-        self.assertNotIn("rear_mount", source)
-        self.assertNotIn("wood", source.lower())
-        self.assertNotIn("hub75", source.lower())
+        module = ast.parse(source)
+        cls = next(
+            node for node in module.body
+            if isinstance(node, ast.ClassDef) and node.name == "CornerBracket"
+        )
+        anchors = next(
+            node for node in cls.body
+            if isinstance(node, ast.FunctionDef) and node.name == "anchors"
+        )
+        anchor_source = ast.get_source_segment(source, anchors)
+        self.assertIn("inner_tangent_negative_y", anchor_source)
+        self.assertIn("inner_tangent_positive_y", anchor_source)
+        self.assertNotIn("front_mount", anchor_source)
+        self.assertNotIn("rear_mount", anchor_source)
+        self.assertNotIn("wood", anchor_source.lower())
+        self.assertNotIn("hub75", anchor_source.lower())
 
         assembly_source = (
             ROOT

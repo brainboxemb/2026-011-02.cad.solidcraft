@@ -88,7 +88,7 @@ class CADModelRegressions(unittest.TestCase):
             / "models/advanced/hub75_wood_frame/scpf/assemblies/wood_frame.py"
         ).read_text(encoding="utf-8")
         self.assertIn(".with_anchor(", frame_source)
-        self.assertIn("outside_offset = (-self.frame_wood_thickness, 0)", frame_source)
+        self.assertIn("outside_offset = (0, -self.frame_wood_thickness)", frame_source)
         self.assertNotIn("pv(self.opening_width)", frame_source)
         self.assertNotIn("pv(self.opening_height)", frame_source)
 

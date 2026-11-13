@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import assembly
+from scpf import AnchorTopology, assembly, pv
 
 from parts.board import Board
 
@@ -93,4 +93,100 @@ class WoodFrame:
             color="#A87D4D",
         ).group("WoodBoxFrame")
 
-        return left + right + bottom + roof + rear
+        frame = left + right + bottom + roof + rear
+
+        # Semantic frame anchors belong here, not on the generic Board.
+        # The references select the vertical outside edges of the side walls.
+        # SolidCraft stores that topology, so width/height/thickness edits move
+        # the selected edge/corner without Board needing application knowledge.
+        t = pv(self.frame_wood_thickness)
+        opening_w = pv(self.opening_width)
+        opening_h = pv(self.opening_height)
+        depth = pv(self.cabinet_depth)
+
+        left_x = -(opening_w / 2 + t)
+        right_x = opening_w / 2 + t
+        left_mid_x = -(opening_w / 2 + t / 2)
+        right_mid_x = opening_w / 2 + t / 2
+        bottom_z = t
+        top_z = t + opening_h
+        mid_z = (bottom_z + top_z) / 2
+
+        def vertical_ref(x, on_x, y, z, frame_z, frame_x):
+            return AnchorTopology(
+                edge=(x, y, mid_z),
+                on=(on_x, y, mid_z),
+                corner=(x, y, z),
+                z=frame_z,
+                x=frame_x,
+            )
+
+        for name, target, reference in (
+            (
+                "front_bottom_left",
+                left,
+                vertical_ref(
+                    left_x, left_mid_x, 0, bottom_z,
+                    (0, 0, 1), (1, 0, 0),
+                ),
+            ),
+            (
+                "front_top_left",
+                left,
+                vertical_ref(
+                    left_x, left_mid_x, 0, top_z,
+                    (0, 0, -1), (1, 0, 0),
+                ),
+            ),
+            (
+                "front_bottom_right",
+                right,
+                vertical_ref(
+                    right_x, right_mid_x, 0, bottom_z,
+                    (0, 0, 1), (-1, 0, 0),
+                ),
+            ),
+            (
+                "front_top_right",
+                right,
+                vertical_ref(
+                    right_x, right_mid_x, 0, top_z,
+                    (0, 0, -1), (-1, 0, 0),
+                ),
+            ),
+            (
+                "back_bottom_left",
+                left,
+                vertical_ref(
+                    left_x, left_mid_x, depth, bottom_z,
+                    (0, 0, 1), (1, 0, 0),
+                ),
+            ),
+            (
+                "back_top_left",
+                left,
+                vertical_ref(
+                    left_x, left_mid_x, depth, top_z,
+                    (0, 0, -1), (1, 0, 0),
+                ),
+            ),
+            (
+                "back_bottom_right",
+                right,
+                vertical_ref(
+                    right_x, right_mid_x, depth, bottom_z,
+                    (0, 0, 1), (-1, 0, 0),
+                ),
+            ),
+            (
+                "back_top_right",
+                right,
+                vertical_ref(
+                    right_x, right_mid_x, depth, top_z,
+                    (0, 0, -1), (-1, 0, 0),
+                ),
+            ),
+        ):
+            frame = frame.with_anchor(name, target, reference)
+
+        return frame

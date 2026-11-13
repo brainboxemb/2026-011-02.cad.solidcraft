@@ -1,6 +1,6 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, AnchorFrame, assembly
+from scpf import AnchorFrame, assembly
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 

@@ -6,7 +6,7 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 """
-from scpf import AnchorTopology, Polygon2D, Direction, Edges, component, pv
+from scpf import Polygon2D, Direction, Edges, component
 
 
 @component
@@ -21,36 +21,6 @@ class CornerBracket:
     side_edge_chamfer = 2.0
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
-
-    def anchors(self):
-        """Intrinsic topology references on the inner-fillet tangent edge.
-
-        These are geometry datums, not mounting/application knowledge. The
-        selected edge is the straight extrusion-direction edge where the
-        concave inside fillet meets the vertical inner arm. The two names only
-        distinguish the -Y and +Y endpoints of that same edge.
-
-              broad face -Y      Y=0       broad face +Y
-                    *-------------+-------------*
-                    ^                           ^
-          inner_tangent_negative_y   inner_tangent_positive_y
-        """
-        radius = pv(self.inside_corner_radius)
-        half_width = pv(self.arm_width) / 2
-
-        def tangent(y):
-            return AnchorTopology(
-                edge=(0, 0, -radius),
-                on=(0, 0, -(radius + 8)),
-                corner=(0, y, -radius),
-                z=(0, 0, 1),
-                x=(1, 0, 0),
-            )
-
-        return {
-            "inner_tangent_negative_y": tangent(-half_width),
-            "inner_tangent_positive_y": tangent(half_width),
-        }
 
     def build(self):
         w = self.arm_height

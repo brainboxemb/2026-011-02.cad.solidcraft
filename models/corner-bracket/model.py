@@ -6,13 +6,13 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 """
-from scpf import AnchorFrame, Polygon2D, Direction, Edges, pv, component
+from scpf import Polygon2D, Direction, Edges, component
 
 
 @component
 class CornerBracket:
-    bracket_width = 24.0
-    wall_thickness = 12.0
+    arm_width = 24.0
+    arm_height = 12.0
     horizontal_arm_length = 60.0
     vertical_arm_length = 60.0
 
@@ -22,41 +22,8 @@ class CornerBracket:
     elephant_foot_relief = 0.6
     inside_corner_radius = 4.0
 
-    def anchors(self):
-        """Mount frames that place the L-profile outside a matching wood corner.
-
-        The neutral bracket origin is its concave inside corner. The frame
-        corner we attach to is one material thickness inward from that origin
-        in Z, so two alternating local origins cover the four clock positions.
-        Front and rear use opposite face normals; their x directions encode
-        the intended quarter-turn orientation.
-        """
-        w = pv(self.wall_thickness)
-        return {
-            "front_mount_a": AnchorFrame(
-                origin=(0, 0, -w),
-                z=(0, 1, 0),
-                x=(0, 0, -1),
-            ),
-            "front_mount_b": AnchorFrame(
-                origin=(w, 0, 0),
-                z=(0, 1, 0),
-                x=(0, 0, -1),
-            ),
-            "rear_mount_a": AnchorFrame(
-                origin=(0, 0, -w),
-                z=(0, -1, 0),
-                x=(1, 0, 0),
-            ),
-            "rear_mount_b": AnchorFrame(
-                origin=(w, 0, 0),
-                z=(0, -1, 0),
-                x=(1, 0, 0),
-            ),
-        }
-
     def build(self):
-        w = self.wall_thickness
+        w = self.arm_height
         h = self.horizontal_arm_length
         v = self.vertical_arm_length
         end = self.arm_end_chamfer
@@ -100,7 +67,7 @@ class CornerBracket:
         )
 
         body = profile.extrude(
-            self.bracket_width,
+            self.arm_width,
             direction=Direction.SYMMETRIC,
         )
 

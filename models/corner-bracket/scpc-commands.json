@@ -3,8 +3,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "bracket_width",
+        "name": "arm_width",
         "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_height",
+        "expression": "12",
         "unit": "mm"
       }
     },
@@ -19,8 +27,8 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "wall_thickness",
-        "expression": "12",
+        "name": "vertical_arm_length",
+        "expression": "60",
         "unit": "mm"
       }
     },
@@ -37,14 +45,6 @@
       "params": {
         "name": "outer_corner_chamfer",
         "expression": "6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "vertical_arm_length",
-        "expression": "60",
         "unit": "mm"
       }
     },
@@ -93,26 +93,26 @@
           ],
           [
             "horizontal_arm_length",
-            "-(wall_thickness - (arm_end_chamfer))"
+            "-(arm_height - (arm_end_chamfer))"
           ],
           [
             "horizontal_arm_length - (arm_end_chamfer)",
-            "-(wall_thickness)"
+            "-(arm_height)"
           ],
           [
-            "(-(wall_thickness)) + (outer_corner_chamfer)",
-            "-(wall_thickness)"
+            "(-(arm_height)) + (outer_corner_chamfer)",
+            "-(arm_height)"
           ],
           [
-            "-(wall_thickness)",
-            "-(wall_thickness - (outer_corner_chamfer))"
+            "-(arm_height)",
+            "-(arm_height - (outer_corner_chamfer))"
           ],
           [
-            "-(wall_thickness)",
+            "-(arm_height)",
             "-((-(vertical_arm_length)) + (arm_end_chamfer))"
           ],
           [
-            "(-(wall_thickness)) + (arm_end_chamfer)",
+            "(-(arm_height)) + (arm_end_chamfer)",
             "-(-(vertical_arm_length))"
           ],
           [
@@ -141,7 +141,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "bracket_width",
+        "distance": "arm_width",
         "direction": "symmetric",
         "body_name": "CornerBracket"
       }

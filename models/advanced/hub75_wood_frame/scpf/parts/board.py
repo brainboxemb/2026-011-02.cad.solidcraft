@@ -38,47 +38,49 @@ class Board:
         right = center_x + width / 2
         mid_y = (front + rear) / 2
 
-        def corner_anchor(*, z, y, x, top_face, left_side):
+        def corner_anchor(*, z, y, x, top_face):
             return AnchorTopology(
                 edge=(center_x, y, z),
                 on=(center_x, mid_y, z),
                 corner=(x, y, z),
+                # For an edge/corner origin SolidCraft derives the in-plane
+                # axes from topology. We only override z to make the native
+                # joint offset vertical.
                 z=(0, 0, 1 if top_face else -1),
-                x=(1 if left_side else -1, 0, 0),
             )
 
         return {
             "bottom_front_left": corner_anchor(
                 z=bottom, y=front, x=left,
-                top_face=False, left_side=True,
+                top_face=False,
             ),
             "bottom_front_right": corner_anchor(
                 z=bottom, y=front, x=right,
-                top_face=False, left_side=False,
+                top_face=False,
             ),
             "bottom_back_left": corner_anchor(
                 z=bottom, y=rear, x=left,
-                top_face=False, left_side=True,
+                top_face=False,
             ),
             "bottom_back_right": corner_anchor(
                 z=bottom, y=rear, x=right,
-                top_face=False, left_side=False,
+                top_face=False,
             ),
             "top_front_left": corner_anchor(
                 z=top, y=front, x=left,
-                top_face=True, left_side=True,
+                top_face=True,
             ),
             "top_front_right": corner_anchor(
                 z=top, y=front, x=right,
-                top_face=True, left_side=False,
+                top_face=True,
             ),
             "top_back_left": corner_anchor(
                 z=top, y=rear, x=left,
-                top_face=True, left_side=True,
+                top_face=True,
             ),
             "top_back_right": corner_anchor(
                 z=top, y=rear, x=right,
-                top_face=True, left_side=False,
+                top_face=True,
             ),
         }
 

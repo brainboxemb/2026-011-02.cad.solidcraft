@@ -72,6 +72,32 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
+    def test_board_exposes_vertical_topology_anchors_for_brackets(self):
+        source = (
+            ROOT / "models/advanced/hub75_wood_frame/scpf/parts/board.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("AnchorTopology", source)
+        for name in (
+            "front_bottom_left_vertical",
+            "front_top_left_vertical",
+            "front_bottom_right_vertical",
+            "front_top_right_vertical",
+            "back_bottom_left_vertical",
+            "back_top_left_vertical",
+            "back_bottom_right_vertical",
+            "back_top_right_vertical",
+        ):
+            self.assertIn(name, source)
+
+        assembly_source = (
+            ROOT
+            / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("frame_wood_thickness - self.corner_radius", assembly_source)
+        self.assertNotIn("gap = -(self.bracket_width / 2)", assembly_source)
+        self.assertNotIn("parent=Anchor.", assembly_source)
+
+
     def test_corner_bracket_dimension_names_match_geometry(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"

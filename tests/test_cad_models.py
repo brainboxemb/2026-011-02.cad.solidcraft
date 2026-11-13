@@ -72,30 +72,37 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
-    def test_board_exposes_vertical_topology_anchors_for_brackets(self):
-        source = (
+    def test_wood_frame_owns_corner_anchors_not_board(self):
+        board_source = (
             ROOT / "models/advanced/hub75_wood_frame/scpf/parts/board.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorTopology", source)
-        for name in (
-            "front_bottom_left_vertical",
-            "front_top_left_vertical",
-            "front_bottom_right_vertical",
-            "front_top_right_vertical",
-            "back_bottom_left_vertical",
-            "back_top_left_vertical",
-            "back_bottom_right_vertical",
-            "back_top_right_vertical",
-        ):
-            self.assertIn(name, source)
+        self.assertNotIn("def anchors(", board_source)
+        self.assertNotIn("AnchorTopology", board_source)
 
-        assembly_source = (
+        frame_source = (
+            ROOT
+            / "models/advanced/hub75_wood_frame/scpf/assemblies/wood_frame.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("AnchorTopology", frame_source)
+        self.assertIn(".with_anchor(", frame_source)
+        for name in (
+            "front_bottom_left",
+            "front_top_left",
+            "front_bottom_right",
+            "front_top_right",
+            "back_bottom_left",
+            "back_top_left",
+            "back_bottom_right",
+            "back_top_right",
+        ):
+            self.assertIn(f'"{name}"', frame_source)
+
+        bracket_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("frame_wood_thickness - self.corner_radius", assembly_source)
-        self.assertNotIn("gap = -(self.bracket_width / 2)", assembly_source)
-        self.assertNotIn("parent=Anchor.", assembly_source)
+        self.assertIn('.anchor("front_top_left")', bracket_source)
+        self.assertIn('.anchor("back_bottom_right")', bracket_source)
 
 
     def test_corner_bracket_dimension_names_match_geometry(self):

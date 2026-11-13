@@ -144,7 +144,7 @@ class CornerBrackets:
             child=front_mount_a,
             offset=bottom_right_front_offset,
             gap=gap,
-            angle=180,
+            angle=0,
         )
         bottom_left_front_anchor, bottom_left_front_offset = parent_anchor("front_bottom_left")
         bottom_left_front = bracket.copy().attach(

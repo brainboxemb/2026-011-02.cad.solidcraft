@@ -123,21 +123,24 @@ class CADModelRegressions(unittest.TestCase):
         self.assertNotIn("bracket_width", values)
         self.assertNotIn("wall_thickness", values)
 
-    def test_corner_bracket_has_no_hub75_mount_anchors(self):
+    def test_corner_bracket_anchors_are_intrinsic_geometry_only(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
         ).read_text(encoding="utf-8")
-        self.assertNotIn("def anchors(", source)
+        self.assertIn("def anchors(", source)
+        self.assertIn("inner_tangent_negative_y", source)
+        self.assertIn("inner_tangent_positive_y", source)
         self.assertNotIn("front_mount", source)
         self.assertNotIn("rear_mount", source)
+        self.assertNotIn("wood", source.lower())
+        self.assertNotIn("hub75", source.lower())
 
         assembly_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorFrame(", assembly_source)
-        self.assertIn("front_mount_a", assembly_source)
-        self.assertIn("rear_mount_a", assembly_source)
+        self.assertIn('child="inner_tangent_negative_y"', assembly_source)
+        self.assertIn('child="inner_tangent_positive_y"', assembly_source)
         self.assertNotIn('child="front_mount', assembly_source)
         self.assertNotIn('child="rear_mount', assembly_source)
 

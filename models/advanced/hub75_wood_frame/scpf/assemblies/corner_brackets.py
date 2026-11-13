@@ -28,6 +28,59 @@ class CornerBrackets:
         # Mounting orientation belongs to this HUB75 assembly, not to the
         # reusable CornerBracket geometry. Read the existing bracket profile
         # dimension; do not introduce a second assembly parameter for it.
+        #
+        # CornerBracket local side profile (XZ), looking along +Y:
+        #
+        #                    +Z
+        #                     ^
+        #        +------------+--------------------------+
+        #        |            |        horizontal arm   |
+        #        |            |                         |
+        #        |            I----B--------------------+
+        #        |            |    B = (w, 0, 0)
+        #        |            |
+        #        |            A    A = (0, 0, -w)
+        #        |            |
+        #        +------------+
+        #                     +-------------------------> +X
+        #
+        # I = the concave inside corner and component origin (0, 0, 0).
+        # A and B are NOT points stored by CornerBracket; they are mounting
+        # references chosen here by this assembly:
+        #
+        #   mount_a origin = (0, 0, -w)
+        #       one arm_height below I, on the inside edge of the vertical arm.
+        #
+        #   mount_b origin = (w, 0, 0)
+        #       one arm_height right of I, on the inside edge of the
+        #       horizontal arm.
+        #
+        # Both origins have Y=0. The bracket itself is extruded symmetrically
+        # over arm_width, so its broad faces are at:
+        #
+        #             local Y / bracket width
+        #
+        #        front face       centre        rear face
+        #        Y=-arm_width/2    Y=0          Y=+arm_width/2
+        #             |             |                 |
+        #             +-------------+-----------------+
+        #             <--------- arm_width ----------->
+        #                           ^
+        #                           |
+        #                 AnchorFrame.origin
+        #
+        # The frame normal selects which side is front/rear:
+        #
+        #   front_mount_*: z = (0, +1, 0)
+        #   rear_mount_* : z = (0, -1, 0)
+        #
+        # The AnchorFrame itself therefore remains on the Y=0 centre plane.
+        # gap = -arm_width/2 below offsets the rigid joint along that normal:
+        # front -> Y=-arm_width/2, rear -> Y=+arm_width/2.
+        #
+        # x=... on each AnchorFrame fixes the remaining rotation around the
+        # normal. A/B plus the parent corner determine which of the four
+        # clock positions the neutral L profile occupies.
         w = CornerBracket.arm_height
         front_mount_a = AnchorFrame(
             origin=(0, 0, -w),
@@ -50,6 +103,8 @@ class CornerBrackets:
             x=(1, 0, 0),
         )
 
+        # CornerBracket.arm_width is passed from self.bracket_width above.
+        # Keep the joint on the broad bracket face rather than its Y=0 centre.
         gap = -(self.bracket_width / 2)
 
         top_left_front = bracket.copy().attach(

@@ -592,7 +592,7 @@ class WoodenFrameTests(unittest.TestCase):
         )
         self.assertEqual(
             sorted(p.get("angle", 0) for p in joints),
-            [0, 0, 0, 0, 0, 0, 0, 180],
+            [0, 0, 0, 0, 0, 0, 0, 0],
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)

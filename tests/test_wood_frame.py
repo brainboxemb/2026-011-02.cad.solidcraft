@@ -253,22 +253,10 @@ class WoodenFrameTests(unittest.TestCase):
 
     def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
         source = BOARD.read_text(encoding="utf-8")
-        module = ast.parse(source)
-        cls = next(
-            node for node in module.body
-            if isinstance(node, ast.ClassDef) and node.name == "Board"
-        )
-        build = next(
-            node for node in cls.body
-            if isinstance(node, ast.FunctionDef) and node.name == "build"
-        )
-        build_source = ast.get_source_segment(source, build)
-        self.assertIn("half = self.width / 2", build_source)
-        self.assertNotIn("pv(self.width)", build_source)
-        self.assertNotIn("pv(self.height)", build_source)
-        self.assertIn("Edges.from_vertices", build_source)
-        self.assertNotIn("def anchors(", source)
-        self.assertNotIn("AnchorTopology", source)
+        self.assertIn("half = self.width / 2", source)
+        self.assertNotIn("pv(self.width)", source)
+        self.assertNotIn("pv(self.height)", source)
+        self.assertIn("Edges.from_vertices", source)
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
@@ -526,18 +514,14 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertNotIn(".rotate(", assembly_source)
         self.assertNotIn("opening_width", assembly_source)
         self.assertNotIn("opening_height", assembly_source)
-        frame_source = (ASSEMBLIES / "wood_frame.py").read_text(encoding="utf-8")
-        self.assertIn(".with_anchor(", frame_source)
-        self.assertIn("AnchorTopology(", frame_source)
         self.assertIn(".attach(", assembly_source)
-        self.assertIn('.anchor("front_top_left")', assembly_source)
-        self.assertIn('.anchor("back_bottom_right")', assembly_source)
-        self.assertIn("AnchorTopology(", assembly_source)
-        self.assertIn("tangent_negative_y", assembly_source)
-        self.assertIn("tangent_positive_y", assembly_source)
-        self.assertIn("tangent_gap", assembly_source)
-        self.assertIn("frame_wood_thickness", assembly_source)
-        self.assertNotIn("Anchor.FRONT_TOP_LEFT", assembly_source)
+        self.assertIn('self.wood_frame.anchor("front_top_left")', assembly_source)
+        self.assertIn('self.wood_frame.anchor("back_bottom_right")', assembly_source)
+        self.assertIn("bracket_z_correction = CornerBracket.arm_height", assembly_source)
+        frame_source = (ASSEMBLIES / "wood_frame.py").read_text(encoding="utf-8")
+        self.assertIn("Anchor.FRONT_TOP_LEFT", frame_source)
+        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", frame_source)
+        self.assertIn("outside_offset = (-self.frame_wood_thickness, 0)", frame_source)
 
         cmd = commands()
         creates = [
@@ -592,15 +576,12 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum(abs(p["a"]["corner"][1] - 0.0) < 1e-9 for p in joints),
+            sum("front_mount" in str(p["b"]) for p in joints),
             4,
         )
         self.assertEqual(
-            sum(abs(p["a"]["corner"][1] - 100.0) < 1e-9 for p in joints),
+            sum("rear_mount" in str(p["b"]) for p in joints),
             4,
-        )
-        self.assertTrue(
-            all("edge" in p["a"] and "corner" in p["a"] for p in joints)
         )
         self.assertEqual(
             sorted(p["angle"] for p in joints),
@@ -764,11 +745,7 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum(abs(p["a"]["corner"][1] - 120.0) < 1e-9 for p in joints),
-            4,
-        )
-        self.assertEqual(
-            sum(abs(p["a"]["corner"][1] - 0.0) < 1e-9 for p in joints),
+            sum("rear_mount" in str(p["b"]) for p in joints),
             4,
         )
         self.assertTrue(

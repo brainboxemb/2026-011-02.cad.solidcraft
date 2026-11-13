@@ -11,10 +11,10 @@ from scpf import Polygon2D, Direction, Edges, component
 
 @component
 class CornerBracket:
-    bracket_width = 24.0
-    wall_thickness = 12.0
-    arm_width = 60.0
-    arm_height = 60.0
+    arm_width = 24.0
+    arm_height = 12.0
+    horizontal_arm_length = 60.0
+    vertical_arm_length = 60.0
 
     outer_corner_chamfer = 6.0
     arm_end_chamfer = 3.0
@@ -23,9 +23,9 @@ class CornerBracket:
     inside_corner_radius = 4.0
 
     def build(self):
-        w = self.wall_thickness
-        h = self.arm_width
-        v = self.arm_height
+        w = self.arm_height
+        h = self.horizontal_arm_length
+        v = self.vertical_arm_length
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
 
@@ -67,7 +67,7 @@ class CornerBracket:
         )
 
         body = profile.extrude(
-            self.bracket_width,
+            self.arm_width,
             direction=Direction.SYMMETRIC,
         )
 

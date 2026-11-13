@@ -65,11 +65,11 @@ class CornerBrackets:
                 edge=(0, y, edge_z),
                 on=(on_x, y, edge_z),
                 corner=(0, y, tangent_z),
-                # -Z is the local vertical-arm direction. Mating it to the
-                # board bottom/top frame automatically flips the bracket for
-                # bottom versus top while x=+X keeps its horizontal arm inward.
+                # -Z follows the straight inner vertical edge. SolidCraft
+                # derives the in-plane frame axis from this edge/corner
+                # topology; the joint angle below selects the left/right
+                # clock orientation.
                 z=(0, 0, -1),
-                x=(1, 0, 0),
             )
 
         front_tangent = bracket_tangent(-arm_width / 2)
@@ -77,12 +77,22 @@ class CornerBrackets:
 
         tangent_gap = self.frame_wood_thickness - self.corner_radius
 
+        # The topology frame fixes the tangent point and vertical normal.
+        # The remaining clock orientation is a native joint turn:
+        #
+        #   left  corners: 180 deg
+        #   right corners:   0 deg
+        #
+        # Which broad-face tangent is referenced depends on the clock
+        # position. This keeps front brackets at Y=-arm_width..0 and rear
+        # brackets at Y=cabinet_depth-arm_width..cabinet_depth without a
+        # separate Y gap.
         top_left_front = bracket.copy().attach(
             left,
             parent="top_front_left",
-            child=front_tangent,
+            child=rear_tangent,
             gap=tangent_gap,
-            angle=0,
+            angle=180,
         )
         top_right_front = bracket.copy().attach(
             right,
@@ -94,7 +104,7 @@ class CornerBrackets:
         bottom_right_front = bracket.copy().attach(
             right,
             parent="bottom_front_right",
-            child=front_tangent,
+            child=rear_tangent,
             gap=tangent_gap,
             angle=0,
         )
@@ -103,7 +113,7 @@ class CornerBrackets:
             parent="bottom_front_left",
             child=front_tangent,
             gap=tangent_gap,
-            angle=0,
+            angle=180,
         )
 
         top_left_rear = bracket.copy().attach(
@@ -111,12 +121,12 @@ class CornerBrackets:
             parent="top_back_left",
             child=rear_tangent,
             gap=tangent_gap,
-            angle=0,
+            angle=180,
         )
         top_right_rear = bracket.copy().attach(
             right,
             parent="top_back_right",
-            child=rear_tangent,
+            child=front_tangent,
             gap=tangent_gap,
             angle=0,
         )
@@ -130,9 +140,9 @@ class CornerBrackets:
         bottom_left_rear = bracket.copy().attach(
             left,
             parent="bottom_back_left",
-            child=rear_tangent,
+            child=front_tangent,
             gap=tangent_gap,
-            angle=0,
+            angle=180,
         )
 
         return (

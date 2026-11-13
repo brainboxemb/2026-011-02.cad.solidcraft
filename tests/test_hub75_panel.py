@@ -83,9 +83,8 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(root_parameters, [])
 
     def test_single_panel_and_screen_import_the_same_definition(self):
-        from models.components.hub75_panel.detailed.scpf.model import Hub75Panel as PanelDefinition
-        from scpf import component
-        panel = component(PanelDefinition)()
+        from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
+        panel = Hub75Panel()
         self.assertIs(panel.definition.shape, panel.copy().definition.shape)
 
     def test_copy_creates_a_second_occurrence_of_one_definition(self):
@@ -172,8 +171,8 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertIn("front_depth", str(cuts[0]["distance"]))
 
         # Drawing and STEP values; coordinates are measured, not guessed.
-        panel = Hub75Panel()
-        self.assertEqual(panel.depth - panel.front_depth, 12.5)
+        panel_class = Hub75Panel._scpf_component_class
+        self.assertEqual(panel_class.depth - panel_class.front_depth, 12.5)
         side = 12.5 * 159.70 / 160.0
         end = 10.75 * 319.71 / 320.0
         crossbar = 20 * 319.71 / 320.0
@@ -215,8 +214,8 @@ class Hub75PanelTests(unittest.TestCase):
         # An old through-hole depth of 15 mm would pierce the front face.
         # Native input preserves expressions in the parameterized model.
         from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
-        reference = Hub75Panel()
-        self.assertEqual(reference.depth - reference.front_depth, 12.5)
+        panel_class = Hub75Panel._scpf_component_class
+        self.assertEqual(panel_class.depth - panel_class.front_depth, 12.5)
         for bore in holes:
             depth_expression = str(bore["depth"])
             self.assertIn("depth", depth_expression)

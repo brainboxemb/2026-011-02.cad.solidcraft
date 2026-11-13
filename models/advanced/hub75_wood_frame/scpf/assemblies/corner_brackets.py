@@ -115,8 +115,8 @@ class CornerBrackets:
         def parent_anchor(name):
             anchor = self.wood_frame.anchor(name)
             return anchor, (
-                anchor.offset[0] + bracket_z_correction,
-                anchor.offset[1],
+                anchor.offset[0],
+                anchor.offset[1] + bracket_z_correction,
             )
 
         top_left_front_anchor, top_left_front_offset = parent_anchor("front_top_left")

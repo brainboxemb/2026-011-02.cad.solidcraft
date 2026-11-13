@@ -82,25 +82,15 @@ class CornerBrackets:
         # normal. A/B plus the parent corner determine which of the four
         # clock positions the neutral L profile occupies.
         w = CornerBracket.arm_height
-        front_mount_a = AnchorFrame(
+        mount_a = AnchorFrame(
             origin=(0, 0, -w),
             z=(0, 1, 0),
             x=(0, 0, -1),
         )
-        front_mount_b = AnchorFrame(
+        mount_b = AnchorFrame(
             origin=(w, 0, 0),
             z=(0, 1, 0),
             x=(0, 0, -1),
-        )
-        rear_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
-        )
-        rear_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
-            z=(0, -1, 0),
-            x=(1, 0, 0),
         )
 
         # CornerBracket.arm_width is passed from self.bracket_width above.
@@ -110,28 +100,28 @@ class CornerBrackets:
         top_left_front = bracket.copy().attach(
             left,
             parent=Anchor.FRONT_TOP_LEFT,
-            child=front_mount_a,
+            child=mount_a,
             gap=gap,
             angle=0,
         )
         top_right_front = bracket.copy().attach(
             right,
             parent=Anchor.FRONT_TOP_RIGHT,
-            child=front_mount_b,
+            child=mount_b,
             gap=gap,
             angle=0,
         )
         bottom_right_front = bracket.copy().attach(
             right,
             parent=Anchor.FRONT_BOTTOM_RIGHT,
-            child=front_mount_a,
+            child=mount_a,
             gap=gap,
             angle=0,
         )
         bottom_left_front = bracket.copy().attach(
             left,
             parent=Anchor.FRONT_BOTTOM_LEFT,
-            child=front_mount_b,
+            child=mount_b,
             gap=gap,
             angle=0,
         )
@@ -139,28 +129,28 @@ class CornerBrackets:
         top_left_rear = bracket.copy().attach(
             left,
             parent=Anchor.BACK_TOP_LEFT,
-            child=rear_mount_a,
+            child=mount_a,
             gap=gap,
             angle=0,
         )
         top_right_rear = bracket.copy().attach(
             right,
             parent=Anchor.BACK_TOP_RIGHT,
-            child=rear_mount_b,
+            child=mount_b,
             gap=gap,
             angle=0,
         )
         bottom_right_rear = bracket.copy().attach(
             right,
             parent=Anchor.BACK_BOTTOM_RIGHT,
-            child=rear_mount_a,
+            child=mount_a,
             gap=gap,
             angle=0,
         )
         bottom_left_rear = bracket.copy().attach(
             left,
             parent=Anchor.BACK_BOTTOM_LEFT,
-            child=rear_mount_b,
+            child=mount_b,
             gap=gap,
             angle=0,
         )

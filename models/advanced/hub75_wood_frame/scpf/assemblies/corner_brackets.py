@@ -1,6 +1,6 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, AnchorFrame, assembly
+from scpf import AnchorFrame, assembly
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -16,9 +16,6 @@ class CornerBrackets:
     def build(self):
         if self.wood_frame is None:
             raise ValueError("CornerBrackets requires wood_frame")
-
-        left = self.wood_frame.left
-        right = self.wood_frame.right
 
         bracket = CornerBracket(
             arm_width=self.bracket_width,
@@ -97,60 +94,97 @@ class CornerBrackets:
         # Keep the joint on the broad bracket face rather than its Y=0 centre.
         gap = -(self.bracket_width / 2)
 
+        def parent_anchor(name, z_correction):
+            anchor = self.wood_frame.anchor(name)
+            x, y, z = anchor.offset
+            return anchor, (x, y, z + z_correction)
+
+        top_left_front_anchor, top_left_front_offset = parent_anchor(
+            "front_top_left", -w
+        )
         top_left_front = bracket.copy().attach(
-            left,
-            parent=Anchor.FRONT_TOP_LEFT,
+            top_left_front_anchor.target,
+            parent=top_left_front_anchor.reference,
             child=mount_a,
+            offset=top_left_front_offset,
             gap=gap,
             angle=0,
+        )
+        top_right_front_anchor, top_right_front_offset = parent_anchor(
+            "front_top_right", -w
         )
         top_right_front = bracket.copy().attach(
-            right,
-            parent=Anchor.FRONT_TOP_RIGHT,
+            top_right_front_anchor.target,
+            parent=top_right_front_anchor.reference,
             child=mount_b,
+            offset=top_right_front_offset,
             gap=gap,
             angle=0,
+        )
+        bottom_right_front_anchor, bottom_right_front_offset = parent_anchor(
+            "front_bottom_right", w
         )
         bottom_right_front = bracket.copy().attach(
-            right,
-            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            bottom_right_front_anchor.target,
+            parent=bottom_right_front_anchor.reference,
             child=mount_a,
+            offset=bottom_right_front_offset,
             gap=gap,
             angle=0,
         )
+        bottom_left_front_anchor, bottom_left_front_offset = parent_anchor(
+            "front_bottom_left", w
+        )
         bottom_left_front = bracket.copy().attach(
-            left,
-            parent=Anchor.FRONT_BOTTOM_LEFT,
+            bottom_left_front_anchor.target,
+            parent=bottom_left_front_anchor.reference,
             child=mount_b,
+            offset=bottom_left_front_offset,
             gap=gap,
             angle=0,
         )
 
+        top_left_rear_anchor, top_left_rear_offset = parent_anchor(
+            "back_top_left", -w
+        )
         top_left_rear = bracket.copy().attach(
-            left,
-            parent=Anchor.BACK_TOP_LEFT,
+            top_left_rear_anchor.target,
+            parent=top_left_rear_anchor.reference,
             child=mount_a,
+            offset=top_left_rear_offset,
             gap=gap,
             angle=0,
+        )
+        top_right_rear_anchor, top_right_rear_offset = parent_anchor(
+            "back_top_right", -w
         )
         top_right_rear = bracket.copy().attach(
-            right,
-            parent=Anchor.BACK_TOP_RIGHT,
+            top_right_rear_anchor.target,
+            parent=top_right_rear_anchor.reference,
             child=mount_b,
+            offset=top_right_rear_offset,
             gap=gap,
             angle=0,
+        )
+        bottom_right_rear_anchor, bottom_right_rear_offset = parent_anchor(
+            "back_bottom_right", w
         )
         bottom_right_rear = bracket.copy().attach(
-            right,
-            parent=Anchor.BACK_BOTTOM_RIGHT,
+            bottom_right_rear_anchor.target,
+            parent=bottom_right_rear_anchor.reference,
             child=mount_a,
+            offset=bottom_right_rear_offset,
             gap=gap,
             angle=0,
         )
+        bottom_left_rear_anchor, bottom_left_rear_offset = parent_anchor(
+            "back_bottom_left", w
+        )
         bottom_left_rear = bracket.copy().attach(
-            left,
-            parent=Anchor.BACK_BOTTOM_LEFT,
+            bottom_left_rear_anchor.target,
+            parent=bottom_left_rear_anchor.reference,
             child=mount_b,
+            offset=bottom_left_rear_offset,
             gap=gap,
             angle=0,
         )

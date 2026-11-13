@@ -126,6 +126,7 @@ class CornerBrackets:
             child=front_mount_a,
             offset=top_left_front_offset,
             gap=gap,
+            assembled_rotation=90,
             angle=0,
         )
         top_right_front_anchor, top_right_front_offset = parent_anchor("front_top_right")
@@ -135,6 +136,7 @@ class CornerBrackets:
             child=front_mount_b,
             offset=top_right_front_offset,
             gap=gap,
+            assembled_rotation=180,
             angle=0,
         )
         bottom_right_front_anchor, bottom_right_front_offset = parent_anchor("front_bottom_right")
@@ -144,6 +146,7 @@ class CornerBrackets:
             child=front_mount_a,
             offset=bottom_right_front_offset,
             gap=gap,
+            assembled_rotation=90,
             angle=0,
         )
         bottom_left_front_anchor, bottom_left_front_offset = parent_anchor("front_bottom_left")
@@ -153,6 +156,7 @@ class CornerBrackets:
             child=front_mount_b,
             offset=bottom_left_front_offset,
             gap=gap,
+            assembled_rotation=180,
             angle=0,
         )
 
@@ -163,6 +167,7 @@ class CornerBrackets:
             child=rear_mount_a,
             offset=top_left_rear_offset,
             gap=gap,
+            assembled_rotation=180,
             angle=0,
         )
         top_right_rear_anchor, top_right_rear_offset = parent_anchor("back_top_right")
@@ -172,6 +177,7 @@ class CornerBrackets:
             child=rear_mount_b,
             offset=top_right_rear_offset,
             gap=gap,
+            assembled_rotation=90,
             angle=0,
         )
         bottom_right_rear_anchor, bottom_right_rear_offset = parent_anchor("back_bottom_right")
@@ -181,6 +187,7 @@ class CornerBrackets:
             child=rear_mount_a,
             offset=bottom_right_rear_offset,
             gap=gap,
+            assembled_rotation=180,
             angle=0,
         )
         bottom_left_rear_anchor, bottom_left_rear_offset = parent_anchor("back_bottom_left")
@@ -190,6 +197,7 @@ class CornerBrackets:
             child=rear_mount_b,
             offset=bottom_left_rear_offset,
             gap=gap,
+            assembled_rotation=90,
             angle=0,
         )
 

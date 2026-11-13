@@ -1,8 +1,8 @@
 class CornerBracket:
-    bracket_width = 24.0
-    wall_thickness = 12.0
-    arm_width = 60.0
-    arm_height = 60.0
+    arm_width = 24.0
+    arm_height = 12.0
+    horizontal_arm_length = 60.0
+    vertical_arm_length = 60.0
 
     outer_corner_chamfer = 6.0
     arm_end_chamfer = 3.0
@@ -24,9 +24,9 @@ class CornerBracket:
     bolt_hole_edge_relief = 0.2
 
     def build(self):
-        w = self.wall_thickness
-        h = self.arm_width
-        v = self.arm_height
+        w = self.arm_height
+        h = self.horizontal_arm_length
+        v = self.vertical_arm_length
         end = self.arm_end_chamfer
         outer = self.outer_corner_chamfer
         ef = self.elephant_foot_relief
@@ -51,7 +51,7 @@ class CornerBracket:
         profile = Polygon2D([(x, -z) for x, z in outline_xz], plane="XZ")
 
         body = profile.extrude(
-            self.bracket_width,
+            self.arm_width,
             direction=Direction.SYMMETRIC,
         )
 
@@ -62,7 +62,7 @@ class CornerBracket:
         )
 
         # Bevel only the outside perimeter on both broad print faces.
-        y0 = self.bracket_width / 2
+        y0 = self.arm_width / 2
         outer_edges = [
             (h, (ef + w - end) / 2),
             (h - end / 2, w - end / 2),

@@ -97,7 +97,8 @@ class CADModelRegressions(unittest.TestCase):
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
         self.assertIn("bracket_z_correction = CornerBracket.arm_height", assembly_source)
-        self.assertIn('self.wood_frame.anchor("front_top_left")', assembly_source)
+        self.assertIn("anchor = self.wood_frame.anchor(name)", assembly_source)
+        self.assertIn('parent_anchor("front_top_left")', assembly_source)
         self.assertIn("offset=", assembly_source)
 
 

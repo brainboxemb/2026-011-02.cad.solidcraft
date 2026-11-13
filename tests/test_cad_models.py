@@ -123,35 +123,20 @@ class CADModelRegressions(unittest.TestCase):
         self.assertNotIn("bracket_width", values)
         self.assertNotIn("wall_thickness", values)
 
-    def test_corner_bracket_anchors_are_intrinsic_geometry_only(self):
+    def test_corner_bracket_has_no_mounting_anchors(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
         ).read_text(encoding="utf-8")
-        module = ast.parse(source)
-        cls = next(
-            node for node in module.body
-            if isinstance(node, ast.ClassDef) and node.name == "CornerBracket"
-        )
-        anchors = next(
-            node for node in cls.body
-            if isinstance(node, ast.FunctionDef) and node.name == "anchors"
-        )
-        anchor_source = ast.get_source_segment(source, anchors)
-        self.assertIn("inner_tangent_negative_y", anchor_source)
-        self.assertIn("inner_tangent_positive_y", anchor_source)
-        self.assertNotIn("front_mount", anchor_source)
-        self.assertNotIn("rear_mount", anchor_source)
-        self.assertNotIn("wood", anchor_source.lower())
-        self.assertNotIn("hub75", anchor_source.lower())
+        self.assertNotIn("def anchors(", source)
+        self.assertNotIn("AnchorTopology", source)
 
         assembly_source = (
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn('child="inner_tangent_negative_y"', assembly_source)
-        self.assertIn('child="inner_tangent_positive_y"', assembly_source)
-        self.assertNotIn('child="front_mount', assembly_source)
-        self.assertNotIn('child="rear_mount', assembly_source)
+        self.assertIn("AnchorTopology(", assembly_source)
+        self.assertIn("tangent_negative_y", assembly_source)
+        self.assertIn("tangent_positive_y", assembly_source)
 
 
     def test_reusable_component_sources_own_component_decorator(self):

@@ -72,6 +72,31 @@ class CADModelRegressions(unittest.TestCase):
                         self.assertIsInstance(fn.body[-1], ast.Return, cls.name)
 
 
+    def test_corner_bracket_dimension_names_match_geometry(self):
+        source = (
+            ROOT / "models/components/corner_bracket/scpf/model.py"
+        ).read_text(encoding="utf-8")
+        module = ast.parse(source)
+        cls = next(
+            node for node in module.body
+            if isinstance(node, ast.ClassDef) and node.name == "CornerBracket"
+        )
+        values = {
+            node.targets[0].id: node.value.value
+            for node in cls.body
+            if isinstance(node, ast.Assign)
+            and len(node.targets) == 1
+            and isinstance(node.targets[0], ast.Name)
+            and isinstance(node.value, ast.Constant)
+            and isinstance(node.value.value, (int, float))
+        }
+        self.assertEqual(values["arm_width"], 24.0)
+        self.assertEqual(values["arm_height"], 12.0)
+        self.assertEqual(values["horizontal_arm_length"], 60.0)
+        self.assertEqual(values["vertical_arm_length"], 60.0)
+        self.assertNotIn("bracket_width", values)
+        self.assertNotIn("wall_thickness", values)
+
     def test_corner_bracket_has_no_hub75_mount_anchors(self):
         source = (
             ROOT / "models/components/corner_bracket/scpf/model.py"
@@ -87,6 +112,8 @@ class CADModelRegressions(unittest.TestCase):
         self.assertIn("AnchorFrame(", assembly_source)
         self.assertIn("front_mount_a", assembly_source)
         self.assertIn("rear_mount_a", assembly_source)
+        self.assertNotIn('child="front_mount', assembly_source)
+        self.assertNotIn('child="rear_mount', assembly_source)
 
 
     def test_reusable_component_sources_own_component_decorator(self):

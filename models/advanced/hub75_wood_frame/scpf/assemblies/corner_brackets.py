@@ -94,35 +94,37 @@ class CornerBrackets:
         )
 
         # CornerBracket.arm_width is passed from self.bracket_width above.
-        # Keep the joint on the broad bracket face rather than its Y=0 centre.
-        gap = -(self.bracket_width / 2)
+        # Both mount frames share the same normal. Select the broad face only
+        # with the joint gap: front and rear lie on opposite sides of Y=0.
+        front_gap = -(self.bracket_width / 2)
+        rear_gap = self.bracket_width / 2
 
         top_left_front = bracket.copy().attach(
             left,
             parent=Anchor.FRONT_TOP_LEFT,
             child=mount_a,
-            gap=gap,
+            gap=front_gap,
             angle=0,
         )
         top_right_front = bracket.copy().attach(
             right,
             parent=Anchor.FRONT_TOP_RIGHT,
             child=mount_b,
-            gap=gap,
+            gap=front_gap,
             angle=0,
         )
         bottom_right_front = bracket.copy().attach(
             right,
             parent=Anchor.FRONT_BOTTOM_RIGHT,
             child=mount_a,
-            gap=gap,
+            gap=front_gap,
             angle=0,
         )
         bottom_left_front = bracket.copy().attach(
             left,
             parent=Anchor.FRONT_BOTTOM_LEFT,
             child=mount_b,
-            gap=gap,
+            gap=front_gap,
             angle=0,
         )
 
@@ -130,28 +132,28 @@ class CornerBrackets:
             left,
             parent=Anchor.BACK_TOP_LEFT,
             child=mount_a,
-            gap=gap,
+            gap=rear_gap,
             angle=0,
         )
         top_right_rear = bracket.copy().attach(
             right,
             parent=Anchor.BACK_TOP_RIGHT,
             child=mount_b,
-            gap=gap,
+            gap=rear_gap,
             angle=0,
         )
         bottom_right_rear = bracket.copy().attach(
             right,
             parent=Anchor.BACK_BOTTOM_RIGHT,
             child=mount_a,
-            gap=gap,
+            gap=rear_gap,
             angle=0,
         )
         bottom_left_rear = bracket.copy().attach(
             left,
             parent=Anchor.BACK_BOTTOM_LEFT,
             child=mount_b,
-            gap=gap,
+            gap=rear_gap,
             angle=0,
         )
 

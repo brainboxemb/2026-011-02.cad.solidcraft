@@ -21,14 +21,14 @@ class CornerBrackets:
         right = self.wood_frame.right
 
         bracket = CornerBracket(
-            bracket_width=self.bracket_width,
+            arm_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )
 
         # Mounting orientation belongs to this HUB75 assembly, not to the
         # reusable CornerBracket geometry. Read the existing bracket profile
         # dimension; do not introduce a second assembly parameter for it.
-        w = CornerBracket.wall_thickness
+        w = CornerBracket.arm_height
         front_mount_a = AnchorFrame(
             origin=(0, 0, -w),
             z=(0, 1, 0),
@@ -69,14 +69,14 @@ class CornerBrackets:
         bottom_right_front = bracket.copy().attach(
             right,
             parent=Anchor.FRONT_BOTTOM_RIGHT,
-            child="front_mount_a",
+            child=front_mount_a,
             gap=gap,
             angle=0,
         )
         bottom_left_front = bracket.copy().attach(
             left,
             parent=Anchor.FRONT_BOTTOM_LEFT,
-            child="front_mount_b",
+            child=front_mount_b,
             gap=gap,
             angle=0,
         )
@@ -98,14 +98,14 @@ class CornerBrackets:
         bottom_right_rear = bracket.copy().attach(
             right,
             parent=Anchor.BACK_BOTTOM_RIGHT,
-            child="rear_mount_a",
+            child=rear_mount_a,
             gap=gap,
             angle=0,
         )
         bottom_left_rear = bracket.copy().attach(
             left,
             parent=Anchor.BACK_BOTTOM_LEFT,
-            child="rear_mount_b",
+            child=rear_mount_b,
             gap=gap,
             angle=0,
         )

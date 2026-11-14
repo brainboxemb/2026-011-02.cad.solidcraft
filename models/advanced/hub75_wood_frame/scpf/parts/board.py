@@ -8,9 +8,6 @@ class Board:
     width = 100.0
     depth = 100.0
     height = 100.0
-    _x_position = 0.0
-    _y_position = 0.0
-    _z_position = 0.0
     corner_radius = 0.0
 
     # Build-only role details. They are deliberately not SolidCraft parameters.
@@ -24,9 +21,9 @@ class Board:
             self.depth,
             self.height,
         ).at(
-            self._x_position,
-            self._y_position,
-            self._z_position,
+            0,
+            0,
+            0,
             anchor=FRONT + BOTTOM,
         )
 

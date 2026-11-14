@@ -416,7 +416,7 @@ class CADModelRegressions(unittest.TestCase):
         run_script(ROOT / "models/basic/sample_plate/scpf/model.py")
 
 
-    def test_plastic_enclosure_compiles_to_sketch_base_and_native_plastic_features(self):
+    def test_plastic_enclosure_compiles_to_native_box_and_plastic_features(self):
         commands = run_script(
             ROOT / "models/basic/plastic_enclosure/scpf/model.py"
         )["commands"]

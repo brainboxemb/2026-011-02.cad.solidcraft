@@ -24,6 +24,11 @@ class WoodFrame:
             + self.panel_wood_thickness
             + self.roof_rear_overhang
         )
+        roof_center_offset_y = (
+            self.panel_wood_thickness
+            + self.roof_rear_overhang
+            - self.roof_front_overhang
+        ) / 2
 
         bottom = Board(
             name="bottom",
@@ -74,10 +79,11 @@ class WoodFrame:
             material_name="LIGHTPLY roof",
         )
         roof = roof.attach(
-            left,
-            parent=FRONT + TOP + LEFT,
-            child=FRONT + BOTTOM + LEFT,
-            gap=self.roof_front_overhang,
+            bottom,
+            parent=TOP,
+            child=BOTTOM,
+            offset=(0, roof_center_offset_y),
+            gap=self.opening_height,
         )
         roof = roof.group("WoodBoxFrame")
 

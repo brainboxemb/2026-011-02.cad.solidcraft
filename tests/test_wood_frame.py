@@ -272,12 +272,22 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(extrusion["distance"], "bracket_width")
         self.assertEqual(fillet["radius"], "corner_radius")
 
-    def test_board_keeps_geometry_symbolic_and_uses_named_edges(self):
+    def test_board_uses_native_box_and_directional_edges(self):
         source = BOARD.read_text(encoding="utf-8")
-        self.assertIn("half = self.width / 2", source)
-        self.assertNotIn("pv(self.width)", source)
-        self.assertNotIn("pv(self.height)", source)
-        self.assertIn("Edges.from_vertices", source)
+        frame_source = (ASSEMBLIES / "wood_frame.py").read_text(encoding="utf-8")
+
+        self.assertIn("body = Box(", source)
+        self.assertIn("anchor=FRONT + BOTTOM", source)
+        self.assertIn("if self.fillet:", source)
+        self.assertNotIn("Sketch(", source)
+        self.assertNotIn("Polygon2D", source)
+        self.assertNotIn("Edges.from_vertices", source)
+        self.assertNotIn("pv(", source)
+
+        self.assertIn("BOTTOM + LEFT", frame_source)
+        self.assertIn("BOTTOM + RIGHT", frame_source)
+        self.assertIn("TOP + LEFT", frame_source)
+        self.assertIn("TOP + RIGHT", frame_source)
 
         cmd = commands()
         parameter_names = {p["name"] for p in of(cmd, "parameters.add")}
@@ -289,6 +299,16 @@ class WoodenFrameTests(unittest.TestCase):
             for params in of(cmd, "solid.fillet")
         ]
         self.assertEqual(radii.count("corner_radius"), 3)
+
+        for role in ("bottom", "roof"):
+            part = component_commands(cmd, BOARD_COMPONENTS[role])
+            self.assertEqual(
+                sum(item["command"] == "solid.box" for item in part),
+                1,
+            )
+            self.assertFalse(
+                any(item["command"].startswith("sketch.") for item in part)
+            )
 
     def test_exactly_one_source_definition_per_wooden_part(self):
         cmd = commands()

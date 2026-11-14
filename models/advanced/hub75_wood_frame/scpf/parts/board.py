@@ -1,6 +1,6 @@
 """Generic rectangular wooden board component."""
 
-from scpf import Direction, Edges, Polygon2D, Sketch, component, pv
+from scpf import BOTTOM, FRONT, Box, component
 
 
 @component
@@ -19,44 +19,21 @@ class Board:
     color = None
 
     def build(self):
-        half = self.width / 2
-        center = self.width * 0 + self._x_position
-        left = center - half
-        right = center + half
-        bottom = self._z_position
-        top = bottom + self.height
-
-        with Sketch(
-            name="Profile",
-            plane="XZ",
-            offset=self._y_position,
-        ) as sketch:
-            Polygon2D([
-                ("lower_left", (left, bottom)),
-                ("lower_right", (right, bottom)),
-                ("upper_right", (right, top)),
-                ("upper_left", (left, top)),
-            ], plane="XZ", world=True)
-
-        body = sketch.extrude(
+        body = Box(
+            self.width,
             self.depth,
-            direction=Direction.POSITIVE,
+            self.height,
+        ).at(
+            self._x_position,
+            self._y_position,
+            self._z_position,
+            anchor=FRONT + BOTTOM,
         )
 
-        if self.fillet is not None and pv(self.corner_radius) > 0:
-            vertices = {
-                "bottom": ("lower_left", "lower_right"),
-                "top": ("upper_left", "upper_right"),
-            }
-            try:
-                selected = vertices[self.fillet]
-            except KeyError as exc:
-                raise ValueError(
-                    "Board fillet must be 'top', 'bottom' or None"
-                ) from exc
+        if self.fillet:
             body = body.fillet(
                 self.corner_radius,
-                edges=Edges.from_vertices(*selected),
+                edges=self.fillet,
             )
 
         return body.with_material(

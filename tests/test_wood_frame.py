@@ -549,8 +549,10 @@ class WoodenFrameTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn("as_built=True", source)
         self.assertNotIn("Anchor.", source)
-        self.assertIn("parent=FRONT + TOP + LEFT", source)
-        self.assertIn("parent=FRONT + TOP + RIGHT", source)
+        self.assertIn("parent=TOP", source)
+        self.assertIn("child=BOTTOM", source)
+        self.assertIn("offset=(-side_center_x, 0)", source)
+        self.assertIn("offset=(side_center_x, 0)", source)
 
         cmd = commands()
         frame_joints = [
@@ -561,12 +563,15 @@ class WoodenFrameTests(unittest.TestCase):
             }
         ]
         self.assertEqual(len(frame_joints), 2)
-        self.assertTrue(all(p["type"] == "rigid" for p in frame_joints))
-        self.assertEqual(
-            sorted(p["a"]["corner"][0] for p in frame_joints),
-            [-434.0, 434.0],
+        self.assertTrue(all(p["type"] == "planar" for p in frame_joints))
+        self.assertTrue(all(p["a"]["face"][2] == 12.0 for p in frame_joints))
+        self.assertTrue(
+            all("opening_width" in str(p["values"][0]) for p in frame_joints)
         )
-        self.assertTrue(all(p["a"]["corner"][2] == 12.0 for p in frame_joints))
+        self.assertTrue(
+            all("frame_wood_thickness" in str(p["values"][0])
+                for p in frame_joints)
+        )
 
     def test_corner_bracket_is_neutral_and_assembly_owns_placement(self):
         source = (
@@ -762,9 +767,9 @@ class WoodenFrameTests(unittest.TestCase):
                 "Attach Board:2 to Board 2:1",
             }
         ]
-        self.assertEqual(
-            sorted(p["a"]["corner"][0] for p in side_joints),
-            [-512.0, 512.0],
+        self.assertEqual(len(side_joints), 2)
+        self.assertTrue(
+            all("opening_width" in str(p["values"][0]) for p in side_joints)
         )
 
         joints = [
@@ -813,7 +818,8 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "joint.create")
             if p["name"] == "Attach Board 4:1 to Board 2:1"
         )
-        self.assertEqual(rear_joint["a"]["corner"][1], 120.0)
+        self.assertEqual(rear_joint["a"]["face"][1], 120.0)
+        self.assertIn("opening_height", str(rear_joint["values"][1]))
 
         roof = component_commands(cmd, BOARD_COMPONENTS["roof"])
         roof_box = next(
@@ -852,11 +858,11 @@ class WoodenFrameTests(unittest.TestCase):
                 "Attach Board:2 to Board 2:1",
             }
         ]
-        self.assertEqual(
-            sorted(p["a"]["corner"][0] for p in side_joints),
-            [-438.0, 438.0],
+        self.assertEqual(len(side_joints), 2)
+        self.assertTrue(all(p["a"]["face"][2] == 13.0 for p in side_joints))
+        self.assertTrue(
+            all("opening_width" in str(p["values"][0]) for p in side_joints)
         )
-        self.assertTrue(all(p["a"]["corner"][2] == 13.0 for p in side_joints))
 
         joints = [
             p for p in of(cmd, "joint.create")

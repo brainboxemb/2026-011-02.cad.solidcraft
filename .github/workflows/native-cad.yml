@@ -508,25 +508,25 @@ jobs:
           # Check representative editable SolidCraft feature histories, not just images.
           unzip -p output/native/sample-plate/model.sc document.json > output/native/sample-plate/document.json
           jq -e '
-            [.features[] | select(.type == "sketch") | .name] == ["Base","Holes","Boss","Bore"]
+            [.features[] | select(.type == "sketch") | .name] == ["Base","Holes","Bore"]
+            and ([.features[] | select(.type == "cylinder")] | length) == 1
             and ([.features[] | select(.type == "hole")] | length) == 0
           ' output/native/sample-plate/document.json
           unzip -p output/native/plastic-enclosure/model.sc document.json > output/native/plastic-enclosure/document.json
           jq -e '
             [.features[].type] ==
-              ["sketch","extrude","shell","lip","snap_fit","boss","boss","rest"]
+              ["box","shell","lip","snap_fit","boss","boss","rest"]
           ' output/native/plastic-enclosure/document.json
           jq -e '
             [.commands[] | select(.command == "sketch.create") | .params.name] ==
-              ["PlasticEnclosurePi footprint","Pi ports",
-               "USB and Ethernet","Floor vents","Pi 4 engraving"]
+              ["Pi ports","USB and Ethernet","Floor vents","Pi 4 engraving"]
             and ([.commands[] | select(.command == "plastic.boss")] | length) == 4
           ' output/native/plastic-enclosure-pi/commands.json
           jq -e '
             .body_count == 1 and .bodies[0].name == "PlasticEnclosurePi"
             and .bodies[0].closed == true
             and .bodies[0].material == "PETG"
-            and (.sketches | length) == 5
+            and (.sketches | length) == 4
           ' output/native/plastic-enclosure-pi/measurements.json
           jq -e '
             .body_count == 1 and .bodies[0].name == "CornerBracket"

@@ -8,9 +8,9 @@ class Board:
     width = 100.0
     depth = 100.0
     height = 100.0
-    x_position = 0.0
-    y_position = 0.0
-    z_position = 0.0
+    _x_position = 0.0
+    _y_position = 0.0
+    _z_position = 0.0
     corner_radius = 0.0
 
     # Build-only role details. They are deliberately not SolidCraft parameters.
@@ -20,16 +20,16 @@ class Board:
 
     def build(self):
         half = self.width / 2
-        center = self.width * 0 + self.x_position
+        center = self.width * 0 + self._x_position
         left = center - half
         right = center + half
-        bottom = self.z_position
+        bottom = self._z_position
         top = bottom + self.height
 
         with Sketch(
             name="Profile",
             plane="XZ",
-            offset=self.y_position,
+            offset=self._y_position,
         ) as sketch:
             Polygon2D([
                 ("lower_left", (left, bottom)),

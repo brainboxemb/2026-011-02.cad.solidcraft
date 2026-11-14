@@ -4,7 +4,7 @@ No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The dimensions are fixed
 product constants; depth and vertical placement may be linked to parent parameters.
 """
-from scpf import Direction, Polygon2D, component
+from scpf import Direction, Polygon2D, Sketch, component
 
 
 HUB75_PANEL_WIDTH = 159.70
@@ -22,14 +22,19 @@ class Hub75PanelBasic:
         bottom = self.z_position
         top = bottom + HUB75_PANEL_HEIGHT
 
-        profile = Polygon2D([
-            (-half_width, bottom),
-            (half_width, bottom),
-            (half_width, top),
-            (-half_width, top),
-        ], plane="XZ", world=True).at(y=self.y_center)
+        with Sketch(
+            name="Profile",
+            plane="XZ",
+            offset=self.y_center,
+        ) as sketch:
+            Polygon2D([
+                (-half_width, bottom),
+                (half_width, bottom),
+                (half_width, top),
+                (-half_width, top),
+            ], plane="XZ", world=True)
 
-        return profile.extrude(
+        return sketch.extrude(
             HUB75_PANEL_DEPTH,
             direction=Direction.SYMMETRIC,
         ).with_material(

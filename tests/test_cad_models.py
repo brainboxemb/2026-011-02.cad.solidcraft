@@ -268,8 +268,19 @@ class CADModelRegressions(unittest.TestCase):
         commands = generated["commands"]
         self.assertEqual([c["params"]["name"] for c in commands[:3]],
                          ["length", "width", "thickness"])
-        self.assertEqual([c["params"]["name"] for c in commands
-                          if c["command"] == "sketch.create"], ["Plate footprint"])
+        boxes = [c["params"] for c in commands if c["command"] == "solid.box"]
+        self.assertEqual(len(boxes), 1)
+        self.assertEqual(
+            boxes[0],
+            {
+                "length": "length",
+                "width": "width",
+                "height": "thickness",
+                "corner": ["-length / 2", "-width / 2", 0],
+                "body_name": "Plate",
+            },
+        )
+        self.assertFalse(any(c["command"].startswith("sketch.") for c in commands))
         holes = [c["params"] for c in commands if c["command"] == "solid.hole"]
         self.assertEqual(len(holes), 4)
         self.assertEqual([c["position"] for c in holes],

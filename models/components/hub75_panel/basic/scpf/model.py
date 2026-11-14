@@ -14,18 +14,18 @@ HUB75_PANEL_DEPTH = 14.50
 
 @component
 class Hub75PanelBasic:
-    y_center = 0.0
-    z_position = 0.0
+    _y_center = 0.0
+    _z_position = 0.0
 
     def build(self):
         half_width = HUB75_PANEL_WIDTH / 2
-        bottom = self.z_position
+        bottom = self._z_position
         top = bottom + HUB75_PANEL_HEIGHT
 
         with Sketch(
             name="Profile",
             plane="XZ",
-            offset=self.y_center,
+            offset=self._y_center,
         ) as sketch:
             Polygon2D([
                 (-half_width, bottom),

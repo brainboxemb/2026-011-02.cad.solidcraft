@@ -1300,52 +1300,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": "glazing_wood_depth"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -420.0,
-            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2))"
-          ],
-          [
-            420.0,
-            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2))"
-          ],
-          [
-            420.0,
-            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2) + 360 mm)"
-          ],
-          [
-            -420.0,
-            "-(frame_wood_thickness + ((opening_height - 360 mm) / 2) + 360 mm)"
-          ]
+        "length": 840.0,
+        "width": 4.0,
+        "height": 360.0,
+        "corner": [
+          -420.0,
+          "glazing_wood_depth",
+          "frame_wood_thickness + ((opening_height - 360 mm) / 2)"
         ],
-        "closed": true,
-        "ids": [
-          "a",
-          "b",
-          "c",
-          "d"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": 4.0,
-        "direction": "positive",
         "body_name": "Window"
       }
     },

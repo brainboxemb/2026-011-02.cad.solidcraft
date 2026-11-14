@@ -6,7 +6,9 @@ class SamplePlate:
     thickness = 8
 
     def build(self):
-        plate = Rectangle2D(self.width, self.depth).extrude(self.thickness)
+        with Sketch(name="Base", plane="XY") as sketch:
+            Rectangle2D(self.width, self.depth)
+        plate = sketch.extrude(self.thickness)
         plate = plate.fillet(6, edges=Edges.VERTICAL)
 
         holes = Hole(d=8, depth=Depth.THROUGH_ALL).pattern(

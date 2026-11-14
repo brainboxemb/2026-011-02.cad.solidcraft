@@ -44,7 +44,7 @@
         "height": "size",
         "diameter": "size / 1.5",
         "base": [
-          "-(size) / 2",
+          "-(size / 2)",
           0,
           0
         ],
@@ -62,7 +62,7 @@
         "diameter": "size / 1.5",
         "base": [
           0,
-          "-(size) / 2",
+          "-(size / 2)",
           0
         ],
         "axis": "Y",
@@ -80,7 +80,7 @@
         "base": [
           0,
           0,
-          "-(size) / 2"
+          "-(size / 2)"
         ],
         "axis": "Z",
         "operation": "cut",

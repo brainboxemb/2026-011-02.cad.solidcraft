@@ -56,9 +56,10 @@ corner at `[0, 0, 0]`. The script does not manually compensate with
 `length / 2` or `width / 2`: `X.MIN/CENTER/MAX` and `Y.MIN/CENTER/MAX`
 keep each coordinate relative to the matching enclosure axis.
 
-The uploaded SolidCraft source contains no sketches. SCPF deliberately keeps
-its normal `Box` representation instead: one footprint sketch plus an
-extrusion, followed by the native Shell/Lip/SnapFit/Boss/Rest features.
+The uploaded SolidCraft source contains no sketches. Forge now preserves that
+structure: `Box(...)` lowers directly to native `solid.box`, followed by
+the native Shell/Lip/SnapFit/Boss/Rest features. No synthetic footprint sketch
+is introduced.
 
-The native CI qualification verifies that history, checks that the resulting
-body is closed, and checks that exactly one base sketch is present.
+The native CI qualification verifies that history and checks that the
+resulting body is closed without any base sketch.

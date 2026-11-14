@@ -48,9 +48,10 @@ class CornerBracket:
                 (0, -v + ef),
                 (0, 0),
             ]
-        profile = Polygon2D([(x, -z) for x, z in outline_xz], plane="XZ")
+        with Sketch(name="Profile", plane="XZ") as sketch:
+            Polygon2D([(x, -z) for x, z in outline_xz], plane="XZ")
 
-        body = profile.extrude(
+        body = sketch.extrude(
             self.arm_width,
             direction=Direction.SYMMETRIC,
         )

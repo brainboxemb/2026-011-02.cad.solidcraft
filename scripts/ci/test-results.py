@@ -159,7 +159,7 @@ def check(site, commit):
             assert 'href="scpc-commands.json"' in page, slug
             assert 'script.add' in page, slug
             data = json.loads(native_json.read_text(encoding="utf-8"))
-            assert len(data["commands"]) == (12 if slug == "plate" else 17)
+            assert len(data["commands"]) == (9 if slug == "plate" else 17)
         else:
             assert not (model / "scpc-model.py").exists(), slug
             assert not (model / "scpc-commands.json").exists(), slug

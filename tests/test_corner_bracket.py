@@ -45,8 +45,8 @@ class CornerBracketTests(unittest.TestCase):
         self.assertEqual(
             set(names),
             {
-                "bracket_width",
-                "wall_thickness",
+                "arm_width",
+                "arm_height",
                 "horizontal_arm_length",
                 "vertical_arm_length",
                 "outer_corner_chamfer",
@@ -129,40 +129,49 @@ class CornerBracketTests(unittest.TestCase):
         self.assertEqual(chamfers[2]["distance"], "elephant_foot_relief")
 
     def test_missing_profile_edge_name_is_rejected(self):
+        from scpf import Sketch
         from scpf.core import Polygon2D, Direction, Edges
         from scpf.features import compile_features
         from scpf.compiler import ModelError
 
-        shape = Polygon2D(
-            [(0, 0), (10, 0), (10, 10), (0, 10)],
-            plane="XZ",
-            ids=["bottom", "right", "top", "left"],
-        ).extrude(10, direction=Direction.SYMMETRIC)
+        with Sketch(plane="XZ") as sketch:
+            Polygon2D(
+                [(0, 0), (10, 0), (10, 10), (0, 10)],
+                plane="XZ",
+                ids=["bottom", "right", "top", "left"],
+            )
+        shape = sketch.extrude(10, direction=Direction.SYMMETRIC)
         shape = shape.chamfer(1, edges=Edges.from_profile("o_*"))
         with self.assertRaisesRegex(ModelError, "no polygon segment or vertex matches"):
             compile_features(shape, "Square")
 
     def test_named_profile_selection_requires_segment_ids(self):
+        from scpf import Sketch
         from scpf.core import Polygon2D, Direction, Edges
         from scpf.features import compile_features
         from scpf.compiler import ModelError
 
-        shape = Polygon2D(
-            [(0, 0), (10, 0), (10, 10), (0, 10)],
-            plane="XZ",
-        ).extrude(10, direction=Direction.SYMMETRIC)
+        with Sketch(plane="XZ") as sketch:
+            Polygon2D(
+                [(0, 0), (10, 0), (10, 10), (0, 10)],
+                plane="XZ",
+            )
+        shape = sketch.extrude(10, direction=Direction.SYMMETRIC)
         shape = shape.chamfer(1, edges=Edges.from_profile("o_*"))
         with self.assertRaisesRegex(ModelError, "must define ids"):
             compile_features(shape, "Square")
 
     def test_sweep_edge_selection_uses_named_vertices(self):
+        from scpf import Sketch
         from scpf.core import Polygon2D, Direction, Edges
         from scpf.features import compile_features
 
-        shape = Polygon2D([
-            ("start", (0, 0)), ("tip", (10, 0)),
-            ("far", (10, 8)), ("end", (0, 8)),
-        ], plane="XZ", world=True).extrude(8, direction=Direction.SYMMETRIC)
+        with Sketch(plane="XZ") as sketch:
+            Polygon2D([
+                ("start", (0, 0)), ("tip", (10, 0)),
+                ("far", (10, 8)), ("end", (0, 8)),
+            ], plane="XZ", world=True)
+        shape = sketch.extrude(8, direction=Direction.SYMMETRIC)
         shape = shape.chamfer(0.5, edges=Edges.from_vertices("tip", "end"))
         chamfer = next(
             c for c in compile_features(shape, "Plate")

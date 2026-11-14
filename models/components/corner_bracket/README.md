@@ -29,13 +29,16 @@ reintroduced later, after they can be built without native warnings.
 The L outline is defined **once**, in a single `Polygon2D` table of `("name", (x, z))` rows:
 
 ```python
-profile = Polygon2D([
-    ("i_corner", (0, 0)),  # start at the sketch origin
-    ("o_hor_tip", (h, 0)),
-    ("o_hor_bevel", (h, w - end)),
-    # ... the rest of the contour ...
-    ("v_tip", (0, -v)),
-], plane="XZ", world=True)
+with Sketch(name="Profile", plane="XZ") as sketch:
+    Polygon2D([
+        ("i_corner", (0, 0)),  # start at the sketch origin
+        ("o_hor_tip", (h, 0)),
+        ("o_hor_bevel", (h, w - end)),
+        # ... the rest of the contour ...
+        ("v_tip", (0, -v)),
+    ], plane="XZ", world=True)
+
+body = sketch.extrude(arm_width, direction=Direction.SYMMETRIC)
 ```
 
 The name belongs to the **vertex** and becomes the sketch-line ID for the **segment beginning at that vertex**. `world=True` means the XZ coordinates are ordinary world (x, z); SCPF performs SolidCraft's local-sketch axis conversion.

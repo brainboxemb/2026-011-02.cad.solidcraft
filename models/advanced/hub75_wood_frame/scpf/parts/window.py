@@ -1,6 +1,6 @@
 """Fixed-size plexiglass window, vertically centred in the opening."""
 
-from scpf import Direction, Polygon2D, component
+from scpf import Direction, Polygon2D, Sketch, component
 
 
 GLASS_WIDTH = 840.0
@@ -24,14 +24,19 @@ class Window:
         )
         top = bottom + GLASS_HEIGHT
 
-        profile = Polygon2D([
-            (-half_width, bottom),
-            (half_width, bottom),
-            (half_width, top),
-            (-half_width, top),
-        ], plane="XZ", world=True).at(y=self.front_y)
+        with Sketch(
+            name="Profile",
+            plane="XZ",
+            offset=self.front_y,
+        ) as sketch:
+            Polygon2D([
+                (-half_width, bottom),
+                (half_width, bottom),
+                (half_width, top),
+                (-half_width, top),
+            ], plane="XZ", world=True)
 
-        return profile.extrude(
+        return sketch.extrude(
             GLASS_THICKNESS,
             direction=Direction.POSITIVE,
         ).with_material(

@@ -657,14 +657,13 @@ class WoodenFrameTests(unittest.TestCase):
             and cmd[i]["params"]["component"] == "root"
         )
         roof_commands = cmd[create_index:activate_index]
-        roof_profile = next(
+        roof_box = next(
             command["params"] for command in roof_commands
-            if command["command"] == "sketch.line"
+            if command["command"] == "solid.box"
         )
 
-        points = str(roof_profile["points"])
-        self.assertIn("opening_height", points)
-        self.assertNotIn("Board_4_z_position", points)
+        self.assertIn("opening_height", str(roof_box["corner"][2]))
+        self.assertNotIn("Board_4_z_position", str(roof_box["corner"]))
 
     def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)
@@ -752,42 +751,34 @@ class WoodenFrameTests(unittest.TestCase):
 
         for role in ("left", "right", "bottom"):
             part = component_commands(cmd, BOARD_COMPONENTS[role])
-            sketch = next(
+            box = next(
                 item["params"] for item in part
-                if item["command"] == "sketch.create"
+                if item["command"] == "solid.box"
             )
-            extrusion = next(
-                item["params"] for item in part
-                if item["command"] == "solid.extrude"
-            )
-            self.assertEqual(sketch.get("offset", 0), 0.0)
-            self.assertEqual(extrusion["direction"], "positive")
-            self.assertEqual(extrusion["distance"], "cabinet_depth")
+            self.assertEqual(box["corner"][1], 0.0)
+            self.assertEqual(box["width"], "cabinet_depth")
 
         back = component_commands(cmd, BOARD_COMPONENTS["rear"])
-        back_sketch = next(
+        back_box = next(
             item["params"] for item in back
-            if item["command"] == "sketch.create"
+            if item["command"] == "solid.box"
         )
-        self.assertEqual(back_sketch["offset"], "cabinet_depth")
+        self.assertEqual(back_box["corner"][1], "cabinet_depth")
+        self.assertEqual(back_box["width"], "panel_wood_thickness")
 
         roof = component_commands(cmd, BOARD_COMPONENTS["roof"])
-        roof_sketch = next(
+        roof_box = next(
             item["params"] for item in roof
-            if item["command"] == "sketch.create"
+            if item["command"] == "solid.box"
         )
-        roof_extrusion = next(
-            item["params"] for item in roof
-            if item["command"] == "solid.extrude"
-        )
-        self.assertIn("roof_front_overhang", str(roof_sketch["offset"]))
+        self.assertIn("roof_front_overhang", str(roof_box["corner"][1]))
         for parameter in (
             "cabinet_depth",
             "panel_wood_thickness",
             "roof_front_overhang",
             "roof_rear_overhang",
         ):
-            self.assertIn(parameter, str(roof_extrusion["distance"]))
+            self.assertIn(parameter, str(roof_box["width"]))
 
         joints = [
             p for p in of(cmd, "joint.create")

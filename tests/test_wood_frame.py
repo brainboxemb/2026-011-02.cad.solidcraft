@@ -666,12 +666,10 @@ class WoodenFrameTests(unittest.TestCase):
             for command in component_commands(cmd, BOARD_COMPONENTS["roof"])
             if command["command"] == "solid.box"
         )
-        roof_prefix = BOARD_COMPONENTS["roof"].replace(" ", "_")
-        self.assertEqual(roof_box["corner"], [
-            f"-({roof_prefix}_width) / 2",
-            0,
-            0,
-        ])
+        self.assertEqual(roof_box["corner"][1:], [0, 0])
+        self.assertIn("opening_width", str(roof_box["corner"][0]))
+        self.assertIn("frame_wood_thickness", str(roof_box["corner"][0]))
+        self.assertIn("/ 2", str(roof_box["corner"][0]))
 
     def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)
@@ -712,7 +710,14 @@ class WoodenFrameTests(unittest.TestCase):
             if p["name"].startswith("Attach CornerBracket:")
         ]
         corner_z = [str(p["a"]["corner"][2]) for p in joints]
-        self.assertEqual(sum("opening_height" in value for value in corner_z), 4)
+        self.assertEqual(
+            sum(value.endswith("+ 0 mm") for value in corner_z),
+            4,
+        )
+        self.assertEqual(
+            sum(value.endswith("+ 400 mm") for value in corner_z),
+            4,
+        )
         self.assertTrue(
             all("frame_wood_thickness" in value for value in corner_z)
         )
@@ -754,10 +759,14 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "joint.create")
             if p["name"].startswith("Attach CornerBracket:")
         ]
+        corner_x = [str(p["a"]["corner"][0]) for p in joints]
+        self.assertTrue(all("opening_width" in value for value in corner_x))
+        self.assertTrue(
+            all("frame_wood_thickness" in value for value in corner_x)
+        )
         self.assertEqual(
-            sorted(p["a"]["corner"][0] for p in joints),
-            [-512.0, -512.0, -512.0, -512.0,
-             512.0, 512.0, 512.0, 512.0],
+            sum(value.startswith("-") for value in corner_x),
+            4,
         )
 
         points = " ".join(

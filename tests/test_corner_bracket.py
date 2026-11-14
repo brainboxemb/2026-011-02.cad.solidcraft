@@ -45,8 +45,8 @@ class CornerBracketTests(unittest.TestCase):
         self.assertEqual(
             set(names),
             {
-                "bracket_width",
-                "wall_thickness",
+                "arm_width",
+                "arm_height",
                 "horizontal_arm_length",
                 "vertical_arm_length",
                 "outer_corner_chamfer",

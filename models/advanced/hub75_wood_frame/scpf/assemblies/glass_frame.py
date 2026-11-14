@@ -16,45 +16,58 @@ class GlassFrame:
     def build(self):
         opening_bottom = self.opening_bottom_z
         opening_top = opening_bottom + self.opening_height
+        opening_center_z = opening_bottom + self.opening_height / 2
 
         bottom = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            _length_center=0,
-            _width_base=opening_bottom,
-            _finish=0,
-            _depth_sign=1,
+            material_name="PINE glazing horizontal",
+            color="#E3BF80",
+        )
+        bottom = bottom.move(
+            0,
+            0,
+            opening_bottom,
         )
 
         top = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            _length_center=0,
-            _width_base=-opening_top,
-            _finish=0,
-            _depth_sign=-1,
-        ).rotate(X, 180)
+            material_name="PINE glazing horizontal",
+            color="#E3BF80",
+        )
+        top = top.rotate(X, 180).move(
+            0,
+            self.glazing_wood_depth,
+            opening_top,
+        )
 
         left = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            _length_center=-(self.opening_height / 2) - opening_bottom,
-            _width_base=-(self.opening_width / 2),
-            _finish=1,
-            _depth_sign=1,
-        ).rotate(Y, 90)
+            material_name="PINE glazing vertical",
+            color="#A9793E",
+        )
+        left = left.rotate(Y, 90).move(
+            -(self.opening_width / 2),
+            0,
+            opening_center_z,
+        )
 
         right = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            _length_center=self.opening_height / 2 + opening_bottom,
-            _width_base=-(self.opening_width / 2),
-            _finish=1,
-            _depth_sign=1,
-        ).rotate(Y, -90)
+            material_name="PINE glazing vertical",
+            color="#A9793E",
+        )
+        right = right.rotate(Y, -90).move(
+            self.opening_width / 2,
+            0,
+            opening_center_z,
+        )
 
         return (bottom + top + left + right).group("WoodGlassFrame")

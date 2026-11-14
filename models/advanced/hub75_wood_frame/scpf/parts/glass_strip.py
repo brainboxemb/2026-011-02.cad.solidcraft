@@ -1,54 +1,42 @@
 """Mitred wooden glazing retainer."""
 
-from scpf import Direction, Polygon2D, Sketch, component, pv
+from scpf import Polygon2D, Sketch, component, pv
 
 
 @component
 class GlassStrip:
-    """One strip type for both horizontal and vertical retainers."""
+    """One neutral mitred glazing strip in local coordinates."""
 
     length = 844.0
     width = 12.0
     depth = 12.0
-    _length_center = 0.0
-    _width_base = 0.0
-    _finish = 0
-    _depth_sign = 1
+
+    # Build-only appearance details.
+    material_name = None
+    color = None
 
     def build(self):
         if not 0 < pv(self.width) < pv(self.length) / 2:
             raise ValueError("GlassStrip width must be less than half its length")
 
         half = self.length / 2
-        zero = self.length * 0
-        center = zero + self._length_center
-        outer = zero + self._width_base
-
-        start = center - half
-        end = center + half
+        start = -half
+        end = half
         inner_start = start + self.width
         inner_end = end - self.width
-        inner = outer + self.width
 
         with Sketch(name="Profile", plane="XZ") as sketch:
             Polygon2D([
-                (start, outer),
-                (end, outer),
-                (inner_end, inner),
-                (inner_start, inner),
+                (start, 0),
+                (end, 0),
+                (inner_end, self.width),
+                (inner_start, self.width),
             ], plane="XZ", world=True)
 
-        dark = pv(self._finish) >= 0.5
-        direction = (
-            Direction.NEGATIVE
-            if pv(self._depth_sign) < 0
-            else Direction.POSITIVE
-        )
         return sketch.extrude(
             self.depth,
-            direction=direction,
         ).with_material(
-            "PINE glazing vertical" if dark else "PINE glazing horizontal",
+            self.material_name or "PINE glazing",
             density_g_cm3=0.55,
-            color="#A9793E" if dark else "#E3BF80",
+            color=self.color or "#E3BF80",
         )

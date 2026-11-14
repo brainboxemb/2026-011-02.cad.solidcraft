@@ -694,7 +694,7 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(window_box["length"], GLASS_WIDTH)
         self.assertEqual(window_box["width"], GLASS_THICKNESS)
         self.assertEqual(window_box["height"], GLASS_HEIGHT)
-        self.assertEqual(window_box["corner"][1], "front_y")
+        self.assertEqual(window_box["corner"][1], "glazing_wood_depth")
         self.assertIn("opening_height", str(window_box["corner"][2]))
         self.assertIn("360", str(window_box["corner"][2]))
         self.assertFalse(

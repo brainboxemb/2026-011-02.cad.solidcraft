@@ -1,6 +1,6 @@
 """Four-piece mitred glazing-frame subassembly."""
 
-from scpf import X, Y, assembly
+from scpf import X, Y, assembly, half, midpoint
 
 from parts.glass_strip import GlassStrip
 
@@ -16,7 +16,7 @@ class GlassFrame:
     def build(self):
         opening_bottom = self.opening_bottom_z
         opening_top = opening_bottom + self.opening_height
-        opening_center_z = opening_bottom + self.opening_height / 2
+        opening_center_z = midpoint(opening_bottom, opening_top)
 
         bottom = GlassStrip(
             length=self.opening_width,
@@ -52,7 +52,7 @@ class GlassFrame:
             color="#A9793E",
         )
         left = left.rotate(Y, 90).move(
-            -(self.opening_width / 2),
+            -half(self.opening_width),
             0,
             opening_center_z,
         )
@@ -65,7 +65,7 @@ class GlassFrame:
             color="#A9793E",
         )
         right = right.rotate(Y, -90).move(
-            self.opening_width / 2,
+            half(self.opening_width),
             0,
             opening_center_z,
         )

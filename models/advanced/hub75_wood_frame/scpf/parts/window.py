@@ -1,6 +1,6 @@
 """Fixed-size plexiglass window, vertically centred in the opening."""
 
-from scpf import BOTTOM, FRONT, Box, component
+from scpf import BOTTOM, FRONT, Box, component, half
 
 
 GLASS_WIDTH = 840.0
@@ -19,7 +19,7 @@ class Window:
     def build(self):
         bottom = (
             self.opening_bottom_z
-            + (self.opening_height - GLASS_HEIGHT) / 2
+            + half(self.opening_height - GLASS_HEIGHT)
         )
 
         return Box(

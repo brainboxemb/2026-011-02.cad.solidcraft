@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import BOTTOM, LEFT, RIGHT, TOP, assembly
+from scpf import BOTTOM, LEFT, RIGHT, TOP, assembly, half
 
 from parts.board import Board
 
@@ -24,6 +24,9 @@ class WoodFrame:
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         opening_bottom = self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
+        side_center_x = half(
+            self.opening_width + self.frame_wood_thickness
+        )
 
         bottom = Board(
             name="bottom",
@@ -48,7 +51,7 @@ class WoodFrame:
             material_name="LIGHTPLY side board",
         )
         left = left.move(
-            -(self.opening_width / 2 + self.frame_wood_thickness / 2),
+            -side_center_x,
             0,
             opening_bottom,
         ).group("WoodBoxFrame")
@@ -61,7 +64,7 @@ class WoodFrame:
             material_name="LIGHTPLY side board",
         )
         right = right.move(
-            self.opening_width / 2 + self.frame_wood_thickness / 2,
+            side_center_x,
             0,
             opening_bottom,
         ).group("WoodBoxFrame")

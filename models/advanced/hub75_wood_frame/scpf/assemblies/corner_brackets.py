@@ -1,6 +1,6 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, AnchorFrame, assembly
+from scpf import Anchor, AnchorFrame, assembly, half
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -105,7 +105,7 @@ class CornerBrackets:
 
         # CornerBracket.arm_width is passed from self.bracket_width above.
         # Keep the joint on the broad bracket face rather than its Y=0 centre.
-        gap = -(self.bracket_width / 2)
+        gap = -half(self.bracket_width)
 
         top_left_front = bracket.copy().attach(
             left,

@@ -1,6 +1,6 @@
 """Mitred wooden glazing retainer."""
 
-from scpf import Polygon2D, Sketch, component, pv
+from scpf import Polygon2D, Sketch, component, half, pv
 
 
 @component
@@ -16,12 +16,12 @@ class GlassStrip:
     color = None
 
     def build(self):
-        if not 0 < pv(self.width) < pv(self.length) / 2:
+        if not 0 < pv(self.width) < half(pv(self.length)):
             raise ValueError("GlassStrip width must be less than half its length")
 
-        half = self.length / 2
-        start = -half
-        end = half
+        half_length = half(self.length)
+        start = -half_length
+        end = half_length
         inner_start = start + self.width
         inner_end = end - self.width
 

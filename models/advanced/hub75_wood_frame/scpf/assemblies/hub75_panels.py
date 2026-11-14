@@ -1,6 +1,6 @@
 """Five-panel HUB75 subassembly."""
 
-from scpf import assembly
+from scpf import assembly, half
 
 from models.components.hub75_panel.basic.scpf.model import (
     HUB75_PANEL_DEPTH,
@@ -21,10 +21,10 @@ class HUB75Panels:
     panel_recess_depth = 25.0
 
     def build(self):
-        panel_y = self.panel_recess_depth + HUB75_PANEL_DEPTH / 2
+        panel_y = self.panel_recess_depth + half(HUB75_PANEL_DEPTH)
         panel_z = (
             self.opening_bottom_z
-            + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
+            + half(self.opening_height - HUB75_PANEL_HEIGHT)
         )
         middle = Hub75PanelBasic(
             _y_center=panel_y,

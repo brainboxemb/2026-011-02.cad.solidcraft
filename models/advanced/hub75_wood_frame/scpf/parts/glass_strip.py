@@ -1,6 +1,6 @@
 """Mitred wooden glazing retainer."""
 
-from scpf import Direction, Polygon2D, component, pv
+from scpf import Direction, Polygon2D, Sketch, component, pv
 
 
 @component
@@ -30,12 +30,13 @@ class GlassStrip:
         inner_end = end - self.width
         inner = outer + self.width
 
-        profile = Polygon2D([
-            (start, outer),
-            (end, outer),
-            (inner_end, inner),
-            (inner_start, inner),
-        ], plane="XZ", world=True)
+        with Sketch(name="Profile", plane="XZ") as sketch:
+            Polygon2D([
+                (start, outer),
+                (end, outer),
+                (inner_end, inner),
+                (inner_start, inner),
+            ], plane="XZ", world=True)
 
         dark = pv(self.finish) >= 0.5
         direction = (
@@ -43,7 +44,7 @@ class GlassStrip:
             if pv(self.depth_sign) < 0
             else Direction.POSITIVE
         )
-        return profile.extrude(
+        return sketch.extrude(
             self.depth,
             direction=direction,
         ).with_material(

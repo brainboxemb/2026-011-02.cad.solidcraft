@@ -4,7 +4,7 @@ No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The dimensions are fixed
 product constants; depth and vertical placement may be linked to parent parameters.
 """
-from scpf import Direction, Polygon2D, Sketch, component
+from scpf import Direction, Polygon2D, Sketch, component, half
 
 
 HUB75_PANEL_WIDTH = 159.70
@@ -18,7 +18,7 @@ class Hub75PanelBasic:
     _z_position = 0.0
 
     def build(self):
-        half_width = HUB75_PANEL_WIDTH / 2
+        half_width = half(HUB75_PANEL_WIDTH)
         bottom = self._z_position
         top = bottom + HUB75_PANEL_HEIGHT
 

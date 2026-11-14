@@ -14,6 +14,8 @@ SCPF creates all native copies before asking SolidCraft to place them.
 Rotations and positions are applied with SolidCraft's native commands, not
 custom matrix arithmetic.
 """
+from scpf import half
+
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 
 # This model represents one fixed five-panel 160 x 320 mm nominal grid.
@@ -32,7 +34,7 @@ class BasicHub75Screen:
         central = Hub75Panel().rotate(
             axis=(1, 0, 0),
             degrees=90,
-        ).move(z=NOMINAL_HEIGHT / 2)
+        ).move(z=half(NOMINAL_HEIGHT))
         screen = central
 
         for index in (0, 1, 3, 4):

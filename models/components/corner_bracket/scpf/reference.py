@@ -63,15 +63,15 @@ class CornerBracket:
         )
 
         # Bevel only the outside perimeter on both broad print faces.
-        y0 = self.arm_width / 2
+        y0 = half(self.arm_width)
         outer_edges = [
-            (h, (ef + w - end) / 2),
-            (h - end / 2, w - end / 2),
-            ((h - end - w + outer) / 2, w),
-            (-w + outer / 2, w - outer / 2),
-            (-w, (w - outer - v + end) / 2),
-            (-w + end / 2, -v + end / 2),
-            ((-w + end - ef) / 2, -v),
+            (h, half(ef + w - end)),
+            (h - half(end), w - half(end)),
+            (half(h - end - w + outer), w),
+            (-w + half(outer), w - half(outer)),
+            (-w, half(w - outer - v + end)),
+            (-w + half(end), -v + half(end)),
+            (half(-w + end - ef), -v),
         ]
         body = body.chamfer(
             self.side_edge_chamfer,
@@ -87,8 +87,8 @@ class CornerBracket:
         body = body.chamfer(
             self.elephant_foot_relief,
             edges=[
-                (h / 2, -y0, 0),
-                (h / 2, y0, 0),
+                (half(h), -y0, 0),
+                (half(h), y0, 0),
             ],
         )
 

@@ -14,7 +14,7 @@ class PlasticEnclosurePi:
 
         # The video rounds one upper rim edge, R1.
         enclosure = enclosure.fillet(
-            1.0, edges=[(0, depth / 2, self.height)]
+            1.0, edges=[(0, half(depth), self.height)]
         )
 
         # Board mounting holes: one corner 3.5 mm in from board edges,
@@ -35,7 +35,7 @@ class PlasticEnclosurePi:
         # extrusion points into the case from the front face.
         with Sketch(
             name="Pi ports", on=enclosure, plane="XZ",
-            origin=(0, -(depth / 2), 0),
+            origin=(0, -(half(depth)), 0),
         ) as ports:
             for x, half_width in ((-31.3, 5.0), (-16.5, 4.0), (-3.0, 4.0)):
                 ports.add(
@@ -50,7 +50,7 @@ class PlasticEnclosurePi:
         # Local YZ coordinates are (world Y, world Z).
         with Sketch(
             name="USB and Ethernet", on=enclosure, plane="YZ",
-            origin=(width / 2, 0, 0),
+            origin=(half(width), 0, 0),
         ) as end_ports:
             end_ports.add(Rectangle2D(50.0, 14.0), offset=(-25.0, 8.0))
         enclosure = enclosure - end_ports.extrude(

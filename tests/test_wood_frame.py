@@ -681,10 +681,13 @@ class WoodenFrameTests(unittest.TestCase):
 
         roof_joint = next(
             p for p in of(cmd, "joint.create")
-            if p["name"] == "Attach Board 3:1 to Board:1"
+            if p["name"] == "Attach Board 3:1 to Board 2:1"
         )
-        self.assertEqual(roof_joint["offset"], "roof_front_overhang")
-        self.assertEqual(roof_joint["a"]["corner"][2], 412.0)
+        self.assertEqual(roof_joint["offset"], "opening_height")
+        self.assertEqual(roof_joint["a"]["face"][2], 12.0)
+        self.assertIn("panel_wood_thickness", str(roof_joint["values"][1]))
+        self.assertIn("roof_rear_overhang", str(roof_joint["values"][1]))
+        self.assertIn("roof_front_overhang", str(roof_joint["values"][1]))
 
     def test_window_size_is_fixed_but_position_stays_centred(self):
         cmd = commands(opening_height=400)

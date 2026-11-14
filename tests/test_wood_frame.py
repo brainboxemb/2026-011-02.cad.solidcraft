@@ -7,6 +7,11 @@ import unittest
 import warnings
 
 from scpf.runner import ModelParameterWarning, run_script
+from models.advanced.hub75_wood_frame.scpf.parts.window import (
+    GLASS_HEIGHT,
+    GLASS_THICKNESS,
+    GLASS_WIDTH,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -681,14 +686,20 @@ class WoodenFrameTests(unittest.TestCase):
             and cmd[i]["params"]["component"] == "root"
         )
         window_commands = cmd[create_index:activate_index]
-        points = " ".join(
-            str(command["params"]["points"])
-            for command in window_commands
-            if command["command"] == "sketch.line"
+        window_box = next(
+            command["params"] for command in window_commands
+            if command["command"] == "solid.box"
         )
 
-        self.assertIn("opening_height", points)
-        self.assertIn("360 mm", points)
+        self.assertEqual(window_box["length"], GLASS_WIDTH)
+        self.assertEqual(window_box["width"], GLASS_THICKNESS)
+        self.assertEqual(window_box["height"], GLASS_HEIGHT)
+        self.assertEqual(window_box["corner"][1], "front_y")
+        self.assertIn("opening_height", str(window_box["corner"][2]))
+        self.assertIn("360", str(window_box["corner"][2]))
+        self.assertFalse(
+            any(command["command"].startswith("sketch.") for command in window_commands)
+        )
 
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)

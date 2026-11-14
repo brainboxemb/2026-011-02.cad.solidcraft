@@ -4,7 +4,7 @@ repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.forge.git
-    version: 25899ba075c7ffb612eac354cad9fb9846a592ba
+    version: e37aefdf36ee2e1486f885703e498a6c34ec88fc
   scpc:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git

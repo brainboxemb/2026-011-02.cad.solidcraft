@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / plate</div>
 <h1>Plate</h1><p>A rounded plate with four holes</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">12 commands</span><span class="badge">100 × 60 × 10 mm; four Ø8 mm holes</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">9 commands</span><span class="badge">100 × 60 × 10 mm; four Ø8 mm holes</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>A feature-based plate: sketch, extrusion, four vertical fillets and a through-hole sketch.</p></section>
@@ -50,12 +50,14 @@ script = Script()
 for name, value in ((&quot;length&quot;, 100), (&quot;width&quot;, 60), (&quot;thickness&quot;, 10)):
     script.add(&quot;parameters.add&quot;, name=name, expression=str(value), unit=&quot;mm&quot;)
 
-script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Plate footprint&quot;)
-script.add(&quot;sketch.rectangle.two_point&quot;,
-           p0=[&quot;-length / 2&quot;, &quot;-width / 2&quot;],
-           p1=[&quot;length / 2&quot;, &quot;width / 2&quot;])
-script.add(&quot;sketch.finish&quot;)
-script.add(&quot;solid.extrude&quot;, distance=&quot;thickness&quot;, body_name=&quot;Plate&quot;)
+script.add(
+    &quot;solid.box&quot;,
+    length=&quot;length&quot;,
+    width=&quot;width&quot;,
+    height=&quot;thickness&quot;,
+    corner=[&quot;-length / 2&quot;, &quot;-width / 2&quot;, 0],
+    body_name=&quot;Plate&quot;,
+)
 script.add(&quot;solid.fillet&quot;, body=&quot;Plate&quot;, radius=2,
            edges=[[-50, -30, 5], [50, -30, 5],
                   [50, 30, 5], [-50, 30, 5]])
@@ -88,34 +90,17 @@ for x, y in ((-35, -15), (35, -15), (35, 15), (-35, 15)):
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Plate footprint, plane: XY</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
+<li><strong>Box primitive</strong><small>solid.box · body_name: Plate</small><pre><code>{
+  &quot;command&quot;: &quot;solid.box&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;Plate footprint&quot;
-  }
-}</code></pre></li>
-<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
-  &quot;params&quot;: {
-    &quot;p0&quot;: [
+    &quot;length&quot;: &quot;length&quot;,
+    &quot;width&quot;: &quot;width&quot;,
+    &quot;height&quot;: &quot;thickness&quot;,
+    &quot;corner&quot;: [
       &quot;-length / 2&quot;,
-      &quot;-width / 2&quot;
+      &quot;-width / 2&quot;,
+      0
     ],
-    &quot;p1&quot;: [
-      &quot;length / 2&quot;,
-      &quot;width / 2&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: Plate</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;thickness&quot;,
     &quot;body_name&quot;: &quot;Plate&quot;
   }
 }</code></pre></li>

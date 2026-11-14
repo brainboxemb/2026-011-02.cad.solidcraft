@@ -33,33 +33,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XY",
-        "name": "PlasticEnclosurePi footprint"
-      }
-    },
-    {
-      "command": "sketch.rectangle.two_point",
-      "params": {
-        "p0": [
+        "length": "board_w + 10 mm",
+        "width": "board_d + 10 mm",
+        "height": "height",
+        "corner": [
           "-(board_w + 10 mm) / 2",
-          "-(board_d + 10 mm) / 2"
+          "-(board_d + 10 mm) / 2",
+          0
         ],
-        "p1": [
-          "(board_w + 10 mm) / 2",
-          "(board_d + 10 mm) / 2"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "height",
         "body_name": "PlasticEnclosurePi"
       }
     },

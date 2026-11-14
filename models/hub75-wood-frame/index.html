@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">150 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">157 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -159,6 +159,14 @@ class WoodenHub75Box:
     &quot;grounded&quot;: false
   }
 }</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_recess_depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;panel_recess_depth&quot;,
+    &quot;expression&quot;: &quot;25&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: frame_wood_thickness</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
@@ -172,14 +180,6 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;name&quot;: &quot;opening_height&quot;,
     &quot;expression&quot;: &quot;362&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_recess_depth</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;panel_recess_depth&quot;,
-    &quot;expression&quot;: &quot;25&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -332,19 +332,19 @@ class WoodenHub75Box:
     ]
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_width</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;opening_width&quot;,
-    &quot;expression&quot;: &quot;844&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: cabinet_depth</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;cabinet_depth&quot;,
     &quot;expression&quot;: &quot;100&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;opening_width&quot;,
+    &quot;expression&quot;: &quot;844&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -610,14 +610,6 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: roof_front_overhang</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;roof_front_overhang&quot;,
-    &quot;expression&quot;: &quot;10&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_wood_thickness</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
@@ -631,6 +623,14 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;name&quot;: &quot;roof_rear_overhang&quot;,
     &quot;expression&quot;: &quot;1&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: roof_front_overhang</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;roof_front_overhang&quot;,
+    &quot;expression&quot;: &quot;10&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -823,6 +823,62 @@ class WoodenHub75Box:
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_horizontal_arm_length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_horizontal_arm_length&quot;,
+    &quot;expression&quot;: &quot;60&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_arm_height</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_arm_height&quot;,
+    &quot;expression&quot;: &quot;12&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_arm_end_chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_arm_end_chamfer&quot;,
+    &quot;expression&quot;: &quot;3&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_outer_corner_chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_outer_corner_chamfer&quot;,
+    &quot;expression&quot;: &quot;6&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_vertical_arm_length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_vertical_arm_length&quot;,
+    &quot;expression&quot;: &quot;60&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_elephant_foot_relief</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;expression&quot;: &quot;0.6&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_side_edge_chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
+    &quot;expression&quot;: &quot;2&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: CornerBracket</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -847,36 +903,36 @@ class WoodenHub75Box:
         0
       ],
       [
-        60.0,
+        &quot;CornerBracket_horizontal_arm_length&quot;,
         0
       ],
       [
-        60.0,
-        -9.0
+        &quot;CornerBracket_horizontal_arm_length&quot;,
+        &quot;-(CornerBracket_arm_height - (CornerBracket_arm_end_chamfer))&quot;
       ],
       [
-        57.0,
-        -12.0
+        &quot;CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)&quot;,
+        &quot;-(CornerBracket_arm_height)&quot;
       ],
       [
-        -6.0,
-        -12.0
+        &quot;(-(CornerBracket_arm_height)) + (CornerBracket_outer_corner_chamfer)&quot;,
+        &quot;-(CornerBracket_arm_height)&quot;
       ],
       [
-        -12.0,
-        -6.0
+        &quot;-(CornerBracket_arm_height)&quot;,
+        &quot;-(CornerBracket_arm_height - (CornerBracket_outer_corner_chamfer))&quot;
       ],
       [
-        -12.0,
-        57.0
+        &quot;-(CornerBracket_arm_height)&quot;,
+        &quot;-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))&quot;
       ],
       [
-        -9.0,
-        60.0
+        &quot;(-(CornerBracket_arm_height)) + (CornerBracket_arm_end_chamfer)&quot;,
+        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
       ],
       [
         0,
-        60.0
+        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
       ]
     ],
     &quot;closed&quot;: true,
@@ -934,7 +990,7 @@ class WoodenHub75Box:
         -60.0
       ]
     ],
-    &quot;distance&quot;: 0.6,
+    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1013,7 +1069,7 @@ class WoodenHub75Box:
         -60.0
       ]
     ],
-    &quot;distance&quot;: 2.0,
+    &quot;distance&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1032,7 +1088,7 @@ class WoodenHub75Box:
         -0.0
       ]
     ],
-    &quot;distance&quot;: 0.6,
+    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>

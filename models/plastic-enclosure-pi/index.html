@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / plastic-enclosure-pi</div>
 <h1>Plastic Enclosure Pi</h1><p>Raspberry Pi 4 case with connectors, vents and engraving</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">39 commands</span><span class="badge">95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">36 commands</span><span class="badge">95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Reconstructs the Raspberry Pi 4 video using a rounded open-top shell, mounting bosses, connector cuts, floor vents, Pi 4 lettering and PETG material.</p></section>
@@ -148,34 +148,17 @@
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: PlasticEnclosurePi footprint, plane: XY</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
+<li><strong>Box primitive</strong><small>solid.box · body_name: PlasticEnclosurePi</small><pre><code>{
+  &quot;command&quot;: &quot;solid.box&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;PlasticEnclosurePi footprint&quot;
-  }
-}</code></pre></li>
-<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
-  &quot;params&quot;: {
-    &quot;p0&quot;: [
+    &quot;length&quot;: &quot;board_w + 10 mm&quot;,
+    &quot;width&quot;: &quot;board_d + 10 mm&quot;,
+    &quot;height&quot;: &quot;height&quot;,
+    &quot;corner&quot;: [
       &quot;-(board_w + 10 mm) / 2&quot;,
-      &quot;-(board_d + 10 mm) / 2&quot;
+      &quot;-(board_d + 10 mm) / 2&quot;,
+      0
     ],
-    &quot;p1&quot;: [
-      &quot;(board_w + 10 mm) / 2&quot;,
-      &quot;(board_d + 10 mm) / 2&quot;
-    ]
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · body_name: PlasticEnclosurePi</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: &quot;height&quot;,
     &quot;body_name&quot;: &quot;PlasticEnclosurePi&quot;
   }
 }</code></pre></li>

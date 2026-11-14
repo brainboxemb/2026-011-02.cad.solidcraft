@@ -129,37 +129,38 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.cylinder",
       "params": {
-        "plane": "XY",
-        "name": "Boss",
-        "offset": "thickness"
-      }
-    },
-    {
-      "command": "sketch.circle.center",
-      "params": {
-        "center": [
+        "height": 14,
+        "diameter": 24,
+        "base": [
           40.0,
-          25.0
+          25.0,
+          8.0
         ],
-        "diameter": 24
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": 14,
-        "direction": "positive",
+        "axis": "Z",
         "operation": "join",
         "targets": [
           "SamplePlate"
         ],
-        "name": "Boss"
+        "references": [
+          {
+            "edge": [
+              0.0,
+              25.0,
+              8.0
+            ],
+            "distance": "(width / 2)"
+          },
+          {
+            "edge": [
+              40.0,
+              0.0,
+              8.0
+            ],
+            "distance": "(depth / 2)"
+          }
+        ]
       }
     },
     {

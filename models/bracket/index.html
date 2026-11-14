@@ -28,13 +28,14 @@
     thickness = 6
 
     def build(self):
-        profile = Polygon2D(
-            [(0, 0), (40, 0), (40, self.thickness),
-             (self.thickness, self.thickness),
-             (self.thickness, 30), (0, 30)],
-            plane=&quot;XZ&quot;,
-        )
-        body = profile.extrude(self.width, direction=Direction.NEGATIVE)
+        with Sketch(name=&quot;Profile&quot;, plane=&quot;XZ&quot;) as sketch:
+            Polygon2D(
+                [(0, 0), (40, 0), (40, self.thickness),
+                 (self.thickness, self.thickness),
+                 (self.thickness, 30), (0, 30)],
+                plane=&quot;XZ&quot;,
+            )
+        body = sketch.extrude(self.width, direction=Direction.NEGATIVE)
         body = body.fillet(2, edges=[(40, -self.width / 2, -self.thickness)])
 
         for y in (-15, -45):

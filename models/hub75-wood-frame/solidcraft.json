@@ -35,6 +35,14 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "panel_recess_depth",
+        "expression": "25",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "frame_wood_thickness",
         "expression": "12",
         "unit": "mm"
@@ -45,14 +53,6 @@
       "params": {
         "name": "opening_height",
         "expression": "362",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "panel_recess_depth",
-        "expression": "25",
         "unit": "mm"
       }
     },
@@ -208,16 +208,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "opening_width",
-        "expression": "844",
+        "name": "cabinet_depth",
+        "expression": "100",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "cabinet_depth",
-        "expression": "100",
+        "name": "opening_width",
+        "expression": "844",
         "unit": "mm"
       }
     },
@@ -486,14 +486,6 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "roof_front_overhang",
-        "expression": "10",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "panel_wood_thickness",
         "expression": "9",
         "unit": "mm"
@@ -504,6 +496,14 @@
       "params": {
         "name": "roof_rear_overhang",
         "expression": "1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "roof_front_overhang",
+        "expression": "10",
         "unit": "mm"
       }
     },
@@ -697,6 +697,62 @@
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_horizontal_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_arm_height",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_arm_end_chamfer",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_outer_corner_chamfer",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_vertical_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_elephant_foot_relief",
+        "expression": "0.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "CornerBracket_side_edge_chamfer",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "component.create",
       "params": {
         "name": "CornerBracket",
@@ -720,36 +776,36 @@
             0
           ],
           [
-            60.0,
+            "CornerBracket_horizontal_arm_length",
             0
           ],
           [
-            60.0,
-            -9.0
+            "CornerBracket_horizontal_arm_length",
+            "-(CornerBracket_arm_height - (CornerBracket_arm_end_chamfer))"
           ],
           [
-            57.0,
-            -12.0
+            "CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)",
+            "-(CornerBracket_arm_height)"
           ],
           [
-            -6.0,
-            -12.0
+            "(-(CornerBracket_arm_height)) + (CornerBracket_outer_corner_chamfer)",
+            "-(CornerBracket_arm_height)"
           ],
           [
-            -12.0,
-            -6.0
+            "-(CornerBracket_arm_height)",
+            "-(CornerBracket_arm_height - (CornerBracket_outer_corner_chamfer))"
           ],
           [
-            -12.0,
-            57.0
+            "-(CornerBracket_arm_height)",
+            "-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))"
           ],
           [
-            -9.0,
-            60.0
+            "(-(CornerBracket_arm_height)) + (CornerBracket_arm_end_chamfer)",
+            "-(-(CornerBracket_vertical_arm_length))"
           ],
           [
             0,
-            60.0
+            "-(-(CornerBracket_vertical_arm_length))"
           ]
         ],
         "closed": true,
@@ -807,7 +863,7 @@
             -60.0
           ]
         ],
-        "distance": 0.6,
+        "distance": "CornerBracket_elephant_foot_relief",
         "body": "CornerBracket"
       }
     },
@@ -886,7 +942,7 @@
             -60.0
           ]
         ],
-        "distance": 2.0,
+        "distance": "CornerBracket_side_edge_chamfer",
         "body": "CornerBracket"
       }
     },
@@ -905,7 +961,7 @@
             -0.0
           ]
         ],
-        "distance": 0.6,
+        "distance": "CornerBracket_elephant_foot_relief",
         "body": "CornerBracket"
       }
     },

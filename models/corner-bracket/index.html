@@ -31,7 +31,7 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 &quot;&quot;&quot;
-from scpf import Polygon2D, Direction, Edges, component
+from scpf import Polygon2D, Direction, Edges, Sketch, component
 
 
 @component
@@ -85,13 +85,14 @@ class CornerBracket:
             (&quot;v_tip&quot;, (0, -v)),
         ]
 
-        profile = Polygon2D(
-            points,
-            plane=&quot;XZ&quot;,
-            world=True,
-        )
+        with Sketch(name=&quot;Profile&quot;, plane=&quot;XZ&quot;) as sketch:
+            Polygon2D(
+                points,
+                plane=&quot;XZ&quot;,
+                world=True,
+            )
 
-        body = profile.extrude(
+        body = sketch.extrude(
             self.arm_width,
             direction=Direction.SYMMETRIC,
         )

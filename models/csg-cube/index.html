@@ -28,8 +28,21 @@
 
     def build(self):
         body = Sphere(self.size / 1.5) &amp; Box(self.size, self.size, self.size)
-        holes = Cylinder(d=self.size / 1.5, h=self.size).orient(X, Y, Z)
-        return body - holes
+
+        half = self.size / 2
+        diameter = self.size / 1.5
+
+        hole_x = Cylinder(d=diameter, h=self.size, axis=Axis.X).at(
+            -half, 0, 0
+        )
+        hole_y = Cylinder(d=diameter, h=self.size, axis=Axis.Y).at(
+            0, -half, 0
+        )
+        hole_z = Cylinder(d=diameter, h=self.size, axis=Axis.Z).at(
+            0, 0, -half
+        )
+
+        return body - (hole_x + hole_y + hole_z)
 </code></pre>
 
 <h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: size</small><pre><code>{
@@ -76,7 +89,7 @@
     &quot;height&quot;: &quot;size&quot;,
     &quot;diameter&quot;: &quot;size / 1.5&quot;,
     &quot;base&quot;: [
-      &quot;-(size) / 2&quot;,
+      &quot;-(size / 2)&quot;,
       0,
       0
     ],
@@ -94,7 +107,7 @@
     &quot;diameter&quot;: &quot;size / 1.5&quot;,
     &quot;base&quot;: [
       0,
-      &quot;-(size) / 2&quot;,
+      &quot;-(size / 2)&quot;,
       0
     ],
     &quot;axis&quot;: &quot;Y&quot;,
@@ -112,7 +125,7 @@
     &quot;base&quot;: [
       0,
       0,
-      &quot;-(size) / 2&quot;
+      &quot;-(size / 2)&quot;
     ],
     &quot;axis&quot;: &quot;Z&quot;,
     &quot;operation&quot;: &quot;cut&quot;,

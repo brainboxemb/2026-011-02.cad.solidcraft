@@ -18,6 +18,10 @@ class WoodFrame:
 
     def build(self):
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
+        side_center_x = (
+            self.opening_width / 2
+            + self.frame_wood_thickness / 2
+        )
         roof_depth = (
             self.roof_front_overhang
             + self.cabinet_depth
@@ -50,8 +54,9 @@ class WoodFrame:
         )
         left = left.attach(
             bottom,
-            parent=FRONT + TOP + LEFT,
-            child=FRONT + BOTTOM + LEFT,
+            parent=TOP,
+            child=BOTTOM,
+            offset=(-side_center_x, 0),
         )
         left = left.group("WoodBoxFrame")
 
@@ -64,8 +69,9 @@ class WoodFrame:
         )
         right = right.attach(
             bottom,
-            parent=FRONT + TOP + RIGHT,
-            child=FRONT + BOTTOM + RIGHT,
+            parent=TOP,
+            child=BOTTOM,
+            offset=(side_center_x, 0),
         )
         right = right.group("WoodBoxFrame")
 
@@ -97,8 +103,9 @@ class WoodFrame:
         )
         rear = rear.attach(
             bottom,
-            parent=BACK + BOTTOM + LEFT,
-            child=FRONT + BOTTOM + LEFT,
+            parent=BACK,
+            child=FRONT,
+            offset=(0, self.opening_height / 2),
         )
         rear = rear.group("WoodBoxFrame")
 

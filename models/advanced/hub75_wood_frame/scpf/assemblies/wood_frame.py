@@ -30,7 +30,7 @@ class WoodFrame:
             width=outer_width,
             depth=self.cabinet_depth,
             height=self.frame_wood_thickness,
-            y_position=0.0,
+            _y_position=0.0,
             corner_radius=self.corner_radius,
             fillet="bottom",
             material_name="LIGHTPLY bottom",
@@ -41,12 +41,12 @@ class WoodFrame:
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
-            x_position=-(
+            _x_position=-(
                 self.opening_width / 2
                 + self.frame_wood_thickness / 2
             ),
-            y_position=0.0,
-            z_position=opening_bottom,
+            _y_position=0.0,
+            _z_position=opening_bottom,
             material_name="LIGHTPLY side board",
         ).attach(
             bottom,
@@ -58,12 +58,12 @@ class WoodFrame:
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
-            x_position=(
+            _x_position=(
                 self.opening_width / 2
                 + self.frame_wood_thickness / 2
             ),
-            y_position=0.0,
-            z_position=opening_bottom,
+            _y_position=0.0,
+            _z_position=opening_bottom,
             material_name="LIGHTPLY side board",
         ).attach(
             bottom,
@@ -76,8 +76,8 @@ class WoodFrame:
             width=outer_width,
             depth=roof_rear - roof_front,
             height=self.frame_wood_thickness,
-            y_position=roof_front,
-            z_position=opening_top,
+            _y_position=roof_front,
+            _z_position=opening_top,
             corner_radius=self.corner_radius,
             fillet="top",
             material_name="LIGHTPLY roof",
@@ -88,7 +88,7 @@ class WoodFrame:
             width=outer_width,
             depth=self.panel_wood_thickness,
             height=opening_top,
-            y_position=rear_y,
+            _y_position=rear_y,
             material_name="LIGHTPLY rear",
             color="#A87D4D",
         ).group("WoodBoxFrame")

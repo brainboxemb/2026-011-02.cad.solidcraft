@@ -27,8 +27,8 @@ class HUB75Panels:
             + (self.opening_height - HUB75_PANEL_HEIGHT) / 2
         )
         middle = Hub75PanelBasic(
-            y_center=panel_y,
-            z_position=panel_z,
+            _y_center=panel_y,
+            _z_position=panel_z,
         )
         panels = middle
 

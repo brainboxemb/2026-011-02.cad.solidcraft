@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import assembly
+from scpf import BOTTOM, LEFT, RIGHT, TOP, assembly
 
 from parts.board import Board
 
@@ -32,7 +32,7 @@ class WoodFrame:
             height=self.frame_wood_thickness,
             _y_position=0.0,
             corner_radius=self.corner_radius,
-            fillet="bottom",
+            fillet=(BOTTOM + LEFT, BOTTOM + RIGHT),
             material_name="LIGHTPLY bottom",
         ).group("WoodBoxFrame")
 
@@ -79,7 +79,7 @@ class WoodFrame:
             _y_position=roof_front,
             _z_position=opening_top,
             corner_radius=self.corner_radius,
-            fillet="top",
+            fillet=(TOP + LEFT, TOP + RIGHT),
             material_name="LIGHTPLY roof",
         ).group("WoodBoxFrame")
 

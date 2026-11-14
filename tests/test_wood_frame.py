@@ -606,11 +606,11 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("front_mount" in str(p["b"]) for p in joints),
+            sum(p["b"].get("z") == [0, 1, 0] for p in joints),
             4,
         )
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(p["b"].get("z") == [0, -1, 0] for p in joints),
             4,
         )
         self.assertEqual(
@@ -775,7 +775,7 @@ class WoodenFrameTests(unittest.TestCase):
         ]
         self.assertEqual(len(joints), 8)
         self.assertEqual(
-            sum("rear_mount" in str(p["b"]) for p in joints),
+            sum(p["b"].get("z") == [0, -1, 0] for p in joints),
             4,
         )
         self.assertTrue(

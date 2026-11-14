@@ -205,12 +205,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))"
         ]
       }
     },
@@ -218,12 +218,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
         ]
       }
     },
@@ -231,12 +231,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
         ]
       }
     },
@@ -244,12 +244,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)"
         ],
         "p1": [
-          "((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
-          "((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
+          "(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))",
+          "(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))"
         ]
       }
     },

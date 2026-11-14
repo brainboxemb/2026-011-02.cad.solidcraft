@@ -39,6 +39,8 @@ SCPF creates all native copies before asking SolidCraft to place them.
 Rotations and positions are applied with SolidCraft&#x27;s native commands, not
 custom matrix arithmetic.
 &quot;&quot;&quot;
+from scpf import half
+
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 
 # This model represents one fixed five-panel 160 x 320 mm nominal grid.
@@ -57,7 +59,7 @@ class BasicHub75Screen:
         central = Hub75Panel().rotate(
             axis=(1, 0, 0),
             degrees=90,
-        ).move(z=NOMINAL_HEIGHT / 2)
+        ).move(z=half(NOMINAL_HEIGHT))
         screen = central
 
         for index in (0, 1, 3, 4):
@@ -83,7 +85,7 @@ four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
 bay edges, tubes, PCB and connectors still need distinct features.
 &quot;&quot;&quot;
-from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component, half
 
 
 @component
@@ -123,11 +125,11 @@ class Hub75Panel:
         # Y=-H/4, Y=0 and Y=+H/4 in portrait orientation.
         side = self.rear_side_rail * (159.70 / 160.0)
         end = self.rear_end_rail * (319.71 / 320.0)
-        rib_half = self.rear_crossbar * (319.71 / 320.0) / 2
-        half_height = self.height / 2
+        rib_half = half(self.rear_crossbar * (319.71 / 320.0))
+        half_height = half(self.height)
         quarter_height = self.height / 4
         opening_width = self.width - 2 * side
-        left = -self.width / 2 + side
+        left = -half(self.width) + side
         bay_ranges = (
             (-half_height + end, -quarter_height - rib_half),
             (-quarter_height + rib_half, -rib_half),
@@ -385,12 +387,12 @@ class Hub75Panel:
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094) + ((-(Hub75Panel_height / 4)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 2)) + (Hub75Panel_rear_end_rail * 0.999094))&quot;
     ]
   }
 }</code></pre></li>
@@ -398,12 +400,12 @@ class Hub75Panel:
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + (-((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((-(Hub75Panel_height / 4)) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
     ]
   }
 }</code></pre></li>
@@ -411,12 +413,12 @@ class Hub75Panel:
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 4) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)) - ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -424,12 +426,12 @@ class Hub75Panel:
   &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
   &quot;params&quot;: {
     &quot;p0&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125)&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2)&quot;
     ],
     &quot;p1&quot;: [
-      &quot;((-(Hub75Panel_width)) / 2) + (Hub75Panel_width / 2) + ((-(Hub75Panel_width)) / 2) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
-      &quot;((-(Hub75Panel_height)) / 2) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
+      &quot;(-(Hub75Panel_width / 2)) + (Hub75Panel_width / 2) + (-(Hub75Panel_width / 2)) + (Hub75Panel_rear_side_rail * 0.998125) + (Hub75Panel_width - ((Hub75Panel_rear_side_rail * 0.998125) * 2))&quot;,
+      &quot;(-(Hub75Panel_height / 2)) + (Hub75Panel_height / 2) + (Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2) + ((Hub75Panel_height / 2) - (Hub75Panel_rear_end_rail * 0.999094)) - ((Hub75Panel_height / 4) + ((Hub75Panel_rear_crossbar * 0.999094) / 2))&quot;
     ]
   }
 }</code></pre></li>

@@ -13,7 +13,7 @@
       "params": {
         "name": "WoodBoxFrame",
         "activate": false,
-        "grounded": false
+        "grounded": true
       }
     },
     {
@@ -21,7 +21,7 @@
       "params": {
         "name": "CornerBrackets",
         "activate": false,
-        "grounded": false
+        "grounded": true
       }
     },
     {
@@ -29,7 +29,7 @@
       "params": {
         "name": "WoodGlassFrame",
         "activate": false,
-        "grounded": false
+        "grounded": true
       }
     },
     {
@@ -214,14 +214,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "opening_width",
-        "expression": "844",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "Board",
@@ -236,9 +228,9 @@
         "width": "cabinet_depth",
         "height": "opening_height",
         "corner": [
-          "(-((opening_width / 2) + (frame_wood_thickness / 2))) + (-(frame_wood_thickness / 2))",
-          0.0,
-          "frame_wood_thickness"
+          "-(frame_wood_thickness / 2)",
+          0,
+          0
         ],
         "body_name": "Board"
       }
@@ -267,40 +259,122 @@
       }
     },
     {
-      "command": "component.create",
+      "command": "occurrence.copy",
       "params": {
-        "name": "Board 2",
-        "grounded": false,
-        "parent": "WoodBoxFrame"
+        "component": "Board"
       }
     },
     {
-      "command": "solid.box",
+      "command": "parameters.add",
       "params": {
-        "length": "frame_wood_thickness",
-        "width": "cabinet_depth",
-        "height": "opening_height",
-        "corner": [
-          "((opening_width / 2) + (frame_wood_thickness / 2)) + (-(frame_wood_thickness / 2))",
-          0.0,
-          "frame_wood_thickness"
+        "name": "opening_width",
+        "expression": "844 mm"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place Board:1",
+        "a": {
+          "occurrence": "WoodBoxFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "Board:1",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          "-((opening_width + (frame_wood_thickness)) / 2)",
+          0,
+          0.0
         ],
-        "body_name": "Board_2"
+        "offset": "frame_wood_thickness",
+        "flip": true,
+        "angle": 0.0
       }
     },
     {
-      "command": "material.assign",
+      "command": "joint.create",
       "params": {
-        "bodies": [
-          "Board_2"
+        "type": "planar",
+        "name": "Place Board:2",
+        "a": {
+          "occurrence": "WoodBoxFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "Board:2",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          "(opening_width + (frame_wood_thickness)) / 2",
+          0,
+          0.0
         ],
-        "material": "LIGHTPLY side board"
-      }
-    },
-    {
-      "command": "component.activate",
-      "params": {
-        "component": "root"
+        "offset": "frame_wood_thickness",
+        "flip": true,
+        "angle": 0.0
       }
     },
     {
@@ -314,7 +388,7 @@
     {
       "command": "component.create",
       "params": {
-        "name": "Board 3",
+        "name": "Board 2",
         "grounded": false,
         "parent": "WoodBoxFrame"
       }
@@ -327,10 +401,10 @@
         "height": "frame_wood_thickness",
         "corner": [
           "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-          0.0,
-          0.0
+          0,
+          0
         ],
-        "body_name": "Board_3"
+        "body_name": "Board_2"
       }
     },
     {
@@ -349,7 +423,7 @@
           ]
         ],
         "radius": "corner_radius",
-        "body": "Board_3"
+        "body": "Board_2"
       }
     },
     {
@@ -364,7 +438,7 @@
       "command": "material.assign",
       "params": {
         "bodies": [
-          "Board_3"
+          "Board_2"
         ],
         "material": "LIGHTPLY bottom"
       }
@@ -402,7 +476,7 @@
     {
       "command": "component.create",
       "params": {
-        "name": "Board 4",
+        "name": "Board 3",
         "grounded": false,
         "parent": "WoodBoxFrame"
       }
@@ -415,10 +489,10 @@
         "height": "frame_wood_thickness",
         "corner": [
           "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-          "-(roof_front_overhang)",
-          "frame_wood_thickness + (opening_height)"
+          0,
+          0
         ],
-        "body_name": "Board_4"
+        "body_name": "Board_3"
       }
     },
     {
@@ -427,17 +501,17 @@
         "edges": [
           [
             -434.0,
-            50.0,
-            386.0
+            60.0,
+            12.0
           ],
           [
             434.0,
-            50.0,
-            386.0
+            60.0,
+            12.0
           ]
         ],
         "radius": "corner_radius",
-        "body": "Board_4"
+        "body": "Board_3"
       }
     },
     {
@@ -452,7 +526,7 @@
       "command": "material.assign",
       "params": {
         "bodies": [
-          "Board_4"
+          "Board_3"
         ],
         "material": "LIGHTPLY roof"
       }
@@ -464,9 +538,62 @@
       }
     },
     {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place Board 3:1",
+        "a": {
+          "occurrence": "WoodBoxFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "Board 3:1",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          0,
+          "-(roof_front_overhang)",
+          0.0
+        ],
+        "offset": "frame_wood_thickness + (opening_height)",
+        "flip": true,
+        "angle": 0.0
+      }
+    },
+    {
       "command": "component.create",
       "params": {
-        "name": "Board 5",
+        "name": "Board 4",
         "grounded": false,
         "parent": "WoodBoxFrame"
       }
@@ -479,10 +606,10 @@
         "height": "frame_wood_thickness + (opening_height)",
         "corner": [
           "-((opening_width + (frame_wood_thickness * 2)) / 2)",
-          "cabinet_depth",
-          0.0
+          0,
+          0
         ],
-        "body_name": "Board_5"
+        "body_name": "Board_4"
       }
     },
     {
@@ -497,7 +624,7 @@
       "command": "material.assign",
       "params": {
         "bodies": [
-          "Board_5"
+          "Board_4"
         ],
         "material": "LIGHTPLY rear"
       }
@@ -506,6 +633,59 @@
       "command": "component.activate",
       "params": {
         "component": "root"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place Board 4:1",
+        "a": {
+          "occurrence": "WoodBoxFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "Board 4:1",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          0,
+          "cabinet_depth",
+          0.0
+        ],
+        "offset": 0,
+        "flip": true,
+        "angle": 0.0
       }
     },
     {
@@ -957,20 +1137,20 @@
       "params": {
         "points": [
           [
-            "(opening_width * 0 + 0 mm) - (opening_width / 2)",
-            "-((opening_width * 0) + (frame_wood_thickness))"
+            "-(opening_width / 2)",
+            0
           ],
           [
-            "(opening_width * 0 + 0 mm) + (opening_width / 2)",
-            "-((opening_width * 0) + (frame_wood_thickness))"
+            "opening_width / 2",
+            0
           ],
           [
-            "((opening_width * 0 + 0 mm) + (opening_width / 2)) - (glazing_wood_width)",
-            "-(((opening_width * 0) + (frame_wood_thickness)) + (glazing_wood_width))"
+            "(opening_width / 2) - (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ],
           [
-            "((opening_width * 0 + 0 mm) - (opening_width / 2)) + (glazing_wood_width)",
-            "-(((opening_width * 0) + (frame_wood_thickness)) + (glazing_wood_width))"
+            "(-(opening_width / 2)) + (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ]
         ],
         "closed": true,
@@ -1018,6 +1198,135 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassStrip"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place GlassStrip:1",
+        "a": {
+          "occurrence": "WoodGlassFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "GlassStrip:1",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          0,
+          0,
+          0.0
+        ],
+        "offset": "frame_wood_thickness",
+        "flip": true,
+        "angle": 0.0
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "GlassStrip:2",
+        "translate": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "180 deg"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place GlassStrip:2",
+        "a": {
+          "occurrence": "WoodGlassFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "GlassStrip:2",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          0,
+          "glazing_wood_depth",
+          0.0
+        ],
+        "offset": "frame_wood_thickness + (opening_height)",
+        "flip": true,
+        "angle": 0.0
+      }
+    },
+    {
       "command": "component.create",
       "params": {
         "name": "GlassStrip 2",
@@ -1037,109 +1346,20 @@
       "params": {
         "points": [
           [
-            "(opening_width * 0 + 0 mm) - (opening_width / 2)",
-            "-((opening_width * 0) + (-(frame_wood_thickness + (opening_height))))"
+            "-(opening_height / 2)",
+            0
           ],
           [
-            "(opening_width * 0 + 0 mm) + (opening_width / 2)",
-            "-((opening_width * 0) + (-(frame_wood_thickness + (opening_height))))"
+            "opening_height / 2",
+            0
           ],
           [
-            "((opening_width * 0 + 0 mm) + (opening_width / 2)) - (glazing_wood_width)",
-            "-(((opening_width * 0) + (-(frame_wood_thickness + (opening_height)))) + (glazing_wood_width))"
+            "(opening_height / 2) - (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ],
           [
-            "((opening_width * 0 + 0 mm) - (opening_width / 2)) + (glazing_wood_width)",
-            "-(((opening_width * 0) + (-(frame_wood_thickness + (opening_height)))) + (glazing_wood_width))"
-          ]
-        ],
-        "closed": true,
-        "ids": [
-          "a",
-          "b",
-          "c",
-          "d"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "glazing_wood_depth",
-        "direction": "negative",
-        "body_name": "GlassStrip_2"
-      }
-    },
-    {
-      "command": "material.assign",
-      "params": {
-        "bodies": [
-          "GlassStrip_2"
-        ],
-        "material": "PINE glazing horizontal"
-      }
-    },
-    {
-      "command": "component.activate",
-      "params": {
-        "component": "root"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip 2:1",
-        "translate": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "axis": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "angle": "180 deg"
-      }
-    },
-    {
-      "command": "component.create",
-      "params": {
-        "name": "GlassStrip 3",
-        "grounded": false,
-        "parent": "WoodGlassFrame"
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "Profile"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) - (opening_height / 2)",
-            "-((opening_height * 0) + (-(opening_width / 2)))"
-          ],
-          [
-            "((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) + (opening_height / 2)",
-            "-((opening_height * 0) + (-(opening_width / 2)))"
-          ],
-          [
-            "(((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) + (opening_height / 2)) - (glazing_wood_width)",
-            "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
-          ],
-          [
-            "(((opening_height * 0) + ((-(opening_height / 2)) - (frame_wood_thickness))) - (opening_height / 2)) + (glazing_wood_width)",
-            "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
+            "(-(opening_height / 2)) + (glazing_wood_width)",
+            "-(glazing_wood_width)"
           ]
         ],
         "closed": true,
@@ -1160,7 +1380,7 @@
       "params": {
         "distance": "glazing_wood_depth",
         "direction": "positive",
-        "body_name": "GlassStrip_3"
+        "body_name": "GlassStrip_2"
       }
     },
     {
@@ -1175,7 +1395,7 @@
       "command": "material.assign",
       "params": {
         "bodies": [
-          "GlassStrip_3"
+          "GlassStrip_2"
         ],
         "material": "PINE glazing vertical"
       }
@@ -1187,9 +1407,15 @@
       }
     },
     {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "GlassStrip 2"
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "GlassStrip 3:1",
+        "occurrence": "GlassStrip 2:1",
         "translate": [
           0.0,
           0.0,
@@ -1204,81 +1430,62 @@
       }
     },
     {
-      "command": "component.create",
+      "command": "joint.create",
       "params": {
-        "name": "GlassStrip 4",
-        "grounded": false,
-        "parent": "WoodGlassFrame"
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "Profile"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) - (opening_height / 2)",
-            "-((opening_height * 0) + (-(opening_width / 2)))"
+        "type": "planar",
+        "name": "Place GlassStrip 2:1",
+        "a": {
+          "occurrence": "WoodGlassFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "GlassStrip 2:1",
+          "point": [
+            0.0,
+            0.0,
+            0.0
           ],
-          [
-            "((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) + (opening_height / 2)",
-            "-((opening_height * 0) + (-(opening_width / 2)))"
+          "z": [
+            0.0,
+            0.0,
+            1.0
           ],
-          [
-            "(((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) + (opening_height / 2)) - (glazing_wood_width)",
-            "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
-          ],
-          [
-            "(((opening_height * 0) + ((opening_height / 2) + (frame_wood_thickness))) - (opening_height / 2)) + (glazing_wood_width)",
-            "-(((opening_height * 0) + (-(opening_width / 2))) + (glazing_wood_width))"
+          "x": [
+            1.0,
+            0.0,
+            0.0
           ]
+        },
+        "values": [
+          "-(opening_width / 2)",
+          0,
+          0.0
         ],
-        "closed": true,
-        "ids": [
-          "a",
-          "b",
-          "c",
-          "d"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "glazing_wood_depth",
-        "direction": "positive",
-        "body_name": "GlassStrip_4"
-      }
-    },
-    {
-      "command": "material.assign",
-      "params": {
-        "bodies": [
-          "GlassStrip_4"
-        ],
-        "material": "PINE glazing vertical"
-      }
-    },
-    {
-      "command": "component.activate",
-      "params": {
-        "component": "root"
+        "offset": "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2",
+        "flip": true,
+        "angle": 0.0
       }
     },
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "GlassStrip 4:1",
+        "occurrence": "GlassStrip 2:2",
         "translate": [
           0.0,
           0.0,
@@ -1290,6 +1497,59 @@
           0.0
         ],
         "angle": "-90 deg"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "planar",
+        "name": "Place GlassStrip 2:2",
+        "a": {
+          "occurrence": "WoodGlassFrame:1",
+          "frame": {
+            "origin": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "z": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "x": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        "b": {
+          "occurrence": "GlassStrip 2:2",
+          "point": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "z": [
+            0.0,
+            0.0,
+            1.0
+          ],
+          "x": [
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "values": [
+          "opening_width / 2",
+          0,
+          0.0
+        ],
+        "offset": "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2",
+        "flip": true,
+        "angle": 0.0
       }
     },
     {
@@ -1334,24 +1594,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "joint.as_built",
-      "params": {
-        "type": "rigid",
-        "name": "Attach Board:1 to Board 3:1",
-        "a": "Board 3:1",
-        "b": "Board:1"
-      }
-    },
-    {
-      "command": "joint.as_built",
-      "params": {
-        "type": "rigid",
-        "name": "Attach Board 2:1 to Board 3:1",
-        "a": "Board 3:1",
-        "b": "Board 2:1"
       }
     },
     {
@@ -1448,9 +1690,9 @@
       "command": "joint.create",
       "params": {
         "type": "rigid",
-        "name": "Attach CornerBracket:3 to Board 2:1",
+        "name": "Attach CornerBracket:3 to Board:2",
         "a": {
-          "occurrence": "Board 2:1",
+          "occurrence": "Board:2",
           "edge": [
             434.0,
             0.0,
@@ -1493,9 +1735,9 @@
       "command": "joint.create",
       "params": {
         "type": "rigid",
-        "name": "Attach CornerBracket:4 to Board 2:1",
+        "name": "Attach CornerBracket:4 to Board:2",
         "a": {
-          "occurrence": "Board 2:1",
+          "occurrence": "Board:2",
           "edge": [
             434.0,
             100.0,
@@ -1538,9 +1780,9 @@
       "command": "joint.create",
       "params": {
         "type": "rigid",
-        "name": "Attach CornerBracket:5 to Board 2:1",
+        "name": "Attach CornerBracket:5 to Board:2",
         "a": {
-          "occurrence": "Board 2:1",
+          "occurrence": "Board:2",
           "edge": [
             434.0,
             0.0,
@@ -1583,9 +1825,9 @@
       "command": "joint.create",
       "params": {
         "type": "rigid",
-        "name": "Attach CornerBracket:6 to Board 2:1",
+        "name": "Attach CornerBracket:6 to Board:2",
         "a": {
-          "occurrence": "Board 2:1",
+          "occurrence": "Board:2",
           "edge": [
             434.0,
             100.0,

@@ -1,6 +1,6 @@
 """Generic rectangular wooden board component."""
 
-from scpf import Direction, Edges, Polygon2D, component, pv
+from scpf import Direction, Edges, Polygon2D, Sketch, component, pv
 
 
 @component
@@ -26,14 +26,19 @@ class Board:
         bottom = self.z_position
         top = bottom + self.height
 
-        profile = Polygon2D([
-            ("lower_left", (left, bottom)),
-            ("lower_right", (right, bottom)),
-            ("upper_right", (right, top)),
-            ("upper_left", (left, top)),
-        ], plane="XZ", world=True).at(y=self.y_position)
+        with Sketch(
+            name="Profile",
+            plane="XZ",
+            offset=self.y_position,
+        ) as sketch:
+            Polygon2D([
+                ("lower_left", (left, bottom)),
+                ("lower_right", (right, bottom)),
+                ("upper_right", (right, top)),
+                ("upper_left", (left, top)),
+            ], plane="XZ", world=True)
 
-        body = profile.extrude(
+        body = sketch.extrude(
             self.depth,
             direction=Direction.POSITIVE,
         )

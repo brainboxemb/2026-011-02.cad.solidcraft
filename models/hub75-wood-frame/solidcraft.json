@@ -230,52 +230,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": 0.0
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) - (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness)"
-          ],
-          [
-            "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) + (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness)"
-          ],
-          [
-            "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) + (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ],
-          [
-            "((frame_wood_thickness * 0) + (-((opening_width / 2) + (frame_wood_thickness / 2)))) - (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ]
+        "length": "frame_wood_thickness",
+        "width": "cabinet_depth",
+        "height": "opening_height",
+        "corner": [
+          "(-((opening_width / 2) + (frame_wood_thickness / 2))) + (-(frame_wood_thickness / 2))",
+          0.0,
+          "frame_wood_thickness"
         ],
-        "closed": true,
-        "ids": [
-          "lower_left",
-          "lower_right",
-          "upper_right",
-          "upper_left"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "cabinet_depth",
-        "direction": "positive",
         "body_name": "Board"
       }
     },
@@ -311,52 +275,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": 0.0
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) - (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness)"
-          ],
-          [
-            "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) + (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness)"
-          ],
-          [
-            "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) + (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ],
-          [
-            "((frame_wood_thickness * 0) + ((opening_width / 2) + (frame_wood_thickness / 2))) - (frame_wood_thickness / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ]
+        "length": "frame_wood_thickness",
+        "width": "cabinet_depth",
+        "height": "opening_height",
+        "corner": [
+          "((opening_width / 2) + (frame_wood_thickness / 2)) + (-(frame_wood_thickness / 2))",
+          0.0,
+          "frame_wood_thickness"
         ],
-        "closed": true,
-        "ids": [
-          "lower_left",
-          "lower_right",
-          "upper_right",
-          "upper_left"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "cabinet_depth",
-        "direction": "positive",
         "body_name": "Board_2"
       }
     },
@@ -392,52 +320,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": 0.0
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            -0.0
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            -0.0
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + 0 mm)"
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + 0 mm)"
-          ]
+        "length": "opening_width + (frame_wood_thickness * 2)",
+        "width": "cabinet_depth",
+        "height": "frame_wood_thickness",
+        "corner": [
+          "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+          0.0,
+          0.0
         ],
-        "closed": true,
-        "ids": [
-          "lower_left",
-          "lower_right",
-          "upper_right",
-          "upper_left"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "cabinet_depth",
-        "direction": "positive",
         "body_name": "Board_3"
       }
     },
@@ -516,52 +408,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": "-(roof_front_overhang)"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + (opening_height))"
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-((frame_wood_thickness + (opening_height)) + (frame_wood_thickness))"
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-((frame_wood_thickness + (opening_height)) + (frame_wood_thickness))"
-          ]
+        "length": "opening_width + (frame_wood_thickness * 2)",
+        "width": "((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))",
+        "height": "frame_wood_thickness",
+        "corner": [
+          "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+          "-(roof_front_overhang)",
+          "frame_wood_thickness + (opening_height)"
         ],
-        "closed": true,
-        "ids": [
-          "lower_left",
-          "lower_right",
-          "upper_right",
-          "upper_left"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "((cabinet_depth + (panel_wood_thickness)) + (roof_rear_overhang)) - (-(roof_front_overhang))",
-        "direction": "positive",
         "body_name": "Board_4"
       }
     },
@@ -570,12 +426,12 @@
       "params": {
         "edges": [
           [
-            434.0,
+            -434.0,
             50.0,
             386.0
           ],
           [
-            -434.0,
+            434.0,
             50.0,
             386.0
           ]
@@ -616,52 +472,16 @@
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.box",
       "params": {
-        "plane": "XZ",
-        "name": "Profile",
-        "offset": "cabinet_depth"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            -0.0
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            -0.0
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) + ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + (opening_height) + 0 mm)"
-          ],
-          [
-            "((opening_width + (frame_wood_thickness * 2)) * 0 + 0 mm) - ((opening_width + (frame_wood_thickness * 2)) / 2)",
-            "-(frame_wood_thickness + (opening_height) + 0 mm)"
-          ]
+        "length": "opening_width + (frame_wood_thickness * 2)",
+        "width": "panel_wood_thickness",
+        "height": "frame_wood_thickness + (opening_height)",
+        "corner": [
+          "-((opening_width + (frame_wood_thickness * 2)) / 2)",
+          "cabinet_depth",
+          0.0
         ],
-        "closed": true,
-        "ids": [
-          "lower_left",
-          "lower_right",
-          "upper_right",
-          "upper_left"
-        ]
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "panel_wood_thickness",
-        "direction": "positive",
         "body_name": "Board_5"
       }
     },

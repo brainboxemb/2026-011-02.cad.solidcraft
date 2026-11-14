@@ -211,6 +211,13 @@ class WoodenFrameTests(unittest.TestCase):
                 "bracket_width",
                 "glazing_wood_width",
                 "glazing_wood_depth",
+                "CornerBracket_arm_height",
+                "CornerBracket_horizontal_arm_length",
+                "CornerBracket_vertical_arm_length",
+                "CornerBracket_outer_corner_chamfer",
+                "CornerBracket_arm_end_chamfer",
+                "CornerBracket_side_edge_chamfer",
+                "CornerBracket_elephant_foot_relief",
             },
         )
 
@@ -235,8 +242,22 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertEqual(parameter_names.count("bracket_width"), 1)
         self.assertEqual(parameter_names.count("corner_radius"), 1)
-        self.assertFalse(
-            any(name.startswith("CornerBracket_") for name in parameter_names)
+        self.assertNotIn("CornerBracket_arm_width", parameter_names)
+        self.assertNotIn("CornerBracket_inside_corner_radius", parameter_names)
+        self.assertEqual(
+            {
+                name for name in parameter_names
+                if name.startswith("CornerBracket_")
+            },
+            {
+                "CornerBracket_arm_height",
+                "CornerBracket_horizontal_arm_length",
+                "CornerBracket_vertical_arm_length",
+                "CornerBracket_outer_corner_chamfer",
+                "CornerBracket_arm_end_chamfer",
+                "CornerBracket_side_edge_chamfer",
+                "CornerBracket_elephant_foot_relief",
+            },
         )
 
         part = component_commands(cmd, "CornerBracket")
@@ -451,7 +472,6 @@ class WoodenFrameTests(unittest.TestCase):
         }
 
         for prefix in (
-            "CornerBracket_",
             "Board_",
             "GlassStrip_",
             "Hub75PanelBasic_",
@@ -461,6 +481,21 @@ class WoodenFrameTests(unittest.TestCase):
                 prefix,
             )
 
+        self.assertEqual(
+            {
+                name for name in parameter_names
+                if name.startswith("CornerBracket_")
+            },
+            {
+                "CornerBracket_arm_height",
+                "CornerBracket_horizontal_arm_length",
+                "CornerBracket_vertical_arm_length",
+                "CornerBracket_outer_corner_chamfer",
+                "CornerBracket_arm_end_chamfer",
+                "CornerBracket_side_edge_chamfer",
+                "CornerBracket_elephant_foot_relief",
+            },
+        )
         self.assertIn("corner_radius", parameter_names)
 
     def test_side_boards_are_connected_to_bottom_board(self):

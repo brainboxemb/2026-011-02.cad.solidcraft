@@ -357,32 +357,38 @@ class CADModelRegressions(unittest.TestCase):
         commands = run_script(ROOT / "models/basic/sample_plate/scpf/model.py")["commands"]
         self.assertEqual(
             [c["params"]["name"] for c in commands if c["command"] == "sketch.create"],
-            ["Base", "Holes", "Boss", "Bore"],
+            ["Base", "Holes", "Bore"],
         )
         self.assertEqual(
             [c["command"] for c in commands
              if c["command"] in ("solid.hole", "solid.cylinder")],
-            [],
+            ["solid.cylinder"],
         )
+        boss = next(c["params"] for c in commands
+                    if c["command"] == "solid.cylinder")
+        self.assertEqual(boss["operation"], "join")
+        self.assertEqual(boss["diameter"], 24)
+        self.assertEqual(boss["height"], 14)
+        self.assertEqual(boss["base"], [40.0, 25.0, 8.0])
         self.assertEqual(
             [c["params"]["operation"] for c in commands
              if c["command"] == "solid.extrude" and "operation" in c["params"]],
-            ["cut", "join", "cut"],
+            ["cut", "cut"],
         )
         self.assertEqual(
             [c["params"]["name"] for c in commands
              if c["command"] == "solid.extrude" and "operation" in c["params"]],
-            ["Holes", "Boss", "Bore"],
+            ["Holes", "Bore"],
         )
         self.assertEqual(
             [c["params"]["center"] for c in commands
              if c["command"] == "sketch.circle.center"],
-            [[12, 25], [68, 25], [40, 25], [40, 25]],
+            [[12, 25], [68, 25], [40, 25]],
         )
         self.assertEqual(
             [c["params"]["offset"] for c in commands
              if c["command"] == "sketch.create" and "offset" in c["params"]],
-            ["thickness", "thickness + 14 mm"],
+            ["thickness + 14 mm"],
         )
 
 
@@ -399,7 +405,7 @@ class CADModelRegressions(unittest.TestCase):
         self.assertEqual(
             [c["params"]["center"] for c in commands
              if c["command"] == "sketch.circle.center"],
-            [[12, 30], [88, 30], [50, 30], [50, 30]],
+            [[12, 30], [88, 30], [50, 30]],
         )
         self.assertFalse(any(c["command"] == "solid.hole" for c in commands))
 
@@ -419,10 +425,7 @@ class CADModelRegressions(unittest.TestCase):
         self.assertEqual(
             [c["command"] for c in feature_commands],
             [
-                "sketch.create",
-                "sketch.rectangle.two_point",
-                "sketch.finish",
-                "solid.extrude",
+                "solid.box",
                 "solid.shell",
                 "plastic.lip",
                 "plastic.snap_fit",
@@ -431,23 +434,25 @@ class CADModelRegressions(unittest.TestCase):
                 "plastic.rest",
             ],
         )
-        self.assertEqual(feature_commands[0]["params"]["name"], "Enclosure footprint")
-        self.assertEqual(feature_commands[3]["params"]["body_name"], "Enclosure")
+        self.assertEqual(feature_commands[0]["params"]["body_name"], "Enclosure")
+        self.assertFalse(
+            any(c["command"].startswith("sketch.") for c in feature_commands)
+        )
         self.assertTrue(all(
             c["params"].get("body") == "Enclosure"
-            for c in feature_commands[4:]
+            for c in feature_commands[1:]
         ))
-        self.assertEqual(feature_commands[4]["params"]["faces"], [[0, 0, 30]])
-        self.assertEqual(feature_commands[5]["params"]["face"], [-39, 0, 30])
-        self.assertEqual(feature_commands[6]["params"]["position"], [0, 19, 2])
-        self.assertEqual(feature_commands[6]["params"]["hook"], [0, -1, 0])
+        self.assertEqual(feature_commands[1]["params"]["faces"], [[0, 0, 30]])
+        self.assertEqual(feature_commands[2]["params"]["face"], [-39, 0, 30])
+        self.assertEqual(feature_commands[3]["params"]["position"], [0, 19, 2])
+        self.assertEqual(feature_commands[3]["params"]["hook"], [0, -1, 0])
         self.assertEqual(
-            [feature_commands[7]["params"]["position"],
-             feature_commands[8]["params"]["position"]],
+            [feature_commands[4]["params"]["position"],
+             feature_commands[5]["params"]["position"]],
             [[-30, -15, 2], [30, 15, 2]],
         )
-        self.assertEqual(feature_commands[9]["params"]["position"], [0, 0, 2])
-        self.assertEqual(feature_commands[9]["params"]["length"], 24)
+        self.assertEqual(feature_commands[6]["params"]["position"], [0, 0, 2])
+        self.assertEqual(feature_commands[6]["params"]["length"], 24)
 
 
     def test_plastic_enclosure_pi_video_feature_sequence(self):
@@ -462,8 +467,7 @@ class CADModelRegressions(unittest.TestCase):
         features = [c for c in commands if c["command"] != "parameters.add"]
         self.assertEqual(
             [c["command"] for c in features],
-            ["sketch.create", "sketch.rectangle.two_point", "sketch.finish",
-             "solid.extrude", "solid.fillet", "solid.shell", "solid.fillet",
+            ["solid.box", "solid.fillet", "solid.shell", "solid.fillet",
              "plastic.boss", "plastic.boss", "plastic.boss", "plastic.boss",
              "sketch.create", "sketch.rectangle.two_point",
              "sketch.rectangle.two_point", "sketch.rectangle.two_point",
@@ -477,10 +481,10 @@ class CADModelRegressions(unittest.TestCase):
              "sketch.create", "sketch.text", "sketch.finish", "solid.extrude",
              "material.create", "material.assign"],
         )
-        self.assertIn("board_w", str(features[1]["params"]["p0"][0]))
-        self.assertIn("board_d", str(features[1]["params"]["p1"][1]))
-        self.assertEqual(features[4]["params"]["radius"], 5.0)
-        self.assertEqual(features[6]["params"]["radius"], 1.0)
+        self.assertIn("board_w", str(features[0]["params"]["length"]))
+        self.assertIn("board_d", str(features[0]["params"]["width"]))
+        self.assertEqual(features[1]["params"]["radius"], 5.0)
+        self.assertEqual(features[3]["params"]["radius"], 1.0)
         bosses = [c["params"] for c in features if c["command"] == "plastic.boss"]
         self.assertEqual(
             [p["position"] for p in bosses],
@@ -491,8 +495,7 @@ class CADModelRegressions(unittest.TestCase):
         self.assertEqual(
             [c["params"]["name"] for c in features
              if c["command"] == "sketch.create"],
-            ["PlasticEnclosurePi footprint", "Pi ports",
-             "USB and Ethernet", "Floor vents", "Pi 4 engraving"],
+            ["Pi ports", "USB and Ethernet", "Floor vents", "Pi 4 engraving"],
         )
         cuts = [c for c in features if c["command"] == "solid.extrude"
                 and c["params"].get("operation") == "cut"]

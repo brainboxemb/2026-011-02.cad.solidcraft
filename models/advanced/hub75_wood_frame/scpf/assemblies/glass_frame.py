@@ -21,40 +21,40 @@ class GlassFrame:
             length=self.opening_width,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            length_center=0,
-            width_base=opening_bottom,
-            finish=0,
-            depth_sign=1,
+            _length_center=0,
+            _width_base=opening_bottom,
+            _finish=0,
+            _depth_sign=1,
         )
 
         top = GlassStrip(
             length=self.opening_width,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            length_center=0,
-            width_base=-opening_top,
-            finish=0,
-            depth_sign=-1,
+            _length_center=0,
+            _width_base=-opening_top,
+            _finish=0,
+            _depth_sign=-1,
         ).rotate(X, 180)
 
         left = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            length_center=-(self.opening_height / 2) - opening_bottom,
-            width_base=-(self.opening_width / 2),
-            finish=1,
-            depth_sign=1,
+            _length_center=-(self.opening_height / 2) - opening_bottom,
+            _width_base=-(self.opening_width / 2),
+            _finish=1,
+            _depth_sign=1,
         ).rotate(Y, 90)
 
         right = GlassStrip(
             length=self.opening_height,
             width=self.glazing_wood_width,
             depth=self.glazing_wood_depth,
-            length_center=self.opening_height / 2 + opening_bottom,
-            width_base=-(self.opening_width / 2),
-            finish=1,
-            depth_sign=1,
+            _length_center=self.opening_height / 2 + opening_bottom,
+            _width_base=-(self.opening_width / 2),
+            _finish=1,
+            _depth_sign=1,
         ).rotate(Y, -90)
 
         return (bottom + top + left + right).group("WoodGlassFrame")

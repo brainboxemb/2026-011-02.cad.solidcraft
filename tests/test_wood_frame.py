@@ -166,7 +166,7 @@ class WoodenFrameTests(unittest.TestCase):
         parameter_names = {p["name"] for p in of(commands(), "parameters.add")}
         self.assertFalse(any(name.startswith("Window_") for name in parameter_names))
         self.assertIn("opening_height", parameter_names)
-        self.assertIn("(self.opening_height - GLASS_HEIGHT) / 2", window_source)
+        self.assertIn("half(self.opening_height - GLASS_HEIGHT)", window_source)
         self.assertIn("opening_bottom_z = 12.0", window_source)
         self.assertNotIn("frame_wood_thickness", window_source)
 
@@ -666,8 +666,9 @@ class WoodenFrameTests(unittest.TestCase):
             for command in component_commands(cmd, BOARD_COMPONENTS["roof"])
             if command["command"] == "solid.box"
         )
+        roof_prefix = BOARD_COMPONENTS["roof"].replace(" ", "_")
         self.assertEqual(roof_box["corner"], [
-            "-(Board_4_width) / 2",
+            f"-({roof_prefix}_width) / 2",
             0,
             0,
         ])

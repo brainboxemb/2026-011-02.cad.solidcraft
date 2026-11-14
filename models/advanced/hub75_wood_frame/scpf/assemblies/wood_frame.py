@@ -30,10 +30,14 @@ class WoodFrame:
             width=outer_width,
             depth=self.cabinet_depth,
             height=self.frame_wood_thickness,
-            _y_position=0.0,
             corner_radius=self.corner_radius,
             fillet=(BOTTOM + LEFT, BOTTOM + RIGHT),
             material_name="LIGHTPLY bottom",
+        )
+        bottom = bottom.move(
+            0,
+            0,
+            0,
         ).group("WoodBoxFrame")
 
         left = Board(
@@ -41,16 +45,12 @@ class WoodFrame:
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
-            _x_position=-(
-                self.opening_width / 2
-                + self.frame_wood_thickness / 2
-            ),
-            _y_position=0.0,
-            _z_position=opening_bottom,
             material_name="LIGHTPLY side board",
-        ).attach(
-            bottom,
-            as_built=True,
+        )
+        left = left.move(
+            -(self.opening_width / 2 + self.frame_wood_thickness / 2),
+            0,
+            opening_bottom,
         ).group("WoodBoxFrame")
 
         right = Board(
@@ -58,29 +58,27 @@ class WoodFrame:
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
             height=self.opening_height,
-            _x_position=(
-                self.opening_width / 2
-                + self.frame_wood_thickness / 2
-            ),
-            _y_position=0.0,
-            _z_position=opening_bottom,
             material_name="LIGHTPLY side board",
-        ).attach(
-            bottom,
-            as_built=True,
+        )
+        right = right.move(
+            self.opening_width / 2 + self.frame_wood_thickness / 2,
+            0,
+            opening_bottom,
         ).group("WoodBoxFrame")
-
 
         roof = Board(
             name="roof",
             width=outer_width,
             depth=roof_rear - roof_front,
             height=self.frame_wood_thickness,
-            _y_position=roof_front,
-            _z_position=opening_top,
             corner_radius=self.corner_radius,
             fillet=(TOP + LEFT, TOP + RIGHT),
             material_name="LIGHTPLY roof",
+        )
+        roof = roof.move(
+            0,
+            roof_front,
+            opening_top,
         ).group("WoodBoxFrame")
 
         rear = Board(
@@ -88,9 +86,13 @@ class WoodFrame:
             width=outer_width,
             depth=self.panel_wood_thickness,
             height=opening_top,
-            _y_position=rear_y,
             material_name="LIGHTPLY rear",
             color="#A87D4D",
+        )
+        rear = rear.move(
+            0,
+            rear_y,
+            0,
         ).group("WoodBoxFrame")
 
         return left + right + bottom + roof + rear

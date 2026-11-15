@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / corner-bracket</div>
 <h1>CornerBracket</h1><p>24 mm plywood corner bracket without mounting holes</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">17 commands</span><span class="badge">24 mm width, 12 mm wall, 60 mm arms; no screw holes</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">17 commands</span><span class="badge">24 mm width, 12 mm wall, 60 mm arms; no screw holes</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.</p></section>
@@ -21,7 +21,7 @@
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Profile — 2D L outline with arm-end bevels</li><li>Extrude — symmetric 24 mm body</li><li>Fillet — rounded inside corner R4</li><li>Chamfer — outer edges of both broad faces</li><li>Chamfer — print-face elephant-foot relief</li><li>Solid bracket — mounting-hole features deliberately omitted</li></ol></section></div>
-<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fcorner-bracket%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in SolidCraft 0.30.1.</p></section>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fcorner-bracket%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
 <section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>models/components/corner_bracket/scpf/model.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;One shared, editable CornerBracket shape WITHOUT screw holes.
 
@@ -101,13 +101,16 @@ class CornerBracket:
             self.inside_corner_radius,
             edges=Edges.from_vertices(&quot;i_corner&quot;),
         )
-        body = body.chamfer(
-            self.elephant_foot_relief,
-            edges=Edges.from_vertices(&quot;o_hor_tip&quot;, &quot;v_tip&quot;),
-        )
+        # Apply the larger broad-face chamfer before the tiny tip relief.
+        # SolidCraft 0.42 correctly rejects a 2 mm chamfer when the adjacent
+        # face has already been reduced to 0.6 mm by the tip relief.
         body = body.chamfer(
             self.side_edge_chamfer,
             edges=Edges.from_profile(&quot;o_*&quot;, sides=&quot;both&quot;),
+        )
+        body = body.chamfer(
+            self.elephant_foot_relief,
+            edges=Edges.from_vertices(&quot;o_hor_tip&quot;, &quot;v_tip&quot;),
         )
         body = body.chamfer(
             self.elephant_foot_relief,
@@ -173,9 +176,6 @@ script.add(&quot;solid.extrude&quot;, distance=&quot;arm_width&quot;,
 # One concave inner fillet and three native chamfers; no screw holes.
 script.add(&quot;solid.fillet&quot;, edges=[[0, 0, 0]],
            radius=4, body=&quot;CornerBracket&quot;)
-script.add(&quot;solid.chamfer&quot;, edges=[[60, 0, 0], [0, 0, -60]],
-           distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
-
 # These positions select the two outside broad faces, including the
 # mitred end edges. They are reference coordinates, not Python CSG.
 outside_edges = [
@@ -188,6 +188,8 @@ outside_edges = [
 ]
 script.add(&quot;solid.chamfer&quot;, edges=outside_edges,
            distance=&quot;side_edge_chamfer&quot;, body=&quot;CornerBracket&quot;)
+script.add(&quot;solid.chamfer&quot;, edges=[[60, 0, 0], [0, 0, -60]],
+           distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
 script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
            distance=&quot;elephant_foot_relief&quot;, body=&quot;CornerBracket&quot;)
 </code></pre></section>
@@ -247,19 +249,19 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: elephant_foot_relief</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;elephant_foot_relief&quot;,
-    &quot;expression&quot;: &quot;0.6&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: side_edge_chamfer</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;side_edge_chamfer&quot;,
     &quot;expression&quot;: &quot;2&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: elephant_foot_relief</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;elephant_foot_relief&quot;,
+    &quot;expression&quot;: &quot;0.6&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -357,25 +359,6 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
     &quot;edges&quot;: [
       [
         60.0,
-        0.0,
-        -0.0
-      ],
-      [
-        0.0,
-        0.0,
-        -60.0
-      ]
-    ],
-    &quot;distance&quot;: &quot;elephant_foot_relief&quot;,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        60.0,
         -12.0,
         4.5
       ],
@@ -446,6 +429,25 @@ script.add(&quot;solid.chamfer&quot;, edges=[[30, -12, 0], [30, 12, 0]],
       ]
     ],
     &quot;distance&quot;: &quot;side_edge_chamfer&quot;,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        60.0,
+        0.0,
+        -0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -60.0
+      ]
+    ],
+    &quot;distance&quot;: &quot;elephant_foot_relief&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>

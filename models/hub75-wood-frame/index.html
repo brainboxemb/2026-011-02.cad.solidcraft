@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">130 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.30.1 · verified native run</span></div>
+<span class="badge">130 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -20,8 +20,8 @@
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Define one central parameter set and the wooden component types</li><li>Place five lightweight HUB75 panel occurrences on the 160 mm grid</li><li>Place 12 mm sidewalls, R4 bottom and roof with 10/1 mm overhang</li><li>Attach the 9 mm back board and place the 4 mm window behind the strips</li><li>Create two length variants of ONE GlassStrip type and place four mitred pieces</li><li>Place eight shared hole-free CornerBracket occurrences, front and rear</li><li>Verify actual native positions and dimensions in SolidCraft 0.30.1</li></ol></section></div>
-<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fhub75-wood-frame%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in SolidCraft 0.30.1.</p></section>
+<h3>Construction stages</h3><ol><li>Define one central parameter set and the wooden component types</li><li>Place five lightweight HUB75 panel occurrences on the 160 mm grid</li><li>Place 12 mm sidewalls, R4 bottom and roof with 10/1 mm overhang</li><li>Attach the 9 mm back board and place the 4 mm window behind the strips</li><li>Create two length variants of ONE GlassStrip type and place four mitred pieces</li><li>Place eight shared hole-free CornerBracket occurrences, front and rear</li><li>Verify actual native positions and dimensions in SolidCraft 0.42.0</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fhub75-wood-frame%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
 <h2>Python model</h2><pre><code>&quot;&quot;&quot;Wooden HUB75 display assembled from named parts and subassemblies.&quot;&quot;&quot;
 
@@ -863,19 +863,19 @@ class WoodenHub75Box:
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_elephant_foot_relief</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
-    &quot;expression&quot;: &quot;0.6&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_side_edge_chamfer</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
     &quot;expression&quot;: &quot;2&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_elephant_foot_relief</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;expression&quot;: &quot;0.6&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -981,25 +981,6 @@ class WoodenHub75Box:
     &quot;edges&quot;: [
       [
         60.0,
-        0.0,
-        -0.0
-      ],
-      [
-        0.0,
-        0.0,
-        -60.0
-      ]
-    ],
-    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
-    &quot;body&quot;: &quot;CornerBracket&quot;
-  }
-}</code></pre></li>
-<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;solid.chamfer&quot;,
-  &quot;params&quot;: {
-    &quot;edges&quot;: [
-      [
-        60.0,
         -12.0,
         4.5
       ],
@@ -1070,6 +1051,25 @@ class WoodenHub75Box:
       ]
     ],
     &quot;distance&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
+    &quot;body&quot;: &quot;CornerBracket&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        60.0,
+        0.0,
+        -0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -60.0
+      ]
+    ],
+    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>

@@ -166,25 +166,6 @@
         "edges": [
           [
             60,
-            0,
-            0
-          ],
-          [
-            0,
-            0,
-            -60
-          ]
-        ],
-        "distance": "elephant_foot_relief",
-        "body": "CornerBracket"
-      }
-    },
-    {
-      "command": "solid.chamfer",
-      "params": {
-        "edges": [
-          [
-            60,
             -12,
             4.5
           ],
@@ -255,6 +236,25 @@
           ]
         ],
         "distance": "side_edge_chamfer",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            60,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            -60
+          ]
+        ],
+        "distance": "elephant_foot_relief",
         "body": "CornerBracket"
       }
     },

@@ -1,4 +1,5 @@
 {
+  "native_file_format": "solidcraft/57",
   "native_verified_models": [
     "plate",
     "csg-cube",
@@ -12,8 +13,9 @@
     "plastic-enclosure"
   ],
   "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
-  "scpf_commit": "ec5e23c5bfddd18daaf7a8e67b1e6968e5efff0e",
-  "solidcraft_version": "0.30.1",
-  "source_commit": "3d80e969886475adc5f2d724e1313dcf416cfbd3",
-  "workflow_run": "43695985798"
+  "scpf_commit": "c5fb33e0de357403983f539839523d0bdb57c00a",
+  "scpf_release": "0.1.1",
+  "solidcraft_version": "0.42.0",
+  "source_commit": "02d33ddd0a49d685b6e001a80bf12b3f26017fe7",
+  "workflow_run": "43713646001"
 }

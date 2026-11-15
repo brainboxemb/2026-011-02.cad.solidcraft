@@ -43,9 +43,9 @@ body = sketch.extrude(arm_width, direction=Direction.SYMMETRIC)
 
 The name belongs to the **vertex** and becomes the sketch-line ID for the **segment beginning at that vertex**. `world=True` means the XZ coordinates are ordinary world (x, z); SCPF performs SolidCraft's local-sketch axis conversion.
 
-`Edges.from_profile("o_*")` selects named profile segments on the two broad faces. `Edges.from_vertices("o_hor_tip", "v_tip")` instead selects the extrusion-direction edges starting at those vertices. SCPF translates both selectors to edge-pick points because SolidCraft 0.30.1's fillet/chamfer commands do not directly accept sketch-line IDs.
+`Edges.from_profile("o_*")` selects named profile segments on the two broad faces. `Edges.from_vertices("o_hor_tip", "v_tip")` instead selects the extrusion-direction edges starting at those vertices. SCPF translates both selectors to edge-pick points because SolidCraft 0.42.0's fillet/chamfer commands do not directly accept sketch-line IDs.
 
-The original 0.6 mm **tip elephant-foot cuts are not in the polygon**: a separate native chamfer removes them at the two tip edges. Another chamfer produces the relief along the inside horizontal edge. The inside fillet, both reliefs and side chamfers remain separate editable features. No mounting holes are created in the default model.
+The original 0.6 mm **tip elephant-foot cuts are not in the polygon**: a separate native chamfer removes them at the two tip edges. Another chamfer produces the relief along the inside horizontal edge. The inside fillet, both reliefs and side chamfers remain separate editable features. SolidCraft 0.42.0 requires the larger 2 mm broad-face chamfers to be applied before the adjacent 0.6 mm tip reliefs; the dimensions are unchanged, only the native feature order is deliberate. No mounting holes are created in the default model.
 
 Named-edge selection is currently implemented for **symmetric XZ polygon extrusions only**. The remaining irregularities at the arm tips are a separate follow-up in issue #20.
 

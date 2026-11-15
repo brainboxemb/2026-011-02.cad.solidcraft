@@ -2,6 +2,8 @@
 
 CAD projects and native SolidCraft verification. The Python libraries live separately: [SCPF Python Forge](https://github.com/brainboxemb/lib.py.solidcraft.forge) for parametrized models and [SCPC Python Commands](https://github.com/brainboxemb/lib.py.solidcraft.cmd) for explicit native commands.
 
+The current CAD baseline pins **SCPF 0.1.1** by exact release commit and qualifies the models against **SolidCraft 0.42.0**.
+
 ## Two Python scripts for one CAD design
 
 The same design can be expressed in two deliberately different ways:
@@ -59,7 +61,7 @@ python -m scpf models/components/hub75-panel/scpf/model.py --connect --new
 python -m scpf models/advanced/hub75_screen/scpf/model.py --connect --new
 ```
 
-`--connect --new` first asks SolidCraft 0.30.1 to replace the active design
+`--connect --new` first asks SolidCraft 0.42.0 to replace the active design
 with a new empty design using its native `file.new` command, then sends the
 compiled model through the authenticated local control channel. It does
 **not** launch or automatically save SolidCraft. Plain `--connect` remains
@@ -178,7 +180,7 @@ the old CAD cheatsheet URL redirects there.
 
 ## Publication and migration
 
-All ten existing Forge models use a pinned SCPF revision. The first two parallel native-command models also use a separately pinned SCPC revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+All ten existing Forge models use a pinned SCPF revision. The first two parallel native-command models also use a separately pinned SCPC revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The native run writes source-matched `verification.json` first; the site is allowed to publish verified `.sc` files and badges only from that evidence. See [CAD result and provenance pipeline](docs/results-provenance.md). The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
 
 Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.
 

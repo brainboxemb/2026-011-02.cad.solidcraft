@@ -33,7 +33,18 @@ def check(site, commit):
     provenance = json.loads((site / "provenance.json").read_text(encoding="utf-8"))
     assert provenance["source_commit"] == commit
     if provenance["native_verified_models"]:
-        assert provenance.get("solidcraft_version") == "0.30.1"
+        assert re.fullmatch(
+            r"\d+\.\d+\.\d+",
+            provenance.get("solidcraft_version", ""),
+        )
+        assert re.fullmatch(
+            r"solidcraft/\d+",
+            provenance.get("native_file_format", ""),
+        )
+        assert re.fullmatch(
+            r"\d+\.\d+\.\d+",
+            provenance.get("scpf_release", ""),
+        )
     assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpf_commit"])
     assert re.fullmatch(r"[0-9a-f]{40}", provenance["scpc_commit"])
     assert isinstance(provenance["native_verified_models"], list)
@@ -50,7 +61,10 @@ def check(site, commit):
     assert commit in text, "site must identify its source commit"
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
-    assert "SolidCraft engine:" in text and "0.30.1 tested" in text
+    assert "SolidCraft engine:" in text
+    if provenance["native_verified_models"]:
+        assert provenance["solidcraft_version"] in text
+        assert f"release {provenance['scpf_release']}" in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")
@@ -64,7 +78,8 @@ def check(site, commit):
         assert (model / "solidcraft.json").is_file(), slug
         page = (model / "index.html").read_text(encoding="utf-8")
         assert "Native SolidCraft command sequence" in page
-        assert "SolidCraft 0.30.1" in page
+        if slug in provenance["native_verified_models"]:
+            assert f"SolidCraft {provenance['solidcraft_version']}" in page
         assert "Show exact command and parameters" not in page
         assert "<details>" not in page
         assert "&quot;command&quot;" in page and "&quot;params&quot;" in page
@@ -115,7 +130,8 @@ def check(site, commit):
             with zipfile.ZipFile(native_file) as archive:
                 doc = json.loads(archive.read("document.json"))
                 container = json.loads(archive.read("container.json"))
-                assert doc["format"] == "solidcraft/48", slug
+                assert re.fullmatch(r"solidcraft/\d+", doc["format"]), slug
+                assert doc["format"] == provenance["native_file_format"], slug
                 assert container["format"] == "solidcraft-container/1", slug
             assert 'href="model.sc"' in page
             assert 'href="viewer.html"' not in page, slug

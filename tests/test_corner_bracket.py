@@ -107,23 +107,25 @@ class CornerBracketTests(unittest.TestCase):
         self.assertEqual(fillet["params"]["edges"], [[0, 0, 0]])
 
         chamfers = [c["params"] for c in commands if c["command"] == "solid.chamfer"]
-        self.assertEqual(chamfers[0]["edges"], [[60, 0, 0], [0, 0, -60]])
-        self.assertEqual(chamfers[0]["distance"], "elephant_foot_relief")
 
         expected_xz = [
             (60, 4.5), (58.5, 10.5), (25.5, 12),
             (-9, 9), (-12, -25.5), (-10.5, -58.5),
             (-4.5, -60),
         ]
-        self.assertEqual(len(chamfers[1]["edges"]), 14)
+        self.assertEqual(len(chamfers[0]["edges"]), 14)
+        self.assertEqual(chamfers[0]["distance"], "side_edge_chamfer")
         for side_index, side in enumerate((-12, 12)):
             for (expected_x, expected_z), point in zip(
-                expected_xz, chamfers[1]["edges"][side_index * 7:(side_index + 1) * 7]
+                expected_xz, chamfers[0]["edges"][side_index * 7:(side_index + 1) * 7]
             ):
                 x, y, z = point
                 self.assertAlmostEqual(x, expected_x)
                 self.assertAlmostEqual(y, side)
                 self.assertAlmostEqual(z, expected_z)
+
+        self.assertEqual(chamfers[1]["edges"], [[60, 0, 0], [0, 0, -60]])
+        self.assertEqual(chamfers[1]["distance"], "elephant_foot_relief")
 
         self.assertEqual(chamfers[2]["edges"], [[30, -12, 0], [30, 12, 0]])
         self.assertEqual(chamfers[2]["distance"], "elephant_foot_relief")

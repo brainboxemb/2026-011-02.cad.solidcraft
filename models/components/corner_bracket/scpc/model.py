@@ -50,9 +50,6 @@ script.add("solid.extrude", distance="arm_width",
 # One concave inner fillet and three native chamfers; no screw holes.
 script.add("solid.fillet", edges=[[0, 0, 0]],
            radius=4, body="CornerBracket")
-script.add("solid.chamfer", edges=[[60, 0, 0], [0, 0, -60]],
-           distance="elephant_foot_relief", body="CornerBracket")
-
 # These positions select the two outside broad faces, including the
 # mitred end edges. They are reference coordinates, not Python CSG.
 outside_edges = [
@@ -65,5 +62,7 @@ outside_edges = [
 ]
 script.add("solid.chamfer", edges=outside_edges,
            distance="side_edge_chamfer", body="CornerBracket")
+script.add("solid.chamfer", edges=[[60, 0, 0], [0, 0, -60]],
+           distance="elephant_foot_relief", body="CornerBracket")
 script.add("solid.chamfer", edges=[[30, -12, 0], [30, 12, 0]],
            distance="elephant_foot_relief", body="CornerBracket")

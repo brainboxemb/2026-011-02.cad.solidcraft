@@ -80,10 +80,7 @@ class WoodenHub75Box:
         )
 
         brackets = CornerBrackets(
-            opening_width=self.opening_width,
-            opening_height=self.opening_height,
-            frame_wood_thickness=self.frame_wood_thickness,
-            cabinet_depth=self.cabinet_depth,
+            wood_frame=frame,
             bracket_width=self.bracket_width,
             corner_radius=self.corner_radius,
         )

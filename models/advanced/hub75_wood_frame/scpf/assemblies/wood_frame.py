@@ -24,8 +24,9 @@ class WoodFrame:
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         opening_bottom = self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
-        side_center_x = half(
-            self.opening_width + self.frame_wood_thickness
+        side_center_x = (
+            half(self.opening_width)
+            + half(self.frame_wood_thickness)
         )
 
         bottom = Board(

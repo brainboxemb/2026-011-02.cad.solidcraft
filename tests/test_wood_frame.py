@@ -365,6 +365,12 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(HUB75_PANEL_HEIGHT, 319.71)
         self.assertEqual(HUB75_PANEL_DEPTH, 14.50)
 
+        source = (
+            ROOT / "models/components/hub75_panel/basic/scpf/model.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("_y_center", source)
+        self.assertNotIn("_z_position", source)
+
         parameter_names = {
             p["name"] for p in of(commands(), "parameters.add")
         }

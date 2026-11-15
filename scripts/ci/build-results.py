@@ -25,7 +25,6 @@ ROOT = Path(__file__).resolve().parents[2]
 # runtime, frontend build, or CAD server is required for this first experiment.
 PUBLIC_SITE = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
 SOLIDCRAFT_WEB = "https://docs.solidcraft.io/app/"
-NATIVE_FILE_FORMAT = "solidcraft/48"  # SolidCraft CLI 0.30.1
 MODELS = {
     "plate": {
         "title": "Plate", "tagline": "A rounded plate with four holes",
@@ -89,7 +88,7 @@ MODELS = {
                    "Attach the 9 mm back board and place the 4 mm window behind the strips",
                    "Create two length variants of ONE GlassStrip type and place four mitred pieces",
                    "Place eight shared hole-free CornerBracket occurrences, front and rear",
-                   "Verify actual native positions and dimensions in SolidCraft 0.30.1"],
+                   "Verify actual native positions and dimensions in SolidCraft 0.42.0"],
     },
     "hub75-screen": {
         "title": "BasicHub75Screen",
@@ -116,7 +115,7 @@ MODELS = {
                    "Cut six blind rear-side Ø3 mounting holes",
                    "Assign grey housing material",
                    "Keep the standalone part in its local CAD axes",
-                   "Verify local front and rear views in SolidCraft 0.30.1"],
+                   "Verify local front and rear views in SolidCraft 0.42.0"],
     },
     "plastic-enclosure-pi": {
         "title": "Plastic Enclosure Pi",
@@ -301,6 +300,23 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
     cards = {key: [] for key in SECTIONS}
     scpf_commit = library_revision()
     scpc_commit = dependency_revision("scpc")
+    verification = None
+    if native_root is not None and (native_root / "verification.json").is_file():
+        candidate = read_json(native_root / "verification.json")
+        if (
+            candidate.get("source_commit") == commit
+            and candidate.get("scpf_commit") == scpf_commit
+            and candidate.get("scpc_commit") == scpc_commit
+            and candidate.get("verified") is True
+        ):
+            verification = candidate
+    engine_version = (
+        verification.get("solidcraft_version") if verification is not None else None
+    )
+    scpf_release = (
+        verification.get("scpf_release") if verification is not None else None
+    )
+    native_file_format = None
     verified_models = []
     verified_count = 0
     for slug, info in MODELS.items():
@@ -334,9 +350,19 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 raise ValueError(f"Missing/invalid native SolidCraft file: {native_file}")
             with zipfile.ZipFile(native_file) as archive:
                 doc = json.loads(archive.read("document.json"))
-                if doc.get("format") != NATIVE_FILE_FORMAT:
+                doc_format = doc.get("format")
+                if not isinstance(doc_format, str) or re.fullmatch(
+                    r"solidcraft/\d+", doc_format
+                ) is None:
                     raise ValueError(
-                        f"{slug}: expected {NATIVE_FILE_FORMAT}, got {doc.get('format')!r}"
+                        f"{slug}: unsupported SolidCraft document format {doc_format!r}"
+                    )
+                if native_file_format is None:
+                    native_file_format = doc_format
+                elif doc_format != native_file_format:
+                    raise ValueError(
+                        f"{slug}: mixed SolidCraft document formats: "
+                        f"{native_file_format!r} and {doc_format!r}"
                     )
                 if json.loads(archive.read("container.json")).get("format") != "solidcraft-container/1":
                     raise ValueError(f"{slug}: unsupported SolidCraft archive")
@@ -369,7 +395,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 '</div><p class="small muted">You are leaving '
                 'brainboxemb.github.io for docs.solidcraft.io. '
                 'If you prefer not to use the external web app, download '
-                'the native .sc file and open it locally in SolidCraft 0.30.1.'
+                'the native .sc file and open it locally in the matching '
+                'SolidCraft release.'
                 '</p></section>'
             )
             verified_count += 1
@@ -402,15 +429,10 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                            '<div class="panel-views">' + ''.join(faces) + '</div>'
                            '<p class="small muted">Both are native SolidCraft '
                            'snapshots of the same single-component design.</p>')
-        tested_version = "0.30.1"
-        engine_version = (
-            read_json(native_root / "verification.json").get("solidcraft_version")
-            if has_native else None
-        )
         version_label = (
             f"SolidCraft {engine_version} · verified native run"
-            if engine_version else
-            f"SolidCraft {tested_version} target · native version unverified for this revision"
+            if has_native and engine_version else
+            "SolidCraft native version not verified for this revision"
         )
         status = ("Native verified · snapshot from matching run" if has_native
                   else "Previously verified render from main · not verified for this PR"
@@ -560,18 +582,18 @@ Native qualification is reported only when the matching verified image exists.</
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
 <p class="small muted">CAD source revision: <code>{esc(commit)}</code><br>
-SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a><br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/{esc(scpc_commit)}"><code>{esc(scpc_commit)}</code></a><br>SolidCraft engine: <strong>0.30.1 tested</strong>; older releases are refused by the SCPF compatibility guard, newer releases warn.</p></main>"""
+SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a>{f" · release {esc(scpf_release)}" if scpf_release else ""}<br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/{esc(scpc_commit)}"><code>{esc(scpc_commit)}</code></a><br>SolidCraft engine: <strong>{esc(engine_version) if engine_version else "native version not verified for this revision"}</strong>.</p></main>"""
     provenance = {
         "source_commit": commit,
         "scpf_commit": scpf_commit,
         "scpc_commit": scpc_commit,
         "native_verified_models": verified_models,
     }
-    if native_root is not None and (native_root / "verification.json").is_file():
-        verified = read_json(native_root / "verification.json")
-        if verified.get("source_commit") == commit and verified.get("scpf_commit") == scpf_commit:
-            provenance["solidcraft_version"] = verified.get("solidcraft_version")
-            provenance["workflow_run"] = verified.get("workflow_run")
+    if verification is not None:
+        provenance["scpf_release"] = scpf_release
+        provenance["solidcraft_version"] = engine_version
+        provenance["workflow_run"] = verification.get("workflow_run")
+        provenance["native_file_format"] = native_file_format
     (out / "provenance.json").write_text(
         json.dumps(provenance, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",

@@ -216,13 +216,6 @@ class WoodenFrameTests(unittest.TestCase):
                 "bracket_width",
                 "glazing_wood_width",
                 "glazing_wood_depth",
-                "CornerBracket_arm_height",
-                "CornerBracket_horizontal_arm_length",
-                "CornerBracket_vertical_arm_length",
-                "CornerBracket_outer_corner_chamfer",
-                "CornerBracket_arm_end_chamfer",
-                "CornerBracket_side_edge_chamfer",
-                "CornerBracket_elephant_foot_relief",
             },
         )
 

@@ -16,8 +16,10 @@ class GlassStrip:
     color = None
 
     def build(self):
-        if not 0 < pv(self.width) < half(pv(self.length)):
-            raise ValueError("GlassStrip width must be less than half its length")
+        assert pv(self.width) > 0, "GlassStrip width must be positive"
+        assert pv(self.width) < half(pv(self.length)), (
+            "GlassStrip width must be less than half its length"
+        )
 
         half_length = half(self.length)
         start = -half_length

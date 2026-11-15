@@ -17,10 +17,8 @@ class CornerBrackets:
     corner_radius = 4.0
 
     def build(self):
-        # This deliberately uses explicit occurrence Placement rather than
-        # AnchorFrame/attach. AnchorFrame has a known regression in the current
-        # Forge/SolidCraft path and is not required to describe these eight
-        # cabinet-corner poses.
+        # These eight cabinet-corner poses are explicit occurrence Placement.
+        # No attachment relationship is needed for this baseline.
         outer_half = half(self.opening_width) + self.frame_wood_thickness
         top_z = self.opening_height + 2 * self.frame_wood_thickness
         front_y = half(self.bracket_width)

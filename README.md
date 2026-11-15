@@ -180,7 +180,7 @@ the old CAD cheatsheet URL redirects there.
 
 ## Publication and migration
 
-All ten existing Forge models use a pinned SCPF revision. The first two parallel native-command models also use a separately pinned SCPC revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
+All ten existing Forge models use a pinned SCPF revision. The first two parallel native-command models also use a separately pinned SCPC revision. Nine primary examples have required native geometry and screenshots; the CSG preview is optional if CPU rendering fails. Native-qualified results and a machine-readable `provenance.json` are published from `main` into the `gh-pages` branch. The native run writes source-matched `verification.json` first; the site is allowed to publish verified `.sc` files and badges only from that evidence. See [CAD result and provenance pipeline](docs/results-provenance.md). The public website additionally requires GitHub Pages to be configured to serve this branch; a successful branch push alone does not prove that setting.
 
 Legacy library Pages and files must **remain** until the new URL is verified. Migration and cutover tracking: [library issue #25](https://github.com/brainboxemb/lib.py.solidcraft/issues/25). The SCPF version used for qualification is controlled by the exact `dependencies.repos` commit, not the library's moving `main`.
 

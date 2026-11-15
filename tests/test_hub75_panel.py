@@ -13,8 +13,8 @@ class Hub75PanelTests(unittest.TestCase):
     def test_five_panel_screen_uses_constructor_placement(self):
         """Each occurrence declares one complete pose through Placement.
 
-        Numeric copy positions lower through occurrence.copy; orientation uses
-        the minimal native occurrence.move fallback.
+        Copies that include orientation stay at native identity first; their
+        complete XYZ + rotation pose lowers through occurrence.move.
         """
         commands = run_script(ROOT / "models/advanced/hub75_screen/scpf/model.py")["commands"]
         def of(kind):
@@ -28,22 +28,20 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(of("material.create")), 1)
 
         copies = of("occurrence.copy")
-        self.assertEqual(
-            [p["translate"] for p in copies],
-            [
-                [-320.0, 0.0, 160.0],
-                [-160.0, 0.0, 160.0],
-                [160.0, 0.0, 160.0],
-                [320.0, 0.0, 160.0],
-            ],
-        )
+        self.assertTrue(all("translate" not in p for p in copies))
 
         placements = of("occurrence.move")
         self.assertEqual([p["occurrence"] for p in placements],
                          [f"Hub75Panel:{i}" for i in range(1, 6)])
         self.assertEqual(
             [p["translate"] for p in placements],
-            [[0.0, 0.0, 160.0]] + [[0.0, 0.0, 0.0]] * 4,
+            [
+                [0.0, 0.0, 160.0],
+                [-320.0, 0.0, 160.0],
+                [-160.0, 0.0, 160.0],
+                [160.0, 0.0, 160.0],
+                [320.0, 0.0, 160.0],
+            ],
         )
         for i, pose in enumerate(placements):
             axis = [0., 1., -1.] if i in (2, 3) else [1., 0., 0.]

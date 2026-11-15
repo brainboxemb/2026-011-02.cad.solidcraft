@@ -10,11 +10,11 @@ MODEL = ROOT / "models/components/hub75_panel/detailed/scpf/model.py"
 
 
 class Hub75PanelTests(unittest.TestCase):
-    def test_five_panel_screen_uses_native_rotations_and_independent_positions(self):
-        """Copies first, then move each independently with SolidCraft 0.30.1.
+    def test_five_panel_screen_uses_constructor_placement(self):
+        """Each occurrence declares one complete pose through Placement.
 
-        No Python matrix calculations, and no unsupported 'to' parameter.
-        The native CI separately checks actual saved SolidCraft transforms.
+        Numeric copy positions lower through occurrence.copy; orientation uses
+        the minimal native occurrence.move fallback.
         """
         commands = run_script(ROOT / "models/advanced/hub75_screen/scpf/model.py")["commands"]
         def of(kind):
@@ -27,23 +27,24 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertEqual(len(of("solid.hole")), 6)
         self.assertEqual(len(of("material.create")), 1)
 
-        # A copied native component inherits its source transform.
-        # Therefore, create all copies BEFORE applying any placement.
-        copy_indices = [i for i, row in enumerate(commands)
-                        if row["command"] == "occurrence.copy"]
-        move_indices = [i for i, row in enumerate(commands)
-                        if row["command"] == "occurrence.move"]
-        self.assertLess(max(copy_indices), min(move_indices))
-        self.assertTrue(all(p == {"component": "Hub75Panel"}
-                            for p in of("occurrence.copy")))
+        copies = of("occurrence.copy")
+        self.assertEqual(
+            [p["translate"] for p in copies],
+            [
+                [-320.0, 0.0, 160.0],
+                [-160.0, 0.0, 160.0],
+                [160.0, 0.0, 160.0],
+                [320.0, 0.0, 160.0],
+            ],
+        )
 
         placements = of("occurrence.move")
         self.assertEqual([p["occurrence"] for p in placements],
                          [f"Hub75Panel:{i}" for i in range(1, 6)])
-        self.assertEqual([p["translate"] for p in placements],
-                         [[0., 0., 160.], [-320., 0., 160.],
-                          [-160., 0., 160.], [160., 0., 160.],
-                          [320., 0., 160.]])
+        self.assertEqual(
+            [p["translate"] for p in placements],
+            [[0.0, 0.0, 160.0]] + [[0.0, 0.0, 0.0]] * 4,
+        )
         for i, pose in enumerate(placements):
             axis = [0., 1., -1.] if i in (2, 3) else [1., 0., 0.]
             angle = "180 deg" if i in (2, 3) else "90 deg"
@@ -88,15 +89,16 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertIs(panel.definition.shape, panel.copy().definition.shape)
 
     def test_copy_creates_a_second_occurrence_of_one_definition(self):
+        from scpf import Placement
         from scpf.core import Box
         from scpf.model_objects import ModelDefinition, ModelInstance
 
         original = ModelInstance(ModelDefinition("Panel", (), Box(20, 10, 2)))
-        duplicate = original.copy().move(x=24)
+        duplicate = original.copy(placement=Placement(x=24))
         self.assertIsNot(original, duplicate)
         self.assertIs(original.definition, duplicate.definition)
-        self.assertEqual(original.translation, (0, 0, 0))
-        self.assertEqual(duplicate.translation, (24, 0, 0))
+        self.assertEqual(original.placement.position, (0, 0, 0))
+        self.assertEqual(duplicate.placement.position, (24, 0, 0))
         self.assertIsNone(duplicate.attachment)
 
     def test_single_panel_runs_shared_component_directly_in_local_axes(self):

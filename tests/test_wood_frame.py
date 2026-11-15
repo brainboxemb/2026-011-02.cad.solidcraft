@@ -433,11 +433,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertIn("sketch.extrude(", strip_source)
         self.assertNotIn("direction=", strip_source)
 
-        for name in ("bottom", "top", "left", "right"):
-            self.assertIn(f"{name} = {name}.", frame_source)
-        self.assertIn("top = top.rotate(X, 180).move(", frame_source)
-        self.assertIn("left = left.rotate(Y, 90).move(", frame_source)
-        self.assertIn("right = right.rotate(Y, -90).move(", frame_source)
+        self.assertIn("placement=Placement(z=opening_bottom)", frame_source)
+        self.assertIn("rotation=(X, 180)", frame_source)
+        self.assertIn("rotation=(Y, 90)", frame_source)
+        self.assertIn("rotation=(Y, -90)", frame_source)
+        self.assertNotIn(".move(", frame_source)
 
         cmd = commands()
         strip_placements = [
@@ -557,11 +557,13 @@ class WoodenFrameTests(unittest.TestCase):
             self.assertNotIn(name, board_source)
         self.assertNotIn("as_built=True", frame_source)
         self.assertNotIn(".attach(", frame_source)
-        self.assertIn("bottom = bottom.move(", frame_source)
-        self.assertIn("left = left.move(", frame_source)
-        self.assertIn("right = right.move(", frame_source)
-        self.assertIn("roof = roof.move(", frame_source)
-        self.assertIn("rear = rear.move(", frame_source)
+        self.assertIn("placement=Placement()", frame_source)
+        self.assertIn("placement=Placement(", frame_source)
+        self.assertIn("x=-side_center_x", frame_source)
+        self.assertIn("x=side_center_x", frame_source)
+        self.assertIn("y=roof_front", frame_source)
+        self.assertIn("placement=Placement(y=rear_y)", frame_source)
+        self.assertNotIn(".move(", frame_source)
 
         cmd = commands()
         frame_joints = [

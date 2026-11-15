@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-wood-frame</div>
 <h1>WoodenHub75Box</h1><p>Parametrized 12 mm plywood box, eight brackets and one GlassStrip type</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">130 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">112 commands</span><span class="badge">Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.</p></section>
@@ -105,7 +105,10 @@ class WoodenHub75Box:
         )
 
         brackets = CornerBrackets(
-            wood_frame=frame,
+            opening_width=self.opening_width,
+            opening_height=self.opening_height,
+            frame_wood_thickness=self.frame_wood_thickness,
+            cabinet_depth=self.cabinet_depth,
             bracket_width=self.bracket_width,
             corner_radius=self.corner_radius,
         )
@@ -159,30 +162,6 @@ class WoodenHub75Box:
     &quot;grounded&quot;: true
   }
 }</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_recess_depth</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;panel_recess_depth&quot;,
-    &quot;expression&quot;: &quot;25&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: frame_wood_thickness</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;frame_wood_thickness&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;opening_height&quot;,
-    &quot;expression&quot;: &quot;362&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Hub75PanelBasic</small><pre><code>{
   &quot;command&quot;: &quot;component.create&quot;,
   &quot;params&quot;: {
@@ -195,8 +174,7 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
     &quot;plane&quot;: &quot;XZ&quot;,
-    &quot;name&quot;: &quot;Profile&quot;,
-    &quot;offset&quot;: &quot;panel_recess_depth + 7.25 mm&quot;
+    &quot;name&quot;: &quot;Profile&quot;
   }
 }</code></pre></li>
 <li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
@@ -205,19 +183,19 @@ class WoodenHub75Box:
     &quot;points&quot;: [
       [
         -79.85,
-        &quot;-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))&quot;
+        0
       ],
       [
         79.85,
-        &quot;-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))&quot;
+        0
       ],
       [
         79.85,
-        &quot;-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)&quot;
+        -319.71
       ],
       [
         -79.85,
-        &quot;-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)&quot;
+        -319.71
       ]
     ],
     &quot;closed&quot;: true,
@@ -288,14 +266,46 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;Hub75PanelBasic&quot;
   }
 }</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: panel_recess_depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;panel_recess_depth&quot;,
+    &quot;expression&quot;: &quot;25 mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: frame_wood_thickness</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;frame_wood_thickness&quot;,
+    &quot;expression&quot;: &quot;12 mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: opening_height</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;opening_height&quot;,
+    &quot;expression&quot;: &quot;362 mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
+  &quot;params&quot;: {
+    &quot;occurrence&quot;: &quot;Hub75PanelBasic:1&quot;,
+    &quot;translate&quot;: [
+      0,
+      &quot;panel_recess_depth + 7.25 mm&quot;,
+      &quot;frame_wood_thickness + ((opening_height - 319.71 mm) / 2)&quot;
+    ]
+  }
+}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:2&quot;,
     &quot;translate&quot;: [
       -320.0,
-      0.0,
-      0.0
+      &quot;panel_recess_depth + 7.25 mm&quot;,
+      &quot;frame_wood_thickness + ((opening_height - 319.71 mm) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -305,8 +315,8 @@ class WoodenHub75Box:
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:3&quot;,
     &quot;translate&quot;: [
       -160.0,
-      0.0,
-      0.0
+      &quot;panel_recess_depth + 7.25 mm&quot;,
+      &quot;frame_wood_thickness + ((opening_height - 319.71 mm) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -316,8 +326,8 @@ class WoodenHub75Box:
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:4&quot;,
     &quot;translate&quot;: [
       160.0,
-      0.0,
-      0.0
+      &quot;panel_recess_depth + 7.25 mm&quot;,
+      &quot;frame_wood_thickness + ((opening_height - 319.71 mm) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -327,8 +337,8 @@ class WoodenHub75Box:
     &quot;occurrence&quot;: &quot;Hub75PanelBasic:5&quot;,
     &quot;translate&quot;: [
       320.0,
-      0.0,
-      0.0
+      &quot;panel_recess_depth + 7.25 mm&quot;,
+      &quot;frame_wood_thickness + ((opening_height - 319.71 mm) / 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -398,110 +408,26 @@ class WoodenHub75Box:
     &quot;expression&quot;: &quot;844 mm&quot;
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place Board:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place Board:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodBoxFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;Board:1&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
-      &quot;-((opening_width + (frame_wood_thickness)) / 2)&quot;,
+    &quot;occurrence&quot;: &quot;Board:1&quot;,
+    &quot;translate&quot;: [
+      &quot;-((opening_width / 2) + (frame_wood_thickness / 2))&quot;,
       0,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;frame_wood_thickness&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
+      &quot;frame_wood_thickness&quot;
+    ]
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place Board:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place Board:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodBoxFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;Board:2&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
-      &quot;(opening_width + (frame_wood_thickness)) / 2&quot;,
+    &quot;occurrence&quot;: &quot;Board:2&quot;,
+    &quot;translate&quot;: [
+      &quot;(opening_width / 2) + (frame_wood_thickness / 2)&quot;,
       0,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;frame_wood_thickness&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
+      &quot;frame_wood_thickness&quot;
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: corner_radius</small><pre><code>{
@@ -664,57 +590,15 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place Board 3:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place Board 3:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodBoxFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;Board 3:1&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
+    &quot;occurrence&quot;: &quot;Board 3:1&quot;,
+    &quot;translate&quot;: [
       0,
       &quot;-(roof_front_overhang)&quot;,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;frame_wood_thickness + (opening_height)&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
+      &quot;frame_wood_thickness + (opening_height)&quot;
+    ]
   }
 }</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Board 4</small><pre><code>{
@@ -762,57 +646,15 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;root&quot;
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place Board 4:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place Board 4:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodBoxFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;Board 4:1&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
+    &quot;occurrence&quot;: &quot;Board 4:1&quot;,
+    &quot;translate&quot;: [
       0,
       &quot;cabinet_depth&quot;,
-      0.0
-    ],
-    &quot;offset&quot;: 0,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
+      0
+    ]
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: bracket_width</small><pre><code>{
@@ -820,62 +662,6 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;name&quot;: &quot;bracket_width&quot;,
     &quot;expression&quot;: &quot;24&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_horizontal_arm_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_horizontal_arm_length&quot;,
-    &quot;expression&quot;: &quot;60&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_arm_height</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_arm_height&quot;,
-    &quot;expression&quot;: &quot;12&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_arm_end_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_arm_end_chamfer&quot;,
-    &quot;expression&quot;: &quot;3&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_outer_corner_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_outer_corner_chamfer&quot;,
-    &quot;expression&quot;: &quot;6&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_vertical_arm_length</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_vertical_arm_length&quot;,
-    &quot;expression&quot;: &quot;60&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_side_edge_chamfer</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
-    &quot;expression&quot;: &quot;2&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: CornerBracket_elephant_foot_relief</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
-    &quot;expression&quot;: &quot;0.6&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -903,36 +689,36 @@ class WoodenHub75Box:
         0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length&quot;,
+        60.0,
         0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length&quot;,
-        &quot;-(CornerBracket_arm_height - (CornerBracket_arm_end_chamfer))&quot;
+        60.0,
+        -9.0
       ],
       [
-        &quot;CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)&quot;,
-        &quot;-(CornerBracket_arm_height)&quot;
+        57.0,
+        -12.0
       ],
       [
-        &quot;(-(CornerBracket_arm_height)) + (CornerBracket_outer_corner_chamfer)&quot;,
-        &quot;-(CornerBracket_arm_height)&quot;
+        -6.0,
+        -12.0
       ],
       [
-        &quot;-(CornerBracket_arm_height)&quot;,
-        &quot;-(CornerBracket_arm_height - (CornerBracket_outer_corner_chamfer))&quot;
+        -12.0,
+        -6.0
       ],
       [
-        &quot;-(CornerBracket_arm_height)&quot;,
-        &quot;-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))&quot;
+        -12.0,
+        57.0
       ],
       [
-        &quot;(-(CornerBracket_arm_height)) + (CornerBracket_arm_end_chamfer)&quot;,
-        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
+        -9.0,
+        60.0
       ],
       [
         0,
-        &quot;-(-(CornerBracket_vertical_arm_length))&quot;
+        60.0
       ]
     ],
     &quot;closed&quot;: true,
@@ -1050,7 +836,7 @@ class WoodenHub75Box:
         -60.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_side_edge_chamfer&quot;,
+    &quot;distance&quot;: 2.0,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1069,7 +855,7 @@ class WoodenHub75Box:
         -60.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;distance&quot;: 0.6,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1088,7 +874,7 @@ class WoodenHub75Box:
         -0.0
       ]
     ],
-    &quot;distance&quot;: &quot;CornerBracket_elephant_foot_relief&quot;,
+    &quot;distance&quot;: 0.6,
     &quot;body&quot;: &quot;CornerBracket&quot;
   }
 }</code></pre></li>
@@ -1145,9 +931,9 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
     &quot;translate&quot;: [
-      -434.0,
-      0.0,
-      386.0
+      &quot;-((opening_width / 2) + (frame_wood_thickness))&quot;,
+      &quot;bracket_width / 2&quot;,
+      &quot;opening_height + (frame_wood_thickness * 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -1156,9 +942,9 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
     &quot;translate&quot;: [
-      -434.0,
-      100.0,
-      386.0
+      &quot;-((opening_width / 2) + (frame_wood_thickness))&quot;,
+      &quot;cabinet_depth - (bracket_width / 2)&quot;,
+      &quot;opening_height + (frame_wood_thickness * 2)&quot;
     ]
   }
 }</code></pre></li>
@@ -1167,10 +953,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
     &quot;translate&quot;: [
-      422.0,
+      &quot;(opening_width / 2) + (frame_wood_thickness)&quot;,
+      &quot;bracket_width / 2&quot;,
+      &quot;opening_height + (frame_wood_thickness * 2)&quot;
+    ],
+    &quot;axis&quot;: [
       0.0,
-      374.0
-    ]
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1178,10 +970,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
     &quot;translate&quot;: [
-      422.0,
-      100.0,
-      374.0
-    ]
+      &quot;(opening_width / 2) + (frame_wood_thickness)&quot;,
+      &quot;cabinet_depth - (bracket_width / 2)&quot;,
+      &quot;opening_height + (frame_wood_thickness * 2)&quot;
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;90 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1189,10 +987,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
     &quot;translate&quot;: [
-      434.0,
+      &quot;(opening_width / 2) + (frame_wood_thickness)&quot;,
+      &quot;bracket_width / 2&quot;,
+      0
+    ],
+    &quot;axis&quot;: [
       0.0,
-      24.0
-    ]
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1200,10 +1004,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
     &quot;translate&quot;: [
-      434.0,
-      100.0,
-      24.0
-    ]
+      &quot;(opening_width / 2) + (frame_wood_thickness)&quot;,
+      &quot;cabinet_depth - (bracket_width / 2)&quot;,
+      0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;180 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1211,10 +1021,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
     &quot;translate&quot;: [
-      -446.0,
+      &quot;-((opening_width / 2) + (frame_wood_thickness))&quot;,
+      &quot;bracket_width / 2&quot;,
+      0
+    ],
+    &quot;axis&quot;: [
       0.0,
-      12.0
-    ]
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;270 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1222,10 +1038,16 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
     &quot;translate&quot;: [
-      -446.0,
-      100.0,
-      12.0
-    ]
+      &quot;-((opening_width / 2) + (frame_wood_thickness))&quot;,
+      &quot;cabinet_depth - (bracket_width / 2)&quot;,
+      0
+    ],
+    &quot;axis&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;angle&quot;: &quot;270 deg&quot;
   }
 }</code></pre></li>
 <li><strong>Named CAD parameter</strong><small>parameters.add · name: glazing_wood_depth</small><pre><code>{
@@ -1330,57 +1152,15 @@ class WoodenHub75Box:
     &quot;component&quot;: &quot;GlassStrip&quot;
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place GlassStrip:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
+<li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
+  &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place GlassStrip:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodGlassFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;GlassStrip:1&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
+    &quot;occurrence&quot;: &quot;GlassStrip:1&quot;,
+    &quot;translate&quot;: [
       0,
       0,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;frame_wood_thickness&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
+      &quot;frame_wood_thickness&quot;
+    ]
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
@@ -1388,9 +1168,9 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassStrip:2&quot;,
     &quot;translate&quot;: [
-      0.0,
-      0.0,
-      0.0
+      0,
+      &quot;glazing_wood_depth&quot;,
+      &quot;frame_wood_thickness + (opening_height)&quot;
     ],
     &quot;axis&quot;: [
       1.0,
@@ -1398,59 +1178,6 @@ class WoodenHub75Box:
       0.0
     ],
     &quot;angle&quot;: &quot;180 deg&quot;
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place GlassStrip:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place GlassStrip:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodGlassFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;GlassStrip:2&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
-      0,
-      &quot;glazing_wood_depth&quot;,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;frame_wood_thickness + (opening_height)&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
   }
 }</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: GlassStrip 2</small><pre><code>{
@@ -1544,9 +1271,9 @@ class WoodenHub75Box:
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassStrip 2:1&quot;,
     &quot;translate&quot;: [
-      0.0,
-      0.0,
-      0.0
+      &quot;-(opening_width / 2)&quot;,
+      0,
+      &quot;(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2&quot;
     ],
     &quot;axis&quot;: [
       0.0,
@@ -1556,67 +1283,14 @@ class WoodenHub75Box:
     &quot;angle&quot;: &quot;90 deg&quot;
   }
 }</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place GlassStrip 2:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place GlassStrip 2:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodGlassFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;GlassStrip 2:1&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
-      &quot;-(opening_width / 2)&quot;,
-      0,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
     &quot;occurrence&quot;: &quot;GlassStrip 2:2&quot;,
     &quot;translate&quot;: [
-      0.0,
-      0.0,
-      0.0
+      &quot;opening_width / 2&quot;,
+      0,
+      &quot;(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2&quot;
     ],
     &quot;axis&quot;: [
       0.0,
@@ -1624,59 +1298,6 @@ class WoodenHub75Box:
       0.0
     ],
     &quot;angle&quot;: &quot;-90 deg&quot;
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Place GlassStrip 2:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;planar&quot;,
-    &quot;name&quot;: &quot;Place GlassStrip 2:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;WoodGlassFrame:1&quot;,
-      &quot;frame&quot;: {
-        &quot;origin&quot;: [
-          0.0,
-          0.0,
-          0.0
-        ],
-        &quot;z&quot;: [
-          0.0,
-          0.0,
-          1.0
-        ],
-        &quot;x&quot;: [
-          1.0,
-          0.0,
-          0.0
-        ]
-      }
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;GlassStrip 2:2&quot;,
-      &quot;point&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        0.0,
-        1.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;values&quot;: [
-      &quot;opening_width / 2&quot;,
-      0,
-      0.0
-    ],
-    &quot;offset&quot;: &quot;(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2&quot;,
-    &quot;flip&quot;: true,
-    &quot;angle&quot;: 0.0
   }
 }</code></pre></li>
 <li><strong>Create reusable component</strong><small>component.create · name: Window</small><pre><code>{
@@ -1721,373 +1342,6 @@ class WoodenHub75Box:
   &quot;command&quot;: &quot;component.activate&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;root&quot;
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:1 to Board:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:1 to Board:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:1&quot;,
-      &quot;edge&quot;: [
-        -434.0,
-        0.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        -428.0,
-        0.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        -434.0,
-        0.0,
-        374.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:1&quot;,
-      &quot;point&quot;: [
-        -434.0,
-        0.0,
-        374.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:2 to Board:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:2 to Board:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:1&quot;,
-      &quot;edge&quot;: [
-        -434.0,
-        100.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        -428.0,
-        100.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        -434.0,
-        100.0,
-        374.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:2&quot;,
-      &quot;point&quot;: [
-        -434.0,
-        100.0,
-        374.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:3 to Board:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:3 to Board:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:2&quot;,
-      &quot;edge&quot;: [
-        434.0,
-        0.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        428.0,
-        0.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        434.0,
-        0.0,
-        374.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:3&quot;,
-      &quot;point&quot;: [
-        434.0,
-        0.0,
-        374.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:4 to Board:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:4 to Board:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:2&quot;,
-      &quot;edge&quot;: [
-        434.0,
-        100.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        428.0,
-        100.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        434.0,
-        100.0,
-        374.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:4&quot;,
-      &quot;point&quot;: [
-        434.0,
-        100.0,
-        374.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:5 to Board:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:5 to Board:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:2&quot;,
-      &quot;edge&quot;: [
-        434.0,
-        0.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        428.0,
-        0.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        434.0,
-        0.0,
-        12.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:5&quot;,
-      &quot;point&quot;: [
-        434.0,
-        0.0,
-        12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:6 to Board:2</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:6 to Board:2&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:2&quot;,
-      &quot;edge&quot;: [
-        434.0,
-        100.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        428.0,
-        100.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        434.0,
-        100.0,
-        12.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:6&quot;,
-      &quot;point&quot;: [
-        434.0,
-        100.0,
-        12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:7 to Board:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:7 to Board:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:1&quot;,
-      &quot;edge&quot;: [
-        -434.0,
-        0.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        -428.0,
-        0.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        -434.0,
-        0.0,
-        12.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:7&quot;,
-      &quot;point&quot;: [
-        -434.0,
-        0.0,
-        12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        0.0,
-        0.0,
-        -1.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>Assembly joint</strong><small>joint.create · name: Attach CornerBracket:8 to Board:1</small><pre><code>{
-  &quot;command&quot;: &quot;joint.create&quot;,
-  &quot;params&quot;: {
-    &quot;type&quot;: &quot;rigid&quot;,
-    &quot;name&quot;: &quot;Attach CornerBracket:8 to Board:1&quot;,
-    &quot;a&quot;: {
-      &quot;occurrence&quot;: &quot;Board:1&quot;,
-      &quot;edge&quot;: [
-        -434.0,
-        100.0,
-        193.0
-      ],
-      &quot;on&quot;: [
-        -428.0,
-        100.0,
-        193.0
-      ],
-      &quot;corner&quot;: [
-        -434.0,
-        100.0,
-        12.0
-      ]
-    },
-    &quot;b&quot;: {
-      &quot;occurrence&quot;: &quot;CornerBracket:8&quot;,
-      &quot;point&quot;: [
-        -434.0,
-        100.0,
-        12.0
-      ],
-      &quot;z&quot;: [
-        0.0,
-        -1.0,
-        0.0
-      ],
-      &quot;x&quot;: [
-        1.0,
-        0.0,
-        0.0
-      ]
-    },
-    &quot;offset&quot;: &quot;-(bracket_width / 2)&quot;,
-    &quot;angle&quot;: 0.0
-  }
-}</code></pre></li>
-<li><strong>browser.visibility</strong><small>browser.visibility</small><pre><code>{
-  &quot;command&quot;: &quot;browser.visibility&quot;,
-  &quot;params&quot;: {
-    &quot;folder&quot;: &quot;joints&quot;,
-    &quot;visible&quot;: false
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

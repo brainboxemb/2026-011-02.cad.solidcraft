@@ -33,30 +33,6 @@
       }
     },
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "panel_recess_depth",
-        "expression": "25",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "frame_wood_thickness",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "opening_height",
-        "expression": "362",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "Hub75PanelBasic",
@@ -68,8 +44,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Profile",
-        "offset": "panel_recess_depth + 7.25 mm"
+        "name": "Profile"
       }
     },
     {
@@ -78,19 +53,19 @@
         "points": [
           [
             -79.85,
-            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))"
+            0
           ],
           [
             79.85,
-            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2))"
+            0
           ],
           [
             79.85,
-            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)"
+            -319.71
           ],
           [
             -79.85,
-            "-(frame_wood_thickness + ((opening_height - 319.71 mm) / 2) + 319.71 mm)"
+            -319.71
           ]
         ],
         "closed": true,
@@ -162,13 +137,45 @@
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "panel_recess_depth",
+        "expression": "25 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "frame_wood_thickness",
+        "expression": "12 mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "opening_height",
+        "expression": "362 mm"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "Hub75PanelBasic:1",
+        "translate": [
+          0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "Hub75PanelBasic:2",
         "translate": [
           -320.0,
-          0.0,
-          0.0
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
         ]
       }
     },
@@ -178,8 +185,8 @@
         "occurrence": "Hub75PanelBasic:3",
         "translate": [
           -160.0,
-          0.0,
-          0.0
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
         ]
       }
     },
@@ -189,8 +196,8 @@
         "occurrence": "Hub75PanelBasic:4",
         "translate": [
           160.0,
-          0.0,
-          0.0
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
         ]
       }
     },
@@ -200,8 +207,8 @@
         "occurrence": "Hub75PanelBasic:5",
         "translate": [
           320.0,
-          0.0,
-          0.0
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
         ]
       }
     },
@@ -272,109 +279,25 @@
       }
     },
     {
-      "command": "joint.create",
+      "command": "occurrence.move",
       "params": {
-        "type": "planar",
-        "name": "Place Board:1",
-        "a": {
-          "occurrence": "WoodBoxFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "Board:1",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
-          "-((opening_width + (frame_wood_thickness)) / 2)",
+        "occurrence": "Board:1",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness / 2))",
           0,
-          0.0
-        ],
-        "offset": "frame_wood_thickness",
-        "flip": true,
-        "angle": 0.0
+          "frame_wood_thickness"
+        ]
       }
     },
     {
-      "command": "joint.create",
+      "command": "occurrence.move",
       "params": {
-        "type": "planar",
-        "name": "Place Board:2",
-        "a": {
-          "occurrence": "WoodBoxFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "Board:2",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
-          "(opening_width + (frame_wood_thickness)) / 2",
+        "occurrence": "Board:2",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness / 2)",
           0,
-          0.0
-        ],
-        "offset": "frame_wood_thickness",
-        "flip": true,
-        "angle": 0.0
+          "frame_wood_thickness"
+        ]
       }
     },
     {
@@ -538,56 +461,14 @@
       }
     },
     {
-      "command": "joint.create",
+      "command": "occurrence.move",
       "params": {
-        "type": "planar",
-        "name": "Place Board 3:1",
-        "a": {
-          "occurrence": "WoodBoxFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "Board 3:1",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
+        "occurrence": "Board 3:1",
+        "translate": [
           0,
           "-(roof_front_overhang)",
-          0.0
-        ],
-        "offset": "frame_wood_thickness + (opening_height)",
-        "flip": true,
-        "angle": 0.0
+          "frame_wood_thickness + (opening_height)"
+        ]
       }
     },
     {
@@ -636,56 +517,14 @@
       }
     },
     {
-      "command": "joint.create",
+      "command": "occurrence.move",
       "params": {
-        "type": "planar",
-        "name": "Place Board 4:1",
-        "a": {
-          "occurrence": "WoodBoxFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "Board 4:1",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
+        "occurrence": "Board 4:1",
+        "translate": [
           0,
           "cabinet_depth",
-          0.0
-        ],
-        "offset": 0,
-        "flip": true,
-        "angle": 0.0
+          0
+        ]
       }
     },
     {
@@ -693,62 +532,6 @@
       "params": {
         "name": "bracket_width",
         "expression": "24",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_horizontal_arm_length",
-        "expression": "60",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_arm_height",
-        "expression": "12",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_arm_end_chamfer",
-        "expression": "3",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_outer_corner_chamfer",
-        "expression": "6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_vertical_arm_length",
-        "expression": "60",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_side_edge_chamfer",
-        "expression": "2",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "CornerBracket_elephant_foot_relief",
-        "expression": "0.6",
         "unit": "mm"
       }
     },
@@ -776,36 +559,36 @@
             0
           ],
           [
-            "CornerBracket_horizontal_arm_length",
+            60.0,
             0
           ],
           [
-            "CornerBracket_horizontal_arm_length",
-            "-(CornerBracket_arm_height - (CornerBracket_arm_end_chamfer))"
+            60.0,
+            -9.0
           ],
           [
-            "CornerBracket_horizontal_arm_length - (CornerBracket_arm_end_chamfer)",
-            "-(CornerBracket_arm_height)"
+            57.0,
+            -12.0
           ],
           [
-            "(-(CornerBracket_arm_height)) + (CornerBracket_outer_corner_chamfer)",
-            "-(CornerBracket_arm_height)"
+            -6.0,
+            -12.0
           ],
           [
-            "-(CornerBracket_arm_height)",
-            "-(CornerBracket_arm_height - (CornerBracket_outer_corner_chamfer))"
+            -12.0,
+            -6.0
           ],
           [
-            "-(CornerBracket_arm_height)",
-            "-((-(CornerBracket_vertical_arm_length)) + (CornerBracket_arm_end_chamfer))"
+            -12.0,
+            57.0
           ],
           [
-            "(-(CornerBracket_arm_height)) + (CornerBracket_arm_end_chamfer)",
-            "-(-(CornerBracket_vertical_arm_length))"
+            -9.0,
+            60.0
           ],
           [
             0,
-            "-(-(CornerBracket_vertical_arm_length))"
+            60.0
           ]
         ],
         "closed": true,
@@ -923,7 +706,7 @@
             -60.0
           ]
         ],
-        "distance": "CornerBracket_side_edge_chamfer",
+        "distance": 2.0,
         "body": "CornerBracket"
       }
     },
@@ -942,7 +725,7 @@
             -60.0
           ]
         ],
-        "distance": "CornerBracket_elephant_foot_relief",
+        "distance": 0.6,
         "body": "CornerBracket"
       }
     },
@@ -961,7 +744,7 @@
             -0.0
           ]
         ],
-        "distance": "CornerBracket_elephant_foot_relief",
+        "distance": 0.6,
         "body": "CornerBracket"
       }
     },
@@ -1018,9 +801,9 @@
       "params": {
         "occurrence": "CornerBracket:1",
         "translate": [
-          -434.0,
-          0.0,
-          386.0
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "bracket_width / 2",
+          "opening_height + (frame_wood_thickness * 2)"
         ]
       }
     },
@@ -1029,9 +812,9 @@
       "params": {
         "occurrence": "CornerBracket:2",
         "translate": [
-          -434.0,
-          100.0,
-          386.0
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "cabinet_depth - (bracket_width / 2)",
+          "opening_height + (frame_wood_thickness * 2)"
         ]
       }
     },
@@ -1040,10 +823,16 @@
       "params": {
         "occurrence": "CornerBracket:3",
         "translate": [
-          422.0,
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "bracket_width / 2",
+          "opening_height + (frame_wood_thickness * 2)"
+        ],
+        "axis": [
           0.0,
-          374.0
-        ]
+          1.0,
+          0.0
+        ],
+        "angle": "90 deg"
       }
     },
     {
@@ -1051,10 +840,16 @@
       "params": {
         "occurrence": "CornerBracket:4",
         "translate": [
-          422.0,
-          100.0,
-          374.0
-        ]
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "cabinet_depth - (bracket_width / 2)",
+          "opening_height + (frame_wood_thickness * 2)"
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "90 deg"
       }
     },
     {
@@ -1062,10 +857,16 @@
       "params": {
         "occurrence": "CornerBracket:5",
         "translate": [
-          434.0,
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "bracket_width / 2",
+          0
+        ],
+        "axis": [
           0.0,
-          24.0
-        ]
+          1.0,
+          0.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
@@ -1073,10 +874,16 @@
       "params": {
         "occurrence": "CornerBracket:6",
         "translate": [
-          434.0,
-          100.0,
-          24.0
-        ]
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "cabinet_depth - (bracket_width / 2)",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "180 deg"
       }
     },
     {
@@ -1084,10 +891,16 @@
       "params": {
         "occurrence": "CornerBracket:7",
         "translate": [
-          -446.0,
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "bracket_width / 2",
+          0
+        ],
+        "axis": [
           0.0,
-          12.0
-        ]
+          1.0,
+          0.0
+        ],
+        "angle": "270 deg"
       }
     },
     {
@@ -1095,10 +908,16 @@
       "params": {
         "occurrence": "CornerBracket:8",
         "translate": [
-          -446.0,
-          100.0,
-          12.0
-        ]
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "cabinet_depth - (bracket_width / 2)",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "270 deg"
       }
     },
     {
@@ -1204,56 +1023,14 @@
       }
     },
     {
-      "command": "joint.create",
+      "command": "occurrence.move",
       "params": {
-        "type": "planar",
-        "name": "Place GlassStrip:1",
-        "a": {
-          "occurrence": "WoodGlassFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "GlassStrip:1",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
+        "occurrence": "GlassStrip:1",
+        "translate": [
           0,
           0,
-          0.0
-        ],
-        "offset": "frame_wood_thickness",
-        "flip": true,
-        "angle": 0.0
+          "frame_wood_thickness"
+        ]
       }
     },
     {
@@ -1261,9 +1038,9 @@
       "params": {
         "occurrence": "GlassStrip:2",
         "translate": [
-          0.0,
-          0.0,
-          0.0
+          0,
+          "glazing_wood_depth",
+          "frame_wood_thickness + (opening_height)"
         ],
         "axis": [
           1.0,
@@ -1271,59 +1048,6 @@
           0.0
         ],
         "angle": "180 deg"
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "planar",
-        "name": "Place GlassStrip:2",
-        "a": {
-          "occurrence": "WoodGlassFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "GlassStrip:2",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
-          0,
-          "glazing_wood_depth",
-          0.0
-        ],
-        "offset": "frame_wood_thickness + (opening_height)",
-        "flip": true,
-        "angle": 0.0
       }
     },
     {
@@ -1417,9 +1141,9 @@
       "params": {
         "occurrence": "GlassStrip 2:1",
         "translate": [
-          0.0,
-          0.0,
-          0.0
+          "-(opening_width / 2)",
+          0,
+          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
         ],
         "axis": [
           0.0,
@@ -1430,66 +1154,13 @@
       }
     },
     {
-      "command": "joint.create",
-      "params": {
-        "type": "planar",
-        "name": "Place GlassStrip 2:1",
-        "a": {
-          "occurrence": "WoodGlassFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "GlassStrip 2:1",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
-          "-(opening_width / 2)",
-          0,
-          0.0
-        ],
-        "offset": "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2",
-        "flip": true,
-        "angle": 0.0
-      }
-    },
-    {
       "command": "occurrence.move",
       "params": {
         "occurrence": "GlassStrip 2:2",
         "translate": [
-          0.0,
-          0.0,
-          0.0
+          "opening_width / 2",
+          0,
+          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
         ],
         "axis": [
           0.0,
@@ -1497,59 +1168,6 @@
           0.0
         ],
         "angle": "-90 deg"
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "planar",
-        "name": "Place GlassStrip 2:2",
-        "a": {
-          "occurrence": "WoodGlassFrame:1",
-          "frame": {
-            "origin": [
-              0.0,
-              0.0,
-              0.0
-            ],
-            "z": [
-              0.0,
-              0.0,
-              1.0
-            ],
-            "x": [
-              1.0,
-              0.0,
-              0.0
-            ]
-          }
-        },
-        "b": {
-          "occurrence": "GlassStrip 2:2",
-          "point": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "z": [
-            0.0,
-            0.0,
-            1.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "values": [
-          "opening_width / 2",
-          0,
-          0.0
-        ],
-        "offset": "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2",
-        "flip": true,
-        "angle": 0.0
       }
     },
     {
@@ -1594,373 +1212,6 @@
       "command": "component.activate",
       "params": {
         "component": "root"
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:1 to Board:1",
-        "a": {
-          "occurrence": "Board:1",
-          "edge": [
-            -434.0,
-            0.0,
-            193.0
-          ],
-          "on": [
-            -428.0,
-            0.0,
-            193.0
-          ],
-          "corner": [
-            -434.0,
-            0.0,
-            374.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:1",
-          "point": [
-            -434.0,
-            0.0,
-            374.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:2 to Board:1",
-        "a": {
-          "occurrence": "Board:1",
-          "edge": [
-            -434.0,
-            100.0,
-            193.0
-          ],
-          "on": [
-            -428.0,
-            100.0,
-            193.0
-          ],
-          "corner": [
-            -434.0,
-            100.0,
-            374.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:2",
-          "point": [
-            -434.0,
-            100.0,
-            374.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:3 to Board:2",
-        "a": {
-          "occurrence": "Board:2",
-          "edge": [
-            434.0,
-            0.0,
-            193.0
-          ],
-          "on": [
-            428.0,
-            0.0,
-            193.0
-          ],
-          "corner": [
-            434.0,
-            0.0,
-            374.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:3",
-          "point": [
-            434.0,
-            0.0,
-            374.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:4 to Board:2",
-        "a": {
-          "occurrence": "Board:2",
-          "edge": [
-            434.0,
-            100.0,
-            193.0
-          ],
-          "on": [
-            428.0,
-            100.0,
-            193.0
-          ],
-          "corner": [
-            434.0,
-            100.0,
-            374.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:4",
-          "point": [
-            434.0,
-            100.0,
-            374.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:5 to Board:2",
-        "a": {
-          "occurrence": "Board:2",
-          "edge": [
-            434.0,
-            0.0,
-            193.0
-          ],
-          "on": [
-            428.0,
-            0.0,
-            193.0
-          ],
-          "corner": [
-            434.0,
-            0.0,
-            12.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:5",
-          "point": [
-            434.0,
-            0.0,
-            12.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:6 to Board:2",
-        "a": {
-          "occurrence": "Board:2",
-          "edge": [
-            434.0,
-            100.0,
-            193.0
-          ],
-          "on": [
-            428.0,
-            100.0,
-            193.0
-          ],
-          "corner": [
-            434.0,
-            100.0,
-            12.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:6",
-          "point": [
-            434.0,
-            100.0,
-            12.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:7 to Board:1",
-        "a": {
-          "occurrence": "Board:1",
-          "edge": [
-            -434.0,
-            0.0,
-            193.0
-          ],
-          "on": [
-            -428.0,
-            0.0,
-            193.0
-          ],
-          "corner": [
-            -434.0,
-            0.0,
-            12.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:7",
-          "point": [
-            -434.0,
-            0.0,
-            12.0
-          ],
-          "z": [
-            0.0,
-            1.0,
-            0.0
-          ],
-          "x": [
-            0.0,
-            0.0,
-            -1.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "joint.create",
-      "params": {
-        "type": "rigid",
-        "name": "Attach CornerBracket:8 to Board:1",
-        "a": {
-          "occurrence": "Board:1",
-          "edge": [
-            -434.0,
-            100.0,
-            193.0
-          ],
-          "on": [
-            -428.0,
-            100.0,
-            193.0
-          ],
-          "corner": [
-            -434.0,
-            100.0,
-            12.0
-          ]
-        },
-        "b": {
-          "occurrence": "CornerBracket:8",
-          "point": [
-            -434.0,
-            100.0,
-            12.0
-          ],
-          "z": [
-            0.0,
-            -1.0,
-            0.0
-          ],
-          "x": [
-            1.0,
-            0.0,
-            0.0
-          ]
-        },
-        "offset": "-(bracket_width / 2)",
-        "angle": 0.0
-      }
-    },
-    {
-      "command": "browser.visibility",
-      "params": {
-        "folder": "joints",
-        "visible": false
       }
     }
   ]

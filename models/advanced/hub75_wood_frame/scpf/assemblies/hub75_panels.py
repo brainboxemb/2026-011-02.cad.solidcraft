@@ -36,6 +36,6 @@ class HUB75Panels:
             if column == PANEL_COUNT // 2:
                 continue
             x = (column - PANEL_COUNT // 2) * PANEL_PITCH
-            panels = panels + middle.copy().move(x=x)
+            panels = panels + middle.copy().at(x=x)
 
         return panels.group("HUB75Panels")

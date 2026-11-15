@@ -38,6 +38,7 @@ jobs:
           python -m pip install -e ext/scpf/scpf
           python -m pip install -e ext/scpc
           echo "SCPF_COMMIT=$(git -C ext/scpf rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "SCPC_COMMIT=$(git -C ext/scpc rev-parse HEAD)" >> "$GITHUB_ENV"
           python - <<'PY'
           import os
           from importlib.metadata import version
@@ -582,10 +583,23 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          jq -n --arg source "$GITHUB_SHA" --arg scpf "$SCPF_COMMIT" \
-            --arg version "$SOLIDCRAFT_VERSION" --arg run "$GITHUB_RUN_ID" \
-            '{source_commit:$source,scpf_commit:$scpf,solidcraft_version:$version,workflow_run:$run,verified:true}' \
-            > output/native/verification.json
+          jq -n \
+            --arg source "$GITHUB_SHA" \
+            --arg scpf "$SCPF_COMMIT" \
+            --arg scpf_release "$SCPF_RELEASE" \
+            --arg scpc "$SCPC_COMMIT" \
+            --arg version "$SOLIDCRAFT_VERSION" \
+            --arg run "$GITHUB_RUN_ID" \
+            '{
+              schema:1,
+              source_commit:$source,
+              scpf_commit:$scpf,
+              scpf_release:$scpf_release,
+              scpc_commit:$scpc,
+              solidcraft_version:$version,
+              workflow_run:$run,
+              verified:true
+            }' > output/native/verification.json
           for model in plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" \
               --out "output/models/$model/scpf/solidcraft.json"
@@ -599,9 +613,21 @@ jobs:
           for model in plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel hub75-screen hub75-wood-frame; do
             test -s "output/site/models/$model/native.png"
           done
-          jq -e --arg scpf "$SCPF_COMMIT" --arg source "$GITHUB_SHA" \
-            '.scpf_commit == $scpf and .source_commit == $source and (.native_verified_models | length)  >= 9' \
-            output/site/provenance.json
+          jq -e \
+            --arg scpf "$SCPF_COMMIT" \
+            --arg scpf_release "$SCPF_RELEASE" \
+            --arg scpc "$SCPC_COMMIT" \
+            --arg source "$GITHUB_SHA" \
+            --arg solidcraft "$SOLIDCRAFT_VERSION" \
+            '.
+              | .scpf_commit == $scpf
+              and .scpf_release == $scpf_release
+              and .scpc_commit == $scpc
+              and .source_commit == $source
+              and .solidcraft_version == $solidcraft
+              and (.native_file_format | test("^solidcraft/[0-9]+$"))
+              and (.native_verified_models | length) >= 9
+            ' output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()
         uses: actions/upload-artifact@v4

@@ -76,13 +76,16 @@ class CornerBracket:
             self.inside_corner_radius,
             edges=Edges.from_vertices("i_corner"),
         )
-        body = body.chamfer(
-            self.elephant_foot_relief,
-            edges=Edges.from_vertices("o_hor_tip", "v_tip"),
-        )
+        # Apply the larger broad-face chamfer before the tiny tip relief.
+        # SolidCraft 0.42 correctly rejects a 2 mm chamfer when the adjacent
+        # face has already been reduced to 0.6 mm by the tip relief.
         body = body.chamfer(
             self.side_edge_chamfer,
             edges=Edges.from_profile("o_*", sides="both"),
+        )
+        body = body.chamfer(
+            self.elephant_foot_relief,
+            edges=Edges.from_vertices("o_hor_tip", "v_tip"),
         )
         body = body.chamfer(
             self.elephant_foot_relief,

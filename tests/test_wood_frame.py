@@ -610,28 +610,18 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertIn("@assembly", assembly_source)
         self.assertIn("class CornerBrackets:", assembly_source)
-        self.assertIn("z=Anchor.BACK", assembly_source)
-        self.assertIn("z=Anchor.FRONT", assembly_source)
-        self.assertIn("x=Anchor.DOWN", assembly_source)
-        self.assertIn("x=Anchor.RIGHT", assembly_source)
-        self.assertNotIn("z=(0, 1, 0)", assembly_source)
-        self.assertNotIn("z=(0, -1, 0)", assembly_source)
-        self.assertNotIn("angle=0", assembly_source)
-        self.assertEqual(assembly_source.count("origin=(0, 0, 0)"), 2)
-        self.assertNotIn("origin=down(", assembly_source)
-        self.assertNotIn("origin=right(", assembly_source)
-        self.assertIn("gap = half(self.bracket_width)", assembly_source)
-        self.assertIn("wood_frame = None", assembly_source)
-        self.assertIn("def build(self):", assembly_source)
-        self.assertNotIn("def __new__", assembly_source)
-        self.assertNotIn("attach_corner_brackets", assembly_source)
+        self.assertIn("outer_x = half(self.opening_width)", assembly_source)
+        self.assertIn("top_z = self.opening_height", assembly_source)
+        self.assertIn("front_y = half(self.bracket_width)", assembly_source)
+        self.assertIn("rear_y = self.cabinet_depth - half(self.bracket_width)", assembly_source)
+        self.assertIn("placement=Placement(", assembly_source)
+        self.assertIn("rotation=(Z, 180)", assembly_source)
+        self.assertIn("rotation=(X, 180)", assembly_source)
+        self.assertIn("rotation=(Y, 180)", assembly_source)
+        self.assertNotIn("AnchorFrame(", assembly_source)
+        self.assertNotIn(".attach(", assembly_source)
         self.assertNotIn(".move(", assembly_source)
         self.assertNotIn(".rotate(", assembly_source)
-        self.assertNotIn("opening_width", assembly_source)
-        self.assertNotIn("opening_height", assembly_source)
-        self.assertIn(".attach(", assembly_source)
-        self.assertIn("Anchor.FRONT_TOP_LEFT", assembly_source)
-        self.assertIn("Anchor.BACK_BOTTOM_RIGHT", assembly_source)
 
         cmd = commands()
         creates = [
@@ -651,8 +641,8 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "joint.create")
             if p["name"].startswith("Attach CornerBracket:")
         ]
-        self.assertEqual(len(joints), 8)
-        self.assertTrue(all(p["type"] == "rigid" for p in joints))
+        self.assertEqual(joints, [])
+        self.assertEqual(len(moved(cmd, "CornerBracket")), 8)
 
     def test_bracket_inside_radius_uses_frame_corner_radius(self):
         cmd = commands()
@@ -684,18 +674,13 @@ class WoodenFrameTests(unittest.TestCase):
             p for p in of(cmd, "joint.create")
             if p["name"].startswith("Attach CornerBracket:")
         ]
-        self.assertEqual(len(joints), 8)
+        self.assertEqual(joints, [])
+
+        placements = moved(cmd, "CornerBracket")
+        self.assertEqual(len(placements), 8)
         self.assertEqual(
-            sum(p["b"].get("z") == [0, 1, 0] for p in joints),
-            4,
-        )
-        self.assertEqual(
-            sum(p["b"].get("z") == [0, -1, 0] for p in joints),
-            4,
-        )
-        self.assertEqual(
-            sorted(p["angle"] for p in joints),
-            [0, 0, 0, 0, 0, 0, 0, 0],
+            sorted(p["translate"][1] for p in placements),
+            [12.0] * 4 + [88.0] * 4,
         )
         self.assertFalse(
             any(p["command"] == "solid.hole" for p in cmd)

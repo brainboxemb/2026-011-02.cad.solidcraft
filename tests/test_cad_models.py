@@ -109,11 +109,11 @@ class CADModelRegressions(unittest.TestCase):
             ROOT
             / "models/advanced/hub75_wood_frame/scpf/assemblies/corner_brackets.py"
         ).read_text(encoding="utf-8")
-        self.assertIn("AnchorFrame(", assembly_source)
-        self.assertIn("front_mount_a", assembly_source)
-        self.assertIn("rear_mount_a", assembly_source)
-        self.assertNotIn('child="front_mount', assembly_source)
-        self.assertNotIn('child="rear_mount', assembly_source)
+        self.assertIn("placement=Placement(", assembly_source)
+        self.assertNotIn("AnchorFrame(", assembly_source)
+        self.assertNotIn(".attach(", assembly_source)
+        self.assertNotIn("front_mount_a", assembly_source)
+        self.assertNotIn("rear_mount_a", assembly_source)
 
 
     def test_reusable_component_sources_own_component_decorator(self):

@@ -179,17 +179,20 @@ jobs:
             ([.commands[] | select(.command == "solid.fillet")] | length) == 1 and
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
-          # One reusable CornerBracket definition is attached eight times
-          # to the named left/right Board outside-corner references. Initial occurrence
-          # moves only seed the solver; the native rigid joints own the relation.
+          # One reusable CornerBracket definition is placed eight times
+          # explicitly. This CAD baseline deliberately does not use AnchorFrame:
+          # the current AnchorFrame path has a known regression and these eight
+          # cabinet-corner poses are fully described by Placement.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"
                and .params.name == "CornerBracket")] | length) == 1 and
             ([.commands[] | select(.command == "occurrence.copy"
                and .params.component == "CornerBracket")] | length) == 7 and
+            ([.commands[] | select(.command == "occurrence.move"
+               and (.params.occurrence | startswith("CornerBracket")))] | length) == 8 and
             ([.commands[] | select(.command == "joint.create"
-               and (.params.name | startswith("Attach CornerBracket:")))] | length) == 8 and
+               and (.params.name | startswith("Attach CornerBracket:")))] | length) == 0 and
             ([.commands[] | select(.command == "joint.origin"
                and (.params.name | startswith("CornerBracket:")))] | length) == 0 and
             ([.commands[] | select(.command == "solid.fillet")] | length) == 3

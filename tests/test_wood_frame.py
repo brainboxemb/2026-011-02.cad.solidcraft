@@ -705,13 +705,18 @@ class WoodenFrameTests(unittest.TestCase):
     def test_opening_height_drives_all_vertical_dependents_symbolically(self):
         cmd = commands(opening_height=400)
 
-        joints = [
-            p for p in of(cmd, "joint.create")
-            if p["name"].startswith("Attach CornerBracket:")
+        bracket_moves = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
         ]
+        self.assertEqual(len(bracket_moves), 8)
         self.assertEqual(
-            sorted(p["a"]["corner"][2] for p in joints),
-            [12.0, 12.0, 12.0, 12.0, 412.0, 412.0, 412.0, 412.0],
+            sum("opening_height" in str(p["translate"][2]) for p in bracket_moves),
+            4,
+        )
+        self.assertEqual(
+            sum(p["translate"][2] == 0 for p in bracket_moves),
+            4,
         )
 
         points = " ".join(
@@ -747,14 +752,16 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertTrue(any(value.startswith("-") for value in side_x))
         self.assertTrue(any(not value.startswith("-") for value in side_x))
 
-        joints = [
-            p for p in of(cmd, "joint.create")
-            if p["name"].startswith("Attach CornerBracket:")
+        bracket_moves = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
         ]
-        self.assertEqual(
-            sorted(p["a"]["corner"][0] for p in joints),
-            [-512.0, -512.0, -512.0, -512.0,
-             512.0, 512.0, 512.0, 512.0],
+        self.assertEqual(len(bracket_moves), 8)
+        self.assertTrue(
+            all("opening_width" in str(p["translate"][0]) for p in bracket_moves)
+        )
+        self.assertTrue(
+            all("frame_wood_thickness" in str(p["translate"][0]) for p in bracket_moves)
         )
 
         points = " ".join(
@@ -808,17 +815,14 @@ class WoodenFrameTests(unittest.TestCase):
             str(roof_placement["translate"][1]),
         )
 
-        joints = [
-            p for p in of(cmd, "joint.create")
-            if p["name"].startswith("Attach CornerBracket:")
+        bracket_moves = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
         ]
-        self.assertEqual(len(joints), 8)
+        self.assertEqual(len(bracket_moves), 8)
         self.assertEqual(
-            sum(p["b"].get("z") == [0, -1, 0] for p in joints),
+            sum("cabinet_depth" in str(p["translate"][1]) for p in bracket_moves),
             4,
-        )
-        self.assertTrue(
-            all("corner" in p["a"] and "edge" in p["a"] for p in joints)
         )
 
     def test_parameter_override_changes_all_dependents(self):
@@ -827,11 +831,11 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(moved(cmd, BOARD_COMPONENTS["bottom"]), [])
         self.assertEqual(len(moved(cmd, BOARD_COMPONENTS["left"])), 2)
         self.assertEqual(len(moved(cmd, BOARD_COMPONENTS["roof"])), 1)
-        joints = [
-            p for p in of(cmd, "joint.create")
-            if p["name"].startswith("Attach CornerBracket:")
+        bracket_moves = [
+            p for p in of(cmd, "occurrence.move")
+            if p["occurrence"].startswith("CornerBracket")
         ]
-        self.assertEqual(len(joints), 8)
+        self.assertEqual(len(bracket_moves), 8)
         sketch_points = " ".join(
             str(p["points"]) for p in of(cmd, "sketch.line")
         )

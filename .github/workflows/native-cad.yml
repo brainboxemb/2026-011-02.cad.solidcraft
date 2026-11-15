@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SOLIDCRAFT_VERSION: "0.30.1"
+      SCPF_RELEASE: "0.1.0"
+      SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +38,25 @@ jobs:
           python -m pip install -e ext/scpf/scpf
           python -m pip install -e ext/scpc
           echo "SCPF_COMMIT=$(git -C ext/scpf rev-parse HEAD)" >> "$GITHUB_ENV"
+          python - <<'PY'
+          import os
+          from importlib.metadata import version
+          from scpf.version import TESTED_SOLIDCRAFT_VERSION
+
+          actual = version("scpf")
+          expected = os.environ["SCPF_RELEASE"]
+          if actual != expected:
+              raise SystemExit(
+                  f"SCPF release mismatch: expected {expected}, installed {actual}"
+              )
+          engine = os.environ["SOLIDCRAFT_VERSION"]
+          if TESTED_SOLIDCRAFT_VERSION != engine:
+              raise SystemExit(
+                  "Forge/SolidCraft qualification mismatch: "
+                  f"Forge expects {TESTED_SOLIDCRAFT_VERSION}, workflow uses {engine}"
+              )
+          print(f"SCPF {actual}; SolidCraft {engine}")
+          PY
       - name: Download the verified official SolidCraft release
         shell: bash
         run: |
@@ -187,7 +207,7 @@ jobs:
                 and (.params.occurrence | startswith("Hub75PanelBasic"))
                 and .params.translate[1] != 0)] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
-          # Stable SolidCraft 0.30.1 lowers symbolic free placement to native
+          # Stable SolidCraft 0.42.0 lowers symbolic free placement to native
           # parametric joints. Board placement therefore needs no occurrence
           # translation; GlassStrip occurrence moves are rotation-only.
           jq -e '

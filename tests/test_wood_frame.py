@@ -590,6 +590,13 @@ class WoodenFrameTests(unittest.TestCase):
 
         self.assertIn("@assembly", assembly_source)
         self.assertIn("class CornerBrackets:", assembly_source)
+        self.assertIn("z=Anchor.BACK", assembly_source)
+        self.assertIn("z=Anchor.FRONT", assembly_source)
+        self.assertIn("x=Anchor.DOWN", assembly_source)
+        self.assertIn("x=Anchor.RIGHT", assembly_source)
+        self.assertNotIn("z=(0, 1, 0)", assembly_source)
+        self.assertNotIn("z=(0, -1, 0)", assembly_source)
+        self.assertNotIn("angle=0", assembly_source)
         self.assertIn("wood_frame = None", assembly_source)
         self.assertIn("def build(self):", assembly_source)
         self.assertNotIn("def __new__", assembly_source)

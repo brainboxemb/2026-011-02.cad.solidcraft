@@ -1,132 +1,160 @@
-"""Eight corner brackets placed around the four outside cabinet corners."""
+"""Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Placement, X, Y, Z, assembly, half
+from scpf import Anchor, AnchorFrame, assembly, down, half, right
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
 
 @assembly
 class CornerBrackets:
-    """Place two brackets along Y at each outside X/Z cabinet corner."""
+    """Attach brackets around the four outside corners of the side boards."""
 
-    opening_width = 844.0
-    opening_height = 362.0
-    frame_wood_thickness = 12.0
-    cabinet_depth = 100.0
+    wood_frame = None
     bracket_width = 24.0
     corner_radius = 4.0
 
     def build(self):
-        outer_x = half(self.opening_width) + self.frame_wood_thickness
-        bottom_z = 0.0
-        top_z = self.opening_height + 2 * self.frame_wood_thickness
+        if self.wood_frame is None:
+            raise ValueError("CornerBrackets requires wood_frame")
 
-        front_y = half(self.bracket_width)
-        rear_y = self.cabinet_depth - half(self.bracket_width)
+        left_board = self.wood_frame.left
+        right_board = self.wood_frame.right
 
         bracket = CornerBracket(
             arm_width=self.bracket_width,
             inside_corner_radius=self.corner_radius,
         )
 
-        # CornerBracket is authored as one neutral L profile in local XZ.
-        # Its concave inside corner I is the component origin.
+        # Mounting orientation belongs to this HUB75 assembly, not to the
+        # reusable CornerBracket geometry. Read the existing bracket profile
+        # dimension; do not introduce a second assembly parameter for it.
         #
-        # Neutral profile:
+        # CornerBracket local side profile (XZ), looking along +Y:
         #
         #                    +Z
         #                     ^
         #        +------------+--------------------------+
         #        |            |        horizontal arm   |
         #        |            |                         |
-        #        |            I-------------------------+  +X
+        #        |            I----B--------------------+
+        #        |            |    B = (w, 0, 0)
         #        |            |
-        #        |            | vertical arm
+        #        |            A    A = (0, 0, -w)
         #        |            |
         #        +------------+
+        #                     +-------------------------> +X
         #
-        # I must coincide directly with the exterior convex cabinet corner.
-        # The four required X/Z orientations are:
+        # I = the concave inside corner and component origin (0, 0, 0).
+        # A and B are NOT points stored by CornerBracket; they are mounting
+        # references chosen here by this assembly:
         #
-        #   top-left     neutral      +X inward, -Z down
-        #   top-right    Z 180°       -X inward, -Z down
-        #   bottom-left  X 180°       +X inward, +Z up
-        #   bottom-right Y 180°       -X inward, +Z up
+        #   mount_a origin = (0, 0, -w)
+        #       one arm_height below I, on the inside edge of the vertical arm.
         #
-        # The bracket extrusion is symmetric around local Y, so these 180°
-        # rotations may flip the local extrusion axis without changing the
-        # physical front/rear envelope.
+        #   mount_b origin = (w, 0, 0)
+        #       one arm_height right of I, on the inside edge of the
+        #       horizontal arm.
         #
-        # Front and rear therefore share exactly the same X/Z Placement and
-        # differ only in their Y centre:
+        # Both origins have Y=0. The bracket itself is extruded symmetrically
+        # over arm_width, so its broad faces are at:
         #
-        #   front: 0 .. bracket_width
-        #   rear:  cabinet_depth-bracket_width .. cabinet_depth
-
-        top_left_front = bracket.copy(
-            placement=Placement(
-                x=-outer_x,
-                y=front_y,
-                z=top_z,
-            ),
+        #             local Y / bracket width
+        #
+        #        front face       centre        rear face
+        #        Y=-arm_width/2    Y=0          Y=+arm_width/2
+        #             |             |                 |
+        #             +-------------+-----------------+
+        #             <--------- arm_width ----------->
+        #                           ^
+        #                           |
+        #                 AnchorFrame.origin
+        #
+        # The frame normal selects which side is front/rear:
+        #
+        #   front_mount_*: z = Anchor.BACK
+        #   rear_mount_* : z = Anchor.FRONT
+        #
+        # The AnchorFrame itself therefore remains on the Y=0 centre plane.
+        # gap = -arm_width/2 below offsets the rigid joint along that normal:
+        # front -> Y=-arm_width/2, rear -> Y=+arm_width/2.
+        #
+        # x=... on each AnchorFrame fixes the remaining rotation around the
+        # normal. A/B plus the parent corner determine which of the four
+        # clock positions the neutral L profile occupies.
+        w = CornerBracket.arm_height
+        front_mount_a = AnchorFrame(
+            origin=down(w),
+            z=Anchor.BACK,
+            x=Anchor.DOWN,
         )
-        top_left_rear = bracket.copy(
-            placement=Placement(
-                x=-outer_x,
-                y=rear_y,
-                z=top_z,
-            ),
+        front_mount_b = AnchorFrame(
+            origin=right(w),
+            z=Anchor.BACK,
+            x=Anchor.DOWN,
         )
-
-        top_right_front = bracket.copy(
-            placement=Placement(
-                x=outer_x,
-                y=front_y,
-                z=top_z,
-                rotation=(Z, 180),
-            ),
+        rear_mount_a = AnchorFrame(
+            origin=down(w),
+            z=Anchor.FRONT,
+            x=Anchor.RIGHT,
         )
-        top_right_rear = bracket.copy(
-            placement=Placement(
-                x=outer_x,
-                y=rear_y,
-                z=top_z,
-                rotation=(Z, 180),
-            ),
-        )
-
-        bottom_left_front = bracket.copy(
-            placement=Placement(
-                x=-outer_x,
-                y=front_y,
-                z=bottom_z,
-                rotation=(X, 180),
-            ),
-        )
-        bottom_left_rear = bracket.copy(
-            placement=Placement(
-                x=-outer_x,
-                y=rear_y,
-                z=bottom_z,
-                rotation=(X, 180),
-            ),
+        rear_mount_b = AnchorFrame(
+            origin=right(w),
+            z=Anchor.FRONT,
+            x=Anchor.RIGHT,
         )
 
-        bottom_right_front = bracket.copy(
-            placement=Placement(
-                x=outer_x,
-                y=front_y,
-                z=bottom_z,
-                rotation=(Y, 180),
-            ),
+        # CornerBracket.arm_width is passed from self.bracket_width above.
+        # Keep the joint on the broad bracket face rather than its Y=0 centre.
+        gap = -half(self.bracket_width)
+
+        top_left_front = bracket.copy().attach(
+            left_board,
+            parent=Anchor.FRONT_TOP_LEFT,
+            child=front_mount_a,
+            gap=gap,
         )
-        bottom_right_rear = bracket.copy(
-            placement=Placement(
-                x=outer_x,
-                y=rear_y,
-                z=bottom_z,
-                rotation=(Y, 180),
-            ),
+        top_right_front = bracket.copy().attach(
+            right_board,
+            parent=Anchor.FRONT_TOP_RIGHT,
+            child=front_mount_b,
+            gap=gap,
+        )
+        bottom_right_front = bracket.copy().attach(
+            right_board,
+            parent=Anchor.FRONT_BOTTOM_RIGHT,
+            child=front_mount_a,
+            gap=gap,
+        )
+        bottom_left_front = bracket.copy().attach(
+            left_board,
+            parent=Anchor.FRONT_BOTTOM_LEFT,
+            child=front_mount_b,
+            gap=gap,
+        )
+
+        top_left_rear = bracket.copy().attach(
+            left_board,
+            parent=Anchor.BACK_TOP_LEFT,
+            child=rear_mount_a,
+            gap=gap,
+        )
+        top_right_rear = bracket.copy().attach(
+            right_board,
+            parent=Anchor.BACK_TOP_RIGHT,
+            child=rear_mount_b,
+            gap=gap,
+        )
+        bottom_right_rear = bracket.copy().attach(
+            right_board,
+            parent=Anchor.BACK_BOTTOM_RIGHT,
+            child=rear_mount_a,
+            gap=gap,
+        )
+        bottom_left_rear = bracket.copy().attach(
+            left_board,
+            parent=Anchor.BACK_BOTTOM_LEFT,
+            child=rear_mount_b,
+            gap=gap,
         )
 
         return (

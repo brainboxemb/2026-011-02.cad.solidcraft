@@ -1,6 +1,6 @@
 """Main plywood frame subassembly."""
 
-from scpf import BOTTOM, LEFT, RIGHT, TOP, assembly, half
+from scpf import BOTTOM, LEFT, RIGHT, TOP, Placement, assembly, half
 
 from parts.board import Board
 
@@ -24,8 +24,9 @@ class WoodFrame:
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
         opening_bottom = self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
-        side_center_x = half(
-            self.opening_width + self.frame_wood_thickness
+        side_center_x = (
+            half(self.opening_width)
+            + half(self.frame_wood_thickness)
         )
 
         bottom = Board(
@@ -36,11 +37,7 @@ class WoodFrame:
             corner_radius=self.corner_radius,
             fillet=(BOTTOM + LEFT, BOTTOM + RIGHT),
             material_name="LIGHTPLY bottom",
-        )
-        bottom = bottom.move(
-            0,
-            0,
-            0,
+            placement=Placement(),
         ).group("WoodBoxFrame")
 
         left = Board(
@@ -49,11 +46,10 @@ class WoodFrame:
             depth=self.cabinet_depth,
             height=self.opening_height,
             material_name="LIGHTPLY side board",
-        )
-        left = left.move(
-            -side_center_x,
-            0,
-            opening_bottom,
+            placement=Placement(
+                x=-side_center_x,
+                z=opening_bottom,
+            ),
         ).group("WoodBoxFrame")
 
         right = Board(
@@ -62,11 +58,10 @@ class WoodFrame:
             depth=self.cabinet_depth,
             height=self.opening_height,
             material_name="LIGHTPLY side board",
-        )
-        right = right.move(
-            side_center_x,
-            0,
-            opening_bottom,
+            placement=Placement(
+                x=side_center_x,
+                z=opening_bottom,
+            ),
         ).group("WoodBoxFrame")
 
         roof = Board(
@@ -77,11 +72,10 @@ class WoodFrame:
             corner_radius=self.corner_radius,
             fillet=(TOP + LEFT, TOP + RIGHT),
             material_name="LIGHTPLY roof",
-        )
-        roof = roof.move(
-            0,
-            roof_front,
-            opening_top,
+            placement=Placement(
+                y=roof_front,
+                z=opening_top,
+            ),
         ).group("WoodBoxFrame")
 
         rear = Board(
@@ -91,11 +85,7 @@ class WoodFrame:
             height=opening_top,
             material_name="LIGHTPLY rear",
             color="#A87D4D",
-        )
-        rear = rear.move(
-            0,
-            rear_y,
-            0,
+            placement=Placement(y=rear_y),
         ).group("WoodBoxFrame")
 
         return left + right + bottom + roof + rear

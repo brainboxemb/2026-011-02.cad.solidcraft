@@ -1,6 +1,6 @@
 """Five-panel HUB75 subassembly."""
 
-from scpf import assembly, half
+from scpf import Placement, assembly, half
 
 from models.components.hub75_panel.basic.scpf.model import (
     HUB75_PANEL_DEPTH,
@@ -26,9 +26,12 @@ class HUB75Panels:
             self.opening_bottom_z
             + half(self.opening_height - HUB75_PANEL_HEIGHT)
         )
+
         middle = Hub75PanelBasic(
-            _y_center=panel_y,
-            _z_position=panel_z,
+            placement=Placement(
+                y=panel_y,
+                z=panel_z,
+            ),
         )
         panels = middle
 
@@ -36,6 +39,12 @@ class HUB75Panels:
             if column == PANEL_COUNT // 2:
                 continue
             x = (column - PANEL_COUNT // 2) * PANEL_PITCH
-            panels = panels + middle.copy().move(x=x)
+            panels = panels + middle.copy(
+                placement=Placement(
+                    x=x,
+                    y=panel_y,
+                    z=panel_z,
+                ),
+            )
 
         return panels.group("HUB75Panels")

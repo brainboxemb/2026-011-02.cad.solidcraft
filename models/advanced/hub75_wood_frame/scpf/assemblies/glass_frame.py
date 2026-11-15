@@ -1,6 +1,6 @@
 """Four-piece mitred glazing-frame subassembly."""
 
-from scpf import X, Y, assembly, half, midpoint
+from scpf import X, Y, Placement, assembly, half, midpoint
 
 from parts.glass_strip import GlassStrip
 
@@ -24,11 +24,7 @@ class GlassFrame:
             depth=self.glazing_wood_depth,
             material_name="PINE glazing horizontal",
             color="#E3BF80",
-        )
-        bottom = bottom.move(
-            0,
-            0,
-            opening_bottom,
+            placement=Placement(z=opening_bottom),
         )
 
         top = GlassStrip(
@@ -37,11 +33,11 @@ class GlassFrame:
             depth=self.glazing_wood_depth,
             material_name="PINE glazing horizontal",
             color="#E3BF80",
-        )
-        top = top.rotate(X, 180).move(
-            0,
-            self.glazing_wood_depth,
-            opening_top,
+            placement=Placement(
+                y=self.glazing_wood_depth,
+                z=opening_top,
+                rotation=(X, 180),
+            ),
         )
 
         left = GlassStrip(
@@ -50,11 +46,11 @@ class GlassFrame:
             depth=self.glazing_wood_depth,
             material_name="PINE glazing vertical",
             color="#A9793E",
-        )
-        left = left.rotate(Y, 90).move(
-            -half(self.opening_width),
-            0,
-            opening_center_z,
+            placement=Placement(
+                x=-half(self.opening_width),
+                z=opening_center_z,
+                rotation=(Y, 90),
+            ),
         )
 
         right = GlassStrip(
@@ -63,11 +59,11 @@ class GlassFrame:
             depth=self.glazing_wood_depth,
             material_name="PINE glazing vertical",
             color="#A9793E",
-        )
-        right = right.rotate(Y, -90).move(
-            half(self.opening_width),
-            0,
-            opening_center_z,
+            placement=Placement(
+                x=half(self.opening_width),
+                z=opening_center_z,
+                rotation=(Y, -90),
+            ),
         )
 
         return (bottom + top + left + right).group("WoodGlassFrame")

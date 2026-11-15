@@ -1,6 +1,6 @@
 """Eight corner brackets attached outside an existing WoodFrame."""
 
-from scpf import Anchor, AnchorFrame, assembly, half
+from scpf import Anchor, AnchorFrame, assembly, down, half, right
 
 from models.components.corner_bracket.scpf.model import CornerBracket
 
@@ -17,8 +17,8 @@ class CornerBrackets:
         if self.wood_frame is None:
             raise ValueError("CornerBrackets requires wood_frame")
 
-        left = self.wood_frame.left
-        right = self.wood_frame.right
+        left_board = self.wood_frame.left
+        right_board = self.wood_frame.right
 
         bracket = CornerBracket(
             arm_width=self.bracket_width,
@@ -83,22 +83,22 @@ class CornerBrackets:
         # clock positions the neutral L profile occupies.
         w = CornerBracket.arm_height
         front_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
+            origin=down(w),
             z=Anchor.BACK,
             x=Anchor.DOWN,
         )
         front_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
+            origin=right(w),
             z=Anchor.BACK,
             x=Anchor.DOWN,
         )
         rear_mount_a = AnchorFrame(
-            origin=(0, 0, -w),
+            origin=down(w),
             z=Anchor.FRONT,
             x=Anchor.RIGHT,
         )
         rear_mount_b = AnchorFrame(
-            origin=(w, 0, 0),
+            origin=right(w),
             z=Anchor.FRONT,
             x=Anchor.RIGHT,
         )
@@ -108,50 +108,50 @@ class CornerBrackets:
         gap = -half(self.bracket_width)
 
         top_left_front = bracket.copy().attach(
-            left,
+            left_board,
             parent=Anchor.FRONT_TOP_LEFT,
             child=front_mount_a,
             gap=gap,
         )
         top_right_front = bracket.copy().attach(
-            right,
+            right_board,
             parent=Anchor.FRONT_TOP_RIGHT,
             child=front_mount_b,
             gap=gap,
         )
         bottom_right_front = bracket.copy().attach(
-            right,
+            right_board,
             parent=Anchor.FRONT_BOTTOM_RIGHT,
             child=front_mount_a,
             gap=gap,
         )
         bottom_left_front = bracket.copy().attach(
-            left,
+            left_board,
             parent=Anchor.FRONT_BOTTOM_LEFT,
             child=front_mount_b,
             gap=gap,
         )
 
         top_left_rear = bracket.copy().attach(
-            left,
+            left_board,
             parent=Anchor.BACK_TOP_LEFT,
             child=rear_mount_a,
             gap=gap,
         )
         top_right_rear = bracket.copy().attach(
-            right,
+            right_board,
             parent=Anchor.BACK_TOP_RIGHT,
             child=rear_mount_b,
             gap=gap,
         )
         bottom_right_rear = bracket.copy().attach(
-            right,
+            right_board,
             parent=Anchor.BACK_BOTTOM_RIGHT,
             child=rear_mount_a,
             gap=gap,
         )
         bottom_left_rear = bracket.copy().attach(
-            left,
+            left_board,
             parent=Anchor.BACK_BOTTOM_LEFT,
             child=rear_mount_b,
             gap=gap,

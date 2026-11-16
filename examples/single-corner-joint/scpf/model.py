@@ -15,7 +15,7 @@ class Base:
 
 class Child:
     def build(self):
-        return Box(30, 20, 20)
+        return Box(30, 20, 20, anchor=Anchor.BOTTOM)
 
 
 class SingleCornerJoint:

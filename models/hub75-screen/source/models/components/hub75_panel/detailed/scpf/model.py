@@ -6,7 +6,7 @@ four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
 bay edges, tubes, PCB and connectors still need distinct features.
 """
-from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component, half
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component, half, midpoint
 
 
 @component
@@ -50,7 +50,6 @@ class Hub75Panel:
         half_height = half(self.height)
         quarter_height = self.height / 4
         opening_width = self.width - 2 * side
-        left = -half(self.width) + side
         bay_ranges = (
             (-half_height + end, -quarter_height - rib_half),
             (-quarter_height + rib_half, -rib_half),
@@ -65,7 +64,7 @@ class Hub75Panel:
             for bottom, top in bay_ranges:
                 bays.add(
                     Rectangle2D(opening_width, top - bottom),
-                    offset=(left, bottom),
+                    offset=(0, midpoint(bottom, top)),
                 )
         body = body - bays.extrude(
             self.depth - self.front_depth,

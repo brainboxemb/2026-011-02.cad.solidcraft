@@ -35,12 +35,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          0,
-          0
+          "-(width / 2)",
+          "-(depth / 2)"
         ],
         "p1": [
-          "width",
-          "depth"
+          "width / 2",
+          "depth / 2"
         ]
       }
     },
@@ -61,23 +61,23 @@
       "params": {
         "edges": [
           [
-            0.0,
-            0.0,
+            -40.0,
+            -25.0,
             4.0
           ],
           [
-            80.0,
-            0.0,
+            40.0,
+            -25.0,
             4.0
           ],
           [
-            80.0,
-            50.0,
+            40.0,
+            25.0,
             4.0
           ],
           [
-            0.0,
-            50.0,
+            -40.0,
+            25.0,
             4.0
           ]
         ],
@@ -96,8 +96,8 @@
       "command": "sketch.circle.center",
       "params": {
         "center": [
-          12.0,
-          25.0
+          "(-(width / 2)) + (width / 2) + ((width - 24 mm) * -0.5)",
+          "(-(depth / 2)) + (depth / 2)"
         ],
         "diameter": 8
       }
@@ -106,8 +106,8 @@
       "command": "sketch.circle.center",
       "params": {
         "center": [
-          68.0,
-          25.0
+          "(-(width / 2)) + (width / 2) + ((width - 24 mm) * 0.5)",
+          "(-(depth / 2)) + (depth / 2)"
         ],
         "diameter": 8
       }
@@ -134,8 +134,8 @@
         "height": 14,
         "diameter": 24,
         "base": [
-          40.0,
-          25.0,
+          0.0,
+          0.0,
           8.0
         ],
         "axis": "Z",
@@ -146,16 +146,16 @@
         "references": [
           {
             "edge": [
+              -40.0,
               0.0,
-              25.0,
               8.0
             ],
             "distance": "(width / 2)"
           },
           {
             "edge": [
-              40.0,
               0.0,
+              -25.0,
               8.0
             ],
             "distance": "(depth / 2)"
@@ -175,8 +175,8 @@
       "command": "sketch.circle.center",
       "params": {
         "center": [
-          40.0,
-          25.0
+          0.0,
+          0.0
         ],
         "diameter": 12
       }

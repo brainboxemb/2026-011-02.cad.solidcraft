@@ -1,10 +1,15 @@
 {
+  "format": "scpf-replay",
+  "version": 1,
   "commands": [
     {
       "command": "component.create",
       "params": {
         "name": "Hub75Panel",
         "grounded": true
+      },
+      "bind": {
+        "$hub75panel_occurrence_1": "occurrence"
       }
     },
     {
@@ -328,33 +333,45 @@
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75Panel"
+      },
+      "bind": {
+        "$hub75panel_occurrence_2": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75Panel"
+      },
+      "bind": {
+        "$hub75panel_occurrence_3": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75Panel"
+      },
+      "bind": {
+        "$hub75panel_occurrence_4": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75Panel"
+      },
+      "bind": {
+        "$hub75panel_occurrence_5": "occurrence"
       }
     },
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75Panel:1",
+        "occurrence": "$hub75panel_occurrence_1",
         "translate": [
-          0.0,
-          0.0,
+          0,
+          0,
           160.0
         ],
         "axis": [
@@ -369,10 +386,10 @@
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75Panel:2",
+        "occurrence": "$hub75panel_occurrence_2",
         "translate": [
           -320.0,
-          0.0,
+          0,
           160.0
         ],
         "axis": [
@@ -386,10 +403,10 @@
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75Panel:3",
+        "occurrence": "$hub75panel_occurrence_3",
         "translate": [
           -160.0,
-          0.0,
+          0,
           160.0
         ],
         "axis": [
@@ -403,10 +420,10 @@
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75Panel:4",
+        "occurrence": "$hub75panel_occurrence_4",
         "translate": [
           160.0,
-          0.0,
+          0,
           160.0
         ],
         "axis": [
@@ -420,10 +437,10 @@
     {
       "command": "occurrence.move",
       "params": {
-        "occurrence": "Hub75Panel:5",
+        "occurrence": "$hub75panel_occurrence_5",
         "translate": [
           320.0,
-          0.0,
+          0,
           160.0
         ],
         "axis": [

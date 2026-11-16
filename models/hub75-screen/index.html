@@ -185,6 +185,9 @@ class Hub75Panel:
   &quot;params&quot;: {
     &quot;name&quot;: &quot;Hub75Panel&quot;,
     &quot;grounded&quot;: true
+  },
+  &quot;bind&quot;: {
+    &quot;$hub75panel_occurrence_1&quot;: &quot;occurrence&quot;
   }
 }</code></pre></li>
 <li><strong>Create sketch</strong><small>sketch.create · name: Hub75Panel footprint, plane: XY</small><pre><code>{
@@ -508,33 +511,45 @@ class Hub75Panel:
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;Hub75Panel&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$hub75panel_occurrence_2&quot;: &quot;occurrence&quot;
   }
 }</code></pre></li>
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;Hub75Panel&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$hub75panel_occurrence_3&quot;: &quot;occurrence&quot;
   }
 }</code></pre></li>
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;Hub75Panel&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$hub75panel_occurrence_4&quot;: &quot;occurrence&quot;
   }
 }</code></pre></li>
 <li><strong>Copy component occurrence</strong><small>occurrence.copy</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.copy&quot;,
   &quot;params&quot;: {
     &quot;component&quot;: &quot;Hub75Panel&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$hub75panel_occurrence_5&quot;: &quot;occurrence&quot;
   }
 }</code></pre></li>
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:1&quot;,
+    &quot;occurrence&quot;: &quot;$hub75panel_occurrence_1&quot;,
     &quot;translate&quot;: [
-      0.0,
-      0.0,
+      0,
+      0,
       160.0
     ],
     &quot;axis&quot;: [
@@ -549,10 +564,10 @@ class Hub75Panel:
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:2&quot;,
+    &quot;occurrence&quot;: &quot;$hub75panel_occurrence_2&quot;,
     &quot;translate&quot;: [
       -320.0,
-      0.0,
+      0,
       160.0
     ],
     &quot;axis&quot;: [
@@ -566,10 +581,10 @@ class Hub75Panel:
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:3&quot;,
+    &quot;occurrence&quot;: &quot;$hub75panel_occurrence_3&quot;,
     &quot;translate&quot;: [
       -160.0,
-      0.0,
+      0,
       160.0
     ],
     &quot;axis&quot;: [
@@ -583,10 +598,10 @@ class Hub75Panel:
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:4&quot;,
+    &quot;occurrence&quot;: &quot;$hub75panel_occurrence_4&quot;,
     &quot;translate&quot;: [
       160.0,
-      0.0,
+      0,
       160.0
     ],
     &quot;axis&quot;: [
@@ -600,10 +615,10 @@ class Hub75Panel:
 <li><strong>Move component occurrence</strong><small>occurrence.move</small><pre><code>{
   &quot;command&quot;: &quot;occurrence.move&quot;,
   &quot;params&quot;: {
-    &quot;occurrence&quot;: &quot;Hub75Panel:5&quot;,
+    &quot;occurrence&quot;: &quot;$hub75panel_occurrence_5&quot;,
     &quot;translate&quot;: [
       320.0,
-      0.0,
+      0,
       160.0
     ],
     &quot;axis&quot;: [

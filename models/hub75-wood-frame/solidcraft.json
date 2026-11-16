@@ -1,11 +1,13 @@
 {
+  "format": "scpf-replay",
+  "version": 1,
   "commands": [
     {
       "command": "component.create",
       "params": {
         "name": "HUB75Panels",
         "activate": false,
-        "grounded": true
+        "grounded": false
       }
     },
     {
@@ -13,7 +15,7 @@
       "params": {
         "name": "WoodBoxFrame",
         "activate": false,
-        "grounded": true
+        "grounded": false
       }
     },
     {
@@ -21,7 +23,7 @@
       "params": {
         "name": "CornerBrackets",
         "activate": false,
-        "grounded": true
+        "grounded": false
       }
     },
     {
@@ -29,7 +31,7 @@
       "params": {
         "name": "WoodGlassFrame",
         "activate": false,
-        "grounded": true
+        "grounded": false
       }
     },
     {
@@ -38,6 +40,9 @@
         "name": "Hub75PanelBasic",
         "grounded": false,
         "parent": "HUB75Panels"
+      },
+      "bind": {
+        "$hub75panelbasic_occurrence_1": "occurrence"
       }
     },
     {
@@ -116,100 +121,44 @@
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75PanelBasic"
+      },
+      "bind": {
+        "$hub75panelbasic_occurrence_2": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75PanelBasic"
+      },
+      "bind": {
+        "$hub75panelbasic_occurrence_3": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75PanelBasic"
+      },
+      "bind": {
+        "$hub75panelbasic_occurrence_4": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "Hub75PanelBasic"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "panel_recess_depth",
-        "expression": "25 mm"
+      },
+      "bind": {
+        "$hub75panelbasic_occurrence_5": "occurrence"
       }
     },
     {
       "command": "parameters.add",
       "params": {
         "name": "frame_wood_thickness",
-        "expression": "12 mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "opening_height",
-        "expression": "362 mm"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:1",
-        "translate": [
-          0,
-          "panel_recess_depth + 7.25 mm",
-          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:2",
-        "translate": [
-          -320.0,
-          "panel_recess_depth + 7.25 mm",
-          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:3",
-        "translate": [
-          -160.0,
-          "panel_recess_depth + 7.25 mm",
-          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:4",
-        "translate": [
-          160.0,
-          "panel_recess_depth + 7.25 mm",
-          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Hub75PanelBasic:5",
-        "translate": [
-          320.0,
-          "panel_recess_depth + 7.25 mm",
-          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
-        ]
+        "expression": "12",
+        "unit": "mm"
       }
     },
     {
@@ -221,11 +170,22 @@
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "opening_height",
+        "expression": "362",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "component.create",
       "params": {
         "name": "Board",
         "grounded": false,
         "parent": "WoodBoxFrame"
+      },
+      "bind": {
+        "$left": "occurrence"
       }
     },
     {
@@ -269,35 +229,17 @@
       "command": "occurrence.copy",
       "params": {
         "component": "Board"
+      },
+      "bind": {
+        "$right": "occurrence"
       }
     },
     {
       "command": "parameters.add",
       "params": {
         "name": "opening_width",
-        "expression": "844 mm"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Board:1",
-        "translate": [
-          "-((opening_width / 2) + (frame_wood_thickness / 2))",
-          0,
-          "frame_wood_thickness"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Board:2",
-        "translate": [
-          "(opening_width / 2) + (frame_wood_thickness / 2)",
-          0,
-          "frame_wood_thickness"
-        ]
+        "expression": "844",
+        "unit": "mm"
       }
     },
     {
@@ -314,6 +256,9 @@
         "name": "Board 2",
         "grounded": false,
         "parent": "WoodBoxFrame"
+      },
+      "bind": {
+        "$bottom": "occurrence"
       }
     },
     {
@@ -402,6 +347,9 @@
         "name": "Board 3",
         "grounded": false,
         "parent": "WoodBoxFrame"
+      },
+      "bind": {
+        "$roof": "occurrence"
       }
     },
     {
@@ -461,22 +409,14 @@
       }
     },
     {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Board 3:1",
-        "translate": [
-          0,
-          "-(roof_front_overhang)",
-          "frame_wood_thickness + (opening_height)"
-        ]
-      }
-    },
-    {
       "command": "component.create",
       "params": {
         "name": "Board 4",
         "grounded": false,
         "parent": "WoodBoxFrame"
+      },
+      "bind": {
+        "$rear": "occurrence"
       }
     },
     {
@@ -517,17 +457,6 @@
       }
     },
     {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "Board 4:1",
-        "translate": [
-          0,
-          "cabinet_depth",
-          0
-        ]
-      }
-    },
-    {
       "command": "parameters.add",
       "params": {
         "name": "bracket_width",
@@ -541,6 +470,9 @@
         "name": "CornerBracket",
         "grounded": false,
         "parent": "CornerBrackets"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_1": "occurrence"
       }
     },
     {
@@ -758,166 +690,63 @@
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_2": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_3": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_4": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_5": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_6": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_7": "occurrence"
       }
     },
     {
       "command": "occurrence.copy",
       "params": {
         "component": "CornerBracket"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:1",
-        "translate": [
-          "-((opening_width / 2) + (frame_wood_thickness))",
-          "bracket_width / 2",
-          "opening_height + (frame_wood_thickness * 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:2",
-        "translate": [
-          "-((opening_width / 2) + (frame_wood_thickness))",
-          "cabinet_depth - (bracket_width / 2)",
-          "opening_height + (frame_wood_thickness * 2)"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:3",
-        "translate": [
-          "(opening_width / 2) + (frame_wood_thickness)",
-          "bracket_width / 2",
-          "opening_height + (frame_wood_thickness * 2)"
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "90 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:4",
-        "translate": [
-          "(opening_width / 2) + (frame_wood_thickness)",
-          "cabinet_depth - (bracket_width / 2)",
-          "opening_height + (frame_wood_thickness * 2)"
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "90 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:5",
-        "translate": [
-          "(opening_width / 2) + (frame_wood_thickness)",
-          "bracket_width / 2",
-          0
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "180 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:6",
-        "translate": [
-          "(opening_width / 2) + (frame_wood_thickness)",
-          "cabinet_depth - (bracket_width / 2)",
-          0
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "180 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:7",
-        "translate": [
-          "-((opening_width / 2) + (frame_wood_thickness))",
-          "bracket_width / 2",
-          0
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "270 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "CornerBracket:8",
-        "translate": [
-          "-((opening_width / 2) + (frame_wood_thickness))",
-          "cabinet_depth - (bracket_width / 2)",
-          0
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "270 deg"
+      },
+      "bind": {
+        "$cornerbracket_occurrence_8": "occurrence"
       }
     },
     {
@@ -942,6 +771,9 @@
         "name": "GlassStrip",
         "grounded": false,
         "parent": "WoodGlassFrame"
+      },
+      "bind": {
+        "$glassstrip_occurrence_1": "occurrence"
       }
     },
     {
@@ -1020,34 +852,9 @@
       "command": "occurrence.copy",
       "params": {
         "component": "GlassStrip"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip:1",
-        "translate": [
-          0,
-          0,
-          "frame_wood_thickness"
-        ]
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip:2",
-        "translate": [
-          0,
-          "glazing_wood_depth",
-          "frame_wood_thickness + (opening_height)"
-        ],
-        "axis": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "angle": "180 deg"
+      },
+      "bind": {
+        "$glassstrip_occurrence_2": "occurrence"
       }
     },
     {
@@ -1056,6 +863,9 @@
         "name": "GlassStrip 2",
         "grounded": false,
         "parent": "WoodGlassFrame"
+      },
+      "bind": {
+        "$glassstrip_2_occurrence_1": "occurrence"
       }
     },
     {
@@ -1134,40 +944,9 @@
       "command": "occurrence.copy",
       "params": {
         "component": "GlassStrip 2"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip 2:1",
-        "translate": [
-          "-(opening_width / 2)",
-          0,
-          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "90 deg"
-      }
-    },
-    {
-      "command": "occurrence.move",
-      "params": {
-        "occurrence": "GlassStrip 2:2",
-        "translate": [
-          "opening_width / 2",
-          0,
-          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
-        ],
-        "axis": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "angle": "-90 deg"
+      },
+      "bind": {
+        "$glassstrip_2_occurrence_2": "occurrence"
       }
     },
     {
@@ -1175,6 +954,9 @@
       "params": {
         "name": "Window",
         "grounded": false
+      },
+      "bind": {
+        "$window": "occurrence"
       }
     },
     {
@@ -1212,6 +994,298 @@
       "command": "component.activate",
       "params": {
         "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "panel_recess_depth",
+        "expression": "25 mm"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panelbasic_occurrence_1",
+        "translate": [
+          0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panelbasic_occurrence_2",
+        "translate": [
+          -320.0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panelbasic_occurrence_3",
+        "translate": [
+          -160.0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panelbasic_occurrence_4",
+        "translate": [
+          160.0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panelbasic_occurrence_5",
+        "translate": [
+          320.0,
+          "panel_recess_depth + 7.25 mm",
+          "frame_wood_thickness + ((opening_height - 319.71 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$left",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness / 2))",
+          0,
+          "frame_wood_thickness"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$right",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness / 2)",
+          0,
+          "frame_wood_thickness"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$roof",
+        "translate": [
+          0,
+          "-(roof_front_overhang)",
+          "frame_wood_thickness + (opening_height)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$rear",
+        "translate": [
+          0,
+          "cabinet_depth",
+          0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_1",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "bracket_width / 2",
+          "opening_height + (frame_wood_thickness * 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_2",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "cabinet_depth - (bracket_width / 2)",
+          "opening_height + (frame_wood_thickness * 2)"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_3",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "bracket_width / 2",
+          "opening_height + (frame_wood_thickness * 2)"
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "90 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_4",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "cabinet_depth - (bracket_width / 2)",
+          "opening_height + (frame_wood_thickness * 2)"
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "90 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_5",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "bracket_width / 2",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "180 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_6",
+        "translate": [
+          "(opening_width / 2) + (frame_wood_thickness)",
+          "cabinet_depth - (bracket_width / 2)",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "180 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_7",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "bracket_width / 2",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "270 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$cornerbracket_occurrence_8",
+        "translate": [
+          "-((opening_width / 2) + (frame_wood_thickness))",
+          "cabinet_depth - (bracket_width / 2)",
+          0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "270 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$glassstrip_occurrence_1",
+        "translate": [
+          0,
+          0,
+          "frame_wood_thickness"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$glassstrip_occurrence_2",
+        "translate": [
+          0,
+          "glazing_wood_depth",
+          "frame_wood_thickness + (opening_height)"
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "180 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$glassstrip_2_occurrence_1",
+        "translate": [
+          "-(opening_width / 2)",
+          0,
+          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "90 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$glassstrip_2_occurrence_2",
+        "translate": [
+          "opening_width / 2",
+          0,
+          "(frame_wood_thickness + (frame_wood_thickness + (opening_height))) / 2"
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "angle": "-90 deg"
       }
     }
   ]

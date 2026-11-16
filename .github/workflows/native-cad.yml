@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SCPF_RELEASE: "0.4.2"
+      SCPF_RELEASE: "0.5.0"
       SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
     steps:

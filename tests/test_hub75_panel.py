@@ -31,8 +31,10 @@ class Hub75PanelTests(unittest.TestCase):
         self.assertTrue(all("translate" not in p for p in copies))
 
         placements = of("occurrence.move")
-        self.assertEqual([p["occurrence"] for p in placements],
-                         [f"Hub75Panel:{i}" for i in range(1, 6)])
+        self.assertEqual(
+            [p["occurrence"] for p in placements],
+            [f"$hub75panel_occurrence_{i}" for i in range(1, 6)],
+        )
         self.assertEqual(
             [p["translate"] for p in placements],
             [

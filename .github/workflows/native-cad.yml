@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SCPF_RELEASE: "0.3.3"
+      SCPF_RELEASE: "0.3.4"
       SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
     steps:
@@ -216,7 +216,7 @@ jobs:
             ([.commands[] | select(.command == "joint.create"
                 and (.params.name | startswith("Place Hub75PanelBasic")))] | length) == 0
           ' output/native/hub75-wood-frame/commands.json
-          # Forge 0.3.3 keeps free occurrence Placement separate from joints.
+          # Forge keeps free occurrence Placement separate from joints.
           # SolidCraft 0.42.0 uses expressed occurrence.move commands when
           # component.create/copy cannot encode symbolic XYZ or orientation.
           jq -e '

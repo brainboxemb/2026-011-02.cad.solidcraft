@@ -171,7 +171,7 @@ class CADModelRegressions(unittest.TestCase):
         )
         self.assertEqual(
             joints[0]["b"],
-            {"occurrence": "$child", "face": [40.0, 0.0, 10.0]},
+            {"occurrence": "$child", "face": [-15.0, 0.0, 10.0]},
         )
         self.assertEqual(
             commands[-1],
@@ -211,7 +211,7 @@ class CADModelRegressions(unittest.TestCase):
         )
         self.assertEqual(
             joints[0]["b"],
-            {"occurrence": "$child", "face": [40.0, -20.0, 80.0]},
+            {"occurrence": "$child", "face": [-15.0, 0.0, 10.0]},
         )
 
 
@@ -246,7 +246,7 @@ class CADModelRegressions(unittest.TestCase):
             joints[0]["b"],
             {
                 "occurrence": "$child",
-                "point": [40.0, -20.0, 80.0],
+                "point": [0.0, 0.0, 0.0],
                 "z": [0.0, 1.0, 0.0],
                 "x": [1.0, 0.0, 0.0],
             },

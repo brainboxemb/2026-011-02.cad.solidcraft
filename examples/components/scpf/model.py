@@ -4,7 +4,7 @@ class Block:
     height = 10.0
 
     def build(self):
-        return Box(self.length, self.width, self.height)
+        return Box(self.length, self.width, self.height, anchor=Anchor.BOTTOM)
 
 
 class TwoBlocks:

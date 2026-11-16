@@ -8,12 +8,12 @@ native visualization and behavior of one ordinary face-to-face joint.
 
 class Base:
     def build(self):
-        return Box(80, 40, 20)
+        return Box(80, 40, 20, anchor=Anchor.BOTTOM)
 
 
 class Child:
     def build(self):
-        return Box(30, 20, 20)
+        return Box(30, 20, 20, anchor=Anchor.BOTTOM)
 
 
 class SingleJoint:

@@ -1,11 +1,13 @@
 # Exact revisions of independent Forge (SCPF) and Commands (SCPC) libraries.
 # Both can be checked out reproducibly under ext/ using vcs2l.
-# SCPF pin below is release 0.4.2, qualified against SolidCraft 0.42.0.
+# SCPF preview pin: Forge change 0022, before merge/release.
+# Replace with the qualified merged revision before promoting this CAD PR.
+# SolidCraft native target: 0.42.0.
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.forge.git
-    version: 4c26bf8e1038ff862145fa0d0c651c0555134038
+    version: cb3db03890eaefb1762d4cac02d766c1197ab112
   scpc:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git

@@ -27,12 +27,12 @@
         "length": "size",
         "width": "size",
         "height": "size",
+        "operation": "intersect",
         "center": [
           0,
           0,
           0
         ],
-        "operation": "intersect",
         "targets": [
           "CsgCube"
         ]

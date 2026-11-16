@@ -32,7 +32,7 @@ class Hub75Panel:
 
     def build(self):
         # Real long sloping sides from Z=2 to Z=14.5, not a short bevel.
-        body = Box(self.width, self.height, self.depth).taper(
+        body = Box(self.width, self.height, self.depth, anchor=Anchor.BOTTOM).taper(
             from_z=self.front_depth, inset=self.rear_inset,
         )
 

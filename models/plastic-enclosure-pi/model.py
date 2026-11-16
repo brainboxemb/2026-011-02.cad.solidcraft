@@ -8,7 +8,7 @@ class PlasticEnclosurePi:
     def build(self):
         width = self.board_w + 10.0
         depth = self.board_d + 10.0
-        enclosure = Box(width, depth, self.height)
+        enclosure = Box(width, depth, self.height, anchor=Anchor.BOTTOM)
         enclosure = enclosure.fillet(5.0, edges=Edges.VERTICAL)
         enclosure = enclosure.shell(self.wall, open=Faces.TOP)
 

@@ -99,12 +99,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-width / 2",
-          "-height / 2"
+          "-(width / 2)",
+          "-(height / 2)"
         ],
         "p1": [
-          "width / 2",
-          "height / 2"
+          "(-(width / 2)) + (width)",
+          "(-(height / 2)) + (height)"
         ]
       }
     },
@@ -131,12 +131,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-width / 2",
-          "-height / 2"
+          "-(width / 2)",
+          "-(height / 2)"
         ],
         "p1": [
-          "width / 2",
-          "height / 2"
+          "(-(width / 2)) + (width)",
+          "(-(height / 2)) + (height)"
         ]
       }
     },
@@ -156,12 +156,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-width / 2) + (rear_inset)",
-          "(-height / 2) + (rear_inset)"
+          "(-(width / 2)) + (rear_inset)",
+          "(-(height / 2)) + (rear_inset)"
         ],
         "p1": [
-          "(width / 2) - (rear_inset)",
-          "(height / 2) - (rear_inset)"
+          "((-(width / 2)) + (width)) - (rear_inset)",
+          "((-(height / 2)) + (height)) - (rear_inset)"
         ]
       }
     },

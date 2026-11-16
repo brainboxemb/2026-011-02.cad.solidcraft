@@ -32,7 +32,7 @@
     wall = 2.0
 
     def build(self):
-        enclosure = Box(self.length, self.width, self.height)
+        enclosure = Box(self.length, self.width, self.height, anchor=Anchor.BOTTOM)
         enclosure = enclosure.shell(self.wall, open=Faces.TOP)
 
         lip = Lip(width=1, height=2).attach(

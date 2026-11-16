@@ -10,7 +10,7 @@ from scpf import AnchorFrame
 
 class Base:
     def build(self):
-        return Box(80, 40, 80)
+        return Box(80, 40, 80, anchor=Anchor.BOTTOM)
 
 
 class Child:

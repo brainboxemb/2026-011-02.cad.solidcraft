@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SCPF_RELEASE: "0.3.4"
+      SCPF_RELEASE: "0.4.2"
       SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
     steps:
@@ -180,9 +180,9 @@ jobs:
             ([.commands[] | select(.command == "solid.chamfer")] | length) == 3
           ' output/native/corner-bracket/commands.json
           # One reusable CornerBracket definition is placed eight times
-          # explicitly. This CAD baseline deliberately does not use AnchorFrame:
-          # the current AnchorFrame path has a known regression and these eight
-          # cabinet-corner poses are fully described by Placement.
+          # explicitly. These cabinet-corner poses are ordinary occurrence
+          # Placement, so they deliberately do not introduce an attachment or
+          # AnchorFrame relationship that the CAD design does not need.
           jq -e '
             ([.commands[] | select(.command == "solid.hole")] | length) == 0 and
             ([.commands[] | select(.command == "component.create"

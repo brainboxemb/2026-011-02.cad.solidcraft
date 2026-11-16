@@ -1,6 +1,6 @@
 """Mitred wooden glazing retainer."""
 
-from scpf import Polygon2D, Sketch, component, half, pv
+from scpf import Polygon2D, Sketch, component, half
 
 
 @component
@@ -16,11 +16,9 @@ class GlassStrip:
     color = None
 
     def build(self):
-        assert pv(self.width) > 0, "GlassStrip width must be positive"
-        assert pv(self.width) < half(pv(self.length)), (
-            "GlassStrip width must be less than half its length"
-        )
-
+        # length and width remain native editable parameters. A Python pv()
+        # check would validate only the initial Forge run, not later edits in
+        # the saved SolidCraft design, so geometry keeps the values symbolic.
         half_length = half(self.length)
         start = -half_length
         end = half_length

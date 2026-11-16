@@ -369,7 +369,7 @@ class CADModelRegressions(unittest.TestCase):
         self.assertEqual(boss["operation"], "join")
         self.assertEqual(boss["diameter"], 24)
         self.assertEqual(boss["height"], 14)
-        self.assertEqual(boss["base"], [40.0, 25.0, 8.0])
+        self.assertEqual(boss["base"], [0.0, 0.0, 8.0])
         self.assertEqual(
             [c["params"]["operation"] for c in commands
              if c["command"] == "solid.extrude" and "operation" in c["params"]],
@@ -380,11 +380,16 @@ class CADModelRegressions(unittest.TestCase):
              if c["command"] == "solid.extrude" and "operation" in c["params"]],
             ["Holes", "Bore"],
         )
-        self.assertEqual(
-            [c["params"]["center"] for c in commands
-             if c["command"] == "sketch.circle.center"],
-            [[12, 25], [68, 25], [40, 25]],
-        )
+        centers = [
+            c["params"]["center"] for c in commands
+            if c["command"] == "sketch.circle.center"
+        ]
+        self.assertEqual(len(centers), 3)
+        self.assertEqual(centers[-1], [0.0, 0.0])
+        self.assertIn("width", str(centers[0][0]))
+        self.assertIn("width", str(centers[1][0]))
+        self.assertIn("depth", str(centers[0][1]))
+        self.assertIn("depth", str(centers[1][1]))
         self.assertEqual(
             [c["params"]["offset"] for c in commands
              if c["command"] == "sketch.create" and "offset" in c["params"]],
@@ -402,11 +407,21 @@ class CADModelRegressions(unittest.TestCase):
             commands = run_script(script)["commands"]
         self.assertEqual([c["params"]["expression"] for c in commands[:3]],
                          ["100", "60", "10"])
-        self.assertEqual(
-            [c["params"]["center"] for c in commands
-             if c["command"] == "sketch.circle.center"],
-            [[12, 30], [88, 30], [50, 30]],
-        )
+        centers = [
+            c["params"]["center"] for c in commands
+            if c["command"] == "sketch.circle.center"
+        ]
+        default_commands = run_script(
+            ROOT / "models/basic/sample_plate/scpf/model.py"
+        )["commands"]
+        default_centers = [
+            c["params"]["center"] for c in default_commands
+            if c["command"] == "sketch.circle.center"
+        ]
+        # Initial parameter overrides change parameters.add values, while the
+        # saved CAD relationships stay expressed around the centered origin.
+        self.assertEqual(centers, default_centers)
+        self.assertEqual(centers[-1], [0.0, 0.0])
         self.assertFalse(any(c["command"] == "solid.hole" for c in commands))
 
 

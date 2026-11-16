@@ -69,11 +69,16 @@ def of(all_commands, kind):
     ]
 
 
+def replay_prefix(name):
+    return "$" + name.replace(" ", "_").lower()
+
+
 def moved(all_commands, name):
+    prefix = replay_prefix(name)
     return [
         params
         for params in of(all_commands, "occurrence.move")
-        if params["occurrence"].startswith(name + ":")
+        if params["occurrence"].startswith(prefix)
     ]
 
 
@@ -444,7 +449,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         strip_moves = [
             p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("GlassStrip")
+            if p["occurrence"].startswith("$glassstrip")
         ]
         self.assertEqual(len(strip_moves), 4)
         self.assertTrue(
@@ -707,7 +712,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         bracket_moves = [
             p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("CornerBracket")
+            if p["occurrence"].startswith("$cornerbracket")
         ]
         self.assertEqual(len(bracket_moves), 8)
         self.assertEqual(
@@ -754,7 +759,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         bracket_moves = [
             p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("CornerBracket")
+            if p["occurrence"].startswith("$cornerbracket")
         ]
         self.assertEqual(len(bracket_moves), 8)
         self.assertTrue(
@@ -817,7 +822,7 @@ class WoodenFrameTests(unittest.TestCase):
 
         bracket_moves = [
             p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("CornerBracket")
+            if p["occurrence"].startswith("$cornerbracket")
         ]
         self.assertEqual(len(bracket_moves), 8)
         self.assertEqual(
@@ -833,13 +838,29 @@ class WoodenFrameTests(unittest.TestCase):
         self.assertEqual(len(moved(cmd, BOARD_COMPONENTS["roof"])), 1)
         bracket_moves = [
             p for p in of(cmd, "occurrence.move")
-            if p["occurrence"].startswith("CornerBracket")
+            if p["occurrence"].startswith("$cornerbracket")
         ]
         self.assertEqual(len(bracket_moves), 8)
         sketch_points = " ".join(
             str(p["points"]) for p in of(cmd, "sketch.line")
         )
         self.assertIn("opening_width", sketch_points)
+
+    def test_occurrence_moves_use_replay_variables_not_browser_names(self):
+        cmd = commands()
+        selectors = [
+            params["occurrence"]
+            for params in of(cmd, "occurrence.move")
+        ]
+        self.assertTrue(selectors)
+        self.assertTrue(all(
+            selector.startswith("$")
+            for selector in selectors
+        ))
+        self.assertFalse(any(
+            ":" in selector
+            for selector in selectors
+        ))
 
     def test_all_copies_created_before_native_placements(self):
         cmd = commands()
@@ -852,7 +873,7 @@ class WoodenFrameTests(unittest.TestCase):
             move_idx = [
                 i for i, command in enumerate(cmd)
                 if command["command"] == "occurrence.move"
-                and command["params"]["occurrence"].startswith(name + ":")
+                and command["params"]["occurrence"].startswith(replay_prefix(name))
             ]
             self.assertTrue(copy_idx and move_idx)
             self.assertLess(max(copy_idx), min(move_idx))

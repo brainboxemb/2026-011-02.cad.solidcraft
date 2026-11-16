@@ -21,9 +21,9 @@ The HUB75 wooden Board and Window already place by explicit
 The lightweight HUB75 panel is a coordinate-authored XZ Polygon2D and keeps
 its authored reference coordinates. CSG Cube already centers its primitives.
 
-The CAD repository pins an exact preview Forge change-0022 commit until
-Forge qualification and merge complete. Replace that SHA with the released,
-qualified Forge commit before merging this CAD branch.
+The CAD repository now pins the exact Forge 0.5.0 release-candidate main
+commit. The automatic release workflow must confirm the v0.5.0 tag points
+to that same commit before this CAD branch is merged.
 
 Verification requirements:
 1. Run the CAD model unit and reference JSON tests.

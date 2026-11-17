@@ -16,9 +16,9 @@
     "hub75-wood-frame"
   ],
   "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
-  "scpf_commit": "1ca462b4aff1495b00644571b89216579a4dd9c3",
-  "scpf_release": "0.8.0",
+  "scpf_commit": "377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072",
+  "scpf_release": "0.8.1",
   "solidcraft_version": "0.42.0",
-  "source_commit": "c9ad9e4d45234b73358c760cc68165d155db5e09",
-  "workflow_run": "44160810919"
+  "source_commit": "ff6da120dec8e5a4f3bb862a9cd7c6c9a3bdfd81",
+  "workflow_run": "44168760700"
 }

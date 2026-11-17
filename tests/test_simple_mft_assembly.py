@@ -47,7 +47,7 @@ class SimpleMFTAssemblyTests(unittest.TestCase):
         rail = next(
             params
             for params in of(self.commands, "solid.extrude")
-            if params.get("name") == "Guide rail profile - festool"
+            if params.get("distance") == "guide_rail_length"
         )
         self.assertEqual(rail["distance"], "guide_rail_length")
         self.assertEqual(rail["direction"], "symmetric")

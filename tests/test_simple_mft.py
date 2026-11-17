@@ -18,7 +18,8 @@ class SimpleMFTTests(unittest.TestCase):
 
     def test_plate_keeps_rectangular_base_for_native_top_anchors(self):
         self.assertEqual(self.names.count("solid.box"), 1)
-        self.assertEqual(self.names.count("sketch.polygon"), 4)
+        self.assertEqual(self.names.count("solid.chamfer"), 1)
+        self.assertEqual(self.names.count("sketch.polygon"), 0)
         self.assertEqual(self.names.count("sketch.circle.center"), 1)
         self.assertEqual(self.names.count("solid.pattern.rectangular"), 1)
 

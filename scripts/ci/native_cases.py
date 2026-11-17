@@ -5,6 +5,16 @@ validator checks the resulting native evidence.
 """
 
 NATIVE_MUTATIONS = {
+    "simple-mft-assembly": (
+        {
+            "name": "worktop-thickness-24",
+            "changes": {"worktop_thickness": "24 mm"},
+        },
+        {
+            "name": "guide-rail-length-1400",
+            "changes": {"guide_rail_length": "1400 mm"},
+        },
+    ),
     "hub75-wood-frame": (
         {
             "name": "height-400",

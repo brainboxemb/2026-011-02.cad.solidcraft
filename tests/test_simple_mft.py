@@ -16,6 +16,26 @@ class SimpleMFTTests(unittest.TestCase):
         self.commands = run_script(MODEL)["commands"]
         self.names = [command["command"] for command in self.commands]
 
+    def test_worktop_is_a_reusable_component_without_losing_parameters(self):
+        source = MODEL.read_text(encoding="utf-8")
+        self.assertIn('@component(include="*")', source)
+        parameter_names = {
+            command["params"]["name"]
+            for command in self.commands
+            if command["command"] == "parameters.add"
+        }
+        self.assertEqual(
+            parameter_names,
+            {
+                "width",
+                "depth",
+                "thickness",
+                "hole_diameter",
+                "hole_pitch",
+                "corner_chamfer",
+            },
+        )
+
     def test_plate_uses_two_compact_associative_sketches(self):
         self.assertEqual(self.names.count("solid.box"), 1)
         self.assertEqual(self.names.count("solid.chamfer"), 1)

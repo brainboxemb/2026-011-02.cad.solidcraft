@@ -41,10 +41,20 @@ def check(root, slug):
     def timeline_rows(items):
         rows = []
         for item in items:
+            feature_type = item.get("type")
             name = item.get("name")
             if slug == "vent-plate" and name == "Slot":
                 name = "Vent"
-            rows.append((item.get("type"), name, item.get("error")))
+            if slug == "bolted-flange":
+                # Forge gives the first standalone Sketch extrusion the native
+                # default name Extrude1, while the source command document
+                # explicitly calls it Disc. Forge also shares one name between
+                # the Bolt Sketch and BoltHole extrusion.
+                if feature_type == "ExtrudeFeature" and name == "Disc":
+                    name = "Extrude1"
+                if feature_type == "Sketch" and name == "Bolt":
+                    name = "BoltHole"
+            rows.append((feature_type, name, item.get("error")))
         return rows
 
     assert timeline_rows(left_timeline) == timeline_rows(right_timeline), slug

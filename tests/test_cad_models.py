@@ -385,6 +385,60 @@ class CADModelRegressions(unittest.TestCase):
         )
 
 
+    def test_bolted_flange_uses_one_native_circular_pattern(self):
+        commands = run_script(
+            ROOT / "models/basic/bolted_flange/scpf/model.py"
+        )["commands"]
+
+        parameters = {
+            row["params"]["name"]: row["params"]
+            for row in commands
+            if row["command"] == "parameters.add"
+        }
+        self.assertEqual(parameters["bolts"]["unit"], "")
+        self.assertEqual(parameters["pcd"]["unit"], "mm")
+        self.assertEqual(parameters["bolts"]["expression"], "6")
+        self.assertEqual(parameters["pcd"]["expression"], "70")
+
+        sketches = [
+            row["params"]["name"]
+            for row in commands
+            if row["command"] == "sketch.create"
+        ]
+        self.assertEqual(
+            sketches,
+            ["Disc", "Hub", "Bore", "BoltHole"],
+        )
+
+        circles = [
+            row["params"]
+            for row in commands
+            if row["command"] == "sketch.circle.center"
+        ]
+        self.assertEqual([row["diameter"] for row in circles], [100, 44, 24, 9])
+        self.assertIn("pcd", str(circles[-1]["center"][0]))
+
+        self.assertEqual(
+            [row["command"] for row in commands].count("solid.extrude"),
+            4,
+        )
+        base_extrude = next(
+            row["params"]
+            for row in commands
+            if row["command"] == "solid.extrude"
+            and "body_name" in row["params"]
+        )
+        self.assertEqual(base_extrude["body_name"], "Flange")
+        patterns = [
+            row["params"]
+            for row in commands
+            if row["command"] == "solid.pattern.circular"
+        ]
+        self.assertEqual(len(patterns), 1)
+        self.assertEqual(patterns[0]["features"], ["BoltHole"])
+        self.assertEqual(patterns[0]["axis"], "Z")
+        self.assertEqual(patterns[0]["count"], "bolts")
+
     def test_bracket_matches_corrected_native_commands(self):
         generated = run_script(ROOT / "models/basic/bracket/scpf/model.py")
         expected = json.loads(

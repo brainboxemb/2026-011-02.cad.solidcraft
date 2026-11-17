@@ -1,14 +1,13 @@
 # Exact revisions of independent Forge (SCPF) and Commands (SCPC) libraries.
 # Both can be checked out reproducibly under ext/ using vcs2l.
-# SCPF is pinned to the exact v0.8.1 release commit. This release includes
-# selective Sketch profile extrusion, the shared fillet/chamfer edge-selection
-# API and the reusable-component replay-binding fix used by the current CAD
-# models.
+# SCPF v0.9.0 provides the selective Sketch extrusion, shared fillet/chamfer
+# selector contract, native circular feature patterns and non-rectangular
+# attached-Sketch support used by the current CAD models.
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.forge.git
-    version: 377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072
+    version: aebeb8f24427518130a4f08fdeedab1df67e2732
   scpc:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git

@@ -14,7 +14,7 @@
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
 <p>Each model has its Python source, generated command JSON and a readable operation timeline. Native-verified models also provide a clearly marked external link to the official SolidCraft website and a downloadable editable .sc design. Nothing from the external CAD application loads automatically on this site. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
-<p><span class="badge">15 models</span> <span class="badge verified">15 matching native screenshots</span></p></section>
+<p><span class="badge">16 models</span> <span class="badge verified">16 matching native screenshots</span></p></section>
 <section class="model-category" id="basic"><h2>Basic Models</h2><p class="muted">Small, transparent models used to develop and verify SCPF features.</p><div class="grid"><article class="card"><div class="picture"><img src="models/plate/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/plate/">Plate</a></h3><p>A rounded plate with four holes</p>
@@ -23,7 +23,11 @@
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/vent-plate/">Vent Plate</a></h3><p>One source vent repeated by a native 6 × 3 feature pattern</p>
 <p class="small muted">120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch</p>
-<a class="btn" href="models/vent-plate/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/csg-cube/native.png" alt="SolidCraft model render"></div>
+<a class="btn" href="models/vent-plate/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/bolted-flange/native.png" alt="SolidCraft model render"></div>
+<div class="inside"><span class="badge verified">Native verified</span>
+<h3><a href="models/bolted-flange/">Bolted Flange</a></h3><p>Official SolidCraft flange with one native circular bolt-hole pattern</p>
+<p class="small muted">Ø100 × 26 mm overall; Ø44 hub; Ø24 bore; 6 × Ø9 on 70 mm PCD</p>
+<a class="btn" href="models/bolted-flange/">Explore model →</a></div></article><article class="card"><div class="picture"><img src="models/csg-cube/native.png" alt="SolidCraft model render"></div>
 <div class="inside"><span class="badge verified">Native verified</span>
 <h3><a href="models/csg-cube/">CsgCube</a></h3><p>A box, sphere and three crossing bores</p>
 <p class="small muted">50 mm cube; three crossing cylindrical cuts</p>
@@ -80,8 +84,8 @@
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
-<p class="small muted">CAD source revision: <code>256144014b548bd0f9784109e60eb3bf109d6c5a</code><br>
-SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072"><code>377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072</code></a> · release 0.8.1<br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7"><code>fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7</code></a><br>SolidCraft engine: <strong>0.42.0</strong>.</p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<p class="small muted">CAD source revision: <code>8e1fc930f2a43b4219f94bd8cea167c48d60fe6c</code><br>
+SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/aebeb8f24427518130a4f08fdeedab1df67e2732"><code>aebeb8f24427518130a4f08fdeedab1df67e2732</code></a> · release 0.9.0<br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7"><code>fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7</code></a><br>SolidCraft engine: <strong>0.42.0</strong>.</p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
 <a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
 <a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
 </body></html>

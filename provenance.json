@@ -3,6 +3,7 @@
   "native_verified_models": [
     "plate",
     "vent-plate",
+    "bolted-flange",
     "csg-cube",
     "bracket",
     "sample-plate",
@@ -18,9 +19,9 @@
     "hub75-wood-frame"
   ],
   "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
-  "scpf_commit": "377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072",
-  "scpf_release": "0.8.1",
+  "scpf_commit": "aebeb8f24427518130a4f08fdeedab1df67e2732",
+  "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "256144014b548bd0f9784109e60eb3bf109d6c5a",
-  "workflow_run": "44173762853"
+  "source_commit": "8e1fc930f2a43b4219f94bd8cea167c48d60fe6c",
+  "workflow_run": "44175671767"
 }

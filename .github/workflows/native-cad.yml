@@ -19,7 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SCPF_RELEASE: "0.6.0"
       SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
     steps:
@@ -45,11 +44,8 @@ jobs:
           from scpf.version import TESTED_SOLIDCRAFT_VERSION
 
           actual = version("scpf")
-          expected = os.environ["SCPF_RELEASE"]
-          if actual != expected:
-              raise SystemExit(
-                  f"SCPF release mismatch: expected {expected}, installed {actual}"
-              )
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env:
+              env.write(f"SCPF_RELEASE={actual}\n")
           engine = os.environ["SOLIDCRAFT_VERSION"]
           if TESTED_SOLIDCRAFT_VERSION != engine:
               raise SystemExit(

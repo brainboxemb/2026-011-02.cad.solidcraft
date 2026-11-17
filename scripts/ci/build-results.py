@@ -91,15 +91,14 @@ MODELS = {
     "simple-mft": {
         "title": "Simple MFT",
         "tagline": "805 × 555 mm worktop with a 9 × 7 dog-hole grid and eight native clamp slots",
-        "description": "A CRAFTMAKER-inspired worktop study: one 18 mm native Box, four straight 20 mm corner chamfers, one Ø20 source hole repeated as a native 9 × 7 SolidCraft rectangular pattern at 76 mm pitch, and eight photo-measured native diagonal Slots. The frame, guide rail and accessories are outside this model.",
-        "parameters": "805 × 555 × 18 mm; Ø20; 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm",
+        "description": "A CRAFTMAKER-inspired worktop study: one 18 mm native Box, four straight 20 mm corner chamfers, 59 Ø20 dog holes on the nominal 9 × 7 / 76 mm grid with the four diagonal ring-2 positions omitted, and eight photo-measured native diagonal Slots. The frame, guide rail and accessories are outside this model.",
+        "parameters": "805 × 555 × 18 mm; 59 × Ø20; nominal 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm",
         "diagram": "plate",
         "stages": ["Box — 805 × 555 × 18 mm",
                    "Chamfer — four straight 20 × 20 mm plan-view corner cuts",
-                   "Dog hole — one Ø20 through-hole source feature",
-                   "RectangularPattern — 9 columns × 7 rows at 76 mm pitch",
-                   "Clamp Slots — eight native SlotCenterToCenter2D cuts, ≈104 × 24 mm",
-                   "Keep the ring-2 diagonal Ø20 holes between the inner and outer Slots"],
+                   "Dog holes — 59 × Ø20 on the nominal 9 × 7 grid at 76 mm pitch",
+                   "Omit the four diagonal ring-2 positions at (±152, ±152) mm",
+                   "Clamp Slots — eight native SlotCenterToCenter2D cuts, ≈104 × 24 mm"],
     },
     "hub75-wood-frame": {
         "title": "WoodenHub75Box",
@@ -476,8 +475,8 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 'rel="noopener noreferrer">'
                 '<img src="expected-top-view.svg" '
                 'alt="Simple MFT expected top view"></a>'
-                '<figcaption>2D expectation: 9 × 7 holes at 76 mm pitch, '
-                'with two Slots per quadrant.</figcaption></figure>'
+                '<figcaption>2D expectation: nominal 9 × 7 grid at 76 mm pitch, '
+                'four diagonal ring-2 holes omitted, with two Slots per quadrant.</figcaption></figure>'
                 '</div>'
                 '<p class="small muted">The 76 mm pitch, 20 mm corner cuts '
                 'and ≈104 × 24 mm Slot dimensions are photo-based estimates, '

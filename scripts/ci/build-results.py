@@ -223,7 +223,19 @@ def screenshot_info(native_root, commit, model, scpf_commit):
             or metadata.get("scpf_commit") != scpf_commit
             or metadata.get("verified") is not True):
         return None
-    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "hub75-screen": "hub75-screen/model.png", "hub75-wood-frame": "hub75-wood-frame/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
+    rel = {
+        "plate": "plate/model.png",
+        "vent-plate": "vent-plate/model.png",
+        "csg-cube": "csg-cube/model.png",
+        "bracket": "bracket/model.png",
+        "corner-bracket": "corner-bracket/model.png",
+        "hub75-panel": "hub75-panel/model.png",
+        "hub75-screen": "hub75-screen/model.png",
+        "hub75-wood-frame": "hub75-wood-frame/model.png",
+        "sample-plate": "sample-plate/model.png",
+        "plastic-enclosure": "plastic-enclosure/model.png",
+        "plastic-enclosure-pi": "plastic-enclosure-pi/model.png",
+    }.get(model)
     if not rel:
         return None
     candidate = native_root / rel
@@ -275,6 +287,7 @@ def command_stages(commands):
         "material.assign": "Assign material",
         "joint.create": "Assembly joint",
         "solid.shell": "Shell / hollow body",
+        "solid.pattern.rectangular": "Rectangular feature pattern",
         "plastic.lip": "Plastic lip",
         "plastic.snap_fit": "Plastic snap fit",
         "plastic.boss": "Plastic screw boss",

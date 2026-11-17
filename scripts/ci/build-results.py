@@ -98,7 +98,8 @@ MODELS = {
                    "Chamfer — four straight 20 × 20 mm plan-view corner cuts",
                    "Dog holes — 59 × Ø20 on the nominal 9 × 7 grid at 76 mm pitch",
                    "Omit the four diagonal ring-2 positions at (±152, ±152) mm",
-                   "Clamp Slots — eight native SlotCenterToCenter2D cuts, ≈104 × 24 mm"],
+                   "Clamp slots — one Sketch with eight native SlotCenterToCenter2D profiles",
+                   "Clamp cut — one through-all cut for the complete Slot pattern, ≈104 × 24 mm each"],
     },
     "hub75-wood-frame": {
         "title": "WoodenHub75Box",

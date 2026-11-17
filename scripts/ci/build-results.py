@@ -34,6 +34,18 @@ MODELS = {
         "stages": ["Sketch the rectangle", "Extrude the base", "Fillet vertical corners",
                    "Sketch four hole centres", "Cut the holes"],
     },
+    "vent-plate": {
+        "title": "Vent Plate",
+        "tagline": "One source vent repeated by a native 6 × 3 feature pattern",
+        "description": "Recreates the small SolidCraft Vent Plate example with a rounded 120 × 80 × 4 mm plate, one rectangular source cut and one native two-direction rectangular pattern.",
+        "parameters": "120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch",
+        "diagram": "plate",
+        "stages": ["Box — 120 × 80 × 4 mm from corner [0, 0, 0]",
+                   "Fillet — four vertical edges R8",
+                   "Vent — one 6 × 14 mm source rectangle at X=18..24, Y=12..26",
+                   "Cut — positive 4 mm through the plate",
+                   "RectangularPattern — 6 columns × 3 rows at 16 × 22 mm spacing"],
+    },
     "csg-cube": {
         "title": "CsgCube", "tagline": "A box, sphere and three crossing bores",
         "description": "A constructive solid geometry demonstration: intersect a cube with a sphere, then subtract cylinders along three axes.",

@@ -3,8 +3,8 @@
 This intentionally mirrors the source feature history:
 Box1 -> Fillet1 -> Slot -> Vent -> RectangularPattern1.
 
-The SCPF version is added only when Forge can emit the same native rectangular
-feature pattern (brainboxemb/lib.py.solidcraft.forge#215).
+This file remains independent from the SCPF model and keeps the source
+SolidCraft names, including the separate Slot sketch and Vent cut feature.
 """
 from scpc import Script
 

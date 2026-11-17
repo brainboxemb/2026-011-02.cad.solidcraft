@@ -1,14 +1,14 @@
 """One source of truth for model locations and website categories.
 
 The slug remains stable for published Pages URLs, while source directories
-are organized by their intended role. Use this module from CI, not copies
-of a 10-item path mapping in multiple shell scripts.
+are organized by their intended role. Use this module from CI instead of inventing model locations elsewhere.
 """
 from pathlib import Path
 import sys
 
 SOURCES = {
     "plate": "models/basic/plate/scpf/model.py",
+    "vent-plate": "models/basic/vent_plate/scpf/model.py",
     "csg-cube": "models/basic/csg_cube/scpf/model.py",
     "bracket": "models/basic/bracket/scpf/model.py",
     "sample-plate": "models/basic/sample_plate/scpf/model.py",
@@ -32,6 +32,7 @@ SOURCES = {
 # Start with Plate and CornerBracket; expand only after native comparison.
 COMMAND_SOURCES = {
     "plate": "models/basic/plate/scpc/model.py",
+    "vent-plate": "models/basic/vent_plate/scpc/model.py",
     "corner-bracket": "models/components/corner_bracket/scpc/model.py",
 }
 
@@ -49,7 +50,7 @@ COMPONENT_DEFINITION_PRIMARY = frozenset({
 
 SECTIONS = {
     "basic": ("Basic Models", "Small, transparent models used to develop and verify SCPF features.",
-              ("plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi")),
+              ("plate", "vent-plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi")),
     "components": ("Components", "Reusable physical parts compiled directly from the same source assemblies import.",
                    ("corner-bracket", "hub75-panel")),
     "advanced": ("Advanced Models", "Full designs and nested native assemblies built from reusable components.",

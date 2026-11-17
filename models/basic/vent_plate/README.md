@@ -18,20 +18,24 @@ Its feature history is intentionally small and useful for library development:
 
 ## Implementations
 
-### SCPC
-
-`scpc/model.py` describes the same five-step intent with native SolidCraft
-commands, including `solid.pattern.rectangular`.
-
 ### SCPF
 
-The SCPF implementation is deliberately **not** approximated with Python loops
-or repeated sketches. Forge issue
-`brainboxemb/lib.py.solidcraft.forge#215` tracks the missing native
-rectangular feature-pattern API.
+`scpf/model.py` uses SCPF 0.6.1 native feature patterning. It creates one
+source vent and passes that existing cut feature to
+`Shape.rectangular_pattern(...)`, which lowers directly to
+`solid.pattern.rectangular`. There is no Python loop and no repeated sketch
+expansion.
 
-Once that API is available, the SCPF model should reproduce the same feature
-history rather than only equivalent final geometry.
+The original SolidCraft source uses `Slot` for the sketch name and `Vent`
+for its cut feature. SCPF 0.6.1 uses one name for an explicit Sketch and its
+extrusion, so the SCPF source calls both `Vent`. The body geometry, source
+rectangle, cut direction, pattern counts and spacing remain the same.
+
+### SCPC
+
+`scpc/model.py` independently describes the original native SolidCraft
+commands, including the original `Slot` sketch name, `Vent` cut name and
+`solid.pattern.rectangular`.
 
 ## Why this is a basic model
 

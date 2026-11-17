@@ -82,6 +82,8 @@ class SimpleMFT:
         slot_width = float(self.SLOT_WIDTH)
         along_axis = slot_center_distance / sqrt(2)
 
+        slot_plane_z = float(self.thickness.value)
+
         for name, sx, sy in (
             ("Slot NE", +1, +1),
             ("Slot NW", -1, +1),
@@ -99,7 +101,12 @@ class SimpleMFT:
                 sy * (3 * pitch - along_axis),
             )
 
-            with Sketch(name=name, on=board, parent=Anchor.TOP) as slots:
+            with Sketch(
+                name=name,
+                on=board,
+                plane="XY",
+                origin=(0.0, 0.0, slot_plane_z),
+            ) as slots:
                 SlotCenterToCenter2D(
                     inner_ring,
                     inner_outward,
@@ -111,6 +118,6 @@ class SimpleMFT:
                     slot_width,
                 )
 
-            board = board - slots.extrude(Depth.THROUGH_ALL)
+            board = board - slots.extrude(-self.thickness)
 
         return board

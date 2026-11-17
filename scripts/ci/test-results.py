@@ -196,7 +196,7 @@ def check(site, commit):
             assert "(±152, ±152) mm" in page
             assert "8 Slots ≈104 × 24 mm" in page
             assert "two Slots per quadrant" in page
-            assert "four Circle seeds" in page
+            assert "one Circle seed" in page
             assert "one master Slot" in page
             assert "one native sketch pattern and three mirrors" in page
             assert "CRAFTMAKER ProStation S30 reference worktop" in page

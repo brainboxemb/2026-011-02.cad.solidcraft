@@ -73,7 +73,7 @@ jobs:
           unset PYTHONPATH
           solidcraft-cli --version
           python -c 'from scpf.version import check_cli_version; check_cli_version(require_cli=True)'
-          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
+          for model in $(python scripts/ci/model_catalog.py --list native); do
             mkdir -p "output/native/$model"
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/native/$model/commands.json"
             python -m scpf.headless "output/native/$model/commands.json" \
@@ -577,7 +577,7 @@ jobs:
         run: |
           set -euo pipefail
           unset PYTHONPATH
-          for model in plate vent-plate corner-bracket; do
+          for model in $(python scripts/ci/model_catalog.py --list scpc); do
             mkdir -p "output/native/$model/scpf" "output/native/$model/scpc"
             cp "output/native/$model/measurements.json" "output/native/$model/scpf/measurements.json"
             python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
@@ -614,25 +614,27 @@ jobs:
               workflow_run:$run,
               verified:true
             }' > output/native/verification.json
-          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
+          for model in $(python scripts/ci/model_catalog.py --list native); do
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" \
               --out "output/models/$model/scpf/solidcraft.json"
           done
-          for model in plate vent-plate corner-bracket; do
+          for model in $(python scripts/ci/model_catalog.py --list scpc); do
             python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
               --out "output/models/$model/scpc/solidcraft.json"
           done
           python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
-          for model in plate vent-plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
+          for model in $(python scripts/ci/model_catalog.py --list native-snapshot-required); do
             test -s "output/site/models/$model/native.png"
           done
+          expected_native="$(python scripts/ci/model_catalog.py --count native-snapshot-required)"
           jq -e \
             --arg scpf "$SCPF_COMMIT" \
             --arg scpf_release "$SCPF_RELEASE" \
             --arg scpc "$SCPC_COMMIT" \
             --arg source "$GITHUB_SHA" \
             --arg solidcraft "$SOLIDCRAFT_VERSION" \
+            --argjson expected_native "$expected_native" \
             '.
               | .scpf_commit == $scpf
               and .scpf_release == $scpf_release
@@ -640,7 +642,7 @@ jobs:
               and .source_commit == $source
               and .solidcraft_version == $solidcraft
               and (.native_file_format | test("^solidcraft/[0-9]+$"))
-              and (.native_verified_models | length) >= 13
+              and (.native_verified_models | length) >= $expected_native
             ' output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()

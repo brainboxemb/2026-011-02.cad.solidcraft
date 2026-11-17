@@ -31,20 +31,24 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertEqual(hole_pattern["count2"], 7)
         self.assertEqual(hole_pattern["spacing2"], "hole_pitch")
 
-    def test_slots_connect_three_diagonal_grid_positions(self):
+    def test_slots_are_two_segments_on_each_diagonal_arm(self):
         slots = [
             command["params"]
             for command in self.commands
             if command["command"] == "sketch.slot.center_to_center"
         ]
-        self.assertEqual(len(slots), 4)
+        self.assertEqual(len(slots), 8)
         self.assertTrue(all(slot["width"] == 24.0 for slot in slots))
 
         expected = {
-            ((76.0, 76.0), (228.0, 228.0)),
-            ((-76.0, 76.0), (-228.0, 228.0)),
-            ((-76.0, -76.0), (-228.0, -228.0)),
-            ((76.0, -76.0), (228.0, -228.0)),
+            ((76.0, 76.0), (152.0, 152.0)),
+            ((152.0, 152.0), (228.0, 228.0)),
+            ((-76.0, 76.0), (-152.0, 152.0)),
+            ((-152.0, 152.0), (-228.0, 228.0)),
+            ((-76.0, -76.0), (-152.0, -152.0)),
+            ((-152.0, -152.0), (-228.0, -228.0)),
+            ((76.0, -76.0), (152.0, -152.0)),
+            ((152.0, -152.0), (228.0, -228.0)),
         }
         actual = {
             (tuple(slot["p0"]), tuple(slot["p1"]))
@@ -53,14 +57,24 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertEqual(actual, expected)
         self.assertNotIn("sketch.slot.overall", self.names)
 
+    def test_model_does_not_cut_from_plate_centre_to_first_diagonal_hole(self):
+        slots = [
+            command["params"]
+            for command in self.commands
+            if command["command"] == "sketch.slot.center_to_center"
+        ]
+        self.assertTrue(
+            all(tuple(slot["p0"]) != (0.0, 0.0) and
+                tuple(slot["p1"]) != (0.0, 0.0)
+                for slot in slots)
+        )
+
     def test_model_keeps_reference_estimates_explicit(self):
         source = MODEL.read_text(encoding="utf-8")
         self.assertIn("hole_pitch = 76.0", source)
         self.assertIn("COLUMNS = 9", source)
         self.assertIn("ROWS = 7", source)
         self.assertIn("SLOT_WIDTH = 24.0", source)
-        self.assertIn("SLOT_START_INDEX = 1", source)
-        self.assertIn("SLOT_END_INDEX = 3", source)
         self.assertNotIn("SLOT_LENGTH = 75.0", source)
 
 

@@ -88,6 +88,17 @@ MODELS = {
                    "Chamfer — print-face elephant-foot relief",
                    "Solid bracket — mounting-hole features deliberately omitted"],
     },
+    "guide-rail": {
+        "title": "GuideRail",
+        "tagline": "Parametric guide rail with a measured reference cross-section",
+        "description": "A reusable brand-neutral guide-rail component. The current simplified profile uses the TSO measured dimensions for a Festool-style rail as its dimensional reference, while assemblies depend only on the generic GuideRail component and its editable length.",
+        "parameters": "184.20 × 10.50 mm profile; default length 1400 mm; editable length",
+        "diagram": "guide-rail",
+        "stages": ["Sketch one XZ cross-section from the measured reference dimensions",
+                   "Keep minor wall and rib details intentionally simplified",
+                   "Extrude symmetrically along Y by the editable length",
+                   "Reuse the same GuideRail component at assembly-specific lengths"],
+    },
     "simple-mft": {
         "title": "Simple MFT",
         "tagline": "805 × 555 mm worktop with a 9 × 7 dog-hole grid and eight native clamp slots",
@@ -182,6 +193,7 @@ DIAGRAMS = {
     "plate": """<rect x="95" y="25" width="310" height="165" rx="16" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M95 175 145 218 H420 V65 L405 25" fill="#99bad9" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/>""",
     "csg": """<path d="M130 68 250 15 376 68 376 188 250 241 130 188Z" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M130 68 250 125 376 68 M250 125 V241" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="250" cy="129" rx="39" ry="37" fill="#f1f6fc" stroke="#285785" stroke-width="5"/><ellipse cx="250" cy="130" rx="14" ry="34" fill="#acc6e3" stroke="#285785" stroke-width="3"/><path d="M196 90 307 162 M185 155 310 100" stroke="#285785" stroke-width="4" stroke-dasharray="8 8"/>""",
     "bracket": """<path d="M104 195 104 34 145 34 145 163 388 163 388 207 104 207Z" fill="#b4cde9" stroke="#285785" stroke-width="5"/><path d="M145 163 174 188 407 188 388 163 M388 207 407 188" fill="none" stroke="#285785" stroke-width="4"/><ellipse cx="230" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/><ellipse cx="330" cy="187" rx="14" ry="8" fill="#f4f7fc" stroke="#285785" stroke-width="4"/>""",
+    "guide-rail": """<path d="M55 150 380 62 445 88 120 177Z" fill="#c8d5e3" stroke="#285785" stroke-width="4"/><path d="M120 177 445 88 445 106 120 196Z" fill="#96aec8" stroke="#285785" stroke-width="4"/><path d="M88 141 412 54 M103 162 427 74" fill="none" stroke="#285785" stroke-width="4"/><path d="M155 132 177 126 189 131 167 137ZM275 100 297 94 309 99 287 105Z" fill="#eef4fb" stroke="#285785" stroke-width="3"/>""",
     "hub75": """<rect x="130" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><rect x="250" y="28" width="112" height="205" rx="2" fill="#b8b8b8" stroke="#374151" stroke-width="4"/><g fill="#f5f5f5" stroke="#374151" stroke-width="2"><circle cx="145" cy="42" r="3"/><circle cx="227" cy="42" r="3"/><circle cx="145" cy="130" r="3"/><circle cx="227" cy="130" r="3"/><circle cx="145" cy="218" r="3"/><circle cx="227" cy="218" r="3"/><circle cx="265" cy="42" r="3"/><circle cx="347" cy="42" r="3"/><circle cx="265" cy="130" r="3"/><circle cx="347" cy="130" r="3"/><circle cx="265" cy="218" r="3"/><circle cx="347" cy="218" r="3"/></g>""",
     "hub75-wood-frame": """<g stroke="#75532a" stroke-width="4" fill="#d6b17b">
 <rect x="45" y="18" width="410" height="230" rx="2"/>
@@ -243,6 +255,7 @@ def screenshot_info(native_root, commit, model, scpf_commit):
         "bracket": "bracket/model.png",
         "corner-bracket": "corner-bracket/model.png",
         "hub75-panel": "hub75-panel/model.png",
+        "guide-rail": "guide-rail/model.png",
         "simple-mft": "simple-mft/model.png",
         "hub75-screen": "hub75-screen/model.png",
         "hub75-wood-frame": "hub75-wood-frame/model.png",

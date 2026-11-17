@@ -73,7 +73,7 @@ jobs:
           unset PYTHONPATH
           solidcraft-cli --version
           python -c 'from scpf.version import check_cli_version; check_cli_version(require_cli=True)'
-          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel simple-mft hub75-screen hub75-wood-frame; do
+          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
             mkdir -p "output/native/$model"
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/native/$model/commands.json"
             python -m scpf.headless "output/native/$model/commands.json" \
@@ -157,6 +157,14 @@ jobs:
             ((.bodies[0].bbox.max[1] - .bodies[0].bbox.min[1] - 319.71) | fabs) < 0.001 and
             ((.bodies[0].bbox.max[2] - .bodies[0].bbox.min[2] - 14.50) | fabs) < 0.001
           ' output/native/hub75-panel/measurements.json
+          # GuideRail is authored in XZ and extruded symmetrically along Y.
+          # The native BRep must match the TSO-based envelope and default length.
+          jq -e '
+            .body_count == 1 and
+            ((.bodies[0].bbox.max[0] - .bodies[0].bbox.min[0] - 184.20) | fabs) < 0.001 and
+            ((.bodies[0].bbox.max[1] - .bodies[0].bbox.min[1] - 1400.0) | fabs) < 0.001 and
+            ((.bodies[0].bbox.max[2] - .bodies[0].bbox.min[2] - 10.50) | fabs) < 0.001
+          ' output/native/guide-rail/measurements.json
           jq -e '
             .body_count == 5 and
             (all(.bodies[];
@@ -606,7 +614,7 @@ jobs:
               workflow_run:$run,
               verified:true
             }' > output/native/verification.json
-          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel simple-mft hub75-screen hub75-wood-frame; do
+          for model in plate vent-plate csg-cube bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" \
               --out "output/models/$model/scpf/solidcraft.json"
           done
@@ -616,7 +624,7 @@ jobs:
           done
           python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
           python scripts/ci/test-results.py output/site "$GITHUB_SHA"
-          for model in plate vent-plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel simple-mft hub75-screen hub75-wood-frame; do
+          for model in plate vent-plate bracket sample-plate plastic-enclosure plastic-enclosure-pi corner-bracket hub75-panel guide-rail simple-mft hub75-screen hub75-wood-frame; do
             test -s "output/site/models/$model/native.png"
           done
           jq -e \
@@ -632,7 +640,7 @@ jobs:
               and .source_commit == $source
               and .solidcraft_version == $solidcraft
               and (.native_file_format | test("^solidcraft/[0-9]+$"))
-              and (.native_verified_models | length) >= 11
+              and (.native_verified_models | length) >= 13
             ' output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()

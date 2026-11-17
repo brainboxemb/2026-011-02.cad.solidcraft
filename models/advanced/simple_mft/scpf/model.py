@@ -42,30 +42,19 @@ class SimpleMFT:
             anchor=Anchor.BOTTOM,
         )
 
-        # Trim the four straight corners after creating the rectangular base.
-        with Sketch(name="Corner cuts", on=board, parent=Anchor.TOP) as corners:
-            Polygon2D([
-                (-half_w, -half_d),
-                (-half_w + c, -half_d),
-                (-half_w, -half_d + c),
-            ])
-            Polygon2D([
-                (half_w, -half_d),
-                (half_w - c, -half_d),
-                (half_w, -half_d + c),
-            ])
-            Polygon2D([
-                (half_w, half_d),
-                (half_w - c, half_d),
-                (half_w, half_d - c),
-            ])
-            Polygon2D([
-                (-half_w, half_d),
-                (-half_w + c, half_d),
-                (-half_w, half_d - c),
-            ])
-
-        board = board - corners.extrude(Depth.THROUGH_ALL)
+        # Chamfer the four vertical corner edges. An equal 20 mm chamfer on a
+        # vertical edge produces the straight 20 x 20 mm plan-view corner cut
+        # while retaining the rectangular Box as the anchor base.
+        edge_z = self.thickness.value / 2
+        board = board.chamfer(
+            c,
+            edges=[
+                (-half_w, -half_d, edge_z),
+                (half_w, -half_d, edge_z),
+                (half_w, half_d, edge_z),
+                (-half_w, half_d, edge_z),
+            ],
+        )
 
         with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
             hole.add(

@@ -34,6 +34,18 @@ MODELS = {
         "stages": ["Sketch the rectangle", "Extrude the base", "Fillet vertical corners",
                    "Sketch four hole centres", "Cut the holes"],
     },
+    "vent-plate": {
+        "title": "Vent Plate",
+        "tagline": "One source vent repeated by a native 6 × 3 feature pattern",
+        "description": "Recreates the small SolidCraft Vent Plate example with a rounded 120 × 80 × 4 mm plate, one rectangular source cut and one native two-direction rectangular pattern.",
+        "parameters": "120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch",
+        "diagram": "plate",
+        "stages": ["Box — 120 × 80 × 4 mm from corner [0, 0, 0]",
+                   "Fillet — four vertical edges R8",
+                   "Vent — one 6 × 14 mm source rectangle at X=18..24, Y=12..26",
+                   "Cut — positive 4 mm through the plate",
+                   "RectangularPattern — 6 columns × 3 rows at 16 × 22 mm spacing"],
+    },
     "csg-cube": {
         "title": "CsgCube", "tagline": "A box, sphere and three crossing bores",
         "description": "A constructive solid geometry demonstration: intersect a cube with a sphere, then subtract cylinders along three axes.",
@@ -211,7 +223,19 @@ def screenshot_info(native_root, commit, model, scpf_commit):
             or metadata.get("scpf_commit") != scpf_commit
             or metadata.get("verified") is not True):
         return None
-    rel = {"plate": "plate/model.png", "csg-cube": "csg-cube/model.png", "bracket": "bracket/model.png", "corner-bracket": "corner-bracket/model.png", "hub75-panel": "hub75-panel/model.png", "hub75-screen": "hub75-screen/model.png", "hub75-wood-frame": "hub75-wood-frame/model.png", "sample-plate": "sample-plate/model.png", "plastic-enclosure": "plastic-enclosure/model.png", "plastic-enclosure-pi": "plastic-enclosure-pi/model.png"}.get(model)
+    rel = {
+        "plate": "plate/model.png",
+        "vent-plate": "vent-plate/model.png",
+        "csg-cube": "csg-cube/model.png",
+        "bracket": "bracket/model.png",
+        "corner-bracket": "corner-bracket/model.png",
+        "hub75-panel": "hub75-panel/model.png",
+        "hub75-screen": "hub75-screen/model.png",
+        "hub75-wood-frame": "hub75-wood-frame/model.png",
+        "sample-plate": "sample-plate/model.png",
+        "plastic-enclosure": "plastic-enclosure/model.png",
+        "plastic-enclosure-pi": "plastic-enclosure-pi/model.png",
+    }.get(model)
     if not rel:
         return None
     candidate = native_root / rel
@@ -263,6 +287,7 @@ def command_stages(commands):
         "material.assign": "Assign material",
         "joint.create": "Assembly joint",
         "solid.shell": "Shell / hollow body",
+        "solid.pattern.rectangular": "Rectangular feature pattern",
         "plastic.lip": "Plastic lip",
         "plastic.snap_fit": "Plastic snap fit",
         "plastic.boss": "Plastic screw boss",

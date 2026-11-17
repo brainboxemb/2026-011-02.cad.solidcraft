@@ -295,6 +295,91 @@ class CADModelRegressions(unittest.TestCase):
         self.assertEqual([c["command"] for c in commands].count("solid.fillet"), 1)
 
 
+    def test_vent_plate_uses_one_native_rectangular_pattern(self):
+        generated = run_script(
+            ROOT / "models/basic/vent_plate/scpf/model.py"
+        )
+        commands = generated["commands"]
+
+        self.assertEqual(
+            [c["params"]["name"] for c in commands[:3]],
+            ["cols", "pitch", "rows"],
+        )
+        self.assertEqual(
+            commands[3],
+            {
+                "command": "solid.box",
+                "params": {
+                    "length": 120,
+                    "width": 80,
+                    "height": 4,
+                    "corner": [0, 0, 0],
+                    "body_name": "Plate",
+                },
+            },
+        )
+
+        fillet = commands[4]
+        self.assertEqual(fillet["command"], "solid.fillet")
+        self.assertEqual(fillet["params"]["radius"], 8)
+        self.assertEqual(
+            fillet["params"]["edges"],
+            [[0, 0, 2], [120, 0, 2], [120, 80, 2], [0, 80, 2]],
+        )
+
+        self.assertEqual(
+            commands[5],
+            {
+                "command": "sketch.create",
+                "params": {"plane": "XY", "name": "Vent"},
+            },
+        )
+        self.assertEqual(
+            commands[6],
+            {
+                "command": "sketch.rectangle.two_point",
+                "params": {"p0": [18, 12], "p1": [24, 26]},
+            },
+        )
+        self.assertEqual(commands[7]["command"], "sketch.finish")
+        self.assertEqual(
+            commands[8],
+            {
+                "command": "solid.extrude",
+                "params": {
+                    "operation": "cut",
+                    "targets": ["Plate"],
+                    "name": "Vent",
+                    "distance": 4,
+                    "direction": "positive",
+                },
+            },
+        )
+
+        pattern = commands[9]
+        self.assertEqual(pattern["command"], "solid.pattern.rectangular")
+        self.assertEqual(
+            pattern["params"],
+            {
+                "features": ["Vent"],
+                "dir1": [1, 0, 0],
+                "count1": "cols",
+                "spacing1": "pitch",
+                "alignment": "right",
+                "reversed": False,
+                "dir2": [0, 1, 0],
+                "count2": "rows",
+                "spacing2": 22,
+                "alignment2": "right",
+                "reversed2": False,
+            },
+        )
+        self.assertEqual(
+            [c["command"] for c in commands].count("solid.pattern.rectangular"),
+            1,
+        )
+
+
     def test_bracket_matches_corrected_native_commands(self):
         generated = run_script(ROOT / "models/basic/bracket/scpf/model.py")
         expected = json.loads(

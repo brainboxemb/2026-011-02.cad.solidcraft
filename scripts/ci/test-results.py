@@ -71,7 +71,7 @@ def check(site, commit):
     for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
         assert name in text, name
     assert provenance["scpf_commit"] in text
-    for slug in ("plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
+    for slug in ("plate", "vent-plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug
         assert (model / "model.py").is_file(), slug
@@ -175,7 +175,12 @@ def check(site, commit):
             assert 'href="scpc-commands.json"' in page, slug
             assert 'script.add' in page, slug
             data = json.loads(native_json.read_text(encoding="utf-8"))
-            assert len(data["commands"]) == (9 if slug == "plate" else 17)
+            expected_command_counts = {
+                "plate": 9,
+                "vent-plate": 10,
+                "corner-bracket": 17,
+            }
+            assert len(data["commands"]) == expected_command_counts[slug]
         else:
             assert not (model / "scpc-model.py").exists(), slug
             assert not (model / "scpc-commands.json").exists(), slug

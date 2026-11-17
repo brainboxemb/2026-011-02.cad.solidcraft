@@ -198,12 +198,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-(width / 2)) + (width / 2) + (-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "(-(height / 2)) + (height / 2) + ((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2))"
+          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
+          "((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2))"
         ],
         "p1": [
-          "(-(width / 2)) + (width / 2) + ((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "(-(height / 2)) + (height / 2) + ((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2)"
+          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
+          "((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2)"
         ]
       }
     },
@@ -211,12 +211,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-(width / 2)) + (width / 2) + (-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "(-(height / 2)) + (height / 2) + ((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (-(((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2))"
+          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
+          "((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (-(((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2))"
         ],
         "p1": [
-          "(-(width / 2)) + (width / 2) + ((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "(-(height / 2)) + (height / 2) + ((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2)"
+          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
+          "((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2)"
         ]
       }
     },
@@ -224,12 +224,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-(width / 2)) + (width / 2) + (-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "(-(height / 2)) + (height / 2) + ((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2))"
+          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
+          "((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2))"
         ],
         "p1": [
-          "(-(width / 2)) + (width / 2) + ((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "(-(height / 2)) + (height / 2) + ((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2)"
+          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
+          "((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2)"
         ]
       }
     },
@@ -237,12 +237,12 @@
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-(width / 2)) + (width / 2) + (-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "(-(height / 2)) + (height / 2) + ((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + (-((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2))"
+          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
+          "((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + (-((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2))"
         ],
         "p1": [
-          "(-(width / 2)) + (width / 2) + ((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "(-(height / 2)) + (height / 2) + ((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + ((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2)"
+          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
+          "((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + ((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2)"
         ]
       }
     },

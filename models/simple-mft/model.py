@@ -1,9 +1,18 @@
-"""Simple MFT worktop — plate and standard dog-hole grid only.
+"""Simple MFT worktop inspired by the Craftmaker S30 replacement top.
 
-The 805 x 555 x 18 mm plate and 20 mm hole diameter use the chosen worktop
-envelope. The hole layout is our centred 96 mm MFT grid, not a claim about
-the measured Craftmaker S30 hole positions.
+The plate envelope and dog-hole diameter follow the published replacement-top
+dimensions. The 76 mm pitch, 20 mm corner cuts and clamp-slot dimensions are
+photo-based design estimates, not manufacturer dimensions.
+
+The current 2D expectation is calibrated from the front product photo:
+- slot width about 24 mm;
+- slot end-centre distance about 80 mm, giving about 104 mm overall length;
+- per diagonal arm, the inner slot starts on grid ring 1 and extends outward;
+- the outer slot starts on grid ring 3 and extends inward;
+- grid ring 2 remains a normal dog hole between the two slots.
 """
+
+from math import sqrt
 
 
 class SimpleMFT:
@@ -11,12 +20,22 @@ class SimpleMFT:
     depth = 555.0
     thickness = 18.0
     hole_diameter = 20.0
-    hole_pitch = 96.0
+    hole_pitch = 76.0
+    corner_chamfer = 20.0
 
-    COLUMNS = 7
-    ROWS = 5
+    COLUMNS = 9
+    ROWS = 7
+
+    SLOT_WIDTH = 24.0
+    SLOT_CENTER_DISTANCE = 80.0
 
     def build(self):
+        half_w = self.width / 2
+        half_d = self.depth / 2
+        c = self.corner_chamfer
+
+        # Keep a rectangular native base so attached Sketches use the native
+        # rectangular face reference supported by SCPF.
         board = Box(
             self.width,
             self.depth,
@@ -24,26 +43,30 @@ class SimpleMFT:
             anchor=Anchor.BOTTOM,
         )
 
-        # One source hole at the lower-left grid position. Its offset remains
-        # linked to the 96 mm pitch so the full 7 x 5 pattern stays centred.
-        with Sketch(
-            name="Dog hole",
-            on=board,
-            parent=Anchor.TOP,
-        ) as hole:
+        # Chamfer the four vertical corner edges. An equal 20 mm chamfer on a
+        # vertical edge produces the straight 20 x 20 mm plan-view corner cut
+        # while retaining the rectangular Box as the anchor base.
+        edge_z = self.thickness.value / 2
+        board = board.chamfer(
+            c,
+            edges=[
+                (-half_w, -half_d, edge_z),
+                (half_w, -half_d, edge_z),
+                (half_w, half_d, edge_z),
+                (-half_w, half_d, edge_z),
+            ],
+        )
+
+        with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
             hole.add(
                 Circle2D(d=self.hole_diameter),
-                offset=(
-                    -3 * self.hole_pitch,
-                    -2 * self.hole_pitch,
-                ),
+                offset=(-4 * self.hole_pitch, -3 * self.hole_pitch),
             )
 
-        source_cut = hole.extrude(Depth.THROUGH_ALL)
-        board = board - source_cut
-
-        return board.rectangular_pattern(
-            source_cut,
+        hole_cut = hole.extrude(Depth.THROUGH_ALL)
+        board = board - hole_cut
+        board = board.rectangular_pattern(
+            hole_cut,
             count=self.COLUMNS,
             spacing=self.hole_pitch,
             direction=Axis.X,
@@ -51,3 +74,44 @@ class SimpleMFT:
             spacing2=self.hole_pitch,
             direction2=Axis.Y,
         )
+
+        # SolidCraft 0.42 native Slot creators require fixed numeric points.
+        # Read the current parameter values explicitly instead of passing Forge
+        # expressions into the Slot command.
+        pitch = float(self.hole_pitch.value)
+        slot_center_distance = float(self.SLOT_CENTER_DISTANCE)
+        slot_width = float(self.SLOT_WIDTH)
+        along_axis = slot_center_distance / sqrt(2)
+
+        for name, sx, sy in (
+            ("Slot NE", +1, +1),
+            ("Slot NW", -1, +1),
+            ("Slot SW", -1, -1),
+            ("Slot SE", +1, -1),
+        ):
+            inner_ring = (sx * pitch, sy * pitch)
+            inner_outward = (
+                sx * (pitch + along_axis),
+                sy * (pitch + along_axis),
+            )
+            outer_ring = (sx * 3 * pitch, sy * 3 * pitch)
+            outer_inward = (
+                sx * (3 * pitch - along_axis),
+                sy * (3 * pitch - along_axis),
+            )
+
+            with Sketch(name=name, on=board, parent=Anchor.TOP) as slots:
+                SlotCenterToCenter2D(
+                    inner_ring,
+                    inner_outward,
+                    slot_width,
+                )
+                SlotCenterToCenter2D(
+                    outer_inward,
+                    outer_ring,
+                    slot_width,
+                )
+
+            board = board - slots.extrude(Depth.THROUGH_ALL)
+
+        return board

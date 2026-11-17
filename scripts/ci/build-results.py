@@ -14,7 +14,13 @@ import zipfile
 from urllib.parse import quote
 from pathlib import Path
 from model_catalog import (
-    SOURCES, SECTIONS, COMMAND_SOURCES, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, source_path,
+    MODELS,
+    SOURCES,
+    SECTIONS,
+    COMMAND_SOURCES,
+    COMPONENT_SOURCES,
+    COMPONENT_DEFINITION_PRIMARY,
+    source_path,
 )
 
 
@@ -25,168 +31,6 @@ ROOT = Path(__file__).resolve().parents[2]
 # runtime, frontend build, or CAD server is required for this first experiment.
 PUBLIC_SITE = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
 SOLIDCRAFT_WEB = "https://docs.solidcraft.io/app/"
-MODELS = {
-    "plate": {
-        "title": "Plate", "tagline": "A rounded plate with four holes",
-        "description": "A feature-based plate: sketch, extrusion, four vertical fillets and a through-hole sketch.",
-        "parameters": "100 × 60 × 10 mm; four Ø8 mm holes",
-        "diagram": "plate",
-        "stages": ["Sketch the rectangle", "Extrude the base", "Fillet vertical corners",
-                   "Sketch four hole centres", "Cut the holes"],
-    },
-    "vent-plate": {
-        "title": "Vent Plate",
-        "tagline": "One source vent repeated by a native 6 × 3 feature pattern",
-        "description": "Recreates the small SolidCraft Vent Plate example with a rounded 120 × 80 × 4 mm plate, one rectangular source cut and one native two-direction rectangular pattern.",
-        "parameters": "120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch",
-        "diagram": "plate",
-        "stages": ["Box — 120 × 80 × 4 mm from corner [0, 0, 0]",
-                   "Fillet — four vertical edges R8",
-                   "Vent — one 6 × 14 mm source rectangle at X=18..24, Y=12..26",
-                   "Cut — positive 4 mm through the plate",
-                   "RectangularPattern — 6 columns × 3 rows at 16 × 22 mm spacing"],
-    },
-    "csg-cube": {
-        "title": "CsgCube", "tagline": "A box, sphere and three crossing bores",
-        "description": "A constructive solid geometry demonstration: intersect a cube with a sphere, then subtract cylinders along three axes.",
-        "parameters": "50 mm cube; three crossing cylindrical cuts",
-        "diagram": "csg",
-        "stages": ["Create the sphere", "Intersect with a cube",
-                   "Cut along X, Y and Z"],
-    },
-    "sample-plate": {
-        "title": "SamplePlate",
-        "tagline": "Original four-sketch history: Base, Holes, Boss, Bore",
-        "description": "Recreates the original saved SolidCraft construction history with four named sketches and sketch-based cuts. The object-level Hole and Cylinder intent is compiled to the four editable sketches and matching cut/join history.",
-        "parameters": "80 × 50 × 8 mm; R6; Ø24 × 14 boss",
-        "diagram": "sample",
-        "stages": ["Base — sketch XY rectangle (80 × 50)",
-                   "Extrude1 — extrude base by 8 mm",
-                   "Fillet1 — fillet four vertical corners, R6",
-                   "Holes — cut two mounting holes Ø8",
-                   "Boss — join Ø24 boss above plate, height 14",
-                   "Bore — cut central Ø12 bore through full 22 mm"],
-    },
-    "bracket": {
-        "title": "Bracket", "tagline": "An L-shaped extrusion with two mounting holes",
-        "description": "An XZ polygon extruded along Y with an edge fillet and two native SolidCraft Hole features.",
-        "parameters": "60 mm wide; 6 mm wall; two Ø8 mm holes",
-        "diagram": "bracket",
-        "stages": ["Draw the L profile", "Extrude its width",
-                   "Round an exposed edge", "Sketch mounting holes", "Cut through the flange"],
-    },
-    "corner-bracket": {
-        "title": "CornerBracket",
-        "tagline": "24 mm plywood corner bracket without mounting holes",
-        "description": "One shared, hole-free CornerBracket is reused by the standalone model and the wooden HUB75 enclosure. Its native outline, inner R4 fillet and elephant-foot/outer chamfers remain editable. The older hole-containing experiment is archived separately.",
-        "parameters": "24 mm width, 12 mm wall, 60 mm arms; no screw holes",
-        "diagram": "bracket",
-        "stages": ["Profile — 2D L outline with arm-end bevels",
-                   "Extrude — symmetric 24 mm body",
-                   "Fillet — rounded inside corner R4",
-                   "Chamfer — outer edges of both broad faces",
-                   "Chamfer — print-face elephant-foot relief",
-                   "Solid bracket — mounting-hole features deliberately omitted"],
-    },
-    "guide-rail": {
-        "title": "GuideRail",
-        "tagline": "Parametric guide rail with a measured reference cross-section",
-        "description": "A reusable brand-neutral guide-rail component. The current simplified profile uses the TSO measured dimensions for a Festool-style rail as its dimensional reference, while assemblies depend only on the generic GuideRail component and its editable length.",
-        "parameters": "184.20 × 10.50 mm profile; default length 1400 mm; editable length",
-        "diagram": "guide-rail",
-        "stages": ["Sketch one XZ cross-section from the measured reference dimensions",
-                   "Keep minor wall and rib details intentionally simplified",
-                   "Extrude symmetrically along Y by the editable length",
-                   "Reuse the same GuideRail component at assembly-specific lengths"],
-    },
-    "simple-mft": {
-        "title": "Simple MFT",
-        "tagline": "805 × 555 mm worktop with a 9 × 7 dog-hole grid and eight native clamp slots",
-        "description": "A CRAFTMAKER-inspired worktop study: one 18 mm native Box, four straight 20 mm corner chamfers, 59 Ø20 dog holes on the nominal 9 × 7 / 76 mm grid with the four diagonal ring-2 positions omitted, and eight photo-measured native diagonal Slots. The frame, guide rail and accessories are outside this model.",
-        "parameters": "805 × 555 × 18 mm; 59 × Ø20; nominal 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm",
-        "diagram": "plate",
-        "stages": ["Box — 805 × 555 × 18 mm",
-                   "Dog holes Sketch — four Circle seeds with native rectangular patterns/mirrors create 59 holes",
-                   "Omit the four diagonal ring-2 positions at (±152, ±152) mm",
-                   "Clamp slots Sketch — one master Slot, one native sketch pattern and three mirrors create 8 Slots",
-                   "Two through-all cuts — one for dog holes and one for clamp slots",
-                   "Chamfer — four straight 20 × 20 mm plan-view corner cuts"],
-    },
-    "hub75-wood-frame": {
-        "title": "WoodenHub75Box",
-        "tagline": "Parametrized 12 mm plywood box, eight brackets and one GlassStrip type",
-        "description": "One clearly parametrized assembly: five lightweight HUB75 modules, 12 mm sidewalls/bottom/roof, 9 mm attached rear, 4 mm glass and four straight-mitred wooden retainers from one GlassStrip class. The roof extends 10 mm in front and 1 mm beyond the attached rear sheet. Eight printed corner brackets, two per corner, share the hole-free CornerBracket definition. The four rear brackets stop at the sidewall rear face (Y=75), before the 9 mm backboard (Y=75..84). The R4 fillets belong to the roof and bottom boards, not the glazing strips.",
-        "parameters": "Outer 868 × 386 mm; 12 mm ply, 9 mm rear; roof 10/1 mm overhang; eight brackets",
-        "diagram": "hub75-wood-frame",
-        "stages": ["Define one central parameter set and the wooden component types",
-                   "Place five lightweight HUB75 panel occurrences on the 160 mm grid",
-                   "Place 12 mm sidewalls, R4 bottom and roof with 10/1 mm overhang",
-                   "Attach the 9 mm back board and place the 4 mm window behind the strips",
-                   "Create two length variants of ONE GlassStrip type and place four mitred pieces",
-                   "Place eight shared hole-free CornerBracket occurrences, front and rear",
-                   "Verify actual native positions and dimensions in SolidCraft 0.42.0"],
-    },
-    "hub75-screen": {
-        "title": "BasicHub75Screen",
-        "tagline": "Five shared native HUB75 occurrences with two 180° rotations",
-        "description": "Five panels on the source project's 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 reverse direction around the assembled front-to-back axis for the rear data chain, and all occurrences stand upright in XZ. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.",
-        "parameters": "Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm",
-        "diagram": "hub75-screen",
-        "stages": ["Create the reusable tapered HUB75 component",
-                   "Make six blind M3 rear bores and assign material once",
-                   "Ground the middle occurrence at X=0",
-                   "Place four copies on the 160 mm nominal grid",
-                   "Place native occurrences with translate, axis and angle",
-                   "Verify five saved native occurrences"],
-    },
-    "hub75-panel": {
-        "title": "Hub75Panel",
-        "tagline": "One measured reusable P5 HUB75 panel component",
-        "description": "Shared panel component from the existing OpenSCAD reference: a 159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side blind Ø3 mounting-hole centres and a grey housing material. Standalone uses the component's own local XY/Z axes; screen assemblies rotate the exact same class into world XZ.",
-        "parameters": "159.70 × 319.71 × 14.50 mm; six Ø3 holes; direct shared component root",
-        "diagram": "hub75",
-        "stages": ["Run the shared Hub75Panel component directly",
-                   "Sketch and extrude the physical front envelope",
-                   "Cut four rear electronics bays from the rear plane",
-                   "Cut six blind rear-side Ø3 mounting holes",
-                   "Assign grey housing material",
-                   "Keep the standalone part in its local CAD axes",
-                   "Verify local front and rear views in SolidCraft 0.42.0"],
-    },
-    "plastic-enclosure-pi": {
-        "title": "Plastic Enclosure Pi",
-        "tagline": "Raspberry Pi 4 case with connectors, vents and engraving",
-        "description": "Reconstructs the Raspberry Pi 4 video using a rounded open-top shell, mounting bosses, connector cuts, floor vents, Pi 4 lettering and PETG material.",
-        "parameters": "95 × 66 × 24 mm; R5; PETG; 4 × M2.5 standoffs",
-        "diagram": "plastic-enclosure",
-        "stages": ["Outline — centered 95 × 66 mm footprint",
-                   "Extrude — height 24 mm",
-                   "Fillet — four vertical corners R5",
-                   "Shell — open top, 2 mm wall",
-                   "Fillet upper rim — R1",
-                   "Four mounting bosses — Ø6 / Ø2.5, 58 × 49 pattern",
-                   "Sketch and cut USB-C and dual micro-HDMI ports",
-                   "Sketch and cut USB / Ethernet opening",
-                   "Sketch and cut five floor ventilation slots",
-                   "Engrave Pi 4 text, 0.6 mm",
-                   "Assign PETG physical material"],
-    },
-    "plastic-enclosure": {
-        "title": "Plastic Enclosure",
-        "tagline": "A shelled enclosure with native plastic design features",
-        "description": "Rebuilds the supplied enclosure with the normal SCPF Box sketch/extrusion, followed by native Shell, Lip, Snap Fit, Boss and Rest features.",
-        "parameters": "80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses",
-        "diagram": "plastic-enclosure",
-        "stages": ["Enclosure footprint — sketch the 80 × 50 mm base",
-                   "Extrude1 — create the 30 mm solid",
-                   "Shell1 — hollow to 2 mm with the top open",
-                   "Lip1 — add a 1 × 2 mm rim lip",
-                   "SnapFit1 — add the 14 mm cantilever snap",
-                   "Boss1 / Boss2 — add two Ø7 × 12 mm screw bosses",
-                   "Rest1 — add the 16 × 24 × 3 mm centre rest"],
-    },
-}
-
 # Purely schematic line art; never mistaken for a native SolidCraft render.
 DIAGRAMS = {
     "sample": """<path d="M65 115 300 50 425 100 185 175Z" fill="#bcd4ee" stroke="#285785" stroke-width="5"/><path d="M65 115 V160 L185 222 V175 M185 222 425 150 V100" fill="#8eb5db" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="100" rx="62" ry="39" fill="#5f92c6" stroke="#285785" stroke-width="4"/><path d="M231 100 V60 A62 39 0 0 1 355 60 V100" fill="#b4d0e9" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="60" rx="62" ry="39" fill="#d1e4f4" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="60" rx="29" ry="18" fill="#edf4fb" stroke="#285785" stroke-width="4"/><ellipse cx="130" cy="116" rx="15" ry="10" fill="#edf4fb" stroke="#285785" stroke-width="4"/><ellipse cx="385" cy="129" rx="15" ry="10" fill="#edf4fb" stroke="#285785" stroke-width="4"/>""",
@@ -248,24 +92,9 @@ def screenshot_info(native_root, commit, model, scpf_commit):
             or metadata.get("scpf_commit") != scpf_commit
             or metadata.get("verified") is not True):
         return None
-    rel = {
-        "plate": "plate/model.png",
-        "vent-plate": "vent-plate/model.png",
-        "csg-cube": "csg-cube/model.png",
-        "bracket": "bracket/model.png",
-        "corner-bracket": "corner-bracket/model.png",
-        "hub75-panel": "hub75-panel/model.png",
-        "guide-rail": "guide-rail/model.png",
-        "simple-mft": "simple-mft/model.png",
-        "hub75-screen": "hub75-screen/model.png",
-        "hub75-wood-frame": "hub75-wood-frame/model.png",
-        "sample-plate": "sample-plate/model.png",
-        "plastic-enclosure": "plastic-enclosure/model.png",
-        "plastic-enclosure-pi": "plastic-enclosure-pi/model.png",
-    }.get(model)
-    if not rel:
+    if model not in MODELS:
         return None
-    candidate = native_root / rel
+    candidate = native_root / model / "model.png"
     return candidate if candidate.is_file() and candidate.stat().st_size else None
 
 

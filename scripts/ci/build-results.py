@@ -255,6 +255,7 @@ def screenshot_info(native_root, commit, model, scpf_commit):
         "bracket": "bracket/model.png",
         "corner-bracket": "corner-bracket/model.png",
         "hub75-panel": "hub75-panel/model.png",
+        "guide-rail": "guide-rail/model.png",
         "simple-mft": "simple-mft/model.png",
         "hub75-screen": "hub75-screen/model.png",
         "hub75-wood-frame": "hub75-wood-frame/model.png",

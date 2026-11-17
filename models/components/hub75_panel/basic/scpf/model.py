@@ -28,9 +28,6 @@ class Hub75PanelBasic:
                 (-half_width, HUB75_PANEL_HEIGHT),
             ], plane="XZ", world=True)
 
-        return sketch.extrude(
-            HUB75_PANEL_DEPTH,
-            direction=Direction.SYMMETRIC,
-        ).with_material(
+        return sketch.extrude(HUB75_PANEL_DEPTH, sym=True).with_material(
             "LED panel envelope", density_g_cm3=1.2, color="#242B32"
         )

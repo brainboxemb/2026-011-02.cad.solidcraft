@@ -7,16 +7,16 @@ worktop. It models the **worktop plate only**.
 
 ![CRAFTMAKER ProStation S30 front reference](https://cdn.myshoptet.com/usr/www.craftmaker.nl/user/documents/upload/Product_description/craftmaker_pro_station_s30_accessories.jpg)
 
-Source: CRAFTMAKER ProStation S30 product page. This nearly front-on image is
-used as the main geometry reference because the complete worktop, 9 × 7 hole
-grid and all eight clamp slots are visible at once.
+This nearly front-on product image is the main visual reference because the
+complete worktop, 9 × 7 hole grid and all eight clamp slots are visible at
+once.
 
 ## 2D expectation
 
 ![Simple MFT expected top view](expected-top-view.svg)
 
-The 2D expectation is the geometry reference for the SCPF model. It is kept
-next to the model so slot placement can be reviewed without opening SolidCraft.
+The 2D expectation is kept next to the model so the inferred layout can be
+reviewed without opening SolidCraft.
 
 ## Known dimensions
 
@@ -25,78 +25,83 @@ Published replacement-top dimensions:
 - 805 × 555 × 18 mm;
 - Ø20 mm dog holes.
 
-The front photo also supports a 9 × 7 hole grid. The current grid estimate is
-76 mm pitch in X and Y.
+The front photo supports a 9 × 7 hole grid. The current pitch estimate is
+76 mm in X and Y.
 
-## Photo measurement
+## Photo-based slot estimate
 
-The front image was calibrated against the known worktop size and the visible
-9 × 7 hole grid. A projective fit of the unaffected dog-hole centres gives a
-mean image-fit error of about 1 pixel, so the slot geometry can be estimated in
-worktop millimetres rather than raw image pixels.
+The front photo was aligned against the known worktop envelope and the visible
+hole grid. The values below remain estimates rather than manufacturer
+dimensions.
 
-Eight slots are visible: two on each diagonal arm.
+Eight slots are visible: two in each quadrant.
 
-Measured across the eight slots:
+Current nominal values:
 
-- slot width: about **24 mm**;
-- end-cap centre distance: about **80 mm**;
+- slot width: **24 mm**;
+- end-cap centre distance: **80 mm**;
 - overall slot length: about **104 mm**;
-- slot angle: approximately **45°**;
-- inner slot: one round end is centred on diagonal grid ring 1
-  (\`±76, ±76\`) and the slot extends outward;
-- outer slot: one round end is centred on diagonal grid ring 3
-  (\`±228, ±228\`) and the slot extends inward;
-- diagonal grid ring 2 (\`±152, ±152\`) remains a normal Ø20 dog hole between
+- slot angle: approximately **45°**.
+
+The inferred pattern in each quadrant is:
+
+- the inner slot has one round-end centre at diagonal grid ring 1
+  (`±76, ±76`) and extends outward;
+- the outer slot has one round-end centre at diagonal grid ring 3
+  (`±228, ±228`) and extends inward;
+- diagonal grid ring 2 (`±152, ±152`) remains a normal Ø20 dog hole between
   the two slots.
 
-The measured individual slot lengths vary by a few millimetres in the image
-because of perspective, edge contrast and manual end-cap picking. The model
-therefore uses the simple nominal estimate **80 mm centre-to-centre × 24 mm
-wide**, equivalent to roughly **104 × 24 mm overall**.
+The model uses 80 mm centre-to-centre × 24 mm wide as the simple nominal Slot
+size. That gives approximately 104 × 24 mm overall.
 
-The 76 mm pitch, 20 mm corner cut and slot dimensions are still estimates, not
-manufacturer specifications.
+The 76 mm pitch, 20 mm corner cut and Slot dimensions are still estimates.
 
 ## Pattern
 
 For one diagonal arm:
 
-\`\`\`text
+```text
 centre
 
       Ø ring 1
        \
-        \  inner slot, 80 mm c2c
+        \  inner Slot
          \
-          Ø ring 2        <- normal Ø20 hole remains
+          Ø ring 2        <- normal Ø20 hole
            \
-            \ outer slot, 80 mm c2c
+            \ outer Slot
              \
               Ø ring 3
-\`\`\`
+```
 
-The same pattern is mirrored into all four quadrants. There is no Slot through
-ring 2 and no Slot from the plate centre to ring 1.
+The pattern is mirrored into all four quadrants. There is no Slot from the
+plate centre to ring 1 and no Slot through the ring-2 dog hole.
 
 ## Native SCPF construction
 
-The model targets the pinned **SCPF 0.6.1** release.
+The CAD repository pins **SCPF 0.6.2**. This release fixes issue #266: fixed
+native Slot coordinates stay fixed in a normal attached Sketch when the parent
+Box has editable dimensions.
 
-The plate starts as one eight-point polygon and is extruded to 18 mm.
+The worktop starts as one native `Box`. A native chamfer cuts the four
+20 × 20 mm plan-view corners while keeping the rectangular Box as the base for
+TOP-attached Sketches.
 
-The dog holes use one native source hole and one two-direction rectangular
-feature pattern for the complete 9 × 7 grid.
+The dog holes use one native source circle plus one two-direction
+`solid.pattern.rectangular` feature for the complete 9 × 7 grid.
 
-The clamp geometry uses eight native \`SlotCenterToCenter2D\` profiles:
+The clamp geometry uses eight native `SlotCenterToCenter2D` profiles:
 
 - four inner Slots start at ring 1 and extend 80 mm outward along the 45°
   diagonal;
 - four outer Slots end at ring 3 and extend 80 mm inward along the same
   diagonal.
 
-This keeps the SCPF model close to the visible product geometry without
-inventing a 75 mm Slot length or a Slot through the middle diagonal hole.
+Each Slot Sketch is attached normally with
+`Sketch(on=board, parent=Anchor.TOP)` and cut with
+`Depth.THROUGH_ALL`. The model no longer needs an explicit numeric XY plane
+as a workaround.
 
 ## Scope
 
@@ -110,7 +115,7 @@ Not included:
 
 ## Run
 
-\`\`\`powershell
+```powershell
 python -m scpf models/advanced/simple_mft/scpf/model.py --out output/simple-mft.json
 python -m scpf models/advanced/simple_mft/scpf/model.py --connect --new
-\`\`\`
+```

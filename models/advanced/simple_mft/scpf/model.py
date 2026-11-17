@@ -34,18 +34,28 @@ class SimpleMFT:
         half_d = self.depth / 2
         c = self.corner_chamfer
 
-        with Sketch(name="Worktop outline", plane="XY") as outline:
-            Polygon2D([
-                (-half_w + c, -half_d),
-                (half_w - c, -half_d),
-                (half_w, -half_d + c),
-                (half_w, half_d - c),
-                (half_w - c, half_d),
-                (-half_w + c, half_d),
-                (-half_w, -half_d + c),
-            ])
+        # Keep a rectangular native base so attached Sketches use the native
+        # rectangular face reference supported by SCPF.
+        board = Box(
+            self.width,
+            self.depth,
+            self.thickness,
+            anchor=Anchor.BOTTOM,
+        )
 
-        board = outline.extrude(self.thickness)
+        # Chamfer the four vertical corner edges. An equal 20 mm chamfer on a
+        # vertical edge produces the straight 20 x 20 mm plan-view corner cut
+        # while retaining the rectangular Box as the anchor base.
+        edge_z = self.thickness.value / 2
+        board = board.chamfer(
+            c,
+            edges=[
+                (-half_w, -half_d, edge_z),
+                (half_w, -half_d, edge_z),
+                (half_w, half_d, edge_z),
+                (-half_w, half_d, edge_z),
+            ],
+        )
 
         with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
             hole.add(
@@ -65,8 +75,13 @@ class SimpleMFT:
             direction2=Axis.Y,
         )
 
-        pitch = self.hole_pitch.value
-        along_axis = self.SLOT_CENTER_DISTANCE / sqrt(2)
+        # SolidCraft 0.42 native Slot creators require fixed numeric points.
+        # Read the current parameter values explicitly instead of passing Forge
+        # expressions into the Slot command.
+        pitch = float(self.hole_pitch.value)
+        slot_center_distance = float(self.SLOT_CENTER_DISTANCE)
+        slot_width = float(self.SLOT_WIDTH)
+        along_axis = slot_center_distance / sqrt(2)
 
         for name, sx, sy in (
             ("Slot NE", +1, +1),
@@ -89,12 +104,12 @@ class SimpleMFT:
                 SlotCenterToCenter2D(
                     inner_ring,
                     inner_outward,
-                    self.SLOT_WIDTH,
+                    slot_width,
                 )
                 SlotCenterToCenter2D(
                     outer_inward,
                     outer_ring,
-                    self.SLOT_WIDTH,
+                    slot_width,
                 )
 
             board = board - slots.extrude(Depth.THROUGH_ALL)

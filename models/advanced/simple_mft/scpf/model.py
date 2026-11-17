@@ -34,18 +34,38 @@ class SimpleMFT:
         half_d = self.depth / 2
         c = self.corner_chamfer
 
-        with Sketch(name="Worktop outline", plane="XY") as outline:
+        # Keep a rectangular native base so SCPF 0.6.1 can resolve TOP anchors.
+        board = Box(
+            self.width,
+            self.depth,
+            self.thickness,
+            anchor=Anchor.BOTTOM,
+        )
+
+        # Trim the four straight corners after creating the rectangular base.
+        with Sketch(name="Corner cuts", on=board, parent=Anchor.TOP) as corners:
             Polygon2D([
+                (-half_w, -half_d),
                 (-half_w + c, -half_d),
-                (half_w - c, -half_d),
-                (half_w, -half_d + c),
-                (half_w, half_d - c),
-                (half_w - c, half_d),
-                (-half_w + c, half_d),
                 (-half_w, -half_d + c),
             ])
+            Polygon2D([
+                (half_w, -half_d),
+                (half_w - c, -half_d),
+                (half_w, -half_d + c),
+            ])
+            Polygon2D([
+                (half_w, half_d),
+                (half_w - c, half_d),
+                (half_w, half_d - c),
+            ])
+            Polygon2D([
+                (-half_w, half_d),
+                (-half_w + c, half_d),
+                (-half_w, half_d - c),
+            ])
 
-        board = outline.extrude(self.thickness)
+        board = board - corners.extrude(Depth.THROUGH_ALL)
 
         with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
             hole.add(

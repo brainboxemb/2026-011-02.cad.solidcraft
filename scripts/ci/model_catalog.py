@@ -16,6 +16,7 @@ SOURCES = {
     "plastic-enclosure-pi": "models/basic/plastic_enclosure_pi/scpf/model.py",
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
     "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
+    "festool-guide-rail": "models/components/festool_guide_rail/scpf/model.py",
     "simple-mft": "models/advanced/simple_mft/scpf/model.py",
     "hub75-screen": "models/advanced/hub75_screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75_wood_frame/scpf/model.py",
@@ -40,20 +41,21 @@ COMMAND_SOURCES = {
 COMPONENT_SOURCES = {
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
     "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
+    "festool-guide-rail": "models/components/festool_guide_rail/scpf/model.py",
     "hub75-screen": "models/components/hub75_panel/detailed/scpf/model.py",
 }
 
 # Component examples display their real source first. Assemblies are primarily
 # about arranging components, so show the assembly script first.
 COMPONENT_DEFINITION_PRIMARY = frozenset({
-    "corner-bracket", "hub75-panel",
+    "corner-bracket", "hub75-panel", "festool-guide-rail",
 })
 
 SECTIONS = {
     "basic": ("Basic Models", "Small, transparent models used to develop and verify SCPF features.",
               ("plate", "vent-plate", "csg-cube", "bracket", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi")),
     "components": ("Components", "Reusable physical parts compiled directly from the same source assemblies import.",
-                   ("corner-bracket", "hub75-panel")),
+                   ("corner-bracket", "hub75-panel", "festool-guide-rail")),
     "advanced": ("Advanced Models", "Full designs and nested native assemblies built from reusable components.",
                  ("simple-mft", "hub75-screen", "hub75-wood-frame")),
 }

@@ -20,19 +20,8 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertEqual(self.names.count("solid.box"), 1)
         self.assertEqual(self.names.count("solid.chamfer"), 1)
         self.assertEqual(self.names.count("sketch.polygon"), 0)
-        self.assertEqual(self.names.count("sketch.circle.center"), 1)
-        self.assertEqual(self.names.count("solid.pattern.rectangular"), 1)
-
-        hole_pattern = next(
-            command["params"]
-            for command in self.commands
-            if command["command"] == "solid.pattern.rectangular"
-        )
-        self.assertEqual(hole_pattern["features"], ["Dog hole"])
-        self.assertEqual(hole_pattern["count1"], 9)
-        self.assertEqual(hole_pattern["spacing1"], "hole_pitch")
-        self.assertEqual(hole_pattern["count2"], 7)
-        self.assertEqual(hole_pattern["spacing2"], "hole_pitch")
+        self.assertEqual(self.names.count("sketch.circle.center"), 59)
+        self.assertNotIn("solid.pattern.rectangular", self.names)
 
     def test_slots_match_photo_based_two_ring_pattern(self):
         slots = [
@@ -67,26 +56,33 @@ class SimpleMFTTests(unittest.TestCase):
                 for q0, q1 in actual
             ))
 
-    def test_middle_diagonal_ring_remains_clear(self):
-        slots = [
+    def test_diagonal_ring2_dog_holes_are_omitted(self):
+        circles = [
             command["params"]
             for command in self.commands
-            if command["command"] == "sketch.slot.center_to_center"
+            if command["command"] == "sketch.circle.center"
         ]
-        middle = {(sx * 152.0, sy * 152.0)
-                  for sx, sy in ((1, 1), (-1, 1), (-1, -1), (1, -1))}
-        endpoints = {
-            tuple(point)
-            for slot in slots
-            for point in (slot["p0"], slot["p1"])
+        self.assertEqual(len(circles), 59)
+
+        centers = {tuple(circle["center"]) for circle in circles}
+        excluded = {
+            ("(hole_pitch * -2)", "(hole_pitch * -2)"),
+            ("(hole_pitch * -2)", "(hole_pitch * 2)"),
+            ("(hole_pitch * 2)", "(hole_pitch * -2)"),
+            ("(hole_pitch * 2)", "(hole_pitch * 2)"),
         }
-        self.assertTrue(middle.isdisjoint(endpoints))
+        self.assertTrue(excluded.isdisjoint(centers))
 
     def test_model_keeps_measured_estimates_explicit(self):
         source = MODEL.read_text(encoding="utf-8")
         self.assertIn("hole_pitch = 76.0", source)
         self.assertIn("COLUMNS = 9", source)
         self.assertIn("ROWS = 7", source)
+        self.assertIn("EXCLUDED_DOG_HOLE_GRID", source)
+        self.assertIn("(-2, -2)", source)
+        self.assertIn("(-2, 2)", source)
+        self.assertIn("(2, -2)", source)
+        self.assertIn("(2, 2)", source)
         self.assertIn("SLOT_WIDTH = 24.0", source)
         self.assertIn("SLOT_CENTER_DISTANCE = 80.0", source)
         self.assertNotIn("SLOT_LENGTH = 75.0", source)

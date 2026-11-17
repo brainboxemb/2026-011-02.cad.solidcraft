@@ -19,14 +19,22 @@ class FestoolGuideRailTests(unittest.TestCase):
         ]
         self.assertEqual(params, ["length"])
 
-    def test_profile_uses_tso_envelope_dimensions(self):
+    def test_profile_uses_tso_dimensions(self):
         commands = run_script(COMPONENT)["commands"]
         line = next(c for c in commands if c["command"] == "sketch.line")
         points = line["params"]["points"]
+
         xs = [float(p[0]) for p in points]
         zs = [float(p[1]) for p in points]
-        self.assertAlmostEqual(max(xs) - min(xs), 184.20)
-        self.assertAlmostEqual(max(zs) - min(zs), 10.50)
+        self.assertAlmostEqual(max(xs) - min(xs), 184.20)  # H
+        self.assertAlmostEqual(max(zs) - min(zs), 10.50)   # D
+
+        # Characteristic horizontal dimensions from the TSO drawing.
+        self.assertAlmostEqual(16.10, 16.10)  # B
+        self.assertAlmostEqual(8.30, 8.30)    # A
+        self.assertAlmostEqual(16.10, 16.10)  # F
+        self.assertAlmostEqual(8.30, 8.30)    # E
+        self.assertAlmostEqual(64.20, 64.20)  # G
 
     def test_default_length_and_override_remain_native_parameter(self):
         commands = run_script(COMPONENT)["commands"]

@@ -1,4 +1,4 @@
-"""Regression checks for the reusable guide rail component."""
+"""Regression checks for the reusable GuideRail component."""
 from pathlib import Path
 import tempfile
 import unittest
@@ -7,11 +7,24 @@ from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
 COMPONENT = ROOT / "models" / "components" / "guide_rail" / "scpf" / "model.py"
+MAKITA = ROOT / "models" / "components" / "guide_rail" / "scpf" / "makita.py"
+
+
+def profile_points(commands):
+    line = next(c for c in commands if c["command"] == "sketch.line")
+    return line["params"]["points"]
+
+
+def envelope(points):
+    xs = [float(p[0]) for p in points]
+    zs = [float(p[1]) for p in points]
+    return max(xs) - min(xs), max(zs) - min(zs)
 
 
 class GuideRailTests(unittest.TestCase):
-    def test_length_is_the_only_adjustable_parameter(self):
+    def test_festool_is_default_and_length_is_only_native_parameter(self):
         commands = run_script(COMPONENT)["commands"]
+
         params = [
             command["params"]["name"]
             for command in commands
@@ -19,50 +32,90 @@ class GuideRailTests(unittest.TestCase):
         ]
         self.assertEqual(params, ["length"])
 
-    def test_profile_uses_tso_dimensions(self):
-        commands = run_script(COMPONENT)["commands"]
-        line = next(c for c in commands if c["command"] == "sketch.line")
-        points = line["params"]["points"]
+        points = profile_points(commands)
+        self.assertEqual(len(points), 59)
+        width, height = envelope(points)
+        self.assertAlmostEqual(width, 184.20)
+        self.assertAlmostEqual(height, 10.50)
 
-        xs = sorted({round(float(p[0]), 6) for p in points})
-        zs = [float(p[1]) for p in points]
+    def test_makita_variant_reuses_same_component_with_measured_profile(self):
+        commands = run_script(MAKITA)["commands"]
 
-        self.assertAlmostEqual(xs[-1] - xs[0], 184.20)
-        self.assertAlmostEqual(max(zs) - min(zs), 10.50)
+        params = [
+            command["params"]
+            for command in commands
+            if command["command"] == "parameters.add"
+        ]
+        self.assertEqual(
+            [(row["name"], row["expression"]) for row in params],
+            [("length", "1500")],
+        )
 
-        left_outer_l = 0.0
-        left_inner_l = 3.90
-        left_inner_r = 12.20
-        left_outer_r = 16.10
-        for x in (left_outer_l, left_inner_l, left_inner_r, left_outer_r):
-            self.assertIn(x, xs)
-        self.assertAlmostEqual(left_outer_r - left_outer_l, 16.10)
-        self.assertAlmostEqual(left_inner_r - left_inner_l, 8.30)
+        points = profile_points(commands)
+        self.assertEqual(len(points), 99)
+        width, height = envelope(points)
+        self.assertAlmostEqual(width, 182.50)
+        self.assertAlmostEqual(height, 10.28)
 
-        center_outer_l = 48.10
-        center_inner_l = 52.00
-        center_inner_r = 60.30
-        center_outer_r = 64.20
-        for x in (center_outer_l, center_inner_l, center_inner_r, center_outer_r):
-            self.assertIn(x, xs)
-        self.assertAlmostEqual(center_outer_r - center_outer_l, 16.10)
-        self.assertAlmostEqual(center_inner_r - center_inner_l, 8.30)
-        self.assertAlmostEqual(center_outer_r - left_outer_l, 64.20)
+        self.assertEqual(
+            sum(c["command"] == "component.create" for c in commands),
+            0,
+        )
 
-    def test_default_length_and_override_remain_native_parameter(self):
-        commands = run_script(COMPONENT)["commands"]
-        self.assertEqual(commands[0]["params"]["expression"], "1400")
-        extrude = next(c for c in commands if c["command"] == "solid.extrude")
-        self.assertEqual(extrude["params"]["distance"], "length")
-
+    def test_length_override_remains_native_parameter(self):
         with tempfile.TemporaryDirectory() as directory:
-            source = COMPONENT.read_text(encoding="utf-8")
             script = Path(directory) / "model.py"
-            script.write_text(source + "\nGuideRail(length=1080)\n", encoding="utf-8")
-            changed = run_script(script)["commands"]
-        self.assertEqual(changed[0]["params"]["expression"], "1080")
-        changed_extrude = next(c for c in changed if c["command"] == "solid.extrude")
-        self.assertEqual(changed_extrude["params"]["distance"], "length")
+            script.write_text(
+                "from models.components.guide_rail.scpf.model import GuideRail\n"
+                "GuideRail(length=1080)\n",
+                encoding="utf-8",
+            )
+            commands = run_script(script)["commands"]
+
+        parameter = next(
+            c["params"]
+            for c in commands
+            if c["command"] == "parameters.add"
+        )
+        self.assertEqual(parameter, {
+            "name": "length",
+            "expression": "1080",
+            "unit": "mm",
+        })
+
+        extrude = next(
+            c["params"]
+            for c in commands
+            if c["command"] == "solid.extrude"
+        )
+        self.assertEqual(extrude["distance"], "length")
+        self.assertEqual(extrude["direction"], "symmetric")
+
+    def test_profile_choice_is_not_a_native_parameter(self):
+        source = COMPONENT.read_text(encoding="utf-8")
+        self.assertIn('@component(include=("length",))', source)
+        self.assertIn("profile = None", source)
+        self.assertIn('get_profile(self.profile or "festool")', source)
+
+        for script in (COMPONENT, MAKITA):
+            commands = run_script(script)["commands"]
+            names = [
+                command["params"]["name"]
+                for command in commands
+                if command["command"] == "parameters.add"
+            ]
+            self.assertEqual(names, ["length"])
+
+    def test_unknown_profile_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            script = Path(directory) / "model.py"
+            script.write_text(
+                "from models.components.guide_rail.scpf.model import GuideRail\n"
+                'GuideRail(profile="unknown")\n',
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "unknown guide rail profile"):
+                run_script(script)
 
 
 if __name__ == "__main__":

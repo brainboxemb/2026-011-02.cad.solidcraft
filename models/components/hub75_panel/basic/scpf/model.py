@@ -4,7 +4,7 @@ No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The dimensions are fixed
 product constants; occurrence placement belongs to the owning assembly.
 """
-from scpf import Direction, Polygon2D, Sketch, component, half
+from scpf import Polygon2D, Sketch, component, half
 
 
 HUB75_PANEL_WIDTH = 159.70

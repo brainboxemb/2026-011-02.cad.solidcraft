@@ -57,64 +57,56 @@ size. That gives approximately 104 × 24 mm overall.
 
 The 76 mm pitch, 20 mm corner cut and Slot dimensions are still estimates.
 
-## Pattern
-
-For one diagonal arm:
-
-```text
-centre
-
-      Ø ring 1
-       \
-        \  inner Slot
-         \
-          · ring 2        <- no dog hole
-           \
-            \ outer Slot
-             \
-              Ø ring 3
-```
-
-The pattern is mirrored into all four quadrants. There is no Slot from the
-plate centre to ring 1, and the four ring-2 diagonal grid positions are omitted
-from the dog-hole set.
-
 ## Native SCPF construction
 
-The CAD repository pins **SCPF 0.6.2**. This release fixes issue #266: fixed
-native Slot coordinates stay fixed in a normal attached Sketch when the parent
-Box has editable dimensions.
+The worktop starts as one native `Box`. The two TOP-attached Sketches are
+created and cut first. The four 20 mm plan-view corner chamfers are then
+applied as the final plate feature.
 
-The worktop starts as one native `Box`. A native chamfer cuts the four
-20 × 20 mm plan-view corners while keeping the rectangular Box as the base for
-TOP-attached Sketches.
+The nominal dog-hole grid has 9 × 7 = 63 Circle profiles. It is authored in the
+same compact way as a manual SolidCraft model:
 
-The nominal grid has 9 × 7 = 63 positions. The four diagonal ring-2 positions
-are deliberately excluded, so the model creates **59 dog holes** in one
-TOP-attached Sketch and cuts them through the plate in one operation. This is
-clearer than creating a full 63-hole pattern and adding material back later.
+1. one `Circle2D` seed;
+2. one associative 9 × 7 `Sketch.rectangular_pattern(...)`;
+3. one selective through-cut using 59 profile points.
 
-The clamp geometry uses eight native `SlotCenterToCenter2D` profiles:
+The four diagonal ring-2 profiles at `(±152, ±152)` remain uncut, leaving
+**59 dog holes**. The sketch itself remains a complete editable 9 × 7 pattern;
+nothing is deleted from the pattern.
 
-- four inner Slots start at ring 1 and extend 80 mm outward along the 45°
-  diagonal;
-- four outer Slots end at ring 3 and extend 80 mm inward along the same
-  diagonal.
+The clamp geometry is also associative inside one `Clamp slots` Sketch:
 
-Each Slot Sketch is attached normally with
-`Sketch(on=board, parent=Anchor.TOP)` and cut with
-`Depth.THROUGH_ALL`. The model no longer needs an explicit numeric XY plane
-as a workaround.
+- one native `SlotCenterToCenter2D` is the master Slot;
+- one diagonal `Sketch.rectangular_pattern(...)` creates the second Slot on
+  the same arm;
+- three `Sketch.mirror(...)` operations create the other three arms.
+
+The corner treatment uses the common named selector
+`chamfer(..., edges=Edges.VERTICAL)`.
+
+So the final SolidCraft history stays compact:
+
+```text
+Box
+Dog holes Sketch
+Dog holes cut
+Clamp slots Sketch
+Clamp slots cut
+Chamfer
+```
 
 ## Scope
 
-Not included:
+Not included yet:
 
 - frame or legs;
-- guide rail;
+- guide rail placement in the MFT assembly;
 - fence;
 - dogs or clamps;
 - logos and printed markings.
+
+The reusable Festool-style guide rail itself now lives separately under
+`models/components/festool_guide_rail/`; its length is a parameter.
 
 ## Run
 

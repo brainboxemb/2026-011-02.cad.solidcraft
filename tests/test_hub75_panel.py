@@ -140,9 +140,13 @@ class Hub75PanelTests(unittest.TestCase):
         planes = [c["params"] for c in commands if c["command"] == "sketch.create"]
         self.assertEqual(
             [p.get("offset", 0) for p in planes],
-            [0, "front_depth", "depth",
-             "(depth)"],
+            [0, "front_depth", "depth", 0],
         )
+        rear_bays = planes[-1]
+        self.assertEqual(rear_bays["plane"]["body"], "Hub75Panel")
+        self.assertEqual(rear_bays["plane"]["face"], "$face_point_1")
+        self.assertEqual(rear_bays["plane"]["index"], "$face_index_1")
+        self.assertFalse(rear_bays["project_edges"])
 
     def test_four_bays_are_one_rear_facing_native_sketch_cut(self):
         from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
@@ -154,8 +158,18 @@ class Hub75PanelTests(unittest.TestCase):
         idx = next(i for i, c in enumerate(commands)
                    if c["command"] == "sketch.create"
                    and c["params"]["name"] == "Rear electronics bays")
-        self.assertEqual(commands[idx]["params"]["offset"],
-                         "(depth)")
+        self.assertNotIn("offset", commands[idx]["params"])
+        self.assertEqual(
+            commands[idx]["params"]["plane"],
+            {
+                "face": "$face_point_1",
+                "body": "Hub75Panel",
+                "index": "$face_index_1",
+            },
+        )
+        self.assertFalse(commands[idx]["params"]["project_edges"])
+        self.assertEqual(commands[idx - 1]["command"], "model.faces")
+        self.assertEqual(commands[idx - 1]["params"]["body"], "Hub75Panel")
         rectangles = []
         for operation in commands[idx + 1:]:
             if operation["command"] == "sketch.finish":

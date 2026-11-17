@@ -68,9 +68,11 @@ class SimpleMFT:
         # The visible 9 x 7 grid has four missing dog-hole positions on
         # diagonal ring 2. Build the actual hole set directly instead of
         # creating a complete rectangular pattern and adding material back.
+        half_columns = self.COLUMNS // 2
+        half_rows = self.ROWS // 2
         with Sketch(name="Dog holes", on=board, parent=Anchor.TOP) as holes:
-            for row in range(-3, 4):
-                for column in range(-4, 5):
+            for row in range(-half_rows, half_rows + 1):
+                for column in range(-half_columns, half_columns + 1):
                     if (column, row) in EXCLUDED_DOG_HOLE_GRID:
                         continue
                     holes.add(

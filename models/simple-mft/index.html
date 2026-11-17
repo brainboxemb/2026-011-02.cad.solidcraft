@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simple MFT · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / simple-mft</div>
+<h1>Simple MFT</h1><p>805 × 555 mm worktop with a centered native 96 mm dog-hole grid</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
+<span class="badge">11 commands</span><span class="badge">805 × 555 × 18 mm; Ø20 holes; centered 7 × 5 grid; 96 mm pitch</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
+<p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
+<p>A deliberately simple MFT worktop: one 18 mm plate and one Ø20 source hole repeated as a native 7 × 5 SolidCraft rectangular pattern. No clamp slots, frame, rail or accessories are part of this model.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Plate — 805 × 555 × 18 mm</li><li>Dog hole — one Ø20 through-hole source feature</li><li>RectangularPattern — 7 columns × 5 rows at 96 mm pitch</li><li>Keep the grid centred on the worktop</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fsimple-mft%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Simple MFT worktop — plate and standard dog-hole grid only.
+
+The 805 x 555 x 18 mm plate and 20 mm hole diameter use the chosen worktop
+envelope. The hole layout is our centred 96 mm MFT grid, not a claim about
+the measured Craftmaker S30 hole positions.
+&quot;&quot;&quot;
+
+
+class SimpleMFT:
+    width = 805.0
+    depth = 555.0
+    thickness = 18.0
+    hole_diameter = 20.0
+    hole_pitch = 96.0
+
+    COLUMNS = 7
+    ROWS = 5
+
+    def build(self):
+        board = Box(
+            self.width,
+            self.depth,
+            self.thickness,
+            anchor=Anchor.BOTTOM,
+        )
+
+        # One source hole at the lower-left grid position. Its offset remains
+        # linked to the 96 mm pitch so the full 7 x 5 pattern stays centred.
+        with Sketch(
+            name=&quot;Dog hole&quot;,
+            on=board,
+            parent=Anchor.TOP,
+        ) as hole:
+            hole.add(
+                Circle2D(d=self.hole_diameter),
+                offset=(
+                    -3 * self.hole_pitch,
+                    -2 * self.hole_pitch,
+                ),
+            )
+
+        source_cut = hole.extrude(Depth.THROUGH_ALL)
+        board = board - source_cut
+
+        return board.rectangular_pattern(
+            source_cut,
+            count=self.COLUMNS,
+            spacing=self.hole_pitch,
+            direction=Axis.X,
+            count2=self.ROWS,
+            spacing2=self.hole_pitch,
+            direction2=Axis.Y,
+        )
+</code></pre>
+
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;width&quot;,
+    &quot;expression&quot;: &quot;805&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;depth&quot;,
+    &quot;expression&quot;: &quot;555&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: thickness</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;thickness&quot;,
+    &quot;expression&quot;: &quot;18&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_diameter</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;hole_diameter&quot;,
+    &quot;expression&quot;: &quot;20&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_pitch</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;hole_pitch&quot;,
+    &quot;expression&quot;: &quot;96&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Box primitive</strong><small>solid.box · body_name: SimpleMFT</small><pre><code>{
+  &quot;command&quot;: &quot;solid.box&quot;,
+  &quot;params&quot;: {
+    &quot;length&quot;: &quot;width&quot;,
+    &quot;width&quot;: &quot;depth&quot;,
+    &quot;height&quot;: &quot;thickness&quot;,
+    &quot;corner&quot;: [
+      &quot;-width / 2&quot;,
+      &quot;-depth / 2&quot;,
+      0
+    ],
+    &quot;body_name&quot;: &quot;SimpleMFT&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Dog hole, plane: XY</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XY&quot;,
+    &quot;name&quot;: &quot;Dog hole&quot;,
+    &quot;offset&quot;: &quot;(thickness)&quot;
+  }
+}</code></pre></li>
+<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.circle.center&quot;,
+  &quot;params&quot;: {
+    &quot;center&quot;: [
+      &quot;(-(width / 2)) + (width / 2) + (hole_pitch * -3)&quot;,
+      &quot;(-(depth / 2)) + (depth / 2) + (hole_pitch * -2)&quot;
+    ],
+    &quot;diameter&quot;: &quot;hole_diameter&quot;
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Dog hole, direction: negative, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;SimpleMFT&quot;
+    ],
+    &quot;name&quot;: &quot;Dog hole&quot;,
+    &quot;through_all&quot;: true,
+    &quot;direction&quot;: &quot;negative&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangular feature pattern</strong><small>solid.pattern.rectangular</small><pre><code>{
+  &quot;command&quot;: &quot;solid.pattern.rectangular&quot;,
+  &quot;params&quot;: {
+    &quot;features&quot;: [
+      &quot;Dog hole&quot;
+    ],
+    &quot;dir1&quot;: [
+      1.0,
+      0.0,
+      0.0
+    ],
+    &quot;count1&quot;: 7,
+    &quot;spacing1&quot;: &quot;hole_pitch&quot;,
+    &quot;alignment&quot;: &quot;right&quot;,
+    &quot;reversed&quot;: false,
+    &quot;dir2&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;count2&quot;: 5,
+    &quot;spacing2&quot;: &quot;hole_pitch&quot;,
+    &quot;alignment2&quot;: &quot;right&quot;,
+    &quot;reversed2&quot;: false
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.
+The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.
+Native qualification is reported only when the matching verified image exists.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

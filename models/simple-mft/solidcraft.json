@@ -1,0 +1,118 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "width",
+        "expression": "805",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "depth",
+        "expression": "555",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "thickness",
+        "expression": "18",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_pitch",
+        "expression": "96",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "width",
+        "width": "depth",
+        "height": "thickness",
+        "corner": [
+          "-width / 2",
+          "-depth / 2",
+          0
+        ],
+        "body_name": "SimpleMFT"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Dog hole",
+        "offset": "(thickness)"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(-(width / 2)) + (width / 2) + (hole_pitch * -3)",
+          "(-(depth / 2)) + (depth / 2) + (hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "SimpleMFT"
+        ],
+        "name": "Dog hole",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Dog hole"
+        ],
+        "dir1": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "count1": 7,
+        "spacing1": "hole_pitch",
+        "alignment": "right",
+        "reversed": false,
+        "dir2": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count2": 5,
+        "spacing2": "hole_pitch",
+        "alignment2": "right",
+        "reversed2": false
+      }
+    }
+  ]
+}

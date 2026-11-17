@@ -48,6 +48,8 @@ native parameter/edge-selector semantics.
 
 ## Advanced Models — designs and assemblies
 
+- [Simple MFT worktop](advanced/simple_mft/README.md)
+- [Simple MFT assembly](advanced/simple_mft_assembly/README.md) combines the worktop with a reusable 1080 mm GuideRail.
 - [Five-panel screen](advanced/hub75-screen/README.md)
 - [Wooden HUB75 Basic Box](advanced/hub75-wood-frame/README.md)
 

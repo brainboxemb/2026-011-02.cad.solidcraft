@@ -67,10 +67,7 @@ class CornerBracket:
                 world=True,
             )
 
-        body = sketch.extrude(
-            self.arm_width,
-            direction=Direction.SYMMETRIC,
-        )
+        body = sketch.extrude(self.arm_width, sym=True)
 
         body = body.fillet(
             self.inside_corner_radius,

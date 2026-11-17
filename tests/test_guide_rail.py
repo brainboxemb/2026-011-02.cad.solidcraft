@@ -80,6 +80,7 @@ class GuideRailTests(unittest.TestCase):
         self.assertEqual(parameter, {
             "name": "length",
             "expression": "1080",
+            "unit": "mm",
         })
 
         extrude = next(

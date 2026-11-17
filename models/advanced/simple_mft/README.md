@@ -49,8 +49,8 @@ The inferred pattern in each quadrant is:
   (`±76, ±76`) and extends outward;
 - the outer slot has one round-end centre at diagonal grid ring 3
   (`±228, ±228`) and extends inward;
-- diagonal grid ring 2 (`±152, ±152`) remains a normal Ø20 dog hole between
-  the two slots.
+- the four diagonal grid-ring-2 positions (`±152, ±152`) do **not** contain
+  dog holes; they are the clear gap between the two slots.
 
 The model uses 80 mm centre-to-centre × 24 mm wide as the simple nominal Slot
 size. That gives approximately 104 × 24 mm overall.
@@ -68,7 +68,7 @@ centre
        \
         \  inner Slot
          \
-          Ø ring 2        <- normal Ø20 hole
+          · ring 2        <- no dog hole
            \
             \ outer Slot
              \
@@ -76,7 +76,8 @@ centre
 ```
 
 The pattern is mirrored into all four quadrants. There is no Slot from the
-plate centre to ring 1 and no Slot through the ring-2 dog hole.
+plate centre to ring 1, and the four ring-2 diagonal grid positions are omitted
+from the dog-hole set.
 
 ## Native SCPF construction
 
@@ -88,8 +89,10 @@ The worktop starts as one native `Box`. A native chamfer cuts the four
 20 × 20 mm plan-view corners while keeping the rectangular Box as the base for
 TOP-attached Sketches.
 
-The dog holes use one native source circle plus one two-direction
-`solid.pattern.rectangular` feature for the complete 9 × 7 grid.
+The nominal grid has 9 × 7 = 63 positions. The four diagonal ring-2 positions
+are deliberately excluded, so the model creates **59 dog holes** in one
+TOP-attached Sketch and cuts them through the plate in one operation. This is
+clearer than creating a full 63-hole pattern and adding material back later.
 
 The clamp geometry uses eight native `SlotCenterToCenter2D` profiles:
 

@@ -33,6 +33,17 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertTrue(all(slot["width"] == 24.0 for slot in slots))
         self.assertNotIn("sketch.slot.overall", self.names)
 
+        sketches = [
+            command["params"]["name"]
+            for command in self.commands
+            if command["command"] == "sketch.create"
+        ]
+        self.assertEqual(sketches.count("Clamp slots"), 1)
+        self.assertNotIn("Slot NE", sketches)
+        self.assertNotIn("Slot NW", sketches)
+        self.assertNotIn("Slot SW", sketches)
+        self.assertNotIn("Slot SE", sketches)
+
         delta = 80.0 / math.sqrt(2)
         expected = set()
         for sx, sy in ((1, 1), (-1, 1), (-1, -1), (1, -1)):
@@ -87,7 +98,7 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertIn("SLOT_CENTER_DISTANCE = 80.0", source)
         self.assertNotIn("SLOT_LENGTH = 75.0", source)
         self.assertIn(
-            'Sketch(name=name, on=board, parent=Anchor.TOP)',
+            'Sketch(name="Clamp slots", on=board, parent=Anchor.TOP)',
             source,
         )
         self.assertIn("slots.extrude(Depth.THROUGH_ALL)", source)

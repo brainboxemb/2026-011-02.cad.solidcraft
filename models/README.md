@@ -19,7 +19,7 @@ perceived level of geometric complexity.
 - [Hub75Panel detailed](components/hub75_panel/detailed/scpf/model.py) is the detailed panel with
   rear electronics bays; [Hub75Panel basic](components/hub75_panel/basic/scpf/model.py)
   is the faster envelope.
-- [FestoolGuideRail](components/festool_guide_rail/README.md) is a reusable FS-style guide rail with a parametric length and a fixed reference profile.
+- [GuideRail](components/guide_rail/README.md) is a reusable FS-style guide rail with a parametric length and a fixed reference profile.
 
 These live in top-level `components/`. The standalone demonstration
 scripts in `models/components/` import the corresponding

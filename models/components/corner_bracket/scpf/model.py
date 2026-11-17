@@ -6,7 +6,7 @@ SolidCraft warnings, keep the bracket as a clean L-shaped body with the
 reviewed inner fillet and outer/elephant-foot chamfers. Historical hole
 experiments remain only in the standalone reference.py, not here.
 """
-from scpf import Polygon2D, Direction, Edges, Sketch, component
+from scpf import Polygon2D, Edges, Sketch, component
 
 
 @component

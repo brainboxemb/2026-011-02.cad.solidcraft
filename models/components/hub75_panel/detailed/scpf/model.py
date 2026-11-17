@@ -66,10 +66,7 @@ class Hub75Panel:
                     Rectangle2D(opening_width, top - bottom),
                     offset=(0, midpoint(bottom, top)),
                 )
-        body = body - bays.extrude(
-            self.depth - self.front_depth,
-            direction=Direction.NEGATIVE,
-        )
+        body = body - bays.extrude(-(self.depth - self.front_depth))
 
         # These four rectangles create the real rails and 3 dividing ribs.
         # Pending STEP details: 5 mm rounded corners, the stepped 7.75 mm

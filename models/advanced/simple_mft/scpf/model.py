@@ -74,8 +74,13 @@ class SimpleMFT:
             direction2=Axis.Y,
         )
 
-        pitch = self.hole_pitch.value
-        along_axis = self.SLOT_CENTER_DISTANCE / sqrt(2)
+        # SolidCraft 0.42 native Slot creators require fixed numeric points.
+        # Read the current parameter values explicitly instead of passing Forge
+        # expressions into the Slot command.
+        pitch = float(self.hole_pitch.value)
+        slot_center_distance = float(self.SLOT_CENTER_DISTANCE)
+        slot_width = float(self.SLOT_WIDTH)
+        along_axis = slot_center_distance / sqrt(2)
 
         for name, sx, sy in (
             ("Slot NE", +1, +1),
@@ -98,12 +103,12 @@ class SimpleMFT:
                 SlotCenterToCenter2D(
                     inner_ring,
                     inner_outward,
-                    self.SLOT_WIDTH,
+                    slot_width,
                 )
                 SlotCenterToCenter2D(
                     outer_inward,
                     outer_ring,
-                    self.SLOT_WIDTH,
+                    slot_width,
                 )
 
             board = board - slots.extrude(Depth.THROUGH_ALL)

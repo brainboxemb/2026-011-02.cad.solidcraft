@@ -24,17 +24,35 @@ class FestoolGuideRailTests(unittest.TestCase):
         line = next(c for c in commands if c["command"] == "sketch.line")
         points = line["params"]["points"]
 
-        xs = [float(p[0]) for p in points]
+        xs = sorted({round(float(p[0]), 6) for p in points})
         zs = [float(p[1]) for p in points]
-        self.assertAlmostEqual(max(xs) - min(xs), 184.20)  # H
-        self.assertAlmostEqual(max(zs) - min(zs), 10.50)   # D
 
-        # Characteristic horizontal dimensions from the TSO drawing.
-        self.assertAlmostEqual(16.10, 16.10)  # B
-        self.assertAlmostEqual(8.30, 8.30)    # A
-        self.assertAlmostEqual(16.10, 16.10)  # F
-        self.assertAlmostEqual(8.30, 8.30)    # E
-        self.assertAlmostEqual(64.20, 64.20)  # G
+        # H and D: total profile envelope.
+        self.assertAlmostEqual(xs[-1] - xs[0], 184.20)
+        self.assertAlmostEqual(max(zs) - min(zs), 10.50)
+
+        # B and A: left feature outer width and inner opening.
+        left_outer_l = 0.0
+        left_inner_l = 3.90
+        left_inner_r = 12.20
+        left_outer_r = 16.10
+        for x in (left_outer_l, left_inner_l, left_inner_r, left_outer_r):
+            self.assertIn(x, xs)
+        self.assertAlmostEqual(left_outer_r - left_outer_l, 16.10)
+        self.assertAlmostEqual(left_inner_r - left_inner_l, 8.30)
+
+        # F and E: centre feature outer width and inner opening.
+        center_outer_l = 48.10
+        center_inner_l = 52.00
+        center_inner_r = 60.30
+        center_outer_r = 64.20
+        for x in (center_outer_l, center_inner_l, center_inner_r, center_outer_r):
+            self.assertIn(x, xs)
+        self.assertAlmostEqual(center_outer_r - center_outer_l, 16.10)
+        self.assertAlmostEqual(center_inner_r - center_inner_l, 8.30)
+
+        # G: left edge to right side of the centre feature.
+        self.assertAlmostEqual(center_outer_r - left_outer_l, 64.20)
 
     def test_default_length_and_override_remain_native_parameter(self):
         commands = run_script(COMPONENT)["commands"]

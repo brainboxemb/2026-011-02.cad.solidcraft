@@ -1,4 +1,4 @@
-"""Regression checks for the plate-only Simple MFT model."""
+"""Regression checks for the Craftmaker-inspired Simple MFT worktop."""
 
 import unittest
 from pathlib import Path
@@ -11,48 +11,49 @@ MODEL = ROOT / "models/advanced/simple_mft/scpf/model.py"
 
 
 class SimpleMFTTests(unittest.TestCase):
-    def test_plate_uses_one_native_two_direction_mft_pattern(self):
-        commands = run_script(MODEL)["commands"]
-        names = [command["command"] for command in commands]
+    def setUp(self):
+        self.commands = run_script(MODEL)["commands"]
+        self.names = [command["command"] for command in self.commands]
 
-        self.assertEqual(names.count("solid.box"), 1)
-        self.assertEqual(names.count("sketch.circle.center"), 1)
-        self.assertEqual(names.count("solid.extrude"), 1)
-        self.assertEqual(names.count("solid.pattern.rectangular"), 1)
-        self.assertNotIn("solid.hole", names)
-        self.assertNotIn("sketch.rectangle.rounded", names)
-        self.assertNotIn("material.assign", names)
-        self.assertNotIn("component.create", names)
-        self.assertNotIn("occurrence.move", names)
+    def test_plate_uses_polygon_and_one_native_two_direction_hole_pattern(self):
+        self.assertEqual(self.names.count("sketch.polygon"), 1)
+        self.assertEqual(self.names.count("sketch.circle.center"), 1)
+        self.assertEqual(self.names.count("solid.pattern.rectangular"), 5)
 
-        pattern = next(
+        patterns = [
             command["params"]
-            for command in commands
+            for command in self.commands
             if command["command"] == "solid.pattern.rectangular"
-        )
-        self.assertEqual(pattern["features"], ["Dog hole"])
-        self.assertEqual(pattern["dir1"], [1, 0, 0])
-        self.assertEqual(pattern["count1"], 7)
-        self.assertEqual(pattern["spacing1"], "hole_pitch")
-        self.assertEqual(pattern["dir2"], [0, 1, 0])
-        self.assertEqual(pattern["count2"], 5)
-        self.assertEqual(pattern["spacing2"], "hole_pitch")
+        ]
+        hole_pattern = patterns[0]
+        self.assertEqual(hole_pattern["features"], ["Dog hole"])
+        self.assertEqual(hole_pattern["count1"], 9)
+        self.assertEqual(hole_pattern["spacing1"], "hole_pitch")
+        self.assertEqual(hole_pattern["count2"], 7)
+        self.assertEqual(hole_pattern["spacing2"], "hole_pitch")
 
-        circle = next(
+    def test_slots_are_four_native_sources_patterned_to_eight_slots(self):
+        self.assertEqual(self.names.count("sketch.slot.overall"), 4)
+
+        patterns = [
             command["params"]
-            for command in commands
-            if command["command"] == "sketch.circle.center"
-        )
-        self.assertEqual(circle["diameter"], "hole_diameter")
-        self.assertEqual(len(circle["center"]), 2)
-        self.assertIn("hole_pitch * -3", circle["center"][0])
-        self.assertIn("hole_pitch * -2", circle["center"][1])
+            for command in self.commands
+            if command["command"] == "solid.pattern.rectangular"
+        ][1:]
+        self.assertEqual(len(patterns), 4)
+        for pattern in patterns:
+            self.assertEqual(pattern["count1"], 2)
+            self.assertIsNone(pattern.get("count2"))
 
-    def test_model_does_not_reintroduce_rejected_clamp_slots(self):
+    def test_model_keeps_reference_estimates_explicit(self):
         source = MODEL.read_text(encoding="utf-8")
-        self.assertNotIn("RoundedRectangle2D", source)
-        self.assertNotIn("SLOT_CENTERS", source)
-        self.assertNotIn("80.0", source)
+        self.assertIn("hole_pitch = 76.0", source)
+        self.assertIn("COLUMNS = 9", source)
+        self.assertIn("ROWS = 7", source)
+        self.assertIn("SLOT_WIDTH = 24.0", source)
+        self.assertIn("SLOT_LENGTH = 75.0", source)
+        self.assertIn("SLOT_INNER_INDEX = 2", source)
+        self.assertIn("SLOT_COUNT_PER_ARM = 2", source)
 
 
 if __name__ == "__main__":

@@ -640,7 +640,7 @@ jobs:
               and .source_commit == $source
               and .solidcraft_version == $solidcraft
               and (.native_file_format | test("^solidcraft/[0-9]+$"))
-              and (.native_verified_models | length) >= 12
+              and (.native_verified_models | length) >= 13
             ' output/site/provenance.json
       - name: Retain native geometry, command plans and site bundle
         if: always()

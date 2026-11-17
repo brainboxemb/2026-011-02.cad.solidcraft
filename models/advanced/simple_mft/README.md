@@ -100,13 +100,13 @@ Chamfer
 Not included yet:
 
 - frame or legs;
-- guide rail placement in the MFT assembly;
 - fence;
 - dogs or clamps;
 - logos and printed markings.
 
-The reusable Festool-style guide rail itself now lives separately under
-`models/components/festool_guide_rail/`; its length is a parameter.
+The reusable generic guide rail lives under
+`models/components/guide_rail/`; its length is a parameter. Placement is handled by
+`models/advanced/simple_mft_assembly/`.
 
 ## Run
 

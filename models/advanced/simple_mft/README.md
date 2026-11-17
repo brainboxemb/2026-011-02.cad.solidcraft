@@ -1,50 +1,54 @@
 # Simple MFT
 
-This model is intentionally small in scope: **the worktop plate only**.
+This model is a photo/video-based study of the Craftmaker Pro Station S30
+replacement worktop. It models the **worktop plate only**.
 
-It uses the published Craftmaker replacement-top envelope as a convenient
-plate size:
+## Current geometry
+
+Published replacement-top envelope:
 
 - 805 × 555 × 18 mm;
-- 20 mm dog holes.
+- Ø20 mm dog holes.
 
-The hole layout is **not** presented as a measured Craftmaker S30 layout.
-Instead this is our own simple MFT study with the standard 96 mm spacing:
+Current design estimates derived from the visual references:
 
-- 7 columns × 5 rows;
-- 96 mm pitch in X and Y;
-- the complete grid is centred on the plate.
+- 9 columns × 7 rows;
+- 76 mm pitch in X and Y;
+- 20 mm straight corner cuts;
+- eight diagonal clamp slots;
+- slot size currently estimated at 75 × 24 mm.
 
-The earlier photo-based 80 mm estimate and the large clamp-slot placeholders
-were removed. They were not verified dimensions and are not part of this
-model.
+The 76 mm pitch, corner-cut size and slot dimensions are not presented as
+manufacturer specifications.
 
-## Native pattern
+## Native construction
 
-The SCPF source creates exactly one Ø20 through-hole and passes that cut
-feature to `Shape.rectangular_pattern(...)`.
+The plate starts as one eight-point polygon and is extruded to 18 mm.
 
-SolidCraft therefore owns one editable two-direction
-`solid.pattern.rectangular` history feature. The 35 holes are **not** emitted
-as 35 separate holes and are not expanded by a Python loop.
+The dog holes use one native source hole and one two-direction rectangular
+pattern for the complete 9 × 7 grid.
+
+The clamp slots use SolidCraft's native Slot geometry. Four master slots are
+placed symmetrically at grid index 2 from the centre. Each master slot is
+patterned one 76 mm grid step farther outward along its diagonal arm, producing
+two slots per arm and eight slots total.
+
+The slot axes follow the X arms:
+
+- north-west / south-east: \\
+- north-east / south-west: /
+
+This deliberately avoids eight unrelated literal XY placements.
 
 ## Scope
 
-Included:
-
-- one 805 × 555 × 18 mm plate;
-- one centred 7 × 5 MFT hole grid;
-- Ø20 mm holes;
-- 96 mm spacing.
-
 Not included:
 
-- clamp slots;
 - frame or legs;
 - guide rail;
 - fence;
 - dogs or clamps;
-- claims about the actual Craftmaker S30 hole coordinates.
+- logos and printed markings.
 
 ## Run
 

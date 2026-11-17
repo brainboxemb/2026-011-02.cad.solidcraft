@@ -90,14 +90,16 @@ MODELS = {
     },
     "simple-mft": {
         "title": "Simple MFT",
-        "tagline": "805 × 555 mm worktop with a centered native 96 mm dog-hole grid",
-        "description": "A deliberately simple MFT worktop: one 18 mm plate and one Ø20 source hole repeated as a native 7 × 5 SolidCraft rectangular pattern. No clamp slots, frame, rail or accessories are part of this model.",
-        "parameters": "805 × 555 × 18 mm; Ø20 holes; centered 7 × 5 grid; 96 mm pitch",
+        "tagline": "805 × 555 mm worktop with a 9 × 7 dog-hole grid and eight native clamp slots",
+        "description": "A CRAFTMAKER-inspired worktop study: one 18 mm native Box, four straight 20 mm corner chamfers, one Ø20 source hole repeated as a native 9 × 7 SolidCraft rectangular pattern at 76 mm pitch, and eight photo-measured native diagonal Slots. The frame, guide rail and accessories are outside this model.",
+        "parameters": "805 × 555 × 18 mm; Ø20; 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm",
         "diagram": "plate",
-        "stages": ["Plate — 805 × 555 × 18 mm",
+        "stages": ["Box — 805 × 555 × 18 mm",
+                   "Chamfer — four straight 20 × 20 mm plan-view corner cuts",
                    "Dog hole — one Ø20 through-hole source feature",
-                   "RectangularPattern — 7 columns × 5 rows at 96 mm pitch",
-                   "Keep the grid centred on the worktop"],
+                   "RectangularPattern — 9 columns × 7 rows at 76 mm pitch",
+                   "Clamp Slots — eight native SlotCenterToCenter2D cuts, ≈104 × 24 mm",
+                   "Keep the ring-2 diagonal Ø20 holes between the inner and outer Slots"],
     },
     "hub75-wood-frame": {
         "title": "WoodenHub75Box",
@@ -300,6 +302,7 @@ def command_stages(commands):
         "joint.create": "Assembly joint",
         "solid.shell": "Shell / hollow body",
         "solid.pattern.rectangular": "Rectangular feature pattern",
+        "sketch.slot.center_to_center": "Center-to-center Slot",
         "plastic.lip": "Plastic lip",
         "plastic.snap_fit": "Plastic snap fit",
         "plastic.boss": "Plastic screw boss",
@@ -446,9 +449,40 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             'full-size image available"></a>'
             if preview_image else diagram(slug)
         )
-        # Publish native face views only when their verification provenance
-        # matches the exact CAD source and SCPF library revision.
+        # Publish model-specific reference/native views next to the main render.
         extra_views = ""
+        if slug == "simple-mft":
+            expectation = ROOT / "models/advanced/simple_mft/expected-top-view.svg"
+            if not expectation.is_file():
+                raise FileNotFoundError(
+                    f"Missing Simple MFT 2D expectation: {expectation}"
+                )
+            copy_if_exists(expectation, work / "expected-top-view.svg")
+            reference_image = (
+                "https://cdn.myshoptet.com/usr/www.craftmaker.nl/"
+                "user/documents/upload/Product_description/"
+                "craftmaker_pro_station_s30_accessories.jpg"
+            )
+            extra_views = (
+                '<h2>Reference and 2D expectation</h2>'
+                '<div class="panel-views">'
+                '<figure><a href="' + reference_image + '" target="_blank" '
+                'rel="noopener noreferrer">'
+                '<img src="' + reference_image + '" '
+                'alt="CRAFTMAKER ProStation S30 reference worktop"></a>'
+                '<figcaption>Front product reference used to estimate the '
+                'hole and Slot pattern.</figcaption></figure>'
+                '<figure><a href="expected-top-view.svg" target="_blank" '
+                'rel="noopener noreferrer">'
+                '<img src="expected-top-view.svg" '
+                'alt="Simple MFT expected top view"></a>'
+                '<figcaption>2D expectation: 9 × 7 holes at 76 mm pitch, '
+                'with two Slots per quadrant.</figcaption></figure>'
+                '</div>'
+                '<p class="small muted">The 76 mm pitch, 20 mm corner cuts '
+                'and ≈104 × 24 mm Slot dimensions are photo-based estimates, '
+                'not manufacturer specifications.</p>'
+            )
         if slug == "hub75-panel" and has_native:
             faces = []
             for title, filename in (("Front — LED mask", "front.png"),

@@ -10,35 +10,51 @@ Published replacement-top envelope:
 - 805 × 555 × 18 mm;
 - Ø20 mm dog holes.
 
-Current design estimates derived from the visual references:
+Current design estimates derived from the visual references and the SolidCraft
+reference model:
 
 - 9 columns × 7 rows;
 - 76 mm pitch in X and Y;
 - 20 mm straight corner cuts;
-- eight diagonal clamp slots;
-- slot size currently estimated at 75 × 24 mm.
+- four diagonal clamp slots;
+- slot width currently estimated at 24 mm;
+- each slot follows three diagonal grid positions: index 1, 2 and 3 from the
+  centre.
 
-The 76 mm pitch, corner-cut size and slot dimensions are not presented as
+The 76 mm pitch, corner-cut size and slot width are not presented as
 manufacturer specifications.
 
+With a 76 mm square grid, two diagonal grid steps are:
+
+```text
+2 × sqrt(2) × 76 mm = 214.96 mm
+```
+
+That is the centre-to-centre distance between the round ends of each Slot. With
+a 24 mm slot width, the resulting overall capsule length is about 238.96 mm.
+There is therefore no separate 75 mm slot-length parameter.
+
 ## Native construction
+
+The model targets the pinned **SCPF 0.6.1** release.
 
 The plate starts as one eight-point polygon and is extruded to 18 mm.
 
 The dog holes use one native source hole and one two-direction rectangular
-pattern for the complete 9 × 7 grid.
+feature pattern for the complete 9 × 7 grid.
 
-The clamp slots use SolidCraft's native Slot geometry. Four master slots are
-placed symmetrically at grid index 2 from the centre. Each master slot is
-patterned one 76 mm grid step farther outward along its diagonal arm, producing
-two slots per arm and eight slots total.
+The clamp slots use SolidCraft's native
+`SlotCenterToCenter2D` construction. The end-cap centres are placed on grid
+indices 1 and 3 on each diagonal arm; grid index 2 lies on the same slot axis.
+This directly represents one continuous slot crossing three dog-hole positions
+instead of patterning several unrelated short slots.
 
-The slot axes follow the X arms:
+The four arms are:
 
-- north-west / south-east: \\
-- north-east / south-west: /
-
-This deliberately avoids eight unrelated literal XY placements.
+- north-east: `(76, 76) -> (228, 228)`;
+- north-west: `(-76, 76) -> (-228, 228)`;
+- south-west: `(-76, -76) -> (-228, -228)`;
+- south-east: `(76, -76) -> (228, -228)`.
 
 ## Scope
 

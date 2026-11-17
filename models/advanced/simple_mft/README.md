@@ -94,17 +94,17 @@ are deliberately excluded, so the model creates **59 dog holes** in one
 TOP-attached Sketch and cuts them through the plate in one operation. This is
 clearer than creating a full 63-hole pattern and adding material back later.
 
-The clamp geometry uses eight native `SlotCenterToCenter2D` profiles:
+The clamp geometry uses **one TOP-attached Sketch** containing eight native
+`SlotCenterToCenter2D` profiles:
 
 - four inner Slots start at ring 1 and extend 80 mm outward along the 45°
   diagonal;
 - four outer Slots end at ring 3 and extend 80 mm inward along the same
   diagonal.
 
-Each Slot Sketch is attached normally with
-`Sketch(on=board, parent=Anchor.TOP)` and cut with
-`Depth.THROUGH_ALL`. The model no longer needs an explicit numeric XY plane
-as a workaround.
+That single `Clamp slots` Sketch is cut once with `Depth.THROUGH_ALL`.
+This keeps the SolidCraft history compact: one dog-hole Sketch/cut and one
+clamp-slot Sketch/cut.
 
 ## Scope
 

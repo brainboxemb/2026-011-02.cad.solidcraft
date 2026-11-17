@@ -176,6 +176,7 @@ the old CAD cheatsheet URL redirects there.
 - [Basic HUB75 Screen / five occurrences](models/advanced/hub75_screen/README.md)
 - [Wooden Basic Box / nested HUB75Panels and prototype corner rails](models/advanced/hub75_wood_frame/README.md)
 - [Plastic Enclosure Pi](models/basic/plastic_enclosure_pi/README.md)
+- [Bolted Flange](models/basic/bolted_flange/README.md)
 - [Plate](models/basic/plate/README.md) and [CSG comparison](models/basic/csg_cube/README.md)
 
 ## Publication and migration

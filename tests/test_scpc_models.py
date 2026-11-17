@@ -6,6 +6,7 @@ also executes and evaluates both designs, which remains the geometry proof.
 """
 from copy import deepcopy
 from pathlib import Path
+import json
 import unittest
 
 from scpf.runner import run_script as forge_script
@@ -80,6 +81,34 @@ class InlineFrameDiagnosticTests(unittest.TestCase):
 
 
 class ParallelModelTests(unittest.TestCase):
+    def test_bolted_flange_scpc_matches_official_source_commands(self):
+        native = source_path(ROOT, "bolted-flange", "scpc")
+        source = native.read_text(encoding="utf-8")
+        self.assertIn("script.add(", source)
+        self.assertNotIn("from scpf", source)
+        self.assertNotIn("scpf.runner", source)
+
+        generated = native_script(native).to_dict()
+        expected = json.loads(
+            (
+                ROOT
+                / "models/basic/bolted_flange/source/flange.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertEqual(generated, expected)
+        self.assertEqual(len(generated["commands"]), 19)
+        self.assertEqual(
+            generated["commands"][-1],
+            {
+                "command": "solid.pattern.circular",
+                "params": {
+                    "features": ["BoltHole"],
+                    "axis": "Z",
+                    "count": "bolts",
+                },
+            },
+        )
+
     def test_plate_and_corner_bracket_have_independent_native_scripts(self):
         for slug in ("plate", "corner-bracket"):
             with self.subTest(slug=slug):

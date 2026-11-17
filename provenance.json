@@ -11,6 +11,7 @@
     "corner-bracket",
     "hub75-panel",
     "guide-rail",
+    "guide-rail-makita",
     "simple-mft",
     "hub75-screen",
     "hub75-wood-frame"
@@ -19,6 +20,6 @@
   "scpf_commit": "377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072",
   "scpf_release": "0.8.1",
   "solidcraft_version": "0.42.0",
-  "source_commit": "ff6da120dec8e5a4f3bb862a9cd7c6c9a3bdfd81",
-  "workflow_run": "44168760700"
+  "source_commit": "2297da1b307de8dcb908bc8612bd4ed8750ef371",
+  "workflow_run": "44171660254"
 }

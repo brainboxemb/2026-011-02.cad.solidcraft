@@ -37,11 +37,11 @@ below before opening or merging the PR.
    - Keep the model small enough to understand from its own source.
 
 2. **Model catalog**
-   - Register the slug and source in `scripts/ci/model_catalog.py:SOURCES`.
-   - For a reusable component, also update `COMPONENT_SOURCES`.
-   - If the component page should show its own definition first, add it to
-     `COMPONENT_DEFINITION_PRIMARY`.
-   - Add the slug to the correct `SECTIONS` group.
+   - Add one record to `scripts/ci/model_catalog.py:MODELS`.
+   - Put the source path, section, site metadata, native flags and optional
+     component/SCPC metadata in that record.
+   - Do not create a second model list elsewhere. The derived source mappings,
+     site sections and CI selections come from `MODELS`.
 
 3. **Regression tests**
    - Add a focused test file under `tests/` for the important geometry and
@@ -52,26 +52,23 @@ below before opening or merging the PR.
      assert that constants exist in the source.
 
 4. **Normal CAD CI**
-   - Until issue #111 removes the duplicated lists, add the slug to the model
-     loop in `.github/workflows/cad-models.yml`.
+   - Models are compiled from the central catalog; do not add a slug to the
+     workflow YAML.
    - The normal model regression and static-site smoke tests must pass.
 
 5. **Native SolidCraft verification**
-   - Add the slug to the model loops in `.github/workflows/native-cad.yml`.
+   - Set the model's native flags in the central catalog.
    - Add a native BRep measurement check when the model has known physical
      dimensions. Prefer checking the actual saved SolidCraft body rather than
      only generated command JSON.
-   - If the model should appear on the results site, ensure its native render is
-     required by the workflow.
+   - Do not add another model list to the workflow.
 
 6. **Results site**
-   - Add the model metadata to `scripts/ci/build-results.py:MODELS`.
-   - Add a schematic `DIAGRAMS` entry if useful as a fallback.
-   - Add the model to `screenshot_info()` so a verified native render is used.
-   - Add the slug to `scripts/ci/test-results.py` so the generated page is
-     smoke-tested.
-   - Update the minimum native-verified model count only when the model really
-     participates in native verification.
+   - Site title, description, parameters, stages and section belong in the
+     central model record.
+   - Add only presentation-specific artwork to `build-results.py:DIAGRAMS`
+     when a schematic fallback is useful.
+   - The site builder and smoke tests iterate the central catalog automatically.
 
 7. **Repository model index**
    - Add a concise entry to `models/README.md` when the model is a reusable

@@ -55,8 +55,10 @@ class SimpleMFT:
             anchor=Anchor.BOTTOM,
         )
 
-        # One complete 9 x 7 associative grid. The cut selects 59 profiles and
-        # leaves the four diagonal ring-2 circles (±2, ±2) uncut.
+        # Build the dog-hole geometry as ONE native associative SolidCraft
+        # Sketch pattern. The sketch contains all 9 x 7 = 63 Circle profiles;
+        # we deliberately keep the pattern complete instead of constructing
+        # 59 independent holes in Python.
         p = self.hole_pitch
         pitch = float(p.value)
 
@@ -75,21 +77,36 @@ class SimpleMFT:
                 direction2=Axis.Y,
             )
 
-        excluded = {
+        # Four diagonal ring-2 positions must remain solid because that clear
+        # space belongs to the clamp-slot layout. These are grid coordinates,
+        # not millimetre coordinates: with the current 76 mm pitch they are
+        # the four positions at (±152, ±152) mm.
+        excluded_dog_hole_grid_positions = {
             (-2, -2),
             (-2, 2),
             (2, -2),
             (2, 2),
         }
-        dog_hole_profiles = [
+
+        # SolidCraft's native solid.extrude can select closed Sketch regions
+        # by a point inside each region. SCPF passes these 59 points directly
+        # as native profile picks; it does NOT create 59 separate Circle/cut
+        # features. SolidCraft stores the selected regions by their surrounding
+        # sketch curves, so the cut continues to follow the associative 9 x 7
+        # pattern when its saved parameters (for example pitch) are changed.
+        #
+        # exact_regions=True means each point selects exactly the closed region
+        # that contains it. The four excluded pattern regions therefore stay
+        # uncut while the other 59 become one native through-all extrusion.
+        dog_hole_profile_picks = [
             (column * pitch, row * pitch)
             for row in range(-3, 4)
             for column in range(-4, 5)
-            if (column, row) not in excluded
+            if (column, row) not in excluded_dog_hole_grid_positions
         ]
         board = board - holes.extrude(
             Depth.THROUGH_ALL,
-            profiles=dog_hole_profiles,
+            profiles=dog_hole_profile_picks,
             exact_regions=True,
         )
 

@@ -1,13 +1,14 @@
 # Exact revisions of independent Forge (SCPF) and Commands (SCPC) libraries.
 # Both can be checked out reproducibly under ext/ using vcs2l.
-# SCPF pin below is release 0.6.1, renewed under the corrected Forge Q1-Q6
-# qualification gates against SolidCraft 0.42.0. Exact release-tag commit is
-# retained for reproducible checkout.
+# SCPF pin below is release 0.6.2. It includes issue #266's fix for fixed
+# native Slot coordinates on parametrically sized attached Sketches and passed
+# the full Q1-Q6 qualification gates against SolidCraft 0.42.0. Exact
+# release-tag commit is retained for reproducible checkout.
 repositories:
   scpf:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.forge.git
-    version: 0f9315a31ce5f9a7a486a80a150b8adb759f9619
+    version: 514716330aab2ce69addddc9d03ccf5099534ece
   scpc:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git

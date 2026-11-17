@@ -89,7 +89,7 @@ class GuideRailTests(unittest.TestCase):
             if c["command"] == "solid.extrude"
         )
         self.assertEqual(extrude["distance"], "length")
-        self.assertTrue(extrude["symmetric"])
+        self.assertEqual(extrude["direction"], "symmetric")
 
     def test_profile_choice_is_not_a_native_parameter(self):
         source = COMPONENT.read_text(encoding="utf-8")

@@ -1,8 +1,15 @@
 """Simple MFT worktop inspired by the Craftmaker S30 replacement top.
 
 The plate envelope and dog-hole diameter follow the published replacement-top
-dimensions. The 76 mm pitch, 20 mm corner cuts and 75 x 24 mm clamp slots are
-photo/video-based design estimates, not manufacturer dimensions.
+dimensions. The 76 mm pitch, 20 mm corner cuts and clamp-slot dimensions are
+photo-based design estimates, not manufacturer dimensions.
+
+The current 2D expectation is calibrated from the front product photo:
+- slot width about 24 mm;
+- slot end-centre distance about 80 mm, giving about 104 mm overall length;
+- per diagonal arm, the inner slot starts on grid ring 1 and extends outward;
+- the outer slot starts on grid ring 3 and extends inward;
+- grid ring 2 remains a normal dog hole between the two slots.
 """
 
 from math import sqrt
@@ -20,16 +27,13 @@ class SimpleMFT:
     ROWS = 7
 
     SLOT_WIDTH = 24.0
-    SLOT_LENGTH = 75.0
-    SLOT_INNER_INDEX = 2
-    SLOT_COUNT_PER_ARM = 2
+    SLOT_CENTER_DISTANCE = 80.0
 
     def build(self):
         half_w = self.width / 2
         half_d = self.depth / 2
         c = self.corner_chamfer
 
-        # Eight-point outline: straight corner cuts, not fillets.
         with Sketch(name="Worktop outline", plane="XY") as outline:
             Polygon2D([
                 (-half_w + c, -half_d),
@@ -38,20 +42,15 @@ class SimpleMFT:
                 (half_w, half_d - c),
                 (half_w - c, half_d),
                 (-half_w + c, half_d),
-                (-half_w, half_d - c),
                 (-half_w, -half_d + c),
             ])
 
         board = outline.extrude(self.thickness)
 
-        # One source hole drives the complete centred 9 x 7 native pattern.
         with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
             hole.add(
                 Circle2D(d=self.hole_diameter),
-                offset=(
-                    -4 * self.hole_pitch,
-                    -3 * self.hole_pitch,
-                ),
+                offset=(-4 * self.hole_pitch, -3 * self.hole_pitch),
             )
 
         hole_cut = hole.extrude(Depth.THROUGH_ALL)
@@ -66,41 +65,38 @@ class SimpleMFT:
             direction2=Axis.Y,
         )
 
-        # SolidCraft 0.42's native Slot creator currently requires numeric
-        # coordinates. Four master slots are placed at grid index 2; each is
-        # patterned one grid step outward along its arm. This keeps the eight
-        # slots as four native two-instance patterns rather than eight manually
-        # positioned cuts.
         pitch = self.hole_pitch.value
-        inner = self.SLOT_INNER_INDEX * pitch
-        half_axis = (self.SLOT_LENGTH - self.SLOT_WIDTH) / (2 * sqrt(2))
-        diagonal_step = pitch * sqrt(2)
+        along_axis = self.SLOT_CENTER_DISTANCE / sqrt(2)
 
-        arms = (
-            ("Slot NE", +inner, +inner, +1, +1),
-            ("Slot NW", -inner, +inner, -1, +1),
-            ("Slot SW", -inner, -inner, -1, -1),
-            ("Slot SE", +inner, -inner, +1, -1),
-        )
+        for name, sx, sy in (
+            ("Slot NE", +1, +1),
+            ("Slot NW", -1, +1),
+            ("Slot SW", -1, -1),
+            ("Slot SE", +1, -1),
+        ):
+            inner_ring = (sx * pitch, sy * pitch)
+            inner_outward = (
+                sx * (pitch + along_axis),
+                sy * (pitch + along_axis),
+            )
+            outer_ring = (sx * 3 * pitch, sy * 3 * pitch)
+            outer_inward = (
+                sx * (3 * pitch - along_axis),
+                sy * (3 * pitch - along_axis),
+            )
 
-        for name, cx, cy, sx, sy in arms:
-            # Slot axis follows the radial X arm: NW/SE use \\, NE/SW use /.
-            dx = sx * half_axis
-            dy = sy * half_axis
-            with Sketch(name=name, on=board, parent=Anchor.TOP) as slot:
-                SlotOverall2D(
-                    (cx - dx, cy - dy),
-                    (cx + dx, cy + dy),
+            with Sketch(name=name, on=board, parent=Anchor.TOP) as slots:
+                SlotCenterToCenter2D(
+                    inner_ring,
+                    inner_outward,
+                    self.SLOT_WIDTH,
+                )
+                SlotCenterToCenter2D(
+                    outer_inward,
+                    outer_ring,
                     self.SLOT_WIDTH,
                 )
 
-            slot_cut = slot.extrude(Depth.THROUGH_ALL)
-            board = board - slot_cut
-            board = board.rectangular_pattern(
-                slot_cut,
-                count=self.SLOT_COUNT_PER_ARM,
-                spacing=diagonal_step,
-                direction=(sx / sqrt(2), sy / sqrt(2), 0),
-            )
+            board = board - slots.extrude(Depth.THROUGH_ALL)
 
         return board

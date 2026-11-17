@@ -150,7 +150,7 @@ class SimpleMFTTests(unittest.TestCase):
             source,
         )
         self.assertEqual(source.count("Depth.THROUGH_ALL"), 2)
-        self.assertIn("profiles=dog_hole_profiles", source)
+        self.assertIn("profiles=dog_hole_profile_picks", source)
         self.assertIn("exact_regions=True", source)
 
 

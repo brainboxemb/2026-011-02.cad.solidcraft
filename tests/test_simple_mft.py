@@ -16,8 +16,9 @@ class SimpleMFTTests(unittest.TestCase):
         self.commands = run_script(MODEL)["commands"]
         self.names = [command["command"] for command in self.commands]
 
-    def test_plate_uses_polygon_and_one_native_two_direction_hole_pattern(self):
-        self.assertEqual(self.names.count("sketch.polygon"), 1)
+    def test_plate_keeps_rectangular_base_for_native_top_anchors(self):
+        self.assertEqual(self.names.count("solid.box"), 1)
+        self.assertEqual(self.names.count("sketch.polygon"), 4)
         self.assertEqual(self.names.count("sketch.circle.center"), 1)
         self.assertEqual(self.names.count("solid.pattern.rectangular"), 1)
 
@@ -66,8 +67,6 @@ class SimpleMFTTests(unittest.TestCase):
             ))
 
     def test_middle_diagonal_ring_remains_clear(self):
-        # Ring 2 (±152, ±152) must not be a Slot endpoint. It remains a
-        # normal Ø20 dog-hole position between the inner and outer Slots.
         slots = [
             command["params"]
             for command in self.commands

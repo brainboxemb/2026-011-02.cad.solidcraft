@@ -93,24 +93,26 @@ class SimpleMFT:
         slot_width = float(self.SLOT_WIDTH)
         along_axis = slot_center_distance / sqrt(2)
 
-        for name, sx, sy in (
-            ("Slot NE", +1, +1),
-            ("Slot NW", -1, +1),
-            ("Slot SW", -1, -1),
-            ("Slot SE", +1, -1),
-        ):
-            inner_ring = (sx * pitch, sy * pitch)
-            inner_outward = (
-                sx * (pitch + along_axis),
-                sy * (pitch + along_axis),
-            )
-            outer_ring = (sx * 3 * pitch, sy * 3 * pitch)
-            outer_inward = (
-                sx * (3 * pitch - along_axis),
-                sy * (3 * pitch - along_axis),
-            )
+        # All eight clamp Slots belong to one physical cut pattern, so keep
+        # them together in one Sketch and one through-cut feature.
+        with Sketch(name="Clamp slots", on=board, parent=Anchor.TOP) as slots:
+            for sx, sy in (
+                (+1, +1),
+                (-1, +1),
+                (-1, -1),
+                (+1, -1),
+            ):
+                inner_ring = (sx * pitch, sy * pitch)
+                inner_outward = (
+                    sx * (pitch + along_axis),
+                    sy * (pitch + along_axis),
+                )
+                outer_ring = (sx * 3 * pitch, sy * 3 * pitch)
+                outer_inward = (
+                    sx * (3 * pitch - along_axis),
+                    sy * (3 * pitch - along_axis),
+                )
 
-            with Sketch(name=name, on=board, parent=Anchor.TOP) as slots:
                 SlotCenterToCenter2D(
                     inner_ring,
                     inner_outward,
@@ -122,6 +124,6 @@ class SimpleMFT:
                     slot_width,
                 )
 
-            board = board - slots.extrude(Depth.THROUGH_ALL)
+        board = board - slots.extrude(Depth.THROUGH_ALL)
 
         return board

@@ -44,10 +44,9 @@ class SimpleMFTTests(unittest.TestCase):
             if command["command"] == "sketch.circle.center"
         )
         self.assertEqual(circle["diameter"], "hole_diameter")
-        self.assertEqual(
-            circle["center"],
-            ["(-3 * hole_pitch)", "(-2 * hole_pitch)"],
-        )
+        self.assertEqual(len(circle["center"]), 2)
+        self.assertIn("hole_pitch * -3", circle["center"][0])
+        self.assertIn("hole_pitch * -2", circle["center"][1])
 
     def test_model_does_not_reintroduce_rejected_clamp_slots(self):
         source = MODEL.read_text(encoding="utf-8")

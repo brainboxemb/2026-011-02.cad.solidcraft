@@ -20,6 +20,15 @@ def validate_guide_rail(root: Path):
     )
 
 
+def validate_guide_rail_makita(root: Path):
+    data = measurements(root, "guide-rail-makita")
+    require(data["body_count"] == 1, "guide-rail-makita: expected one body")
+    require(
+        size_close(data["bodies"][0], (182.50, 1500.0, 10.28)),
+        f"guide-rail-makita: unexpected bounds {body_size(data['bodies'][0])}",
+    )
+
+
 def validate_corner_bracket(root: Path):
     rows = commands(root, "corner-bracket")
     require(count(rows, "solid.hole") == 0, "corner-bracket: holes must stay absent")

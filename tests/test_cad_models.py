@@ -131,9 +131,13 @@ class CADModelRegressions(unittest.TestCase):
                 if isinstance(node, ast.ClassDef) and node.name == class_name
             )
             decorators = {
-                item.id
+                item.id if isinstance(item, ast.Name) else item.func.id
                 for item in cls.decorator_list
                 if isinstance(item, ast.Name)
+                or (
+                    isinstance(item, ast.Call)
+                    and isinstance(item.func, ast.Name)
+                )
             }
             self.assertIn("component", decorators, relative)
 

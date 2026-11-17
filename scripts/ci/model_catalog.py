@@ -16,6 +16,7 @@ SOURCES = {
     "plastic-enclosure-pi": "models/basic/plastic_enclosure_pi/scpf/model.py",
     "corner-bracket": "models/components/corner_bracket/scpf/model.py",
     "hub75-panel": "models/components/hub75_panel/detailed/scpf/model.py",
+    "simple-mft": "models/advanced/simple_mft/scpf/model.py",
     "hub75-screen": "models/advanced/hub75_screen/scpf/model.py",
     "hub75-wood-frame": "models/advanced/hub75_wood_frame/scpf/model.py",
 }
@@ -54,7 +55,7 @@ SECTIONS = {
     "components": ("Components", "Reusable physical parts compiled directly from the same source assemblies import.",
                    ("corner-bracket", "hub75-panel")),
     "advanced": ("Advanced Models", "Full designs and nested native assemblies built from reusable components.",
-                 ("hub75-screen", "hub75-wood-frame")),
+                 ("simple-mft", "hub75-screen", "hub75-wood-frame")),
 }
 
 

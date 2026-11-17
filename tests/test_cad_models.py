@@ -121,7 +121,7 @@ class CADModelRegressions(unittest.TestCase):
             ("models/components/corner_bracket/scpf/model.py", "CornerBracket"),
             ("models/components/hub75_panel/basic/scpf/model.py", "Hub75PanelBasic"),
             ("models/components/hub75_panel/detailed/scpf/model.py", "Hub75Panel"),
-            ("models/components/festool_guide_rail/scpf/model.py", "FestoolGuideRail"),
+            ("models/components/guide_rail/scpf/model.py", "GuideRail"),
         )
         for relative, class_name in reusable:
             source = (ROOT / relative).read_text(encoding="utf-8")

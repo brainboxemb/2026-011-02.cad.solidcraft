@@ -303,7 +303,7 @@ class CADModelRegressions(unittest.TestCase):
 
         self.assertEqual(
             [c["params"]["name"] for c in commands[:3]],
-            ["cols", "rows", "pitch"],
+            ["cols", "pitch", "rows"],
         )
         self.assertEqual(
             commands[3],

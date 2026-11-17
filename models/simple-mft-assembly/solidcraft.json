@@ -1,0 +1,1051 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_width",
+        "expression": "805",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_depth",
+        "expression": "555",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "worktop_thickness",
+        "expression": "18",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_hole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_hole_pitch",
+        "expression": "76",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_corner_chamfer",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "SimpleMFT",
+        "grounded": true
+      },
+      "bind": {
+        "$simplemft": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d1_SimpleMFT_width",
+        "width": "d1_SimpleMFT_depth",
+        "height": "worktop_thickness",
+        "corner": [
+          "-d1_SimpleMFT_width / 2",
+          "-d1_SimpleMFT_depth / 2",
+          0
+        ],
+        "body_name": "SimpleMFT"
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "SimpleMFT"
+      },
+      "bind": {
+        "$d1_SimpleMFT_face_point_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_SimpleMFT_face_index_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$d1_SimpleMFT_face_point_1",
+          "body": "SimpleMFT",
+          "index": "$d1_SimpleMFT_face_index_1"
+        },
+        "project_edges": false,
+        "name": "Dog holes"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(d1_SimpleMFT_hole_pitch * -4)",
+          "(d1_SimpleMFT_hole_pitch * -3)"
+        ],
+        "diameter": "d1_SimpleMFT_hole_diameter"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_1_profile_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.pattern.rectangular",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_1_profile_1",
+        "count": 9,
+        "spacing": "d1_SimpleMFT_hole_pitch",
+        "dir": [
+          1.0,
+          0.0
+        ],
+        "count2": 7,
+        "spacing2": "d1_SimpleMFT_hole_pitch",
+        "dir2": [
+          0.0,
+          1.0
+        ]
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_1_operation_1": {
+          "field": "curves",
+          "prepend": "$d1_SimpleMFT_sketch_1_profile_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "SimpleMFT"
+        ],
+        "name": "Dog holes",
+        "through_all": true,
+        "direction": "negative",
+        "profiles": [
+          {
+            "point": [
+              -304.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              228.0
+            ]
+          }
+        ],
+        "exact_regions": true
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "SimpleMFT"
+      },
+      "bind": {
+        "$d1_SimpleMFT_face_point_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_SimpleMFT_face_index_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$d1_SimpleMFT_face_point_2",
+          "body": "SimpleMFT",
+          "index": "$d1_SimpleMFT_face_index_2"
+        },
+        "project_edges": false,
+        "name": "Clamp slots"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          76.0,
+          76.0
+        ],
+        "p1": [
+          132.5685424949238,
+          132.5685424949238
+        ],
+        "width": 24.0
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_profile_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.pattern.rectangular",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_profile_1",
+        "count": 2,
+        "spacing": 134.96046148071045,
+        "dir": [
+          1.0,
+          1.0
+        ]
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_1": {
+          "field": "curves",
+          "prepend": "$d1_SimpleMFT_sketch_2_profile_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_1",
+        "line": "y"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_2": "curves"
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_1",
+        "line": "x"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_3": "curves"
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_2",
+        "line": "x"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_4": "curves"
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "SimpleMFT"
+        ],
+        "name": "Clamp slots",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -402.5,
+            -277.5,
+            9.0
+          ],
+          [
+            402.5,
+            -277.5,
+            9.0
+          ],
+          [
+            402.5,
+            277.5,
+            9.0
+          ],
+          [
+            -402.5,
+            277.5,
+            9.0
+          ]
+        ],
+        "distance": "d1_SimpleMFT_corner_chamfer",
+        "body": "SimpleMFT"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "guide_rail_length",
+        "expression": "1080",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "GuideRail",
+        "grounded": false
+      },
+      "bind": {
+        "$guiderail": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Guide rail profile - festool"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -0.0
+          ],
+          [
+            16.052,
+            -0.0
+          ],
+          [
+            16.052,
+            -1.6
+          ],
+          [
+            48.207,
+            -1.6
+          ],
+          [
+            48.207,
+            -0.0
+          ],
+          [
+            51.969,
+            -0.0
+          ],
+          [
+            51.969,
+            -1.9
+          ],
+          [
+            50.063,
+            -1.9
+          ],
+          [
+            50.063,
+            -8.6
+          ],
+          [
+            62.303,
+            -8.6
+          ],
+          [
+            62.303,
+            -1.9
+          ],
+          [
+            60.397,
+            -1.9
+          ],
+          [
+            60.397,
+            -0.0
+          ],
+          [
+            64.159,
+            -0.0
+          ],
+          [
+            64.159,
+            -1.6
+          ],
+          [
+            85.228,
+            -1.6
+          ],
+          [
+            85.228,
+            -1.0
+          ],
+          [
+            87.084,
+            -1.0
+          ],
+          [
+            87.084,
+            -1.6
+          ],
+          [
+            165.941,
+            -1.6
+          ],
+          [
+            167.144,
+            -0.4
+          ],
+          [
+            167.144,
+            -2.05
+          ],
+          [
+            184.2,
+            -2.05
+          ],
+          [
+            184.2,
+            -3.9
+          ],
+          [
+            153.099,
+            -3.9
+          ],
+          [
+            153.099,
+            -3.1
+          ],
+          [
+            140.909,
+            -3.1
+          ],
+          [
+            140.909,
+            -3.9
+          ],
+          [
+            129.572,
+            -3.9
+          ],
+          [
+            129.572,
+            -3.65
+          ],
+          [
+            117.382,
+            -3.65
+          ],
+          [
+            117.382,
+            -3.9
+          ],
+          [
+            112.517,
+            -3.9
+          ],
+          [
+            112.517,
+            -3.65
+          ],
+          [
+            75.245,
+            -3.65
+          ],
+          [
+            75.245,
+            -3.9
+          ],
+          [
+            63.708,
+            -3.9
+          ],
+          [
+            63.708,
+            -5.9
+          ],
+          [
+            64.209,
+            -5.9
+          ],
+          [
+            64.209,
+            -10.5
+          ],
+          [
+            48.157,
+            -10.5
+          ],
+          [
+            48.157,
+            -5.9
+          ],
+          [
+            48.658,
+            -5.9
+          ],
+          [
+            48.658,
+            -3.9
+          ],
+          [
+            35.265,
+            -3.9
+          ],
+          [
+            35.265,
+            -3.1
+          ],
+          [
+            23.075,
+            -3.1
+          ],
+          [
+            23.075,
+            -3.9
+          ],
+          [
+            16.052,
+            -3.9
+          ],
+          [
+            16.052,
+            -10.5
+          ],
+          [
+            12.29,
+            -10.5
+          ],
+          [
+            12.29,
+            -8.6
+          ],
+          [
+            14.447,
+            -8.6
+          ],
+          [
+            14.447,
+            -1.9
+          ],
+          [
+            1.605,
+            -1.9
+          ],
+          [
+            1.605,
+            -8.6
+          ],
+          [
+            3.762,
+            -8.6
+          ],
+          [
+            3.762,
+            -10.5
+          ],
+          [
+            0.0,
+            -10.5
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "p000",
+          "p001",
+          "p002",
+          "p003",
+          "p004",
+          "p005",
+          "p006",
+          "p007",
+          "p008",
+          "p009",
+          "p010",
+          "p011",
+          "p012",
+          "p013",
+          "p014",
+          "p015",
+          "p016",
+          "p017",
+          "p018",
+          "p019",
+          "p020",
+          "p021",
+          "p022",
+          "p023",
+          "p024",
+          "p025",
+          "p026",
+          "p027",
+          "p028",
+          "p029",
+          "p030",
+          "p031",
+          "p032",
+          "p033",
+          "p034",
+          "p035",
+          "p036",
+          "p037",
+          "p038",
+          "p039",
+          "p040",
+          "p041",
+          "p042",
+          "p043",
+          "p044",
+          "p045",
+          "p046",
+          "p047",
+          "p048",
+          "p049",
+          "p050",
+          "p051",
+          "p052",
+          "p053",
+          "p054",
+          "p055",
+          "p056",
+          "p057",
+          "p058"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "guide_rail_length",
+        "direction": "symmetric",
+        "body_name": "GuideRail"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$guiderail",
+        "translate": [
+          -92.1,
+          0,
+          "worktop_thickness"
+        ]
+      }
+    }
+  ]
+}

@@ -13,6 +13,7 @@
     "guide-rail",
     "guide-rail-makita",
     "simple-mft",
+    "simple-mft-assembly",
     "hub75-screen",
     "hub75-wood-frame"
   ],
@@ -20,6 +21,6 @@
   "scpf_commit": "377a2a1f5420fa7f0ca45fd8ad2cb6fd576b1072",
   "scpf_release": "0.8.1",
   "solidcraft_version": "0.42.0",
-  "source_commit": "2297da1b307de8dcb908bc8612bd4ed8750ef371",
-  "workflow_run": "44171660254"
+  "source_commit": "256144014b548bd0f9784109e60eb3bf109d6c5a",
+  "workflow_run": "44173762853"
 }

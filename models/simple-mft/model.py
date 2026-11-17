@@ -30,9 +30,11 @@ from scpf import (
     Edges,
     Sketch,
     SlotCenterToCenter2D,
+    component,
 )
 
 
+@component(include="*")
 class SimpleMFT:
     width = 805.0
     depth = 555.0

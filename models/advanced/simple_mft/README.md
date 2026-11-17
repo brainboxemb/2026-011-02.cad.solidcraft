@@ -95,18 +95,29 @@ Clamp slots cut
 Chamfer
 ```
 
-## Scope
+## Scope and assembly
 
-Not included yet:
+The standalone `SimpleMFT` remains the worktop-only model. It is also a
+reusable SCPF component, so assemblies can use exactly the same worktop
+definition without copying its geometry.
 
-- frame or legs;
-- guide rail placement in the MFT assembly;
-- fence;
-- dogs or clamps;
-- logos and printed markings.
+The first assembly is in
+`scpf/assemblies/guide_rail.py`. It combines the worktop with the reusable
+generic `GuideRail` component using the Festool profile at **1080 mm**.
 
-The reusable Festool-style guide rail itself now lives separately under
-`models/components/festool_guide_rail/`; its length is a parameter.
+The 1080 mm choice follows Festool's MFT/3 system, which includes the
+[FS 1080/2](https://www.festool.com/accessory/guide-rail-system/guide-systems/guide-rails/491504---fs-10802).
+The MFT/3 table is 1157 × 773 mm, so the rail spans the short table direction.
+The Simple MFT assembly therefore places the rail along the worktop's Y/depth
+axis as well.
+
+The current assembly is intentionally a layout model only. The rail is centred
+over X=0 and rests on the worktop top face. Rail dogs, swivel/support hardware,
+fence, frame/legs and clamps are not modelled yet.
+
+The reusable guide rail component lives under
+`models/components/guide_rail/`; its length is a native parameter and its
+Festool/Makita cross-sections are fixed profile variants.
 
 ## Run
 

@@ -142,7 +142,7 @@ class CornerBracketTests(unittest.TestCase):
                 plane="XZ",
                 ids=["bottom", "right", "top", "left"],
             )
-        shape = sketch.extrude(10, direction=Direction.SYMMETRIC)
+        shape = sketch.extrude(10, sym=True)
         shape = shape.chamfer(1, edges=Edges.from_profile("o_*"))
         with self.assertRaisesRegex(ModelError, "no polygon segment or vertex matches"):
             compile_features(shape, "Square")
@@ -158,7 +158,7 @@ class CornerBracketTests(unittest.TestCase):
                 [(0, 0), (10, 0), (10, 10), (0, 10)],
                 plane="XZ",
             )
-        shape = sketch.extrude(10, direction=Direction.SYMMETRIC)
+        shape = sketch.extrude(10, sym=True)
         shape = shape.chamfer(1, edges=Edges.from_profile("o_*"))
         with self.assertRaisesRegex(ModelError, "must define ids"):
             compile_features(shape, "Square")
@@ -173,7 +173,7 @@ class CornerBracketTests(unittest.TestCase):
                 ("start", (0, 0)), ("tip", (10, 0)),
                 ("far", (10, 8)), ("end", (0, 8)),
             ], plane="XZ", world=True)
-        shape = sketch.extrude(8, direction=Direction.SYMMETRIC)
+        shape = sketch.extrude(8, sym=True)
         shape = shape.chamfer(0.5, edges=Edges.from_vertices("tip", "end"))
         chamfer = next(
             c for c in compile_features(shape, "Plate")

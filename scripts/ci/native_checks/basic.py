@@ -2,6 +2,7 @@
 from pathlib import Path
 
 from .common import (
+    body_size,
     commands,
     count,
     document,

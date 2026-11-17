@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           unset PYTHONPATH
-          for model in plate vent-plate corner-bracket; do
+          for model in $(python scripts/ci/model_catalog.py --list scpc); do
             python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" --out "output/models/$model/scpc/solidcraft.json"
             python -m json.tool "output/models/$model/scpc/solidcraft.json" >/dev/null
           done

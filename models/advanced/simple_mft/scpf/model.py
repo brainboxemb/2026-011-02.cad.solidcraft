@@ -1,11 +1,14 @@
 """Simple MFT worktop inspired by the Craftmaker S30 replacement top.
 
 The plate envelope and dog-hole diameter follow the published replacement-top
-dimensions. The 76 mm pitch, 20 mm corner cuts and 75 x 24 mm clamp slots are
+dimensions. The 76 mm pitch, 20 mm corner cuts and 24 mm clamp-slot width are
 photo/video-based design estimates, not manufacturer dimensions.
-"""
 
-from math import sqrt
+The clamp-slot layout is derived from the SolidCraft reference model: each
+diagonal arm uses grid positions 1, 2 and 3. Forge 0.6.1 can express that
+directly as one native center-to-center Slot from position 1 to position 3,
+which passes through the middle grid position.
+"""
 
 
 class SimpleMFT:
@@ -20,9 +23,8 @@ class SimpleMFT:
     ROWS = 7
 
     SLOT_WIDTH = 24.0
-    SLOT_LENGTH = 75.0
-    SLOT_INNER_INDEX = 2
-    SLOT_COUNT_PER_ARM = 2
+    SLOT_START_INDEX = 1
+    SLOT_END_INDEX = 3
 
     def build(self):
         half_w = self.width / 2
@@ -66,41 +68,29 @@ class SimpleMFT:
             direction2=Axis.Y,
         )
 
-        # SolidCraft 0.42's native Slot creator currently requires numeric
-        # coordinates. Four master slots are placed at grid index 2; each is
-        # patterned one grid step outward along its arm. This keeps the eight
-        # slots as four native two-instance patterns rather than eight manually
-        # positioned cuts.
+        # SolidCraft 0.42's direct Slot creators require numeric coordinates.
+        # Use the three diagonal grid positions from the reference model as one
+        # continuous native Slot: end-cap centres at index 1 and 3, with the
+        # index-2 dog-hole centre on the Slot axis.
         pitch = self.hole_pitch.value
-        inner = self.SLOT_INNER_INDEX * pitch
-        half_axis = (self.SLOT_LENGTH - self.SLOT_WIDTH) / (2 * sqrt(2))
-        diagonal_step = pitch * sqrt(2)
+        start = self.SLOT_START_INDEX * pitch
+        end = self.SLOT_END_INDEX * pitch
 
         arms = (
-            ("Slot NE", +inner, +inner, +1, +1),
-            ("Slot NW", -inner, +inner, -1, +1),
-            ("Slot SW", -inner, -inner, -1, -1),
-            ("Slot SE", +inner, -inner, +1, -1),
+            ("Slot NE", +1, +1),
+            ("Slot NW", -1, +1),
+            ("Slot SW", -1, -1),
+            ("Slot SE", +1, -1),
         )
 
-        for name, cx, cy, sx, sy in arms:
-            # Slot axis follows the radial X arm: NW/SE use \\, NE/SW use /.
-            dx = sx * half_axis
-            dy = sy * half_axis
+        for name, sx, sy in arms:
             with Sketch(name=name, on=board, parent=Anchor.TOP) as slot:
-                SlotOverall2D(
-                    (cx - dx, cy - dy),
-                    (cx + dx, cy + dy),
+                SlotCenterToCenter2D(
+                    (sx * start, sy * start),
+                    (sx * end, sy * end),
                     self.SLOT_WIDTH,
                 )
 
-            slot_cut = slot.extrude(Depth.THROUGH_ALL)
-            board = board - slot_cut
-            board = board.rectangular_pattern(
-                slot_cut,
-                count=self.SLOT_COUNT_PER_ARM,
-                spacing=diagonal_step,
-                direction=(sx / sqrt(2), sy / sqrt(2), 0),
-            )
+            board = board - slot.extrude(Depth.THROUGH_ALL)
 
         return board

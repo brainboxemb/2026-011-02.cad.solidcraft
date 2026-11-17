@@ -2,6 +2,7 @@
   "native_file_format": "solidcraft/57",
   "native_verified_models": [
     "plate",
+    "vent-plate",
     "csg-cube",
     "sample-plate",
     "bracket",
@@ -16,6 +17,6 @@
   "scpf_commit": "0f9315a31ce5f9a7a486a80a150b8adb759f9619",
   "scpf_release": "0.6.1",
   "solidcraft_version": "0.42.0",
-  "source_commit": "56f722580f6b995ac9ac788ff2a1727d9c43be33",
-  "workflow_run": "44091936946"
+  "source_commit": "3c42e3fa49ea70e945118923d961d6042b15ff26",
+  "workflow_run": "44093889010"
 }

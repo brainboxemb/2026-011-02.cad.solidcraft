@@ -100,7 +100,7 @@ class SimpleMFT:
                 slot_cut,
                 count=self.SLOT_COUNT_PER_ARM,
                 spacing=diagonal_step,
-                direction=(sx, sy, 0),
+                direction=(sx / sqrt(2), sy / sqrt(2), 0),
             )
 
         return board

@@ -8,7 +8,11 @@ import zipfile
 from urllib.parse import urlparse, parse_qs
 from pathlib import Path
 from model_catalog import (
-    SOURCES, COMPONENT_SOURCES, COMPONENT_DEFINITION_PRIMARY, COMMAND_SOURCES,
+    MODELS,
+    SOURCES,
+    COMPONENT_SOURCES,
+    COMPONENT_DEFINITION_PRIMARY,
+    COMMAND_SOURCES,
 )
 
 
@@ -71,7 +75,7 @@ def check(site, commit):
     for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
         assert name in text, name
     assert provenance["scpf_commit"] in text
-    for slug in ("plate", "vent-plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "guide-rail", "simple-mft", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
+    for slug in MODELS:
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug
         assert (model / "model.py").is_file(), slug
@@ -175,12 +179,8 @@ def check(site, commit):
             assert 'href="scpc-commands.json"' in page, slug
             assert 'script.add' in page, slug
             data = json.loads(native_json.read_text(encoding="utf-8"))
-            expected_command_counts = {
-                "plate": 9,
-                "vent-plate": 10,
-                "corner-bracket": 17,
-            }
-            assert len(data["commands"]) == expected_command_counts[slug]
+            expected_command_count = MODELS[slug]["scpc_command_count"]
+            assert len(data["commands"]) == expected_command_count
         else:
             assert not (model / "scpc-model.py").exists(), slug
             assert not (model / "scpc-commands.json").exists(), slug

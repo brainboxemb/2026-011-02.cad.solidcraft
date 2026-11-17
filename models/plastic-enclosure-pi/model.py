@@ -42,9 +42,7 @@ class PlasticEnclosurePi:
                     Rectangle2D(half_width * 2, 4.0),
                     offset=(x - half_width, 7.5),
                 )
-        enclosure = enclosure - ports.extrude(
-            self.wall, direction=Direction.NEGATIVE
-        )
+        enclosure = enclosure - ports.extrude(-self.wall)
 
         # Right (+X) end: the combined USB-A and Ethernet window.
         # Local YZ coordinates are (world Y, world Z).
@@ -53,9 +51,7 @@ class PlasticEnclosurePi:
             origin=(half(width), 0, 0),
         ) as end_ports:
             end_ports.add(Rectangle2D(50.0, 14.0), offset=(-25.0, 8.0))
-        enclosure = enclosure - end_ports.extrude(
-            self.wall, direction=Direction.NEGATIVE
-        )
+        enclosure = enclosure - end_ports.extrude(-self.wall)
 
         # Five separate slots, spaced 7 mm along X, through the floor.
         with Sketch(
@@ -67,9 +63,7 @@ class PlasticEnclosurePi:
                     Rectangle2D(5.0, 28.0),
                     offset=(-22.0 + i * 7.0, -16.5),
                 )
-        enclosure = enclosure - vents.extrude(
-            self.wall, direction=Direction.NEGATIVE
-        )
+        enclosure = enclosure - vents.extrude(-self.wall)
 
         # Recess "Pi 4" 0.6 mm into the inner floor of the case.
         with Sketch(
@@ -80,9 +74,7 @@ class PlasticEnclosurePi:
                 Text2D("Pi 4", height=6.0, font="DejaVu Sans Bold"),
                 offset=(-9.0, 18.0),
             )
-        enclosure = enclosure - label.extrude(
-            0.6, direction=Direction.NEGATIVE
-        )
+        enclosure = enclosure - label.extrude(-0.6)
 
         # The recording assigns a physical design material, not just a color.
         enclosure = enclosure.with_material(

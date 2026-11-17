@@ -113,11 +113,11 @@
           ],
           [
             "(-(arm_height)) + (arm_end_chamfer)",
-            "-(-(vertical_arm_length))"
+            "vertical_arm_length"
           ],
           [
             0,
-            "-(-(vertical_arm_length))"
+            "vertical_arm_length"
           ]
         ],
         "closed": true,

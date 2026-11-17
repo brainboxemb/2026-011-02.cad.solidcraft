@@ -31,7 +31,7 @@ four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
 bay edges, tubes, PCB and connectors still need distinct features.
 &quot;&quot;&quot;
-from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component, half, midpoint
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, component, half, midpoint
 
 
 @component
@@ -91,10 +91,7 @@ class Hub75Panel:
                     Rectangle2D(opening_width, top - bottom),
                     offset=(0, midpoint(bottom, top)),
                 )
-        body = body - bays.extrude(
-            self.depth - self.front_depth,
-            direction=Direction.NEGATIVE,
-        )
+        body = body - bays.extrude(-(self.depth - self.front_depth))
 
         # These four rectangles create the real rails and 3 dividing ribs.
         # Pending STEP details: 5 mm rounded corners, the stepped 7.75 mm

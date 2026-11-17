@@ -11,7 +11,7 @@ class SamplePlate:
         plate = sketch.extrude(self.thickness)
         plate = plate.fillet(6, edges=Edges.VERTICAL)
 
-        holes = Hole(d=8, depth=Depth.THROUGH_ALL).pattern(
+        holes = Hole(d=8, depth=Depth.THROUGH_ALL).repeat_linear(
             count=2,
             spacing=self.width - 24,
             axis=Axis.X,

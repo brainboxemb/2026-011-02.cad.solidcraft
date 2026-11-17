@@ -4,7 +4,7 @@ No native loft, cutouts, rear PCB, or mounting bores: this component only
 occupies the measured external bounding volume. The dimensions are fixed
 product constants; occurrence placement belongs to the owning assembly.
 """
-from scpf import Direction, Polygon2D, Sketch, component, half
+from scpf import Polygon2D, Sketch, component, half
 
 
 HUB75_PANEL_WIDTH = 159.70
@@ -28,9 +28,6 @@ class Hub75PanelBasic:
                 (-half_width, HUB75_PANEL_HEIGHT),
             ], plane="XZ", world=True)
 
-        return sketch.extrude(
-            HUB75_PANEL_DEPTH,
-            direction=Direction.SYMMETRIC,
-        ).with_material(
+        return sketch.extrude(HUB75_PANEL_DEPTH, sym=True).with_material(
             "LED panel envelope", density_g_cm3=1.2, color="#242B32"
         )

@@ -51,10 +51,7 @@ class CornerBracket:
         with Sketch(name="Profile", plane="XZ") as sketch:
             Polygon2D([(x, -z) for x, z in outline_xz], plane="XZ")
 
-        body = sketch.extrude(
-            self.arm_width,
-            direction=Direction.SYMMETRIC,
-        )
+        body = sketch.extrude(self.arm_width, sym=True)
 
         # Round the concave plywood corner.
         body = body.fillet(

@@ -2,7 +2,7 @@
 
 CAD projects and native SolidCraft verification. The Python libraries live separately: [SCPF Python Forge](https://github.com/brainboxemb/lib.py.solidcraft.forge) for parametrized models and [SCPC Python Commands](https://github.com/brainboxemb/lib.py.solidcraft.cmd) for explicit native commands.
 
-The current CAD baseline pins **SCPF 0.5.0** by exact release commit and qualifies the models against **SolidCraft 0.42.0**.
+The current CAD baseline pins **SCPF 0.6.0** by exact release-tag commit after renewed qualification under the corrected Forge gates, and qualifies the models against **SolidCraft 0.42.0**.
 
 ## Two Python scripts for one CAD design
 

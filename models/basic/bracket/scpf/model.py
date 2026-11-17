@@ -10,7 +10,7 @@ class Bracket:
                  (self.thickness, 30), (0, 30)],
                 plane="XZ",
             )
-        body = sketch.extrude(self.width, direction=Direction.NEGATIVE)
+        body = sketch.extrude(-self.width)
         body = body.fillet(2, edges=[(40, -half(self.width), -self.thickness)])
 
         for y in (-15, -45):

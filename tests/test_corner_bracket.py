@@ -132,7 +132,7 @@ class CornerBracketTests(unittest.TestCase):
 
     def test_missing_profile_edge_name_is_rejected(self):
         from scpf import Sketch
-        from scpf.core import Polygon2D, Direction, Edges
+        from scpf.core import Polygon2D, Edges
         from scpf.features import compile_features
         from scpf.compiler import ModelError
 
@@ -149,7 +149,7 @@ class CornerBracketTests(unittest.TestCase):
 
     def test_named_profile_selection_requires_segment_ids(self):
         from scpf import Sketch
-        from scpf.core import Polygon2D, Direction, Edges
+        from scpf.core import Polygon2D, Edges
         from scpf.features import compile_features
         from scpf.compiler import ModelError
 
@@ -165,7 +165,7 @@ class CornerBracketTests(unittest.TestCase):
 
     def test_sweep_edge_selection_uses_named_vertices(self):
         from scpf import Sketch
-        from scpf.core import Polygon2D, Direction, Edges
+        from scpf.core import Polygon2D, Edges
         from scpf.features import compile_features
 
         with Sketch(plane="XZ") as sketch:

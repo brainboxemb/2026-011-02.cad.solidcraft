@@ -58,10 +58,14 @@ below before opening or merging the PR.
 
 5. **Native SolidCraft verification**
    - Set the model's native flags in the central catalog.
-   - Add a native BRep measurement check when the model has known physical
-     dimensions. Prefer checking the actual saved SolidCraft body rather than
-     only generated command JSON.
-   - Do not add another model list to the workflow.
+   - Put model-specific native evidence checks under
+     `scripts/ci/native_checks/`; do not add jq assertions to workflow YAML.
+   - Declare saved-design parameter mutations in
+     `scripts/ci/native_cases.py`; `run_native_mutations.py` executes them.
+   - Prefer checking the actual saved SolidCraft body rather than only generated
+     command JSON.
+   - Keep `.github/workflows/native-cad.yml` as orchestration only and do not
+     add another model list there.
 
 6. **Results site**
    - Site title, description, parameters, stages and section belong in the

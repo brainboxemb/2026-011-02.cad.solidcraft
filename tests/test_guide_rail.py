@@ -1,4 +1,4 @@
-"""Regression checks for the reusable Festool guide rail component."""
+"""Regression checks for the reusable guide rail component."""
 from pathlib import Path
 import tempfile
 import unittest
@@ -6,10 +6,10 @@ import unittest
 from scpf.runner import run_script
 
 ROOT = Path(__file__).resolve().parents[1]
-COMPONENT = ROOT / "models" / "components" / "festool_guide_rail" / "scpf" / "model.py"
+COMPONENT = ROOT / "models" / "components" / "guide_rail" / "scpf" / "model.py"
 
 
-class FestoolGuideRailTests(unittest.TestCase):
+class GuideRailTests(unittest.TestCase):
     def test_length_is_the_only_adjustable_parameter(self):
         commands = run_script(COMPONENT)["commands"]
         params = [
@@ -27,11 +27,9 @@ class FestoolGuideRailTests(unittest.TestCase):
         xs = sorted({round(float(p[0]), 6) for p in points})
         zs = [float(p[1]) for p in points]
 
-        # H and D: total profile envelope.
         self.assertAlmostEqual(xs[-1] - xs[0], 184.20)
         self.assertAlmostEqual(max(zs) - min(zs), 10.50)
 
-        # B and A: left feature outer width and inner opening.
         left_outer_l = 0.0
         left_inner_l = 3.90
         left_inner_r = 12.20
@@ -41,7 +39,6 @@ class FestoolGuideRailTests(unittest.TestCase):
         self.assertAlmostEqual(left_outer_r - left_outer_l, 16.10)
         self.assertAlmostEqual(left_inner_r - left_inner_l, 8.30)
 
-        # F and E: centre feature outer width and inner opening.
         center_outer_l = 48.10
         center_inner_l = 52.00
         center_inner_r = 60.30
@@ -50,8 +47,6 @@ class FestoolGuideRailTests(unittest.TestCase):
             self.assertIn(x, xs)
         self.assertAlmostEqual(center_outer_r - center_outer_l, 16.10)
         self.assertAlmostEqual(center_inner_r - center_inner_l, 8.30)
-
-        # G: left edge to right side of the centre feature.
         self.assertAlmostEqual(center_outer_r - left_outer_l, 64.20)
 
     def test_default_length_and_override_remain_native_parameter(self):
@@ -63,7 +58,7 @@ class FestoolGuideRailTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             source = COMPONENT.read_text(encoding="utf-8")
             script = Path(directory) / "model.py"
-            script.write_text(source + "\nFestoolGuideRail(length=1080)\n", encoding="utf-8")
+            script.write_text(source + "\nGuideRail(length=1080)\n", encoding="utf-8")
             changed = run_script(script)["commands"]
         self.assertEqual(changed[0]["params"]["expression"], "1080")
         changed_extrude = next(c for c in changed if c["command"] == "solid.extrude")

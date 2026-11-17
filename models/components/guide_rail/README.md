@@ -1,6 +1,10 @@
-# Festool guide rail component
+# Guide rail component
 
-Reusable SCPF component for a simplified Festool FS-style guide rail.
+Reusable SCPF component for a simplified guide rail.
+
+The component is intentionally named generically. The **current profile** is
+based on measured Festool FS-style rail dimensions, but assemblies should depend
+on a guide rail rather than on a brand-specific component name.
 
 ## Parameter
 
@@ -8,13 +12,13 @@ Reusable SCPF component for a simplified Festool FS-style guide rail.
 **1400 mm**. An assembly can instantiate another length without duplicating the
 profile; the Simple MFT can therefore use a **1080 mm** occurrence.
 
-## Cross-section source
+## Current cross-section source
 
-The dimensional basis is:
+The dimensional basis for the current profile is:
 
 - [TSO Products — Guide Rail Extrusion Comparison Guide](https://tsoproducts.com/content/guide-rail-extrusion-comparison-guide.pdf)
 
-For Festool, TSO reports:
+For the Festool rail measured by TSO:
 
 | TSO dimension | mm |
 | --- | ---: |
@@ -36,7 +40,7 @@ dimensioned in the TSO drawing. They are intentionally simplified here because
 this component is meant for assembly/layout work, not manufacturing the
 extrusion.
 
-Additional visual references:
+Additional visual references for the current profile:
 
 - [Printables — Festool Track Profile by crashkg](https://www.printables.com/model/787210-festool-track-profile)
 - [GrabCAD — Festool FS1400mm Guide Rail](https://grabcad.com/library/festool-fs1400mm-guide-rail-2)

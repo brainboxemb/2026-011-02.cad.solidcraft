@@ -1,17 +1,18 @@
-"""Reusable Festool FS-style guide rail component.
+"""Reusable guide rail component.
 
-The rail length is the only adjustable CAD parameter. The simplified
-cross-section is based directly on the measured Festool dimensions published
-in TSO Products' Guide Rail Extrusion Comparison Guide.
+The rail length is the only adjustable CAD parameter. The current simplified
+cross-section is based on the measured Festool guide-rail dimensions published
+in TSO Products' Guide Rail Extrusion Comparison Guide. The component name is
+generic so assemblies are not tied to one rail brand.
 """
 from scpf import Polygon2D, Sketch, component
 
 
 @component
-class FestoolGuideRail:
+class GuideRail:
     length = 1400.0
 
-    # TSO Products measured Festool guide-rail dimensions (mm).
+    # TSO Products measured dimensions for the current reference profile (mm).
     # Names deliberately follow the A-H labels in the source drawing.
     TSO_A_OPENING_LEFT = 8.30
     TSO_B_LEFT_FEATURE = 16.10
@@ -23,7 +24,7 @@ class FestoolGuideRail:
 
     # TSO does not dimension the small wall/base thicknesses. These are kept
     # deliberately simple because this component is intended as a useful CAD
-    # representation of the guide rail, not a manufacturing drawing.
+    # representation of a guide rail, not a manufacturing drawing.
     BASE_THICKNESS = 2.0
     TOP_LIP_THICKNESS = 1.5
 
@@ -47,9 +48,9 @@ class FestoolGuideRail:
 
         # X = rail width, Y = rail length, Z = height.
         #
-        # The profile intentionally captures the dimensions that matter for an
-        # MFT/guide-rail assembly: total width/height and the two characteristic
-        # mounting/guide features. Small extrusion ribs are omitted.
+        # The profile captures the dimensions that matter for an MFT/guide-rail
+        # assembly: total width/height and the two characteristic mounting/guide
+        # features. Small extrusion ribs are omitted.
         points = [
             ("bottom_left", (0.0, 0.0)),
             ("bottom_right", (self.TSO_H_TOTAL_WIDTH, 0.0)),
@@ -73,7 +74,7 @@ class FestoolGuideRail:
             ("left_top", (0.0, height)),
         ]
 
-        with Sketch(name="Festool FS profile", plane="XZ") as profile:
+        with Sketch(name="Guide rail profile", plane="XZ") as profile:
             Polygon2D(points, plane="XZ", world=True)
 
         return profile.extrude(self.length, sym=True)

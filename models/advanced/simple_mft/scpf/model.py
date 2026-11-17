@@ -10,17 +10,27 @@ The current 2D expectation is calibrated from the front product photo:
 - per diagonal arm, the inner slot starts on grid ring 1 and extends outward;
 - the outer slot starts on grid ring 3 and extends inward;
 - the four diagonal grid-ring-2 dog-hole positions are omitted.
+
+The dog holes deliberately follow a normal SolidCraft workflow:
+- one Circle seed;
+- one associative 9 x 7 Sketch rectangular pattern;
+- one selective cut using 59 of the 63 closed profiles.
+
+The clamp slots use one Slot seed, one Sketch pattern and three mirrors.
 """
 
 from math import sqrt
 
-
-EXCLUDED_DOG_HOLE_GRID = frozenset({
-    (-2, -2),
-    (-2, 2),
-    (2, -2),
-    (2, 2),
-})
+from scpf import (
+    Anchor,
+    Axis,
+    Box,
+    Circle2D,
+    Depth,
+    Edges,
+    Sketch,
+    SlotCenterToCenter2D,
+)
 
 
 class SimpleMFT:
@@ -38,12 +48,6 @@ class SimpleMFT:
     SLOT_CENTER_DISTANCE = 80.0
 
     def build(self):
-        half_w = self.width / 2
-        half_d = self.depth / 2
-        c = self.corner_chamfer
-
-        # Keep a rectangular native base so attached Sketches use the native
-        # rectangular face reference supported by SCPF.
         board = Box(
             self.width,
             self.depth,
@@ -51,77 +55,83 @@ class SimpleMFT:
             anchor=Anchor.BOTTOM,
         )
 
-        # Chamfer the four vertical corner edges. An equal 20 mm chamfer on a
-        # vertical edge produces the straight 20 x 20 mm plan-view corner cut
-        # while retaining the rectangular Box as the anchor base.
-        edge_z = self.thickness.value / 2
-        board = board.chamfer(
-            c,
-            edges=[
-                (-half_w, -half_d, edge_z),
-                (half_w, -half_d, edge_z),
-                (half_w, half_d, edge_z),
-                (-half_w, half_d, edge_z),
-            ],
+        # One complete 9 x 7 associative grid. The cut selects 59 profiles and
+        # leaves the four diagonal ring-2 circles (±2, ±2) uncut.
+        p = self.hole_pitch
+        pitch = float(p.value)
+
+        with Sketch(name="Dog holes", on=board, parent=Anchor.TOP) as holes:
+            seed = holes.add(
+                Circle2D(d=self.hole_diameter),
+                offset=(-4 * p, -3 * p),
+            )
+            holes.rectangular_pattern(
+                seed,
+                count=self.COLUMNS,
+                spacing=p,
+                direction=Axis.X,
+                count2=self.ROWS,
+                spacing2=p,
+                direction2=Axis.Y,
+            )
+
+        excluded = {
+            (-2, -2),
+            (-2, 2),
+            (2, -2),
+            (2, 2),
+        }
+        dog_hole_profiles = [
+            (column * pitch, row * pitch)
+            for row in range(-3, 4)
+            for column in range(-4, 5)
+            if (column, row) not in excluded
+        ]
+        board = board - holes.extrude(
+            Depth.THROUGH_ALL,
+            profiles=dog_hole_profiles,
+            exact_regions=True,
         )
 
-        # The visible 9 x 7 grid has four missing dog-hole positions on
-        # diagonal ring 2. Build the actual hole set directly instead of
-        # creating a complete rectangular pattern and adding material back.
-        half_columns = self.COLUMNS // 2
-        half_rows = self.ROWS // 2
-        with Sketch(name="Dog holes", on=board, parent=Anchor.TOP) as holes:
-            for row in range(-half_rows, half_rows + 1):
-                for column in range(-half_columns, half_columns + 1):
-                    if (column, row) in EXCLUDED_DOG_HOLE_GRID:
-                        continue
-                    holes.add(
-                        Circle2D(d=self.hole_diameter),
-                        offset=(
-                            column * self.hole_pitch,
-                            row * self.hole_pitch,
-                        ),
-                    )
-
-        board = board - holes.extrude(Depth.THROUGH_ALL)
-
-        # SolidCraft 0.42 native Slot creators require fixed numeric points.
-        # Read the current parameter values explicitly instead of passing Forge
-        # expressions into the Slot command.
-        pitch = float(self.hole_pitch.value)
+        # SolidCraft 0.42 direct Slot creators use fixed numeric profile points.
         slot_center_distance = float(self.SLOT_CENTER_DISTANCE)
         slot_width = float(self.SLOT_WIDTH)
         along_axis = slot_center_distance / sqrt(2)
 
-        for name, sx, sy in (
-            ("Slot NE", +1, +1),
-            ("Slot NW", -1, +1),
-            ("Slot SW", -1, -1),
-            ("Slot SE", +1, -1),
-        ):
-            inner_ring = (sx * pitch, sy * pitch)
-            inner_outward = (
-                sx * (pitch + along_axis),
-                sy * (pitch + along_axis),
-            )
-            outer_ring = (sx * 3 * pitch, sy * 3 * pitch)
-            outer_inward = (
-                sx * (3 * pitch - along_axis),
-                sy * (3 * pitch - along_axis),
-            )
+        inner_ring = (pitch, pitch)
+        inner_outward = (
+            pitch + along_axis,
+            pitch + along_axis,
+        )
 
-            with Sketch(name=name, on=board, parent=Anchor.TOP) as slots:
-                SlotCenterToCenter2D(
-                    inner_ring,
-                    inner_outward,
-                    slot_width,
-                )
-                SlotCenterToCenter2D(
-                    outer_inward,
-                    outer_ring,
-                    slot_width,
-                )
+        # Translation from the inner Slot to the outer Slot on the same arm.
+        # SolidCraft normalises the (1, 1) direction vector.
+        slot_pattern_spacing = (
+            2 * sqrt(2) * pitch - slot_center_distance
+        )
 
-            board = board - slots.extrude(Depth.THROUGH_ALL)
+        with Sketch(name="Clamp slots", on=board, parent=Anchor.TOP) as slots:
+            master_slot = SlotCenterToCenter2D(
+                inner_ring,
+                inner_outward,
+                slot_width,
+            )
+            upper_right = slots.rectangular_pattern(
+                master_slot,
+                count=2,
+                spacing=slot_pattern_spacing,
+                direction=(1, 1),
+            )
+            upper_left = slots.mirror(upper_right, axis=Axis.Y)
+            slots.mirror(upper_right, axis=Axis.X)
+            slots.mirror(upper_left, axis=Axis.X)
+
+        board = board - slots.extrude(Depth.THROUGH_ALL)
+
+        # Apply the four plan-view corner chamfers after the attached cuts.
+        board = board.chamfer(
+            self.corner_chamfer,
+            edges=Edges.VERTICAL,
+        )
 
         return board

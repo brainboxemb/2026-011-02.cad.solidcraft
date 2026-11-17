@@ -196,12 +196,16 @@ def check(site, commit):
             assert "(±152, ±152) mm" in page
             assert "8 Slots ≈104 × 24 mm" in page
             assert "two Slots per quadrant" in page
+            assert "four Circle seeds" in page
+            assert "one master Slot" in page
+            assert "one native sketch pattern and three mirrors" in page
             assert "CRAFTMAKER ProStation S30 reference worktop" in page
             assert "photo-based estimates" in page
             assert "7 × 5" not in page
             assert "96 mm pitch" not in page
             assert "No clamp slots" not in page
             assert "Keep the ring-2 diagonal Ø20 holes" not in page
+            assert "eight native SlotCenterToCenter2D cuts" not in page
         if slug == "hub75-panel" and slug in provenance["native_verified_models"]:
             for filename in ("front.png", "rear.png"):
                 assert (model / filename).is_file()

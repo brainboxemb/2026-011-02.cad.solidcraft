@@ -6,7 +6,7 @@ four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
 bay edges, tubes, PCB and connectors still need distinct features.
 """
-from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, Direction, component, half, midpoint
+from scpf import Box, Hole, Sketch, Rectangle2D, Anchor, component, half, midpoint
 
 
 @component

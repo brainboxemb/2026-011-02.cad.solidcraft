@@ -1,6 +1,6 @@
 {
   "format": "scpf-replay",
-  "version": 1,
+  "version": 2,
   "commands": [
     {
       "command": "component.create",
@@ -111,11 +111,47 @@
       }
     },
     {
+      "command": "model.faces",
+      "params": {
+        "body": "Hub75Panel"
+      },
+      "bind": {
+        "$d1_Hub75Panel_face_point_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_Hub75Panel_face_index_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "Rear electronics bays",
-        "offset": 14.5
+        "plane": {
+          "face": "$d1_Hub75Panel_face_point_1",
+          "body": "Hub75Panel",
+          "index": "$d1_Hub75Panel_face_index_1"
+        },
+        "project_edges": false,
+        "name": "Rear electronics bays"
       }
     },
     {

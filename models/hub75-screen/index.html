@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / hub75-screen</div>
 <h1>BasicHub75Screen</h1><p>Five shared native HUB75 occurrences with two 180° rotations</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">37 commands</span><span class="badge">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">38 commands</span><span class="badge">Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>Five panels on the source project&#x27;s 800 × 320 mm nominal grid. One rear-tapered, four-bay panel component is reused at X=−320, −160, 0, 160 and 320 mm. Columns 2 and 4 reverse direction around the assembled front-to-back axis for the rear data chain, and all occurrences stand upright in XZ. R5 corners, detailed rear reinforcements, PCB and connectors remain future phases.</p></section>
@@ -284,12 +284,48 @@ class Hub75Panel:
     ]
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Rear electronics bays, plane: XY</small><pre><code>{
+<li><strong>model.faces</strong><small>model.faces</small><pre><code>{
+  &quot;command&quot;: &quot;model.faces&quot;,
+  &quot;params&quot;: {
+    &quot;body&quot;: &quot;Hub75Panel&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$d1_Hub75Panel_face_point_1&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;point&quot;
+    },
+    &quot;$d1_Hub75Panel_face_index_1&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;index&quot;
+    }
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Rear electronics bays, plane: {&#x27;face&#x27;: &#x27;$d1_Hub75Panel_face_point_1&#x27;, &#x27;body&#x27;: &#x27;Hub75Panel&#x27;, &#x27;index&#x27;: &#x27;$d1_Hub75Panel_face_index_1&#x27;}</small><pre><code>{
   &quot;command&quot;: &quot;sketch.create&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;Rear electronics bays&quot;,
-    &quot;offset&quot;: 14.5
+    &quot;plane&quot;: {
+      &quot;face&quot;: &quot;$d1_Hub75Panel_face_point_1&quot;,
+      &quot;body&quot;: &quot;Hub75Panel&quot;,
+      &quot;index&quot;: &quot;$d1_Hub75Panel_face_index_1&quot;
+    },
+    &quot;project_edges&quot;: false,
+    &quot;name&quot;: &quot;Rear electronics bays&quot;
   }
 }</code></pre></li>
 <li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{

@@ -1,6 +1,6 @@
 {
   "format": "scpf-replay",
-  "version": 1,
+  "version": 2,
   "commands": [
     {
       "command": "component.create",

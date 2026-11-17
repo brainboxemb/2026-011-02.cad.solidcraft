@@ -1,0 +1,131 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "length",
+        "expression": "1400",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Guide rail profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -0.0
+          ],
+          [
+            184.2,
+            -0.0
+          ],
+          [
+            184.2,
+            -2.0
+          ],
+          [
+            64.2,
+            -2.0
+          ],
+          [
+            64.2,
+            -10.5
+          ],
+          [
+            60.300000000000004,
+            -10.5
+          ],
+          [
+            60.300000000000004,
+            -2.0
+          ],
+          [
+            52.0,
+            -2.0
+          ],
+          [
+            52.0,
+            -10.5
+          ],
+          [
+            48.1,
+            -10.5
+          ],
+          [
+            48.1,
+            -2.0
+          ],
+          [
+            16.1,
+            -2.0
+          ],
+          [
+            16.1,
+            -9.0
+          ],
+          [
+            12.200000000000001,
+            -9.0
+          ],
+          [
+            12.200000000000001,
+            -2.0
+          ],
+          [
+            3.9000000000000004,
+            -2.0
+          ],
+          [
+            3.9000000000000004,
+            -10.5
+          ],
+          [
+            0.0,
+            -10.5
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "bottom_left",
+          "bottom_right",
+          "right_top",
+          "center_right_base",
+          "center_right_top",
+          "center_inner_right_top",
+          "center_inner_right_bottom",
+          "center_inner_left_bottom",
+          "center_inner_left_top",
+          "center_left_top",
+          "center_left_base",
+          "left_right_base",
+          "left_right_top",
+          "left_inner_right_top",
+          "left_inner_right_bottom",
+          "left_inner_left_bottom",
+          "left_inner_left_top",
+          "left_top"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "length",
+        "direction": "symmetric",
+        "body_name": "GuideRail"
+      }
+    }
+  ]
+}

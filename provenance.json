@@ -7,6 +7,7 @@
     "sample-plate",
     "bracket",
     "corner-bracket",
+    "guide-rail",
     "simple-mft",
     "hub75-wood-frame",
     "hub75-screen",
@@ -18,6 +19,6 @@
   "scpf_commit": "1ca462b4aff1495b00644571b89216579a4dd9c3",
   "scpf_release": "0.8.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "bf02e296ddb43e7b6afefd215f9e7c9845f9157a",
-  "workflow_run": "44157509700"
+  "source_commit": "07141e15d2c883f2af2a883f862b762c8fab2d9d",
+  "workflow_run": "44158536128"
 }

@@ -90,6 +90,13 @@ class SimpleMFTTests(unittest.TestCase):
         self.assertIn("SLOT_WIDTH = 24.0", source)
         self.assertIn("SLOT_CENTER_DISTANCE = 80.0", source)
         self.assertNotIn("SLOT_LENGTH = 75.0", source)
+        self.assertIn(
+            'Sketch(name=name, on=board, parent=Anchor.TOP)',
+            source,
+        )
+        self.assertIn("slots.extrude(Depth.THROUGH_ALL)", source)
+        self.assertNotIn("slot_plane_z", source)
+        self.assertNotIn('origin=(0.0, 0.0', source)
 
 
 if __name__ == "__main__":

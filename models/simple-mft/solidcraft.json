@@ -95,7 +95,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Dog hole",
+        "name": "Dog holes",
         "offset": "(thickness)"
       }
     },
@@ -105,6 +105,586 @@
         "center": [
           "(hole_pitch * -4)",
           "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -2)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 2)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * -3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * -2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -2)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 2)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * -1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -2)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 2)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * 0)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -2)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 2)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * 1)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * 2)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -4)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -3)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -2)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * -1)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 0)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 1)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 2)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 3)",
+          "(hole_pitch * 3)"
+        ],
+        "diameter": "hole_diameter"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(hole_pitch * 4)",
+          "(hole_pitch * 3)"
         ],
         "diameter": "hole_diameter"
       }
@@ -120,35 +700,9 @@
         "targets": [
           "SimpleMFT"
         ],
-        "name": "Dog hole",
+        "name": "Dog holes",
         "through_all": true,
         "direction": "negative"
-      }
-    },
-    {
-      "command": "solid.pattern.rectangular",
-      "params": {
-        "features": [
-          "Dog hole"
-        ],
-        "dir1": [
-          1.0,
-          0.0,
-          0.0
-        ],
-        "count1": 9,
-        "spacing1": "hole_pitch",
-        "alignment": "right",
-        "reversed": false,
-        "dir2": [
-          0.0,
-          1.0,
-          0.0
-        ],
-        "count2": 7,
-        "spacing2": "hole_pitch",
-        "alignment2": "right",
-        "reversed2": false
       }
     },
     {

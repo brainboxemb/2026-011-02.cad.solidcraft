@@ -9,10 +9,18 @@ The current 2D expectation is calibrated from the front product photo:
 - slot end-centre distance about 80 mm, giving about 104 mm overall length;
 - per diagonal arm, the inner slot starts on grid ring 1 and extends outward;
 - the outer slot starts on grid ring 3 and extends inward;
-- grid ring 2 remains a normal dog hole between the two slots.
+- the four diagonal grid-ring-2 dog-hole positions are omitted.
 """
 
 from math import sqrt
+
+
+EXCLUDED_DOG_HOLE_GRID = frozenset({
+    (-2, -2),
+    (-2, 2),
+    (2, -2),
+    (2, 2),
+})
 
 
 class SimpleMFT:
@@ -57,23 +65,25 @@ class SimpleMFT:
             ],
         )
 
-        with Sketch(name="Dog hole", on=board, parent=Anchor.TOP) as hole:
-            hole.add(
-                Circle2D(d=self.hole_diameter),
-                offset=(-4 * self.hole_pitch, -3 * self.hole_pitch),
-            )
+        # The visible 9 x 7 grid has four missing dog-hole positions on
+        # diagonal ring 2. Build the actual hole set directly instead of
+        # creating a complete rectangular pattern and adding material back.
+        half_columns = self.COLUMNS // 2
+        half_rows = self.ROWS // 2
+        with Sketch(name="Dog holes", on=board, parent=Anchor.TOP) as holes:
+            for row in range(-half_rows, half_rows + 1):
+                for column in range(-half_columns, half_columns + 1):
+                    if (column, row) in EXCLUDED_DOG_HOLE_GRID:
+                        continue
+                    holes.add(
+                        Circle2D(d=self.hole_diameter),
+                        offset=(
+                            column * self.hole_pitch,
+                            row * self.hole_pitch,
+                        ),
+                    )
 
-        hole_cut = hole.extrude(Depth.THROUGH_ALL)
-        board = board - hole_cut
-        board = board.rectangular_pattern(
-            hole_cut,
-            count=self.COLUMNS,
-            spacing=self.hole_pitch,
-            direction=Axis.X,
-            count2=self.ROWS,
-            spacing2=self.hole_pitch,
-            direction2=Axis.Y,
-        )
+        board = board - holes.extrude(Depth.THROUGH_ALL)
 
         # SolidCraft 0.42 native Slot creators require fixed numeric points.
         # Read the current parameter values explicitly instead of passing Forge

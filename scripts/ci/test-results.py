@@ -184,6 +184,20 @@ def check(site, commit):
         else:
             assert not (model / "scpc-model.py").exists(), slug
             assert not (model / "scpc-commands.json").exists(), slug
+        if slug == "simple-mft":
+            expectation = model / "expected-top-view.svg"
+            assert expectation.is_file()
+            assert 'src="expected-top-view.svg"' in page
+            assert "Reference and 2D expectation" in page
+            assert "9 × 7" in page
+            assert "76 mm" in page
+            assert "8 Slots ≈104 × 24 mm" in page
+            assert "two Slots per quadrant" in page
+            assert "CRAFTMAKER ProStation S30 reference worktop" in page
+            assert "photo-based estimates" in page
+            assert "7 × 5" not in page
+            assert "96 mm pitch" not in page
+            assert "No clamp slots" not in page
         if slug == "hub75-panel" and slug in provenance["native_verified_models"]:
             for filename in ("front.png", "rear.png"):
                 assert (model / filename).is_file()
@@ -201,6 +215,8 @@ def check(site, commit):
             else:
                 assert resolved.exists(), (slug, href)
         for src in parser.images:
+            if src.startswith(("http://", "https://")):
+                continue
             assert (model / src).is_file(), (slug, src)
     print("Static CAD results site passed smoke checks")
 

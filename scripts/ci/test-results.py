@@ -71,7 +71,7 @@ def check(site, commit):
     for name in ("id=\"basic\"", "id=\"components\"", "id=\"advanced\""):
         assert name in text, name
     assert provenance["scpf_commit"] in text
-    for slug in ("plate", "vent-plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "simple-mft", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
+    for slug in ("plate", "vent-plate", "csg-cube", "bracket", "corner-bracket", "hub75-panel", "guide-rail", "simple-mft", "hub75-screen", "hub75-wood-frame", "sample-plate", "plastic-enclosure", "plastic-enclosure-pi"):
         model = site / "models" / slug
         assert (model / "index.html").is_file(), slug
         assert (model / "model.py").is_file(), slug

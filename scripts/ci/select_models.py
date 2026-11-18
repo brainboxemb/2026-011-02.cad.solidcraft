@@ -14,6 +14,24 @@ from pathlib import Path
 from model_catalog import MODELS, model_input_paths, model_slugs
 
 
+PIPELINE_SMOKE_MODEL = "plate"
+PIPELINE_SMOKE_PATHS = (
+    ".github/workflows/cad.yml",
+    "scripts/ci/build_plan.py",
+    "scripts/ci/cad_ci.py",
+    "scripts/ci/model_catalog.py",
+    "scripts/ci/model_check.py",
+    "scripts/ci/model_checks.py",
+    "scripts/ci/native_ci.py",
+    "scripts/ci/native_validation.py",
+    "scripts/ci/output_store.py",
+    "scripts/ci/pipeline_ci.py",
+    "scripts/ci/publish_ci.py",
+    "scripts/ci/run_native_mutations.py",
+    "scripts/ci/compare-scpc.py",
+)
+
+
 SITE_ONLY_PATHS = (
     "scripts/ci/build-results.py",
     "scripts/ci/test-results.py",
@@ -95,6 +113,15 @@ def needs_site_refresh(changed_paths, selected=()):
         _matches(path, watched)
         for path in changed_paths
         for watched in SITE_ONLY_PATHS
+    )
+
+
+def needs_pipeline_smoke(changed_paths):
+    """Whether CI infrastructure changes need one real end-to-end model."""
+    return any(
+        _matches(path, watched)
+        for path in changed_paths
+        for watched in PIPELINE_SMOKE_PATHS
     )
 
 

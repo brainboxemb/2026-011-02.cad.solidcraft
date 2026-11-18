@@ -90,6 +90,18 @@ class TargetedModelSelectionTests(unittest.TestCase):
             ("bolted-flange", "bracket"),
         )
 
+    def test_explicit_models_mode_filters_by_build_capability(self):
+        requested = ("bolted-flange", "bracket")
+        selected = select_models(
+            mode="models",
+            kind="scpc",
+            models=requested,
+        )
+        self.assertEqual(
+            selected,
+            tuple(slug for slug in requested if slug in model_slugs("scpc")),
+        )
+
     def test_explicit_all_mode_is_the_only_full_catalog_selection(self):
         self.assertEqual(
             select_models(mode="all", kind="native"),

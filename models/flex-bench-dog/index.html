@@ -12,77 +12,124 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / flex-bench-dog</div>
 <h1>FlexBenchDog</h1><p>Passive 20 mm MFT bench dog with a four-segment flex stem</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">9 commands</span><span class="badge">20.0 mm nominal hole; 20.2 mm flex stem; Ø24 × 3 mm rim; 76 mm overall</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">22 commands</span><span class="badge">20.0 mm nominal hole; Ø20.2 mm flared flex tip; Ø24 × 3 mm rim; 20 mm above and 20 mm below worktop</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>A simple printable bench dog inferred from the Mini-MFT reference image: cylindrical working section, small stop rim and a slightly oversized insertion stem split by two perpendicular slots. The four stem quadrants flex inward for a passive friction fit; there is no screw mechanism.</p></section>
+<p>A simple printable bench dog inferred from the Mini-MFT reference image: 20 mm above and 20 mm below the worktop, with a nominal Ø20 insert and a small Ø20.2 flare only at the free tip. Two perpendicular slots create four flexible legs; a larger bottom chamfer provides an insertion lead-in. There is no screw mechanism.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">Component source</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Cylinder — Ø20 × 35 mm working section</li><li>Cylinder — join Ø24 × 3 mm stop rim</li><li>Cylinder — join Ø20.2 × 38 mm insertion stem</li><li>Box cut — first 1.5 × 30 mm flex slot</li><li>Box cut — second perpendicular flex slot</li><li>Four flexible stem quadrants provide passive friction</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Cylinder — Ø24 × 3 mm stop rim at worktop datum</li><li>Cylinder — join Ø20 × 17 mm working section to Z=20</li><li>Cylinder — join Ø20 × 20 mm insertion below worktop</li><li>Cylinder — add Ø20.2 × 2 mm flared free tip</li><li>Two 1.5 × 16 mm crossing cuts create four flex legs</li><li>Chamfer top and bottom edges, then cut a recessed square box logo</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fflex-bench-dog%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
 <section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>models/components/flex_bench_dog/scpf/model.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Reusable 20 mm flex bench dog based on the supplied Mini-MFT reference image.
 
-The fit is intentionally passive: a slightly oversized insertion stem is split
-by two crossing slots so the four quadrants can flex inward in a 20 mm dog hole.
-No screw, nut, O-ring or separate expansion part is used.
+The CAD orientation is functional rather than a prescribed print orientation:
+the worktop surface is Z=0, the insert extends 20 mm downward and the dog rises
+20 mm upward. A small flare at the free insert end provides passive spring
+preload after the stem is split into four flexible quadrants.
 &quot;&quot;&quot;
 
 
 @component
 class FlexBenchDog:
-    # Native fit parameters. These are the dimensions most useful to tune after
-    # a first print in a real 20 mm worktop.
     hole_diameter = 20.0
     interference = 0.20
     rim_diameter = 24.0
     slot_width = 1.5
 
-    # Fixed first-prototype proportions inferred from the supplied image.
-    WORKING_HEIGHT = 35.0
+    ABOVE_WORKTOP = 20.0
     RIM_THICKNESS = 3.0
-    INSERTION_LENGTH = 38.0
-    SLOT_LENGTH = 30.0
+    INSERTION_LENGTH = 20.0
+    TIP_FLARE_LENGTH = 2.0
+    SLOT_LENGTH = 16.0
+    TOP_CHAMFER = 0.6
+    BOTTOM_CHAMFER = 1.0
+    LOGO_SIZE = 8.0
+    LOGO_DEPTH = 0.6
 
     def build(self):
-        dog = Cylinder(
-            d=self.hole_diameter,
-            h=self.WORKING_HEIGHT,
-            anchor=Anchor.BOTTOM,
-        )
-
+        # Rim bottom is the worktop datum. The narrower working cylinder starts
+        # on the rim and ends at 20 mm above the worktop.
         rim = Cylinder(
             d=self.rim_diameter,
             h=self.RIM_THICKNESS,
             anchor=Anchor.BOTTOM,
-        ).at(0, 0, self.WORKING_HEIGHT, anchor=Anchor.BOTTOM)
-        dog = dog + rim
+        )
 
-        stem_diameter = self.hole_diameter + self.interference
-        stem_z = self.WORKING_HEIGHT + self.RIM_THICKNESS
-        stem = Cylinder(
-            d=stem_diameter,
+        working_height = self.ABOVE_WORKTOP - self.RIM_THICKNESS
+        upper = Cylinder(
+            d=self.hole_diameter,
+            h=working_height,
+            anchor=Anchor.BOTTOM,
+        ).at(0, 0, self.RIM_THICKNESS, anchor=Anchor.BOTTOM)
+        dog = rim + upper
+
+        # Straight insert root below Z=0, with only the free 2 mm flared.
+        insert = Cylinder(
+            d=self.hole_diameter,
             h=self.INSERTION_LENGTH,
             anchor=Anchor.BOTTOM,
-        ).at(0, 0, stem_z, anchor=Anchor.BOTTOM)
-        dog = dog + stem
+        ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
+        dog = dog + insert
 
-        slot_z = stem_z + self.INSERTION_LENGTH - self.SLOT_LENGTH
-        slot_x = Box(
-            stem_diameter + 2.0,
-            self.slot_width,
-            self.SLOT_LENGTH,
-        ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
-        slot_y = Box(
-            self.slot_width,
-            stem_diameter + 2.0,
-            self.SLOT_LENGTH,
-        ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
+        flare = Cylinder(
+            d=self.hole_diameter + self.interference,
+            h=self.TIP_FLARE_LENGTH,
+            anchor=Anchor.BOTTOM,
+        ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
+        dog = dog + flare
 
-        dog = dog - slot_x
-        dog = dog - slot_y
+        # Give the complete free insert edge a larger lead-in before splitting
+        # it into four flexible legs.
+        dog = dog.chamfer(
+            self.BOTTOM_CHAMFER,
+            edges=[(
+                (self.hole_diameter + self.interference) / 2,
+                0,
+                -self.INSERTION_LENGTH,
+            )],
+        )
+
+        # Two native sketch cuts form the cross slots. They start at the free
+        # end and stop 4 mm below the worktop, leaving a solid flex root.
+        slot_span = self.hole_diameter + self.interference + 2.0
+
+        with Sketch(
+            name=&quot;Flex slot X&quot;,
+            on=dog,
+            plane=&quot;XY&quot;,
+            origin=(0, 0, -self.INSERTION_LENGTH),
+        ) as slot_x:
+            Rectangle2D(slot_span, self.slot_width)
+        dog = dog - slot_x.extrude(self.SLOT_LENGTH)
+
+        with Sketch(
+            name=&quot;Flex slot Y&quot;,
+            on=dog,
+            plane=&quot;XY&quot;,
+            origin=(0, 0, -self.INSERTION_LENGTH),
+        ) as slot_y:
+            Rectangle2D(self.slot_width, slot_span)
+        dog = dog - slot_y.extrude(self.SLOT_LENGTH)
+
+        # Light chamfer on the visible upper perimeter.
+        dog = dog.chamfer(
+            self.TOP_CHAMFER,
+            edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
+        )
+
+        # Small recessed square used as a simple BBE/box mark.
+        with Sketch(
+            name=&quot;Top logo&quot;,
+            on=dog,
+            plane=&quot;XY&quot;,
+            origin=(0, 0, self.ABOVE_WORKTOP),
+        ) as logo:
+            Rectangle2D(self.LOGO_SIZE, self.LOGO_SIZE)
+        dog = dog - logo.extrude(-self.LOGO_DEPTH)
+
         return dog
 </code></pre></section>
 <section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;FlexBenchDog expressed directly as SolidCraft commands.&quot;&quot;&quot;
@@ -99,73 +146,140 @@ for name, value in (
 ):
     script.add(&quot;parameters.add&quot;, name=name, expression=str(value), unit=&quot;mm&quot;)
 
+# Rim at the worktop datum.
 script.add(
     &quot;solid.cylinder&quot;,
-    height=35,
-    diameter=&quot;hole_diameter&quot;,
+    height=3,
+    diameter=&quot;rim_diameter&quot;,
     base=[0, 0, 0],
     axis=&quot;Z&quot;,
     operation=&quot;new&quot;,
     body_name=&quot;FlexBenchDog&quot;,
 )
+
+# Working section: top of rim to 20 mm above the worktop.
 script.add(
     &quot;solid.cylinder&quot;,
-    height=3,
-    diameter=&quot;rim_diameter&quot;,
-    base=[0, 0, 35],
+    height=17,
+    diameter=&quot;hole_diameter&quot;,
+    base=[0, 0, 3],
+    axis=&quot;Z&quot;,
+    operation=&quot;join&quot;,
+    targets=[&quot;FlexBenchDog&quot;],
+)
+
+# Straight 20 mm insert and a slightly oversized free tip.
+script.add(
+    &quot;solid.cylinder&quot;,
+    height=20,
+    diameter=&quot;hole_diameter&quot;,
+    base=[0, 0, -20],
     axis=&quot;Z&quot;,
     operation=&quot;join&quot;,
     targets=[&quot;FlexBenchDog&quot;],
 )
 script.add(
     &quot;solid.cylinder&quot;,
-    height=38,
+    height=2,
     diameter=&quot;hole_diameter + interference&quot;,
-    base=[0, 0, 38],
+    base=[0, 0, -20],
     axis=&quot;Z&quot;,
     operation=&quot;join&quot;,
     targets=[&quot;FlexBenchDog&quot;],
 )
+
+# Larger lead-in chamfer on the free insert edge.
 script.add(
-    &quot;solid.box&quot;,
-    length=&quot;hole_diameter + interference + 2&quot;,
-    width=&quot;slot_width&quot;,
-    height=30,
-    corner=[
-        &quot;-(hole_diameter + interference + 2) / 2&quot;,
-        &quot;-slot_width / 2&quot;,
-        46,
-    ],
-    operation=&quot;cut&quot;,
-    targets=[&quot;FlexBenchDog&quot;],
+    &quot;solid.chamfer&quot;,
+    body=&quot;FlexBenchDog&quot;,
+    distance=1.0,
+    edges=[[10.1, 0, -20]],
+)
+
+# Flex slot X.
+script.add(
+    &quot;sketch.create&quot;,
+    plane={&quot;origin&quot;: [0, 0, -20], &quot;x_dir&quot;: [1, 0, 0], &quot;y_dir&quot;: [0, 1, 0]},
+    name=&quot;Flex slot X&quot;,
 )
 script.add(
-    &quot;solid.box&quot;,
-    length=&quot;slot_width&quot;,
-    width=&quot;hole_diameter + interference + 2&quot;,
-    height=30,
-    corner=[
-        &quot;-slot_width / 2&quot;,
-        &quot;-(hole_diameter + interference + 2) / 2&quot;,
-        46,
-    ],
+    &quot;sketch.rectangle.two_point&quot;,
+    p0=[&quot;-(hole_diameter + interference + 2) / 2&quot;, &quot;-slot_width / 2&quot;],
+    p1=[&quot;(hole_diameter + interference + 2) / 2&quot;, &quot;slot_width / 2&quot;],
+)
+script.add(&quot;sketch.finish&quot;)
+script.add(
+    &quot;solid.extrude&quot;,
+    distance=16,
+    direction=&quot;positive&quot;,
     operation=&quot;cut&quot;,
     targets=[&quot;FlexBenchDog&quot;],
+    name=&quot;Flex slot X&quot;,
+)
+
+# Flex slot Y.
+script.add(
+    &quot;sketch.create&quot;,
+    plane={&quot;origin&quot;: [0, 0, -20], &quot;x_dir&quot;: [1, 0, 0], &quot;y_dir&quot;: [0, 1, 0]},
+    name=&quot;Flex slot Y&quot;,
+)
+script.add(
+    &quot;sketch.rectangle.two_point&quot;,
+    p0=[&quot;-slot_width / 2&quot;, &quot;-(hole_diameter + interference + 2) / 2&quot;],
+    p1=[&quot;slot_width / 2&quot;, &quot;(hole_diameter + interference + 2) / 2&quot;],
+)
+script.add(&quot;sketch.finish&quot;)
+script.add(
+    &quot;solid.extrude&quot;,
+    distance=16,
+    direction=&quot;positive&quot;,
+    operation=&quot;cut&quot;,
+    targets=[&quot;FlexBenchDog&quot;],
+    name=&quot;Flex slot Y&quot;,
+)
+
+# Light chamfer on the visible upper perimeter.
+script.add(
+    &quot;solid.chamfer&quot;,
+    body=&quot;FlexBenchDog&quot;,
+    distance=0.6,
+    edges=[[10, 0, 20]],
+)
+
+# Recessed square box logo.
+script.add(
+    &quot;sketch.create&quot;,
+    plane={&quot;origin&quot;: [0, 0, 20], &quot;x_dir&quot;: [1, 0, 0], &quot;y_dir&quot;: [0, 1, 0]},
+    name=&quot;Top logo&quot;,
+)
+script.add(
+    &quot;sketch.rectangle.two_point&quot;,
+    p0=[-4, -4],
+    p1=[4, 4],
+)
+script.add(&quot;sketch.finish&quot;)
+script.add(
+    &quot;solid.extrude&quot;,
+    distance=0.6,
+    direction=&quot;negative&quot;,
+    operation=&quot;cut&quot;,
+    targets=[&quot;FlexBenchDog&quot;],
+    name=&quot;Top logo&quot;,
 )
 </code></pre></section>
-<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_diameter</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;hole_diameter&quot;,
-    &quot;expression&quot;: &quot;20&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: rim_diameter</small><pre><code>{
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: rim_diameter</small><pre><code>{
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;rim_diameter&quot;,
     &quot;expression&quot;: &quot;24&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_diameter</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;hole_diameter&quot;,
+    &quot;expression&quot;: &quot;20&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>
@@ -188,8 +302,8 @@ script.add(
 <li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: new, body_name: FlexBenchDog</small><pre><code>{
   &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;height&quot;: 35.0,
-    &quot;diameter&quot;: &quot;hole_diameter&quot;,
+    &quot;height&quot;: 3.0,
+    &quot;diameter&quot;: &quot;rim_diameter&quot;,
     &quot;base&quot;: [
       0,
       0,
@@ -203,12 +317,12 @@ script.add(
 <li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: join</small><pre><code>{
   &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;height&quot;: 3.0,
-    &quot;diameter&quot;: &quot;rim_diameter&quot;,
+    &quot;height&quot;: 17.0,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;base&quot;: [
       0,
       0,
-      35.0
+      3.0
     ],
     &quot;axis&quot;: &quot;Z&quot;,
     &quot;operation&quot;: &quot;join&quot;,
@@ -220,12 +334,12 @@ script.add(
 <li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: join</small><pre><code>{
   &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;height&quot;: 38.0,
-    &quot;diameter&quot;: &quot;hole_diameter + (interference)&quot;,
+    &quot;height&quot;: 20.0,
+    &quot;diameter&quot;: &quot;hole_diameter&quot;,
     &quot;base&quot;: [
       0,
       0,
-      38.0
+      -20.0
     ],
     &quot;axis&quot;: &quot;Z&quot;,
     &quot;operation&quot;: &quot;join&quot;,
@@ -234,38 +348,205 @@ script.add(
     ]
   }
 }</code></pre></li>
-<li><strong>Box primitive</strong><small>solid.box · operation: cut</small><pre><code>{
-  &quot;command&quot;: &quot;solid.box&quot;,
+<li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: join</small><pre><code>{
+  &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;length&quot;: &quot;hole_diameter + (interference) + 2 mm&quot;,
-    &quot;width&quot;: &quot;slot_width&quot;,
-    &quot;height&quot;: 30.0,
-    &quot;operation&quot;: &quot;cut&quot;,
-    &quot;corner&quot;: [
-      &quot;-((hole_diameter + (interference) + 2 mm) / 2)&quot;,
-      &quot;-(slot_width / 2)&quot;,
-      46.0
+    &quot;height&quot;: 2.0,
+    &quot;diameter&quot;: &quot;hole_diameter + (interference)&quot;,
+    &quot;base&quot;: [
+      0,
+      0,
+      -20.0
     ],
+    &quot;axis&quot;: &quot;Z&quot;,
+    &quot;operation&quot;: &quot;join&quot;,
     &quot;targets&quot;: [
       &quot;FlexBenchDog&quot;
     ]
   }
 }</code></pre></li>
-<li><strong>Box primitive</strong><small>solid.box · operation: cut</small><pre><code>{
-  &quot;command&quot;: &quot;solid.box&quot;,
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
   &quot;params&quot;: {
-    &quot;length&quot;: &quot;slot_width&quot;,
-    &quot;width&quot;: &quot;hole_diameter + (interference) + 2 mm&quot;,
-    &quot;height&quot;: 30.0,
-    &quot;operation&quot;: &quot;cut&quot;,
-    &quot;corner&quot;: [
-      &quot;-(slot_width / 2)&quot;,
-      &quot;-((hole_diameter + (interference) + 2 mm) / 2)&quot;,
-      46.0
+    &quot;edges&quot;: [
+      [
+        10.1,
+        0.0,
+        -20.0
+      ]
     ],
+    &quot;distance&quot;: 1.0,
+    &quot;body&quot;: &quot;FlexBenchDog&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Flex slot X, plane: {&#x27;origin&#x27;: [0.0, 0.0, -20.0], &#x27;x_dir&#x27;: [1, 0, 0], &#x27;y_dir&#x27;: [0, 1, 0]}</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        -20.0
+      ],
+      &quot;x_dir&quot;: [
+        1,
+        0,
+        0
+      ],
+      &quot;y_dir&quot;: [
+        0,
+        1,
+        0
+      ]
+    },
+    &quot;name&quot;: &quot;Flex slot X&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      &quot;(-((hole_diameter + (interference) + 2 mm) / 2))&quot;,
+      &quot;(-(slot_width / 2))&quot;
+    ],
+    &quot;p1&quot;: [
+      &quot;((hole_diameter + (interference) + 2 mm) / 2)&quot;,
+      &quot;(slot_width / 2)&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Flex slot X, direction: positive, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
     &quot;targets&quot;: [
       &quot;FlexBenchDog&quot;
+    ],
+    &quot;name&quot;: &quot;Flex slot X&quot;,
+    &quot;distance&quot;: 16.0,
+    &quot;direction&quot;: &quot;positive&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Flex slot Y, plane: {&#x27;origin&#x27;: [0.0, 0.0, -20.0], &#x27;x_dir&#x27;: [1, 0, 0], &#x27;y_dir&#x27;: [0, 1, 0]}</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        -20.0
+      ],
+      &quot;x_dir&quot;: [
+        1,
+        0,
+        0
+      ],
+      &quot;y_dir&quot;: [
+        0,
+        1,
+        0
+      ]
+    },
+    &quot;name&quot;: &quot;Flex slot Y&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      &quot;(-(slot_width / 2))&quot;,
+      &quot;(-((hole_diameter + (interference) + 2 mm) / 2))&quot;
+    ],
+    &quot;p1&quot;: [
+      &quot;(slot_width / 2)&quot;,
+      &quot;((hole_diameter + (interference) + 2 mm) / 2)&quot;
     ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Flex slot Y, direction: positive, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;FlexBenchDog&quot;
+    ],
+    &quot;name&quot;: &quot;Flex slot Y&quot;,
+    &quot;distance&quot;: 16.0,
+    &quot;direction&quot;: &quot;positive&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        10.0,
+        0.0,
+        20.0
+      ]
+    ],
+    &quot;distance&quot;: 0.6,
+    &quot;body&quot;: &quot;FlexBenchDog&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Top logo, plane: {&#x27;origin&#x27;: [0.0, 0.0, 20.0], &#x27;x_dir&#x27;: [1, 0, 0], &#x27;y_dir&#x27;: [0, 1, 0]}</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: {
+      &quot;origin&quot;: [
+        0.0,
+        0.0,
+        20.0
+      ],
+      &quot;x_dir&quot;: [
+        1,
+        0,
+        0
+      ],
+      &quot;y_dir&quot;: [
+        0,
+        1,
+        0
+      ]
+    },
+    &quot;name&quot;: &quot;Top logo&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      -4.0,
+      -4.0
+    ],
+    &quot;p1&quot;: [
+      4.0,
+      4.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Top logo, direction: negative, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;FlexBenchDog&quot;
+    ],
+    &quot;name&quot;: &quot;Top logo&quot;,
+    &quot;distance&quot;: 0.6,
+    &quot;direction&quot;: &quot;negative&quot;
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

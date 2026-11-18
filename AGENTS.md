@@ -58,14 +58,15 @@ below before opening or merging the PR.
 
 5. **Native SolidCraft verification**
    - Set the model's native flags in the central catalog.
-   - Put model-specific native evidence checks under
-     `scripts/ci/native_checks/`; do not add jq assertions to workflow YAML.
+   - Put model-specific native evidence checks with that model or in the shared
+     native-check runner when the check is genuinely cross-model. Do not add jq
+     assertions or model semantics to workflow YAML.
    - Declare saved-design parameter mutations in
      `scripts/ci/native_cases.py`; `run_native_mutations.py` executes them.
    - Prefer checking the actual saved SolidCraft body rather than only generated
      command JSON.
-   - Keep `.github/workflows/native-cad.yml` as orchestration only and do not
-     add another model list there.
+   - Keep `.github/workflows/native.yml` as orchestration only and do not add
+     another model list there.
 
 6. **Results site**
    - Site title, description, parameters, stages and section belong in the
@@ -86,6 +87,38 @@ below before opening or merging the PR.
 ## Targeted CI and publication
 
 Build selection, tool versions and publication state are separate concerns.
+
+### Reuse one immutable CAD toolchain image
+
+Normal CAD CI must not reinstall the same heavy toolchain for every model run.
+
+- Build one CAD CI image in a separate image workflow.
+- The image contains the fixed runtime/toolchain only: the pinned Python base,
+  system libraries, SolidCraft, and the exact SCPF/SCPC revisions selected by
+  this repository.
+- Repository model source is **not** baked into the image. Model changes must
+  not rebuild the toolchain image.
+- Normal `cad.yml` and `native.yml` jobs pull the immutable image and run the
+  selected repository source inside it. They do not download SolidCraft, run
+  `vcs import`, or reinstall SCPF/SCPC on every run.
+- Image identity is content-addressed from the versioned toolchain inputs.
+  At minimum that includes the pinned Python image, SolidCraft version,
+  `dependencies.repos`, the image Dockerfile and the small image-metadata
+  resolver. Do not use a mutable `latest` tag as qualification identity.
+- Keep the Python/SolidCraft image metadata in one versioned repository source;
+  do not hide version literals only in workflow YAML. SCPF/SCPC revisions remain
+  sourced from `dependencies.repos`; do not duplicate those commit pins.
+- Build/publish the image only when one of those toolchain inputs changes.
+- Smoke-test a newly built image before publishing it: check Python,
+  SolidCraft, SCPF and SCPC versions/imports and run one small representative
+  CAD compile/native operation.
+- Record the immutable image reference/digest in each model's
+  `verification.json` together with the exact SCPF, SCPC and SolidCraft
+  versions used.
+- A new Forge/SolidCraft pin may require a new image, but it still does **not**
+  select the whole model catalog. Model selection and toolchain selection are
+  independent. Use explicit `all` mode only when the complete library is
+  deliberately being qualified.
 
 ### Select only the models that need work
 
@@ -172,6 +205,29 @@ Do not add a CAD-specific workaround just to get the model green.
 
 A downstream product model is evidence for a Forge bug, not the place where the
 Forge bug should be hidden.
+
+## Workflow structure
+
+Keep the caller workflows small and purpose-based:
+
+- `image.yml` — build/smoke/publish the immutable CAD toolchain image;
+- `cad.yml` — cheap model/unit/site checks for the selected scope;
+- `native.yml` — selected native SolidCraft verification using the same image;
+- `publish.yml` — trusted promotion to `model-output` and Pages;
+- `pr-cleanup.yml` — remove closed PR preview namespaces.
+
+Workflow YAML owns triggers, permissions, checkout, image pull/login, artifact
+handoff and calls into tested Python. Git diff logic, model selection, model
+loops, JSON policy, model-specific checks, publication decisions and branch
+mutation policy belong in tested Python modules under `scripts/ci/` or with the
+model that owns the check.
+
+The normal development flow is:
+
+`source change -> build plan -> selected cheap checks -> selected native checks -> candidate output -> publish/promote`
+
+A deliberate full-library run uses the same commands with explicit `all`
+selection; it is not a separate CI implementation.
 
 ## Git workflow
 

@@ -23,7 +23,7 @@ class SideHandles:
     opening_height = 362.0
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
-    side_panel_depth = 110.0
+    side_panel_depth = 120.0
 
     side_recess_lower_keep = 80.0
     side_recess_upper_keep = 80.0
@@ -38,9 +38,9 @@ class SideHandles:
             + self.frame_wood_thickness
         )
 
-        # Align the back of the Ø22 rod exactly with the 110 mm rear edge of
+        # Align the back of the Ø22 rod exactly with the 120 mm rear edge of
         # the side panel. The rod centre therefore sits one radius forward.
-        # Default: Y=110 - 11 = 99 mm.
+        # Default: Y=120 - 11 = 109 mm.
         handle_y = self.side_panel_depth - half(ROD_DIAMETER)
 
         # Use exactly the same vertical limits as the visible side-wall recess.

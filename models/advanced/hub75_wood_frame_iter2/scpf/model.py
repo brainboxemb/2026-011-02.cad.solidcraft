@@ -17,7 +17,7 @@ class WoodenHub75BoxIter2:
     #           Changing frame wood thickness grows the cabinet outwards in ±X;
     #           the opening itself stays centred and keeps opening_width.
     # Y = 0 : front face of the wooden cabinet.
-    #           cabinet_depth is the 110 mm base depth of the wooden cabinet.
+    #           cabinet_depth is the 120 mm base depth of the wooden cabinet.
     #           side_panel_depth is kept separately because the side-wall
     #           recess is defined from that rear edge.
     # Z = 0 : outside bottom face of the wooden cabinet.
@@ -52,8 +52,8 @@ class WoodenHub75BoxIter2:
     # Wood
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
-    cabinet_depth = 110.0
-    side_panel_depth = 110.0
+    cabinet_depth = 120.0
+    side_panel_depth = 120.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0

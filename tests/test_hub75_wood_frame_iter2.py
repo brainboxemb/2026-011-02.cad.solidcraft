@@ -182,16 +182,19 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertNotIn("width=outer_width", shelf_source)
         self.assertIn("depth=self.side_panel_depth", shelf_source)
 
-        # Bottom and roof use the same 110 mm side-panel datum. The roof keeps
-        # its separate front/rear overhangs around that base depth.
+        # Bottom, shelf, dividers and side walls use the same 120 mm datum.
+        # The future rear board sits inside that depth rather than behind it.
         self.assertIn("depth=self.side_panel_depth", frame_source)
         self.assertIn(
-            "self.side_panel_depth\n            + self.panel_wood_thickness\n            + self.roof_rear_overhang",
+            "roof_rear = self.side_panel_depth + self.roof_rear_overhang",
             frame_source,
         )
-        # Default roof depth is 10 mm front + 110 mm cabinet + 9 mm rear-board
-        # allowance + 1 mm rear overhang = 130 mm.
-        self.assertEqual(10.0 + 110.0 + 9.0 + 1.0, 130.0)
+        self.assertIn(
+            "rear_y = self.cabinet_depth - self.panel_wood_thickness",
+            frame_source,
+        )
+        # Default roof depth is 10 mm front + 120 mm cabinet + 1 mm rear.
+        self.assertEqual(10.0 + 120.0 + 1.0, 131.0)
 
         moves = of(rows, "occurrence.move")
         shelf = [row for row in moves if row["occurrence"] == "$intermediate_shelf"]
@@ -273,8 +276,8 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             SCPF_DIR / "parts" / "side_board.py"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("cabinet_depth = 110.0", source)
-        self.assertIn("side_panel_depth = 110.0", source)
+        self.assertIn("cabinet_depth = 120.0", source)
+        self.assertIn("side_panel_depth = 120.0", source)
         self.assertIn("side_recess_depth = 50.0", source)
         self.assertIn("side_recess_radius = 20.0", source)
         self.assertIn("side_recess_lower_keep = 80.0", source)
@@ -321,9 +324,9 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         ]
         self.assertEqual(len(rods), 2)
 
-        # Ø22 radius is 11 mm. With a 110 mm side-panel depth, Y=99 puts the
+        # Ø22 radius is 11 mm. With a 120 mm side-panel depth, Y=109 puts the
         # rear surface of the rod exactly flush with the rear panel edge.
-        self.assertTrue(all(row["translate"][1] == 99.0 for row in rods))
+        self.assertTrue(all(row["translate"][1] == 109.0 for row in rods))
 
         # Put each handle axis on the outside face of its side wall.
         self.assertEqual(
@@ -415,11 +418,11 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         ]
         self.assertEqual(len(bottom), 4)
 
-        # Rear bracket centres follow the 110 mm cabinet rear edge:
-        # 110 - 24/2 = Y=98 mm.
+        # Rear bracket centres follow the 120 mm cabinet rear edge:
+        # 120 - 24/2 = Y=108 mm.
         rear = [
             row for row in brackets
-            if row["translate"][1] == 98.0
+            if row["translate"][1] == 108.0
         ]
         self.assertEqual(len(rear), 4)
 

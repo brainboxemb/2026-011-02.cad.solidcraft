@@ -13,7 +13,7 @@ class CornerBrackets:
     opening_height = 362.0
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
-    cabinet_depth = 110.0
+    cabinet_depth = 120.0
     bracket_width = 24.0
     corner_radius = 4.0
 

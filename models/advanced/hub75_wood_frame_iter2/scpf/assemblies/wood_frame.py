@@ -19,8 +19,8 @@ class WoodFrame:
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
-    cabinet_depth = 110.0
-    side_panel_depth = 110.0
+    cabinet_depth = 120.0
+    side_panel_depth = 120.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
@@ -32,18 +32,15 @@ class WoodFrame:
     side_recess_upper_keep = 80.0
 
     def build(self):
-        rear_y = self.cabinet_depth
+        # The future 9 mm rear board will sit inside the 120 mm cabinet depth
+        # and between the side walls. Flush with the rear edge, it occupies
+        # Y=111..120 instead of adding another 9 mm behind the cabinet.
+        rear_y = self.cabinet_depth - self.panel_wood_thickness
         roof_front = -self.roof_front_overhang
-        # The horizontal frame boards and lower dividers share the 110 mm
-        # cabinet depth. The roof keeps the original construction allowance for
-        # the 9 mm rear board even while that board is temporarily disabled.
-        # With 10 mm front overhang and 1 mm rear overhang this gives:
-        # 10 + 110 + 9 + 1 = 130 mm total roof depth.
-        roof_rear = (
-            self.side_panel_depth
-            + self.panel_wood_thickness
-            + self.roof_rear_overhang
-        )
+
+        # The roof follows the cabinet rear edge directly. With 10 mm front
+        # overhang and 1 mm rear overhang its total depth is 131 mm.
+        roof_rear = self.side_panel_depth + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
 
         bottom_top = self.frame_wood_thickness
@@ -196,7 +193,9 @@ class WoodFrame:
         #
         # rear = Board(
         #     name="rear",
-        #     width=outer_width,
+        #     # The rear board fits between the side walls rather than covering
+        #     # their rear edges, so its width is the clear opening width.
+        #     width=self.opening_width,
         #     depth=self.panel_wood_thickness,
         #     height=opening_top,
         #     material_name="LIGHTPLY rear",

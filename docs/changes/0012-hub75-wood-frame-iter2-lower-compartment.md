@@ -58,29 +58,32 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 The second reference design also reduces the rear depth of the upper side-wall
 section. Apply the same principle here while keeping the iteration-2 dimensions:
 
-- bottom and intermediate shelf extend to 110 mm depth;
-- the roof keeps the original 9 mm rear-board allowance: 10 mm front overhang
-  + 110 mm cabinet + 9 mm rear-board zone + 1 mm rear overhang = 130 mm total;
-- both side panels extend to the same 110 mm depth;
-- both vertical lower dividers also extend to 110 mm depth;
-- the middle display-zone side wall is recessed 50 mm from the 110 mm rear
+- bottom and intermediate shelf extend to 120 mm depth;
+- the roof no longer reserves 9 mm behind the cabinet because the rear board
+  will sit inside it: 10 mm front overhang + 120 mm cabinet + 1 mm rear
+  overhang = 131 mm total;
+- both side panels extend to the same 120 mm depth;
+- both vertical lower dividers also extend to 120 mm depth;
+- the middle display-zone side wall is recessed 50 mm from the 120 mm rear
   edge, leaving 60 mm depth there;
 - use R20 rounded transitions;
 - keep at least 80 mm of full-depth side wall above the intermediate shelf;
 - keep at least 80 mm of full-depth side wall below the roof;
-- keep the lower storage-compartment side wall at the full 110 mm depth.
+- keep the lower storage-compartment side wall at the full 120 mm depth.
 
 Model this as a separate `SideBoard` part with a rounded YZ recess. Do not
 approximate the radius with straight polygon segments. The recess sketch is
 attached to the side-wall body because Forge currently cannot use a standalone
 `sketch_base_extrusion` as a boolean operand; that missing Forge capability is
 tracked separately in Forge issue #354. The rear board remains temporarily
-disabled while this rear-access shape is developed.
+disabled while this rear-access shape is developed. When restored, the 9 mm
+rear board will fit between the side walls and occupy Y=111..120 inside the
+120 mm cabinet depth instead of being mounted behind it.
 
 Add a first side-handle position study with Ø22 mm beech roundwood. The rod is
 clamped visually between the lower and upper limits of the recess. Keep its rear
-surface aligned with the 110 mm rear edge of the side panel, so the rod centre
-is Y=99 mm.
+surface aligned with the 120 mm rear edge of the side panel, so the rod centre
+is Y=109 mm.
 
 Move the handle axes outward onto the outside faces of the side walls, placing
 the centres at X=±434 mm. Extend the roundwood 15 mm beyond both the lower and

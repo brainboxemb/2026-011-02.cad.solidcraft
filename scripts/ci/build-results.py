@@ -207,9 +207,20 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         work = out / "models" / slug
         work.mkdir(parents=True, exist_ok=True)
         source = source_path(ROOT, slug)
-        command_file = ((generated_root / slug / "scpf" / "solidcraft.json")
-                        if generated_root is not None else
-                        ROOT / "models" / slug / "scpf" / "solidcraft.json")
+        committed_command_file = (
+            ROOT / "models" / slug / "scpf" / "solidcraft.json"
+        )
+        generated_command_file = (
+            generated_root / slug / "scpf" / "solidcraft.json"
+            if generated_root is not None
+            else None
+        )
+        command_file = (
+            generated_command_file
+            if generated_command_file is not None
+            and generated_command_file.is_file()
+            else committed_command_file
+        )
         commands = read_json(command_file)["commands"]
         copy_if_exists(source, work / "model.py")
         copy_if_exists(command_file, work / "solidcraft.json")

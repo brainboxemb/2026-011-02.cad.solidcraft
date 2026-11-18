@@ -20,6 +20,7 @@ perceived level of geometric complexity.
   rear electronics bays; [Hub75Panel basic](components/hub75_panel/basic/scpf/model.py)
   is the faster envelope.
 - [GuideRail](components/guide_rail/README.md) is one reusable guide-rail component with a parametric length and fixed Festool/Makita cross-section variants.
+- [FlexBenchDog](components/flex_bench_dog/README.md) is a printable 20 mm MFT dog with a passive four-segment flex stem and no screw mechanism.
 
 These live in top-level `components/`. The standalone demonstration
 scripts in `models/components/` import the corresponding

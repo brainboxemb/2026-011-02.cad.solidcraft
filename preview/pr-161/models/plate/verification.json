@@ -1,0 +1,14 @@
+{
+  "input_fingerprint": "91edbd1aa2a24ea6f5c7418b6e6c6cdfd79a98021e01caf56ee529cdac67c5ee",
+  "model": "plate",
+  "native_file_format": "solidcraft/57",
+  "schema": 1,
+  "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
+  "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
+  "scpf_release": "0.9.0",
+  "solidcraft_version": "0.42.0",
+  "source_commit": "7c78f69d5f4ff22266d7706c355437dc99ef118e",
+  "toolchain_image": "ghcr.io/brainboxemb/2026-011-02.cad.solidcraft/cad-ci:toolchain-b49691a02c8ff81460a3b845e97a4450400f723185c42505ebce9467e460c185",
+  "verified": true,
+  "workflow_run": "44405019731"
+}

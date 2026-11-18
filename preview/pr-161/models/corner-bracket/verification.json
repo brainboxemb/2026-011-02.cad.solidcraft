@@ -1,0 +1,14 @@
+{
+  "input_fingerprint": "38cf30da44ea3bfeb7e38b07f56cfa5872e7123f23ba8bf4de899dbf8e35c2e4",
+  "legacy_migrated": true,
+  "model": "corner-bracket",
+  "native_file_format": "solidcraft/57",
+  "schema": 1,
+  "scpc_commit": "fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7",
+  "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
+  "scpf_release": "0.9.0",
+  "solidcraft_version": "0.42.0",
+  "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+  "verified": true,
+  "workflow_run": "44294334784"
+}

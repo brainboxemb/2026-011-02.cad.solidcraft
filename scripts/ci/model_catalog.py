@@ -309,6 +309,7 @@ MODELS = {
     },
     "simple-mft-assembly": {
         "source": "models/advanced/simple_mft/scpf/assemblies/guide_rail.py",
+        "dependencies": ("simple-mft", "guide-rail"),
         "section": "advanced",
         "title": "Simple MFT assembly",
         "tagline": "Reusable Simple MFT worktop with an 800 mm Festool-profile GuideRail",
@@ -347,6 +348,8 @@ MODELS = {
     },
     "hub75-wood-frame": {
         "source": "models/advanced/hub75_wood_frame/scpf/model.py",
+        "dependencies": ("corner-bracket",),
+        "extra_inputs": ("models/components/hub75_panel/basic/scpf/",),
         "section": "advanced",
         "title": "WoodenHub75Box",
         "tagline": "Parametrized 12 mm plywood box, eight brackets and one GlassStrip type",
@@ -396,6 +399,59 @@ SECTIONS = {
     )
     for key, (title, description) in SECTION_INFO.items()
 }
+
+
+def _model_root(path):
+    """Return the model/package root before a language directory."""
+    value = Path(path).as_posix()
+    for marker in ("/scpf/", "/scpc/"):
+        if marker in value:
+            return value.split(marker, 1)[0] + "/"
+    return str(Path(value).parent.as_posix()) + "/"
+
+
+def direct_input_paths(slug):
+    """Paths whose change directly affects one catalog model."""
+    model = MODELS[slug]
+    paths = {_model_root(model["source"])}
+    if model.get("scpc_source"):
+        paths.add(_model_root(model["scpc_source"]))
+    if model.get("component_source"):
+        paths.add(_model_root(model["component_source"]))
+    paths.update(model.get("extra_inputs", ()))
+    return tuple(sorted(paths))
+
+
+def model_dependencies(slug):
+    """Catalog-model dependencies used by change selection."""
+    return tuple(MODELS[slug].get("dependencies", ()))
+
+
+def dependency_closure(slug):
+    """Return slug plus all declared catalog dependencies."""
+    result = []
+    seen = set()
+
+    def visit(current):
+        if current in seen:
+            return
+        if current not in MODELS:
+            raise ValueError(f"unknown model dependency: {current}")
+        seen.add(current)
+        result.append(current)
+        for dependency in model_dependencies(current):
+            visit(dependency)
+
+    visit(slug)
+    return tuple(result)
+
+
+def model_input_paths(slug):
+    """All direct and dependency paths that can affect one model."""
+    paths = set()
+    for dependency in dependency_closure(slug):
+        paths.update(direct_input_paths(dependency))
+    return tuple(sorted(paths))
 
 
 def model_slugs(kind="scpf"):

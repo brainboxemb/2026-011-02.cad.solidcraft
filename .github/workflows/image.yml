@@ -95,7 +95,7 @@ jobs:
                 --replay-log /tmp/replay-log.json
               solidcraft-cli eval /tmp/plate.sc --json-out /tmp/measurements.json
               test -s /tmp/plate.step
-              python -c "import json; d=json.load(open('/"'"'tmp/measurements.json'"'"')); assert all(x.get('"'"'error'"'"') is None for x in d['"'"'timeline'"'"'])"
+              jq -e "(.timeline | all(.error == null))" /tmp/measurements.json >/dev/null
             '
 
       - name: Publish immutable CAD toolchain image

@@ -7,8 +7,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
-from model_catalog import MODELS, model_slugs  # noqa: E402
+from model_catalog import MODELS, model_input_paths, model_slugs  # noqa: E402
 from select_models import (  # noqa: E402
+    _matches,
     affected_models,
     needs_site_refresh,
     select_models,
@@ -33,6 +34,13 @@ class TargetedModelSelectionTests(unittest.TestCase):
             ),
             ("bolted-flange",),
         )
+
+    def test_directory_inputs_are_prefix_matches(self):
+        watched = "models/components/guide_rail/scpf/"
+        changed = "models/components/guide_rail/scpf/profiles.py"
+        self.assertIn(watched, model_input_paths("guide-rail"))
+        self.assertIn(watched, model_input_paths("simple-mft-assembly"))
+        self.assertTrue(_matches(changed, watched))
 
     def test_shared_guide_rail_code_selects_real_dependants(self):
         selected = affected_models(

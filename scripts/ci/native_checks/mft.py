@@ -35,7 +35,7 @@ def validate_simple_mft_assembly(root: Path):
     )
 
     worktop = _one_body_with_size(data, (805.0, 555.0, 18.0))
-    rail = _one_body_with_size(data, (184.20, 1080.0, 10.50))
+    rail = _one_body_with_size(data, (184.20, 800.0, 10.50))
 
     require(
         _bounds_close(
@@ -48,8 +48,8 @@ def validate_simple_mft_assembly(root: Path):
     require(
         _bounds_close(
             rail,
-            (-92.1, -540.0, 18.0),
-            (92.1, 540.0, 28.5),
+            (-92.1, -400.0, 18.0),
+            (92.1, 400.0, 28.5),
         ),
         f"simple-mft-assembly: unexpected guide rail bounds {rail['bbox']}",
     )
@@ -65,7 +65,7 @@ def validate_simple_mft_assembly(root: Path):
     )
     thick_rail = _one_body_with_size(
         thickness_data,
-        (184.20, 1080.0, 10.50),
+        (184.20, 800.0, 10.50),
     )
     require(
         _bounds_close(
@@ -78,8 +78,8 @@ def validate_simple_mft_assembly(root: Path):
     require(
         _bounds_close(
             thick_rail,
-            (-92.1, -540.0, 24.0),
-            (92.1, 540.0, 34.5),
+            (-92.1, -400.0, 24.0),
+            (92.1, 400.0, 34.5),
         ),
         "simple-mft-assembly: rail did not follow worktop_thickness",
     )

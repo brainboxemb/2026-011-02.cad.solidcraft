@@ -103,13 +103,11 @@ definition without copying its geometry.
 
 The first assembly is in
 `scpf/assemblies/guide_rail.py`. It combines the worktop with the reusable
-generic `GuideRail` component using the Festool profile at **1080 mm**.
+generic `GuideRail` component using the Festool profile at **800 mm**.
 
-The 1080 mm choice follows Festool's MFT/3 system, which includes the
-[FS 1080/2](https://www.festool.com/accessory/guide-rail-system/guide-systems/guide-rails/491504---fs-10802).
-The MFT/3 table is 1157 × 773 mm, so the rail spans the short table direction.
-The Simple MFT assembly therefore places the rail along the worktop's Y/depth
-axis as well.
+The assembly example deliberately uses **800 mm** so the MFT and rail remain
+compact and easy to inspect together. The rail still runs along the worktop's
+Y/depth axis and its length remains a native editable parameter.
 
 The current assembly is intentionally a layout model only. The rail is centred
 over X=0 and rests on the worktop top face. Rail dogs, swivel/support hardware,

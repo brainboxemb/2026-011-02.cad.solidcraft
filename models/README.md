@@ -49,7 +49,7 @@ native parameter/edge-selector semantics.
 ## Advanced Models — designs and assemblies
 
 - [Simple MFT](advanced/simple_mft/README.md) provides the reusable perforated
-  worktop and a first assembly with a 1080 mm Festool-profile GuideRail.
+  worktop and a first assembly with an 800 mm Festool-profile GuideRail.
 - [Five-panel screen](advanced/hub75-screen/README.md)
 - [Wooden HUB75 Basic Box](advanced/hub75-wood-frame/README.md)
 

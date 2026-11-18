@@ -1,4 +1,4 @@
-"""Simple MFT worktop with one reusable 1080 mm guide rail.
+"""Simple MFT worktop with one reusable 800 mm guide rail.
 
 World axes:
     X: left/right across the worktop width
@@ -20,8 +20,8 @@ class SimpleMFTAssembly:
     # rail together instead of leaving the rail at a hard-coded Z=18 position.
     worktop_thickness = SimpleMFT.thickness
 
-    # Festool MFT/3 uses FS 1080/2. Keep the length editable in the assembly.
-    guide_rail_length = 1080.0
+    # Compact assembly example. Keep the length editable in the assembly.
+    guide_rail_length = 800.0
 
     GUIDE_RAIL_PROFILE = "festool"
 

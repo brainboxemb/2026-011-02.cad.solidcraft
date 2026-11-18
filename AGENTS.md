@@ -151,14 +151,15 @@ Normal CAD CI must not reinstall the same heavy toolchain for every model run.
 
 ### Keep build output separate from Pages
 
-Use `model-output` as the durable store of verified model build results.
+Use `build` as the durable store of verified model build results.
+The build item path mirrors the source model root. Do not flatten model output to a slug-only directory.
 `gh-pages` is generated publication output, not the source of truth for CAD
 verification.
 
 The output branch has two states:
 
-- `previews/<preview-key>/models/<slug>/` for branch/PR staging output;
-- `stable/models/<slug>/` for accepted output from a successful `main` build.
+- `pr/<number>/<model-root>/` for branch/PR staging output;
+- `main/<model-root>/` for accepted output from a successful `main` build.
 
 Each model output directory contains its own `verification.json` with the CAD
 source commit, Forge revision/release, SolidCraft version, workflow run and
@@ -170,7 +171,7 @@ SolidCraft or CAD revision merely because another model was rebuilt.
 ### Preview/staging rules
 
 - Every PR/branch writes only to its own preview namespace.
-- A preview must never overwrite `model-output/stable/`.
+- A preview must never overwrite `build/main/`.
 - Build and validate candidate output before publishing the preview.
 - Preview Pages are generated from the branch catalog/source, that preview's
   freshly built models and stable output for unchanged models where needed.
@@ -184,7 +185,7 @@ SolidCraft or CAD revision merely because another model was rebuilt.
 - Build selected models into a temporary/candidate directory first.
 - Run all selected-model checks against that candidate.
 - Only after every required check is green, replace those selected model
-  directories in `model-output/stable/models/`.
+  directories in `build/main/`.
 - Preserve every unchanged stable model directory byte-for-byte.
 - Regenerate the stable site from the current catalog plus the complete stable
   output set and publish that assembled site to the root of `gh-pages`.
@@ -227,7 +228,7 @@ Keep the caller workflows small and purpose-based:
 - `image.yml` — build/smoke/publish the immutable CAD toolchain image;
 - `cad.yml` — cheap model/unit/site checks for the selected scope;
 - `native.yml` — selected native SolidCraft verification using the same image;
-- `publish.yml` — trusted promotion to `model-output` and Pages;
+- `publish.yml` — trusted promotion to `build` and Pages;
 - `pr-cleanup.yml` — remove closed PR preview namespaces.
 
 Workflow YAML owns triggers, permissions, checkout, image pull/login, artifact

@@ -70,7 +70,7 @@ class BuildPlanTests(unittest.TestCase):
         self.assertEqual(plan["channel"], "preview")
         self.assertEqual(plan["preview_key"], "pr-42")
         self.assertTrue(plan["publishable"])
-        self.assertTrue(plan["public_base"].endswith("/preview/pr-42"))
+        self.assertTrue(plan["public_base"].endswith("/previews/pr-42"))
 
     def test_push_to_main_targets_stable_publication(self):
         plan = make_plan(

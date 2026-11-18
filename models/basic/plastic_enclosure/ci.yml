@@ -6,8 +6,9 @@ watch:
   - models/basic/plastic_enclosure/**
   - scripts/ci/model_item.py
 strategy:
-  # Keep every parallel comparison fresh until the old CAD path is removed.
-  reuse: false
+  # Durable item output is now owned by tool.cad.ci, so unchanged results may
+  # be reused whenever their inputs and declared outputs still match.
+  reuse: true
 steps:
   - id: compile
     run: [python, ../../../scripts/ci/model_item.py, compile]

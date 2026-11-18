@@ -127,13 +127,13 @@ class ToolCadCiMigrationTests(unittest.TestCase):
                         f"{item_id} does not watch external input {path}",
                     )
 
-    def test_every_item_watches_shared_runner_and_keeps_reuse_off(self):
-        """Parallel comparisons stay fresh until the old path is removed."""
+    def test_every_item_watches_shared_runner_and_allows_reuse(self):
+        """Item results may be reused once tool.cad.ci owns durable output."""
 
         for item_id in self.item_ids():
             config = self.config_for(item_id)
             self.assertIn("scripts/ci/model_item.py", config["watch"])
-            self.assertFalse(config["strategy"]["reuse"])
+            self.assertTrue(config["strategy"]["reuse"])
             self.assertEqual(
                 [step["id"] for step in config["steps"]],
                 ["compile", "compare-current", "package"],

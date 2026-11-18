@@ -24,6 +24,7 @@ from model_catalog import (
     source_path,
 )
 from output_store import input_fingerprint
+from model_item import stored_model_paths
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -101,14 +102,22 @@ def current_run_verification(native_root, commit, scpf_commit, scpc_commit):
 
 
 def stored_model_output(store_root, slug):
-    """Return verified stored output only when declared model inputs still match."""
+    """Return current verified output from the durable model-root store.
+
+    The path resolver also understands the old per-model layout during the
+    cutover. Validation remains CAD-owned: stored geometry is accepted only
+    when its model ID and declared input fingerprint still match this source.
+    """
+
     if store_root is None:
         return None
-    root = store_root / model_build_path(slug)
+    try:
+        root, generated = stored_model_paths(store_root, slug)
+    except RuntimeError:
+        return None
+
     manifest = root / "verification.json"
     native = root / "native"
-    if not manifest.is_file() or not native.is_dir():
-        return None
     metadata = read_json(manifest)
     if (
         metadata.get("model") != slug
@@ -119,7 +128,7 @@ def stored_model_output(store_root, slug):
     return {
         "root": root,
         "native": native,
-        "generated": root / "generated",
+        "generated": generated,
         "verification": metadata,
     }
 

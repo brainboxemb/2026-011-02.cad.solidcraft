@@ -129,22 +129,20 @@ class PipelineCiTests(unittest.TestCase):
             native = tuple(pipeline_ci.model_slugs("native"))
             self.assertTrue(native)
 
-            for slug in native[:-1]:
-                verification = (
-                    stable
-                    / pipeline_ci.model_build_path(slug)
-                    / "verification.json"
+            missing = native[-1]
+            with patch.object(
+                pipeline_ci,
+                "stored_model_paths",
+                side_effect=lambda _root, slug: (
+                    (_root / slug, _root / slug / "generated")
+                    if slug != missing
+                    else (_ for _ in ()).throw(RuntimeError("missing"))
+                ),
+            ):
+                self.assertEqual(
+                    pipeline_ci.missing_stable_models(stable),
+                    (missing,),
                 )
-                verification.parent.mkdir(parents=True, exist_ok=True)
-                verification.write_text("{}", encoding="utf-8")
-
-            partial = stable / pipeline_ci.model_build_path(native[-1])
-            partial.mkdir(parents=True, exist_ok=True)
-
-            self.assertEqual(
-                pipeline_ci.missing_stable_models(stable),
-                (native[-1],),
-            )
 
     def test_extend_plan_adds_missing_model_by_supported_kinds(self):
         """The plan uses catalog eligibility instead of hardcoded model names."""

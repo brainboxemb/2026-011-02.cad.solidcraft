@@ -55,7 +55,7 @@ def publication_target(
     public_base = (
         PUBLIC_SITE
         if channel == "stable"
-        else f"{PUBLIC_SITE}/preview/{preview_key}"
+        else f"{PUBLIC_SITE}/previews/{preview_key}"
     )
     return {
         "channel": channel,

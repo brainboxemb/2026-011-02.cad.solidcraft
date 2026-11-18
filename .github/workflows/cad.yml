@@ -71,6 +71,9 @@ jobs:
       - name: Bootstrap pinned tool.cad.ci
         run: python scripts/ci/bootstrap_cad_ci.py
 
+      - name: Install pinned publication tool on host
+        run: python -m pip install -e ext/cad-ci
+
       - name: Resolve immutable CAD image
         id: image
         run: |
@@ -128,7 +131,8 @@ jobs:
             --pages-root pages \
             --workflow-event "$EVENT_NAME" \
             --workflow-head-branch "$REF_NAME" \
-            --workflow-head-sha "$HEAD_SHA"
+            --workflow-head-sha "$HEAD_SHA" \
+            --pull-request "$PR_NUMBER"
 
       - name: Upload CAD diagnostics
         if: always()
@@ -143,6 +147,7 @@ jobs:
             output/candidate/
             output/site/
             output/publish.json
+            output/tool-publication/
             build/models/**
           if-no-files-found: ignore
 
@@ -159,27 +164,18 @@ jobs:
           ref: main
           path: source
 
-      - name: Checkout build output
-        uses: actions/checkout@v4
-        with:
-          ref: build
-          path: generated-build
-          fetch-depth: 0
-
-      - name: Checkout Pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: pages
-          fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
+      - name: Bootstrap pinned tool.cad.ci
+        run: python source/scripts/ci/bootstrap_cad_ci.py
+
+      - name: Install pinned publication tool on host
+        run: python -m pip install -e source/ext/cad-ci
+
       - name: Remove closed PR output
         run: |
           python source/scripts/ci/cleanup_ci.py \
-            --build-root generated-build \
-            --pages-root pages \
+            --source-root source \
             --pull-request "${{ github.event.pull_request.number }}"

@@ -17,8 +17,9 @@ class WoodenHub75BoxIter2:
     #           Changing frame wood thickness grows the cabinet outwards in ±X;
     #           the opening itself stays centred and keeps opening_width.
     # Y = 0 : front face of the wooden cabinet.
-    #           cabinet_depth grows only towards +Y. The rear sidewall face is
-    #           Y=cabinet_depth and the back board starts at that same plane.
+    #           cabinet_depth controls bottom/shelf/divider depth.
+    #           side_panel_depth controls only the two side walls and can
+    #           extend farther rearward than the rest of the wooden frame.
     # Z = 0 : outside bottom face of the wooden cabinet.
     #
     # Vertical stack from Z=0:
@@ -52,6 +53,7 @@ class WoodenHub75BoxIter2:
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
+    side_panel_depth = 110.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
@@ -88,6 +90,7 @@ class WoodenHub75BoxIter2:
             frame_wood_thickness=self.frame_wood_thickness,
             panel_wood_thickness=self.panel_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            side_panel_depth=self.side_panel_depth,
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
@@ -103,6 +106,7 @@ class WoodenHub75BoxIter2:
             lower_compartment_height=self.lower_compartment_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
+            side_panel_depth=self.side_panel_depth,
             side_recess_depth=self.side_recess_depth,
             side_recess_lower_keep=self.side_recess_lower_keep,
             side_recess_upper_keep=self.side_recess_upper_keep,

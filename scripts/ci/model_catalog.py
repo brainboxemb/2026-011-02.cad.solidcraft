@@ -391,8 +391,8 @@ MODELS = {
         "section": "advanced",
         "title": "WoodenHub75BoxIter2",
         "tagline": "Iteration 2 of the wooden HUB75 frame with a 70 mm lower storage compartment",
-        "description": "The independently evolving second iteration of the wooden HUB75 frame adds the lower storage geometry from the older display-case concept: 12 mm bottom, 70 mm clear storage space, a 12 mm intermediate shelf and two 12 mm vertical dividers. The dividers create 30% / 40% / 30% clear bays after their own thickness is removed. The upper side walls also follow the second reference design principle: full 100 mm depth near the shelf and roof, with a 50 mm rear recess through the middle display zone and R20 transitions. The rear board is temporarily disabled while this rear-access geometry is developed.",
-        "parameters": "868 × 468 mm outer front envelope; 70 mm lower compartment; 30/40/30 clear bays; 12 mm frame/dividers; 100 mm depth; 50 mm rear side recess; R20; rear board temporarily disabled",
+        "description": "The independently evolving second iteration of the wooden HUB75 frame adds the lower storage geometry from the older display-case concept: 12 mm bottom, 70 mm clear storage space, a 12 mm intermediate shelf and two 12 mm vertical dividers. The dividers create 30% / 40% / 30% clear bays after their own thickness is removed. The upper side walls also follow the second reference design principle: the 100 mm cabinet boards stay unchanged while both side panels extend to 110 mm depth, with a 50 mm rear recess through the middle display zone and R20 transitions. The rear board is temporarily disabled while this rear-access geometry is developed.",
+        "parameters": "868 × 468 mm outer front envelope; 70 mm lower compartment; 30/40/30 clear bays; 12 mm frame/dividers; 100 mm cabinet depth; 110 mm side-panel depth; 50 mm rear side recess; R20; rear board temporarily disabled",
         "diagram": "hub75-wood-frame",
         "stages": [
             "Keep Z=0 at the outside bottom face",
@@ -401,6 +401,7 @@ MODELS = {
             "Add two 12 mm lower dividers for 246 / 328 / 246 mm clear bays",
             "Start the unchanged 844 × 362 mm display opening at Z=94 mm",
             "Extend both sidewalls continuously to the roof",
+            "Extend both side panels to 110 mm depth while keeping the inner cabinet boards at 100 mm",
             "Cut a 50 mm rear recess with R20 transitions while keeping 80 mm full-depth zones above the shelf and below the roof",
             "Move panels, glazing, plexiglass, rear height and top brackets from the same derived opening datum",
             "Verify lower_compartment_height as an editable native SolidCraft parameter",

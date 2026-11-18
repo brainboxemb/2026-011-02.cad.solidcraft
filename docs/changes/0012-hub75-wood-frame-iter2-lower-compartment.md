@@ -58,9 +58,10 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 The second reference design also reduces the rear depth of the upper side-wall
 section. Apply the same principle here while keeping the iteration-2 dimensions:
 
-- cabinet depth remains 100 mm;
-- the middle display-zone side wall is recessed 50 mm from the rear, leaving
-  50 mm depth there;
+- bottom, intermediate shelf and lower dividers remain 100 mm deep;
+- both side panels extend to 110 mm depth;
+- the middle display-zone side wall is recessed 50 mm from the 110 mm rear
+  edge, leaving 60 mm depth there;
 - use R20 rounded transitions;
 - keep at least 80 mm of full-depth side wall above the intermediate shelf;
 - keep at least 80 mm of full-depth side wall below the roof;
@@ -74,7 +75,7 @@ tracked separately in Forge issue #354. The rear board remains temporarily
 disabled while this rear-access shape is developed.
 
 Add a first side-handle concept for visual evaluation. Each side gets one
-vertical Ø22 mm beech roundwood rod centred in the 50 mm rear recess at Y=75.
+vertical Ø22 mm beech roundwood rod centred in the 50 mm rear recess at Y=85.
 Do not slot the roundwood around the 12 mm plywood. Instead keep the rod intact
 and show two temporary printed sockets per side. The current sockets use a Ø34
 outer sleeve, Ø22.6 bore and a short bridge to the recessed plywood edge. These

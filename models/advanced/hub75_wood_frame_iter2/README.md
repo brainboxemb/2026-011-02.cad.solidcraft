@@ -59,8 +59,10 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 
 ## Rear side-wall recess
 
-Like the second reference design, the lower storage section keeps the full
-**100 mm** cabinet depth. Only the rear edge of the display section is reduced.
+Like the second reference design, the side walls are allowed to extend farther
+rearward than the internal cabinet boards. The bottom, intermediate shelf and
+lower dividers remain **100 mm** deep, while both side panels are now **110 mm**
+deep. Only the rear edge of the display section of those side panels is reduced.
 The current iteration-2 values are:
 
 - rear recess depth: **50 mm**, leaving a 50 mm deep middle section;
@@ -76,8 +78,8 @@ rear-access geometry is being developed.
 
 For visual evaluation, each side recess now contains one straight **Ø22 mm
 beech roundwood handle**. The rod is not slotted or weakened. Its centre is
-placed halfway through the 50 mm recess: **Y=75 mm** between the recessed
-plywood edge at Y=50 and the cabinet rear at Y=100.
+placed halfway through the 50 mm recess: **Y=85 mm** between the recessed
+side-wall edge at Y=60 and the side-panel rear at Y=110.
 
 Two temporary printed socket concepts hold each rod. Each socket has a Ø34 mm
 outer sleeve, Ø22.6 mm bore and a short bridge back to the recessed plywood
@@ -98,7 +100,8 @@ can be moved or redesigned after checking hand clearance in the full model.
 | Frame wood | 12 mm |
 | Rear board | temporarily disabled |
 | Side-wall rear recess | 50 mm deep, R20, 80 mm full-depth top/bottom zones |
-| Cabinet depth | 100 mm |
+| Cabinet depth (bottom/shelf/dividers) | 100 mm |
+| Side-panel depth | 110 mm |
 | Roof overhang | 10 mm front / 1 mm rear |
 | Window | 840 × 360 × 4 mm |
 | Corner brackets | 8 |

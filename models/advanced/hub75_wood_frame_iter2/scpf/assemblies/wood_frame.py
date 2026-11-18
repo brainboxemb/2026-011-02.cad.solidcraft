@@ -20,6 +20,7 @@ class WoodFrame:
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
+    side_panel_depth = 110.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
@@ -140,7 +141,7 @@ class WoodFrame:
         left = SideBoard(
             name="left",
             thickness=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
+            depth=self.side_panel_depth,
             height=side_height,
             recess_depth=self.side_recess_depth,
             recess_radius=self.side_recess_radius,
@@ -155,7 +156,7 @@ class WoodFrame:
         right = SideBoard(
             name="right",
             thickness=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
+            depth=self.side_panel_depth,
             height=side_height,
             recess_depth=self.side_recess_depth,
             recess_radius=self.side_recess_radius,

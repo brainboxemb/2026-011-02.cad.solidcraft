@@ -23,6 +23,7 @@ class SideHandles:
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
     cabinet_depth = 100.0
+    side_panel_depth = 110.0
 
     side_recess_depth = 50.0
     side_recess_lower_keep = 80.0
@@ -34,10 +35,10 @@ class SideHandles:
             + half(self.frame_wood_thickness)
         )
 
-        # The handle sits exactly halfway through the 50 mm rear recess.
-        # Default geometry: recessed plywood edge Y=50, rear edge Y=100,
-        # therefore the Ø22 handle centre is Y=75.
-        recessed_edge_y = self.cabinet_depth - self.side_recess_depth
+        # The handle sits exactly halfway through the 50 mm rear recess in
+        # the deeper side panel. Default geometry: recessed plywood edge Y=60,
+        # side-panel rear edge Y=110, therefore handle centre Y=85.
+        recessed_edge_y = self.side_panel_depth - self.side_recess_depth
         handle_y = recessed_edge_y + half(self.side_recess_depth)
         bridge_depth = (
             handle_y

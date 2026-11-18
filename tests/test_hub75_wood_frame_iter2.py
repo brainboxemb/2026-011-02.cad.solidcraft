@@ -103,6 +103,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "frame_wood_thickness",
                 "panel_wood_thickness",
                 "cabinet_depth",
+                "side_panel_depth",
                 "panel_recess_depth",
                 "roof_front_overhang",
                 "roof_rear_overhang",
@@ -253,6 +254,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             SCPF_DIR / "parts" / "side_board.py"
         ).read_text(encoding="utf-8")
 
+        self.assertIn("side_panel_depth = 110.0", source)
         self.assertIn("side_recess_depth = 50.0", source)
         self.assertIn("side_recess_radius = 20.0", source)
         self.assertIn("side_recess_lower_keep = 80.0", source)
@@ -269,6 +271,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             "side_height\n            - self.side_recess_upper_keep",
             frame_source,
         )
+        self.assertIn("depth=self.side_panel_depth", frame_source)
 
         # The side part uses one real rounded YZ cut, not a faceted polygon.
         # The sketch is attached to the SideBoard body because Forge #354
@@ -298,9 +301,9 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         ]
         self.assertEqual(len(rods), 2)
 
-        # Default recess runs from Y=50 to Y=100, so both Ø22 handle centres
-        # are deliberately placed at Y=75 for the first visual concept.
-        self.assertTrue(all(row["translate"][1] == 75.0 for row in rods))
+        # The 110 mm side wall extends 10 mm behind the 100 mm cabinet.
+        # Its 50 mm recess runs from Y=60 to Y=110, so the handle centre is Y=85.
+        self.assertTrue(all(row["translate"][1] == 85.0 for row in rods))
 
         sockets = [
             row for row in moves
@@ -312,7 +315,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             }
         ]
         self.assertEqual(len(sockets), 4)
-        self.assertTrue(all(row["translate"][1] == 75.0 for row in sockets))
+        self.assertTrue(all(row["translate"][1] == 85.0 for row in sockets))
 
         handle_source = (
             SCPF_DIR / "assemblies" / "side_handles.py"

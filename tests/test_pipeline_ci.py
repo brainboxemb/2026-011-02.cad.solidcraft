@@ -69,7 +69,7 @@ class PipelineCiTests(unittest.TestCase):
                 "execute",
             ) as cheap, patch.object(
                 pipeline_ci,
-                "run_tool_cad_ci_proof",
+                "run_tool_cad_ci_items",
                 return_value=("plate",),
             ) as tool_proof, patch.object(
                 pipeline_ci.native_ci,
@@ -116,9 +116,11 @@ class PipelineCiTests(unittest.TestCase):
         )
         native.assert_called_once()
         self.assertEqual(
-            native.call_args.kwargs["stable_store"],
-            root / "resolved/main",
+            native.call_args.kwargs["source_sha"],
+            "head",
         )
+        self.assertNotIn("stable_store", native.call_args.kwargs)
+        self.assertNotIn("previous_site", native.call_args.kwargs)
         self.assertEqual(persisted["scpf_models"], ["plate", "new-model"])
 
     def test_missing_stable_models_uses_verification_files(self):
@@ -219,43 +221,49 @@ class PipelineCiTests(unittest.TestCase):
             ),
         )
 
-    def test_existing_build_main_needs_no_legacy_migration(self):
+
+    def test_resolve_build_baseline_requires_generic_manifest(self):
+        """The post-cutover pipeline only accepts tool.cad.ci build/main."""
+
         with TemporaryDirectory() as temp:
             root = Path(temp)
             source = root / "build"
             destination = root / "resolved"
             (source / "main").mkdir(parents=True)
+            (source / "main/build.json").write_text(
+                '{"schema":1}',
+                encoding="utf-8",
+            )
             (source / "main/marker.txt").write_text("ok", encoding="utf-8")
 
-            with patch.object(
-                pipeline_ci,
-                "migrate_legacy_store_layout",
-            ) as migrate:
-                stable = pipeline_ci.resolve_build_baseline(source, destination)
+            stable = pipeline_ci.resolve_build_baseline(
+                source,
+                destination,
+            )
 
-        self.assertEqual(stable, destination / "main")
-        migrate.assert_not_called()
+            self.assertEqual(stable, destination / "main")
+            self.assertEqual(
+                (stable / "marker.txt").read_text(encoding="utf-8"),
+                "ok",
+            )
 
-    def test_legacy_build_is_migrated_only_in_resolved_copy(self):
+    def test_resolve_build_baseline_rejects_legacy_layout(self):
+        """A missing generic manifest must fail instead of migrating old data."""
+
         with TemporaryDirectory() as temp:
             root = Path(temp)
             source = root / "build"
             destination = root / "resolved"
-            (source / "stable").mkdir(parents=True)
+            (source / "main").mkdir(parents=True)
 
-            def migrate(*, store):
-                (store / "main").mkdir(parents=True)
-                return ("plate",)
-
-            with patch.object(
-                pipeline_ci,
-                "migrate_legacy_store_layout",
-                side_effect=migrate,
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "tool.cad.ci build/main baseline",
             ):
-                stable = pipeline_ci.resolve_build_baseline(source, destination)
-
-            self.assertTrue(stable.is_dir())
-            self.assertFalse((source / "main").exists())
+                pipeline_ci.resolve_build_baseline(
+                    source,
+                    destination,
+                )
 
 
 if __name__ == "__main__":

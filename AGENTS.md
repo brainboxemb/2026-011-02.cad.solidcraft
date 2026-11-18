@@ -168,6 +168,11 @@ Each model output directory contains its own `verification.json` with the CAD
 source commit, Forge revision/release, SolidCraft version, workflow run and
 native file format that actually produced that model.
 
+The canonical primary native screenshot is `native/model.png`. Legacy
+`native/native.png` must be normalized during migration/publication rather
+than supported as a second permanent site input. Extra views such as
+`front.png` and `rear.png` keep their model-specific names.
+
 Do not describe an unchanged model as verified against a newer Forge,
 SolidCraft or CAD revision merely because another model was rebuilt.
 

@@ -279,7 +279,8 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
             for filename in ("model.sc", "native.png", "front.png", "rear.png"):
                 source = published / filename
                 if source.is_file():
-                    shutil.copy2(source, native / filename)
+                    target_name = "model.png" if filename == "native.png" else filename
+                    shutil.copy2(source, native / target_name)
             shutil.copy2(command_file, generated / "solidcraft.json")
 
             scpc = published / "scpc-commands.json"
@@ -403,6 +404,40 @@ def promote_candidate(
         for _, _, temp in staged:
             if temp.exists():
                 shutil.rmtree(temp)
+
+
+def normalize_native_snapshots(store, *, channel="stable", preview_key=None):
+    """Normalize legacy primary screenshots to native/model.png."""
+    root = destination_root(
+        store,
+        channel=channel,
+        preview_key=preview_key,
+    )
+    if not root.is_dir():
+        return ()
+
+    normalized = []
+    for verification in tuple(root.rglob(VERIFICATION_FILE)):
+        model_root = verification.parent
+        try:
+            row = json.loads(verification.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        slug = row.get("model")
+        if not isinstance(slug, str) or slug not in MODELS:
+            continue
+
+        native = model_root / "native"
+        legacy = native / "native.png"
+        canonical = native / "model.png"
+        if legacy.is_file():
+            canonical.parent.mkdir(parents=True, exist_ok=True)
+            if not canonical.exists():
+                legacy.rename(canonical)
+            else:
+                legacy.unlink()
+            normalized.append(slug)
+    return tuple(sorted(set(normalized)))
 
 
 def prune_removed_models(store, *, channel="stable", preview_key=None):

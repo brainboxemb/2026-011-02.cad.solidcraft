@@ -15,6 +15,7 @@ from output_store import (  # noqa: E402
     input_fingerprint,
     migrate_legacy_pages,
     migrate_legacy_store_layout,
+    normalize_native_snapshots,
     prepare_candidate,
     promote_candidate,
     prune_removed_models,
@@ -226,6 +227,56 @@ class OutputStoreTests(unittest.TestCase):
         )
         self.assertTrue(known.is_dir())
         self.assertFalse(removed.exists())
+
+    def test_legacy_native_snapshot_is_normalized_to_model_png(self):
+        model = (
+            self.store
+            / "main"
+            / model_build_path("bolted-flange")
+        )
+        native = model / "native"
+        native.mkdir(parents=True)
+        (model / "verification.json").write_text(
+            json.dumps({
+                "model": "bolted-flange",
+                "verified": True,
+                "source_commit": "legacy",
+            }),
+            encoding="utf-8",
+        )
+        (native / "native.png").write_bytes(b"legacy-png")
+
+        normalized = normalize_native_snapshots(self.store)
+
+        self.assertEqual(normalized, ("bolted-flange",))
+        self.assertFalse((native / "native.png").exists())
+        self.assertEqual((native / "model.png").read_bytes(), b"legacy-png")
+        verification = json.loads(
+            (model / "verification.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(verification["source_commit"], "legacy")
+
+    def test_snapshot_normalization_is_idempotent_and_removes_duplicate_legacy_name(self):
+        model = (
+            self.store
+            / "main"
+            / model_build_path("plate")
+        )
+        native = model / "native"
+        native.mkdir(parents=True)
+        (model / "verification.json").write_text(
+            json.dumps({"model": "plate", "verified": True}),
+            encoding="utf-8",
+        )
+        (native / "model.png").write_bytes(b"canonical")
+        (native / "native.png").write_bytes(b"legacy")
+
+        normalized = normalize_native_snapshots(self.store)
+
+        self.assertEqual(normalized, ("plate",))
+        self.assertEqual((native / "model.png").read_bytes(), b"canonical")
+        self.assertFalse((native / "native.png").exists())
+        self.assertEqual(normalize_native_snapshots(self.store), ())
 
     def test_complete_legacy_store_migrates_without_rewriting_verification(self):
         expected = tuple(

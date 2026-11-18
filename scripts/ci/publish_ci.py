@@ -16,6 +16,7 @@ from model_catalog import model_build_path, model_slugs
 from output_store import (
     migrate_legacy_pages,
     migrate_legacy_store_layout,
+    normalize_native_snapshots,
     promote_candidate,
     prune_removed_models,
 )
@@ -288,6 +289,7 @@ def execute(
                 channel="stable",
             )
         prune_removed_models(build_root, channel="stable")
+        normalize_native_snapshots(build_root, channel="stable")
         remove_legacy_build_layout(build_root)
         write_build_readme(build_root)
         if not stable_complete(build_root):

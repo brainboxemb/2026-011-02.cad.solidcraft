@@ -291,6 +291,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertIn("slot_radius = HANDLE_SLOT_WIDTH / 2", side_source)
         self.assertIn("p0 = (slot_center_y, lower_center_z)", side_source)
         self.assertIn("p1 = (slot_center_y, upper_center_z)", side_source)
+        self.assertNotIn("opening_sketch.add(", side_source)
         self.assertNotIn("self.opening_width", side_source)
         self.assertNotIn("RoundedRectangle2D(", side_source)
 

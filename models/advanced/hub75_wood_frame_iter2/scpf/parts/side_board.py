@@ -69,12 +69,14 @@ class SideBoard:
             on=body,
             plane="YZ",
         ) as opening_sketch:
-            profile = SlotCenterToCenter2D(
+            # Native Slot constructors register themselves in the active
+            # Sketch with authored coordinates. Calling Sketch.add() again
+            # would currently assign Anchor.CENTER (Forge issue #357).
+            SlotCenterToCenter2D(
                 p0,
                 p1,
                 HANDLE_SLOT_WIDTH,
             )
-            opening_sketch.add(profile)
 
         opening = opening_sketch.extrude(
             self.thickness + 2,

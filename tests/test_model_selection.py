@@ -7,7 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
-from model_catalog import MODELS, model_input_paths, model_slugs  # noqa: E402
+from model_catalog import MODELS, model_input_paths, model_slugs, verification_input_paths  # noqa: E402
 from select_models import (  # noqa: E402
     _matches,
     affected_models,
@@ -41,6 +41,19 @@ class TargetedModelSelectionTests(unittest.TestCase):
         self.assertIn(watched, model_input_paths("guide-rail"))
         self.assertIn(watched, model_input_paths("simple-mft-assembly"))
         self.assertTrue(_matches(changed, watched))
+
+    def test_selection_inputs_extend_verification_inputs_with_root_metadata(self):
+        verification = set(verification_input_paths("hub75-wood-frame"))
+        selected = set(model_input_paths("hub75-wood-frame"))
+        self.assertTrue(verification < selected)
+        self.assertIn(
+            "models/advanced/hub75_wood_frame/README.md",
+            selected,
+        )
+        self.assertIn(
+            "models/advanced/hub75_wood_frame/check.py",
+            selected,
+        )
 
     def test_model_root_readme_selects_models_sharing_that_root(self):
         changed = ["models/components/guide_rail/README.md"]

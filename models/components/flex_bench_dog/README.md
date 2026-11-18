@@ -25,7 +25,7 @@ on the actual dog-hole diameter, printer, filament and print settings.
 - Ø24 × 3 mm stop rim;
 - small fillet at the rim-to-dog shoulder;
 - light chamfer around the upper edge;
-- small **raised box-outline logo** on the top face;
+- small **raised square box logo** on the top face;
 - 2 mm long flared flex tips.
 
 ## Initial dimensions

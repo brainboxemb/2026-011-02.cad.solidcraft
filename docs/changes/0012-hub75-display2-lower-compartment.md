@@ -17,6 +17,8 @@ copying the old material thickness.
 
 ## Decision
 
+Keep the Python model directory as `models/advanced/hub75_display2/`. The public model slug remains `hub75-display2`; the hyphen belongs in the URL/CI slug, not in a Python package path.
+
 Keep Z=0 at the outside bottom face and use this vertical stack:
 
 1. 12 mm bottom board;

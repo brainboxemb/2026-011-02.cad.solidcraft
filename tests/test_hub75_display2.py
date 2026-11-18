@@ -9,7 +9,7 @@ from scpf.runner import run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL_ROOT = ROOT / "models" / "advanced" / "hub75-display2"
+MODEL_ROOT = ROOT / "models" / "advanced" / "hub75_display2"
 SCPF_DIR = MODEL_ROOT / "scpf"
 MODEL = SCPF_DIR / "model.py"
 

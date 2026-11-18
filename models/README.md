@@ -53,7 +53,7 @@ native parameter/edge-selector semantics.
   worktop and a first assembly with an 800 mm Festool-profile GuideRail.
 - [Five-panel screen](advanced/hub75-screen/README.md)
 - [Wooden HUB75 Basic Box](advanced/hub75-wood-frame/README.md)
-- [HUB75Display2](advanced/hub75-display2/README.md) starts from the same verified five-panel baseline but owns a separate source tree for parallel v2 development.
+- [HUB75Display2](advanced/hub75_display2/README.md) starts from the same verified five-panel baseline but owns a separate source tree for parallel v2 development.
 
 The wooden enclosure keeps its top-level dimensions and composition in
 [parameterized `model.py`](advanced/hub75-wood-frame/scpf/model.py), while

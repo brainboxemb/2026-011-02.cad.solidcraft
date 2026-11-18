@@ -382,10 +382,10 @@ MODELS = {
         "native_snapshot_required": True,
     },
     "hub75-display2": {
-        "source": "models/advanced/hub75-display2/scpf/model.py",
+        "source": "models/advanced/hub75_display2/scpf/model.py",
         "dependencies": ("corner-bracket",),
         "extra_inputs": (
-            "models/advanced/hub75-display2/scpf/",
+            "models/advanced/hub75_display2/scpf/",
             "models/components/hub75_panel/basic/scpf/",
         ),
         "section": "advanced",

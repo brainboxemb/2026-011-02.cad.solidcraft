@@ -2,4 +2,4 @@
 
 from models.components.guide_rail.scpf.model import GuideRail
 
-GuideRail(length=1500.0, profile="makita")
+GuideRail(length=600.0, profile="makita")

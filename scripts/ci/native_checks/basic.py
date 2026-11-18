@@ -16,7 +16,7 @@ def validate_guide_rail(root: Path):
     data = measurements(root, "guide-rail")
     require(data["body_count"] == 1, "guide-rail: expected one body")
     require(
-        size_close(data["bodies"][0], (184.20, 1400.0, 10.50)),
+        size_close(data["bodies"][0], (184.20, 600.0, 10.50)),
         f"guide-rail: unexpected bounds {body_size(data['bodies'][0])}",
     )
 
@@ -25,7 +25,7 @@ def validate_guide_rail_makita(root: Path):
     data = measurements(root, "guide-rail-makita")
     require(data["body_count"] == 1, "guide-rail-makita: expected one body")
     require(
-        size_close(data["bodies"][0], (182.50, 1500.0, 10.28)),
+        size_close(data["bodies"][0], (182.50, 600.0, 10.28)),
         f"guide-rail-makita: unexpected bounds {body_size(data['bodies'][0])}",
     )
 

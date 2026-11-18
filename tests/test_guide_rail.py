@@ -48,7 +48,7 @@ class GuideRailTests(unittest.TestCase):
         ]
         self.assertEqual(
             [(row["name"], row["expression"]) for row in params],
-            [("length", "1500")],
+            [("length", "600")],
         )
 
         points = profile_points(commands)
@@ -61,6 +61,15 @@ class GuideRailTests(unittest.TestCase):
             sum(c["command"] == "component.create" for c in commands),
             0,
         )
+
+    def test_default_standalone_length_is_600_mm(self):
+        commands = run_script(COMPONENT)["commands"]
+        parameter = next(
+            c["params"]
+            for c in commands
+            if c["command"] == "parameters.add"
+        )
+        self.assertEqual(parameter["expression"], "600")
 
     def test_length_override_remains_native_parameter(self):
         with tempfile.TemporaryDirectory() as directory:

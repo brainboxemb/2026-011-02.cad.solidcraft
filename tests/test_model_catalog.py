@@ -48,6 +48,13 @@ class ModelCatalogTests(unittest.TestCase):
             len({model_build_path(slug) for slug in MODELS}),
             len(MODELS),
         )
+        paths = tuple(model_build_path(slug) for slug in MODELS)
+        for left in paths:
+            for right in paths:
+                if left == right:
+                    continue
+                self.assertNotEqual(left, right.parent)
+                self.assertFalse(left in right.parents)
         for slug, model in MODELS.items():
             with self.subTest(slug=slug):
                 self.assertFalse(required - set(model))
@@ -114,22 +121,17 @@ class ModelCatalogTests(unittest.TestCase):
     def test_build_paths_mirror_source_model_roots(self):
         self.assertEqual(
             model_build_path("plate"),
-            Path("models/basic/plate/scpf"),
+            Path("models/basic/plate/scpf/model"),
         )
         self.assertEqual(
             model_build_path("hub75-panel"),
-            Path("models/components/hub75_panel/detailed/scpf"),
+            Path("models/components/hub75_panel/detailed/scpf/model"),
         )
         for slug, model in MODELS.items():
             with self.subTest(slug=slug):
                 source = Path(model["source"])
                 build = model_build_path(slug)
-                expected = (
-                    source.parent
-                    if source.name == "model.py"
-                    else source.with_suffix("")
-                )
-                self.assertEqual(build, expected)
+                self.assertEqual(build, source.with_suffix(""))
 
     def test_declared_model_dependencies_are_valid_and_acyclic(self):
         for slug in MODELS:

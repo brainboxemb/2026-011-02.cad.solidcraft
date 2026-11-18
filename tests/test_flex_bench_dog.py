@@ -41,7 +41,7 @@ class FlexBenchDogTests(unittest.TestCase):
             row["params"] for row in commands
             if row["command"] == "solid.cylinder"
         ]
-        self.assertEqual(cylinders[2]["diameter"], "hole_diameter + interference")
+        self.assertIn(cylinders[2]["diameter"], ("hole_diameter + interference", "hole_diameter + (interference)"))
 
     def test_cross_slots_are_two_perpendicular_box_cuts(self):
         commands = run_script(MODEL)["commands"]

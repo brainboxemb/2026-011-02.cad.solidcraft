@@ -1,5 +1,5 @@
 {
-  "input_fingerprint": "0c4cb3fe0e5c36ea5acd783e8b10d3b90b289b6a60c76be2717cfcf1ebf299e3",
+  "input_fingerprint": "fc6fa051d0f632ebd4efce27ad034b4af9629b5147c74c8a18cdbc1b17434d60",
   "model": "guide-rail-makita",
   "native_file_format": "solidcraft/57",
   "schema": 1,
@@ -7,8 +7,8 @@
   "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
   "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "6a6241195e057d5dfe09c1bc5448f242333bd6f5",
+  "source_commit": "3baad59fa0fb8bd52100e82eaf9200e74cedb5dc",
   "toolchain_image": "ghcr.io/brainboxemb/2026-011-02.cad.solidcraft/cad-ci:toolchain-738fc48a56d0a6a60eef3f370f0d82d7a5d971a45972708efe417700d268baba",
   "verified": true,
-  "workflow_run": "44376983648"
+  "workflow_run": "44378538368"
 }

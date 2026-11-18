@@ -7,6 +7,7 @@ import argparse
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 
 import build_plan
@@ -17,6 +18,15 @@ from select_models import parse_models
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def configure_git_workspace() -> None:
+    """Allow the container user to inspect the mounted Actions checkout."""
+    subprocess.run(
+        ["git", "config", "--global", "--add", "safe.directory", str(ROOT)],
+        cwd=ROOT,
+        check=True,
+    )
 
 
 def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
@@ -52,6 +62,7 @@ def execute(
     workflow_run: str,
     image_reference: str,
 ) -> dict:
+    configure_git_workspace()
     paths = (
         build_plan.changed_paths(base_sha, head_sha)
         if mode == "changed"

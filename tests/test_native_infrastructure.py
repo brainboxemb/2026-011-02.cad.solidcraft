@@ -30,6 +30,19 @@ class NativeInfrastructureTests(unittest.TestCase):
                     self.assertIsInstance(parameter, str)
                     self.assertIsInstance(expression, str)
 
+    def test_actions_expose_one_normal_cad_workflow_plus_image_worker(self):
+        workflows = {
+            path.name
+            for path in (ROOT / ".github/workflows").glob("*.yml")
+        }
+        self.assertEqual(workflows, {"cad.yml", "image.yml"})
+
+        cad = (ROOT / ".github/workflows/cad.yml").read_text(encoding="utf-8")
+        image = (ROOT / ".github/workflows/image.yml").read_text(encoding="utf-8")
+        self.assertIn("name: CAD", cad)
+        self.assertIn("toolchain", image.lower())
+        self.assertNotIn("workflow_run:", cad)
+
     def test_cad_workflow_is_thin_and_runner_owns_native_checks(self):
         workflow = (ROOT / ".github/workflows/cad.yml").read_text(
             encoding="utf-8"

@@ -5,28 +5,139 @@ on:
     branches: [main]
   push:
     branches: [main]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Model selection mode
+        type: choice
+        required: true
+        default: changed
+        options: [changed, models, all]
+      models:
+        description: Space- or comma-separated model slugs for models mode
+        type: string
+        required: false
+        default: ""
+      publish:
+        description: Publish target for a manual run
+        type: choice
+        required: true
+        default: preview
+        options: [preview, stable]
 
 permissions:
-  contents: write
-
-concurrency:
-  group: cad-native-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  contents: read
 
 jobs:
   native:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
     env:
       SOLIDCRAFT_VERSION: "0.42.0"
       SOLIDCRAFT_GPU: cpu
+      BUILD_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
+      BUILD_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || '' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout last promoted model output
+        uses: actions/checkout@v4
+        with:
+          ref: model-output
+          path: model-output
+
+      - name: Checkout current stable Pages site for legacy fallback
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: previous-site
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Select affected native models
+        id: select
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p output/selection
+          : > output/selection/changed-paths.txt
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only               "${{ github.event.pull_request.base.sha }}"               "${{ github.event.pull_request.head.sha }}"               > output/selection/changed-paths.txt
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            before="${{ github.event.before }}"
+            if [ -n "$before" ] && ! printf '%s' "$before" | grep -Eq '^0+$'; then
+              git diff --name-only "$before" "$GITHUB_SHA"                 > output/selection/changed-paths.txt
+            else
+              git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA"                 > output/selection/changed-paths.txt
+            fi
+          elif [ "$BUILD_MODE" = "changed" ]; then
+            git diff-tree --no-commit-id --name-only -r "$GITHUB_SHA"               > output/selection/changed-paths.txt
+          fi
+
+          python scripts/ci/select_models.py             --mode "$BUILD_MODE" --kind native             --paths-file output/selection/changed-paths.txt             --models "$BUILD_MODELS" --format json             > output/selection/native.json
+          python scripts/ci/select_models.py             --mode "$BUILD_MODE" --kind scpc             --paths-file output/selection/changed-paths.txt             --models "$BUILD_MODELS" --format json             > output/selection/scpc.json
+          python scripts/ci/select_models.py             --mode "$BUILD_MODE" --kind native-snapshot-required             --paths-file output/selection/changed-paths.txt             --models "$BUILD_MODELS" --format json             > output/selection/snapshots.json
+
+          native_models="$(jq -r '.models | join(" ")' output/selection/native.json)"
+          scpc_models="$(jq -r '.models | join(" ")' output/selection/scpc.json)"
+          snapshot_models="$(jq -r '.models | join(" ")' output/selection/snapshots.json)"
+          site_refresh="$(jq -r '.site_refresh' output/selection/native.json)"
+
+          echo "NATIVE_MODELS=$native_models" >> "$GITHUB_ENV"
+          echo "SCPC_MODELS=$scpc_models" >> "$GITHUB_ENV"
+          echo "SNAPSHOT_MODELS=$snapshot_models" >> "$GITHUB_ENV"
+
+          [ -n "$native_models" ] && has_native=true || has_native=false
+          if [ "$has_native" = true ] || [ "$site_refresh" = true ]; then
+            publishable=true
+          else
+            publishable=false
+          fi
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            channel=preview
+            preview_key="pr-${{ github.event.pull_request.number }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            channel=stable
+            preview_key=""
+          elif [ "${{ inputs.publish }}" = "stable" ] && [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            channel=stable
+            preview_key=""
+          else
+            channel=preview
+            preview_key="branch-${GITHUB_REF_NAME//\//-}"
+          fi
+
+          if [ "$channel" = stable ]; then
+            public_base="https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
+          else
+            public_base="https://brainboxemb.github.io/2026-011-02.cad.solidcraft/preview/$preview_key"
+          fi
+
+          {
+            echo "native_models=$native_models"
+            echo "scpc_models=$scpc_models"
+            echo "snapshot_models=$snapshot_models"
+            echo "has_native=$has_native"
+            echo "site_refresh=$site_refresh"
+            echo "publishable=$publishable"
+            echo "channel=$channel"
+            echo "preview_key=$preview_key"
+            echo "public_base=$public_base"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Changed paths:"
+          cat output/selection/changed-paths.txt
+          echo "Native models: $native_models"
+          echo "SCPC models: $scpc_models"
+          echo "Publication: $channel"
+
       - name: Restore exact library dependency and Python interface
+        if: steps.select.outputs.has_native == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -54,46 +165,43 @@ jobs:
               )
           print(f"SCPF {actual}; SolidCraft {engine}")
           PY
+
       - name: Download the verified official SolidCraft release
+        if: steps.select.outputs.has_native == 'true'
         shell: bash
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP"
-          BASE="https://github.com/tangency-labs/solidcraft/releases/download/v${SOLIDCRAFT_VERSION}"
-          ARCHIVE="solidcraft-${SOLIDCRAFT_VERSION}-linux-x86_64.tar.gz"
-          curl --fail --location --retry 3 --silent --show-error "$BASE/SHA256SUMS.txt" --output SHA256SUMS.txt
-          curl --fail --location --retry 3 --silent --show-error "$BASE/$ARCHIVE" --output "$ARCHIVE"
+          BASE="https://github.com/tangency-labs/solidcraft/releases/download/v$SOLIDCRAFT_VERSION"
+          ARCHIVE="solidcraft-$SOLIDCRAFT_VERSION-linux-x86_64.tar.gz"
+          curl --fail --location --retry 3 --silent --show-error             "$BASE/SHA256SUMS.txt" --output SHA256SUMS.txt
+          curl --fail --location --retry 3 --silent --show-error             "$BASE/$ARCHIVE" --output "$ARCHIVE"
           grep -F " $ARCHIVE" SHA256SUMS.txt | sha256sum --check
           tar -xzf "$ARCHIVE"
-          echo "$RUNNER_TEMP/solidcraft-${SOLIDCRAFT_VERSION}-linux-x86_64/bin" >> "$GITHUB_PATH"
-      - name: Compile and evaluate project CAD models
+          echo "$RUNNER_TEMP/solidcraft-$SOLIDCRAFT_VERSION-linux-x86_64/bin" >> "$GITHUB_PATH"
+
+      - name: Compile and evaluate selected CAD models
+        if: steps.select.outputs.has_native == 'true'
         shell: bash
         run: |
           set -euo pipefail
           unset PYTHONPATH
           solidcraft-cli --version
           python -c 'from scpf.version import check_cli_version; check_cli_version(require_cli=True)'
-          for model in $(python scripts/ci/model_catalog.py --list native); do
+
+          for model in $NATIVE_MODELS; do
             mkdir -p "output/native/$model"
-            python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/native/$model/commands.json"
-            python -m scpf.headless "output/native/$model/commands.json" \
-              --save "output/native/$model/model.sc" \
-              --out "output/native/$model/model.step" \
-              --results "output/native/$model/results.json" \
-              --replay-log "output/native/$model/replay-log.json"
-            solidcraft-cli eval "output/native/$model/model.sc" \
-              --json-out "output/native/$model/measurements.json"
-            jq -e '(.timeline | all(.error == null))' "output/native/$model/measurements.json"
+            python -m scpf "$(python scripts/ci/model_catalog.py "$model")"               --out "output/native/$model/commands.json"
+            python -m scpf.headless "output/native/$model/commands.json"               --save "output/native/$model/model.sc"               --out "output/native/$model/model.step"               --results "output/native/$model/results.json"               --replay-log "output/native/$model/replay-log.json"
+            solidcraft-cli eval "output/native/$model/model.sc"               --json-out "output/native/$model/measurements.json"
+            jq -e '(.timeline | all(.error == null))'               "output/native/$model/measurements.json"
             test -s "output/native/$model/model.step"
-            # For large screen/assembly models use a real model-centred camera.
-            # The default ISO view may show only one corner of a wide assembly.
-            # The CLI accepts an orbit camera JSON in millimetres and radians.
+
             snapshot_args=(--out "output/native/$model/model.png" --no-grid --no-axes)
             camera="$(python scripts/ci/snapshot_camera.py "$model")"
             if [ -n "$camera" ]; then
               snapshot_args+=(--camera "$camera")
             fi
-            # CSG snapshots have historically been optional (CPU renderer).
             if [ "$model" = csg-cube ]; then
               if ! solidcraft-cli snapshot "output/native/$model/model.sc" "${snapshot_args[@]}"; then
                 rm -f "output/native/$model/model.png"
@@ -104,105 +212,89 @@ jobs:
               test -s "output/native/$model/model.png"
             fi
           done
-          # Standalone Hub75Panel stays in its own local CAD axes:
-          # front XY at Z=0, rear at +Z. View the same body from both sides.
-          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
-            --out output/native/hub75-panel/front.png --no-grid --no-axes \
-            --camera '{"target":[0,0,7.25],"yaw":0,"pitch":-1.55,"distance":460,"fov":0}'
-          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
-            --out output/native/hub75-panel/rear.png --no-grid --no-axes \
-            --camera '{"target":[0,0,7.25],"yaw":0,"pitch":1.55,"distance":460,"fov":0}'
-          test -s output/native/hub75-panel/front.png
-          test -s output/native/hub75-panel/rear.png
-          python scripts/ci/run_native_mutations.py output/native
-          python scripts/ci/native_validation.py output/native
-      - name: Native comparison of independent SCPF and SCPC designs
+
+          if printf ' %s ' "$NATIVE_MODELS" | grep -Fq ' hub75-panel '; then
+            solidcraft-cli snapshot output/native/hub75-panel/model.sc               --out output/native/hub75-panel/front.png --no-grid --no-axes               --camera '{"target":[0,0,7.25],"yaw":0,"pitch":-1.55,"distance":460,"fov":0}'
+            solidcraft-cli snapshot output/native/hub75-panel/model.sc               --out output/native/hub75-panel/rear.png --no-grid --no-axes               --camera '{"target":[0,0,7.25],"yaw":0,"pitch":1.55,"distance":460,"fov":0}'
+            test -s output/native/hub75-panel/front.png
+            test -s output/native/hub75-panel/rear.png
+          fi
+
+          python scripts/ci/run_native_mutations.py output/native --models $NATIVE_MODELS
+          python scripts/ci/native_validation.py output/native --models $NATIVE_MODELS
+
+      - name: Native comparison of selected independent SCPF and SCPC designs
+        if: steps.select.outputs.has_native == 'true'
         shell: bash
         run: |
           set -euo pipefail
           unset PYTHONPATH
-          for model in $(python scripts/ci/model_catalog.py --list scpc); do
+          for model in $SCPC_MODELS; do
             mkdir -p "output/native/$model/scpf" "output/native/$model/scpc"
-            cp "output/native/$model/measurements.json" "output/native/$model/scpf/measurements.json"
-            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
-              --out "output/native/$model/scpc/commands.json"
-            solidcraft-cli run "output/native/$model/scpc/commands.json" \
-              --param-check strict --results \
-              --json-out "output/native/$model/scpc/results.json" \
-              --save "output/native/$model/scpc/model.sc" \
-              --out "output/native/$model/scpc/model.step"
-            solidcraft-cli eval "output/native/$model/scpc/model.sc" \
-              --json-out "output/native/$model/scpc/measurements.json"
-            jq -e '(.timeline | all(.error == null))' \
-              "output/native/$model/scpc/measurements.json"
+            cp "output/native/$model/measurements.json"               "output/native/$model/scpf/measurements.json"
+            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)"               --out "output/native/$model/scpc/commands.json"
+            solidcraft-cli run "output/native/$model/scpc/commands.json"               --param-check strict --results               --json-out "output/native/$model/scpc/results.json"               --save "output/native/$model/scpc/model.sc"               --out "output/native/$model/scpc/model.step"
+            solidcraft-cli eval "output/native/$model/scpc/model.sc"               --json-out "output/native/$model/scpc/measurements.json"
+            jq -e '(.timeline | all(.error == null))'               "output/native/$model/scpc/measurements.json"
             python scripts/ci/compare-scpc.py output/native "$model"
           done
-      - name: Build source-matched native result pages
+
+      - name: Build candidate output and complete preview/stable site
+        if: steps.select.outputs.publishable == 'true'
         shell: bash
+        env:
+          PUBLIC_BASE: ${{ steps.select.outputs.public_base }}
         run: |
           set -euo pipefail
-          jq -n \
-            --arg source "$GITHUB_SHA" \
-            --arg scpf "$SCPF_COMMIT" \
-            --arg scpf_release "$SCPF_RELEASE" \
-            --arg scpc "$SCPC_COMMIT" \
-            --arg version "$SOLIDCRAFT_VERSION" \
-            --arg run "$GITHUB_RUN_ID" \
-            '{
-              schema:1,
-              source_commit:$source,
-              scpf_commit:$scpf,
-              scpf_release:$scpf_release,
-              scpc_commit:$scpc,
-              solidcraft_version:$version,
-              workflow_run:$run,
-              verified:true
-            }' > output/native/verification.json
-          for model in $(python scripts/ci/model_catalog.py --list native); do
-            python -m scpf "$(python scripts/ci/model_catalog.py "$model")" \
-              --out "output/models/$model/scpf/solidcraft.json"
-          done
-          for model in $(python scripts/ci/model_catalog.py --list scpc); do
-            python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \
-              --out "output/models/$model/scpc/solidcraft.json"
-          done
-          python scripts/ci/build-results.py --generated output/models --native output/native --commit "$GITHUB_SHA" --out output/site
-          python scripts/ci/test-results.py output/site "$GITHUB_SHA"
-          for model in $(python scripts/ci/model_catalog.py --list native-snapshot-required); do
+          mkdir -p output/models output/native
+
+          if [ "${{ steps.select.outputs.has_native }}" = true ]; then
+            jq -n               --arg source "$GITHUB_SHA"               --arg scpf "$SCPF_COMMIT"               --arg scpf_release "$SCPF_RELEASE"               --arg scpc "$SCPC_COMMIT"               --arg version "$SOLIDCRAFT_VERSION"               --arg run "$GITHUB_RUN_ID"               '{
+                schema:1,
+                source_commit:$source,
+                scpf_commit:$scpf,
+                scpf_release:$scpf_release,
+                scpc_commit:$scpc,
+                solidcraft_version:$version,
+                workflow_run:$run,
+                verified:true
+              }' > output/native/verification.json
+
+            for model in $NATIVE_MODELS; do
+              mkdir -p "output/models/$model/scpf"
+              cp "output/native/$model/commands.json"                 "output/models/$model/scpf/solidcraft.json"
+            done
+            for model in $SCPC_MODELS; do
+              mkdir -p "output/models/$model/scpc"
+              cp "output/native/$model/scpc/commands.json"                 "output/models/$model/scpc/solidcraft.json"
+            done
+
+            python scripts/ci/output_store.py prepare               --models "$NATIVE_MODELS"               --native output/native               --generated output/models               --out output/candidate               --source-commit "$GITHUB_SHA"               --scpf-commit "$SCPF_COMMIT"               --scpf-release "$SCPF_RELEASE"               --scpc-commit "$SCPC_COMMIT"               --solidcraft-version "$SOLIDCRAFT_VERSION"               --workflow-run "$GITHUB_RUN_ID"
+          fi
+
+          python scripts/ci/build-results.py             --generated output/models             --native output/native             --stable-store model-output/stable             --previous-site previous-site             --public-base "$PUBLIC_BASE"             --commit "$GITHUB_SHA"             --out output/site
+          python scripts/ci/test-results.py             output/site "$GITHUB_SHA" "$PUBLIC_BASE"
+
+          for model in $SNAPSHOT_MODELS; do
             test -s "output/site/models/$model/native.png"
           done
-          expected_native="$(python scripts/ci/model_catalog.py --count native-snapshot-required)"
-          jq -e \
-            --arg scpf "$SCPF_COMMIT" \
-            --arg scpf_release "$SCPF_RELEASE" \
-            --arg scpc "$SCPC_COMMIT" \
-            --arg source "$GITHUB_SHA" \
-            --arg solidcraft "$SOLIDCRAFT_VERSION" \
-            --argjson expected_native "$expected_native" \
-            '.
-              | .scpf_commit == $scpf
-              and .scpf_release == $scpf_release
-              and .scpc_commit == $scpc
-              and .source_commit == $source
-              and .solidcraft_version == $solidcraft
-              and (.native_file_format | test("^solidcraft/[0-9]+$"))
-              and (.native_verified_models | length) >= $expected_native
-            ' output/site/provenance.json
-      - name: Retain native geometry, command plans and site bundle
-        if: always()
+
+          jq -n             --arg channel "${{ steps.select.outputs.channel }}"             --arg preview_key "${{ steps.select.outputs.preview_key }}"             --arg public_base "$PUBLIC_BASE"             --arg models "$NATIVE_MODELS"             --arg source "$GITHUB_SHA"             '{
+              channel:$channel,
+              preview_key:$preview_key,
+              public_base:$public_base,
+              models:($models | split(" ") | map(select(length > 0))),
+              source_commit:$source
+            }' > output/publish.json
+
+      - name: Upload staged publication bundle
+        if: steps.select.outputs.publishable == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: native-cad-evidence
+          name: native-cad-publish
           path: |
-            output/native/
+            output/candidate/
             output/site/
-          if-no-files-found: warn
-      - name: Publish verified site on main only
-        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: ./output/site
-          keep_files: true
-          commit_message: "Verified SolidCraft CAD website at ${{ github.sha }}"
+            output/selection/
+            output/publish.json
+          if-no-files-found: error

@@ -11,10 +11,26 @@ class AnchoredHoles:
         with Sketch(name="Base", plane="XY") as sketch:
             Rectangle2D(self.width, self.depth)
         plate = sketch.extrude(self.thickness)
-        holes = Hole(d=8, depth=Depth.THROUGH_ALL).repeat_linear(
-            count=2, spacing=self.spacing, axis=Axis.Y
-        ).attach(plate, parent=Anchor.TOP)
-        plate + holes
+
+        with Sketch(
+            name="Hole",
+            on=plate,
+            parent=Anchor.TOP,
+        ) as hole:
+            hole.add(
+                Circle2D(d=8),
+                offset=(0, -(self.spacing / 2)),
+            )
+
+        source_cut = hole.extrude(Depth.THROUGH_ALL)
+        plate = plate - source_cut
+
+        return plate.rectangular_pattern(
+            source_cut,
+            count=2,
+            spacing=self.spacing,
+            direction=Axis.Y,
+        )
 
 
 AnchoredHoles()

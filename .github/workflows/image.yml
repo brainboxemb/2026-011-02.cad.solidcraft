@@ -85,7 +85,7 @@ jobs:
             -v "$GITHUB_WORKSPACE:/workspace" \
             -w /workspace \
             "cad-ci-local:${{ steps.image.outputs.image_id }}" \
-            bash -lc '
+            bash -c '
               set -euo pipefail
               python -m scpf models/basic/plate/scpf/model.py --out /tmp/plate.json
               python -m scpf.headless /tmp/plate.json \

@@ -1,0 +1,22 @@
+# This folder is one tool.cad.ci item. The shared runner derives its
+# catalog variants from model_catalog.py; this file owns only execution policy.
+id: hub75-display2
+kind: qualification
+needs:
+  - corner-bracket
+watch:
+  - models/advanced/hub75-display2/**
+  - scripts/ci/model_item.py
+  - models/components/hub75_panel/basic/scpf/**
+strategy:
+  # Keep every parallel comparison fresh until the old CAD path is removed.
+  reuse: false
+steps:
+  - id: compile
+    run: [python, ../../../scripts/ci/model_item.py, compile]
+    outputs:
+      - checks/compile.json
+  - id: compare-current
+    run: [python, ../../../scripts/ci/model_item.py, compare-current]
+    outputs:
+      - checks/current-pipeline.json

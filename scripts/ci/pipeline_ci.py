@@ -3,7 +3,7 @@
 
 The current CAD pipeline remains authoritative during change 0012. The
 pipeline also handles catalog growth before site generation and, in parallel,
-runs Plate through the pinned tool.cad.ci release as the first migration proof.
+runs every configured model-root item through the pinned tool.cad.ci release as a parallel migration proof.
 """
 
 from __future__ import annotations
@@ -20,6 +20,7 @@ import build_plan
 import cad_ci
 import native_ci
 from model_catalog import MODELS, model_build_path, model_slugs
+from model_item import item_id_for_slug
 from output_store import migrate_legacy_store_layout
 from select_models import parse_models
 
@@ -106,32 +107,36 @@ def extend_plan_for_missing_stable(plan: dict, stable_store: Path) -> dict:
     return result
 
 
-def _tool_selection_args(
+def _tool_selection_groups(
     *,
     mode: str,
     models: str,
     base_sha: str,
     head_sha: str,
     paths: tuple[str, ...],
-) -> list[str] | None:
-    """Translate the current CAD selection to the one-item migration proof."""
+) -> tuple[tuple[str, ...], ...]:
+    """Translate CAD selection modes to one or more tool.cad.ci selections.
+
+    Normal changed/all runs need one tool invocation. Named-model mode can name
+    several catalog variants that share a model-root item, so duplicate item
+    IDs are removed before one exact-item invocation per root.
+    """
 
     if mode == "models":
-        # A deliberate named-model run must not unexpectedly execute Plate.
-        if "plate" not in parse_models(models):
-            return None
-        return ["--item", "plate"]
+        item_ids: list[str] = []
+        for slug in parse_models(models):
+            item_id = item_id_for_slug(slug)
+            if item_id not in item_ids:
+                item_ids.append(item_id)
+        return tuple(("--item", item_id) for item_id in item_ids)
 
     if mode == "all":
-        # The temporary root cad-ci.yml currently contains only Plate.
-        return []
+        return ((),)
 
     if base_sha and base_sha != ZERO_SHA:
-        return ["--base", base_sha, "--head", head_sha]
+        return (("--base", base_sha, "--head", head_sha),)
 
-    # Initial pushes can have a zero/missing base revision. The current planner
-    # already calculated the changed paths, so reuse those exact paths.
-    return ["--changed", *paths]
+    return (("--changed", *paths),)
 
 
 def run_tool_cad_ci_proof(
@@ -143,10 +148,10 @@ def run_tool_cad_ci_proof(
     paths: tuple[str, ...],
     output_root: Path,
 ) -> tuple[str, ...]:
-    """Plan and run Plate through the pinned external tool.
+    """Plan and run selected model-root items through the pinned external tool.
 
-    The plan is stored beside normal diagnostics. Plate itself compares its
-    command document with both the reviewed reference and the current pipeline.
+    Each item compiles every catalog variant owned by its folder and compares
+    the new command JSON with current-run or accepted stable output.
     """
 
     if not TOOL_CAD_CI.is_file():
@@ -154,7 +159,7 @@ def run_tool_cad_ci_proof(
             "missing ext/cad-ci/cad-ci.py; run scripts/ci/bootstrap_cad_ci.py"
         )
 
-    selection = _tool_selection_args(
+    selections = _tool_selection_groups(
         mode=mode,
         models=models,
         base_sha=base_sha,
@@ -164,41 +169,48 @@ def run_tool_cad_ci_proof(
     output_root.mkdir(parents=True, exist_ok=True)
     plan_path = output_root / "tool-cad-ci-plan.json"
 
-    if selection is None:
-        plan_path.write_text("[]\n", encoding="utf-8")
-        return ()
+    combined: list[dict] = []
+    seen: set[str] = set()
+    for selection in selections:
+        common = ["--repo", str(ROOT), *selection]
+        plan_text = subprocess.check_output(
+            [
+                sys.executable,
+                str(TOOL_CAD_CI),
+                "plan",
+                *common,
+                "--json",
+            ],
+            cwd=ROOT,
+            text=True,
+        )
+        plan = json.loads(plan_text)
+        if not isinstance(plan, list):
+            raise RuntimeError("tool.cad.ci plan did not return a list")
 
-    common = ["--repo", str(ROOT), *selection]
-    plan_text = subprocess.check_output(
-        [
-            sys.executable,
-            str(TOOL_CAD_CI),
-            "plan",
-            *common,
-            "--json",
-        ],
-        cwd=ROOT,
-        text=True,
-    )
-    plan = json.loads(plan_text)
-    if not isinstance(plan, list):
-        raise RuntimeError("tool.cad.ci plan did not return a list")
+        for row in plan:
+            if not isinstance(row, dict) or not isinstance(row.get("id"), str):
+                raise RuntimeError("tool.cad.ci plan contains an invalid item")
+            if row["id"] not in seen:
+                seen.add(row["id"])
+                combined.append(row)
+
+        subprocess.run(
+            [
+                sys.executable,
+                str(TOOL_CAD_CI),
+                "run",
+                *common,
+            ],
+            cwd=ROOT,
+            check=True,
+        )
+
     plan_path.write_text(
-        json.dumps(plan, indent=2) + "\n",
+        json.dumps(combined, indent=2) + "\n",
         encoding="utf-8",
     )
-
-    subprocess.run(
-        [
-            sys.executable,
-            str(TOOL_CAD_CI),
-            "run",
-            *common,
-        ],
-        cwd=ROOT,
-        check=True,
-    )
-    return tuple(str(row["id"]) for row in plan)
+    return tuple(str(row["id"]) for row in combined)
 
 
 def execute(
@@ -216,7 +228,7 @@ def execute(
     workflow_run: str,
     image_reference: str,
 ) -> dict:
-    """Run current CAD checks plus the temporary tool.cad.ci Plate proof."""
+    """Run current CAD checks plus the parallel model-root tool.cad.ci proof."""
 
     configure_git_workspace()
     paths = (
@@ -242,7 +254,7 @@ def execute(
         )
 
         # Catalog growth must be fixed before cheap/native work and site
-        # generation. The Plate proof then compares against that same run.
+        # generation. The model-root proof then compares against that same run.
         plan = extend_plan_for_missing_stable(plan, stable_store)
         plan_path.write_text(
             json.dumps(plan, indent=2) + "\n",
@@ -257,8 +269,8 @@ def execute(
             build_site_output=False,
         )
 
-        # Run the new Plate item after the old cheap compile so compare-current
-        # can prove both command documents are identical.
+        # Run the model-root items after the old cheap compile so changed models
+        # can compare against current-run output.
         run_tool_cad_ci_proof(
             mode=mode,
             models=models,

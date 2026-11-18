@@ -1,5 +1,8 @@
-# First migration proof: one model item only.
-# More model folders are added after Plate matches the existing CAD pipeline.
+# Discover every model-root folder that explicitly owns ci.yml.
+# Some roots contain more than one catalog variant; the folder remains the CI
+# item so the repository does not gain a second per-variant directory tree.
 schema: 1
 items:
-  - models/basic/plate
+  - models/basic/*
+  - models/components/*
+  - models/advanced/*

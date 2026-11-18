@@ -143,7 +143,7 @@ jobs:
             output/candidate/
             output/site/
             output/publish.json
-            build/models/basic/plate/
+            build/models/**
           if-no-files-found: ignore
 
   cleanup:

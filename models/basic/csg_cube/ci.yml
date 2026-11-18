@@ -1,0 +1,19 @@
+# This folder is one tool.cad.ci item. The shared runner derives its
+# catalog variants from model_catalog.py; this file owns only execution policy.
+id: csg-cube
+kind: qualification
+watch:
+  - models/basic/csg_cube/**
+  - scripts/ci/model_item.py
+strategy:
+  # Keep every parallel comparison fresh until the old CAD path is removed.
+  reuse: false
+steps:
+  - id: compile
+    run: [python, ../../../scripts/ci/model_item.py, compile]
+    outputs:
+      - checks/compile.json
+  - id: compare-current
+    run: [python, ../../../scripts/ci/model_item.py, compare-current]
+    outputs:
+      - checks/current-pipeline.json

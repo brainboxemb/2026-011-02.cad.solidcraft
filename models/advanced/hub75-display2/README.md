@@ -3,10 +3,8 @@
 HUB75Display2 is the second HUB75 enclosure design. It is developed **in
 parallel** with the existing [Wooden HUB75 Basic Box](../hub75_wood_frame/README.md).
 
-The first revision intentionally starts from the same verified geometry and
-parameter values as the current wooden display. That gives v1 and v2 a known
-comparison point. From this baseline onward, changes to v2 do **not** need to
-be copied back to v1.
+The first revision started from the verified v1 geometry so both designs had a
+known comparison point. HUB75Display2 now evolves independently.
 
 ## Independence
 
@@ -24,16 +22,41 @@ Reusable physical parts remain shared from `models/components/`, including:
 - `Hub75PanelBasic`;
 - `CornerBracket`.
 
-This avoids duplicating genuine cross-model components while allowing the
-cabinet, glazing, placement and later v2-specific mechanics to diverge freely.
+## Lower storage compartment
 
-## Initial baseline
+The first v2-specific geometry change adds the lower compartment from the older
+HUB75 display-case concept while keeping the SolidCraft design's 12 mm plywood.
 
-The initial v2 values are deliberately the same as the verified v1 design:
+Reference design:
 
-| Item | Baseline |
+- `brainboxemb/2026-006-02.cad.HUB75-display-case`;
+- its lower compartment uses 70 mm clear internal height.
+
+The SolidCraft vertical stack is:
+
+| Section | Height |
+| --- | ---: |
+| Bottom board | 12 mm |
+| Clear lower compartment | 70 mm |
+| Intermediate shelf | 12 mm |
+| Display opening | 362 mm |
+| Roof board | 12 mm |
+| **Total cabinet height** | **468 mm** |
+
+The display opening therefore starts at **Z=94 mm**. The five HUB75 panels,
+glazing frame and plexiglass all use that derived opening datum instead of a
+fixed occurrence offset.
+
+`lower_compartment_height` is an editable native SolidCraft parameter. Changing
+it moves the intermediate shelf, display opening, roof, rear-board height and
+top corner brackets together. The lower outside cabinet datum remains Z=0.
+
+## Current main dimensions
+
+| Item | Value |
 | --- | ---: |
 | Opening | 844 × 362 mm |
+| Lower compartment clear height | 70 mm |
 | Panel count | 5 |
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |
@@ -44,11 +67,5 @@ The initial v2 values are deliberately the same as the verified v1 design:
 | Window | 840 × 360 × 4 mm |
 | Corner brackets | 8 |
 
-World axes and datums also start the same: X left/right, Y front/back and Z up,
-with Y=0 at the wooden cabinet front and Z=0 at the outside bottom face.
-
-## Parallel development
-
-This page describes only the **parallel-development baseline**. New v2 design
-choices should be documented here as they are introduced instead of silently
-changing the v1 documentation.
+World axes remain X left/right, Y front/back and Z up, with Y=0 at the wooden
+cabinet front and Z=0 at the outside bottom face.

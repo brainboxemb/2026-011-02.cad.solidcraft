@@ -1,7 +1,8 @@
-"""Regression checks for the independent HUB75Display2 baseline."""
+"""Regression checks for the independent HUB75Display2 design."""
 
 import ast
 from pathlib import Path
+import tempfile
 import unittest
 
 from scpf.runner import run_script
@@ -13,8 +14,28 @@ SCPF_DIR = MODEL_ROOT / "scpf"
 MODEL = SCPF_DIR / "model.py"
 
 
-def commands():
-    return run_script(MODEL)["commands"]
+def commands(**overrides):
+    if not overrides:
+        return run_script(MODEL)["commands"]
+
+    text = MODEL.read_text(encoding="utf-8")
+    args = ", ".join(f"{key}={value!r}" for key, value in overrides.items())
+    changed = text.rstrip() + f"\n\nHUB75Display2({args})\n"
+
+    handle = tempfile.NamedTemporaryFile(
+        mode="w",
+        suffix=".py",
+        prefix="_hub75_display2_test_",
+        dir=SCPF_DIR,
+        delete=False,
+        encoding="utf-8",
+    )
+    try:
+        with handle:
+            handle.write(changed)
+        return run_script(Path(handle.name))["commands"]
+    finally:
+        Path(handle.name).unlink(missing_ok=True)
 
 
 def of(rows, command):
@@ -22,6 +43,13 @@ def of(rows, command):
         row["params"]
         for row in rows
         if row["command"] == command
+    ]
+
+
+def moved(rows, prefix):
+    return [
+        row for row in of(rows, "occurrence.move")
+        if row["occurrence"].startswith(prefix)
     ]
 
 
@@ -58,7 +86,7 @@ class HUB75Display2Tests(unittest.TestCase):
         )
         self.assertNotIn("hub75_wood_frame", source)
 
-    def test_initial_native_parameter_baseline_is_frozen(self):
+    def test_native_parameters_include_lower_compartment_height(self):
         parameter_names = {
             row["name"] for row in of(commands(), "parameters.add")
         }
@@ -67,6 +95,7 @@ class HUB75Display2Tests(unittest.TestCase):
             {
                 "opening_width",
                 "opening_height",
+                "lower_compartment_height",
                 "frame_wood_thickness",
                 "panel_wood_thickness",
                 "cabinet_depth",
@@ -80,76 +109,105 @@ class HUB75Display2Tests(unittest.TestCase):
             },
         )
 
-    def test_initial_component_and_occurrence_baseline_is_frozen(self):
+    def test_12_mm_wood_and_70_mm_compartment_make_94_mm_opening_datum(self):
+        source = MODEL.read_text(encoding="utf-8")
+        frame_source = (
+            SCPF_DIR / "assemblies" / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("frame_wood_thickness = 12.0", source)
+        self.assertIn("lower_compartment_height = 70.0", source)
+        self.assertIn(
+            "2 * self.frame_wood_thickness\n            + self.lower_compartment_height",
+            source,
+        )
+        self.assertIn(
+            "shelf_bottom = bottom_top + self.lower_compartment_height",
+            frame_source,
+        )
+        self.assertIn(
+            "opening_bottom = shelf_bottom + self.frame_wood_thickness",
+            frame_source,
+        )
+
+    def test_lower_compartment_parameter_moves_display_consumers(self):
+        rows = commands(lower_compartment_height=90.0)
+
+        panels = moved(rows, "$hub75panelbasic")
+        self.assertEqual(len(panels), 5)
+        self.assertTrue(
+            all("lower_compartment_height" in str(row["translate"][2]) for row in panels)
+        )
+
+        window = moved(rows, "$window")
+        self.assertEqual(len(window), 1)
+        self.assertIn(
+            "lower_compartment_height",
+            str(window[0]["translate"][2]),
+        )
+
+        strips = [
+            row for row in of(rows, "occurrence.move")
+            if row["occurrence"].startswith("$glassstrip")
+        ]
+        self.assertEqual(len(strips), 4)
+        self.assertTrue(
+            all("lower_compartment_height" in str(row["translate"][2]) for row in strips)
+        )
+
+    def test_frame_contains_intermediate_shelf_and_longer_sidewalls(self):
         rows = commands()
         creates = [row["name"] for row in of(rows, "component.create")]
-        self.assertEqual(len(creates), 13)
 
-        for name in (
-            "HUB75Panels",
-            "WoodBoxFrame",
-            "WoodGlassFrame",
-            "CornerBrackets",
-            "Hub75PanelBasic",
-            "Board",
-            "Board 2",
-            "Board 3",
-            "Board 4",
-            "Window",
-            "GlassStrip",
-            "GlassStrip 2",
-            "CornerBracket",
-        ):
-            self.assertIn(name, creates)
+        # One additional Board component is introduced for the unfilleted
+        # intermediate shelf. Left and right remain copies of one side board.
+        self.assertEqual(len(creates), 14)
+        self.assertIn("Board 5", creates)
 
-        copies = of(rows, "occurrence.copy")
-        expected = {
-            "Hub75PanelBasic": 4,
-            "Board": 1,
-            "GlassStrip": 1,
-            "GlassStrip 2": 1,
-            "CornerBracket": 7,
-        }
-        for name, count in expected.items():
-            self.assertEqual(
-                sum(row["component"] == name for row in copies),
-                count,
-                name,
-            )
+        moves = of(rows, "occurrence.move")
+        shelf = [row for row in moves if row["occurrence"] == "$intermediate_shelf"]
+        self.assertEqual(len(shelf), 1)
+        self.assertIn("lower_compartment_height", str(shelf[0]["translate"][2]))
 
-    def test_initial_five_panel_layout_is_frozen(self):
-        rows = commands()
-        panels = [
-            row for row in of(rows, "occurrence.move")
-            if row["occurrence"].startswith("$hub75panelbasic")
+        sides = [
+            row for row in moves
+            if row["occurrence"] in {"$left", "$right"}
         ]
+        self.assertEqual(len(sides), 2)
+        self.assertTrue(
+            all("frame_wood_thickness" in str(row["translate"][2]) for row in sides)
+        )
+
+    def test_five_panel_x_layout_is_unchanged(self):
+        panels = moved(commands(), "$hub75panelbasic")
         self.assertEqual(len(panels), 5)
         self.assertEqual(
             sorted(row["translate"][0] for row in panels),
             [-320.0, -160.0, 0.0, 160.0, 320.0],
         )
+
+    def test_top_brackets_follow_complete_vertical_stack(self):
+        brackets = moved(commands(), "$cornerbracket")
+        self.assertEqual(len(brackets), 8)
+
+        top = [
+            row for row in brackets
+            if "opening_height" in str(row["translate"][2])
+        ]
+        self.assertEqual(len(top), 4)
         self.assertTrue(
-            all("panel_recess_depth" in str(row["translate"][1]) for row in panels)
-        )
-        self.assertTrue(
-            all("opening_height" in str(row["translate"][2]) for row in panels)
+            all(
+                "lower_compartment_height" in str(row["translate"][2])
+                and "frame_wood_thickness" in str(row["translate"][2])
+                for row in top
+            )
         )
 
-    def test_initial_eight_bracket_layout_is_frozen(self):
-        rows = commands()
-        brackets = [
-            row for row in of(rows, "occurrence.move")
-            if row["occurrence"].startswith("$cornerbracket")
+        bottom = [
+            row for row in brackets
+            if row["translate"][2] == 0
         ]
-        self.assertEqual(len(brackets), 8)
-        self.assertEqual(
-            sum("cabinet_depth" in str(row["translate"][1]) for row in brackets),
-            4,
-        )
-        self.assertEqual(
-            sum("opening_height" in str(row["translate"][2]) for row in brackets),
-            4,
-        )
+        self.assertEqual(len(bottom), 4)
 
 
 if __name__ == "__main__":

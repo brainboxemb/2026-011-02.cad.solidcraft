@@ -1,4 +1,4 @@
-"""HUB75Display2 parallel design baseline assembled from named parts and subassemblies."""
+"""Second-generation HUB75 display assembled from named parts and subassemblies."""
 
 from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
@@ -8,7 +8,7 @@ from parts.window import Window
 
 
 class HUB75Display2:
-    """Second HUB75 display design; initially matches the verified v1 baseline."""
+    """Second HUB75 display design, now with a lower storage compartment."""
 
     # Coordinate / datum conventions
     #
@@ -19,17 +19,17 @@ class HUB75Display2:
     #           cabinet_depth grows only towards +Y. The rear sidewall face is
     #           Y=cabinet_depth and the back board starts at that same plane.
     # Z = 0 : outside bottom face of the wooden cabinet.
-    #           frame_wood_thickness grows upwards from here; the opening starts
-    #           at Z=frame_wood_thickness and keeps opening_height.
     #
-    # Derived reference planes:
-    #   opening X = ±opening_width / 2
-    #   cabinet X = ±(opening_width / 2 + frame_wood_thickness)
-    #   opening Z = frame_wood_thickness ..
-    #               frame_wood_thickness + opening_height
-    #   cabinet rear Y = cabinet_depth
-    #   back board front Y = cabinet_depth
-    #   roof front Y = -roof_front_overhang (the deliberate front exception)
+    # Vertical stack from Z=0:
+    #   bottom board
+    #   lower_compartment_height clear storage space
+    #   intermediate shelf
+    #   opening_height display opening
+    #   roof board
+    #
+    # The bottom, intermediate shelf and roof all use frame_wood_thickness.
+    # Therefore the display opening begins at:
+    #   2 * frame_wood_thickness + lower_compartment_height
     #
     # Parameter rule: dimensions may move these reference planes, but no
     # dependent part may freeze such a relationship into an occurrence.move.
@@ -43,6 +43,9 @@ class HUB75Display2:
     opening_width = 844.0
     opening_height = 362.0
     panel_recess_depth = 25.0
+
+    # Lower storage compartment
+    lower_compartment_height = 70.0
 
     # Wood
     frame_wood_thickness = 12.0
@@ -60,7 +63,10 @@ class HUB75Display2:
     glazing_wood_depth = 12.0
 
     def build(self):
-        opening_bottom_z = self.frame_wood_thickness
+        opening_bottom_z = (
+            2 * self.frame_wood_thickness
+            + self.lower_compartment_height
+        )
 
         panels = HUB75Panels(
             opening_height=self.opening_height,
@@ -71,6 +77,7 @@ class HUB75Display2:
         frame = WoodFrame(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
+            lower_compartment_height=self.lower_compartment_height,
             frame_wood_thickness=self.frame_wood_thickness,
             panel_wood_thickness=self.panel_wood_thickness,
             cabinet_depth=self.cabinet_depth,
@@ -82,6 +89,7 @@ class HUB75Display2:
         brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
+            lower_compartment_height=self.lower_compartment_height,
             frame_wood_thickness=self.frame_wood_thickness,
             cabinet_depth=self.cabinet_depth,
             bracket_width=self.bracket_width,

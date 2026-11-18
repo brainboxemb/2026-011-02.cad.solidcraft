@@ -11,16 +11,21 @@ class CornerBrackets:
 
     opening_width = 844.0
     opening_height = 362.0
+    lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
     cabinet_depth = 100.0
     bracket_width = 24.0
     corner_radius = 4.0
 
     def build(self):
-        # These eight cabinet-corner poses are explicit occurrence Placement.
-        # No attachment relationship is needed for this baseline.
+        # The top brackets follow the complete vertical stack:
+        # bottom + clear lower compartment + shelf + opening + roof.
         outer_half = half(self.opening_width) + self.frame_wood_thickness
-        top_z = self.opening_height + 2 * self.frame_wood_thickness
+        top_z = (
+            self.lower_compartment_height
+            + self.opening_height
+            + 3 * self.frame_wood_thickness
+        )
         front_y = half(self.bracket_width)
         rear_y = self.cabinet_depth - half(self.bracket_width)
 

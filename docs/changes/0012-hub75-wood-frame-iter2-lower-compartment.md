@@ -1,10 +1,10 @@
-# 0012 — HUB75Display2 lower compartment
+# 0012 — Wooden HUB75 frame iteration 2 lower compartment
 
 Issue: #154
 
 ## Problem
 
-`HUB75Display2` was intentionally created as a copy of the verified first
+`WoodenHub75BoxIter2` was intentionally created as a copy of the verified first
 wooden HUB75 enclosure. The second design now needs to start following the
 older full display-case concept, beginning with the storage space below the
 screen.
@@ -17,7 +17,7 @@ copying the old material thickness.
 
 ## Decision
 
-Keep the Python model directory as `models/advanced/hub75_display2/`. The public model slug remains `hub75-display2`; the hyphen belongs in the URL/CI slug, not in a Python package path.
+Name this design as iteration 2 of the existing wooden frame: Python directory `models/advanced/hub75_wood_frame_iter2/`, top-level class `WoodenHub75BoxIter2`, and public catalog/URL slug `hub75-wood-frame-iter2`. Python paths use snake_case; the published slug uses kebab-case.
 
 Keep Z=0 at the outside bottom face and use this vertical stack:
 

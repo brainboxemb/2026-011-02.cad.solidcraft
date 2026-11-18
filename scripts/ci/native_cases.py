@@ -15,7 +15,7 @@ NATIVE_MUTATIONS = {
             "changes": {"guide_rail_length": "1400 mm"},
         },
     ),
-    "hub75-display2": (
+    "hub75-wood-frame-iter2": (
         {
             "name": "lower-compartment-height-90",
             "changes": {"lower_compartment_height": "90 mm"},

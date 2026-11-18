@@ -29,4 +29,4 @@ Current records:
 - [0008-model-root-input-selection.md](0008-model-root-input-selection.md) — select model-root README/check metadata without propagating it through geometry dependencies (#144).
 - [0009-model-page-warnings.md](0009-model-page-warnings.md) — render optional model-specific warnings from catalog metadata on result pages (#147).
 - [0011-native-verification-status.md](0011-native-verification-status.md) — separate geometry verification fingerprints from page metadata and explain public verification states (#152).
-- [0012-hub75-display2-lower-compartment.md](0012-hub75-display2-lower-compartment.md) — extend HUB75Display2 with a 70 mm lower compartment and derived vertical stack (#154).
+- [0012-hub75-wood-frame-iter2-lower-compartment.md](0012-hub75-wood-frame-iter2-lower-compartment.md) — extend wooden HUB75 frame iteration 2 with a 70 mm lower compartment and derived vertical stack (#154).

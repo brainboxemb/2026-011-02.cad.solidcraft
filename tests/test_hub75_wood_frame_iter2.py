@@ -1,4 +1,4 @@
-"""Regression checks for the independent HUB75Display2 design."""
+"""Regression checks for the independent WoodenHub75BoxIter2 design."""
 
 import ast
 from pathlib import Path
@@ -9,7 +9,7 @@ from scpf.runner import run_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MODEL_ROOT = ROOT / "models" / "advanced" / "hub75_display2"
+MODEL_ROOT = ROOT / "models" / "advanced" / "hub75_wood_frame_iter2"
 SCPF_DIR = MODEL_ROOT / "scpf"
 MODEL = SCPF_DIR / "model.py"
 
@@ -20,12 +20,12 @@ def commands(**overrides):
 
     text = MODEL.read_text(encoding="utf-8")
     args = ", ".join(f"{key}={value!r}" for key, value in overrides.items())
-    changed = text.rstrip() + f"\n\nHUB75Display2({args})\n"
+    changed = text.rstrip() + f"\n\nWoodenHub75BoxIter2({args})\n"
 
     handle = tempfile.NamedTemporaryFile(
         mode="w",
         suffix=".py",
-        prefix="_hub75_display2_test_",
+        prefix="_hub75_wood_frame_iter2_test_",
         dir=SCPF_DIR,
         delete=False,
         encoding="utf-8",
@@ -53,14 +53,14 @@ def moved(rows, prefix):
     ]
 
 
-class HUB75Display2Tests(unittest.TestCase):
+class WoodenHub75BoxIter2Tests(unittest.TestCase):
     def test_v2_has_its_own_model_local_source_tree(self):
         classes = [
             node.name
             for node in ast.parse(MODEL.read_text(encoding="utf-8")).body
             if isinstance(node, ast.ClassDef)
         ]
-        self.assertEqual(classes, ["HUB75Display2"])
+        self.assertEqual(classes, ["WoodenHub75BoxIter2"])
 
         self.assertEqual(
             {path.name for path in (SCPF_DIR / "assemblies").glob("*.py")},

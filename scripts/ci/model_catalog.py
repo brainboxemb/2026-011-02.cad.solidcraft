@@ -381,17 +381,17 @@ MODELS = {
         "native": True,
         "native_snapshot_required": True,
     },
-    "hub75-display2": {
-        "source": "models/advanced/hub75_display2/scpf/model.py",
+    "hub75-wood-frame-iter2": {
+        "source": "models/advanced/hub75_wood_frame_iter2/scpf/model.py",
         "dependencies": ("corner-bracket",),
         "extra_inputs": (
-            "models/advanced/hub75_display2/scpf/",
+            "models/advanced/hub75_wood_frame_iter2/scpf/",
             "models/components/hub75_panel/basic/scpf/",
         ),
         "section": "advanced",
-        "title": "HUB75Display2",
-        "tagline": "Second-generation HUB75 enclosure with a 70 mm lower storage compartment",
-        "description": "The independently evolving second HUB75 display now adds the first lower-case geometry from the older display-case concept: 12 mm bottom, 70 mm clear storage space and a 12 mm intermediate shelf below the unchanged 844 × 362 mm display opening. The sidewalls, rear, roof, glazing, window, panels and top brackets all follow the same derived vertical stack. Generic Hub75PanelBasic and CornerBracket components remain shared.",
+        "title": "WoodenHub75BoxIter2",
+        "tagline": "Iteration 2 of the wooden HUB75 frame with a 70 mm lower storage compartment",
+        "description": "The independently evolving second iteration of the wooden HUB75 frame adds the first lower-case geometry from the older display-case concept: 12 mm bottom, 70 mm clear storage space and a 12 mm intermediate shelf below the unchanged 844 × 362 mm display opening. The sidewalls, rear, roof, glazing, window, panels and top brackets all follow the same derived vertical stack. Generic Hub75PanelBasic and CornerBracket components remain shared.",
         "parameters": "868 × 468 mm outer front envelope; 70 mm clear lower compartment; 12 mm frame; 9 mm rear; 100 mm depth; five panels; eight brackets",
         "diagram": "hub75-wood-frame",
         "stages": [

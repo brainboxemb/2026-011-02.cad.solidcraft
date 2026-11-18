@@ -1,4 +1,4 @@
-"""Second-generation HUB75 display assembled from named parts and subassemblies."""
+"""Second iteration of the wooden HUB75 frame, assembled from named parts and subassemblies."""
 
 from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
@@ -7,8 +7,8 @@ from assemblies.wood_frame import WoodFrame
 from parts.window import Window
 
 
-class HUB75Display2:
-    """Second HUB75 display design, now with a lower storage compartment."""
+class WoodenHub75BoxIter2:
+    """Second iteration of the wooden HUB75 frame with a lower storage compartment."""
 
     # Coordinate / datum conventions
     #

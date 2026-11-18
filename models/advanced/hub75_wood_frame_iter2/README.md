@@ -1,14 +1,14 @@
-# HUB75Display2
+# WoodenHub75BoxIter2
 
-HUB75Display2 is the second HUB75 enclosure design. It is developed **in
+WoodenHub75BoxIter2 is the second HUB75 enclosure design. It is developed **in
 parallel** with the existing [Wooden HUB75 Basic Box](../hub75_wood_frame/README.md).
 
-The first revision started from the verified v1 geometry so both designs had a
-known comparison point. HUB75Display2 now evolves independently.
+Iteration 2 started from the verified `hub75_wood_frame` geometry so both
+iterations had a known comparison point. It now evolves independently.
 
 ## Independence
 
-HUB75Display2 owns its own model-local:
+WoodenHub75BoxIter2 owns its own model-local:
 
 - `scpf/model.py`;
 - `scpf/parts/`;
@@ -24,7 +24,7 @@ Reusable physical parts remain shared from `models/components/`, including:
 
 ## Lower storage compartment
 
-The first v2-specific geometry change adds the lower compartment from the older
+The first iteration-2 geometry change adds the lower compartment from the older
 HUB75 display-case concept while keeping the SolidCraft design's 12 mm plywood.
 
 Reference design:

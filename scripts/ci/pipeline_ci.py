@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Run the complete selected CAD check pipeline from event metadata."""
+"""Run the complete selected CAD check pipeline from event metadata.
+
+The pipeline resolves the current durable build baseline before it executes
+model work. If the source catalog contains a native model that is not yet in
+that baseline, the missing model is added to this run before any site build.
+That keeps catalog growth a normal targeted build instead of a broken-site
+state.
+"""
 
 from __future__ import annotations
 
@@ -13,6 +20,7 @@ import tempfile
 import build_plan
 import cad_ci
 import native_ci
+from model_catalog import MODELS, model_build_path, model_slugs
 from output_store import migrate_legacy_store_layout
 from select_models import parse_models
 
@@ -22,6 +30,7 @@ ROOT = Path(__file__).resolve().parents[2]
 
 def configure_git_workspace() -> None:
     """Allow the container user to inspect the mounted Actions checkout."""
+
     subprocess.run(
         ["git", "config", "--global", "--add", "safe.directory", str(ROOT)],
         cwd=ROOT,
@@ -31,6 +40,7 @@ def configure_git_workspace() -> None:
 
 def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
     """Create a read-only resolved build copy for this CI run."""
+
     if destination.exists():
         shutil.rmtree(destination)
     shutil.copytree(
@@ -45,6 +55,59 @@ def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
             "build branch has neither build/main nor a complete legacy stable store"
         )
     return destination / "main"
+
+
+def missing_stable_models(stable_store: Path) -> tuple[str, ...]:
+    """Return current native catalog models absent from the stable build store.
+
+    Presence is defined by the model's verification file, not by a directory
+    name alone. A half-written directory must therefore still be rebuilt.
+    """
+
+    return tuple(
+        slug
+        for slug in model_slugs("native")
+        if not (
+            stable_store
+            / model_build_path(slug)
+            / "verification.json"
+        ).is_file()
+    )
+
+
+def extend_plan_for_missing_stable(plan: dict, stable_store: Path) -> dict:
+    """Add missing stable models to each build kind they actually support.
+
+    A newly added model cannot be used by a complete result site until it has
+    command/native evidence. The central catalog already knows which build
+    kinds apply, so this function extends the plan from that single source.
+    """
+
+    missing = set(missing_stable_models(stable_store))
+    if not missing:
+        return plan
+
+    result = dict(plan)
+    kinds = {
+        "scpf_models": "scpf",
+        "scpc_models": "scpc",
+        "native_models": "native",
+        "snapshot_models": "native-snapshot-required",
+    }
+    for key, kind in kinds.items():
+        eligible = set(model_slugs(kind))
+        selected = set(plan.get(key, ())) | (missing & eligible)
+
+        # Preserve catalog order so generated plans remain stable and readable.
+        result[key] = [
+            slug for slug in MODELS
+            if slug in selected
+        ]
+
+    # Filling a stable-store gap changes both technical output and the site.
+    result["site_refresh"] = True
+    result["publishable"] = True
+    return result
 
 
 def execute(
@@ -62,6 +125,8 @@ def execute(
     workflow_run: str,
     image_reference: str,
 ) -> dict:
+    """Run the selected CAD checks against a complete planned catalog state."""
+
     configure_git_workspace()
     paths = (
         build_plan.changed_paths(base_sha, head_sha)
@@ -78,16 +143,22 @@ def execute(
     )
     output_root.mkdir(parents=True, exist_ok=True)
     plan_path = output_root / "plan.json"
-    plan_path.write_text(
-        json.dumps(plan, indent=2) + "\n",
-        encoding="utf-8",
-    )
 
     with tempfile.TemporaryDirectory(prefix="cad-build-baseline-") as temp:
         stable_store = resolve_build_baseline(
             build_root,
             Path(temp) / "build",
         )
+
+        # Catalog growth is detected against the actual durable baseline before
+        # cheap/native work starts. This ensures the later site always has a
+        # command/native source for every current catalog model.
+        plan = extend_plan_for_missing_stable(plan, stable_store)
+        plan_path.write_text(
+            json.dumps(plan, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
         cad_ci.execute(
             plan_path=plan_path,
             output_root=output_root,
@@ -108,6 +179,8 @@ def execute(
 
 
 def main() -> int:
+    """Parse workflow metadata and run the same pipeline used by local checks."""
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--mode", choices=("changed", "models", "all"), default="changed")
     parser.add_argument("--models", default="")

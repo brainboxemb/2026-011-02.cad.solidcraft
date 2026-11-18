@@ -280,6 +280,10 @@ MODELS = {
         "title": "GuideRail — Makita profile",
         "tagline": "The same GuideRail component with the Makita 199141-8 profile",
         "description": "A second fixed cross-section of the generic GuideRail component. The aluminium shape comes from the Makita 199141-8 STEP reference and is calibrated to the TSO measured 182.50 × 10.28 mm envelope. The standalone CAD example uses 600 mm for compact visual inspection; Makita's referenced product length is 1500 mm.",
+        "warning": {
+            "title": "WARNING — measured/reference geometry, not an official dimensional specification",
+            "body": "The Makita cross-section is based on a third-party STEP reference and calibrated to the 182.50 × 10.28 mm envelope measured by TSO Products. It has not been independently verified against a physical rail or an official Makita extrusion drawing. The official Makita 199141-8 product sheet confirms the guide-rail product and 1500 mm length, but does not provide the full extrusion geometry used here. Treat this model as an assembly/layout reference, not as verified manufacturing geometry or authoritative Makita dimensions.",
+        },
         "parameters": "182.50 × 10.28 mm profile; 600 mm standalone example",
         "diagram": "guide-rail",
         "stages": [

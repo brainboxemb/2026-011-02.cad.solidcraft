@@ -27,6 +27,18 @@ class ModelItemTests(unittest.TestCase):
             ("simple-mft", "simple-mft-assembly"),
         )
 
+    def test_nested_sources_stay_in_their_physical_model_root(self):
+        """Implementation/assembly subfolders do not become extra CI items."""
+
+        self.assertEqual(
+            model_item.catalog_root("hub75-panel"),
+            Path("models/components/hub75_panel"),
+        )
+        self.assertEqual(
+            model_item.catalog_root("simple-mft-assembly"),
+            Path("models/advanced/simple_mft"),
+        )
+
     def test_item_dependencies_are_unique_folder_dependencies(self):
         self.assertEqual(
             model_item.item_dependencies("simple-mft"),

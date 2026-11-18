@@ -27,14 +27,20 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def catalog_root(slug: str) -> Path:
-    """Return the physical model-root path that owns one catalog slug."""
+    """Return the repository model root that owns one catalog slug.
+
+    CAD model roots have one fixed shape: models/<section>/<folder>. Files
+    below that root may add implementation or variant directories such as
+    detailed/scpf or scpf/assemblies, but those are not separate CI items.
+    """
 
     source = Path(MODELS[slug]["source"])
-    try:
-        index = source.parts.index("scpf")
-    except ValueError as exc:
-        raise ValueError(f"{slug}: source path has no scpf directory") from exc
-    return Path(*source.parts[:index])
+    parts = source.parts
+    if len(parts) < 4 or parts[0] != "models":
+        raise ValueError(
+            f"{slug}: source is not below models/<section>/<folder>: {source}"
+        )
+    return Path(*parts[:3])
 
 
 def item_members(item_root: Path) -> tuple[str, ...]:

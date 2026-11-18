@@ -58,6 +58,154 @@ jobs:
           channel="$(jq -r '.channel' bundle/publish.json)"
           preview_key="$(jq -r '.preview_key // ""' bundle/publish.json)"
           models="$(jq -r '.models | join(" ")' bundle/publish.json)"
+          source_commit="$(jq -r '.source_commit' bundle/publish.json)"
+          if ! printf '%s' "$source_commit" | grep -Eq '^[0-9a-f]{40}
+          case "$channel" in
+            stable)
+              if [ "$RUN_BRANCH" != "main" ]; then
+                echo "Stable promotion is only allowed from main." >&2
+                exit 1
+              fi
+              if [ "$RUN_EVENT" != "push" ] && [ "$RUN_EVENT" != "workflow_dispatch" ]; then
+                echo "Stable promotion is not allowed for $RUN_EVENT." >&2
+                exit 1
+              fi
+              ;;
+            preview)
+              if [ -z "$preview_key" ]; then
+                echo "Preview promotion requires a preview key." >&2
+                exit 1
+              fi
+              ;;
+            *)
+              echo "Unknown publication channel: $channel" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+          echo "preview_key=$preview_key" >> "$GITHUB_OUTPUT"
+          echo "models=$models" >> "$GITHUB_OUTPUT"
+          echo "source_commit=$source_commit" >> "$GITHUB_OUTPUT"
+
+      - name: Bootstrap stable output from complete legacy Pages
+        if: steps.target.outputs.channel == 'stable'
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=false
+          for model in $(python source/scripts/ci/model_catalog.py --list native); do
+            if [ ! -s "model-output/stable/models/$model/verification.json" ]; then
+              missing=true
+              break
+            fi
+          done
+          if [ "$missing" = true ]; then
+            python source/scripts/ci/output_store.py migrate-pages               --pages pages               --store model-output
+          fi
+
+      - name: Promote verified model candidate
+        if: steps.target.outputs.models != ''
+        shell: bash
+        run: |
+          set -euo pipefail
+          args=(
+            promote
+            --models "${{ steps.target.outputs.models }}"
+            --candidate bundle/candidate
+            --store model-output
+            --channel "${{ steps.target.outputs.channel }}"
+          )
+          if [ "${{ steps.target.outputs.channel }}" = preview ]; then
+            args+=(--preview-key "${{ steps.target.outputs.preview_key }}")
+          fi
+          python source/scripts/ci/output_store.py "${args[@]}"
+
+          if [ "${{ steps.target.outputs.channel }}" = stable ]; then
+            python source/scripts/ci/output_store.py prune               --store model-output --channel stable
+          fi
+
+      - name: Commit promoted model output
+        shell: bash
+        working-directory: model-output
+        run: |
+          set -euo pipefail
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "No model-output changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote CAD output from run ${{ github.event.workflow_run.id }}"
+          git push origin HEAD:model-output
+
+      - name: Check stable output completeness
+        id: stable
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=()
+          for model in $(python source/scripts/ci/model_catalog.py --list native); do
+            if [ ! -s "model-output/stable/models/$model/verification.json" ]; then
+              missing+=("$model")
+            fi
+          done
+          if [ "${#missing[@]}" -eq 0 ]; then
+            echo "complete=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "complete=false" >> "$GITHUB_OUTPUT"
+            printf 'Stable output is not bootstrapped yet; missing: %s\n' "${missing[*]}"
+          fi
+
+      - name: Regenerate stable site from promoted output
+        if: steps.target.outputs.channel == 'stable' && steps.stable.outputs.complete == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_commit="${{ steps.target.outputs.source_commit }}"
+          git -C source fetch origin "$source_commit"
+          git -C source checkout --detach "$source_commit"
+          rm -rf stable-site
+          python source/scripts/ci/build-results.py             --stable-store model-output/stable             --previous-site pages             --public-base "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"             --commit "$source_commit"             --out stable-site
+          python source/scripts/ci/test-results.py             stable-site "$source_commit"             "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
+
+      - name: Publish preview site
+        if: steps.target.outputs.channel == 'preview'
+        shell: bash
+        run: |
+          set -euo pipefail
+          key="${{ steps.target.outputs.preview_key }}"
+          target="pages/preview/$key"
+          rm -rf "$target"
+          mkdir -p "$target"
+          cp -a bundle/site/. "$target/"
+
+      - name: Publish stable site
+        if: steps.target.outputs.channel == 'stable' && steps.stable.outputs.complete == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete             --exclude='.git/'             --exclude='preview/'             stable-site/ pages/
+
+      - name: Commit Pages publication
+        shell: bash
+        working-directory: pages
+        run: |
+          set -euo pipefail
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "No Pages changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish CAD site from run ${{ github.event.workflow_run.id }}"
+          git push origin HEAD:gh-pages
+; then
+            echo "Invalid source commit in publication bundle." >&2
+            exit 1
+          fi
 
           case "$channel" in
             stable)

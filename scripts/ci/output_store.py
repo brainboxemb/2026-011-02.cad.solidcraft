@@ -14,7 +14,7 @@ import shutil
 import tempfile
 import zipfile
 
-from model_catalog import MODELS, model_input_paths
+from model_catalog import MODELS, model_input_paths, model_slugs
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -171,6 +171,109 @@ def prepare_candidate(
     )
 
 
+def migrate_legacy_pages(*, pages, store, source_root=ROOT):
+    """Bootstrap stable model-output from one complete legacy Pages build."""
+    provenance_file = pages / "provenance.json"
+    if not provenance_file.is_file():
+        raise FileNotFoundError("legacy Pages provenance.json is missing")
+    legacy = json.loads(provenance_file.read_text(encoding="utf-8"))
+
+    expected = tuple(model_slugs("native"))
+    verified = tuple(legacy.get("native_verified_models", ()))
+    if set(verified) != set(expected) or len(verified) != len(expected):
+        raise ValueError(
+            "legacy Pages is not a complete native catalog; "
+            f"expected {len(expected)} models, got {len(verified)}"
+        )
+
+    required = (
+        "source_commit",
+        "scpf_commit",
+        "scpf_release",
+        "scpc_commit",
+        "solidcraft_version",
+        "workflow_run",
+        "native_file_format",
+    )
+    missing = [key for key in required if not legacy.get(key)]
+    if missing:
+        raise ValueError(
+            "legacy Pages lacks verification fields: " + ", ".join(missing)
+        )
+
+    with tempfile.TemporaryDirectory() as tmp:
+        candidate = Path(tmp) / "candidate"
+        (candidate / "models").mkdir(parents=True)
+
+        for slug in expected:
+            published = pages / "models" / slug
+            if not published.is_dir():
+                raise FileNotFoundError(
+                    f"legacy Pages model directory is missing: {slug}"
+                )
+            native_file = published / "model.sc"
+            if not native_file.is_file() or not zipfile.is_zipfile(native_file):
+                raise ValueError(
+                    f"legacy Pages model has no valid native .sc: {slug}"
+                )
+            actual_format = native_file_format(native_file)
+            if actual_format != legacy["native_file_format"]:
+                raise ValueError(
+                    f"{slug}: legacy native format {actual_format!r} does not "
+                    f"match {legacy['native_file_format']!r}"
+                )
+            command_file = published / "solidcraft.json"
+            if not command_file.is_file():
+                raise FileNotFoundError(
+                    f"legacy Pages command JSON is missing: {slug}"
+                )
+
+            target = candidate / "models" / slug
+            native = target / "native"
+            generated = target / "generated" / "scpf"
+            native.mkdir(parents=True)
+            generated.mkdir(parents=True)
+
+            for filename in ("model.sc", "native.png", "front.png", "rear.png"):
+                source = published / filename
+                if source.is_file():
+                    shutil.copy2(source, native / filename)
+            shutil.copy2(command_file, generated / "solidcraft.json")
+
+            scpc = published / "scpc-commands.json"
+            if scpc.is_file():
+                target_scpc = target / "generated" / "scpc"
+                target_scpc.mkdir(parents=True)
+                shutil.copy2(scpc, target_scpc / "solidcraft.json")
+
+            verification = {
+                "schema": 1,
+                "model": slug,
+                "source_commit": legacy["source_commit"],
+                "scpf_commit": legacy["scpf_commit"],
+                "scpf_release": legacy["scpf_release"],
+                "scpc_commit": legacy["scpc_commit"],
+                "solidcraft_version": legacy["solidcraft_version"],
+                "workflow_run": str(legacy["workflow_run"]),
+                "native_file_format": actual_format,
+                "input_fingerprint": input_fingerprint(slug, source_root),
+                "verified": True,
+                "legacy_migrated": True,
+            }
+            (target / VERIFICATION_FILE).write_text(
+                json.dumps(verification, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+
+        promote_candidate(
+            candidate=candidate,
+            store=store,
+            models=expected,
+            channel="stable",
+        )
+    return expected
+
+
 def _validate_candidate(candidate, models):
     missing = []
     for slug in models:
@@ -300,6 +403,10 @@ def main():
     promote.add_argument("--channel", choices=("stable", "preview"), required=True)
     promote.add_argument("--preview-key")
 
+    migrate = sub.add_parser("migrate-pages")
+    migrate.add_argument("--pages", type=Path, required=True)
+    migrate.add_argument("--store", type=Path, required=True)
+
     prune = sub.add_parser("prune")
     prune.add_argument("--store", type=Path, required=True)
     prune.add_argument("--channel", choices=("stable", "preview"), default="stable")
@@ -328,6 +435,12 @@ def main():
             out=args.out,
             metadata=metadata,
         )
+    elif args.command == "migrate-pages":
+        migrated = migrate_legacy_pages(
+            pages=args.pages,
+            store=args.store,
+        )
+        print(" ".join(migrated))
     elif args.command == "promote":
         promote_candidate(
             candidate=args.candidate,

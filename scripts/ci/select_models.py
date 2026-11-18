@@ -18,6 +18,9 @@ SITE_ONLY_PATHS = (
     "scripts/ci/build-results.py",
     "scripts/ci/test-results.py",
     "scripts/ci/model_catalog.py",
+    "scripts/ci/output_store.py",
+    ".github/workflows/publish-cad.yml",
+    ".github/workflows/cleanup-cad-preview.yml",
     "site/",
 )
 

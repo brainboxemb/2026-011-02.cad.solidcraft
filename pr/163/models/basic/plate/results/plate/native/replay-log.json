@@ -1,0 +1,141 @@
+{
+  "format": "scpf-replay-log",
+  "version": 1,
+  "replay_sha256": "1f0ffec921330d6f501766e99692dcc1620b2618dbaa5bf1a9590cdadee97588",
+  "variables": {},
+  "commands": [
+    {
+      "index": 0,
+      "command": "parameters.add",
+      "resolved_params": {
+        "name": "length",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "index": 1,
+      "command": "parameters.add",
+      "resolved_params": {
+        "name": "width",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "index": 2,
+      "command": "parameters.add",
+      "resolved_params": {
+        "name": "thickness",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "index": 3,
+      "command": "solid.box",
+      "resolved_params": {
+        "length": "length",
+        "width": "width",
+        "height": "thickness",
+        "corner": [
+          "-length / 2",
+          "-width / 2",
+          0
+        ],
+        "body_name": "Plate"
+      }
+    },
+    {
+      "index": 4,
+      "command": "solid.fillet",
+      "resolved_params": {
+        "edges": [
+          [
+            -50.0,
+            -30.0,
+            5.0
+          ],
+          [
+            50.0,
+            -30.0,
+            5.0
+          ],
+          [
+            50.0,
+            30.0,
+            5.0
+          ],
+          [
+            -50.0,
+            30.0,
+            5.0
+          ]
+        ],
+        "radius": 2,
+        "body": "Plate"
+      }
+    },
+    {
+      "index": 5,
+      "command": "solid.hole",
+      "resolved_params": {
+        "position": [
+          -35.0,
+          -15.0,
+          10.0
+        ],
+        "diameter": 8,
+        "targets": [
+          "Plate"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "command": "solid.hole",
+      "resolved_params": {
+        "position": [
+          35.0,
+          -15.0,
+          10.0
+        ],
+        "diameter": 8,
+        "targets": [
+          "Plate"
+        ]
+      }
+    },
+    {
+      "index": 7,
+      "command": "solid.hole",
+      "resolved_params": {
+        "position": [
+          35.0,
+          15.0,
+          10.0
+        ],
+        "diameter": 8,
+        "targets": [
+          "Plate"
+        ]
+      }
+    },
+    {
+      "index": 8,
+      "command": "solid.hole",
+      "resolved_params": {
+        "position": [
+          -35.0,
+          15.0,
+          10.0
+        ],
+        "diameter": 8,
+        "targets": [
+          "Plate"
+        ]
+      }
+    }
+  ],
+  "completed": 9
+}

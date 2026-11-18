@@ -1,0 +1,11 @@
+{
+  "duration_seconds": 0.369,
+  "exit_code": 0,
+  "input_fingerprint": "09f7465dbc4a2557bf29ff2bdce6b8c3172a8e8ac4cac1765f8ff2aa17c7eb6d",
+  "outputs": {
+    "checks/compile.json": "4f63892b7575296c43786676d8dd1ca46e0aca9fa35548bce5d1705d8d60922d"
+  },
+  "result_fingerprint": "ba7e78754f2fc73d29cd373174a114608aae06f556674405331f556aea72fe04",
+  "status": "pass",
+  "step": "compile"
+}

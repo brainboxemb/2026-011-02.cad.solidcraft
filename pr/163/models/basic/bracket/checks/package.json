@@ -1,0 +1,11 @@
+{
+  "models": {
+    "bracket": {
+      "source": "stable-build",
+      "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+      "verification_sha256": "14c6644c119d50c9efbfffb46c761484de02482789c0130c8b2cbad2fa7c7e54"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

@@ -1,0 +1,11 @@
+{
+  "models": {
+    "csg-cube": {
+      "source": "stable-build",
+      "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+      "verification_sha256": "98e1c8b63f7b705c7148652ef990040fc797d8b320437a860eb378db4e525862"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

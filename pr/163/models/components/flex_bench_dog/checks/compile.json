@@ -1,0 +1,10 @@
+{
+  "models": {
+    "flex-bench-dog": {
+      "scpc_sha256": "8f045ba888a530a569d053db1c258b593a4d71b64fc09b5205fd7c9b1d400a95",
+      "scpf_sha256": "50101b6d486abbc8c1ceaf7b3f6c04b94364a0ab3e460006e67ac339063df2be"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

@@ -1,0 +1,13 @@
+{
+  "models": {
+    "bracket": {
+      "scpf": {
+        "sha256": "d15bf08d5dd446ae9b6c8f024e298d3de38bea8f9132760146db32b1e690f944",
+        "source": "stable-build",
+        "status": "pass"
+      }
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

@@ -1,0 +1,176 @@
+{
+  "commands": [
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 10,
+        "diameter": 100,
+        "base": [
+          0,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "Flange"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 16,
+        "diameter": 44,
+        "base": [
+          0,
+          0,
+          10
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0,
+          0,
+          26
+        ],
+        "diameter": 24,
+        "depth": 26,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          35.0,
+          0.0,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          17.500000000000004,
+          30.31088913245535,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -17.499999999999993,
+          30.310889132455355,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -35.0,
+          4.2862637970157365e-15,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -17.500000000000014,
+          -30.310889132455344,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          17.500000000000004,
+          -30.31088913245535,
+          10
+        ],
+        "diameter": 9,
+        "depth": 10,
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "targets": [
+          "Flange"
+        ]
+      }
+    }
+  ]
+}

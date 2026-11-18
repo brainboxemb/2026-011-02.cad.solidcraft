@@ -1,0 +1,11 @@
+{
+  "models": {
+    "flex-bench-dog": {
+      "source": "stable-build",
+      "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+      "verification_sha256": "f5a7f4f5020c202c6bb8b7816b56390261be6fa4d846fd568687860d3d0a7bd9"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

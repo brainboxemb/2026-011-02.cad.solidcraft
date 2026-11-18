@@ -1,0 +1,11 @@
+{
+  "models": {
+    "hub75-panel": {
+      "source": "stable-build",
+      "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+      "verification_sha256": "28ec48722a955d4a8c39c6b768ab1f53522a76cbcd61d7503168a9b10bc08872"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

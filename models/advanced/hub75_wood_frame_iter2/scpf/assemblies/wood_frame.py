@@ -19,7 +19,7 @@ class WoodFrame:
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
-    cabinet_depth = 100.0
+    cabinet_depth = 110.0
     side_panel_depth = 110.0
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
@@ -34,7 +34,8 @@ class WoodFrame:
     def build(self):
         rear_y = self.cabinet_depth
         roof_front = -self.roof_front_overhang
-        # The horizontal frame boards now follow the 110 mm side-panel depth.
+        # The horizontal frame boards and lower dividers now share the same
+        # 110 mm cabinet depth as the side panels.
         # The rear board is disabled, so the roof overhang is measured directly
         # from the side-panel rear edge instead of from a rear-sheet thickness.
         roof_rear = self.side_panel_depth + self.roof_rear_overhang

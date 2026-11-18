@@ -232,6 +232,13 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             )
         )
 
+        # All lower-compartment dividers now use the same 110 mm cabinet depth.
+        divider_source = frame_source[
+            frame_source.index('name="lower_divider_left"'):
+            frame_source.index('name="left"', frame_source.index('name="lower_divider_left"'))
+        ]
+        self.assertIn("depth=self.cabinet_depth", divider_source)
+
     def test_lower_compartment_clear_bays_are_30_40_30(self):
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -263,6 +270,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             SCPF_DIR / "parts" / "side_board.py"
         ).read_text(encoding="utf-8")
 
+        self.assertIn("cabinet_depth = 110.0", source)
         self.assertIn("side_panel_depth = 110.0", source)
         self.assertIn("side_recess_depth = 50.0", source)
         self.assertIn("side_recess_radius = 20.0", source)

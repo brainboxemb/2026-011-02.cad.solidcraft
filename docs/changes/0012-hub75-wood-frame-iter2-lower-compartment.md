@@ -60,7 +60,7 @@ section. Apply the same principle here while keeping the iteration-2 dimensions:
 
 - bottom, intermediate shelf and roof base extend to 110 mm depth;
 - both side panels extend to the same 110 mm depth;
-- the two vertical lower dividers remain 100 mm deep for now;
+- both vertical lower dividers also extend to 110 mm depth;
 - the middle display-zone side wall is recessed 50 mm from the 110 mm rear
   edge, leaving 60 mm depth there;
 - use R20 rounded transitions;

@@ -9,6 +9,7 @@ from parts.board import Board
 class WoodFrame:
     opening_width = 844.0
     opening_height = 362.0
+    lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
     panel_wood_thickness = 9.0
     cabinet_depth = 100.0
@@ -22,8 +23,20 @@ class WoodFrame:
         roof_front = -self.roof_front_overhang
         roof_rear = back_outer + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
-        opening_bottom = self.frame_wood_thickness
+
+        bottom_top = self.frame_wood_thickness
+        shelf_bottom = bottom_top + self.lower_compartment_height
+        opening_bottom = shelf_bottom + self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
+
+        # The side boards sit on the bottom board and run continuously to the
+        # underside of the roof. This includes the lower compartment, the
+        # intermediate shelf thickness and the display opening.
+        side_height = (
+            self.lower_compartment_height
+            + self.frame_wood_thickness
+            + self.opening_height
+        )
         side_center_x = (
             half(self.opening_width)
             + half(self.frame_wood_thickness)
@@ -40,15 +53,27 @@ class WoodFrame:
             placement=Placement(),
         ).group("WoodBoxFrame")
 
+        shelf = Board(
+            name="intermediate_shelf",
+            # The shelf sits between the two side walls. Using outer_width
+            # here would make the shelf pass through both 12 mm side boards.
+            # Grooves can be added later as explicit joinery features.
+            width=self.opening_width,
+            depth=self.cabinet_depth,
+            height=self.frame_wood_thickness,
+            material_name="LIGHTPLY intermediate shelf",
+            placement=Placement(z=shelf_bottom),
+        ).group("WoodBoxFrame")
+
         left = Board(
             name="left",
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
-            height=self.opening_height,
+            height=side_height,
             material_name="LIGHTPLY side board",
             placement=Placement(
                 x=-side_center_x,
-                z=opening_bottom,
+                z=bottom_top,
             ),
         ).group("WoodBoxFrame")
 
@@ -56,11 +81,11 @@ class WoodFrame:
             name="right",
             width=self.frame_wood_thickness,
             depth=self.cabinet_depth,
-            height=self.opening_height,
+            height=side_height,
             material_name="LIGHTPLY side board",
             placement=Placement(
                 x=side_center_x,
-                z=opening_bottom,
+                z=bottom_top,
             ),
         ).group("WoodBoxFrame")
 
@@ -88,4 +113,4 @@ class WoodFrame:
             placement=Placement(y=rear_y),
         ).group("WoodBoxFrame")
 
-        return left + right + bottom + roof + rear
+        return left + right + bottom + shelf + roof + rear

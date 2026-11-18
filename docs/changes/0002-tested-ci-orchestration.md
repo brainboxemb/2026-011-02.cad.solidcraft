@@ -1,37 +1,72 @@
-# 0002 — Tested CI orchestration
+# 0002 — One tested CAD workflow
 
 **Tracks:** issue #134  
-**Scope:** CAD/native/publish workflow structure and model-owned checks.
+**Scope:** CAD CI orchestration, native verification, publication and PR cleanup.
 
 ## Problem
 
-The workflows contain repository policy and model semantics: git-diff logic,
-model loops, JSON parsing, model-specific assertions and publication decisions.
-That logic is difficult to unit-test and easy to duplicate.
+The repository exposes several GitHub Actions workflows for what is one normal
+operation: CAD CI. The operator has to understand separate CAD, native,
+publication and cleanup actions, while repository policy is duplicated in YAML.
+
+That is unnecessary for a one-person project.
 
 ## Decision
 
-GitHub Actions YAML is orchestration only:
+Expose one normal user-facing workflow:
 
-`checkout -> setup/image -> tested Python command -> artifact/publisher`
+```text
+.github/workflows/cad.yml
+name: CAD
+```
 
-Move policy into normal Python modules under `scripts/ci/` or beside the model
-that owns the check.
+One CAD run owns the normal chain:
+
+```text
+select
+-> cheap source/command checks
+-> native checks when selected
+-> build verified candidate
+-> publish build/Pages when allowed
+```
+
+A closed PR enters the same CAD workflow and removes that PR's generated
+`build/pr/<number>/` and Pages preview.
+
+The operator does not select separate `native`, `publish` or `cleanup`
+workflows.
+
+## Workflow versus Python
+
+GitHub Actions YAML is wiring only:
+
+```text
+checkout -> reusable image -> tested Python entry point
+```
+
+Selection, path rules, model loops, native verification, publication target
+validation, build promotion and cleanup live in tested Python under
+`scripts/ci/` or in model-owned `check.py` files.
 
 Keep one central model catalog. Do not duplicate model lists in workflows.
 
-Model-specific generated/native assertions live with the model or in a generic
-model-check loader, not inline in YAML.
+## Performance exception
 
-Use short workflow names:
+`.github/workflows/image.yml` remains a separate workflow because it builds
+and caches the immutable CAD toolchain image. Rebuilding that image inside each
+CAD run would make normal CI substantially slower.
 
-- `cad.yml`
-- `native.yml`
-- `publish.yml`
-- `pr-cleanup.yml`
+Additional workflows are allowed only for a similarly concrete performance or
+technical-isolation reason. Do not split a workflow merely because the pipeline
+has multiple stages.
 
 ## Verification
 
-Contract tests reject inline Python/heredoc policy, model-specific JSON assertions
-and duplicated change-selection logic in workflow YAML. Python modules receive
-normal unit tests for selection, build planning, checks and publication rules.
+Contract tests require:
+
+- one normal workflow named `CAD`;
+- no separate normal native/publish/cleanup workflow;
+- `image.yml` is explicitly the reusable toolchain-image performance worker;
+- workflow YAML contains no model-specific assertions or publication policy;
+- Python modules have unit tests for selection, build planning, native checks,
+  promotion, cleanup and publication.

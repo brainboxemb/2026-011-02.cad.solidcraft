@@ -4,13 +4,16 @@ import json
 import sys
 import tempfile
 import unittest
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
+from model_catalog import MODELS  # noqa: E402
 from output_store import (  # noqa: E402
     input_fingerprint,
+    migrate_legacy_pages,
     prepare_candidate,
     promote_candidate,
     prune_removed_models,
@@ -202,6 +205,89 @@ class OutputStoreTests(unittest.TestCase):
         )
         self.assertTrue(known.is_dir())
         self.assertFalse(removed.exists())
+
+    def test_complete_legacy_pages_can_bootstrap_stable_store(self):
+        pages = self.root / "pages"
+        native_models = tuple(
+            slug for slug, model in MODELS.items()
+            if model.get("native")
+        )
+        provenance = {
+            "source_commit": "1" * 40,
+            "scpf_commit": "2" * 40,
+            "scpf_release": "0.9.0",
+            "scpc_commit": "3" * 40,
+            "solidcraft_version": "0.42.0",
+            "workflow_run": "123",
+            "native_file_format": "solidcraft/57",
+            "native_verified_models": list(native_models),
+        }
+        pages.mkdir()
+        (pages / "provenance.json").write_text(
+            json.dumps(provenance),
+            encoding="utf-8",
+        )
+
+        for slug in native_models:
+            model = pages / "models" / slug
+            model.mkdir(parents=True)
+            with zipfile.ZipFile(model / "model.sc", "w") as archive:
+                archive.writestr(
+                    "document.json",
+                    json.dumps({"format": "solidcraft/57"}),
+                )
+                archive.writestr(
+                    "container.json",
+                    json.dumps({"format": "solidcraft-container/1"}),
+                )
+            (model / "solidcraft.json").write_text(
+                json.dumps({"commands": []}),
+                encoding="utf-8",
+            )
+            if slug != "csg-cube":
+                (model / "native.png").write_bytes(b"png")
+
+        migrated = migrate_legacy_pages(
+            pages=pages,
+            store=self.store,
+        )
+        self.assertEqual(set(migrated), set(native_models))
+
+        for slug in native_models:
+            verification = json.loads(
+                (
+                    self.store
+                    / "stable/models"
+                    / slug
+                    / "verification.json"
+                ).read_text(encoding="utf-8")
+            )
+            self.assertEqual(verification["model"], slug)
+            self.assertEqual(
+                verification["input_fingerprint"],
+                input_fingerprint(slug),
+            )
+            self.assertTrue(verification["legacy_migrated"])
+
+    def test_partial_legacy_pages_is_rejected_before_bootstrap(self):
+        pages = self.root / "pages"
+        pages.mkdir()
+        (pages / "provenance.json").write_text(
+            json.dumps({
+                "source_commit": "1" * 40,
+                "scpf_commit": "2" * 40,
+                "scpf_release": "0.9.0",
+                "scpc_commit": "3" * 40,
+                "solidcraft_version": "0.42.0",
+                "workflow_run": "123",
+                "native_file_format": "solidcraft/57",
+                "native_verified_models": ["bolted-flange"],
+            }),
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ValueError, "not a complete native catalog"):
+            migrate_legacy_pages(pages=pages, store=self.store)
+        self.assertFalse((self.store / "stable").exists())
 
     def test_preview_key_is_safe_and_stable(self):
         self.assertEqual(safe_preview_key("PR 129 / test"), "pr-129-test")

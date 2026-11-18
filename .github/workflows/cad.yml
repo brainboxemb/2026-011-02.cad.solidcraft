@@ -85,7 +85,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull immutable CAD toolchain image
-        run: docker pull "${{ steps.image.outputs.reference }}"
+        run: python scripts/ci/pull_cad_image.py "${{ steps.image.outputs.reference }}"
 
       - name: Run selected CAD pipeline
         run: |

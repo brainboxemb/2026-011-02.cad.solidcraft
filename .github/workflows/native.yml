@@ -50,11 +50,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Checkout promoted model output
+      - name: Checkout promoted build output
         uses: actions/checkout@v4
         with:
-          ref: model-output
-          path: model-output
+          ref: build
+          path: build
 
       - name: Checkout current stable site
         uses: actions/checkout@v4
@@ -118,7 +118,7 @@ jobs:
               python scripts/ci/native_ci.py \
                 --plan output/plan.json \
                 --out output \
-                --stable-store model-output/stable \
+                --stable-store build/main \
                 --previous-site previous-site \
                 --source-sha "$HEAD_SHA" \
                 --workflow-run "$GITHUB_RUN_ID" \

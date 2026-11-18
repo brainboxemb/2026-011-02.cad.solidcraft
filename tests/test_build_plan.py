@@ -70,15 +70,25 @@ class BuildPlanTests(unittest.TestCase):
         self.assertEqual(plan["preview_key"], "")
         self.assertTrue(plan["publishable"])
 
-    def test_manual_stable_publication_is_rejected_off_main(self):
+    def test_manual_main_run_is_stable_without_operator_publish_choice(self):
         from build_plan import publication_target
 
-        with self.assertRaisesRegex(ValueError, "only allowed from main"):
-            publication_target(
-                event_name="workflow_dispatch",
-                ref_name="feature/test",
-                publish="stable",
-            )
+        target = publication_target(
+            event_name="workflow_dispatch",
+            ref_name="main",
+        )
+        self.assertEqual(target["channel"], "stable")
+        self.assertEqual(target["preview_key"], "")
+
+    def test_manual_branch_run_is_preview_without_operator_publish_choice(self):
+        from build_plan import publication_target
+
+        target = publication_target(
+            event_name="workflow_dispatch",
+            ref_name="feature/test",
+        )
+        self.assertEqual(target["channel"], "preview")
+        self.assertEqual(target["preview_key"], "branch-feature-test")
 
 
 if __name__ == "__main__":

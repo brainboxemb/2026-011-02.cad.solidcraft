@@ -62,6 +62,15 @@ has multiple stages.
 
 ## Verification
 
+A change to the CAD pipeline itself automatically adds the `plate` model as one
+real end-to-end native smoke. This proves the complete image -> compile ->
+SolidCraft -> candidate -> preview chain without turning an infrastructure
+change into a full-catalog rebuild.
+
+Model-owned `check.py` modules are imported and shape-checked by cheap unit
+tests. A CI refactor therefore does not need to native-build every model merely
+to prove that those check modules load.
+
 Contract tests require:
 
 - one normal workflow named `CAD`;

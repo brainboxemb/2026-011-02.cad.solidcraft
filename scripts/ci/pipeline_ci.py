@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Run the complete selected CAD check pipeline from event metadata.
+"""Run the selected CAD checks and package model-root tool.cad.ci items.
 
-The current CAD pipeline remains authoritative during change 0012. The
-pipeline also handles catalog growth before site generation and, in parallel,
-runs every configured model-root item through the pinned tool.cad.ci release after native verification so each item can package the verified result.
+CAD owns model selection and native verification. The pinned tool executes each
+selected physical model-root item after native verification and writes the item
+state consumed by the host-side build/Pages publisher.
 """
+
 
 from __future__ import annotations
 
@@ -19,9 +20,8 @@ import tempfile
 import build_plan
 import cad_ci
 import native_ci
-from model_catalog import MODELS, model_build_path, model_slugs
+from model_catalog import MODELS, model_slugs
 from model_item import item_id_for_slug, stored_model_paths
-from output_store import migrate_legacy_store_layout
 from select_models import parse_models
 
 
@@ -41,7 +41,11 @@ def configure_git_workspace() -> None:
 
 
 def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
-    """Create a read-only resolved build copy for this CI run."""
+    """Copy the accepted generic build baseline for read-only pipeline use.
+
+    The one-time legacy migration is complete. A missing tool.cad.ci manifest is
+    now a real repository error instead of a signal to rebuild old layouts.
+    """
 
     if destination.exists():
         shutil.rmtree(destination)
@@ -50,13 +54,12 @@ def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
         destination,
         ignore=shutil.ignore_patterns(".git"),
     )
-    if not (destination / "main").is_dir():
-        migrate_legacy_store_layout(store=destination)
-    if not (destination / "main").is_dir():
+    main = destination / "main"
+    if not (main / "build.json").is_file():
         raise RuntimeError(
-            "build branch has neither build/main nor a complete legacy stable store"
+            "build branch is missing the tool.cad.ci build/main baseline"
         )
-    return destination / "main"
+    return main
 
 
 def missing_stable_models(stable_store: Path) -> tuple[str, ...]:
@@ -137,7 +140,7 @@ def _tool_selection_groups(
     return (("--changed", *paths),)
 
 
-def run_tool_cad_ci_proof(
+def run_tool_cad_ci_items(
     *,
     mode: str,
     models: str,
@@ -252,8 +255,8 @@ def execute(
             Path(temp) / "build",
         )
 
-        # Catalog growth must be fixed before cheap/native work and site
-        # generation. The model-root proof then compares against that same run.
+        # Catalog growth must be fixed before cheap/native work. Model-root
+        # items then package fresh native output against this same baseline.
         plan = extend_plan_for_missing_stable(plan, stable_store)
         plan_path.write_text(
             json.dumps(plan, indent=2) + "\n",
@@ -271,8 +274,6 @@ def execute(
         native_ci.execute(
             plan_path=plan_path,
             output_root=output_root,
-            stable_store=stable_store,
-            previous_site=previous_site,
             source_sha=head_sha,
             workflow_run=workflow_run,
             image_reference=image_reference,
@@ -280,7 +281,7 @@ def execute(
 
         # Run the model-root items only after native verification. Their final
         # package step can then use fresh candidate output or a stable sibling.
-        run_tool_cad_ci_proof(
+        run_tool_cad_ci_items(
             mode=mode,
             models=models,
             base_sha=base_sha,

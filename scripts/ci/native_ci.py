@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run selected native SolidCraft CAD verification from one build-plan JSON."""
+"""Build and verify selected native CAD results for later item packaging."""
 
 from __future__ import annotations
 
@@ -22,10 +22,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def run(command: list[str], *, check: bool = True) -> subprocess.CompletedProcess:
+    """Run one CAD tool command from the repository root."""
+
     return subprocess.run(command, cwd=ROOT, check=check)
 
 
 def load_plan(path: Path) -> dict:
+    """Read the selected CAD plan and reject unknown plan schemas."""
+
     plan = json.loads(path.read_text(encoding="utf-8"))
     if plan.get("schema") != 1:
         raise ValueError("unsupported CAD build-plan schema")
@@ -33,12 +37,16 @@ def load_plan(path: Path) -> dict:
 
 
 def camera_json(value: dict | None) -> str | None:
+    """Encode an optional snapshot camera for the SolidCraft CLI."""
+
     if not value:
         return None
     return json.dumps(value, separators=(",", ":"))
 
 
 def compile_native(slug: str, native_root: Path) -> Path:
+    """Compile one SCPF model, replay it natively and collect measurements."""
+
     model_root = native_root / slug
     model_root.mkdir(parents=True, exist_ok=True)
     commands = model_root / "commands.json"
@@ -90,6 +98,8 @@ def compile_native(slug: str, native_root: Path) -> Path:
 
 
 def snapshot(slug: str, model_root: Path) -> None:
+    """Render the configured native screenshots for one verified model."""
+
     target = model_root / "model.png"
     command = [
         "solidcraft-cli",
@@ -135,6 +145,8 @@ def snapshot(slug: str, model_root: Path) -> None:
 
 
 def run_native_checks(models: tuple[str, ...], native_root: Path) -> None:
+    """Run model mutations, generic validation and model-owned checks."""
+
     if not models:
         return
     run([
@@ -156,6 +168,8 @@ def run_native_checks(models: tuple[str, ...], native_root: Path) -> None:
 
 
 def compare_scpc(slug: str, native_root: Path) -> None:
+    """Build the SCPC reference and compare it with the SCPF native result."""
+
     model_root = native_root / slug
     scpf_root = model_root / "scpf"
     scpc_root = model_root / "scpc"
@@ -212,6 +226,8 @@ def compare_scpc(slug: str, native_root: Path) -> None:
 
 
 def toolchain_metadata(*, image_reference: str, workflow_run: str) -> dict:
+    """Read and validate the immutable CAD image's pinned tool versions."""
+
     solidcraft = os.environ.get("SOLIDCRAFT_VERSION", "")
     scpf_commit = os.environ.get("SCPF_COMMIT", "")
     scpc_commit = os.environ.get("SCPC_COMMIT", "")
@@ -241,6 +257,8 @@ def copy_generated_commands(
     native_root: Path,
     generated_root: Path,
 ) -> None:
+    """Copy native-run command JSON into the candidate command tree."""
+
     for slug in native_models:
         target = generated_root / slug / "scpf" / "solidcraft.json"
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -251,57 +269,21 @@ def copy_generated_commands(
         shutil.copy2(native_root / slug / "scpc" / "commands.json", target)
 
 
-def build_site(
-    *,
-    plan: dict,
-    output_root: Path,
-    stable_store: Path,
-    previous_site: Path,
-    source_sha: str,
-) -> None:
-    if not plan["publishable"]:
-        return
-    run([
-        sys.executable,
-        "scripts/ci/build-results.py",
-        "--generated",
-        str(output_root / "models"),
-        "--native",
-        str(output_root / "native"),
-        "--stable-store",
-        str(stable_store),
-        "--previous-site",
-        str(previous_site),
-        "--public-base",
-        plan["public_base"],
-        "--commit",
-        source_sha,
-        "--out",
-        str(output_root / "site"),
-    ])
-    run([
-        sys.executable,
-        "scripts/ci/test-results.py",
-        str(output_root / "site"),
-        source_sha,
-        plan["public_base"],
-    ])
-    for slug in plan["snapshot_models"]:
-        image = output_root / "site" / "models" / slug / "native.png"
-        if not image.is_file() or not image.stat().st_size:
-            raise RuntimeError(f"{slug}: published native snapshot is missing")
-
 
 def execute(
     *,
     plan_path: Path,
     output_root: Path,
-    stable_store: Path,
-    previous_site: Path,
     source_sha: str,
     workflow_run: str,
     image_reference: str,
 ) -> dict:
+    """Build verified native output and the per-model candidate handoff.
+
+    Website generation is deliberately not done here. The host-side publisher
+    renders Pages once from the complete resolved tool.cad.ci build view.
+    """
+
     plan = load_plan(plan_path)
     native_models = tuple(plan["native_models"])
     scpc_models = tuple(
@@ -358,38 +340,15 @@ def execute(
             },
         )
 
-    build_site(
-        plan=plan,
-        output_root=output_root,
-        stable_store=stable_store,
-        previous_site=previous_site,
-        source_sha=source_sha,
-    )
-
-    if plan["publishable"]:
-        (output_root / "publish.json").write_text(
-            json.dumps(
-                {
-                    "channel": plan["channel"],
-                    "preview_key": plan["preview_key"],
-                    "public_base": plan["public_base"],
-                    "models": list(native_models),
-                    "source_commit": source_sha,
-                },
-                indent=2,
-            )
-            + "\n",
-            encoding="utf-8",
-        )
     return plan
 
 
 def main() -> int:
+    """Run native verification with the same inputs used by pipeline_ci."""
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
-    parser.add_argument("--stable-store", type=Path, required=True)
-    parser.add_argument("--previous-site", type=Path, required=True)
     parser.add_argument("--source-sha", required=True)
     parser.add_argument("--workflow-run", required=True)
     parser.add_argument("--image-reference", required=True)
@@ -397,8 +356,6 @@ def main() -> int:
     execute(
         plan_path=args.plan,
         output_root=args.out,
-        stable_store=args.stable_store,
-        previous_site=args.previous_site,
         source_sha=args.source_sha,
         workflow_run=args.workflow_run,
         image_reference=args.image_reference,

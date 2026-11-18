@@ -1,4 +1,4 @@
-"""Tests for the generic native CAD CI runner."""
+"""Tests for native CAD verification and candidate preparation."""
 
 from pathlib import Path
 import json
@@ -50,15 +50,12 @@ class NativeCiTests(unittest.TestCase):
                  patch.object(native_ci, "run_native_checks") as native_checks, \
                  patch.object(native_ci, "compare_scpc") as compare_scpc, \
                  patch.object(native_ci, "copy_generated_commands") as copy_commands, \
-                 patch.object(native_ci, "prepare_candidate") as prepare, \
-                 patch.object(native_ci, "build_site") as build_site:
+                 patch.object(native_ci, "prepare_candidate") as prepare:
                 compile_native.side_effect = lambda slug, native_root: native_root / slug
 
                 native_ci.execute(
                     plan_path=plan_path,
                     output_root=root / "output",
-                    stable_store=root / "store",
-                    previous_site=root / "site",
                     source_sha="source",
                     workflow_run="7",
                     image_reference="ghcr.io/example/cad-ci:toolchain-abc",
@@ -77,7 +74,6 @@ class NativeCiTests(unittest.TestCase):
         self.assertEqual(compare_scpc.call_args.args[0], "plate")
         copy_commands.assert_called_once()
         prepare.assert_called_once()
-        build_site.assert_called_once()
 
     def test_candidate_metadata_contains_immutable_image_reference(self):
         plan = {
@@ -111,13 +107,10 @@ class NativeCiTests(unittest.TestCase):
                  patch.object(native_ci, "run_native_checks"), \
                  patch.object(native_ci, "compare_scpc"), \
                  patch.object(native_ci, "copy_generated_commands"), \
-                 patch.object(native_ci, "prepare_candidate") as prepare, \
-                 patch.object(native_ci, "build_site"):
+                 patch.object(native_ci, "prepare_candidate") as prepare:
                 native_ci.execute(
                     plan_path=plan_path,
                     output_root=root / "output",
-                    stable_store=root / "store",
-                    previous_site=root / "site",
                     source_sha="source",
                     workflow_run="8",
                     image_reference=metadata["toolchain_image"],

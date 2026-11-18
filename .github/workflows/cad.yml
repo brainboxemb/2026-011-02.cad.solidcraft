@@ -145,8 +145,6 @@ jobs:
             output/models/
             output/native/
             output/candidate/
-            output/site/
-            output/publish.json
             publication-output/
             build/models/**
           if-no-files-found: ignore

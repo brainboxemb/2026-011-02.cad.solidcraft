@@ -20,10 +20,10 @@ def validate_flex_bench_dog(root: Path):
             "flex-bench-dog: expected two flex-slot sketches and one logo sketch")
     require(count(rows, "solid.extrude") == 3,
             "flex-bench-dog: expected two slot cuts and one logo extrusion")
-    require(count(rows, "solid.fillet") == 1,
-            "flex-bench-dog: expected one upper-body fillet")
-    require(count(rows, "solid.chamfer") == 1,
-            "flex-bench-dog: expected one upper-edge chamfer")
+    require(count(rows, "solid.fillet") == 0,
+            "flex-bench-dog: expected chamfers rather than fillets")
+    require(count(rows, "solid.chamfer") == 2,
+            "flex-bench-dog: expected top and bottom chamfers")
     require(count(rows, "solid.box") == 0,
             "flex-bench-dog: SCPF model should use native Sketch features, not Box CSG")
 
@@ -32,7 +32,7 @@ def validate_flex_bench_dog(root: Path):
     body = data["bodies"][0]
     require(body["closed"] is True, "flex-bench-dog: body must be closed")
     require(
-        size_close(body, (24.0, 24.0, 38.0)),
+        size_close(body, (24.0, 24.0, 40.0)),
         f"flex-bench-dog: unexpected bounds {body_size(body)}",
     )
 

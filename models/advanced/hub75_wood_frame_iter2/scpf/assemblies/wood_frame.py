@@ -29,12 +29,15 @@ class WoodFrame:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Closed vertical hand openings.
+    # Closed native slots in the side walls.
     handle_opening_width = 30.0
     handle_opening_edge_clearance = 20.0
-    handle_opening_radius = 10.0
     handle_opening_lower_keep = 80.0
     handle_opening_upper_keep = 80.0
+
+    # Rear board keeps the original open side cutouts.
+    rear_opening_depth = 50.0
+    rear_opening_radius = 20.0
 
     def build(self):
         # The future 9 mm rear board will sit inside the 120 mm cabinet depth
@@ -52,6 +55,11 @@ class WoodFrame:
         shelf_bottom = bottom_top + self.lower_compartment_height
         opening_bottom = shelf_bottom + self.frame_wood_thickness
         opening_top = opening_bottom + self.opening_height
+
+        # Rear board starts on top of the two 70 mm lower dividers. With the
+        # default 12 mm bottom + 70 mm divider height this is global Z=82.
+        rear_bottom = shelf_bottom
+        rear_height = opening_top - rear_bottom
 
         # The side boards sit on the bottom board and run continuously to the
         # underside of the roof. This includes the lower compartment, the
@@ -79,6 +87,19 @@ class WoodFrame:
         handle_opening_top = (
             side_height
             - self.handle_opening_upper_keep
+        )
+
+        # Convert the side-wall-local hand zone to RearBoard-local Z. SideBoard
+        # starts at global Z=12; RearBoard starts at global Z=82.
+        rear_opening_bottom = (
+            bottom_top
+            + handle_opening_bottom
+            - rear_bottom
+        )
+        rear_opening_top = (
+            bottom_top
+            + handle_opening_top
+            - rear_bottom
         )
 
         # Two 12 mm dividers split the clear lower-compartment space into
@@ -154,7 +175,6 @@ class WoodFrame:
             height=side_height,
             opening_width=self.handle_opening_width,
             opening_edge_clearance=self.handle_opening_edge_clearance,
-            opening_radius=self.handle_opening_radius,
             opening_bottom=handle_opening_bottom,
             opening_top=handle_opening_top,
             placement=Placement(
@@ -170,7 +190,6 @@ class WoodFrame:
             height=side_height,
             opening_width=self.handle_opening_width,
             opening_edge_clearance=self.handle_opening_edge_clearance,
-            opening_radius=self.handle_opening_radius,
             opening_bottom=handle_opening_bottom,
             opening_top=handle_opening_top,
             placement=Placement(
@@ -197,15 +216,14 @@ class WoodFrame:
             name="rear",
             width=self.opening_width,
             depth=self.panel_wood_thickness,
-            height=side_height,
-            opening_width=self.handle_opening_width,
-            opening_edge_clearance=self.handle_opening_edge_clearance,
-            opening_radius=self.handle_opening_radius,
-            opening_bottom=handle_opening_bottom,
-            opening_top=handle_opening_top,
+            height=rear_height,
+            opening_depth=self.rear_opening_depth,
+            opening_radius=self.rear_opening_radius,
+            opening_bottom=rear_opening_bottom,
+            opening_top=rear_opening_top,
             placement=Placement(
                 y=rear_y,
-                z=bottom_top,
+                z=rear_bottom,
             ),
         ).group("WoodBoxFrame")
 

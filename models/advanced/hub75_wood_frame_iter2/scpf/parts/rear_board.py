@@ -1,21 +1,28 @@
 """Rear plywood panel fitted between the side walls."""
 
-from scpf import BOTTOM, FRONT, Box, RoundedRectangle2D, Sketch, component, half
+from scpf import (
+    BOTTOM,
+    FRONT,
+    Box,
+    RoundedRectangle2D,
+    Sketch,
+    component,
+    half,
+)
 
 
 @component
 class RearBoard:
-    """9 mm rear board with closed rounded hand openings near both sides."""
+    """9 mm rear board with open rounded cutouts at both side edges."""
 
     width = 844.0
     depth = 9.0
-    height = 444.0
+    height = 374.0
 
-    opening_width = 30.0
-    opening_edge_clearance = 20.0
-    opening_radius = 10.0
-    opening_bottom = 162.0
-    opening_top = 364.0
+    opening_depth = 50.0
+    opening_radius = 20.0
+    opening_bottom = 92.0
+    opening_top = 294.0
 
     def build(self):
         body = Box(
@@ -31,41 +38,43 @@ class RearBoard:
 
         opening_height = self.opening_top - self.opening_bottom
 
-        # Mirror the side-wall hand-hole idea on the rear panel. Each 30 mm
-        # opening keeps 20 mm of plywood to the nearest side edge.
-        opening_center_x = (
+        # Restore the original open side cutout. The rounded rectangle extends
+        # one radius beyond the physical panel edge, leaving a 50 mm deep open
+        # recess from each side with R20 transitions.
+        cut_width = self.opening_depth + self.opening_radius
+        cut_center_x = (
             half(self.width)
-            - self.opening_edge_clearance
-            - half(self.opening_width)
+            - self.opening_depth
+            + half(cut_width)
         )
-        opening_center_z = (
+        cut_center_z = (
             self.opening_bottom
             + half(opening_height)
         )
 
         with Sketch(
-            name="Rear hand openings",
+            name="Rear side openings",
             on=body,
             plane="XZ",
         ) as opening_sketch:
             left = RoundedRectangle2D(
-                self.opening_width,
+                cut_width,
                 opening_height,
                 self.opening_radius,
             )
             opening_sketch.add(
                 left,
-                offset=(-opening_center_x, opening_center_z),
+                offset=(-cut_center_x, cut_center_z),
             )
 
             right = RoundedRectangle2D(
-                self.opening_width,
+                cut_width,
                 opening_height,
                 self.opening_radius,
             )
             opening_sketch.add(
                 right,
-                offset=(opening_center_x, opening_center_z),
+                offset=(cut_center_x, cut_center_z),
             )
 
         openings = opening_sketch.extrude(

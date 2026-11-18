@@ -57,10 +57,9 @@ class WoodenHub75BoxIter2:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Closed hand openings in the side walls and rear board.
+    # Closed native slots in the side walls.
     handle_opening_width = 30.0
     handle_opening_edge_clearance = 20.0
-    handle_opening_radius = 10.0
     handle_opening_lower_keep = 80.0
     handle_opening_upper_keep = 80.0
 
@@ -96,7 +95,6 @@ class WoodenHub75BoxIter2:
             corner_radius=self.corner_radius,
             handle_opening_width=self.handle_opening_width,
             handle_opening_edge_clearance=self.handle_opening_edge_clearance,
-            handle_opening_radius=self.handle_opening_radius,
             handle_opening_lower_keep=self.handle_opening_lower_keep,
             handle_opening_upper_keep=self.handle_opening_upper_keep,
         )

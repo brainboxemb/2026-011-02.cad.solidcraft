@@ -108,7 +108,6 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "corner_radius",
                 "handle_opening_width",
                 "handle_opening_edge_clearance",
-                "handle_opening_radius",
                 "handle_opening_lower_keep",
                 "handle_opening_upper_keep",
                 "bracket_width",
@@ -272,8 +271,11 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             170.0,
         )
 
-    def test_closed_hand_openings_replace_rear_recess_and_roundwood(self):
+    def test_side_slots_and_rear_open_cutouts(self):
         source = MODEL.read_text(encoding="utf-8")
+        frame_source = (
+            SCPF_DIR / "assemblies" / "wood_frame.py"
+        ).read_text(encoding="utf-8")
         side_source = (
             SCPF_DIR / "parts" / "side_board.py"
         ).read_text(encoding="utf-8")
@@ -283,29 +285,31 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         self.assertIn("handle_opening_width = 30.0", source)
         self.assertIn("handle_opening_edge_clearance = 20.0", source)
-        self.assertIn("handle_opening_radius = 10.0", source)
 
-        # 120 mm deep side wall: 20 mm rear margin + 30 mm hole => Y=70..100.
-        self.assertIn('name="Side hand opening"', side_source)
+        # Side walls use a true 30 mm native slot: its end radius is R15.
+        self.assertIn("SlotCenterToCenter2D(", side_source)
+        self.assertIn('name="Side hand slot"', side_source)
         self.assertIn('plane="YZ"', side_source)
-        self.assertIn("opening_width = 30.0", side_source)
-        self.assertIn("opening_edge_clearance = 20.0", side_source)
-        self.assertIn("opening_radius = 10.0", side_source)
-        self.assertIn("RoundedRectangle2D(", side_source)
+        self.assertIn("self.opening_width / 2", side_source)
+        self.assertNotIn("RoundedRectangle2D(", side_source)
 
-        # Rear panel uses the same rounded 30 mm opening on both sides.
-        self.assertIn('name="Rear hand openings"', rear_source)
-        self.assertIn('plane="XZ"', rear_source)
+        # Rear board starts above the 70 mm lower dividers at global Z=82.
+        rows = commands()
+        rear = [
+            row for row in of(rows, "occurrence.move")
+            if row["occurrence"] == "$rear"
+        ]
+        self.assertEqual(len(rear), 1)
+        self.assertEqual(rear[0]["translate"][2], 82.0)
+        self.assertIn("rear_height = opening_top - rear_bottom", frame_source)
+
+        # Rear board intentionally uses the original open side cutouts, not
+        # closed slots. Default depth is 50 mm with R20 transitions.
+        self.assertIn('name="Rear side openings"', rear_source)
+        self.assertIn("opening_depth = 50.0", rear_source)
+        self.assertIn("opening_radius = 20.0", rear_source)
         self.assertEqual(rear_source.count("RoundedRectangle2D("), 2)
-        self.assertIn("opening_radius = 10.0", rear_source)
-
-        all_source = "\n".join(
-            path.read_text(encoding="utf-8")
-            for path in SCPF_DIR.glob("**/*.py")
-        )
-        self.assertNotIn("SideHandles", all_source)
-        self.assertNotIn("RoundwoodHandle", all_source)
-        self.assertNotIn("HandleRing", all_source)
+        self.assertNotIn("SlotCenterToCenter2D(", rear_source)
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

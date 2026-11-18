@@ -59,23 +59,26 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 
 ## Hand openings and inset rear board
 
-The side walls remain full **120 mm** deep. The previous open rear recess and
-the roundwood handle experiment have been removed.
+The side walls remain full **120 mm** deep. The previous roundwood handle
+experiment is removed.
 
-Each 12 mm side wall now has one closed vertical rounded hand opening:
+Each 12 mm side wall now uses one native **30 mm wide vertical slot** made with
+`SlotCenterToCenter2D`:
 
-- opening width in Y: **30 mm**;
+- slot width: **30 mm**;
+- round-end radius: **R15**;
 - rear-edge clearance: **20 mm**;
-- opening therefore spans **Y=70..100 mm**;
-- corner radius: **R10**;
-- vertical limits stay at the previous hand zone, from local Z=162 to 364 mm.
+- slot spans **Y=70..100 mm**;
+- total vertical extent remains the previous hand zone.
 
-The **9 mm rear board** remains inset between the side walls at Y=111..120.
-The intermediate shelf and both lower dividers stop at Y=110, leaving 1 mm
-assembly clearance. The rear board has two matching 30 mm wide R10 vertical
-openings, each 20 mm from its nearest side edge.
+The **9 mm rear board** is inset at Y=111..120, but it now starts only above
+the lower divider plates: **Z=82 mm**. It does not cover the lower storage
+compartment.
 
-There is no separate roundwood, plastic ring or handle assembly anymore.
+The rear board deliberately does **not** use closed slots. At the left and
+right edges it restores the earlier **open rounded cutouts**: 50 mm deep with
+R20 transitions. Those cutouts use the same global vertical hand zone as the
+side-wall slots.
 
 ## Current main dimensions
 
@@ -89,8 +92,8 @@ There is no separate roundwood, plastic ring or handle assembly anymore.
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |
 | Frame wood | 12 mm |
-| Rear board | 9 mm inset at Y=111..120; two matching 30 mm R10 openings |
-| Side hand opening | 30 mm wide, R10, Y=70..100, 20 mm from rear edge |
+| Rear board | 9 mm inset at Y=111..120; starts at Z=82; two open 50 mm R20 side cutouts |
+| Side hand slot | 30 mm wide, R15 ends, Y=70..100, 20 mm from rear edge |
 | Bottom depth | 120 mm |
 | Intermediate shelf depth | 110 mm |
 | Lower divider depth | 110 mm |

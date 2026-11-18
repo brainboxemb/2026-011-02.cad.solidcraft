@@ -1,11 +1,18 @@
-"""Side wall with one closed rounded hand opening."""
+"""Side wall with one closed native hand slot."""
 
-from scpf import BOTTOM, FRONT, Box, RoundedRectangle2D, Sketch, component
+from scpf import (
+    BOTTOM,
+    FRONT,
+    Box,
+    Sketch,
+    SlotCenterToCenter2D,
+    component,
+)
 
 
 @component
 class SideBoard:
-    """Full-depth side wall with a closed vertical hand opening."""
+    """Full-depth side wall with one vertical 30 mm native slot."""
 
     thickness = 12.0
     depth = 120.0
@@ -13,7 +20,6 @@ class SideBoard:
 
     opening_width = 30.0
     opening_edge_clearance = 20.0
-    opening_radius = 10.0
     opening_bottom = 162.0
     opening_top = 364.0
 
@@ -32,34 +38,33 @@ class SideBoard:
             anchor=FRONT + BOTTOM,
         )
 
-        opening_height = self.opening_top - self.opening_bottom
-
-        # Keep 20 mm of plywood between the opening and the 120 mm rear edge.
-        # With a 30 mm opening this places the hole at Y=70..100.
+        # Keep 20 mm of plywood between the slot and the 120 mm rear edge.
+        # For a 30 mm wide slot the centreline is Y=85, so the slot spans
+        # Y=70..100 and its round ends are R15 by definition.
         opening_center_y = (
             self.depth
             - self.opening_edge_clearance
             - self.opening_width / 2
         )
-        opening_center_z = (
-            self.opening_bottom
-            + opening_height / 2
-        )
+
+        # SlotCenterToCenter2D uses the centres of the two round ends. Move
+        # those centres 15 mm inward from the requested overall top/bottom so
+        # the complete slot still spans opening_bottom..opening_top.
+        end_radius = self.opening_width / 2
+        lower_center_z = self.opening_bottom + end_radius
+        upper_center_z = self.opening_top - end_radius
 
         with Sketch(
-            name="Side hand opening",
+            name="Side hand slot",
             on=body,
             plane="YZ",
         ) as opening_sketch:
-            profile = RoundedRectangle2D(
+            profile = SlotCenterToCenter2D(
+                (opening_center_y, lower_center_z),
+                (opening_center_y, upper_center_z),
                 self.opening_width,
-                opening_height,
-                self.opening_radius,
             )
-            opening_sketch.add(
-                profile,
-                offset=(opening_center_y, opening_center_z),
-            )
+            opening_sketch.add(profile)
 
         opening = opening_sketch.extrude(
             self.thickness + 2,

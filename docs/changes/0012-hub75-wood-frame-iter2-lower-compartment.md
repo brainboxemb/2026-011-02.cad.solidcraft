@@ -55,27 +55,28 @@ All display-dependent geometry must follow the derived opening datum:
 
 No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 
-Replace the previous rear-edge recess and roundwood-handle experiment with
-closed hand openings cut directly into the plywood.
+Replace the roundwood-handle experiment with direct plywood hand geometry.
 
-Use these hand-opening dimensions:
+Side walls:
 
-- side walls remain full 120 mm deep;
-- each side-wall opening is 30 mm wide in Y;
-- keep 20 mm of plywood between the opening and the 120 mm rear edge, so the
-  opening spans Y=70..100;
-- use **R10** rounded corners;
-- keep the same vertical opening zone as before: local Z=162..364 by default;
-- remove the separate roundwood, plastic rings and `SideHandles` assembly.
+- remain full 120 mm deep;
+- use one native `SlotCenterToCenter2D` each;
+- slot width is 30 mm, so both round ends are **R15**;
+- keep 20 mm plywood to the rear edge, giving Y=70..100 overall;
+- keep the existing global vertical hand zone.
 
-Keep the inset rear-board construction:
+Rear board:
 
-- bottom stays 120 mm deep;
-- intermediate shelf and both lower dividers stop at 110 mm;
-- 9 mm rear board occupies Y=111..120 between the side walls;
-- roof remains 131 mm total: 10 mm front overhang + 120 mm cabinet + 1 mm rear;
-- rear board gets two matching 30 mm wide R10 vertical openings, each 20 mm
-  from its nearest side edge.
+- remains 9 mm thick at Y=111..120 between the side walls;
+- starts at global **Z=82 mm**, directly above the two 70 mm lower dividers;
+- therefore covers only the display section and not the lower storage section;
+- restores the earlier open side-edge cutouts instead of closed slots;
+- each open cutout is 50 mm deep with **R20** transitions and aligns vertically
+  with the side-wall hand zone.
+
+The intermediate shelf and lower dividers remain 110 mm deep, leaving the rear
+board zone clear. The bottom remains 120 mm deep and the roof remains 131 mm
+total.
 
 ## Scope
 

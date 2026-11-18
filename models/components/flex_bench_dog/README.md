@@ -36,6 +36,10 @@ the printer, filament and actual dog-hole diameter.
 
 Total height is **76 mm**.
 
+## External reference
+
+- [MakerWorld — Tension Fit Bench Dogs 20mm](https://makerworld.com/nl/models/3006654-tension-fit-bench-dogs-20mm?from=search#profileId-3376392) — confirms the same passive tension-fit design family. The linked STL is not copied into this repository.
+
 ## Source and confidence
 
 The overall construction is inferred from the supplied image. Only the nominal

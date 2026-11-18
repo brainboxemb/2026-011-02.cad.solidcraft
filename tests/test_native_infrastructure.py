@@ -30,8 +30,8 @@ class NativeInfrastructureTests(unittest.TestCase):
                     self.assertIsInstance(parameter, str)
                     self.assertIsInstance(expression, str)
 
-    def test_native_workflow_is_thin_and_runner_owns_native_checks(self):
-        workflow = (ROOT / ".github/workflows/native.yml").read_text(
+    def test_cad_workflow_is_thin_and_runner_owns_native_checks(self):
+        workflow = (ROOT / ".github/workflows/cad.yml").read_text(
             encoding="utf-8"
         )
         runner = (ROOT / "scripts/ci/native_ci.py").read_text(

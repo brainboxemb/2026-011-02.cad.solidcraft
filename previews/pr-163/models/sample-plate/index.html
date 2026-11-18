@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SamplePlate · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / sample-plate</div>
+<h1>SamplePlate</h1><p>Original four-sketch history: Base, Holes, Boss, Bore</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · stored build 1b673d0e</span>
+<span class="badge">18 commands</span><span class="badge">80 × 50 × 8 mm; R6; Ø24 × 14 boss</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
+
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
+<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
+<p>Recreates the original saved SolidCraft construction history with four named sketches and sketch-based cuts. The object-level Hole and Cylinder intent is compiled to the four editable sketches and matching cut/join history.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Base — sketch XY rectangle (80 × 50)</li><li>Extrude1 — extrude base by 8 mm</li><li>Fillet1 — fillet four vertical corners, R6</li><li>Holes — cut two mounting holes Ø8</li><li>Boss — join Ø24 boss above plate, height 14</li><li>Bore — cut central Ø12 bore through full 22 mm</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fpreviews%2Fpr-163%2Fmodels%2Fsample-plate%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+
+<h2>Python model</h2><pre><code>class SamplePlate:
+    &quot;&quot;&quot;Build the sample plate from object-level CAD intent.&quot;&quot;&quot;
+
+    width = 80
+    depth = 50
+    thickness = 8
+
+    def build(self):
+        with Sketch(name=&quot;Base&quot;, plane=&quot;XY&quot;) as sketch:
+            Rectangle2D(self.width, self.depth)
+        plate = sketch.extrude(self.thickness)
+        plate = plate.fillet(6, edges=Edges.VERTICAL)
+
+        holes = Hole(d=8, depth=Depth.THROUGH_ALL).repeat_linear(
+            count=2,
+            spacing=self.width - 24,
+            axis=Axis.X,
+        ).attach(plate, parent=Anchor.TOP)
+        plate = plate + holes
+
+        boss = Cylinder(d=24, h=14).attach(
+            plate,
+            parent=Anchor.TOP,
+            child=Anchor.BOTTOM,
+        )
+        plate = plate + boss
+
+        bore = Hole(d=12, depth=Depth.THROUGH_ALL).attach(
+            plate,
+            parent=Anchor.TOP,
+        )
+        return plate + bore
+</code></pre>
+
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;width&quot;,
+    &quot;expression&quot;: &quot;80&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;depth&quot;,
+    &quot;expression&quot;: &quot;50&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: thickness</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;thickness&quot;,
+    &quot;expression&quot;: &quot;8&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Base, plane: XY</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XY&quot;,
+    &quot;name&quot;: &quot;Base&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      &quot;-(width / 2)&quot;,
+      &quot;-(depth / 2)&quot;
+    ],
+    &quot;p1&quot;: [
+      &quot;width / 2&quot;,
+      &quot;depth / 2&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: SamplePlate</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;thickness&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
+    &quot;body_name&quot;: &quot;SamplePlate&quot;
+  }
+}</code></pre></li>
+<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
+  &quot;command&quot;: &quot;solid.fillet&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        -40.0,
+        -25.0,
+        4.0
+      ],
+      [
+        40.0,
+        -25.0,
+        4.0
+      ],
+      [
+        40.0,
+        25.0,
+        4.0
+      ],
+      [
+        -40.0,
+        25.0,
+        4.0
+      ]
+    ],
+    &quot;radius&quot;: 6,
+    &quot;body&quot;: &quot;SamplePlate&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Holes, plane: XY</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XY&quot;,
+    &quot;name&quot;: &quot;Holes&quot;
+  }
+}</code></pre></li>
+<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.circle.center&quot;,
+  &quot;params&quot;: {
+    &quot;center&quot;: [
+      &quot;(-(width / 2)) + (width / 2) + ((width - 24 mm) * -0.5)&quot;,
+      &quot;(-(depth / 2)) + (depth / 2)&quot;
+    ],
+    &quot;diameter&quot;: 8
+  }
+}</code></pre></li>
+<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.circle.center&quot;,
+  &quot;params&quot;: {
+    &quot;center&quot;: [
+      &quot;(-(width / 2)) + (width / 2) + ((width - 24 mm) * 0.5)&quot;,
+      &quot;(-(depth / 2)) + (depth / 2)&quot;
+    ],
+    &quot;diameter&quot;: 8
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Holes, direction: positive, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;thickness&quot;,
+    &quot;direction&quot;: &quot;positive&quot;,
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;SamplePlate&quot;
+    ],
+    &quot;name&quot;: &quot;Holes&quot;
+  }
+}</code></pre></li>
+<li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: join</small><pre><code>{
+  &quot;command&quot;: &quot;solid.cylinder&quot;,
+  &quot;params&quot;: {
+    &quot;height&quot;: 14,
+    &quot;diameter&quot;: 24,
+    &quot;base&quot;: [
+      0.0,
+      0.0,
+      8.0
+    ],
+    &quot;axis&quot;: &quot;Z&quot;,
+    &quot;operation&quot;: &quot;join&quot;,
+    &quot;targets&quot;: [
+      &quot;SamplePlate&quot;
+    ],
+    &quot;references&quot;: [
+      {
+        &quot;edge&quot;: [
+          -40.0,
+          0.0,
+          8.0
+        ],
+        &quot;distance&quot;: &quot;(width / 2)&quot;
+      },
+      {
+        &quot;edge&quot;: [
+          0.0,
+          -25.0,
+          8.0
+        ],
+        &quot;distance&quot;: &quot;(depth / 2)&quot;
+      }
+    ]
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Bore, plane: XY</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XY&quot;,
+    &quot;name&quot;: &quot;Bore&quot;,
+    &quot;offset&quot;: &quot;thickness + 14 mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.circle.center&quot;,
+  &quot;params&quot;: {
+    &quot;center&quot;: [
+      0.0,
+      0.0
+    ],
+    &quot;diameter&quot;: 12
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Bore, direction: negative, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;thickness + 14 mm&quot;,
+    &quot;direction&quot;: &quot;negative&quot;,
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;SamplePlate&quot;
+    ],
+    &quot;name&quot;: &quot;Bore&quot;
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Native verified · stored build 1b673d0e.
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

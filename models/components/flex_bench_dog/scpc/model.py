@@ -34,12 +34,12 @@ script.add(
     targets=["FlexBenchDog"],
 )
 
-# Straight insert and a slightly oversized free tip.
+# Straight 20 mm insert and a slightly oversized free tip.
 script.add(
     "solid.cylinder",
-    height=18,
+    height=20,
     diameter="hole_diameter",
-    base=[0, 0, -18],
+    base=[0, 0, -20],
     axis="Z",
     operation="join",
     targets=["FlexBenchDog"],
@@ -48,16 +48,24 @@ script.add(
     "solid.cylinder",
     height=2,
     diameter="hole_diameter + interference",
-    base=[0, 0, -18],
+    base=[0, 0, -20],
     axis="Z",
     operation="join",
     targets=["FlexBenchDog"],
 )
 
+# Larger lead-in chamfer on the free insert edge.
+script.add(
+    "solid.chamfer",
+    body="FlexBenchDog",
+    distance=1.0,
+    edges=[[10.1, 0, -20]],
+)
+
 # Flex slot X.
 script.add(
     "sketch.create",
-    plane={"origin": [0, 0, -18], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
+    plane={"origin": [0, 0, -20], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
     name="Flex slot X",
 )
 script.add(
@@ -68,7 +76,7 @@ script.add(
 script.add("sketch.finish")
 script.add(
     "solid.extrude",
-    distance=14,
+    distance=16,
     direction="positive",
     operation="cut",
     targets=["FlexBenchDog"],
@@ -78,7 +86,7 @@ script.add(
 # Flex slot Y.
 script.add(
     "sketch.create",
-    plane={"origin": [0, 0, -18], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
+    plane={"origin": [0, 0, -20], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
     name="Flex slot Y",
 )
 script.add(
@@ -89,20 +97,14 @@ script.add(
 script.add("sketch.finish")
 script.add(
     "solid.extrude",
-    distance=14,
+    distance=16,
     direction="positive",
     operation="cut",
     targets=["FlexBenchDog"],
     name="Flex slot Y",
 )
 
-# Visible top finish.
-script.add(
-    "solid.fillet",
-    body="FlexBenchDog",
-    radius=1.0,
-    edges=[[10, 0, 3]],
-)
+# Light chamfer on the visible upper perimeter.
 script.add(
     "solid.chamfer",
     body="FlexBenchDog",

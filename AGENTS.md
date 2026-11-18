@@ -199,6 +199,10 @@ SolidCraft or CAD revision merely because another model was rebuilt.
   on a non-fast-forward, fetch the target branch, rebase the prepared generated
   commit, and retry a bounded number of times. Never force-push generated
   branches or discard the other writer's change.
+- Docker CAD output and host publication have different ownership boundaries.
+  Stable Pages must be built and tested in a host-owned temporary directory,
+  not below the container-owned `output/` tree. Do not repair this with broad
+  chmod/chown operations.
 
 ### Site/catalog scaling
 

@@ -9,6 +9,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 
 from build_plan import PUBLIC_SITE
 from model_catalog import model_build_path, model_slugs
@@ -200,10 +201,9 @@ def build_stable_site(
     source_root: Path,
     build_root: Path,
     pages_root: Path,
-    work_root: Path,
+    out: Path,
     source_commit: str,
 ) -> Path:
-    out = work_root / "stable-site"
     if out.exists():
         shutil.rmtree(out)
     run(
@@ -298,14 +298,17 @@ def execute(
             message=f"Publish build/main at {source_commit}",
         )
 
-        stable_site = build_stable_site(
-            source_root=source_root,
-            build_root=build_root,
-            pages_root=pages_root,
-            work_root=bundle,
-            source_commit=source_commit,
-        )
-        replace_stable_pages(stable_site, pages_root)
+        with tempfile.TemporaryDirectory(
+            prefix="cad-stable-site-"
+        ) as temp:
+            stable_site = build_stable_site(
+                source_root=source_root,
+                build_root=build_root,
+                pages_root=pages_root,
+                out=Path(temp) / "site",
+                source_commit=source_commit,
+            )
+            replace_stable_pages(stable_site, pages_root)
         commit_and_push(
             pages_root,
             branch="gh-pages",

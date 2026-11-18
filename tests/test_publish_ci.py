@@ -97,6 +97,96 @@ class PublishCiTests(unittest.TestCase):
                         attempts=2,
                     )
 
+    def test_stable_publication_builds_site_outside_container_output(self):
+        source_sha = "a" * 40
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            bundle = root / "output"
+            build = root / "build"
+            pages = root / "pages"
+            source = root / "source"
+            for path in (bundle, build, pages, source):
+                path.mkdir()
+            (bundle / "publish.json").write_text(
+                '{"channel":"stable","preview_key":"","models":[],"source_commit":"'
+                + source_sha
+                + '"}',
+                encoding="utf-8",
+            )
+
+            seen = {}
+
+            def fake_build_stable_site(**kwargs):
+                out = kwargs["out"]
+                seen["out"] = out
+                self.assertFalse(out.is_relative_to(bundle))
+                out.mkdir(parents=True)
+                (out / "provenance.json").write_text("{}", encoding="utf-8")
+                return out
+
+            with patch.object(
+                publish_ci.subprocess,
+                "check_output",
+                return_value=source_sha + "\n",
+            ), patch.object(
+                publish_ci,
+                "stable_complete",
+                return_value=True,
+            ), patch.object(
+                publish_ci,
+                "prune_removed_models",
+            ), patch.object(
+                publish_ci,
+                "remove_legacy_build_layout",
+            ), patch.object(
+                publish_ci,
+                "write_build_readme",
+            ), patch.object(
+                publish_ci,
+                "commit_and_push",
+                return_value=True,
+            ), patch.object(
+                publish_ci,
+                "build_stable_site",
+                side_effect=fake_build_stable_site,
+            ), patch.object(
+                publish_ci,
+                "replace_stable_pages",
+            ):
+                published = publish_ci.execute(
+                    bundle=bundle,
+                    source_root=source,
+                    build_root=build,
+                    pages_root=pages,
+                    workflow_event="push",
+                    workflow_head_branch="main",
+                    workflow_head_sha=source_sha,
+                )
+
+            self.assertTrue(published)
+            self.assertIn("out", seen)
+
+    def test_build_stable_site_uses_explicit_output_path(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            out = root / "host-site"
+            with patch.object(publish_ci, "run") as run:
+                result = publish_ci.build_stable_site(
+                    source_root=root / "source",
+                    build_root=root / "build",
+                    pages_root=root / "pages",
+                    out=out,
+                    source_commit="a" * 40,
+                )
+
+        self.assertEqual(result, out)
+        build_command = run.call_args_list[0].args[0]
+        self.assertIn("--out", build_command)
+        self.assertEqual(
+            build_command[build_command.index("--out") + 1],
+            str(out),
+        )
+
     def test_replace_stable_pages_preserves_preview_namespace(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)

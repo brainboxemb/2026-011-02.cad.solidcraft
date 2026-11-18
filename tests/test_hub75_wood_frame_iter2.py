@@ -161,7 +161,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         # The intermediate shelf adds one Board shape. The two equal lower
         # dividers share one additional Board shape and become two occurrences.
-        self.assertEqual(len(creates), 15)
+        self.assertEqual(len(creates), 14)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -200,6 +200,12 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 and "frame_wood_thickness" in str(row["translate"][0])
                 for row in dividers
             )
+        )
+
+        # The rear board is intentionally disabled during the current
+        # iteration-2 layout work.
+        self.assertFalse(
+            any(row["occurrence"] == "$rear" for row in moves)
         )
         self.assertTrue(
             all(

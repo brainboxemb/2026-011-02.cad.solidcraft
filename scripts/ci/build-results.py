@@ -20,6 +20,7 @@ from model_catalog import (
     COMMAND_SOURCES,
     COMPONENT_SOURCES,
     COMPONENT_DEFINITION_PRIMARY,
+    model_build_path,
     source_path,
 )
 from output_store import input_fingerprint
@@ -103,7 +104,7 @@ def stored_model_output(store_root, slug):
     """Return verified stored output only when declared model inputs still match."""
     if store_root is None:
         return None
-    root = store_root / "models" / slug
+    root = store_root / model_build_path(slug)
     manifest = root / "verification.json"
     native = root / "native"
     if not manifest.is_file() or not native.is_dir():
@@ -732,7 +733,7 @@ def main():
     parser.add_argument("--generated", type=Path,
                         help="Root of freshly compiled output/models")
     parser.add_argument("--stable-store", type=Path,
-                        help="model-output stable root containing models/<slug>")
+                        help="build/main root containing source-mirrored model output")
     parser.add_argument("--public-base", default=PUBLIC_SITE,
                         help="Published base URL used by external SolidCraft open links")
     args = parser.parse_args()

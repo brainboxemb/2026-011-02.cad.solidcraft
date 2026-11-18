@@ -100,11 +100,10 @@ class CornerBracket:
 
         # Two countersunk M5 holes through the horizontal arm.
         for x in top_x:
-            hole = Hole(
+            hole = CountersinkHole(
                 d=through_d,
                 countersink_d=head_d,
                 countersink_angle=90,
-                countersink_recess=self.head_recess,
                 direction=(0, 0, -1),
             ).at(x, self.bolt_y_offset, w)
             body = body + hole
@@ -125,12 +124,11 @@ class CornerBracket:
             # Use explicit over-through depth for the horizontal bore.
             # The native through-all countersink can fail after the 1 mm
             # vertical-face counterbore; overrun avoids a coplanar exit.
-            hole = Hole(
+            hole = CountersinkHole(
                 d=through_d,
                 depth=w + 1.0,
                 countersink_d=head_d,
                 countersink_angle=90,
-                countersink_recess=self.head_recess,
                 direction=(1, 0, 0),
             ).at(-w, -self.bolt_y_offset, z)
             body = body + hole

@@ -45,6 +45,8 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4
         with:
+          # Publication checks the real source commit, not GitHub's temporary
+          # PR merge ref.
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
@@ -52,17 +54,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: build
-          path: build
+          path: generated-build
+          fetch-depth: 0
 
       - name: Checkout current Pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: pages
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Bootstrap pinned tool.cad.ci
+        run: python scripts/ci/bootstrap_cad_ci.py
 
       - name: Resolve immutable CAD image
         id: image
@@ -79,7 +86,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull immutable CAD image
-        run: docker pull "${{ steps.image.outputs.reference }}"
+        run: python scripts/ci/pull_cad_image.py "${{ steps.image.outputs.reference }}"
 
       - name: Run selected CAD pipeline
         run: |
@@ -104,7 +111,7 @@ jobs:
               --ref-name "$REF_NAME" \
               --pull-request "$PR_NUMBER" \
               --out output \
-              --build-root build \
+              --build-root generated-build \
               --previous-site pages \
               --workflow-run "$GITHUB_RUN_ID" \
               --image-reference "${{ steps.image.outputs.reference }}"
@@ -117,7 +124,7 @@ jobs:
           python scripts/ci/publish_ci.py \
             --bundle output \
             --source-root . \
-            --build-root build \
+            --build-root generated-build \
             --pages-root pages \
             --workflow-event "$EVENT_NAME" \
             --workflow-head-branch "$REF_NAME" \
@@ -130,11 +137,13 @@ jobs:
           name: cad-${{ github.run_id }}
           path: |
             output/plan.json
+            output/tool-cad-ci-plan.json
             output/models/
             output/native/
             output/candidate/
             output/site/
             output/publish.json
+            build/models/basic/plate/
           if-no-files-found: ignore
 
   cleanup:
@@ -154,13 +163,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: build
-          path: build
+          path: generated-build
+          fetch-depth: 0
 
       - name: Checkout Pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: pages
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -169,6 +180,6 @@ jobs:
       - name: Remove closed PR output
         run: |
           python source/scripts/ci/cleanup_ci.py \
-            --build-root build \
+            --build-root generated-build \
             --pages-root pages \
             --pull-request "${{ github.event.pull_request.number }}"

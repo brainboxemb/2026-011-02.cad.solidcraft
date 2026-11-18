@@ -1,0 +1,5 @@
+# First migration proof: one model item only.
+# More model folders are added after Plate matches the existing CAD pipeline.
+schema: 1
+items:
+  - models/basic/plate

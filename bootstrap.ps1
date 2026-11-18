@@ -1,11 +1,13 @@
 <#
 .SYNOPSIS
-    Install both pinned SolidCraft Python libraries (SCPF and SCPC).
+    Prepare the pinned CAD Python libraries and tool.cad.ci checkout.
 .DESCRIPTION
-    Read the exact Git commits from dependencies.repos, clone/update only
-    clean external checkouts and install the Python packages editable.
-    No Git submodules, manually created ext/ directory, or vcs2l command.
-    Start from your active Python / Conda environment.
+    Read exact Git commits from dependencies.repos. SCPF and SCPC are checked
+    out under ext/ and installed editable into the active Python environment.
+    tool.cad.ci is checked out under ext/cad-ci but is deliberately not
+    installed: the CAD repository already owns scripts/ci/cad_ci.py, so the
+    external tool is invoked through ext/cad-ci/cad-ci.py instead of importing
+    another cad_ci module.
 #>
 [CmdletBinding()]
 param([string]$CondaExe) # Old optional argument accepted for compatibility.
@@ -27,7 +29,7 @@ $source = Get-Content -LiteralPath $manifest -Raw
 New-Item -ItemType Directory -Path $ext -Force | Out-Null
 
 foreach ($name in @('scpf', 'scpc')) {
-    # dependencies.repos has a deliberately small, fixed vcs2l layout.
+    # SCPF and SCPC are Python libraries, so bootstrap installs these two.
     $part = [regex]::Match($source, "(?ms)^  ${name}:\s*\r?\n(.*?)(?=^  [\w-]+:|\z)")
     if (-not $part.Success) { throw "Missing $name entry in dependencies.repos" }
     $urlMatch = [regex]::Match($part.Groups[1].Value, '(?m)^    url:\s*(\S+)\s*$')
@@ -74,4 +76,10 @@ foreach ($name in @('scpf', 'scpc')) {
     & python -m pip install -e $package
     if ($LASTEXITCODE -ne 0) { throw "Editable pip install failed for $name" }
     Write-Host "Ready: $name at $actual"
+}
+
+# tool.cad.ci remains executable repository tooling, not an installed package.
+& python (Join-Path $root 'scripts/ci/bootstrap_cad_ci.py')
+if ($LASTEXITCODE -ne 0) {
+    throw 'tool.cad.ci bootstrap failed.'
 }

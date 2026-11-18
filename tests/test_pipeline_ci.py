@@ -16,8 +16,8 @@ import pipeline_ci  # noqa: E402
 
 
 class PipelineCiTests(unittest.TestCase):
-    def test_execute_extends_plan_before_cheap_and_native_phases(self):
-        """A stable-store gap is added before either pipeline phase runs."""
+    def test_execute_extends_plan_and_runs_tool_proof_before_native(self):
+        """The stable plan and Plate proof feed the same native pipeline run."""
 
         initial = {
             "schema": 1,
@@ -37,7 +37,7 @@ class PipelineCiTests(unittest.TestCase):
 
         with TemporaryDirectory() as temp:
             root = Path(temp)
-            build = root / "build"
+            build = root / "generated-build"
             pages = root / "pages"
             out = root / "output"
             build.mkdir()
@@ -66,6 +66,10 @@ class PipelineCiTests(unittest.TestCase):
                 pipeline_ci.cad_ci,
                 "execute",
             ) as cheap, patch.object(
+                pipeline_ci,
+                "run_tool_cad_ci_proof",
+                return_value=("plate",),
+            ) as tool_proof, patch.object(
                 pipeline_ci.native_ci,
                 "execute",
             ) as native:
@@ -94,7 +98,19 @@ class PipelineCiTests(unittest.TestCase):
         resolve.assert_called_once()
         extend.assert_called_once_with(initial, root / "resolved/main")
         cheap.assert_called_once()
+        tool_proof.assert_called_once_with(
+            mode="changed",
+            models="",
+            base_sha="base",
+            head_sha="head",
+            paths=("models/basic/plate/scpf/model.py",),
+            output_root=out,
+        )
         native.assert_called_once()
+        self.assertEqual(
+            native.call_args.kwargs["stable_store"],
+            root / "resolved/main",
+        )
         self.assertEqual(persisted["scpf_models"], ["plate", "new-model"])
 
     def test_missing_stable_models_uses_verification_files(self):
@@ -114,7 +130,6 @@ class PipelineCiTests(unittest.TestCase):
                 verification.parent.mkdir(parents=True, exist_ok=True)
                 verification.write_text("{}", encoding="utf-8")
 
-            # A directory alone must not hide a partial last model.
             partial = stable / pipeline_ci.model_build_path(native[-1])
             partial.mkdir(parents=True, exist_ok=True)
 
@@ -168,6 +183,43 @@ class PipelineCiTests(unittest.TestCase):
         self.assertEqual(result["snapshot_models"], ["new-model"])
         self.assertTrue(result["site_refresh"])
         self.assertTrue(result["publishable"])
+
+    def test_named_non_plate_run_skips_migration_proof(self):
+        """A deliberate named run must not silently add the temporary Plate proof."""
+
+        with TemporaryDirectory() as temp:
+            output = Path(temp)
+            with patch.object(
+                pipeline_ci,
+                "TOOL_CAD_CI",
+            ) as tool, patch.object(
+                pipeline_ci.subprocess,
+                "check_output",
+            ) as check_output, patch.object(
+                pipeline_ci.subprocess,
+                "run",
+            ) as run:
+                tool.is_file.return_value = True
+                selected = pipeline_ci.run_tool_cad_ci_proof(
+                    mode="models",
+                    models="bracket",
+                    base_sha="",
+                    head_sha="head",
+                    paths=(),
+                    output_root=output,
+                )
+
+            self.assertEqual(selected, ())
+            self.assertEqual(
+                json.loads(
+                    (output / "tool-cad-ci-plan.json").read_text(
+                        encoding="utf-8"
+                    )
+                ),
+                [],
+            )
+            check_output.assert_not_called()
+            run.assert_not_called()
 
     def test_existing_build_main_needs_no_legacy_migration(self):
         with TemporaryDirectory() as temp:

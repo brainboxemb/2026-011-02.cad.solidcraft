@@ -13,12 +13,39 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_module():
+    """Load the image resolver from its repository path."""
+
     path = ROOT / "scripts" / "ci" / "cad_image.py"
     spec = importlib.util.spec_from_file_location("cad_image", path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
     spec.loader.exec_module(module)
     return module
+
+
+def dependencies(
+    *,
+    scpf: str = "1" * 40,
+    scpc: str = "2" * 40,
+    cad_ci: str = "3" * 40,
+) -> str:
+    """Return a valid dependency manifest for image-identity tests."""
+
+    return (
+        "repositories:\n"
+        "  scpf:\n"
+        "    type: git\n"
+        "    url: https://example.test/scpf.git\n"
+        f"    version: {scpf}\n"
+        "  scpc:\n"
+        "    type: git\n"
+        "    url: https://example.test/scpc.git\n"
+        f"    version: {scpc}\n"
+        "  cad-ci:\n"
+        "    type: git\n"
+        "    url: https://example.test/cad-ci.git\n"
+        f"    version: {cad_ci}\n"
+    )
 
 
 class CadImageTests(unittest.TestCase):
@@ -35,17 +62,20 @@ class CadImageTests(unittest.TestCase):
         self.assertEqual(data["solidcraft"], "0.42.0")
         self.assertNotIn("latest", data["reference"])
 
-    def test_image_id_changes_for_toolchain_inputs(self):
+    def test_image_id_changes_for_baked_dependency_pin(self):
         with TemporaryDirectory() as temp:
             root = Path(temp)
             dockerfile = root / "docker" / "cad" / "Dockerfile"
             toolchain = root / "ci" / "toolchain.json"
-            dependencies = root / "dependencies.repos"
+            dependency_file = root / "dependencies.repos"
             resolver = root / "scripts" / "ci" / "cad_image.py"
             for path, content in (
                 (dockerfile, "FROM test\n"),
-                (toolchain, '{"schema":1,"python_image":"python:3.12","solidcraft":"0.42.0"}\n'),
-                (dependencies, "pins\n"),
+                (
+                    toolchain,
+                    '{"schema":1,"python_image":"python:3.12","solidcraft":"0.42.0"}\n',
+                ),
+                (dependency_file, dependencies()),
                 (resolver, "resolver\n"),
             ):
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -54,13 +84,49 @@ class CadImageTests(unittest.TestCase):
             with patch.object(self.module, "ROOT", root), \
                  patch.object(self.module, "DOCKERFILE", dockerfile), \
                  patch.object(self.module, "TOOLCHAIN", toolchain), \
-                 patch.object(self.module, "DEPENDENCIES", dependencies), \
+                 patch.object(self.module, "DEPENDENCIES", dependency_file), \
                  patch.object(self.module, "SELF", resolver):
                 first = self.module.image_id()
-                dependencies.write_text("new pins\n", encoding="utf-8")
+                dependency_file.write_text(
+                    dependencies(scpf="4" * 40),
+                    encoding="utf-8",
+                )
                 second = self.module.image_id()
 
             self.assertNotEqual(first, second)
+
+    def test_image_id_ignores_runtime_cad_ci_pin(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            dockerfile = root / "docker" / "cad" / "Dockerfile"
+            toolchain = root / "ci" / "toolchain.json"
+            dependency_file = root / "dependencies.repos"
+            resolver = root / "scripts" / "ci" / "cad_image.py"
+            for path, content in (
+                (dockerfile, "FROM test\n"),
+                (
+                    toolchain,
+                    '{"schema":1,"python_image":"python:3.12","solidcraft":"0.42.0"}\n',
+                ),
+                (dependency_file, dependencies()),
+                (resolver, "resolver\n"),
+            ):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(content, encoding="utf-8")
+
+            with patch.object(self.module, "ROOT", root), \
+                 patch.object(self.module, "DOCKERFILE", dockerfile), \
+                 patch.object(self.module, "TOOLCHAIN", toolchain), \
+                 patch.object(self.module, "DEPENDENCIES", dependency_file), \
+                 patch.object(self.module, "SELF", resolver):
+                first = self.module.image_id()
+                dependency_file.write_text(
+                    dependencies(cad_ci="5" * 40),
+                    encoding="utf-8",
+                )
+                second = self.module.image_id()
+
+            self.assertEqual(first, second)
 
     def test_model_source_is_not_an_image_identity_input(self):
         workflow = (ROOT / ".github" / "workflows" / "image.yml").read_text(

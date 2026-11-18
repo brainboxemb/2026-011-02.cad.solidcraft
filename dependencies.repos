@@ -1,8 +1,9 @@
-# Exact revisions of independent Forge (SCPF) and Commands (SCPC) libraries.
-# Both can be checked out reproducibly under ext/ using vcs2l.
-# SCPF is pinned to the qualified main commit after Forge PR #300. It includes
-# the v0.9.0 API plus the generic primitive/derived-body feature compiler fix
-# and contract-matrix unit tests required by the Bolted Flange model.
+# Exact revisions used by the CAD repository.
+# SCPF and SCPC are installed as Python libraries by bootstrap.ps1 and are
+# baked into the immutable CAD toolchain image.
+# tool.cad.ci is checked out as executable repository tooling under ext/cad-ci;
+# it is not installed into the CAD Python environment because scripts/ci already
+# contains a local cad_ci.py module.
 repositories:
   scpf:
     type: git
@@ -12,3 +13,7 @@ repositories:
     type: git
     url: https://github.com/brainboxemb/lib.py.solidcraft.cmd.git
     version: fcaa6f9fc8388bc715fcd2fbb149ce6b979566a7
+  cad-ci:
+    type: git
+    url: https://github.com/brainboxemb/tool.cad.ci.git
+    version: e99c355a9d1d25f0c6059ba577c2e0794b4352ff

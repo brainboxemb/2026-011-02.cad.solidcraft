@@ -1,0 +1,24 @@
+# Plate is the first real CAD consumer of tool.cad.ci.
+id: plate
+kind: qualification
+watch:
+  - models/basic/plate/**
+  - dependencies.repos
+strategy:
+  affected: changed
+  # During the parallel migration proof every selected run must compare against
+  # the existing pipeline again. Reuse is enabled after the cutover is proven.
+  reuse: false
+steps:
+  - id: compile
+    run: [python, ci.py, compile]
+    outputs:
+      - generated/scpf/solidcraft.json
+  - id: verify
+    run: [python, ci.py, verify]
+    outputs:
+      - checks/reference.json
+  - id: compare-current
+    run: [python, ci.py, compare-current]
+    outputs:
+      - checks/current-pipeline.json

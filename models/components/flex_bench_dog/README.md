@@ -27,14 +27,14 @@ the printer, filament and actual dog-hole diameter.
 | --- | ---: |
 | Dog-hole diameter | 20.00 mm |
 | Interference | 0.20 mm |
-| Working section height | 35 mm |
+| Working section height | 20 mm |
 | Rim diameter | 24 mm |
 | Rim thickness | 3 mm |
-| Insertion length | 38 mm |
+| Insertion length | 18 mm |
 | Cross-slot width | 1.5 mm |
-| Cross-slot length | 30 mm |
+| Cross-slot length | 14 mm |
 
-Total height is **76 mm**.
+Total height is **41 mm**.
 
 ## Source and confidence
 

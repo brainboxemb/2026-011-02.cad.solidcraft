@@ -1,5 +1,5 @@
 {
-  "catalog_commit": "648d7e5577f62e37a2fe00ad92338b31f5dfdf97",
+  "catalog_commit": "52836fc8811fce74e0187ac41a6f6442f725b01f",
   "models": {
     "bolted-flange": {
       "input_fingerprint": "2552b06aff435562f8bdf96a7bce6ac942a4450860cd109b9c2350184242d702",
@@ -250,5 +250,5 @@
   "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
   "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "648d7e5577f62e37a2fe00ad92338b31f5dfdf97"
+  "source_commit": "52836fc8811fce74e0187ac41a6f6442f725b01f"
 }

@@ -256,6 +256,10 @@ MODELS = {
         "title": "GuideRail — Festool profile",
         "tagline": "Parametric guide rail using the detailed Festool reference extrusion",
         "description": "The generic GuideRail component with its default Festool profile. The aluminium cross-section comes from the FS 1400/2 STEP reference and is calibrated to the TSO measured 184.20 × 10.50 mm envelope. Only rail length is a native CAD parameter.",
+        "warning": {
+            "title": "WARNING — measured/reference geometry, not an official specification",
+            "body": "The dimensions used to calibrate this GuideRail profile are based on measurements published by TSO Products. They have not been independently verified against a physical rail or an official manufacturer drawing. The detailed profile shape also comes from third-party STEP/reference material. No official Festool extrusion drawing or other formal manufacturer dimensional specification is available here for validation. Treat this model as a practical assembly/layout reference, not as verified manufacturing geometry or authoritative Festool dimensions.",
+        },
         "parameters": "184.20 × 10.50 mm profile; 600 mm standalone example; editable length",
         "diagram": "guide-rail",
         "stages": [

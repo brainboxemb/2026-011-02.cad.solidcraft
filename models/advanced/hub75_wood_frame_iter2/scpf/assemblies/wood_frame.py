@@ -150,15 +150,19 @@ class WoodFrame:
             ),
         ).group("WoodBoxFrame")
 
-        rear = Board(
-            name="rear",
-            width=outer_width,
-            depth=self.panel_wood_thickness,
-            height=opening_top,
-            material_name="LIGHTPLY rear",
-            color="#A87D4D",
-            placement=Placement(y=rear_y),
-        ).group("WoodBoxFrame")
+        # Rear board is intentionally disabled for the current iteration-2
+        # layout work. Keep the definition here so it can be restored once the
+        # lower-compartment and rear-access design is decided.
+        #
+        # rear = Board(
+        #     name="rear",
+        #     width=outer_width,
+        #     depth=self.panel_wood_thickness,
+        #     height=opening_top,
+        #     material_name="LIGHTPLY rear",
+        #     color="#A87D4D",
+        #     placement=Placement(y=rear_y),
+        # ).group("WoodBoxFrame")
 
         return (
             left
@@ -168,5 +172,4 @@ class WoodFrame:
             + lower_divider_left
             + lower_divider_right
             + roof
-            + rear
         )

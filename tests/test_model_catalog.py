@@ -16,6 +16,8 @@ from model_catalog import (  # noqa: E402
     COMPONENT_DEFINITION_PRIMARY,
     SECTIONS,
     model_slugs,
+    model_dependencies,
+    model_input_paths,
 )
 
 
@@ -95,6 +97,25 @@ class ModelCatalogTests(unittest.TestCase):
             )
             section_slugs.extend(slugs)
         self.assertEqual(set(section_slugs), set(MODELS))
+
+    def test_declared_model_dependencies_are_valid_and_acyclic(self):
+        for slug in MODELS:
+            with self.subTest(slug=slug):
+                for dependency in model_dependencies(slug):
+                    self.assertIn(dependency, MODELS)
+                    self.assertNotEqual(dependency, slug)
+
+                # model_input_paths walks the dependency graph; a cycle would
+                # fail rather than silently selecting an incomplete set.
+                paths = model_input_paths(slug)
+                self.assertTrue(paths)
+
+    def test_declared_extra_inputs_use_repository_relative_paths(self):
+        for slug, model in MODELS.items():
+            for path in model.get("extra_inputs", ()):
+                with self.subTest(slug=slug, path=path):
+                    self.assertFalse(Path(path).is_absolute())
+                    self.assertTrue(path.endswith("/"))
 
     def test_scpc_metadata_is_complete(self):
         for slug, model in MODELS.items():

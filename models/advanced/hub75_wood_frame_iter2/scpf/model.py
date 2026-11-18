@@ -55,6 +55,12 @@ class WoodenHub75BoxIter2:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
+    # Rear side-wall recess. The lower compartment itself stays full depth.
+    side_recess_depth = 50.0
+    side_recess_radius = 20.0
+    side_recess_lower_keep = 80.0
+    side_recess_upper_keep = 80.0
+
     # Printed corner brackets
     bracket_width = 24.0
 
@@ -84,6 +90,10 @@ class WoodenHub75BoxIter2:
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
+            side_recess_depth=self.side_recess_depth,
+            side_recess_radius=self.side_recess_radius,
+            side_recess_lower_keep=self.side_recess_lower_keep,
+            side_recess_upper_keep=self.side_recess_upper_keep,
         )
 
         brackets = CornerBrackets(

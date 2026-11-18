@@ -76,6 +76,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             {
                 "board.py",
                 "glass_strip.py",
+                "side_board.py",
                 "window.py",
             },
         )
@@ -103,6 +104,10 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "roof_front_overhang",
                 "roof_rear_overhang",
                 "corner_radius",
+                "side_recess_depth",
+                "side_recess_radius",
+                "side_recess_lower_keep",
+                "side_recess_upper_keep",
                 "bracket_width",
                 "glazing_wood_width",
                 "glazing_wood_depth",
@@ -235,6 +240,43 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             844.0 / 2 - 246.0 - 12.0 / 2,
             170.0,
         )
+
+    def test_side_walls_follow_v11_rear_recess_principle(self):
+        source = MODEL.read_text(encoding="utf-8")
+        frame_source = (
+            SCPF_DIR / "assemblies" / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+        side_source = (
+            SCPF_DIR / "parts" / "side_board.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("side_recess_depth = 50.0", source)
+        self.assertIn("side_recess_radius = 20.0", source)
+        self.assertIn("side_recess_lower_keep = 80.0", source)
+        self.assertIn("side_recess_upper_keep = 80.0", source)
+
+        # The assembly derives the recess from the top of the intermediate
+        # shelf and from the roof, so changing the vertical stack keeps both
+        # 80 mm full-depth end zones.
+        self.assertIn(
+            "self.lower_compartment_height\n            + self.frame_wood_thickness",
+            frame_source,
+        )
+        self.assertIn(
+            "side_height\n            - self.side_recess_upper_keep",
+            frame_source,
+        )
+
+        # The side part uses one real rounded YZ cut, not a faceted polygon.
+        self.assertIn('Sketch(name="Rear recess", plane="YZ")', side_source)
+        self.assertIn("RoundedRectangle2D(", side_source)
+        self.assertIn("self.recess_radius", side_source)
+
+        # Default local geometry:
+        # shelf top 82 mm; +80 mm = recess starts at 162 mm.
+        # side height 444 mm; -80 mm = recess ends at 364 mm.
+        self.assertEqual(70.0 + 12.0 + 80.0, 162.0)
+        self.assertEqual(70.0 + 12.0 + 362.0 - 80.0, 364.0)
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

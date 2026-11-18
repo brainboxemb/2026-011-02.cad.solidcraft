@@ -55,6 +55,21 @@ All display-dependent geometry must follow the derived opening datum:
 
 No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 
+The second reference design also reduces the rear depth of the upper side-wall
+section. Apply the same principle here while keeping the iteration-2 dimensions:
+
+- cabinet depth remains 100 mm;
+- the middle display-zone side wall is recessed 50 mm from the rear, leaving
+  50 mm depth there;
+- use R20 rounded transitions;
+- keep at least 80 mm of full-depth side wall above the intermediate shelf;
+- keep at least 80 mm of full-depth side wall below the roof;
+- keep the lower storage-compartment side wall at the full 100 mm depth.
+
+Model this as a separate `SideBoard` part with a rounded YZ recess. Do not
+approximate the radius with straight polygon segments. The rear board remains
+temporarily disabled while this rear-access shape is developed.
+
 ## Scope
 
 This change creates the basic lower compartment, including its two vertical
@@ -67,6 +82,7 @@ from the OpenSCAD reference.
 - regression tests check the new native parameter;
 - tests check the 12 + 70 + 12 stack and dependent command expressions;
 - tests check two divider occurrences and the 30% / 40% / 30% clear-bay calculation;
+- tests check the 50 mm side recess, R20 profile and the two 80 mm full-depth end zones;
 - the five-panel X layout remains unchanged;
 - a native mutation changes `lower_compartment_height` to 90 mm and verifies
   that the saved SolidCraft design rebuilds from the parameter;

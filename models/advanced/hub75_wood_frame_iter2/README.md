@@ -57,6 +57,21 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 **246 mm / 328 mm / 246 mm** clear openings, with divider centre-lines at
 **X = -170 mm and +170 mm**.
 
+## Rear side-wall recess
+
+Like the second reference design, the lower storage section keeps the full
+**100 mm** cabinet depth. Only the rear edge of the display section is reduced.
+The current iteration-2 values are:
+
+- rear recess depth: **50 mm**, leaving a 50 mm deep middle section;
+- transition radius: **R20**;
+- full-depth side wall above the intermediate shelf before the recess: **80 mm**;
+- full-depth side wall below the roof after the recess: **80 mm**.
+
+The recess is cut as a real rounded YZ profile in each 12 mm side wall. The
+front edge remains straight. The rear board is temporarily disabled while this
+rear-access geometry is being developed.
+
 ## Current main dimensions
 
 | Item | Value |
@@ -69,7 +84,8 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |
 | Frame wood | 12 mm |
-| Rear board | 9 mm |
+| Rear board | temporarily disabled |
+| Side-wall rear recess | 50 mm deep, R20, 80 mm full-depth top/bottom zones |
 | Cabinet depth | 100 mm |
 | Roof overhang | 10 mm front / 1 mm rear |
 | Window | 840 × 360 × 4 mm |

@@ -103,7 +103,7 @@ jobs:
           unset PYTHONPATH
           solidcraft-cli --version
           python -c 'from scpf.version import check_cli_version; check_cli_version(require_cli=True)'
-          for model in $(python scripts/ci/model_catalog.py --list native); do
+          for model in $NATIVE_MODELS; do
             mkdir -p "output/native/$model"
             python -m scpf "$(python scripts/ci/model_catalog.py "$model")" --out "output/native/$model/commands.json"
             python -m scpf.headless "output/native/$model/commands.json" \
@@ -134,24 +134,28 @@ jobs:
               test -s "output/native/$model/model.png"
             fi
           done
-          # Standalone Hub75Panel stays in its own local CAD axes:
-          # front XY at Z=0, rear at +Z. View the same body from both sides.
-          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
-            --out output/native/hub75-panel/front.png --no-grid --no-axes \
-            --camera '{"target":[0,0,7.25],"yaw":0,"pitch":-1.55,"distance":460,"fov":0}'
-          solidcraft-cli snapshot output/native/hub75-panel/model.sc \
-            --out output/native/hub75-panel/rear.png --no-grid --no-axes \
-            --camera '{"target":[0,0,7.25],"yaw":0,"pitch":1.55,"distance":460,"fov":0}'
-          test -s output/native/hub75-panel/front.png
-          test -s output/native/hub75-panel/rear.png
-          python scripts/ci/run_native_mutations.py output/native
-          python scripts/ci/native_validation.py output/native
+          # Standalone Hub75Panel gets two extra face views only when selected.
+          if printf ' %s ' "$NATIVE_MODELS" | grep -Fq ' hub75-panel '; then
+            solidcraft-cli snapshot output/native/hub75-panel/model.sc \
+              --out output/native/hub75-panel/front.png --no-grid --no-axes \
+              --camera '{"target":[0,0,7.25],"yaw":0,"pitch":-1.55,"distance":460,"fov":0}'
+            solidcraft-cli snapshot output/native/hub75-panel/model.sc \
+              --out output/native/hub75-panel/rear.png --no-grid --no-axes \
+              --camera '{"target":[0,0,7.25],"yaw":0,"pitch":1.55,"distance":460,"fov":0}'
+            test -s output/native/hub75-panel/front.png
+            test -s output/native/hub75-panel/rear.png
+          fi
+
+          if [ -n "$NATIVE_MODELS" ]; then
+            python scripts/ci/run_native_mutations.py output/native --models $NATIVE_MODELS
+            python scripts/ci/native_validation.py output/native --models $NATIVE_MODELS
+          fi
       - name: Native comparison of independent SCPF and SCPC designs
         shell: bash
         run: |
           set -euo pipefail
           unset PYTHONPATH
-          for model in $(python scripts/ci/model_catalog.py --list scpc); do
+          for model in $SCPC_MODELS; do
             mkdir -p "output/native/$model/scpf" "output/native/$model/scpc"
             cp "output/native/$model/measurements.json" "output/native/$model/scpf/measurements.json"
             python -m scpc "$(python scripts/ci/model_catalog.py "$model" scpc)" \

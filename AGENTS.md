@@ -79,8 +79,9 @@ below before opening or merging the PR.
      `scripts/ci/native_cases.py`; `run_native_mutations.py` executes them.
    - Prefer checking the actual saved SolidCraft body rather than only generated
      command JSON.
-   - Keep `.github/workflows/native.yml` as orchestration only and do not add
-     another model list there.
+   - Native verification runs inside the single `.github/workflows/cad.yml`
+     pipeline; do not add a second user-facing native workflow or another model
+     list in YAML.
 
 6. **Results site**
    - Site title, description, parameters, stages and section belong in the
@@ -112,8 +113,8 @@ Normal CAD CI must not reinstall the same heavy toolchain for every model run.
   this repository.
 - Repository model source is **not** baked into the image. Model changes must
   not rebuild the toolchain image.
-- Normal `cad.yml` and `native.yml` jobs pull the immutable image and run the
-  selected repository source inside it. They do not download SolidCraft, run
+- The normal `cad.yml` workflow pulls the immutable image and runs the
+  selected repository source inside it. It does not download SolidCraft, run
   `vcs import`, or reinstall SCPF/SCPC on every run.
 - Image identity is content-addressed from the versioned toolchain inputs.
   At minimum that includes the pinned Python image, SolidCraft version,
@@ -152,7 +153,10 @@ Normal CAD CI must not reinstall the same heavy toolchain for every model run.
 ### Keep build output separate from Pages
 
 Use `build` as the durable store of verified model build results.
-The build item path mirrors the source model root. Do not flatten model output to a slug-only directory.
+The build item path mirrors the catalog item's source location and must be
+unique. A conventional `model.py` item uses its source directory; a named
+source such as `makita.py` or `assemblies/guide_rail.py` gets a directory
+with that source stem. Do not flatten model output to a slug-only directory.
 `gh-pages` is generated publication output, not the source of truth for CAD
 verification.
 
@@ -223,19 +227,21 @@ Forge bug should be hidden.
 
 ## Workflow structure
 
-Keep the caller workflows small and purpose-based:
+Expose one normal user-facing workflow:
 
-- `image.yml` — build/smoke/publish the immutable CAD toolchain image;
-- `cad.yml` — cheap model/unit/site checks for the selected scope;
-- `native.yml` — selected native SolidCraft verification using the same image;
-- `publish.yml` — trusted promotion to `build` and Pages;
-- `pr-cleanup.yml` — remove closed PR preview namespaces.
+- `cad.yml` — the complete CAD pipeline: select, cheap checks, native checks,
+  candidate build, preview/stable publication and closed-PR cleanup.
 
-Workflow YAML owns triggers, permissions, checkout, image pull/login, artifact
-handoff and calls into tested Python. Git diff logic, model selection, model
-loops, JSON policy, model-specific checks, publication decisions and branch
-mutation policy belong in tested Python modules under `scripts/ci/` or with the
-model that owns the check.
+Keep `image.yml` separate only because building and caching the immutable CAD
+toolchain image is a performance optimization. Do not split normal CAD
+operation into separate native, publish or cleanup workflows merely because
+those are separate implementation phases.
+
+Workflow YAML owns triggers, permissions, checkout, image pull/login and calls
+into tested Python. Git diff logic, model selection, model loops, JSON policy,
+model-specific checks, publication decisions and branch mutation policy belong
+in tested Python modules under `scripts/ci/` or with the model that owns the
+check.
 
 The normal development flow is:
 

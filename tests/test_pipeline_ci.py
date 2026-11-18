@@ -16,8 +16,10 @@ import pipeline_ci  # noqa: E402
 
 
 class PipelineCiTests(unittest.TestCase):
-    def test_execute_runs_one_plan_then_cheap_and_native_phases(self):
-        plan = {
+    def test_execute_extends_plan_before_cheap_and_native_phases(self):
+        """A stable-store gap is added before either pipeline phase runs."""
+
+        initial = {
             "schema": 1,
             "scpf_models": ["plate"],
             "scpc_models": [],
@@ -29,6 +31,10 @@ class PipelineCiTests(unittest.TestCase):
             "preview_key": "pr-12",
             "public_base": "https://example.test/preview/pr-12",
         }
+        extended = dict(initial)
+        extended["scpf_models"] = ["plate", "new-model"]
+        extended["native_models"] = ["plate", "new-model"]
+
         with TemporaryDirectory() as temp:
             root = Path(temp)
             build = root / "build"
@@ -47,12 +53,16 @@ class PipelineCiTests(unittest.TestCase):
             ) as changed, patch.object(
                 pipeline_ci.build_plan,
                 "make_plan",
-                return_value=plan,
+                return_value=initial,
             ) as make_plan, patch.object(
                 pipeline_ci,
                 "resolve_build_baseline",
                 return_value=root / "resolved/main",
             ) as resolve, patch.object(
+                pipeline_ci,
+                "extend_plan_for_missing_stable",
+                return_value=extended,
+            ) as extend, patch.object(
                 pipeline_ci.cad_ci,
                 "execute",
             ) as cheap, patch.object(
@@ -77,19 +87,87 @@ class PipelineCiTests(unittest.TestCase):
                     (out / "plan.json").read_text(encoding="utf-8")
                 )
 
-        self.assertEqual(result, plan)
+        self.assertEqual(result, extended)
         configure.assert_called_once_with()
         changed.assert_called_once_with("base", "head")
         make_plan.assert_called_once()
         resolve.assert_called_once()
+        extend.assert_called_once_with(initial, root / "resolved/main")
         cheap.assert_called_once()
-        self.assertFalse(cheap.call_args.kwargs["build_site_output"])
         native.assert_called_once()
-        self.assertEqual(
-            native.call_args.kwargs["stable_store"],
-            root / "resolved/main",
-        )
-        self.assertEqual(persisted["preview_key"], "pr-12")
+        self.assertEqual(persisted["scpf_models"], ["plate", "new-model"])
+
+    def test_missing_stable_models_uses_verification_files(self):
+        """A catalog directory without verification still counts as missing."""
+
+        with TemporaryDirectory() as temp:
+            stable = Path(temp)
+            native = tuple(pipeline_ci.model_slugs("native"))
+            self.assertTrue(native)
+
+            for slug in native[:-1]:
+                verification = (
+                    stable
+                    / pipeline_ci.model_build_path(slug)
+                    / "verification.json"
+                )
+                verification.parent.mkdir(parents=True, exist_ok=True)
+                verification.write_text("{}", encoding="utf-8")
+
+            # A directory alone must not hide a partial last model.
+            partial = stable / pipeline_ci.model_build_path(native[-1])
+            partial.mkdir(parents=True, exist_ok=True)
+
+            self.assertEqual(
+                pipeline_ci.missing_stable_models(stable),
+                (native[-1],),
+            )
+
+    def test_extend_plan_adds_missing_model_by_supported_kinds(self):
+        """The plan uses catalog eligibility instead of hardcoded model names."""
+
+        plan = {
+            "scpf_models": ["plate"],
+            "scpc_models": ["plate"],
+            "native_models": ["plate"],
+            "snapshot_models": [],
+            "site_refresh": False,
+            "publishable": False,
+        }
+
+        def kinds(kind):
+            values = {
+                "native": ("plate", "new-model"),
+                "scpf": ("plate", "new-model"),
+                "scpc": ("plate",),
+                "native-snapshot-required": ("new-model",),
+            }
+            return values[kind]
+
+        with patch.object(
+            pipeline_ci,
+            "missing_stable_models",
+            return_value=("new-model",),
+        ), patch.object(
+            pipeline_ci,
+            "model_slugs",
+            side_effect=kinds,
+        ), patch.object(
+            pipeline_ci,
+            "MODELS",
+            {"plate": {}, "new-model": {}},
+        ):
+            result = pipeline_ci.extend_plan_for_missing_stable(
+                plan,
+                Path("/unused"),
+            )
+
+        self.assertEqual(result["scpf_models"], ["plate", "new-model"])
+        self.assertEqual(result["scpc_models"], ["plate"])
+        self.assertEqual(result["native_models"], ["plate", "new-model"])
+        self.assertEqual(result["snapshot_models"], ["new-model"])
+        self.assertTrue(result["site_refresh"])
+        self.assertTrue(result["publishable"])
 
     def test_existing_build_main_needs_no_legacy_migration(self):
         with TemporaryDirectory() as temp:

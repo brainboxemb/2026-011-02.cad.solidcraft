@@ -97,6 +97,68 @@ class PublishCiTests(unittest.TestCase):
                         attempts=2,
                     )
 
+    def test_empty_modern_store_requires_legacy_bootstrap(self):
+        with TemporaryDirectory() as temp:
+            build = Path(temp)
+            self.assertTrue(
+                publish_ci.needs_legacy_bootstrap(
+                    build,
+                    ("hub75-display2",),
+                )
+            )
+
+    def test_catalog_growth_skips_legacy_bootstrap_when_candidate_covers_missing(self):
+        with TemporaryDirectory() as temp:
+            build = Path(temp)
+            expected = tuple(publish_ci.model_slugs("native"))
+            missing = expected[-1]
+
+            for slug in expected[:-1]:
+                verification = (
+                    build
+                    / "main"
+                    / publish_ci.model_build_path(slug)
+                    / "verification.json"
+                )
+                verification.parent.mkdir(parents=True, exist_ok=True)
+                verification.write_text(
+                    '{"model":"' + slug + '","verified":true}',
+                    encoding="utf-8",
+                )
+
+            self.assertFalse(
+                publish_ci.needs_legacy_bootstrap(
+                    build,
+                    (missing,),
+                )
+            )
+
+    def test_incomplete_modern_store_outside_candidate_fails(self):
+        with TemporaryDirectory() as temp:
+            build = Path(temp)
+            expected = tuple(publish_ci.model_slugs("native"))
+            keep = expected[0]
+            verification = (
+                build
+                / "main"
+                / publish_ci.model_build_path(keep)
+                / "verification.json"
+            )
+            verification.parent.mkdir(parents=True, exist_ok=True)
+            verification.write_text(
+                '{"model":"' + keep + '","verified":true}',
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "outside the current candidate",
+            ):
+                publish_ci.needs_legacy_bootstrap(
+                    build,
+                    (expected[-1],),
+                )
+
     def test_stable_publication_builds_site_outside_container_output(self):
         source_sha = "a" * 40
         with TemporaryDirectory() as temp:

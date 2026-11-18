@@ -4,7 +4,7 @@
       "command": "parameters.add",
       "params": {
         "name": "length",
-        "expression": "1500",
+        "expression": "600",
         "unit": "mm"
       }
     },

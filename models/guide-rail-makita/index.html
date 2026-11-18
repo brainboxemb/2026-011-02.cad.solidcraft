@@ -12,22 +12,22 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / guide-rail-makita</div>
 <h1>GuideRail — Makita profile</h1><p>The same GuideRail component with the Makita 199141-8 profile</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">5 commands</span><span class="badge">182.50 × 10.28 mm profile; length 1500 mm</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">5 commands</span><span class="badge">182.50 × 10.28 mm profile; 600 mm standalone example</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>A second fixed cross-section of the generic GuideRail component. The aluminium shape comes from the Makita 199141-8 STEP reference and is calibrated to the TSO measured 182.50 × 10.28 mm envelope. The standalone result uses the product&#x27;s 1500 mm length.</p></section>
+<p>A second fixed cross-section of the generic GuideRail component. The aluminium shape comes from the Makita 199141-8 STEP reference and is calibrated to the TSO measured 182.50 × 10.28 mm envelope. The standalone CAD example uses 600 mm for compact visual inspection; Makita&#x27;s referenced product length is 1500 mm.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="source/models/components/guide_rail/scpf/model.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Select the fixed Makita cross-section at build time</li><li>Create one detailed XZ Polygon2D</li><li>Approximate the STEP&#x27;s small round edges with short line segments</li><li>Extrude symmetrically along Y to 1500 mm</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Select the fixed Makita cross-section at build time</li><li>Create one detailed XZ Polygon2D</li><li>Approximate the STEP&#x27;s small round edges with short line segments</li><li>Extrude symmetrically along Y to the 600 mm example length</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fguide-rail-makita%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
 <section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the assembly entry point. It imports and places the shared definition; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;Standalone Makita GuideRail variant for qualification/results.&quot;&quot;&quot;
 
 from models.components.guide_rail.scpf.model import GuideRail
 
-GuideRail(length=1500.0, profile=&quot;makita&quot;)
+GuideRail(length=600.0, profile=&quot;makita&quot;)
 </code></pre></section><section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>models/components/guide_rail/scpf/model.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/models/components/guide_rail/scpf/model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Reusable guide rail with interchangeable fixed cross-sections.
 
 `length` is the only native CAD parameter. `profile` is a non-parametric
@@ -40,7 +40,7 @@ from models.components.guide_rail.scpf.profiles import get_profile
 
 @component(include=(&quot;length&quot;,))
 class GuideRail:
-    length = 1400.0
+    length = 600.0
     profile = None
 
     def build(self):
@@ -63,7 +63,7 @@ class GuideRail:
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;length&quot;,
-    &quot;expression&quot;: &quot;1500&quot;,
+    &quot;expression&quot;: &quot;600&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>

@@ -12,7 +12,7 @@
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / guide-rail</div>
 <h1>GuideRail — Festool profile</h1><p>Parametric guide rail using the detailed Festool reference extrusion</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">5 commands</span><span class="badge">184.20 × 10.50 mm profile; default length 1400 mm; editable length</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">5 commands</span><span class="badge">184.20 × 10.50 mm profile; 600 mm standalone example; editable length</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>The generic GuideRail component with its default Festool profile. The aluminium cross-section comes from the FS 1400/2 STEP reference and is calibrated to the TSO measured 184.20 × 10.50 mm envelope. Only rail length is a native CAD parameter.</p></section>
@@ -35,7 +35,7 @@ from models.components.guide_rail.scpf.profiles import get_profile
 
 @component(include=(&quot;length&quot;,))
 class GuideRail:
-    length = 1400.0
+    length = 600.0
     profile = None
 
     def build(self):
@@ -58,7 +58,7 @@ class GuideRail:
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;length&quot;,
-    &quot;expression&quot;: &quot;1400&quot;,
+    &quot;expression&quot;: &quot;600&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>

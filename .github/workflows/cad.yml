@@ -1,0 +1,103 @@
+name: CAD models and site smoke tests
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Model selection mode
+        type: choice
+        required: true
+        default: changed
+        options: [changed, models, all]
+      models:
+        description: Space- or comma-separated model slugs for models mode
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  packages: read
+
+concurrency:
+  group: cad-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  cad:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
+      BUILD_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || '' }}
+      BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || '' }}
+      HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout current stable site
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: previous-site
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve immutable CAD image
+        id: image
+        run: |
+          python scripts/ci/cad_image.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull immutable CAD image
+        run: docker pull "${{ steps.image.outputs.reference }}"
+
+      - name: Run selected CAD CI in immutable image
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            -e BUILD_MODE \
+            -e BUILD_MODELS \
+            -e BASE_SHA \
+            -e HEAD_SHA \
+            "${{ steps.image.outputs.reference }}" \
+            bash -c '
+              set -euo pipefail
+              git config --global --add safe.directory /workspace
+              python scripts/ci/build_plan.py \
+                --mode "$BUILD_MODE" \
+                --models "$BUILD_MODELS" \
+                --base "$BASE_SHA" \
+                --head "$HEAD_SHA" \
+                --out output/plan.json
+              python scripts/ci/cad_ci.py \
+                --plan output/plan.json \
+                --out output \
+                --previous-site previous-site \
+                --source-sha "$HEAD_SHA"
+            '
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cad-site-smoke
+          path: |
+            output/plan.json
+            output/models/
+            output/site/
+          if-no-files-found: error

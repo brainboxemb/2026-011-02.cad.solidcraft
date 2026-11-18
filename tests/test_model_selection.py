@@ -130,6 +130,16 @@ class TargetedModelSelectionTests(unittest.TestCase):
         self.assertEqual(selected, ())
         self.assertTrue(needs_site_refresh(paths, selected))
 
+    def test_publisher_change_refreshes_site_without_geometry(self):
+        paths = [".github/workflows/publish-cad.yml"]
+        self.assertEqual(affected_models(paths, kind="native"), ())
+        self.assertTrue(needs_site_refresh(paths, ()))
+
+    def test_output_store_change_refreshes_site_without_geometry(self):
+        paths = ["scripts/ci/output_store.py"]
+        self.assertEqual(affected_models(paths, kind="native"), ())
+        self.assertTrue(needs_site_refresh(paths, ()))
+
     def test_model_change_refreshes_site(self):
         paths = ["models/basic/bolted_flange/scpf/model.py"]
         selected = affected_models(paths, kind="native")

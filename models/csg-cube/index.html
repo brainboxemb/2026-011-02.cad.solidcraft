@@ -11,18 +11,18 @@
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / csg-cube</div>
 <h1>CsgCube</h1><p>A box, sphere and three crossing bores</p></div></section>
-<main class="wrap"><div class="metadata"><span class="badge pending">Previously published render · verification metadata unavailable</span>
-<span class="badge">6 commands</span><span class="badge">50 mm cube; three crossing cylindrical cuts</span><span class="badge">SolidCraft native version not verified</span></div>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · stored build 1b673d0e</span>
+<span class="badge">6 commands</span><span class="badge">50 mm cube; three crossing cylindrical cuts</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
 
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
-<p class="small muted">Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size.</p>
+<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
 <p>A constructive solid geometry demonstration: intersect a cube with a sphere, then subtract cylinders along three axes.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Create the sphere</li><li>Intersect with a cube</li><li>Cut along X, Y and Z</li></ol></section></div>
-
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fcsg-cube%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
 <h2>Python model</h2><pre><code>class CsgCube:
     size = 50
@@ -127,7 +127,7 @@
     ]
   }
 }</code></pre></li></ol></section>
-<div class="notice"><strong>Verification:</strong> Previously published render · verification metadata unavailable.
+<div class="notice"><strong>Verification:</strong> Native verified · stored build 1b673d0e.
 The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
 <p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
 <a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>

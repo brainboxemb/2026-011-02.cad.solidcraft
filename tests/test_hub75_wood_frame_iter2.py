@@ -321,6 +321,8 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             "rod_length = recess_top_z - recess_bottom_z",
             handle_source,
         )
+        self.assertNotIn("cabinet_depth =", handle_source)
+        self.assertNotIn("side_recess_depth =", handle_source)
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

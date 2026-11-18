@@ -105,9 +105,7 @@ class WoodenHub75BoxIter2:
             opening_height=self.opening_height,
             lower_compartment_height=self.lower_compartment_height,
             frame_wood_thickness=self.frame_wood_thickness,
-            cabinet_depth=self.cabinet_depth,
             side_panel_depth=self.side_panel_depth,
-            side_recess_depth=self.side_recess_depth,
             side_recess_lower_keep=self.side_recess_lower_keep,
             side_recess_upper_keep=self.side_recess_upper_keep,
         )

@@ -18,7 +18,6 @@ class SideHandles:
     frame_wood_thickness = 12.0
     side_panel_depth = 110.0
 
-    side_recess_depth = 50.0
     side_recess_lower_keep = 80.0
     side_recess_upper_keep = 80.0
 

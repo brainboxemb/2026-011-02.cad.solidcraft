@@ -11,17 +11,17 @@
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / sample-plate</div>
 <h1>SamplePlate</h1><p>Original four-sketch history: Base, Holes, Boss, Bore</p></div></section>
-<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · stored build 1b673d0e</span>
-<span class="badge">18 commands</span><span class="badge">80 × 50 × 8 mm; R6; Ø24 × 14 boss</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
-<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
-<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
+<main class="wrap"><div class="metadata"><span class="badge pending">Generated command plan · native render not verified</span>
+<span class="badge">18 commands</span><span class="badge">80 × 50 × 8 mm; R6; Ø24 × 14 boss</span><span class="badge">SolidCraft native version not verified</span></div>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><svg role="img" aria-label="Schematic illustration; not a native CAD render" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg"><path d="M65 115 300 50 425 100 185 175Z" fill="#bcd4ee" stroke="#285785" stroke-width="5"/><path d="M65 115 V160 L185 222 V175 M185 222 425 150 V100" fill="#8eb5db" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="100" rx="62" ry="39" fill="#5f92c6" stroke="#285785" stroke-width="4"/><path d="M231 100 V60 A62 39 0 0 1 355 60 V100" fill="#b4d0e9" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="60" rx="62" ry="39" fill="#d1e4f4" stroke="#285785" stroke-width="4"/><ellipse cx="293" cy="60" rx="29" ry="18" fill="#edf4fb" stroke="#285785" stroke-width="4"/><ellipse cx="130" cy="116" rx="15" ry="10" fill="#edf4fb" stroke="#285785" stroke-width="4"/><ellipse cx="385" cy="129" rx="15" ry="10" fill="#edf4fb" stroke="#285785" stroke-width="4"/></svg></div>
+<p class="small muted">Schematic drawing only; it is not a SolidCraft geometry render.</p>
 <p>Recreates the original saved SolidCraft construction history with four named sketches and sketch-based cuts. The object-level Hole and Cylinder intent is compiled to the four editable sketches and matching cut/join history.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
 <h3>Construction stages</h3><ol><li>Base — sketch XY rectangle (80 × 50)</li><li>Extrude1 — extrude base by 8 mm</li><li>Fillet1 — fillet four vertical corners, R6</li><li>Holes — cut two mounting holes Ø8</li><li>Boss — join Ø24 boss above plate, height 14</li><li>Bore — cut central Ø12 bore through full 22 mm</li></ol></section></div>
-<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fsample-plate%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+
 
 <h2>Python model</h2><pre><code>class SamplePlate:
     &quot;&quot;&quot;Build the sample plate from object-level CAD intent.&quot;&quot;&quot;
@@ -254,7 +254,7 @@
     &quot;name&quot;: &quot;Bore&quot;
   }
 }</code></pre></li></ol></section>
-<div class="notice"><strong>Verification:</strong> Native verified · stored build 1b673d0e.
+<div class="notice"><strong>Verification:</strong> Generated command plan · native render not verified.
 The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
 <p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
 <a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>

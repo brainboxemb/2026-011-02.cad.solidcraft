@@ -38,6 +38,9 @@ class PipelineCiTests(unittest.TestCase):
             pages.mkdir()
 
             with patch.object(
+                pipeline_ci,
+                "configure_git_workspace",
+            ) as configure, patch.object(
                 pipeline_ci.build_plan,
                 "changed_paths",
                 return_value=("models/basic/plate/scpf/model.py",),
@@ -72,6 +75,7 @@ class PipelineCiTests(unittest.TestCase):
                 )
 
         self.assertEqual(result, plan)
+        configure.assert_called_once_with()
         changed.assert_called_once_with("base", "head")
         make_plan.assert_called_once()
         resolve.assert_called_once()

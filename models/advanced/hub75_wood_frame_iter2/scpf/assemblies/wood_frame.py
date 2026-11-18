@@ -55,7 +55,10 @@ class WoodFrame:
 
         shelf = Board(
             name="intermediate_shelf",
-            width=outer_width,
+            # The shelf sits between the two side walls. Using outer_width
+            # here would make the shelf pass through both 12 mm side boards.
+            # Grooves can be added later as explicit joinery features.
+            width=self.opening_width,
             depth=self.cabinet_depth,
             height=self.frame_wood_thickness,
             material_name="LIGHTPLY intermediate shelf",

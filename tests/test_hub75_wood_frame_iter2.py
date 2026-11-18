@@ -164,6 +164,15 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertEqual(len(creates), 14)
         self.assertIn("Board 5", creates)
 
+        frame_source = (
+            SCPF_DIR / "assemblies" / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+        shelf_start = frame_source.index('name="intermediate_shelf"')
+        shelf_end = frame_source.index(').group("WoodBoxFrame")', shelf_start)
+        shelf_source = frame_source[shelf_start:shelf_end]
+        self.assertIn("width=self.opening_width", shelf_source)
+        self.assertNotIn("width=outer_width", shelf_source)
+
         moves = of(rows, "occurrence.move")
         shelf = [row for row in moves if row["occurrence"] == "$intermediate_shelf"]
         self.assertEqual(len(shelf), 1)

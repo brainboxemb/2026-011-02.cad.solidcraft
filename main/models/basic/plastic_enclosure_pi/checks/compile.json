@@ -1,0 +1,9 @@
+{
+  "models": {
+    "plastic-enclosure-pi": {
+      "scpf_sha256": "404be3d0374ac59626f75c56f457ca34697c1d376ffbdd4af09283080a211f5d"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

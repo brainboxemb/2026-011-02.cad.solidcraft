@@ -1,0 +1,11 @@
+{
+  "models": {
+    "plate": {
+      "source": "current-run",
+      "source_commit": "648d7e5577f62e37a2fe00ad92338b31f5dfdf97",
+      "verification_sha256": "2698dad09d5d400cc3983f710bfa93480ff4d52c49b2db8ca0a80ce6da632eff"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

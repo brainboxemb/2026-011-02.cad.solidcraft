@@ -1,0 +1,18 @@
+{
+  "models": {
+    "vent-plate": {
+      "scpc": {
+        "sha256": "91532dc2f20796e0224c2e9cb33a459101fe68daf56adf847b5b88922b7a0bf9",
+        "source": "stable-build",
+        "status": "pass"
+      },
+      "scpf": {
+        "sha256": "a9c94570a7503a5a8fada269591facae2467c43ce7698f4ea5c1234d60f8c1b8",
+        "source": "stable-build",
+        "status": "pass"
+      }
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

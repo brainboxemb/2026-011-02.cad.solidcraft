@@ -1,0 +1,12 @@
+{
+  "duration_seconds": 0.202,
+  "exit_code": 0,
+  "input_fingerprint": "4e894fa059ffb7df98326f4fdc3fa32ff6808896e7c1e9bf67f8c10148897731",
+  "outputs": {
+    "checks/package.json": "fc6949cfd1a8eabc5a452b3d85fa4779adb35fd7e13c8b76774599c279dfa89f",
+    "results": "190966646e23ee6a77db8abc29183dff18c540109ba97bcf6493fba2541c0f2d"
+  },
+  "result_fingerprint": "3366419f2ee5585e096b394da3b4d6ebc0c8b6f2424dbb0fb680a02e8f3aa38f",
+  "status": "pass",
+  "step": "package"
+}

@@ -1,0 +1,12 @@
+{
+  "models": {
+    "plate": {
+      "reference": "models/basic/plate/scpf/reference.json",
+      "reference_sha256": "013d6ee8e6552dd69ab864a1915eec4389916ef410274f13455653bface8df55",
+      "scpc_sha256": "38f4f481fa22e9ba983817183593556d5e4fd7a3d45e7dcd1b3167dbd683003a",
+      "scpf_sha256": "1e3fdbe51d9fbc3c7ce9ee1ca0418c6d85e9148dd32733e7c8beb593186f616c"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

@@ -1,0 +1,9 @@
+{
+  "models": {
+    "bracket": {
+      "scpf_sha256": "d15bf08d5dd446ae9b6c8f024e298d3de38bea8f9132760146db32b1e690f944"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

@@ -1,0 +1,16 @@
+{
+  "models": {
+    "guide-rail": {
+      "source": "stable-build",
+      "source_commit": "3baad59fa0fb8bd52100e82eaf9200e74cedb5dc",
+      "verification_sha256": "0962c6cd108df12303292ed825ae36586f2748f579af5d427d3a70d076c03c95"
+    },
+    "guide-rail-makita": {
+      "source": "stable-build",
+      "source_commit": "3baad59fa0fb8bd52100e82eaf9200e74cedb5dc",
+      "verification_sha256": "fc00c1789a5e0fd09d4cbde71bfa5f6ffd15ccdcec97378cd47976430da32516"
+    }
+  },
+  "schema": 1,
+  "status": "pass"
+}

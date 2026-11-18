@@ -25,7 +25,7 @@ on the actual dog-hole diameter, printer, filament and print settings.
 - Ø24 × 3 mm stop rim;
 - small fillet at the rim-to-dog shoulder;
 - light chamfer around the upper edge;
-- small **raised square box logo** on the top face;
+- small **recessed square box logo** in the top face;
 - 2 mm long flared flex tips.
 
 ## Initial dimensions
@@ -43,10 +43,9 @@ on the actual dog-hole diameter, printer, filament and print settings.
 | Cross-slot length | 14 mm |
 | Top fillet | 1.0 mm |
 | Top chamfer | 0.6 mm |
-| Logo relief | 0.6 mm |
+| Logo depth | 0.6 mm |
 
-The physical body spans 38 mm from the bottom of the insert to the top face,
-plus the 0.6 mm raised logo.
+The physical body spans **38 mm** from the bottom of the insert to the top face. The square logo is recessed 0.6 mm into that top face.
 
 ## Source and confidence
 

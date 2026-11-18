@@ -416,13 +416,10 @@ def _model_root(path):
 
 
 def model_build_path(slug):
-    """Return the unique source-mirrored build directory for one catalog item."""
+    """Return the source-file path without .py as this build item's directory."""
     if slug not in MODELS:
         raise ValueError(f"unknown model: {slug}")
-    source = Path(MODELS[slug]["source"])
-    if source.name == "model.py":
-        return source.parent
-    return source.with_suffix("")
+    return Path(MODELS[slug]["source"]).with_suffix("")
 
 
 def direct_input_paths(slug):

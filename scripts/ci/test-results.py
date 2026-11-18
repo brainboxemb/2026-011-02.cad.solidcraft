@@ -34,6 +34,10 @@ def check(site, commit, public_base="https://brainboxemb.github.io/2026-011-02.c
     homepage = site / "index.html"
     assert homepage.is_file()
     assert (site / "results.css").is_file()
+    css = (site / "results.css").read_text(encoding="utf-8")
+    assert ".model-warning" in css
+    assert "#d32f2f" in css
+    assert "#b71c1c" in css
     provenance = json.loads((site / "provenance.json").read_text(encoding="utf-8"))
     assert provenance["schema"] == 2
     assert provenance["source_commit"] == commit
@@ -107,6 +111,13 @@ def check(site, commit, public_base="https://brainboxemb.github.io/2026-011-02.c
         assert "<details>" not in page
         assert "&quot;command&quot;" in page and "&quot;params&quot;" in page
         assert "Construction stages" in page
+        warning = MODELS[slug].get("warning")
+        if warning:
+            assert 'class="model-warning"' in page, slug
+            assert warning["title"] in page, slug
+            assert warning["body"] in page, slug
+        else:
+            assert 'class="model-warning"' not in page, slug
         assert 'class="two model-preview-layout"' in page
         component_source = COMPONENT_SOURCES.get(slug)
         if component_source is not None:

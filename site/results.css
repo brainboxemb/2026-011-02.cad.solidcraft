@@ -79,6 +79,16 @@ pre{overflow:auto}
 .metadata .badge{max-width:100%}
 .muted{color:var(--muted)}.small{font-size:.86rem}
 .notice{margin:24px 0}
+.model-warning{
+  margin:18px 0 24px;
+  padding:16px 20px;
+  border:2px solid #d32f2f;
+  border-radius:9px;
+  background:#fff5f5;
+  color:#b71c1c;
+}
+.model-warning strong{display:block;font-size:1.05rem;margin-bottom:7px}
+.model-warning p{margin:0;color:#b71c1c}
 hr{border:0;border-top:1px solid var(--line);margin:34px 0}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px}
 @media(max-width:760px){

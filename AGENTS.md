@@ -25,6 +25,20 @@ Do not commit third-party STEP/STL/CAD reference files unless their licence and
 project need explicitly require it. Prefer source links and reproduce only the
 geometry needed by our own model.
 
+## Change records
+
+For structural library, public-model API, CI/publication or reusable-component
+behavior changes, create the GitHub issue and the numbered
+`docs/changes/NNNN-short-name.md` record before implementation.
+
+- Use the next four-digit number from `docs/changes/README.md`.
+- One record describes one design decision and links its issue.
+- Record the problem, decision/contract and verification.
+- Update the index in the same change.
+- Do not use `CHANGELOG.md` as a substitute for the design/change record.
+- Small content-only documentation corrections that do not change a repository
+  contract do not need a new numbered record.
+
 ## Add a new model
 
 A new model is not complete when only `model.py` exists. Check every item

@@ -33,18 +33,6 @@ script.add(
     operation="join",
     targets=["FlexBenchDog"],
 )
-script.add(
-    "solid.fillet",
-    body="FlexBenchDog",
-    radius=1.0,
-    edges=[[10, 0, 3]],
-)
-script.add(
-    "solid.chamfer",
-    body="FlexBenchDog",
-    distance=0.6,
-    edges=[[10, 0, 20]],
-)
 
 # Straight insert and a slightly oversized free tip.
 script.add(
@@ -66,41 +54,79 @@ script.add(
     targets=["FlexBenchDog"],
 )
 
-# Crossing slots split the lower 14 mm into four flexible legs.
+# Flex slot X.
 script.add(
-    "solid.box",
-    length="hole_diameter + interference + 2",
-    width="slot_width",
-    height=14,
-    corner=[
-        "-(hole_diameter + interference + 2) / 2",
-        "-slot_width / 2",
-        -18,
-    ],
-    operation="cut",
-    targets=["FlexBenchDog"],
+    "sketch.create",
+    plane={"origin": [0, 0, -18], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
+    name="Flex slot X",
 )
 script.add(
-    "solid.box",
-    length="slot_width",
-    width="hole_diameter + interference + 2",
-    height=14,
-    corner=[
-        "-slot_width / 2",
-        "-(hole_diameter + interference + 2) / 2",
-        -18,
-    ],
+    "sketch.rectangle.two_point",
+    p0=["-(hole_diameter + interference + 2) / 2", "-slot_width / 2"],
+    p1=["(hole_diameter + interference + 2) / 2", "slot_width / 2"],
+)
+script.add("sketch.finish")
+script.add(
+    "solid.extrude",
+    distance=14,
+    direction="positive",
     operation="cut",
     targets=["FlexBenchDog"],
+    name="Flex slot X",
+)
+
+# Flex slot Y.
+script.add(
+    "sketch.create",
+    plane={"origin": [0, 0, -18], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
+    name="Flex slot Y",
+)
+script.add(
+    "sketch.rectangle.two_point",
+    p0=["-slot_width / 2", "-(hole_diameter + interference + 2) / 2"],
+    p1=["slot_width / 2", "(hole_diameter + interference + 2) / 2"],
+)
+script.add("sketch.finish")
+script.add(
+    "solid.extrude",
+    distance=14,
+    direction="positive",
+    operation="cut",
+    targets=["FlexBenchDog"],
+    name="Flex slot Y",
+)
+
+# Visible top finish.
+script.add(
+    "solid.fillet",
+    body="FlexBenchDog",
+    radius=1.0,
+    edges=[[10, 0, 3]],
+)
+script.add(
+    "solid.chamfer",
+    body="FlexBenchDog",
+    distance=0.6,
+    edges=[[10, 0, 20]],
 )
 
 # Recessed square box logo.
 script.add(
-    "solid.box",
-    length=8,
-    width=8,
-    height=0.6,
-    corner=[-4, -4, 19.4],
+    "sketch.create",
+    plane={"origin": [0, 0, 20], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
+    name="Top logo",
+)
+script.add(
+    "sketch.rectangle.two_point",
+    p0=[-4, -4],
+    p1=[4, 4],
+)
+script.add("sketch.finish")
+script.add(
+    "solid.extrude",
+    distance=0.6,
+    direction="negative",
     operation="cut",
     targets=["FlexBenchDog"],
+    name="Top logo",
 )

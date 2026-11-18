@@ -50,16 +50,15 @@ def affected_models(changed_paths, *, kind="scpf"):
 
 
 def validate_models(slugs, *, kind="scpf"):
+    """Validate catalog slugs and keep only models supporting this build kind."""
     eligible = set(model_slugs(kind))
     unknown = [slug for slug in slugs if slug not in MODELS]
     if unknown:
         raise ValueError(f"unknown model(s): {', '.join(unknown)}")
-    unsupported = [slug for slug in slugs if slug not in eligible]
-    if unsupported:
-        raise ValueError(
-            f"model(s) do not support {kind}: {', '.join(unsupported)}"
-        )
-    return tuple(dict.fromkeys(slugs))
+    return tuple(
+        slug for slug in dict.fromkeys(slugs)
+        if slug in eligible
+    )
 
 
 def select_models(

@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
-from model_catalog import COMMAND_SOURCES, MODELS  # noqa: E402
+from model_catalog import COMMAND_SOURCES, MODELS, model_build_path  # noqa: E402
 from output_store import input_fingerprint  # noqa: E402
 
 spec = importlib.util.spec_from_file_location(
@@ -51,7 +51,7 @@ class IncrementalSiteGenerationTests(unittest.TestCase):
         self.temp.cleanup()
 
     def make_verified_store_model(self, slug="bolted-flange"):
-        root = self.store / "models" / slug
+        root = self.store / model_build_path(slug)
         native = root / "native"
         generated = root / "generated" / "scpf"
         native.mkdir(parents=True)
@@ -128,7 +128,7 @@ class IncrementalSiteGenerationTests(unittest.TestCase):
 
     def test_stale_input_fingerprint_disables_stored_native_output(self):
         self.make_verified_store_model()
-        manifest = self.store / "models/bolted-flange/verification.json"
+        manifest = self.store / model_build_path("bolted-flange") / "verification.json"
         data = json.loads(manifest.read_text(encoding="utf-8"))
         data["input_fingerprint"] = "0" * 64
         manifest.write_text(json.dumps(data), encoding="utf-8")

@@ -415,6 +415,13 @@ def _model_root(path):
     return str(Path(value).parent.as_posix()) + "/"
 
 
+def model_build_path(slug):
+    """Return the source-file path without .py as this build item's directory."""
+    if slug not in MODELS:
+        raise ValueError(f"unknown model: {slug}")
+    return Path(MODELS[slug]["source"]).with_suffix("")
+
+
 def direct_input_paths(slug):
     """Paths whose change directly affects one catalog model.
 

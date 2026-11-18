@@ -1,0 +1,174 @@
+name: CAD
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Models to check
+        type: choice
+        required: true
+        default: changed
+        options: [changed, models, all]
+      models:
+        description: Model slugs when mode is models
+        type: string
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  packages: read
+
+concurrency:
+  group: cad-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+
+jobs:
+  cad:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    env:
+      BUILD_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
+      BUILD_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || '' }}
+      BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || '' }}
+      HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      EVENT_NAME: ${{ github.event_name }}
+      REF_NAME: ${{ github.head_ref || github.ref_name }}
+      PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Checkout verified build output
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          path: build
+
+      - name: Checkout current Pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve immutable CAD image
+        id: image
+        run: |
+          python scripts/ci/cad_image.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull immutable CAD image
+        run: docker pull "${{ steps.image.outputs.reference }}"
+
+      - name: Run selected CAD pipeline
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            -e BUILD_MODE \
+            -e BUILD_MODELS \
+            -e BASE_SHA \
+            -e HEAD_SHA \
+            -e EVENT_NAME \
+            -e REF_NAME \
+            -e PR_NUMBER \
+            -e GITHUB_RUN_ID \
+            "${{ steps.image.outputs.reference }}" \
+            python scripts/ci/pipeline_ci.py \
+              --mode "$BUILD_MODE" \
+              --models "$BUILD_MODELS" \
+              --base-sha "$BASE_SHA" \
+              --head-sha "$HEAD_SHA" \
+              --event-name "$EVENT_NAME" \
+              --ref-name "$REF_NAME" \
+              --pull-request "$PR_NUMBER" \
+              --out output \
+              --build-root build \
+              --previous-site pages \
+              --workflow-run "$GITHUB_RUN_ID" \
+              --image-reference "${{ steps.image.outputs.reference }}"
+
+      - name: Publish verified build and site
+        if: >-
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          python scripts/ci/publish_ci.py \
+            --bundle output \
+            --source-root . \
+            --build-root build \
+            --pages-root pages \
+            --workflow-event "$EVENT_NAME" \
+            --workflow-head-branch "$REF_NAME" \
+            --workflow-head-sha "$HEAD_SHA"
+
+      - name: Upload CAD diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cad-${{ github.run_id }}
+          path: |
+            output/plan.json
+            output/models/
+            output/native/
+            output/candidate/
+            output/site/
+            output/publish.json
+          if-no-files-found: ignore
+
+  cleanup:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted cleanup code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source
+
+      - name: Checkout build output
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          path: build
+
+      - name: Checkout Pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Remove closed PR output
+        run: |
+          python source/scripts/ci/cleanup_ci.py \
+            --build-root build \
+            --pages-root pages \
+            --pull-request "${{ github.event.pull_request.number }}"

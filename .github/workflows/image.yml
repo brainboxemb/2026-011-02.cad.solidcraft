@@ -1,0 +1,115 @@
+name: CAD toolchain image
+
+on:
+  push:
+    branches-ignore:
+      - build
+      - gh-pages
+    paths:
+      - "docker/cad/**"
+      - "ci/toolchain.json"
+      - "dependencies.repos"
+      - "scripts/ci/cad_image.py"
+      - ".github/workflows/image.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: cad-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-smoke-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Resolve immutable image identity
+        id: image
+        run: |
+          python scripts/ci/cad_image.py \
+            --repository "$GITHUB_REPOSITORY" \
+            --github-output "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Reuse existing immutable image
+        id: existing
+        run: |
+          if timeout 30s docker pull "${{ steps.image.outputs.reference }}"; then
+            docker tag \
+              "${{ steps.image.outputs.reference }}" \
+              "cad-ci-local:${{ steps.image.outputs.image_id }}"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build CAD toolchain image
+        if: steps.existing.outputs.exists != 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: docker/cad
+          file: docker/cad/Dockerfile
+          load: true
+          push: false
+          tags: cad-ci-local:${{ steps.image.outputs.image_id }}
+          build-args: |
+            PYTHON_IMAGE=${{ steps.image.outputs.python_image }}
+            SOLIDCRAFT_VERSION=${{ steps.image.outputs.solidcraft }}
+            SCPF_URL=${{ steps.image.outputs.scpf_url }}
+            SCPF_SHA=${{ steps.image.outputs.scpf_sha }}
+            SCPC_URL=${{ steps.image.outputs.scpc_url }}
+            SCPC_SHA=${{ steps.image.outputs.scpc_sha }}
+          cache-from: type=gha,scope=cad-toolchain-image
+          cache-to: type=gha,mode=max,scope=cad-toolchain-image
+
+      - name: Smoke-test one real CAD model
+        if: steps.existing.outputs.exists != 'true'
+        run: |
+          docker run --rm \
+            -v "$GITHUB_WORKSPACE:/workspace" \
+            -w /workspace \
+            "cad-ci-local:${{ steps.image.outputs.image_id }}" \
+            bash -c '
+              set -euo pipefail
+              python -m scpf models/basic/plate/scpf/model.py --out /tmp/plate.json
+              python -m scpf.headless /tmp/plate.json \
+                --save /tmp/plate.sc \
+                --out /tmp/plate.step \
+                --results /tmp/results.json \
+                --replay-log /tmp/replay-log.json
+              solidcraft-cli eval /tmp/plate.sc --json-out /tmp/measurements.json
+              test -s /tmp/plate.step
+              jq -e "(.timeline | all(.error == null))" /tmp/measurements.json >/dev/null
+            '
+
+      - name: Publish immutable CAD toolchain image
+        if: steps.existing.outputs.exists != 'true'
+        run: |
+          docker tag \
+            "cad-ci-local:${{ steps.image.outputs.image_id }}" \
+            "${{ steps.image.outputs.reference }}"
+          docker push "${{ steps.image.outputs.reference }}"
+
+      - name: Publish readable main alias
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag \
+            "cad-ci-local:${{ steps.image.outputs.image_id }}" \
+            "${{ steps.image.outputs.alias }}"
+          docker push "${{ steps.image.outputs.alias }}"

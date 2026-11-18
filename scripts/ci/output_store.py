@@ -1,7 +1,7 @@
 """Prepare and promote verified per-model CAD build output.
 
 This module contains no GitHub-specific code. Workflows check out the
-model-output branch and call these functions/CLI against that working tree.
+build branch and call these functions/CLI against that working tree.
 """
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ import shutil
 import tempfile
 import zipfile
 
-from model_catalog import MODELS, model_input_paths, model_slugs
+from model_catalog import MODELS, model_build_path, model_input_paths, model_slugs
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -80,6 +80,7 @@ def verification_metadata(
     scpc_commit,
     solidcraft_version,
     workflow_run,
+    toolchain_image,
     native_file_format=None,
 ):
     if slug not in MODELS:
@@ -93,6 +94,7 @@ def verification_metadata(
         "scpc_commit": scpc_commit,
         "solidcraft_version": solidcraft_version,
         "workflow_run": str(workflow_run),
+        "toolchain_image": toolchain_image,
         "verified": True,
     }
     if native_file_format:
@@ -142,10 +144,10 @@ def prepare_candidate(
 
     if out.exists():
         shutil.rmtree(out)
-    (out / "models").mkdir(parents=True)
+    out.mkdir(parents=True)
 
     for slug in models:
-        target = out / "models" / slug
+        target = out / model_build_path(slug)
         target.mkdir(parents=True)
         shutil.copytree(native_root / slug, target / "native")
         _copy_tree_if_present(
@@ -169,6 +171,46 @@ def prepare_candidate(
         json.dumps({"models": list(models)}, indent=2) + "\n",
         encoding="utf-8",
     )
+
+
+def migrate_legacy_store_layout(*, store):
+    """Copy a complete legacy stable/models tree into build/main source paths."""
+    legacy = store / "stable" / "models"
+    expected = tuple(model_slugs("native"))
+    if not legacy.is_dir():
+        return ()
+
+    missing = [
+        slug
+        for slug in expected
+        if not (legacy / slug / VERIFICATION_FILE).is_file()
+    ]
+    if missing:
+        raise ValueError(
+            "legacy build store is incomplete; missing: " + ", ".join(missing)
+        )
+
+    with tempfile.TemporaryDirectory() as tmp:
+        candidate = Path(tmp) / "candidate"
+        candidate.mkdir(parents=True)
+        for slug in expected:
+            source = legacy / slug
+            row = json.loads(
+                (source / VERIFICATION_FILE).read_text(encoding="utf-8")
+            )
+            if row.get("model") != slug or row.get("verified") is not True:
+                raise ValueError(f"{slug}: invalid legacy verification")
+            target = candidate / model_build_path(slug)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(source, target)
+
+        promote_candidate(
+            candidate=candidate,
+            store=store,
+            models=expected,
+            channel="stable",
+        )
+    return expected
 
 
 def migrate_legacy_pages(*, pages, store, source_root=ROOT):
@@ -203,7 +245,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
 
     with tempfile.TemporaryDirectory() as tmp:
         candidate = Path(tmp) / "candidate"
-        (candidate / "models").mkdir(parents=True)
+        candidate.mkdir(parents=True)
 
         for slug in expected:
             published = pages / "models" / slug
@@ -228,7 +270,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
                     f"legacy Pages command JSON is missing: {slug}"
                 )
 
-            target = candidate / "models" / slug
+            target = candidate / model_build_path(slug)
             native = target / "native"
             generated = target / "generated" / "scpf"
             native.mkdir(parents=True)
@@ -277,7 +319,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
 def _validate_candidate(candidate, models):
     missing = []
     for slug in models:
-        model = candidate / "models" / slug
+        model = candidate / model_build_path(slug)
         verification = model / VERIFICATION_FILE
         if not model.is_dir() or not verification.is_file():
             missing.append(slug)
@@ -293,11 +335,14 @@ def _validate_candidate(candidate, models):
 
 def destination_root(store, *, channel, preview_key=None):
     if channel == "stable":
-        return store / "stable"
+        return store / "main"
     if channel == "preview":
         if preview_key is None:
             raise ValueError("preview channel requires preview_key")
-        return store / "previews" / safe_preview_key(preview_key)
+        key = safe_preview_key(preview_key)
+        if key.startswith("pr-") and key[3:].isdigit():
+            return store / "pr" / key[3:]
+        return store / "preview" / key
     raise ValueError(f"unknown output channel: {channel}")
 
 
@@ -324,26 +369,24 @@ def promote_candidate(
         channel=channel,
         preview_key=preview_key,
     )
-    model_root = root / "models"
-    model_root.mkdir(parents=True, exist_ok=True)
-
     staged = []
     try:
         for slug in models:
-            source = candidate / "models" / slug
+            source = candidate / model_build_path(slug)
+            target = root / model_build_path(slug)
+            target.parent.mkdir(parents=True, exist_ok=True)
             temp = Path(
                 tempfile.mkdtemp(
-                    prefix=f".{slug}-",
-                    dir=model_root,
+                    prefix=f".{target.name}-",
+                    dir=target.parent,
                 )
             )
             shutil.rmtree(temp)
             shutil.copytree(source, temp)
-            staged.append((slug, temp))
+            staged.append((slug, target, temp))
 
-        for slug, temp in staged:
-            target = model_root / slug
-            backup = model_root / f".{slug}.previous"
+        for slug, target, temp in staged:
+            backup = target.parent / f".{target.name}.previous"
             if backup.exists():
                 shutil.rmtree(backup)
             if target.exists():
@@ -357,26 +400,32 @@ def promote_candidate(
             if backup.exists():
                 shutil.rmtree(backup)
     finally:
-        for _, temp in staged:
+        for _, _, temp in staged:
             if temp.exists():
                 shutil.rmtree(temp)
 
 
 def prune_removed_models(store, *, channel="stable", preview_key=None):
-    """Remove stored model directories that no longer exist in the catalog."""
+    """Remove stored build items whose verification names a retired model."""
     root = destination_root(
         store,
         channel=channel,
         preview_key=preview_key,
-    ) / "models"
+    )
     if not root.is_dir():
         return ()
     removed = []
-    for path in root.iterdir():
-        if path.is_dir() and not path.name.startswith(".") and path.name not in MODELS:
-            shutil.rmtree(path)
-            removed.append(path.name)
-    return tuple(sorted(removed))
+    for verification in tuple(root.rglob(VERIFICATION_FILE)):
+        model_root = verification.parent
+        try:
+            row = json.loads(verification.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        slug = row.get("model")
+        if isinstance(slug, str) and slug not in MODELS:
+            shutil.rmtree(model_root)
+            removed.append(slug)
+    return tuple(sorted(set(removed)))
 
 
 def main():
@@ -394,6 +443,7 @@ def main():
     prepare.add_argument("--scpc-commit", required=True)
     prepare.add_argument("--solidcraft-version", required=True)
     prepare.add_argument("--workflow-run", required=True)
+    prepare.add_argument("--toolchain-image", required=True)
     prepare.add_argument("--native-file-format")
 
     promote = sub.add_parser("promote")
@@ -406,6 +456,9 @@ def main():
     migrate = sub.add_parser("migrate-pages")
     migrate.add_argument("--pages", type=Path, required=True)
     migrate.add_argument("--store", type=Path, required=True)
+
+    migrate_store = sub.add_parser("migrate-store")
+    migrate_store.add_argument("--store", type=Path, required=True)
 
     prune = sub.add_parser("prune")
     prune.add_argument("--store", type=Path, required=True)
@@ -424,6 +477,7 @@ def main():
             "scpc_commit": args.scpc_commit,
             "solidcraft_version": args.solidcraft_version,
             "workflow_run": str(args.workflow_run),
+            "toolchain_image": args.toolchain_image,
             "verified": True,
         }
         if args.native_file_format:
@@ -440,6 +494,9 @@ def main():
             pages=args.pages,
             store=args.store,
         )
+        print(" ".join(migrated))
+    elif args.command == "migrate-store":
+        migrated = migrate_legacy_store_layout(store=args.store)
         print(" ".join(migrated))
     elif args.command == "promote":
         promote_candidate(

@@ -16,6 +16,7 @@ from model_catalog import (  # noqa: E402
     COMPONENT_DEFINITION_PRIMARY,
     SECTIONS,
     model_slugs,
+    model_build_path,
     model_dependencies,
     model_input_paths,
 )
@@ -35,6 +36,25 @@ class ModelCatalogTests(unittest.TestCase):
             "native",
             "native_snapshot_required",
         }
+        self.assertEqual(
+            model_build_path("guide-rail-makita"),
+            Path("models/components/guide_rail/scpf/makita"),
+        )
+        self.assertEqual(
+            model_build_path("simple-mft-assembly"),
+            Path("models/advanced/simple_mft/scpf/assemblies/guide_rail"),
+        )
+        self.assertEqual(
+            len({model_build_path(slug) for slug in MODELS}),
+            len(MODELS),
+        )
+        paths = tuple(model_build_path(slug) for slug in MODELS)
+        for left in paths:
+            for right in paths:
+                if left == right:
+                    continue
+                self.assertNotEqual(left, right.parent)
+                self.assertFalse(left in right.parents)
         for slug, model in MODELS.items():
             with self.subTest(slug=slug):
                 self.assertFalse(required - set(model))
@@ -97,6 +117,21 @@ class ModelCatalogTests(unittest.TestCase):
             )
             section_slugs.extend(slugs)
         self.assertEqual(set(section_slugs), set(MODELS))
+
+    def test_build_paths_mirror_source_model_roots(self):
+        self.assertEqual(
+            model_build_path("plate"),
+            Path("models/basic/plate/scpf/model"),
+        )
+        self.assertEqual(
+            model_build_path("hub75-panel"),
+            Path("models/components/hub75_panel/detailed/scpf/model"),
+        )
+        for slug, model in MODELS.items():
+            with self.subTest(slug=slug):
+                source = Path(model["source"])
+                build = model_build_path(slug)
+                self.assertEqual(build, source.with_suffix(""))
 
     def test_declared_model_dependencies_are_valid_and_acyclic(self):
         for slug in MODELS:

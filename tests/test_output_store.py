@@ -207,9 +207,17 @@ class OutputStoreTests(unittest.TestCase):
 
     def test_prune_removes_only_models_missing_from_catalog(self):
         known = self.store / "main" / model_build_path("bolted-flange")
-        removed = self.store / "stable/models/retired-model"
+        removed = self.store / "main/models/basic/retired_model"
         known.mkdir(parents=True)
         removed.mkdir(parents=True)
+        (known / "verification.json").write_text(
+            json.dumps({"model": "bolted-flange", "verified": True}),
+            encoding="utf-8",
+        )
+        (removed / "verification.json").write_text(
+            json.dumps({"model": "retired-model", "verified": True}),
+            encoding="utf-8",
+        )
 
         self.assertEqual(
             prune_removed_models(self.store),

@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vent Plate · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / vent-plate</div>
+<h1>Vent Plate</h1><p>One source vent repeated by a native 6 × 3 feature pattern</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · stored build 1b673d0e</span>
+<span class="badge">10 commands</span><span class="badge">120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><svg role="img" aria-label="Schematic illustration; not a native CAD render" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg"><rect x="95" y="25" width="310" height="165" rx="16" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M95 175 145 218 H420 V65 L405 25" fill="#99bad9" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/></svg></div>
+<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
+<p>Recreates the small SolidCraft Vent Plate example with a rounded 120 × 80 × 4 mm plate, one rectangular source cut and one native two-direction rectangular pattern.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Box — 120 × 80 × 4 mm from corner [0, 0, 0]</li><li>Fillet — four vertical edges R8</li><li>Vent — one 6 × 14 mm source rectangle at X=18..24, Y=12..26</li><li>Cut — positive 4 mm through the plate</li><li>RectangularPattern — 6 columns × 3 rows at 16 × 22 mm spacing</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fpreview%2Fpr-137%2Fmodels%2Fvent-plate%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Vent Plate from the SolidCraft example, using one native feature pattern.
+
+The source cut is authored once. SCPF 0.6.1 lowers rectangular_pattern()
+directly to SolidCraft&#x27;s solid.pattern.rectangular history feature.
+&quot;&quot;&quot;
+
+
+class Plate:
+    cols = 6
+    rows = 3
+    pitch = 16.0
+
+    def build(self):
+        # Match the source SolidCraft box corner [0, 0, 0].
+        plate = Box(120, 80, 4).at(
+            60, 40, 0,
+            anchor=Anchor.BOTTOM,
+        )
+        plate = plate.fillet(8, edges=Edges.VERTICAL)
+
+        # The source rectangle is X=18..24, Y=12..26. The attached sketch
+        # coordinates are relative to the 120 x 80 plate centre (60, 40).
+        with Sketch(name=&quot;Vent&quot;, on=plate, parent=Anchor.BOTTOM) as vent:
+            vent.add(
+                Rectangle2D(6, 14),
+                offset=(-39, -21),
+            )
+
+        source_cut = vent.extrude(4)
+        plate = plate - source_cut
+
+        return plate.rectangular_pattern(
+            source_cut,
+            count=self.cols,
+            spacing=self.pitch,
+            direction=Axis.X,
+            count2=self.rows,
+            spacing2=22,
+            direction2=Axis.Y,
+        )
+</code></pre>
+<section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;Vent Plate from the official SolidCraft example, expressed as native commands.
+
+This intentionally mirrors the source feature history:
+Box1 -&gt; Fillet1 -&gt; Slot -&gt; Vent -&gt; RectangularPattern1.
+
+This file remains independent from the SCPF model and keeps the source
+SolidCraft names, including the separate Slot sketch and Vent cut feature.
+&quot;&quot;&quot;
+from scpc import Script
+
+
+script = Script()
+
+script.add(&quot;parameters.add&quot;, name=&quot;cols&quot;, expression=&quot;6&quot;, unit=&quot;&quot;)
+script.add(&quot;parameters.add&quot;, name=&quot;rows&quot;, expression=&quot;3&quot;, unit=&quot;&quot;)
+script.add(
+    &quot;parameters.add&quot;,
+    name=&quot;pitch&quot;,
+    expression=&quot;16&quot;,
+    unit=&quot;mm&quot;,
+    comment=&quot;slot spacing&quot;,
+)
+
+script.add(
+    &quot;solid.box&quot;,
+    length=120,
+    width=80,
+    height=4,
+    corner=[0, 0, 0],
+    body_name=&quot;Plate&quot;,
+)
+
+script.add(
+    &quot;solid.fillet&quot;,
+    body=&quot;Plate&quot;,
+    radius=8,
+    edges=[
+        [0, 0, 2],
+        [120, 0, 2],
+        [120, 80, 2],
+        [0, 80, 2],
+    ],
+)
+
+script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Slot&quot;)
+script.add(
+    &quot;sketch.rectangle.two_point&quot;,
+    p0=[18, 12],
+    p1=[24, 26],
+)
+script.add(&quot;sketch.finish&quot;)
+
+script.add(
+    &quot;solid.extrude&quot;,
+    distance=4,
+    direction=&quot;positive&quot;,
+    operation=&quot;cut&quot;,
+    targets=[&quot;Plate&quot;],
+    name=&quot;Vent&quot;,
+)
+
+script.add(
+    &quot;solid.pattern.rectangular&quot;,
+    features=[&quot;Vent&quot;],
+    dir1=[1, 0, 0],
+    count1=&quot;cols&quot;,
+    spacing1=&quot;pitch&quot;,
+    dir2=[0, 1, 0],
+    count2=&quot;rows&quot;,
+    spacing2=22,
+    name=&quot;RectangularPattern1&quot;,
+)
+</code></pre></section>
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: cols</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;cols&quot;,
+    &quot;expression&quot;: &quot;6&quot;,
+    &quot;unit&quot;: &quot;&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: pitch</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;pitch&quot;,
+    &quot;expression&quot;: &quot;16&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: rows</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;rows&quot;,
+    &quot;expression&quot;: &quot;3&quot;,
+    &quot;unit&quot;: &quot;&quot;
+  }
+}</code></pre></li>
+<li><strong>Box primitive</strong><small>solid.box · body_name: Plate</small><pre><code>{
+  &quot;command&quot;: &quot;solid.box&quot;,
+  &quot;params&quot;: {
+    &quot;length&quot;: 120,
+    &quot;width&quot;: 80,
+    &quot;height&quot;: 4,
+    &quot;corner&quot;: [
+      0.0,
+      0.0,
+      0
+    ],
+    &quot;body_name&quot;: &quot;Plate&quot;
+  }
+}</code></pre></li>
+<li><strong>Rounded edge</strong><small>solid.fillet</small><pre><code>{
+  &quot;command&quot;: &quot;solid.fillet&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        0.0,
+        0.0,
+        2.0
+      ],
+      [
+        120.0,
+        0.0,
+        2.0
+      ],
+      [
+        120.0,
+        80.0,
+        2.0
+      ],
+      [
+        0.0,
+        80.0,
+        2.0
+      ]
+    ],
+    &quot;radius&quot;: 8,
+    &quot;body&quot;: &quot;Plate&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Vent, plane: XY</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XY&quot;,
+    &quot;name&quot;: &quot;Vent&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangle</strong><small>sketch.rectangle.two_point</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.rectangle.two_point&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      18.0,
+      12.0
+    ],
+    &quot;p1&quot;: [
+      24.0,
+      26.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Vent, direction: positive, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;Plate&quot;
+    ],
+    &quot;name&quot;: &quot;Vent&quot;,
+    &quot;distance&quot;: 4,
+    &quot;direction&quot;: &quot;positive&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangular feature pattern</strong><small>solid.pattern.rectangular</small><pre><code>{
+  &quot;command&quot;: &quot;solid.pattern.rectangular&quot;,
+  &quot;params&quot;: {
+    &quot;features&quot;: [
+      &quot;Vent&quot;
+    ],
+    &quot;dir1&quot;: [
+      1.0,
+      0.0,
+      0.0
+    ],
+    &quot;count1&quot;: &quot;cols&quot;,
+    &quot;spacing1&quot;: &quot;pitch&quot;,
+    &quot;alignment&quot;: &quot;right&quot;,
+    &quot;reversed&quot;: false,
+    &quot;dir2&quot;: [
+      0.0,
+      1.0,
+      0.0
+    ],
+    &quot;count2&quot;: &quot;rows&quot;,
+    &quot;spacing2&quot;: 22,
+    &quot;alignment2&quot;: &quot;right&quot;,
+    &quot;reversed2&quot;: false
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Native verified · stored build 1b673d0e.
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

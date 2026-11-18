@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Simple MFT · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / simple-mft</div>
+<h1>Simple MFT</h1><p>805 × 555 mm reusable worktop with a 9 × 7 dog-hole grid and eight native clamp slots</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · stored build 1b673d0e</span>
+<span class="badge">23 commands</span><span class="badge">805 × 555 × 18 mm; 59 × Ø20; nominal 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><svg role="img" aria-label="Schematic illustration; not a native CAD render" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg"><rect x="95" y="25" width="310" height="165" rx="16" fill="#d6e4f5" stroke="#285785" stroke-width="5"/><path d="M95 175 145 218 H420 V65 L405 25" fill="#99bad9" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="78" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="155" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/><ellipse cx="345" cy="151" rx="12" ry="10" fill="#fff" stroke="#285785" stroke-width="4"/></svg></div>
+<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
+<p>A reusable CRAFTMAKER-inspired worktop component: one 18 mm native Box, four straight 20 mm corner chamfers, 59 Ø20 dog holes on the nominal 9 × 7 / 76 mm grid with the four diagonal ring-2 positions omitted, and eight photo-measured native diagonal Slots.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="model.py">Component source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Box — 805 × 555 × 18 mm</li><li>Dog holes Sketch — one Circle seed and one native 9 × 7 rectangular pattern create 63 profiles</li><li>One selective cut uses 59 profiles and leaves the four diagonal ring-2 positions at (±152, ±152) mm</li><li>Clamp slots Sketch — one master Slot, one native sketch pattern and three mirrors create 8 Slots</li><li>Two through-all cuts — one for dog holes and one for clamp slots</li><li>Chamfer — four straight 20 × 20 mm plan-view corner cuts</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fpreview%2Fpr-137%2Fmodels%2Fsimple-mft%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+<h2>Reference and 2D expectation</h2><div class="panel-views"><figure><a href="https://cdn.myshoptet.com/usr/www.craftmaker.nl/user/documents/upload/Product_description/craftmaker_pro_station_s30_accessories.jpg" target="_blank" rel="noopener noreferrer"><img src="https://cdn.myshoptet.com/usr/www.craftmaker.nl/user/documents/upload/Product_description/craftmaker_pro_station_s30_accessories.jpg" alt="CRAFTMAKER ProStation S30 reference worktop"></a><figcaption>Front product reference used to estimate the hole and Slot pattern.</figcaption></figure><figure><a href="expected-top-view.svg" target="_blank" rel="noopener noreferrer"><img src="expected-top-view.svg" alt="Simple MFT expected top view"></a><figcaption>2D expectation: nominal 9 × 7 grid at 76 mm pitch, four diagonal ring-2 holes omitted, with two Slots per quadrant.</figcaption></figure></div><p class="small muted">The 76 mm pitch, 20 mm corner cuts and ≈104 × 24 mm Slot dimensions are photo-based estimates, not manufacturer specifications.</p>
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>models/advanced/simple_mft/scpf/model.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Simple MFT worktop inspired by the Craftmaker S30 replacement top.
+
+The plate envelope and dog-hole diameter follow the published replacement-top
+dimensions. The 76 mm pitch, 20 mm corner cuts and clamp-slot dimensions are
+photo-based design estimates, not manufacturer dimensions.
+
+The current 2D expectation is calibrated from the front product photo:
+- slot width about 24 mm;
+- slot end-centre distance about 80 mm, giving about 104 mm overall length;
+- per diagonal arm, the inner slot starts on grid ring 1 and extends outward;
+- the outer slot starts on grid ring 3 and extends inward;
+- the four diagonal grid-ring-2 dog-hole positions are omitted.
+
+The dog holes deliberately follow a normal SolidCraft workflow:
+- one Circle seed;
+- one associative 9 x 7 Sketch rectangular pattern;
+- one selective cut using 59 of the 63 closed profiles.
+
+The clamp slots use one Slot seed, one Sketch pattern and three mirrors.
+&quot;&quot;&quot;
+
+from math import sqrt
+
+from scpf import (
+    Anchor,
+    Axis,
+    Box,
+    Circle2D,
+    Depth,
+    Edges,
+    Sketch,
+    SlotCenterToCenter2D,
+    component,
+)
+
+
+@component(include=&quot;*&quot;)
+class SimpleMFT:
+    width = 805.0
+    depth = 555.0
+    thickness = 18.0
+    hole_diameter = 20.0
+    hole_pitch = 76.0
+    corner_chamfer = 20.0
+
+    COLUMNS = 9
+    ROWS = 7
+
+    SLOT_WIDTH = 24.0
+    SLOT_CENTER_DISTANCE = 80.0
+
+    def build(self):
+        board = Box(
+            self.width,
+            self.depth,
+            self.thickness,
+            anchor=Anchor.BOTTOM,
+        )
+
+        # Build the dog-hole geometry as ONE native associative SolidCraft
+        # Sketch pattern. The sketch contains all 9 x 7 = 63 Circle profiles;
+        # we deliberately keep the pattern complete instead of constructing
+        # 59 independent holes in Python.
+        p = self.hole_pitch
+        pitch = float(p.value)
+
+        with Sketch(name=&quot;Dog holes&quot;, on=board, parent=Anchor.TOP) as holes:
+            seed = holes.add(
+                Circle2D(d=self.hole_diameter),
+                offset=(-4 * p, -3 * p),
+            )
+            holes.rectangular_pattern(
+                seed,
+                count=self.COLUMNS,
+                spacing=p,
+                direction=Axis.X,
+                count2=self.ROWS,
+                spacing2=p,
+                direction2=Axis.Y,
+            )
+
+        # Four diagonal ring-2 positions must remain solid because that clear
+        # space belongs to the clamp-slot layout. These are grid coordinates,
+        # not millimetre coordinates: with the current 76 mm pitch they are
+        # the four positions at (±152, ±152) mm.
+        excluded_dog_hole_grid_positions = {
+            (-2, -2),
+            (-2, 2),
+            (2, -2),
+            (2, 2),
+        }
+
+        # SolidCraft&#x27;s native solid.extrude can select closed Sketch regions
+        # by a point inside each region. SCPF passes these 59 points directly
+        # as native profile picks; it does NOT create 59 separate Circle/cut
+        # features. SolidCraft stores the selected regions by their surrounding
+        # sketch curves, so the cut continues to follow the associative 9 x 7
+        # pattern when its saved parameters (for example pitch) are changed.
+        #
+        # exact_regions=True means each point selects exactly the closed region
+        # that contains it. The four excluded pattern regions therefore stay
+        # uncut while the other 59 become one native through-all extrusion.
+        dog_hole_profile_picks = [
+            (column * pitch, row * pitch)
+            for row in range(-3, 4)
+            for column in range(-4, 5)
+            if (column, row) not in excluded_dog_hole_grid_positions
+        ]
+        board = board - holes.extrude(
+            Depth.THROUGH_ALL,
+            profiles=dog_hole_profile_picks,
+            exact_regions=True,
+        )
+
+        # SolidCraft 0.42 direct Slot creators use fixed numeric profile points.
+        slot_center_distance = float(self.SLOT_CENTER_DISTANCE)
+        slot_width = float(self.SLOT_WIDTH)
+        along_axis = slot_center_distance / sqrt(2)
+
+        inner_ring = (pitch, pitch)
+        inner_outward = (
+            pitch + along_axis,
+            pitch + along_axis,
+        )
+
+        # Translation from the inner Slot to the outer Slot on the same arm.
+        # SolidCraft normalises the (1, 1) direction vector.
+        slot_pattern_spacing = (
+            2 * sqrt(2) * pitch - slot_center_distance
+        )
+
+        with Sketch(name=&quot;Clamp slots&quot;, on=board, parent=Anchor.TOP) as slots:
+            master_slot = SlotCenterToCenter2D(
+                inner_ring,
+                inner_outward,
+                slot_width,
+            )
+            upper_right = slots.rectangular_pattern(
+                master_slot,
+                count=2,
+                spacing=slot_pattern_spacing,
+                direction=(1, 1),
+            )
+            upper_left = slots.mirror(upper_right, axis=Axis.Y)
+            slots.mirror(upper_right, axis=Axis.X)
+            slots.mirror(upper_left, axis=Axis.X)
+
+        board = board - slots.extrude(Depth.THROUGH_ALL)
+
+        # Apply the four plan-view corner chamfers after the attached cuts.
+        board = board.chamfer(
+            self.corner_chamfer,
+            edges=Edges.VERTICAL,
+        )
+
+        return board
+</code></pre></section>
+
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: width</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;width&quot;,
+    &quot;expression&quot;: &quot;805&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: depth</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;depth&quot;,
+    &quot;expression&quot;: &quot;555&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: thickness</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;thickness&quot;,
+    &quot;expression&quot;: &quot;18&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_diameter</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;hole_diameter&quot;,
+    &quot;expression&quot;: &quot;20&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: hole_pitch</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;hole_pitch&quot;,
+    &quot;expression&quot;: &quot;76&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Named CAD parameter</strong><small>parameters.add · name: corner_chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;corner_chamfer&quot;,
+    &quot;expression&quot;: &quot;20&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Box primitive</strong><small>solid.box · body_name: SimpleMFT</small><pre><code>{
+  &quot;command&quot;: &quot;solid.box&quot;,
+  &quot;params&quot;: {
+    &quot;length&quot;: &quot;width&quot;,
+    &quot;width&quot;: &quot;depth&quot;,
+    &quot;height&quot;: &quot;thickness&quot;,
+    &quot;corner&quot;: [
+      &quot;-width / 2&quot;,
+      &quot;-depth / 2&quot;,
+      0
+    ],
+    &quot;body_name&quot;: &quot;SimpleMFT&quot;
+  }
+}</code></pre></li>
+<li><strong>model.faces</strong><small>model.faces</small><pre><code>{
+  &quot;command&quot;: &quot;model.faces&quot;,
+  &quot;params&quot;: {
+    &quot;body&quot;: &quot;SimpleMFT&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$face_point_1&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;point&quot;
+    },
+    &quot;$face_index_1&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;index&quot;
+    }
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Dog holes, plane: {&#x27;face&#x27;: &#x27;$face_point_1&#x27;, &#x27;body&#x27;: &#x27;SimpleMFT&#x27;, &#x27;index&#x27;: &#x27;$face_index_1&#x27;}</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: {
+      &quot;face&quot;: &quot;$face_point_1&quot;,
+      &quot;body&quot;: &quot;SimpleMFT&quot;,
+      &quot;index&quot;: &quot;$face_index_1&quot;
+    },
+    &quot;project_edges&quot;: false,
+    &quot;name&quot;: &quot;Dog holes&quot;
+  }
+}</code></pre></li>
+<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.circle.center&quot;,
+  &quot;params&quot;: {
+    &quot;center&quot;: [
+      &quot;(hole_pitch * -4)&quot;,
+      &quot;(hole_pitch * -3)&quot;
+    ],
+    &quot;diameter&quot;: &quot;hole_diameter&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_1_profile_1&quot;: &quot;curves&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangular sketch pattern</strong><small>sketch.pattern.rectangular</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.pattern.rectangular&quot;,
+  &quot;params&quot;: {
+    &quot;entities&quot;: &quot;$sketch_1_profile_1&quot;,
+    &quot;count&quot;: 9,
+    &quot;spacing&quot;: &quot;hole_pitch&quot;,
+    &quot;dir&quot;: [
+      1.0,
+      0.0
+    ],
+    &quot;count2&quot;: 7,
+    &quot;spacing2&quot;: &quot;hole_pitch&quot;,
+    &quot;dir2&quot;: [
+      0.0,
+      1.0
+    ]
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_1_operation_1&quot;: {
+      &quot;field&quot;: &quot;curves&quot;,
+      &quot;prepend&quot;: &quot;$sketch_1_profile_1&quot;
+    }
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Dog holes, direction: negative, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;SimpleMFT&quot;
+    ],
+    &quot;name&quot;: &quot;Dog holes&quot;,
+    &quot;through_all&quot;: true,
+    &quot;direction&quot;: &quot;negative&quot;,
+    &quot;profiles&quot;: [
+      {
+        &quot;point&quot;: [
+          -304.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -152.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          152.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          -228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          -152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -152.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          152.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          -76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -152.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          152.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          0.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -152.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          152.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          76.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          152.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -304.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -228.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -152.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          -76.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          0.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          76.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          152.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          228.0,
+          228.0
+        ]
+      },
+      {
+        &quot;point&quot;: [
+          304.0,
+          228.0
+        ]
+      }
+    ],
+    &quot;exact_regions&quot;: true
+  }
+}</code></pre></li>
+<li><strong>model.faces</strong><small>model.faces</small><pre><code>{
+  &quot;command&quot;: &quot;model.faces&quot;,
+  &quot;params&quot;: {
+    &quot;body&quot;: &quot;SimpleMFT&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$face_point_2&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;point&quot;
+    },
+    &quot;$face_index_2&quot;: {
+      &quot;field&quot;: &quot;faces&quot;,
+      &quot;where&quot;: {
+        &quot;plane_normal&quot;: [
+          0,
+          0,
+          1
+        ]
+      },
+      &quot;max&quot;: &quot;area&quot;,
+      &quot;select&quot;: &quot;index&quot;
+    }
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Clamp slots, plane: {&#x27;face&#x27;: &#x27;$face_point_2&#x27;, &#x27;body&#x27;: &#x27;SimpleMFT&#x27;, &#x27;index&#x27;: &#x27;$face_index_2&#x27;}</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: {
+      &quot;face&quot;: &quot;$face_point_2&quot;,
+      &quot;body&quot;: &quot;SimpleMFT&quot;,
+      &quot;index&quot;: &quot;$face_index_2&quot;
+    },
+    &quot;project_edges&quot;: false,
+    &quot;name&quot;: &quot;Clamp slots&quot;
+  }
+}</code></pre></li>
+<li><strong>Center-to-center Slot</strong><small>sketch.slot.center_to_center</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.slot.center_to_center&quot;,
+  &quot;params&quot;: {
+    &quot;p0&quot;: [
+      76.0,
+      76.0
+    ],
+    &quot;p1&quot;: [
+      132.5685424949238,
+      132.5685424949238
+    ],
+    &quot;width&quot;: 24.0
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_2_profile_1&quot;: &quot;curves&quot;
+  }
+}</code></pre></li>
+<li><strong>Rectangular sketch pattern</strong><small>sketch.pattern.rectangular</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.pattern.rectangular&quot;,
+  &quot;params&quot;: {
+    &quot;entities&quot;: &quot;$sketch_2_profile_1&quot;,
+    &quot;count&quot;: 2,
+    &quot;spacing&quot;: 134.96046148071045,
+    &quot;dir&quot;: [
+      1.0,
+      1.0
+    ]
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_2_operation_1&quot;: {
+      &quot;field&quot;: &quot;curves&quot;,
+      &quot;prepend&quot;: &quot;$sketch_2_profile_1&quot;
+    }
+  }
+}</code></pre></li>
+<li><strong>Sketch mirror</strong><small>sketch.mirror</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.mirror&quot;,
+  &quot;params&quot;: {
+    &quot;entities&quot;: &quot;$sketch_2_operation_1&quot;,
+    &quot;line&quot;: &quot;y&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_2_operation_2&quot;: &quot;curves&quot;
+  }
+}</code></pre></li>
+<li><strong>Sketch mirror</strong><small>sketch.mirror</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.mirror&quot;,
+  &quot;params&quot;: {
+    &quot;entities&quot;: &quot;$sketch_2_operation_1&quot;,
+    &quot;line&quot;: &quot;x&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_2_operation_3&quot;: &quot;curves&quot;
+  }
+}</code></pre></li>
+<li><strong>Sketch mirror</strong><small>sketch.mirror</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.mirror&quot;,
+  &quot;params&quot;: {
+    &quot;entities&quot;: &quot;$sketch_2_operation_2&quot;,
+    &quot;line&quot;: &quot;x&quot;
+  },
+  &quot;bind&quot;: {
+    &quot;$sketch_2_operation_4&quot;: &quot;curves&quot;
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Clamp slots, direction: negative, operation: cut</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;targets&quot;: [
+      &quot;SimpleMFT&quot;
+    ],
+    &quot;name&quot;: &quot;Clamp slots&quot;,
+    &quot;through_all&quot;: true,
+    &quot;direction&quot;: &quot;negative&quot;
+  }
+}</code></pre></li>
+<li><strong>Chamfered edge</strong><small>solid.chamfer</small><pre><code>{
+  &quot;command&quot;: &quot;solid.chamfer&quot;,
+  &quot;params&quot;: {
+    &quot;edges&quot;: [
+      [
+        -402.5,
+        -277.5,
+        9.0
+      ],
+      [
+        402.5,
+        -277.5,
+        9.0
+      ],
+      [
+        402.5,
+        277.5,
+        9.0
+      ],
+      [
+        -402.5,
+        277.5,
+        9.0
+      ]
+    ],
+    &quot;distance&quot;: &quot;corner_chamfer&quot;,
+    &quot;body&quot;: &quot;SimpleMFT&quot;
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Native verified · stored build 1b673d0e.
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

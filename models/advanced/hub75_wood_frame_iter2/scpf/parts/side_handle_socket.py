@@ -3,6 +3,11 @@
 from scpf import BOTTOM, FRONT, Box, Cylinder, component
 
 
+# Keep a real volume overlap between bridge and sleeve. Exact tangency causes
+# SMLib planar regularization to see an ambiguous selection point.
+BRIDGE_SLEEVE_OVERLAP = 3.0
+
+
 @component
 class SideHandleSocket:
     """Printed sleeve with a short bridge to the recessed rear edge."""
@@ -17,11 +22,12 @@ class SideHandleSocket:
     def build(self):
         outer_radius = self.outer_diameter / 2
 
-        # The bridge starts at the recessed plywood edge and ends tangent to
-        # the sleeve. The socket centre is the local Y=0 datum.
+        # The bridge starts at the recessed plywood edge and continues 3 mm
+        # into the sleeve. A tangent-only contact is not a valid robust union
+        # for SolidCraft/SMLib and caused planar regularization ambiguity.
         bridge = Box(
             self.panel_thickness,
-            self.bridge_depth,
+            self.bridge_depth + BRIDGE_SLEEVE_OVERLAP,
             self.height,
         ).at(
             0,

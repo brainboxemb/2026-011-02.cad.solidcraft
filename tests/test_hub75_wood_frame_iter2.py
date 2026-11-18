@@ -323,6 +323,14 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertIn("ROD_DIAMETER = 22.0", handle_source)
         self.assertIn("SOCKET_OUTER_DIAMETER = 34.0", handle_source)
         self.assertIn("ROD_SOCKET_INSERT = 8.0", handle_source)
+        socket_source = (
+            SCPF_DIR / "parts" / "side_handle_socket.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("BRIDGE_SLEEVE_OVERLAP = 3.0", socket_source)
+        self.assertIn(
+            "self.bridge_depth + BRIDGE_SLEEVE_OVERLAP",
+            socket_source,
+        )
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

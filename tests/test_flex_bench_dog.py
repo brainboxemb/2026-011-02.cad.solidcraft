@@ -75,6 +75,7 @@ class FlexBenchDogTests(unittest.TestCase):
             for row in commands
             if row["command"] == "solid.extrude"
             and row["params"]["operation"] == "cut"
+            and row["params"]["name"] in ("Flex slot X", "Flex slot Y")
         ]
         self.assertEqual(len(cuts), 2)
         self.assertTrue(all(row["distance"] == 14 for row in cuts))

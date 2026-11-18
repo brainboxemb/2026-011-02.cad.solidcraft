@@ -87,18 +87,20 @@ def execute(
     output_root: Path,
     previous_site: Path,
     source_sha: str,
+    build_site_output: bool = True,
 ) -> dict:
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     if plan.get("schema") != 1:
         raise ValueError("unsupported CAD build-plan schema")
     compile_models(plan, output_root)
     run_unit_tests()
-    build_site(
-        plan=plan,
-        output_root=output_root,
-        previous_site=previous_site,
-        source_sha=source_sha,
-    )
+    if build_site_output:
+        build_site(
+            plan=plan,
+            output_root=output_root,
+            previous_site=previous_site,
+            source_sha=source_sha,
+        )
     return plan
 
 
@@ -108,12 +110,14 @@ def main() -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--previous-site", type=Path, required=True)
     parser.add_argument("--source-sha", required=True)
+    parser.add_argument("--skip-site", action="store_true")
     args = parser.parse_args()
     execute(
         plan_path=args.plan,
         output_root=args.out,
         previous_site=args.previous_site,
         source_sha=args.source_sha,
+        build_site_output=not args.skip_site,
     )
     return 0
 

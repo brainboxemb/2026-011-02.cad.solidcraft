@@ -16,6 +16,7 @@ from model_catalog import (  # noqa: E402
     COMPONENT_DEFINITION_PRIMARY,
     SECTIONS,
     model_slugs,
+    model_build_path,
     model_dependencies,
     model_input_paths,
 )
@@ -97,6 +98,23 @@ class ModelCatalogTests(unittest.TestCase):
             )
             section_slugs.extend(slugs)
         self.assertEqual(set(section_slugs), set(MODELS))
+
+    def test_build_paths_mirror_source_model_roots(self):
+        self.assertEqual(
+            model_build_path("plate"),
+            Path("models/basic/plate"),
+        )
+        self.assertEqual(
+            model_build_path("hub75-panel"),
+            Path("models/components/hub75_panel/detailed"),
+        )
+        for slug, model in MODELS.items():
+            with self.subTest(slug=slug):
+                source = Path(model["source"])
+                build = model_build_path(slug)
+                self.assertEqual(source.parts[:len(build.parts)], build.parts)
+                self.assertNotIn("scpf", build.parts)
+                self.assertNotIn("scpc", build.parts)
 
     def test_declared_model_dependencies_are_valid_and_acyclic(self):
         for slug in MODELS:

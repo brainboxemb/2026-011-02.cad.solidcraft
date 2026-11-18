@@ -11,12 +11,25 @@ class SamplePlate:
         plate = sketch.extrude(self.thickness)
         plate = plate.fillet(6, edges=Edges.VERTICAL)
 
-        holes = Hole(d=8, depth=Depth.THROUGH_ALL).repeat_linear(
+        spacing = self.width - 24
+        with Sketch(
+            name="Holes",
+            on=plate,
+            parent=Anchor.TOP,
+        ) as holes:
+            holes.add(
+                Circle2D(d=8),
+                offset=(-(spacing / 2), 0),
+            )
+
+        source_cut = holes.extrude(Depth.THROUGH_ALL)
+        plate = plate - source_cut
+        plate = plate.rectangular_pattern(
+            source_cut,
             count=2,
-            spacing=self.width - 24,
-            axis=Axis.X,
-        ).attach(plate, parent=Anchor.TOP)
-        plate = plate + holes
+            spacing=spacing,
+            direction=Axis.X,
+        )
 
         boss = Cylinder(d=24, h=14).attach(
             plate,

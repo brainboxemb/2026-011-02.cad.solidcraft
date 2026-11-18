@@ -30,7 +30,11 @@ class CadCiTests(unittest.TestCase):
         self.assertEqual(run.call_count, 1)
         command = run.call_args.args[0]
         self.assertEqual(command[0:3], [sys.executable, "-m", "scpf"])
-        self.assertIn("models/basic/bolted_flange/scpf/model.py", command)
+        self.assertTrue(
+            str(command[3]).replace("\\", "/").endswith(
+                "models/basic/bolted_flange/scpf/model.py"
+            )
+        )
         check.assert_called_once()
 
     def test_site_build_is_skipped_when_plan_does_not_request_it(self):

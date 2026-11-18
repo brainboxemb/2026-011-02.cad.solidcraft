@@ -14,7 +14,7 @@ import shutil
 import tempfile
 import zipfile
 
-from model_catalog import MODELS, model_build_path, model_input_paths, model_slugs
+from model_catalog import MODELS, model_build_path, verification_input_paths, model_slugs
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -41,12 +41,12 @@ def safe_preview_key(value):
 
 
 def input_fingerprint(slug, root=ROOT):
-    """Hash the exact source/component inputs declared for one model."""
+    """Hash only geometry/source inputs that define one native CAD result."""
     if slug not in MODELS:
         raise ValueError(f"unknown model: {slug}")
     digest = hashlib.sha256()
     files = set()
-    for watched in model_input_paths(slug):
+    for watched in verification_input_paths(slug):
         candidate = root / watched
         if watched.endswith("/"):
             if candidate.is_dir():

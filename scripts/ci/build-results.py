@@ -473,9 +473,9 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 else f"Native verified · stored build {short_source}"
             )
         elif previously_verified:
-            status = "Previously published render · verification metadata unavailable"
+            status = "Older native render · not verified for current source"
         else:
-            status = "Generated command plan · native render not verified"
+            status = "Command plan only · native output not verified"
         badge = "verified" if has_native else "pending"
         stage_summary = "".join(f"<li>{esc(s)}</li>" for s in info["stages"])
         launcher_code = esc(source.read_text(encoding="utf-8"))
@@ -635,7 +635,7 @@ The source and JSON here are from this checkout. Native qualification is reporte
         )
         group = next(key for key, (_, _, names) in SECTIONS.items() if slug in names)
         card = f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
-<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Published render' if previously_verified else 'Command plan available'}</span>
+<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Older native render — not current verification' if previously_verified else 'Command plan only'}</span>
 <h3><a href="models/{slug}/">{esc(info["title"])}</a></h3><p>{esc(info["tagline"])}</p>
 <p class="small muted">{esc(info["parameters"])}</p>
 <a class="btn" href="models/{slug}/">Explore model →</a></div></article>"""
@@ -668,10 +668,17 @@ The source and JSON here are from this checkout. Native qualification is reporte
         )
     home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
-<p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
+<p>Explore {len(MODELS)} CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
 <main class="wrap"><section class="intro"><h2>Getting started</h2><p>New to SCPF? <a href="{LIBRARY_CHEATSHEET}">Open the SCPF cheatsheet</a> for 2D/3D primitives, operations and examples.</p><h2>Model catalog</h2>
-<p>Each model has its Python source, generated command JSON and a readable operation timeline. Native-verified models also provide a clearly marked external link to the official SolidCraft website and a downloadable editable .sc design. Nothing from the external CAD application loads automatically on this site. PR previews may show existing main renders for reference, explicitly labelled as not verified for the PR revision.</p>
-<p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} matching native screenshots</span></p></section>
+<p>Each model has its Python source, generated command JSON and a readable operation timeline. The link to SolidCraft Web and a downloadable .sc file are user actions only; they are not evidence that a model is verified.</p>
+<h3>Verification status</h3>
+<ul>
+<li><strong>Native verified</strong> — CI executed the model in SolidCraft and produced a real editable .sc file. Its verification fingerprint still matches the current geometry/source inputs, and the shown native screenshot belongs to that verified output.</li>
+<li><strong>Older native render — not verified for current source</strong> — an older published SolidCraft screenshot is shown only as a visual reference. It is not proof that the current source revision has been verified.</li>
+<li><strong>Command plan only — native output not verified</strong> — the SCPF command plan is available, but there is no matching native SolidCraft result accepted for the current geometry/source inputs.</li>
+</ul>
+<p>Nothing from the external CAD application loads automatically on this site. PR previews may reuse an older main render only when it is clearly marked as not current verification.</p>
+<p><span class="badge">{len(MODELS)} models</span> <span class="badge verified">{verified_count} native verified</span></p></section>
 {sections_html}<h2>How it works</h2>
 <div class="two"><section class="panel"><h3>1 · Write the model</h3><p>Use a plain Python class and a <code>build()</code> method, without a mandatory <code>show()</code> and with an explicit <code>return</code>.</p>
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>

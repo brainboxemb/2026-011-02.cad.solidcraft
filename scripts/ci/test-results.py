@@ -72,6 +72,13 @@ def check(site, commit, public_base="https://brainboxemb.github.io/2026-011-02.c
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/"' in text
     assert "SCPF" in text and "SCRF" not in text
     assert "Each native model page records the exact Forge, SolidCraft" in text
+    assert "Verification status" in text
+    assert "Native verified" in text
+    assert "Older native render — not verified for current source" in text
+    assert "Command plan only — native output not verified" in text
+    assert "user actions only; they are not evidence that a model is verified" in text
+    assert f"Explore {len(MODELS)} CAD designs" in text
+    assert "Explore ten CAD designs" not in text
     assert 'href="https://brainboxemb.github.io/lib.py.solidcraft.forge/"' in text
     assert "SolidCraft <span>CAD models</span>" in text
     assert text.index(">Basic Models<") < text.index(">Components<") < text.index(">Advanced Models<")

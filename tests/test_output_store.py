@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
-from model_catalog import MODELS, model_build_path  # noqa: E402
+from model_catalog import MODELS, model_build_path, verification_input_paths  # noqa: E402
 from output_store import (  # noqa: E402
     input_fingerprint,
     migrate_legacy_pages,
@@ -85,6 +85,36 @@ class OutputStoreTests(unittest.TestCase):
             self.assertNotEqual(input_fingerprint("bolted-flange"), first)
         finally:
             source.write_bytes(original)
+
+    def test_verification_fingerprint_ignores_model_root_metadata(self):
+        slug = "hub75-wood-frame"
+        first = input_fingerprint(slug)
+
+        readme = ROOT / "models" / "advanced" / "hub75_wood_frame" / "README.md"
+        check = ROOT / "models" / "advanced" / "hub75_wood_frame" / "check.py"
+        originals = {path: path.read_bytes() for path in (readme, check)}
+        try:
+            readme.write_bytes(originals[readme] + b"\n<!-- fingerprint probe -->\n")
+            check.write_bytes(originals[check] + b"\n# fingerprint probe\n")
+            self.assertEqual(input_fingerprint(slug), first)
+        finally:
+            for path, content in originals.items():
+                path.write_bytes(content)
+
+    def test_verification_paths_exclude_page_metadata(self):
+        paths = verification_input_paths("hub75-wood-frame")
+        self.assertNotIn(
+            "models/advanced/hub75_wood_frame/README.md",
+            paths,
+        )
+        self.assertNotIn(
+            "models/advanced/hub75_wood_frame/check.py",
+            paths,
+        )
+        self.assertIn(
+            "models/advanced/hub75_wood_frame/scpf/model.py",
+            paths,
+        )
 
     def test_prepare_candidate_writes_verification_per_model(self):
         self.make_model_output("bolted-flange", "new")

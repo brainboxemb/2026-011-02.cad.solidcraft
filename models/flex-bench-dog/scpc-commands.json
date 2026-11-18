@@ -1,0 +1,119 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "20.0",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "interference",
+        "expression": "0.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rim_diameter",
+        "expression": "24.0",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "slot_width",
+        "expression": "1.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 35,
+        "diameter": "hole_diameter",
+        "base": [
+          0,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3,
+        "diameter": "rim_diameter",
+        "base": [
+          0,
+          0,
+          35
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 38,
+        "diameter": "hole_diameter + interference",
+        "base": [
+          0,
+          0,
+          38
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "hole_diameter + interference + 2",
+        "width": "slot_width",
+        "height": 30,
+        "corner": [
+          "-(hole_diameter + interference + 2) / 2",
+          "-slot_width / 2",
+          46
+        ],
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "slot_width",
+        "width": "hole_diameter + interference + 2",
+        "height": 30,
+        "corner": [
+          "-slot_width / 2",
+          "-(hole_diameter + interference + 2) / 2",
+          46
+        ],
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    }
+  ]
+}

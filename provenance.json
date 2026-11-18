@@ -11,6 +11,7 @@
     "plastic-enclosure-pi",
     "corner-bracket",
     "hub75-panel",
+    "flex-bench-dog",
     "guide-rail",
     "guide-rail-makita",
     "simple-mft",
@@ -22,6 +23,6 @@
   "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
   "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "99d17b4e82ce97729e152d5c568edf236f599ec9",
-  "workflow_run": "44268145891"
+  "source_commit": "b3ec581ea41bb3dc78ede9346fe773f2cb66c1c9",
+  "workflow_run": "44277367073"
 }

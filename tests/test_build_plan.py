@@ -22,6 +22,19 @@ class BuildPlanTests(unittest.TestCase):
         self.assertEqual(plan["native_models"], ["bolted-flange"])
         self.assertTrue(plan["site_refresh"])
 
+    def test_pipeline_change_adds_one_plate_end_to_end_smoke(self):
+        plan = make_plan(
+            mode="changed",
+            paths=("scripts/ci/native_ci.py",),
+            event_name="pull_request",
+            ref_name="feature/ci",
+            pull_request=12,
+        )
+        self.assertEqual(plan["scpf_models"], ["plate"])
+        self.assertEqual(plan["native_models"], ["plate"])
+        self.assertTrue(plan["site_refresh"])
+        self.assertTrue(plan["publishable"])
+
     def test_toolchain_pin_change_does_not_select_catalog(self):
         plan = make_plan(
             mode="changed",

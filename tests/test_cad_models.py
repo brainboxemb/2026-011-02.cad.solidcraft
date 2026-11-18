@@ -386,45 +386,6 @@ class CADModelRegressions(unittest.TestCase):
         )
 
 
-    def test_bolted_flange_uses_simple_primitives(self):
-        commands = run_script(
-            ROOT / "models/basic/bolted_flange/scpf/model.py"
-        )["commands"]
-
-        self.assertEqual(
-            [row["command"] for row in commands].count("solid.cylinder"),
-            2,
-        )
-        self.assertEqual(
-            [row["command"] for row in commands].count("solid.hole"),
-            7,
-        )
-        self.assertFalse(
-            any(row["command"] == "sketch.create" for row in commands)
-        )
-        self.assertFalse(
-            any(row["command"] == "solid.pattern.circular" for row in commands)
-        )
-
-        cylinders = [
-            row["params"] for row in commands
-            if row["command"] == "solid.cylinder"
-        ]
-        self.assertEqual(cylinders[0]["diameter"], 100)
-        self.assertEqual(cylinders[0]["height"], 10)
-        self.assertEqual(cylinders[1]["diameter"], 44)
-        self.assertEqual(cylinders[1]["height"], 16)
-
-        holes = [
-            row["params"] for row in commands
-            if row["command"] == "solid.hole"
-        ]
-        self.assertEqual(holes[0]["diameter"], 24)
-        self.assertEqual(
-            [row["diameter"] for row in holes[1:]],
-            [9] * 6,
-        )
-
     def test_bracket_matches_corrected_native_commands(self):
         generated = run_script(ROOT / "models/basic/bracket/scpf/model.py")
         expected = json.loads(

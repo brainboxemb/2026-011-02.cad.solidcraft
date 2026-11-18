@@ -23,10 +23,12 @@ SITE_ONLY_PATHS = (
 
 
 def _matches(path: str, watched: str) -> bool:
+    raw_watched = str(watched).replace("\\", "/")
+    is_prefix = raw_watched.endswith("/")
     path = Path(path).as_posix().lstrip("./")
-    watched = Path(watched).as_posix().lstrip("./")
-    if watched.endswith("/"):
-        return path.startswith(watched)
+    watched = Path(raw_watched).as_posix().lstrip("./")
+    if is_prefix:
+        return path == watched or path.startswith(watched + "/")
     return path == watched
 
 

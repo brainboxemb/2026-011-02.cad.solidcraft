@@ -1,230 +1,175 @@
 {
-  "format": "scpf-replay",
-  "version": 2,
   "commands": [
     {
-      "command": "parameters.add",
+      "command": "solid.cylinder",
       "params": {
-        "name": "pcd",
-        "expression": "70",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "bolts",
-        "expression": "6",
-        "unit": ""
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XY",
-        "name": "Disc"
-      }
-    },
-    {
-      "command": "sketch.circle.center",
-      "params": {
-        "center": [
+        "height": 10,
+        "diameter": 100,
+        "base": [
           0,
-          0
+          0,
+          0.0
         ],
-        "diameter": 100
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": 10,
-        "direction": "positive",
+        "axis": "Z",
+        "operation": "new",
         "body_name": "Flange"
       }
     },
     {
-      "command": "model.faces",
+      "command": "solid.cylinder",
       "params": {
-        "body": "Flange"
-      },
-      "bind": {
-        "$face_point_1": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "point"
-        },
-        "$face_index_1": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "index"
-        }
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": {
-          "face": "$face_point_1",
-          "body": "Flange",
-          "index": "$face_index_1"
-        },
-        "project_edges": false,
-        "name": "Hub"
-      }
-    },
-    {
-      "command": "sketch.circle.center",
-      "params": {
-        "center": [
-          0.0,
-          0.0
+        "height": 16,
+        "diameter": 44,
+        "base": [
+          0,
+          0,
+          10.0
         ],
-        "diameter": 44
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
+        "axis": "Z",
         "operation": "join",
         "targets": [
           "Flange"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0,
+          0,
+          26
         ],
-        "name": "Hub",
-        "distance": 16,
-        "direction": "positive"
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "x_dir": [
-            1,
-            0,
-            0
-          ],
-          "y_dir": [
-            0,
-            1,
-            0
-          ]
-        },
-        "name": "Bore"
-      }
-    },
-    {
-      "command": "sketch.circle.center",
-      "params": {
-        "center": [
+        "diameter": 24,
+        "targets": [
+          "Flange"
+        ],
+        "depth": 26,
+        "direction": [
           0.0,
-          0.0
-        ],
-        "diameter": 24
+          0.0,
+          -1.0
+        ]
       }
     },
     {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
+      "command": "solid.hole",
       "params": {
-        "operation": "cut",
+        "position": [
+          35.0,
+          0.0,
+          10
+        ],
+        "diameter": 9,
         "targets": [
           "Flange"
         ],
-        "name": "Bore",
-        "distance": 26,
-        "direction": "positive"
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
       }
     },
     {
-      "command": "sketch.create",
+      "command": "solid.hole",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "x_dir": [
-            1,
-            0,
-            0
-          ],
-          "y_dir": [
-            0,
-            1,
-            0
-          ]
-        },
-        "name": "BoltHole"
-      }
-    },
-    {
-      "command": "sketch.circle.center",
-      "params": {
-        "center": [
-          "(pcd / 2)",
-          0.0
+        "position": [
+          17.500000000000004,
+          30.31088913245535,
+          10
         ],
-        "diameter": 9
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "operation": "cut",
+        "diameter": 9,
         "targets": [
           "Flange"
         ],
-        "name": "BoltHole",
-        "distance": 10,
-        "direction": "positive"
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
       }
     },
     {
-      "command": "solid.pattern.circular",
+      "command": "solid.hole",
       "params": {
-        "features": [
-          "BoltHole"
+        "position": [
+          -17.499999999999993,
+          30.310889132455355,
+          10
         ],
-        "axis": "Z",
-        "count": "bolts",
-        "alignment": "right",
-        "reversed": false
+        "diameter": 9,
+        "targets": [
+          "Flange"
+        ],
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -35.0,
+          4.2862637970157365e-15,
+          10
+        ],
+        "diameter": 9,
+        "targets": [
+          "Flange"
+        ],
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -17.500000000000014,
+          -30.310889132455344,
+          10
+        ],
+        "diameter": 9,
+        "targets": [
+          "Flange"
+        ],
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          17.500000000000004,
+          -30.31088913245535,
+          10
+        ],
+        "diameter": 9,
+        "targets": [
+          "Flange"
+        ],
+        "depth": 10,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
       }
     }
   ]

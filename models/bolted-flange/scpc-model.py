@@ -1,78 +1,54 @@
-"""Official SolidCraft bolted-flange sample expressed as SCPC commands.
+"""Simple bolted flange expressed directly as SCPC commands."""
 
-This intentionally preserves the source command history and names:
-Disc -> Hub -> Bore -> Bolt/BoltHole -> CircularPattern.
-"""
+from math import cos, radians, sin
+
 from scpc import Script
 
+
+BOLTS = 6
+PCD = 70.0
 
 script = Script()
 
 script.add(
-    "parameters.change",
-    name="bolts",
-    expression="6",
-    unit="",
-    comment="number of bolt holes",
-)
-script.add(
-    "parameters.change",
-    name="pcd",
-    expression="70 mm",
-    comment="bolt circle diameter",
-)
-
-script.add("sketch.create", plane="XY", name="Disc")
-script.add("sketch.circle.center", center=[0, 0], diameter=100)
-script.add("sketch.finish")
-script.add(
-    "solid.extrude",
-    distance=10,
-    body_name="Flange",
-    name="Disc",
-)
-
-script.add(
-    "sketch.create",
-    plane={"face": [0, 0, 10]},
-    name="Hub",
-)
-script.add("sketch.circle.center", center=[0, 0], diameter=44)
-script.add("sketch.finish")
-script.add(
-    "solid.extrude",
-    distance=16,
-    operation="join",
-    name="Hub",
-)
-
-script.add("sketch.create", plane="XY", name="Bore")
-script.add("sketch.circle.center", center=[0, 0], diameter=24)
-script.add("sketch.finish")
-script.add(
-    "solid.extrude",
-    distance=26,
-    operation="cut",
-    name="Bore",
-)
-
-script.add("sketch.create", plane="XY", name="Bolt")
-script.add(
-    "sketch.circle.center",
-    center=[35, 0],
-    diameter=9,
-)
-script.add("sketch.finish")
-script.add(
-    "solid.extrude",
-    distance=10,
-    operation="cut",
-    name="BoltHole",
-)
-
-script.add(
-    "solid.pattern.circular",
-    features=["BoltHole"],
+    "solid.cylinder",
+    height=10,
+    diameter=100,
+    base=[0, 0, 0],
     axis="Z",
-    count="bolts",
+    operation="new",
+    body_name="Flange",
 )
+script.add(
+    "solid.cylinder",
+    height=16,
+    diameter=44,
+    base=[0, 0, 10],
+    axis="Z",
+    operation="join",
+    targets=["Flange"],
+)
+script.add(
+    "solid.hole",
+    position=[0, 0, 26],
+    diameter=24,
+    depth=26,
+    direction=[0, 0, -1],
+    targets=["Flange"],
+)
+
+radius = PCD / 2
+for index in range(BOLTS):
+    angle = radians(index * 360 / BOLTS)
+    script.add(
+        "solid.hole",
+        position=[
+            radius * cos(angle),
+            radius * sin(angle),
+            10,
+        ],
+        diameter=9,
+        depth=10,
+        direction=[0, 0, -1],
+        targets=["Flange"],
+    )

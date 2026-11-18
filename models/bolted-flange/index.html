@@ -10,373 +10,284 @@
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / bolted-flange</div>
-<h1>Bolted Flange</h1><p>Official SolidCraft flange with one native circular bolt-hole pattern</p></div></section>
+<h1>Bolted Flange</h1><p>A simple flange built from cylinders and native hole features</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">20 commands</span><span class="badge">Ø100 × 26 mm overall; Ø44 hub; Ø24 bore; 6 × Ø9 on 70 mm PCD</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">9 commands</span><span class="badge">Ø100 × 26 mm overall; Ø44 hub; Ø24 bore; 6 × Ø9 on 70 mm PCD</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
-<p>Recreates the compact SolidCraft flange sample: Ø100 × 10 disc, Ø44 × 16 hub, Ø24 bore and one Ø9 source bolt hole repeated by one native six-instance circular feature pattern.</p></section>
+<p>A compact primitive model: Ø100 × 10 flange, Ø44 × 16 hub, Ø24 bore and six Ø9 bolt holes on a 70 mm PCD.</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="scpc-model.py">SCPC native-command script</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Disc — Ø100 Sketch on XY, extrude 10 mm</li><li>Hub — Ø44 top-face Sketch, join 16 mm</li><li>Bore — central Ø24 cut through the 26 mm overall height</li><li>BoltHole — one Ø9 source cut at pcd / 2</li><li>CircularPattern — bolts instances around the Z axis</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Cylinder — Ø100 × 10 mm flange</li><li>Cylinder — Ø44 × 16 mm hub joined at Z=10</li><li>Hole — central Ø24 bore through 26 mm</li><li>Holes — six Ø9 holes on a 70 mm PCD</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fbolted-flange%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;Bolted flange from the official SolidCraft sample.
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Simple bolted flange built from SolidCraft primitives.&quot;&quot;&quot;
 
-The model keeps one native source bolt-hole cut and repeats that feature with
-one native circular history pattern. SCPF uses one name for an explicit Sketch
-and its extrusion, so the source Sketch named &quot;Bolt&quot; is represented here as
-&quot;BoltHole&quot;; SCPC keeps the original separate names exactly.
-&quot;&quot;&quot;
+from math import cos, radians, sin
 
 
 class Flange:
-    bolts = 6
-    pcd = 70.0
+    BOLTS = 6
+    PCD = 70.0
 
     def build(self):
-        with Sketch(name=&quot;Disc&quot;, plane=&quot;XY&quot;) as disc:
-            Circle2D(d=100)
-        flange = disc.extrude(10)
+        flange = Cylinder(d=100, h=10, anchor=Anchor.BOTTOM)
 
-        with Sketch(name=&quot;Hub&quot;, on=flange, parent=Anchor.TOP) as hub:
-            Circle2D(d=44)
-        hub_feature = hub.extrude(16)
-        flange = flange + hub_feature
-
-        with Sketch(
-            name=&quot;Bore&quot;,
-            on=flange,
-            plane=&quot;XY&quot;,
-            origin=(0, 0, 0),
-        ) as bore:
-            Circle2D(d=24)
-        bore_cut = bore.extrude(26)
-        flange = flange - bore_cut
-
-        with Sketch(
-            name=&quot;BoltHole&quot;,
-            on=flange,
-            plane=&quot;XY&quot;,
-            origin=(0, 0, 0),
-        ) as bolt:
-            bolt.add(
-                Circle2D(d=9),
-                offset=(self.pcd / 2, 0),
-            )
-        bolt_cut = bolt.extrude(10)
-        flange = flange - bolt_cut
-
-        return flange.circular_pattern(
-            bolt_cut,
-            axis=Axis.Z,
-            count=self.bolts,
+        hub = Cylinder(d=44, h=16, anchor=Anchor.BOTTOM).at(
+            0, 0, 10, anchor=Anchor.BOTTOM
         )
-</code></pre>
-<section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;Official SolidCraft bolted-flange sample expressed as SCPC commands.
+        flange = flange + hub
 
-This intentionally preserves the source command history and names:
-Disc -&gt; Hub -&gt; Bore -&gt; Bolt/BoltHole -&gt; CircularPattern.
-&quot;&quot;&quot;
+        bore = Hole(
+            d=24,
+            depth=26,
+            direction=(0, 0, -1),
+        ).at(0, 0, 26)
+        flange = flange + bore
+
+        radius = self.PCD / 2
+        for index in range(self.BOLTS):
+            angle = radians(index * 360 / self.BOLTS)
+            bolt_hole = Hole(
+                d=9,
+                depth=10,
+                direction=(0, 0, -1),
+            ).at(
+                radius * cos(angle),
+                radius * sin(angle),
+                10,
+            )
+            flange = flange + bolt_hole
+
+        return flange
+</code></pre>
+<section class="source-section scpc-source"><h2>SCPC — explicit native SolidCraft commands</h2><p>This is an independent second implementation using <code>Script.add("native.command", ...)</code>. It does not call SCPF or re-export its generated JSON. Both versions are checked against the native CAD engine.</p><div class="links"><a class="btn secondary" href="scpc-model.py">Download SCPC model.py</a><a class="btn secondary" href="scpc-commands.json">SCPC command JSON</a></div><pre><code>&quot;&quot;&quot;Simple bolted flange expressed directly as SCPC commands.&quot;&quot;&quot;
+
+from math import cos, radians, sin
+
 from scpc import Script
 
+
+BOLTS = 6
+PCD = 70.0
 
 script = Script()
 
 script.add(
-    &quot;parameters.change&quot;,
-    name=&quot;bolts&quot;,
-    expression=&quot;6&quot;,
-    unit=&quot;&quot;,
-    comment=&quot;number of bolt holes&quot;,
-)
-script.add(
-    &quot;parameters.change&quot;,
-    name=&quot;pcd&quot;,
-    expression=&quot;70 mm&quot;,
-    comment=&quot;bolt circle diameter&quot;,
-)
-
-script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Disc&quot;)
-script.add(&quot;sketch.circle.center&quot;, center=[0, 0], diameter=100)
-script.add(&quot;sketch.finish&quot;)
-script.add(
-    &quot;solid.extrude&quot;,
-    distance=10,
-    body_name=&quot;Flange&quot;,
-    name=&quot;Disc&quot;,
-)
-
-script.add(
-    &quot;sketch.create&quot;,
-    plane={&quot;face&quot;: [0, 0, 10]},
-    name=&quot;Hub&quot;,
-)
-script.add(&quot;sketch.circle.center&quot;, center=[0, 0], diameter=44)
-script.add(&quot;sketch.finish&quot;)
-script.add(
-    &quot;solid.extrude&quot;,
-    distance=16,
-    operation=&quot;join&quot;,
-    name=&quot;Hub&quot;,
-)
-
-script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Bore&quot;)
-script.add(&quot;sketch.circle.center&quot;, center=[0, 0], diameter=24)
-script.add(&quot;sketch.finish&quot;)
-script.add(
-    &quot;solid.extrude&quot;,
-    distance=26,
-    operation=&quot;cut&quot;,
-    name=&quot;Bore&quot;,
-)
-
-script.add(&quot;sketch.create&quot;, plane=&quot;XY&quot;, name=&quot;Bolt&quot;)
-script.add(
-    &quot;sketch.circle.center&quot;,
-    center=[35, 0],
-    diameter=9,
-)
-script.add(&quot;sketch.finish&quot;)
-script.add(
-    &quot;solid.extrude&quot;,
-    distance=10,
-    operation=&quot;cut&quot;,
-    name=&quot;BoltHole&quot;,
-)
-
-script.add(
-    &quot;solid.pattern.circular&quot;,
-    features=[&quot;BoltHole&quot;],
+    &quot;solid.cylinder&quot;,
+    height=10,
+    diameter=100,
+    base=[0, 0, 0],
     axis=&quot;Z&quot;,
-    count=&quot;bolts&quot;,
+    operation=&quot;new&quot;,
+    body_name=&quot;Flange&quot;,
 )
+script.add(
+    &quot;solid.cylinder&quot;,
+    height=16,
+    diameter=44,
+    base=[0, 0, 10],
+    axis=&quot;Z&quot;,
+    operation=&quot;join&quot;,
+    targets=[&quot;Flange&quot;],
+)
+script.add(
+    &quot;solid.hole&quot;,
+    position=[0, 0, 26],
+    diameter=24,
+    depth=26,
+    direction=[0, 0, -1],
+    targets=[&quot;Flange&quot;],
+)
+
+radius = PCD / 2
+for index in range(BOLTS):
+    angle = radians(index * 360 / BOLTS)
+    script.add(
+        &quot;solid.hole&quot;,
+        position=[
+            radius * cos(angle),
+            radius * sin(angle),
+            10,
+        ],
+        diameter=9,
+        depth=10,
+        direction=[0, 0, -1],
+        targets=[&quot;Flange&quot;],
+    )
 </code></pre></section>
-<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: pcd</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: new, body_name: Flange</small><pre><code>{
+  &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;name&quot;: &quot;pcd&quot;,
-    &quot;expression&quot;: &quot;70&quot;,
-    &quot;unit&quot;: &quot;mm&quot;
-  }
-}</code></pre></li>
-<li><strong>Named CAD parameter</strong><small>parameters.add · name: bolts</small><pre><code>{
-  &quot;command&quot;: &quot;parameters.add&quot;,
-  &quot;params&quot;: {
-    &quot;name&quot;: &quot;bolts&quot;,
-    &quot;expression&quot;: &quot;6&quot;,
-    &quot;unit&quot;: &quot;&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Disc, plane: XY</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: &quot;XY&quot;,
-    &quot;name&quot;: &quot;Disc&quot;
-  }
-}</code></pre></li>
-<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.circle.center&quot;,
-  &quot;params&quot;: {
-    &quot;center&quot;: [
+    &quot;height&quot;: 10,
+    &quot;diameter&quot;: 100,
+    &quot;base&quot;: [
       0,
-      0
+      0,
+      0.0
     ],
-    &quot;diameter&quot;: 100
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: positive, body_name: Flange</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;distance&quot;: 10,
-    &quot;direction&quot;: &quot;positive&quot;,
+    &quot;axis&quot;: &quot;Z&quot;,
+    &quot;operation&quot;: &quot;new&quot;,
     &quot;body_name&quot;: &quot;Flange&quot;
   }
 }</code></pre></li>
-<li><strong>model.faces</strong><small>model.faces</small><pre><code>{
-  &quot;command&quot;: &quot;model.faces&quot;,
+<li><strong>Cylinder primitive</strong><small>solid.cylinder · operation: join</small><pre><code>{
+  &quot;command&quot;: &quot;solid.cylinder&quot;,
   &quot;params&quot;: {
-    &quot;body&quot;: &quot;Flange&quot;
-  },
-  &quot;bind&quot;: {
-    &quot;$face_point_1&quot;: {
-      &quot;field&quot;: &quot;faces&quot;,
-      &quot;where&quot;: {
-        &quot;plane_normal&quot;: [
-          0,
-          0,
-          1
-        ]
-      },
-      &quot;max&quot;: &quot;area&quot;,
-      &quot;select&quot;: &quot;point&quot;
-    },
-    &quot;$face_index_1&quot;: {
-      &quot;field&quot;: &quot;faces&quot;,
-      &quot;where&quot;: {
-        &quot;plane_normal&quot;: [
-          0,
-          0,
-          1
-        ]
-      },
-      &quot;max&quot;: &quot;area&quot;,
-      &quot;select&quot;: &quot;index&quot;
-    }
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Hub, plane: {&#x27;face&#x27;: &#x27;$face_point_1&#x27;, &#x27;body&#x27;: &#x27;Flange&#x27;, &#x27;index&#x27;: &#x27;$face_index_1&#x27;}</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: {
-      &quot;face&quot;: &quot;$face_point_1&quot;,
-      &quot;body&quot;: &quot;Flange&quot;,
-      &quot;index&quot;: &quot;$face_index_1&quot;
-    },
-    &quot;project_edges&quot;: false,
-    &quot;name&quot;: &quot;Hub&quot;
-  }
-}</code></pre></li>
-<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.circle.center&quot;,
-  &quot;params&quot;: {
-    &quot;center&quot;: [
-      0.0,
-      0.0
+    &quot;height&quot;: 16,
+    &quot;diameter&quot;: 44,
+    &quot;base&quot;: [
+      0,
+      0,
+      10.0
     ],
-    &quot;diameter&quot;: 44
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Hub, direction: positive, operation: join</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
+    &quot;axis&quot;: &quot;Z&quot;,
     &quot;operation&quot;: &quot;join&quot;,
     &quot;targets&quot;: [
       &quot;Flange&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
+  &quot;params&quot;: {
+    &quot;position&quot;: [
+      0,
+      0,
+      26
     ],
-    &quot;name&quot;: &quot;Hub&quot;,
-    &quot;distance&quot;: 16,
-    &quot;direction&quot;: &quot;positive&quot;
-  }
-}</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: Bore, plane: {&#x27;origin&#x27;: [0.0, 0.0, 0.0], &#x27;x_dir&#x27;: [1, 0, 0], &#x27;y_dir&#x27;: [0, 1, 0]}</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
-  &quot;params&quot;: {
-    &quot;plane&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;x_dir&quot;: [
-        1,
-        0,
-        0
-      ],
-      &quot;y_dir&quot;: [
-        0,
-        1,
-        0
-      ]
-    },
-    &quot;name&quot;: &quot;Bore&quot;
-  }
-}</code></pre></li>
-<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.circle.center&quot;,
-  &quot;params&quot;: {
-    &quot;center&quot;: [
+    &quot;diameter&quot;: 24,
+    &quot;targets&quot;: [
+      &quot;Flange&quot;
+    ],
+    &quot;depth&quot;: 26,
+    &quot;direction&quot;: [
       0.0,
-      0.0
-    ],
-    &quot;diameter&quot;: 24
+      0.0,
+      -1.0
+    ]
   }
 }</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · name: Bore, direction: positive, operation: cut</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
-    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;position&quot;: [
+      35.0,
+      0.0,
+      10
+    ],
+    &quot;diameter&quot;: 9,
     &quot;targets&quot;: [
       &quot;Flange&quot;
     ],
-    &quot;name&quot;: &quot;Bore&quot;,
-    &quot;distance&quot;: 26,
-    &quot;direction&quot;: &quot;positive&quot;
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
   }
 }</code></pre></li>
-<li><strong>Create sketch</strong><small>sketch.create · name: BoltHole, plane: {&#x27;origin&#x27;: [0.0, 0.0, 0.0], &#x27;x_dir&#x27;: [1, 0, 0], &#x27;y_dir&#x27;: [0, 1, 0]}</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.create&quot;,
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
-    &quot;plane&quot;: {
-      &quot;origin&quot;: [
-        0.0,
-        0.0,
-        0.0
-      ],
-      &quot;x_dir&quot;: [
-        1,
-        0,
-        0
-      ],
-      &quot;y_dir&quot;: [
-        0,
-        1,
-        0
-      ]
-    },
-    &quot;name&quot;: &quot;BoltHole&quot;
-  }
-}</code></pre></li>
-<li><strong>Circle</strong><small>sketch.circle.center</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.circle.center&quot;,
-  &quot;params&quot;: {
-    &quot;center&quot;: [
-      &quot;(pcd / 2)&quot;,
-      0.0
+    &quot;position&quot;: [
+      17.500000000000004,
+      30.31088913245535,
+      10
     ],
-    &quot;diameter&quot;: 9
-  }
-}</code></pre></li>
-<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
-  &quot;command&quot;: &quot;sketch.finish&quot;,
-  &quot;params&quot;: {}
-}</code></pre></li>
-<li><strong>Extrusion / cut</strong><small>solid.extrude · name: BoltHole, direction: positive, operation: cut</small><pre><code>{
-  &quot;command&quot;: &quot;solid.extrude&quot;,
-  &quot;params&quot;: {
-    &quot;operation&quot;: &quot;cut&quot;,
+    &quot;diameter&quot;: 9,
     &quot;targets&quot;: [
       &quot;Flange&quot;
     ],
-    &quot;name&quot;: &quot;BoltHole&quot;,
-    &quot;distance&quot;: 10,
-    &quot;direction&quot;: &quot;positive&quot;
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
   }
 }</code></pre></li>
-<li><strong>solid.pattern.circular</strong><small>solid.pattern.circular</small><pre><code>{
-  &quot;command&quot;: &quot;solid.pattern.circular&quot;,
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
   &quot;params&quot;: {
-    &quot;features&quot;: [
-      &quot;BoltHole&quot;
+    &quot;position&quot;: [
+      -17.499999999999993,
+      30.310889132455355,
+      10
     ],
-    &quot;axis&quot;: &quot;Z&quot;,
-    &quot;count&quot;: &quot;bolts&quot;,
-    &quot;alignment&quot;: &quot;right&quot;,
-    &quot;reversed&quot;: false
+    &quot;diameter&quot;: 9,
+    &quot;targets&quot;: [
+      &quot;Flange&quot;
+    ],
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
+  &quot;params&quot;: {
+    &quot;position&quot;: [
+      -35.0,
+      4.2862637970157365e-15,
+      10
+    ],
+    &quot;diameter&quot;: 9,
+    &quot;targets&quot;: [
+      &quot;Flange&quot;
+    ],
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
+  &quot;params&quot;: {
+    &quot;position&quot;: [
+      -17.500000000000014,
+      -30.310889132455344,
+      10
+    ],
+    &quot;diameter&quot;: 9,
+    &quot;targets&quot;: [
+      &quot;Flange&quot;
+    ],
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
+  }
+}</code></pre></li>
+<li><strong>Native Hole feature</strong><small>solid.hole · direction: [0.0, 0.0, -1.0]</small><pre><code>{
+  &quot;command&quot;: &quot;solid.hole&quot;,
+  &quot;params&quot;: {
+    &quot;position&quot;: [
+      17.500000000000004,
+      -30.31088913245535,
+      10
+    ],
+    &quot;diameter&quot;: 9,
+    &quot;targets&quot;: [
+      &quot;Flange&quot;
+    ],
+    &quot;depth&quot;: 10,
+    &quot;direction&quot;: [
+      0.0,
+      0.0,
+      -1.0
+    ]
   }
 }</code></pre></li></ol></section>
 <div class="notice"><strong>Verification:</strong> Native verified · snapshot from matching run.

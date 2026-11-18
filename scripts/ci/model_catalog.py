@@ -415,6 +415,13 @@ def _model_root(path):
     return str(Path(value).parent.as_posix()) + "/"
 
 
+def model_build_path(slug):
+    """Return the source-mirrored root for one model in the build branch."""
+    if slug not in MODELS:
+        raise ValueError(f"unknown model: {slug}")
+    return Path(_model_root(MODELS[slug]["source"]).rstrip("/"))
+
+
 def direct_input_paths(slug):
     """Paths whose change directly affects one catalog model.
 

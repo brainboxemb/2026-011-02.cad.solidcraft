@@ -1,0 +1,32 @@
+class SamplePlate:
+    """Build the sample plate from object-level CAD intent."""
+
+    width = 80
+    depth = 50
+    thickness = 8
+
+    def build(self):
+        with Sketch(name="Base", plane="XY") as sketch:
+            Rectangle2D(self.width, self.depth)
+        plate = sketch.extrude(self.thickness)
+        plate = plate.fillet(6, edges=Edges.VERTICAL)
+
+        holes = Hole(d=8, depth=Depth.THROUGH_ALL).repeat_linear(
+            count=2,
+            spacing=self.width - 24,
+            axis=Axis.X,
+        ).attach(plate, parent=Anchor.TOP)
+        plate = plate + holes
+
+        boss = Cylinder(d=24, h=14).attach(
+            plate,
+            parent=Anchor.TOP,
+            child=Anchor.BOTTOM,
+        )
+        plate = plate + boss
+
+        bore = Hole(d=12, depth=Depth.THROUGH_ALL).attach(
+            plate,
+            parent=Anchor.TOP,
+        )
+        return plate + bore

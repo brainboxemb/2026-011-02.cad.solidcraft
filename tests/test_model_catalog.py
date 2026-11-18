@@ -124,9 +124,12 @@ class ModelCatalogTests(unittest.TestCase):
             with self.subTest(slug=slug):
                 source = Path(model["source"])
                 build = model_build_path(slug)
-                self.assertEqual(source.parts[:len(build.parts)], build.parts)
-                self.assertNotIn("scpf", build.parts)
-                self.assertNotIn("scpc", build.parts)
+                expected = (
+                    source.parent
+                    if source.name == "model.py"
+                    else source.with_suffix("")
+                )
+                self.assertEqual(build, expected)
 
     def test_declared_model_dependencies_are_valid_and_acyclic(self):
         for slug in MODELS:

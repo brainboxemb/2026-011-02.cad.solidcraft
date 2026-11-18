@@ -67,8 +67,8 @@ class FlexBenchDogTests(unittest.TestCase):
             if row["command"] == "sketch.create"
         ]
         self.assertEqual([row["name"] for row in sketches[:2]], ["Flex slot X", "Flex slot Y"])
-        self.assertEqual(sketches[0]["origin"], [0, 0, -18])
-        self.assertEqual(sketches[1]["origin"], [0, 0, -18])
+        self.assertEqual(sketches[0]["plane"]["origin"], [0, 0, -18])
+        self.assertEqual(sketches[1]["plane"]["origin"], [0, 0, -18])
 
         cuts = [
             row["params"]
@@ -93,7 +93,7 @@ class FlexBenchDogTests(unittest.TestCase):
             if row["command"] == "sketch.create"
         ]
         self.assertEqual(sketches[-1]["name"], "Top logo")
-        self.assertEqual(sketches[-1]["origin"], [0, 0, 20])
+        self.assertEqual(sketches[-1]["plane"]["origin"], [0, 0, 20])
 
         joins = [
             row["params"]

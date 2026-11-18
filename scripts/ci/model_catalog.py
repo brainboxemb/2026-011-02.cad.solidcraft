@@ -503,15 +503,22 @@ def dependency_closure(slug):
     return tuple(result)
 
 
-def model_input_paths(slug):
-    """All paths that can affect one model.
-
-    Geometry/source inputs from dependencies propagate to dependants. Root
-    metadata belongs only to the selected model itself.
-    """
-    paths = set(model_metadata_paths(slug))
+def verification_input_paths(slug):
+    """Geometry/source paths that define one model's native CAD result."""
+    paths = set()
     for dependency in dependency_closure(slug):
         paths.update(direct_input_paths(dependency))
+    return tuple(sorted(paths))
+
+
+def model_input_paths(slug):
+    """All paths whose change should select one model for rebuild/publication.
+
+    Native verification is based only on verification_input_paths(). Model-root
+    README/check metadata belongs to selection, not to the geometry fingerprint.
+    """
+    paths = set(verification_input_paths(slug))
+    paths.update(model_metadata_paths(slug))
     return tuple(sorted(paths))
 
 

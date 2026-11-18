@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GuideRail — Festool profile · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / guide-rail</div>
+<h1>GuideRail — Festool profile</h1><p>Parametric guide rail using the detailed Festool reference extrusion</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge verified">Native verified · current build</span>
+<span class="badge">5 commands</span><span class="badge">184.20 × 10.50 mm profile; 600 mm standalone example; editable length</span><span class="badge">SolidCraft 0.42.0 · verified</span></div>
+<section class="model-warning" role="note"><strong>WARNING — measured/reference geometry, not an official specification</strong><p>The dimensions used to calibrate this GuideRail profile are based on measurements published by TSO Products. They have not been independently verified against a physical rail or an official manufacturer drawing. The detailed profile shape also comes from third-party STEP/reference material. No official Festool extrusion drawing or other formal manufacturer dimensional specification is available here for validation. Treat this model as a practical assembly/layout reference, not as verified manufacturing geometry or authoritative Festool dimensions.</p></section>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
+<p class="small muted">Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size.</p>
+<p>The generic GuideRail component with its default Festool profile. The aluminium cross-section comes from the FS 1400/2 STEP reference and is calibrated to the TSO measured 184.20 × 10.50 mm envelope. Only rail length is a native CAD parameter.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="model.py">Component source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Load the fixed Festool cross-section profile</li><li>Create one detailed XZ Polygon2D</li><li>Extrude symmetrically along Y by the editable length</li><li>Keep profile choice outside the native parameter list</li></ol></section></div>
+<section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fpreview%2Fpr-149%2Fmodels%2Fguide-rail%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
+
+<section class="source-section source-definition"><h2>Python component — actual geometry</h2><p><code>models/components/guide_rail/scpf/model.py</code> is compiled directly by SCPF and imported unchanged by assemblies. There is no launcher or standalone wrapper model.</p><p><a class="btn secondary" href="model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Reusable guide rail with interchangeable fixed cross-sections.
+
+`length` is the only native CAD parameter. `profile` is a non-parametric
+component input selecting one fixed measured reference cross-section.
+&quot;&quot;&quot;
+from scpf import Polygon2D, Sketch, component
+
+from models.components.guide_rail.scpf.profiles import get_profile
+
+
+@component(include=(&quot;length&quot;,))
+class GuideRail:
+    length = 600.0
+    profile = None
+
+    def build(self):
+        profile_data = get_profile(self.profile or &quot;festool&quot;)
+        points = [
+            (f&quot;p{index:03d}&quot;, point)
+            for index, point in enumerate(profile_data.POINTS)
+        ]
+
+        with Sketch(
+            name=f&quot;Guide rail profile - {profile_data.PROFILE_NAME}&quot;,
+            plane=&quot;XZ&quot;,
+        ) as profile_sketch:
+            Polygon2D(points, plane=&quot;XZ&quot;, world=True)
+
+        return profile_sketch.extrude(self.length, sym=True)
+</code></pre></section>
+
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;length&quot;,
+    &quot;expression&quot;: &quot;600&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Guide rail profile - festool, plane: XZ</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Guide rail profile - festool&quot;
+  }
+}</code></pre></li>
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
+  &quot;params&quot;: {
+    &quot;points&quot;: [
+      [
+        0.0,
+        -0.0
+      ],
+      [
+        16.052,
+        -0.0
+      ],
+      [
+        16.052,
+        -1.6
+      ],
+      [
+        48.207,
+        -1.6
+      ],
+      [
+        48.207,
+        -0.0
+      ],
+      [
+        51.969,
+        -0.0
+      ],
+      [
+        51.969,
+        -1.9
+      ],
+      [
+        50.063,
+        -1.9
+      ],
+      [
+        50.063,
+        -8.6
+      ],
+      [
+        62.303,
+        -8.6
+      ],
+      [
+        62.303,
+        -1.9
+      ],
+      [
+        60.397,
+        -1.9
+      ],
+      [
+        60.397,
+        -0.0
+      ],
+      [
+        64.159,
+        -0.0
+      ],
+      [
+        64.159,
+        -1.6
+      ],
+      [
+        85.228,
+        -1.6
+      ],
+      [
+        85.228,
+        -1.0
+      ],
+      [
+        87.084,
+        -1.0
+      ],
+      [
+        87.084,
+        -1.6
+      ],
+      [
+        165.941,
+        -1.6
+      ],
+      [
+        167.144,
+        -0.4
+      ],
+      [
+        167.144,
+        -2.05
+      ],
+      [
+        184.2,
+        -2.05
+      ],
+      [
+        184.2,
+        -3.9
+      ],
+      [
+        153.099,
+        -3.9
+      ],
+      [
+        153.099,
+        -3.1
+      ],
+      [
+        140.909,
+        -3.1
+      ],
+      [
+        140.909,
+        -3.9
+      ],
+      [
+        129.572,
+        -3.9
+      ],
+      [
+        129.572,
+        -3.65
+      ],
+      [
+        117.382,
+        -3.65
+      ],
+      [
+        117.382,
+        -3.9
+      ],
+      [
+        112.517,
+        -3.9
+      ],
+      [
+        112.517,
+        -3.65
+      ],
+      [
+        75.245,
+        -3.65
+      ],
+      [
+        75.245,
+        -3.9
+      ],
+      [
+        63.708,
+        -3.9
+      ],
+      [
+        63.708,
+        -5.9
+      ],
+      [
+        64.209,
+        -5.9
+      ],
+      [
+        64.209,
+        -10.5
+      ],
+      [
+        48.157,
+        -10.5
+      ],
+      [
+        48.157,
+        -5.9
+      ],
+      [
+        48.658,
+        -5.9
+      ],
+      [
+        48.658,
+        -3.9
+      ],
+      [
+        35.265,
+        -3.9
+      ],
+      [
+        35.265,
+        -3.1
+      ],
+      [
+        23.075,
+        -3.1
+      ],
+      [
+        23.075,
+        -3.9
+      ],
+      [
+        16.052,
+        -3.9
+      ],
+      [
+        16.052,
+        -10.5
+      ],
+      [
+        12.29,
+        -10.5
+      ],
+      [
+        12.29,
+        -8.6
+      ],
+      [
+        14.447,
+        -8.6
+      ],
+      [
+        14.447,
+        -1.9
+      ],
+      [
+        1.605,
+        -1.9
+      ],
+      [
+        1.605,
+        -8.6
+      ],
+      [
+        3.762,
+        -8.6
+      ],
+      [
+        3.762,
+        -10.5
+      ],
+      [
+        0.0,
+        -10.5
+      ]
+    ],
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;p000&quot;,
+      &quot;p001&quot;,
+      &quot;p002&quot;,
+      &quot;p003&quot;,
+      &quot;p004&quot;,
+      &quot;p005&quot;,
+      &quot;p006&quot;,
+      &quot;p007&quot;,
+      &quot;p008&quot;,
+      &quot;p009&quot;,
+      &quot;p010&quot;,
+      &quot;p011&quot;,
+      &quot;p012&quot;,
+      &quot;p013&quot;,
+      &quot;p014&quot;,
+      &quot;p015&quot;,
+      &quot;p016&quot;,
+      &quot;p017&quot;,
+      &quot;p018&quot;,
+      &quot;p019&quot;,
+      &quot;p020&quot;,
+      &quot;p021&quot;,
+      &quot;p022&quot;,
+      &quot;p023&quot;,
+      &quot;p024&quot;,
+      &quot;p025&quot;,
+      &quot;p026&quot;,
+      &quot;p027&quot;,
+      &quot;p028&quot;,
+      &quot;p029&quot;,
+      &quot;p030&quot;,
+      &quot;p031&quot;,
+      &quot;p032&quot;,
+      &quot;p033&quot;,
+      &quot;p034&quot;,
+      &quot;p035&quot;,
+      &quot;p036&quot;,
+      &quot;p037&quot;,
+      &quot;p038&quot;,
+      &quot;p039&quot;,
+      &quot;p040&quot;,
+      &quot;p041&quot;,
+      &quot;p042&quot;,
+      &quot;p043&quot;,
+      &quot;p044&quot;,
+      &quot;p045&quot;,
+      &quot;p046&quot;,
+      &quot;p047&quot;,
+      &quot;p048&quot;,
+      &quot;p049&quot;,
+      &quot;p050&quot;,
+      &quot;p051&quot;,
+      &quot;p052&quot;,
+      &quot;p053&quot;,
+      &quot;p054&quot;,
+      &quot;p055&quot;,
+      &quot;p056&quot;,
+      &quot;p057&quot;,
+      &quot;p058&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GuideRail</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;length&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;body_name&quot;: &quot;GuideRail&quot;
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Native verified · current build.
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

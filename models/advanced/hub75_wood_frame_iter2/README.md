@@ -60,22 +60,25 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 ## Rear side-wall recess
 
 Like the second reference design, the side walls are allowed to extend farther
-rearward through the full wooden frame. The bottom, intermediate shelf,
-roof base, both side panels and both vertical lower dividers are now all
-**120 mm** deep. Only the rear edge of the display section of the side panels
+rearward through the full wooden frame. The bottom and both side panels are **120 mm** deep. The intermediate shelf
+and both vertical lower dividers stop at **110 mm**, leaving a 10 mm rear zone
+for the inset rear board. Only the rear edge of the display section of the side panels
 is reduced.
 The current iteration-2 values are:
 
-- rear recess depth: **50 mm**, leaving a 60 mm deep middle section;
+- rear recess depth: **50 mm**, leaving a 70 mm deep middle section;
 - transition radius: **R20**;
 - full-depth side wall above the intermediate shelf before the recess: **80 mm**;
 - full-depth side wall below the roof after the recess: **80 mm**.
 
 The recess is cut as a real rounded YZ profile in each 12 mm side wall. The
-front edge remains straight. The rear board is temporarily disabled while this
-rear-access geometry is being developed. When restored, the 9 mm rear board
-will sit between the side walls, inside the 120 mm cabinet depth, rather than
-being mounted behind the cabinet.
+front edge remains straight.
+
+The **9 mm rear board is enabled again**. It sits between the side walls and
+between the bottom and roof, occupying Y=111..120. The intermediate shelf and
+lower dividers stop at Y=110, leaving 1 mm assembly clearance before the rear
+board. At both handle positions, the rear board has matching **50 mm deep R20
+openings** with the same vertical limits as the side-wall recess.
 
 ### Side-handle concept
 
@@ -111,10 +114,11 @@ and has 0.4 mm assembly clearance. Final attachment is still not defined.
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |
 | Frame wood | 12 mm |
-| Rear board | temporarily disabled |
+| Rear board | 9 mm, inset between side walls at Y=111..120 |
 | Side-wall rear recess | 50 mm deep, R20, 80 mm full-depth top/bottom zones |
-| Bottom / intermediate shelf depth | 120 mm |
-| Lower divider depth | 120 mm |
+| Bottom depth | 120 mm |
+| Intermediate shelf depth | 110 mm |
+| Lower divider depth | 110 mm |
 | Side-panel depth | 120 mm |
 | Roof total depth | 131 mm |
 | Roof construction | 10 mm front + 120 mm cabinet + 1 mm rear |

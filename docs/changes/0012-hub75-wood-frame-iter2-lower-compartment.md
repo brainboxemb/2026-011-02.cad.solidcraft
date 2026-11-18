@@ -58,14 +58,15 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 The second reference design also reduces the rear depth of the upper side-wall
 section. Apply the same principle here while keeping the iteration-2 dimensions:
 
-- bottom and intermediate shelf extend to 120 mm depth;
+- bottom extends to 120 mm depth;
+- intermediate shelf and both lower dividers stop at 110 mm, leaving a 10 mm
+  rear zone for the inset rear board;
 - the roof no longer reserves 9 mm behind the cabinet because the rear board
   will sit inside it: 10 mm front overhang + 120 mm cabinet + 1 mm rear
   overhang = 131 mm total;
 - both side panels extend to the same 120 mm depth;
-- both vertical lower dividers also extend to 120 mm depth;
 - the middle display-zone side wall is recessed 50 mm from the 120 mm rear
-  edge, leaving 60 mm depth there;
+  edge, leaving 70 mm depth there;
 - use R20 rounded transitions;
 - keep at least 80 mm of full-depth side wall above the intermediate shelf;
 - keep at least 80 mm of full-depth side wall below the roof;
@@ -76,9 +77,11 @@ approximate the radius with straight polygon segments. The recess sketch is
 attached to the side-wall body because Forge currently cannot use a standalone
 `sketch_base_extrusion` as a boolean operand; that missing Forge capability is
 tracked separately in Forge issue #354. The rear board remains temporarily
-disabled while this rear-access shape is developed. When restored, the 9 mm
-rear board will fit between the side walls and occupy Y=111..120 inside the
-120 mm cabinet depth instead of being mounted behind it.
+enabled again as a dedicated `RearBoard` part. The 9 mm board fits between
+the side walls and between bottom and roof, occupying Y=111..120 inside the
+120 mm cabinet depth. The shelf and lower dividers end at Y=110. Cut matching
+50 mm deep R20 handle openings from both side edges of the rear board using the
+same vertical recess limits as the side panels.
 
 Add a first side-handle position study with Ø22 mm beech roundwood. The rod is
 clamped visually between the lower and upper limits of the recess. Keep its rear

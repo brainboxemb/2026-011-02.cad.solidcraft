@@ -3,6 +3,7 @@
 from scpf import BOTTOM, LEFT, RIGHT, TOP, Placement, assembly, half
 
 from parts.board import Board
+from parts.rear_board import RearBoard
 from parts.side_board import SideBoard
 
 
@@ -10,6 +11,9 @@ from parts.side_board import SideBoard
 # than editable CAD parameters: the clear bays are 30% / 40% / 30%.
 LOWER_SIDE_BAY_FRACTION = 0.30
 LOWER_CENTER_BAY_FRACTION = 0.40
+
+# Keep a 10 mm rear zone clear for the 9 mm rear board plus 1 mm assembly gap.
+REAR_BOARD_ZONE_DEPTH = 10.0
 
 
 @assembly
@@ -84,6 +88,8 @@ class WoodFrame:
         # then apply the fractions to the remaining clear bay width. This keeps
         # the visible openings in the requested ratio rather than merely placing
         # divider centre-lines at 30% and 70% of the cabinet width.
+        internal_depth = self.cabinet_depth - REAR_BOARD_ZONE_DEPTH
+
         clear_bay_width = (
             self.opening_width
             - 2 * self.frame_wood_thickness
@@ -113,7 +119,7 @@ class WoodFrame:
             # here would make the shelf pass through both 12 mm side boards.
             # Grooves can be added later as explicit joinery features.
             width=self.opening_width,
-            depth=self.side_panel_depth,
+            depth=internal_depth,
             height=self.frame_wood_thickness,
             material_name="LIGHTPLY intermediate shelf",
             placement=Placement(z=shelf_bottom),
@@ -122,7 +128,7 @@ class WoodFrame:
         lower_divider_left = Board(
             name="lower_divider_left",
             width=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
+            depth=internal_depth,
             height=self.lower_compartment_height,
             material_name="LIGHTPLY lower divider",
             placement=Placement(
@@ -134,7 +140,7 @@ class WoodFrame:
         lower_divider_right = Board(
             name="lower_divider_right",
             width=self.frame_wood_thickness,
-            depth=self.cabinet_depth,
+            depth=internal_depth,
             height=self.lower_compartment_height,
             material_name="LIGHTPLY lower divider",
             placement=Placement(
@@ -187,21 +193,20 @@ class WoodFrame:
             ),
         ).group("WoodBoxFrame")
 
-        # Rear board is intentionally disabled for the current iteration-2
-        # layout work. Keep the definition here so it can be restored once the
-        # lower-compartment and rear-access design is decided.
-        #
-        # rear = Board(
-        #     name="rear",
-        #     # The rear board fits between the side walls rather than covering
-        #     # their rear edges, so its width is the clear opening width.
-        #     width=self.opening_width,
-        #     depth=self.panel_wood_thickness,
-        #     height=opening_top,
-        #     material_name="LIGHTPLY rear",
-        #     color="#A87D4D",
-        #     placement=Placement(y=rear_y),
-        # ).group("WoodBoxFrame")
+        rear = RearBoard(
+            name="rear",
+            width=self.opening_width,
+            depth=self.panel_wood_thickness,
+            height=side_height,
+            recess_depth=self.side_recess_depth,
+            recess_radius=self.side_recess_radius,
+            recess_bottom=side_recess_bottom,
+            recess_top=side_recess_top,
+            placement=Placement(
+                y=rear_y,
+                z=bottom_top,
+            ),
+        ).group("WoodBoxFrame")
 
         return (
             left
@@ -211,4 +216,5 @@ class WoodFrame:
             + lower_divider_left
             + lower_divider_right
             + roof
+            + rear
         )

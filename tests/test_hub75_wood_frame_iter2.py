@@ -78,6 +78,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "board.py",
                 "glass_strip.py",
                 "handle_ring.py",
+                "rear_board.py",
                 "roundwood_handle.py",
                 "side_board.py",
                 "window.py",
@@ -170,7 +171,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         # The intermediate shelf adds one Board shape. The two equal lower
         # dividers share one additional Board shape and become two occurrences.
-        self.assertEqual(len(creates), 16)
+        self.assertEqual(len(creates), 17)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -180,7 +181,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         shelf_source = frame_source[shelf_start:shelf_end]
         self.assertIn("width=self.opening_width", shelf_source)
         self.assertNotIn("width=outer_width", shelf_source)
-        self.assertIn("depth=self.side_panel_depth", shelf_source)
+        self.assertIn("depth=internal_depth", shelf_source)
 
         # Bottom, shelf, dividers and side walls use the same 120 mm datum.
         # The future rear board sits inside that depth rather than behind it.
@@ -226,11 +227,10 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             )
         )
 
-        # The rear board is intentionally disabled during the current
-        # iteration-2 layout work.
-        self.assertFalse(
-            any(row["occurrence"] == "$rear" for row in moves)
-        )
+        rear = [row for row in moves if row["occurrence"] == "$rear"]
+        self.assertEqual(len(rear), 1)
+        self.assertEqual(rear[0]["translate"][1], 111.0)
+        self.assertEqual(rear[0]["translate"][2], 12.0)
         self.assertTrue(
             all(
                 "frame_wood_thickness" in str(row["translate"][2])
@@ -238,12 +238,19 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             )
         )
 
-        # All lower-compartment dividers now use the same 110 mm cabinet depth.
+        # Shelf and lower dividers stop at Y=110, leaving the 10 mm rear zone
+        # clear for the 9 mm rear board plus 1 mm assembly gap.
+        self.assertIn("REAR_BOARD_ZONE_DEPTH = 10.0", frame_source)
+        self.assertIn(
+            "internal_depth = self.cabinet_depth - REAR_BOARD_ZONE_DEPTH",
+            frame_source,
+        )
+
         divider_source = frame_source[
             frame_source.index('name="lower_divider_left"'):
             frame_source.index('name="left"', frame_source.index('name="lower_divider_left"'))
         ]
-        self.assertIn("depth=self.cabinet_depth", divider_source)
+        self.assertIn("depth=internal_depth", divider_source)
 
     def test_lower_compartment_clear_bays_are_30_40_30(self):
         frame_source = (
@@ -304,6 +311,15 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertIn('plane="YZ"', side_source)
         self.assertIn("RoundedRectangle2D(", side_source)
         self.assertIn("self.recess_radius", side_source)
+
+        rear_source = (
+            SCPF_DIR / "parts" / "rear_board.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn('name="Rear handle openings"', rear_source)
+        self.assertIn('plane="XZ"', rear_source)
+        self.assertEqual(rear_source.count("RoundedRectangle2D("), 2)
+        self.assertIn("recess_depth = 50.0", rear_source)
+        self.assertIn("recess_radius = 20.0", rear_source)
 
         # Default local geometry:
         # shelf top 82 mm; +80 mm = recess starts at 162 mm.

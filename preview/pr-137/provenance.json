@@ -1,5 +1,5 @@
 {
-  "catalog_commit": "125f490dc6c607e78e68c4567ff32da182650a28",
+  "catalog_commit": "dce0ccddccd795ccb066306d72f5b438d9b4c81e",
   "models": {
     "bolted-flange": {
       "input_fingerprint": "2552b06aff435562f8bdf96a7bce6ac942a4450860cd109b9c2350184242d702",
@@ -171,7 +171,6 @@
     },
     "plate": {
       "input_fingerprint": "91edbd1aa2a24ea6f5c7418b6e6c6cdfd79a98021e01caf56ee529cdac67c5ee",
-      "legacy_migrated": true,
       "model": "plate",
       "native_file_format": "solidcraft/57",
       "schema": 1,
@@ -179,9 +178,10 @@
       "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
       "scpf_release": "0.9.0",
       "solidcraft_version": "0.42.0",
-      "source_commit": "1b673d0e63499468a9283eade16bb1b9aa8cc110",
+      "source_commit": "dce0ccddccd795ccb066306d72f5b438d9b4c81e",
+      "toolchain_image": "ghcr.io/brainboxemb/2026-011-02.cad.solidcraft/cad-ci:toolchain-738fc48a56d0a6a60eef3f370f0d82d7a5d971a45972708efe417700d268baba",
       "verified": true,
-      "workflow_run": "44294334784"
+      "workflow_run": "44365302465"
     },
     "sample-plate": {
       "input_fingerprint": "dcb87af233668f8d74dd57bb9c1bc61ed1a18406ecab91bc81dc39ee4cdd4347",
@@ -265,5 +265,5 @@
   "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
   "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "125f490dc6c607e78e68c4567ff32da182650a28"
+  "source_commit": "dce0ccddccd795ccb066306d72f5b438d9b4c81e"
 }

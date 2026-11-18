@@ -14,6 +14,7 @@ from model_catalog import MODELS, model_build_path  # noqa: E402
 from output_store import (  # noqa: E402
     input_fingerprint,
     migrate_legacy_pages,
+    migrate_legacy_store_layout,
     prepare_candidate,
     promote_candidate,
     prune_removed_models,
@@ -225,6 +226,43 @@ class OutputStoreTests(unittest.TestCase):
         )
         self.assertTrue(known.is_dir())
         self.assertFalse(removed.exists())
+
+    def test_complete_legacy_store_migrates_without_rewriting_verification(self):
+        expected = tuple(
+            slug for slug, model in MODELS.items()
+            if model.get("native")
+        )
+        for slug in expected:
+            source = self.store / "stable/models" / slug
+            source.mkdir(parents=True)
+            payload = {
+                "schema": 1,
+                "model": slug,
+                "source_commit": f"legacy-{slug}",
+                "verified": True,
+            }
+            (source / "verification.json").write_text(
+                json.dumps(payload),
+                encoding="utf-8",
+            )
+            (source / "marker.txt").write_text(slug, encoding="utf-8")
+
+        migrated = migrate_legacy_store_layout(store=self.store)
+        self.assertEqual(set(migrated), set(expected))
+
+        for slug in expected:
+            target = self.store / "main" / model_build_path(slug)
+            self.assertEqual(
+                (target / "marker.txt").read_text(encoding="utf-8"),
+                slug,
+            )
+            verification = json.loads(
+                (target / "verification.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                verification["source_commit"],
+                f"legacy-{slug}",
+            )
 
     def test_complete_legacy_pages_can_bootstrap_stable_store(self):
         pages = self.root / "pages"

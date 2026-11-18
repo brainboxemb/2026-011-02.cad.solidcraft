@@ -348,9 +348,9 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 encoding="utf-8",
             )
 
-        # Legacy preview fallback for repositories that have not yet populated
-        # model-output. This image is illustrative only and is never marked
-        # verified for the current preview.
+        # A preview may still show the last published screenshot when this
+        # resolved build has no current native image. It is presentation only:
+        # the page never marks that older screenshot as verified for this run.
         previously_verified = None
         if not has_native and previous_site is not None and slug != "sample-plate":
             prior = previous_site / "models" / slug / "native.png"

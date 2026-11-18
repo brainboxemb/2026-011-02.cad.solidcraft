@@ -46,13 +46,13 @@ class FlexBenchDog:
 
         slot_z = stem_z + self.INSERTION_LENGTH - self.SLOT_LENGTH
         slot_x = Box(
-            22.2,
+            stem_diameter + 2.0,
             self.slot_width,
             self.SLOT_LENGTH,
         ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
         slot_y = Box(
             self.slot_width,
-            22.2,
+            stem_diameter + 2.0,
             self.SLOT_LENGTH,
         ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
 

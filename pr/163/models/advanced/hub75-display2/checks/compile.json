@@ -1,9 +1,0 @@
-{
-  "models": {
-    "hub75-display2": {
-      "scpf_sha256": "d57bcb33b0ef3ee694f522c63758e1e2fc5a09ce8cd62a45ca248ca6f7238761"
-    }
-  },
-  "schema": 1,
-  "status": "pass"
-}

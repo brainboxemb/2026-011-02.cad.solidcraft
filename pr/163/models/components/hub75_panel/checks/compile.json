@@ -1,9 +1,0 @@
-{
-  "models": {
-    "hub75-panel": {
-      "scpf_sha256": "f51e314f7326810f9ad1df8cd2c024eb848b72f73968b161a54ed352e2934f78"
-    }
-  },
-  "schema": 1,
-  "status": "pass"
-}

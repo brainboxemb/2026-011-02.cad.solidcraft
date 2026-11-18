@@ -28,7 +28,6 @@ def publication_target(
     *,
     event_name: str,
     ref_name: str,
-    publish: str = "preview",
     pull_request: int | None = None,
 ) -> dict:
     if event_name == "pull_request":
@@ -39,9 +38,7 @@ def publication_target(
     elif event_name == "push" and ref_name == "main":
         channel = "stable"
         preview_key = ""
-    elif event_name == "workflow_dispatch" and publish == "stable":
-        if ref_name != "main":
-            raise ValueError("stable manual publication is only allowed from main")
+    elif event_name == "workflow_dispatch" and ref_name == "main":
         channel = "stable"
         preview_key = ""
     else:
@@ -88,7 +85,6 @@ def make_plan(
     paths: tuple[str, ...] = (),
     event_name: str = "workflow_dispatch",
     ref_name: str = "local",
-    publish: str = "preview",
     pull_request: int | None = None,
 ) -> dict:
     selections = {
@@ -108,7 +104,6 @@ def make_plan(
     target = publication_target(
         event_name=event_name,
         ref_name=ref_name,
-        publish=publish,
         pull_request=pull_request,
     )
     site_refresh = needs_site_refresh(paths, selections["scpf"])
@@ -134,7 +129,6 @@ def main() -> int:
     parser.add_argument("--head", required=True)
     parser.add_argument("--event-name", default="workflow_dispatch")
     parser.add_argument("--ref-name", default="local")
-    parser.add_argument("--publish", choices=("preview", "stable"), default="preview")
     parser.add_argument("--pull-request", type=int)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
@@ -146,7 +140,6 @@ def main() -> int:
         paths=paths,
         event_name=args.event_name,
         ref_name=args.ref_name,
-        publish=args.publish,
         pull_request=args.pull_request,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)

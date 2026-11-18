@@ -41,6 +41,13 @@ class SimpleMFTAssemblyTests(unittest.TestCase):
         self.assertIn("worktop_thickness", parameter_names)
         self.assertIn("guide_rail_length", parameter_names)
 
+        guide_rail_length = next(
+            params
+            for params in of(self.commands, "parameters.add")
+            if params["name"] == "guide_rail_length"
+        )
+        self.assertEqual(guide_rail_length["expression"], "800")
+
         board = next(params for params in of(self.commands, "solid.box"))
         self.assertEqual(board["height"], "worktop_thickness")
 

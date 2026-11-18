@@ -1,12 +1,16 @@
 # 0001 — Targeted model builds and incremental publication
 
 **Tracks:** issue #129  
-**Scope:** model selection, verified output storage, Pages assembly and per-model verification metadata.
+**Scope:** model selection, verified build storage, Pages assembly and per-model verification metadata.
 
 ## Problem
 
 The CAD library must scale beyond rebuilding every model for every model change.
 Model selection, toolchain selection and publication state are separate concerns.
+
+Generated output also needs to stay understandable. A separate `model-output`
+branch and a flat `models/<slug>/` tree hide the relationship between source and
+build output.
 
 ## Decision
 
@@ -20,22 +24,47 @@ Normal modes are:
 
 A Forge or SolidCraft version change does not by itself select the full catalog.
 
-Verified technical output lives on `model-output`, separate from `gh-pages`:
+The normal branch model is:
+
+- `main` — editable source;
+- `build` — verified technical CAD output;
+- `gh-pages` — website only;
+- active PR branches — temporary source work.
+
+Do not introduce `model-output`, `qualified-output` or another generated
+state branch.
+
+The `build` branch has two scopes:
 
 ```text
-stable/models/<slug>/
-previews/<preview-key>/models/<slug>/
+main/<model-root>/...
+pr/<number>/<model-root>/...
 ```
 
-Each model owns a `verification.json` recording the exact CAD source commit,
-Forge/SCPC revisions, SolidCraft version, workflow run and achieved verification.
+`<model-root>` mirrors the source model root. Examples:
 
-Stable promotion replaces only selected model directories and preserves unchanged
-verified output byte-for-byte. Pages is regenerated from the complete promoted
-stable set plus current catalog/source.
+```text
+models/basic/plate/scpf/model.py
+-> build/main/models/basic/plate/...
+
+models/components/hub75_panel/detailed/scpf/model.py
+-> build/main/models/components/hub75_panel/detailed/...
+```
+
+Each model directory owns its native/generated evidence plus
+`verification.json` recording the exact CAD source commit, Forge/SCPC
+revisions, SolidCraft version, workflow run, immutable toolchain image and
+input fingerprint.
+
+Stable promotion replaces only selected model directories and preserves
+unchanged verified output byte-for-byte. A PR may replace only its own
+`build/pr/<number>/` scope.
+
+Pages is regenerated from the complete resolved build state. `gh-pages`
+contains presentation only.
 
 ## Verification
 
 Tests cover path-to-model selection, dependency selection, explicit build modes,
-per-model verification metadata, incremental replacement and complete site
-assembly.
+source-mirrored output paths, per-model verification metadata, incremental
+replacement and complete site assembly.

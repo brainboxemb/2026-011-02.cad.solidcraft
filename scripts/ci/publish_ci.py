@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Publish one verified native CAD bundle to build and gh-pages."""
+"""Publish verified CAD item output with the pinned tool.cad.ci release.
+
+CAD still owns model verification, catalog rules, HTML content and CSS. This
+module only translates the CAD build plan into generic tool.cad.ci build-store
+and Pages commands, then asks the CAD site generator to render the resolved
+technical result.
+"""
 
 from __future__ import annotations
 
@@ -9,264 +15,151 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tempfile
-
-from build_plan import PUBLIC_SITE
-from model_catalog import model_build_path, model_slugs
-from output_store import (
-    migrate_legacy_pages,
-    migrate_legacy_store_layout,
-    normalize_native_snapshots,
-    promote_candidate,
-    prune_removed_models,
-)
 
 
-BUILD_README = """# CAD build output
-
-This branch stores verified technical CAD build output only.
-
-- `main/<source-item-path>/` contains the last promoted successful main build.
-- `pr/<number>/<source-item-path>/` contains isolated verified PR output.
-- `<source-item-path>` is the catalog source-file path without `.py`, for
-  example `models/basic/plate/scpf/model/`.
-- Every built model directory carries its own `verification.json`.
-
-The website lives on `gh-pages`. Do not edit generated build output by hand.
-"""
+PUBLIC_SITE = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
 
 
-def run(command: list[str], *, cwd: Path) -> subprocess.CompletedProcess:
-    return subprocess.run(command, cwd=cwd, check=True)
+def read_json(path: Path) -> object:
+    """Read one required JSON file and return its decoded value."""
+
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError as exc:
+        raise RuntimeError(f"missing publication input: {path}") from exc
 
 
-def load_publish(bundle: Path) -> dict | None:
-    path = bundle / "publish.json"
+def tool_path(source_root: Path) -> Path:
+    """Return the exact external tool entry point bootstrapped by the workflow."""
+
+    path = source_root / "ext" / "cad-ci" / "cad-ci.py"
     if not path.is_file():
-        return None
-    data = json.loads(path.read_text(encoding="utf-8"))
-    if data.get("channel") not in {"stable", "preview"}:
-        raise ValueError("publish bundle has invalid channel")
-    if not isinstance(data.get("models"), list):
-        raise ValueError("publish bundle has no model list")
-    if not data.get("source_commit"):
-        raise ValueError("publish bundle has no source commit")
-    return data
+        raise RuntimeError(
+            "missing ext/cad-ci/cad-ci.py; run bootstrap_cad_ci.py first"
+        )
+    return path
 
 
-def validate_publication(
-    publish: dict,
+def run_tool(source_root: Path, *args: str) -> None:
+    """Run one pinned tool.cad.ci command against this source checkout."""
+
+    subprocess.run(
+        [sys.executable, str(tool_path(source_root)), *args],
+        cwd=source_root,
+        check=True,
+    )
+
+
+def selected_items(bundle: Path) -> tuple[str, ...]:
+    """Return item IDs from the exact tool plan executed by the CAD pipeline."""
+
+    data = read_json(bundle / "tool-cad-ci-plan.json")
+    if not isinstance(data, list):
+        raise RuntimeError("tool-cad-ci-plan.json must contain a list")
+    result: list[str] = []
+    for row in data:
+        if not isinstance(row, dict) or not isinstance(row.get("id"), str):
+            raise RuntimeError("tool-cad-ci-plan.json contains an invalid item")
+        if row["id"] not in result:
+            result.append(row["id"])
+    return tuple(result)
+
+
+def validate_source(
     *,
+    source_root: Path,
     workflow_event: str,
     workflow_head_branch: str,
     workflow_head_sha: str,
+    plan: dict,
+    pull_request: int,
 ) -> None:
-    if publish["source_commit"] != workflow_head_sha:
-        raise ValueError(
-            "publish source commit does not match producing workflow head"
+    """Reject publication metadata that does not describe this exact checkout."""
+
+    actual = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"],
+        cwd=source_root,
+        text=True,
+    ).strip()
+    if actual != workflow_head_sha:
+        raise RuntimeError(
+            f"source checkout {actual} does not match {workflow_head_sha}"
         )
-    if publish["channel"] == "stable":
+
+    if plan.get("channel") == "stable":
         if workflow_head_branch != "main":
-            raise ValueError("stable publication is only allowed from main")
+            raise RuntimeError("stable publication is only allowed from main")
         if workflow_event not in {"push", "workflow_dispatch"}:
-            raise ValueError(
+            raise RuntimeError(
                 "stable publication requires a main push or manual main run"
             )
-        if publish.get("preview_key"):
-            raise ValueError("stable publication cannot have a preview key")
-    elif not publish.get("preview_key"):
-        raise ValueError("preview publication requires preview_key")
+        return
+
+    if workflow_event == "pull_request":
+        if pull_request < 1 or plan.get("preview_key") != f"pr-{pull_request}":
+            raise RuntimeError("PR preview metadata does not match the pull request")
 
 
-def is_pr_preview(publish: dict) -> bool:
-    key = str(publish.get("preview_key", ""))
-    return (
-        publish.get("channel") == "preview"
-        and key.startswith("pr-")
-        and key[3:].isdigit()
-    )
-
-
-def stable_model_state(build_root: Path):
-    """Return current native catalog models present/missing in build/main."""
-    expected = tuple(model_slugs("native"))
-    present = []
-    missing = []
-    for slug in expected:
-        verification = (
-            build_root
-            / "main"
-            / model_build_path(slug)
-            / "verification.json"
-        )
-        (present if verification.is_file() else missing).append(slug)
-    return tuple(present), tuple(missing)
-
-
-def stable_complete(build_root: Path) -> bool:
-    _present, missing = stable_model_state(build_root)
-    return not missing
-
-
-def needs_legacy_bootstrap(build_root: Path, candidate_models) -> bool:
-    """Decide whether legacy bootstrap is still appropriate.
-
-    Once any current catalog model exists in build/main, that modern store is
-    authoritative. Catalog growth may leave only candidate models missing;
-    those are filled by normal promotion. Missing non-candidate models indicate
-    an incomplete/corrupt modern store and must fail rather than silently
-    falling back to gh-pages.
-    """
-    present, missing = stable_model_state(build_root)
-    if not present:
-        return True
-
-    candidate = set(candidate_models)
-    uncovered = tuple(slug for slug in missing if slug not in candidate)
-    if uncovered:
-        raise RuntimeError(
-            "build/main is incomplete outside the current candidate; missing: "
-            + ", ".join(uncovered)
-        )
-    return False
-
-
-def write_build_readme(build_root: Path) -> None:
-    (build_root / "README.md").write_text(BUILD_README, encoding="utf-8")
-
-
-def remove_legacy_build_layout(build_root: Path) -> None:
-    for name in ("stable", "previews", "preview"):
-        path = build_root / name
-        if path.exists():
-            shutil.rmtree(path)
-
-
-def commit_and_push(
-    root: Path,
-    *,
-    branch: str,
-    message: str,
-    attempts: int = 3,
-) -> bool:
-    """Commit generated output and retry non-fast-forward publication safely."""
-    if attempts < 1:
-        raise ValueError("attempts must be positive")
-
-    run(["git", "config", "user.name", "github-actions[bot]"], cwd=root)
-    run(
-        [
-            "git",
-            "config",
-            "user.email",
-            "41898282+github-actions[bot]@users.noreply.github.com",
-        ],
-        cwd=root,
-    )
-    run(["git", "add", "-A"], cwd=root)
-    changed = subprocess.run(
-        ["git", "diff", "--cached", "--quiet"],
-        cwd=root,
-    ).returncode != 0
-    if not changed:
-        return False
-
-    run(["git", "commit", "-m", message], cwd=root)
-
-    for attempt in range(1, attempts + 1):
-        pushed = subprocess.run(
-            ["git", "push", "origin", f"HEAD:{branch}"],
-            cwd=root,
-            text=True,
-            capture_output=True,
-        )
-        if pushed.returncode == 0:
-            return True
-        if attempt == attempts:
-            detail = (pushed.stderr or pushed.stdout or "").strip()
-            raise RuntimeError(
-                f"failed to publish {branch} after {attempts} attempts"
-                + (f": {detail}" if detail else "")
-            )
-
-        run(
-            ["git", "fetch", "origin", branch],
-            cwd=root,
-        )
-        run(
-            ["git", "rebase", f"origin/{branch}"],
-            cwd=root,
-        )
-
-    raise AssertionError("unreachable publication retry state")
-
-
-def replace_stable_pages(site: Path, pages: Path) -> None:
-    if not (site / "provenance.json").is_file():
-        raise FileNotFoundError("stable site has no provenance.json")
-    for child in tuple(pages.iterdir()):
-        if child.name in {".git", "preview"}:
-            continue
-        if child.is_dir():
-            shutil.rmtree(child)
-        else:
-            child.unlink()
-    for child in site.iterdir():
-        target = pages / child.name
-        if child.is_dir():
-            shutil.copytree(child, target)
-        else:
-            shutil.copy2(child, target)
-
-
-def publish_preview_site(site: Path, pages: Path, preview_key: str) -> None:
-    if not (site / "provenance.json").is_file():
-        raise FileNotFoundError("preview site has no provenance.json")
-    target = pages / "preview" / preview_key
-    if target.exists():
-        shutil.rmtree(target)
-    target.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copytree(site, target)
-
-
-def build_stable_site(
+def build_site(
     *,
     source_root: Path,
-    build_root: Path,
-    pages_root: Path,
+    stable_store: Path,
+    previous_site: Path,
     out: Path,
     source_commit: str,
+    public_base: str,
 ) -> Path:
+    """Render and smoke-test the CAD website from one complete build view."""
+
     if out.exists():
         shutil.rmtree(out)
-    run(
+    subprocess.run(
         [
             sys.executable,
             str(source_root / "scripts/ci/build-results.py"),
             "--stable-store",
-            str(build_root / "main"),
+            str(stable_store),
             "--previous-site",
-            str(pages_root),
+            str(previous_site),
             "--public-base",
-            PUBLIC_SITE,
+            public_base,
             "--commit",
             source_commit,
             "--out",
             str(out),
         ],
         cwd=source_root,
+        check=True,
     )
-    run(
+    subprocess.run(
         [
             sys.executable,
             str(source_root / "scripts/ci/test-results.py"),
             str(out),
             source_commit,
-            PUBLIC_SITE,
+            public_base,
         ],
         cwd=source_root,
+        check=True,
     )
     return out
+
+
+def _tool_common(
+    source_root: Path,
+    workflow_head_branch: str,
+    workflow_head_sha: str,
+) -> list[str]:
+    """Return source-freshness arguments shared by every generated push."""
+
+    return [
+        "--repo",
+        str(source_root),
+        "--source-ref",
+        workflow_head_branch,
+        "--expected-source",
+        workflow_head_sha,
+    ]
 
 
 def execute(
@@ -278,105 +171,233 @@ def execute(
     workflow_event: str,
     workflow_head_branch: str,
     workflow_head_sha: str,
+    pull_request: int,
 ) -> bool:
-    publish = load_publish(bundle)
-    if publish is None:
-        print("No publish.json; nothing to publish.")
+    """Prepare the complete build view, render CAD Pages and publish both.
+
+    The first generic publication creates build/main from every local item.
+    Later main runs replace only selected items with `build update-main`.
+    PRs publish a sparse overlay and render their site from overlay + main.
+    """
+
+    plan = read_json(bundle / "plan.json")
+    if not isinstance(plan, dict) or plan.get("schema") != 1:
+        raise RuntimeError("plan.json has an unsupported schema")
+    if not plan.get("publishable"):
+        print("CAD plan has no publishable change.")
         return False
 
-    validate_publication(
-        publish,
+    validate_source(
+        source_root=source_root,
         workflow_event=workflow_event,
         workflow_head_branch=workflow_head_branch,
         workflow_head_sha=workflow_head_sha,
+        plan=plan,
+        pull_request=pull_request,
     )
-    source_commit = publish["source_commit"]
-    actual_source = subprocess.check_output(
-        ["git", "rev-parse", "HEAD"],
-        cwd=source_root,
-        text=True,
-    ).strip()
-    if actual_source != source_commit:
-        raise ValueError(
-            f"source checkout {actual_source} does not match {source_commit}"
-        )
 
-    models = tuple(publish["models"])
-    candidate = bundle / "candidate"
+    # tool.cad.ci has a deliberate stable + PR-preview publication contract.
+    # A manually dispatched non-main branch still runs all checks, but does not
+    # create a second ad-hoc Pages namespace outside that contract.
+    if plan.get("channel") == "preview" and workflow_event != "pull_request":
+        print("Manual branch preview checked successfully; durable publish skipped.")
+        return False
 
-    if publish["channel"] == "stable":
-        if not stable_complete(build_root):
-            migrated = migrate_legacy_store_layout(store=build_root)
-            if not migrated and needs_legacy_bootstrap(build_root, models):
-                migrate_legacy_pages(
-                    pages=pages_root,
-                    store=build_root,
-                    source_root=source_root,
+    items = selected_items(bundle)
+    candidate_root = source_root / "build"
+    generic_main = build_root / "main"
+    has_generic_main = (generic_main / "build.json").is_file()
+    # The container writes bundle/output as root. Keep host-side publication
+    # candidates beside that directory so the runner user can create them
+    # without changing ownership of verified container output.
+    work = bundle.parent / "publication-output"
+    if work.exists():
+        shutil.rmtree(work)
+    work.mkdir(parents=True)
+    common = _tool_common(
+        source_root,
+        workflow_head_branch,
+        workflow_head_sha,
+    )
+
+    if plan["channel"] == "stable":
+        publish_main = False
+        if has_generic_main:
+            if items:
+                complete = work / "main"
+                run_tool(
+                    source_root,
+                    "build",
+                    "update-main",
+                    "--repo",
+                    str(source_root),
+                    "--main",
+                    str(generic_main),
+                    "--candidate-root",
+                    str(candidate_root),
+                    "--out",
+                    str(complete),
+                    "--source-commit",
+                    workflow_head_sha,
+                    "--items",
+                    *items,
                 )
-        if models:
-            promote_candidate(
-                candidate=candidate,
-                store=build_root,
-                models=models,
-                channel="stable",
+                publish_main = True
+            else:
+                complete = generic_main
+        else:
+            # The cutover commit changes every model-root ci.yml, so the local
+            # candidate is complete. prepare-main will fail if any item is
+            # missing instead of publishing a partial baseline.
+            complete = work / "main"
+            run_tool(
+                source_root,
+                "build",
+                "prepare-main",
+                "--repo",
+                str(source_root),
+                "--candidate-root",
+                str(candidate_root),
+                "--out",
+                str(complete),
+                "--source-commit",
+                workflow_head_sha,
             )
-        prune_removed_models(build_root, channel="stable")
-        normalize_native_snapshots(build_root, channel="stable")
-        remove_legacy_build_layout(build_root)
-        write_build_readme(build_root)
-        if not stable_complete(build_root):
-            raise RuntimeError("build/main is incomplete after stable promotion")
-        commit_and_push(
-            build_root,
-            branch="build",
-            message=f"Publish build/main at {source_commit}",
-        )
+            publish_main = True
 
-        with tempfile.TemporaryDirectory(
-            prefix="cad-stable-site-"
-        ) as temp:
-            stable_site = build_stable_site(
-                source_root=source_root,
-                build_root=build_root,
-                pages_root=pages_root,
-                out=Path(temp) / "site",
-                source_commit=source_commit,
+        if publish_main:
+            run_tool(
+                source_root,
+                "publish",
+                "build",
+                *common,
+                "--candidate",
+                str(complete),
+                "--scope",
+                "main",
+                "--message",
+                f"Publish CAD build/main at {workflow_head_sha}",
             )
-            replace_stable_pages(stable_site, pages_root)
-        commit_and_push(
-            pages_root,
-            branch="gh-pages",
-            message=f"Publish stable CAD site at {source_commit}",
+
+        site = build_site(
+            source_root=source_root,
+            stable_store=complete,
+            previous_site=pages_root,
+            out=work / "site",
+            source_commit=workflow_head_sha,
+            public_base=PUBLIC_SITE,
+        )
+        run_tool(
+            source_root,
+            "publish",
+            "pages",
+            *common,
+            "--site",
+            str(site),
+            "--message",
+            f"Publish stable CAD site at {workflow_head_sha}",
         )
         return True
 
-    preview_key = publish["preview_key"]
-    if models and is_pr_preview(publish):
-        promote_candidate(
-            candidate=candidate,
-            store=build_root,
-            models=models,
-            channel="preview",
-            preview_key=preview_key,
+    if pull_request < 1:
+        raise RuntimeError("PR preview requires a positive pull request number")
+
+    overlay: Path | None = None
+    if items:
+        overlay = work / "pr"
+        run_tool(
+            source_root,
+            "build",
+            "prepare-pr",
+            "--repo",
+            str(source_root),
+            "--candidate-root",
+            str(candidate_root),
+            "--out",
+            str(overlay),
+            "--source-commit",
+            workflow_head_sha,
+            "--pull-request",
+            str(pull_request),
+            "--items",
+            *items,
         )
-        write_build_readme(build_root)
-        commit_and_push(
-            build_root,
-            branch="build",
-            message=f"Publish build/{preview_key} at {source_commit}",
+        run_tool(
+            source_root,
+            "publish",
+            "build",
+            *common,
+            "--candidate",
+            str(overlay),
+            "--scope",
+            "pr",
+            "--pull-request",
+            str(pull_request),
+            "--message",
+            f"Publish CAD build PR #{pull_request} at {workflow_head_sha}",
         )
 
-    site = bundle / "site"
-    publish_preview_site(site, pages_root, preview_key)
-    commit_and_push(
-        pages_root,
-        branch="gh-pages",
-        message=f"Publish CAD preview {preview_key} at {source_commit}",
+    if has_generic_main:
+        if overlay is None:
+            complete = generic_main
+        else:
+            complete = work / "resolved"
+            run_tool(
+                source_root,
+                "build",
+                "resolve",
+                "--main",
+                str(generic_main),
+                "--overlay",
+                str(overlay),
+                "--out",
+                str(complete),
+            )
+    else:
+        # First cutover PR: every model-root item is selected, so the local
+        # build can also provide the complete preview view.
+        complete = work / "resolved"
+        run_tool(
+            source_root,
+            "build",
+            "prepare-main",
+            "--repo",
+            str(source_root),
+            "--candidate-root",
+            str(candidate_root),
+            "--out",
+            str(complete),
+            "--source-commit",
+            workflow_head_sha,
+        )
+
+    public_base = f"{PUBLIC_SITE}/previews/pr-{pull_request}"
+    site = build_site(
+        source_root=source_root,
+        stable_store=complete,
+        previous_site=pages_root,
+        out=work / "site",
+        source_commit=workflow_head_sha,
+        public_base=public_base,
+    )
+    run_tool(
+        source_root,
+        "publish",
+        "pages",
+        *common,
+        "--site",
+        str(site),
+        "--pull-request",
+        str(pull_request),
+        "--message",
+        f"Publish CAD preview PR #{pull_request} at {workflow_head_sha}",
     )
     return True
 
 
 def main() -> int:
+    """Parse workflow metadata and run the consumer-side publication flow."""
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bundle", type=Path, required=True)
     parser.add_argument("--source-root", type=Path, required=True)
@@ -385,6 +406,7 @@ def main() -> int:
     parser.add_argument("--workflow-event", required=True)
     parser.add_argument("--workflow-head-branch", required=True)
     parser.add_argument("--workflow-head-sha", required=True)
+    parser.add_argument("--pull-request", type=int, default=0)
     args = parser.parse_args()
     execute(
         bundle=args.bundle,
@@ -394,6 +416,7 @@ def main() -> int:
         workflow_event=args.workflow_event,
         workflow_head_branch=args.workflow_head_branch,
         workflow_head_sha=args.workflow_head_sha,
+        pull_request=args.pull_request,
     )
     return 0
 

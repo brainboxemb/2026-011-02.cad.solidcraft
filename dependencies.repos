@@ -1,9 +1,9 @@
 # Exact revisions used by the CAD repository.
 # SCPF and SCPC are installed as Python libraries by bootstrap.ps1 and are
 # baked into the immutable CAD toolchain image.
-# tool.cad.ci is checked out as executable repository tooling under ext/cad-ci;
-# it is not installed into the CAD Python environment because scripts/ci already
-# contains a local cad_ci.py module.
+# tool.cad.ci is checked out as executable repository tooling under ext/cad-ci.
+# The workflow also installs that exact checkout on the host for generated
+# build/Page publication; the immutable CAD image remains independent of it.
 repositories:
   scpf:
     type: git
@@ -16,4 +16,4 @@ repositories:
   cad-ci:
     type: git
     url: https://github.com/brainboxemb/tool.cad.ci.git
-    version: aee6509975e28be996f460e09d2a2f9dece36d33
+    version: 556e8d43dde9218b28a8d991ab9f2021232e76ab

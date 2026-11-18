@@ -60,8 +60,8 @@ class ModelItemTests(unittest.TestCase):
             current = root / "output/models/plate/scpf/solidcraft.json"
             stable = (
                 root
-                / "generated-build/main/models/basic/plate/scpf/model"
-                / "generated/scpf/solidcraft.json"
+                / "generated-build/main/models/basic/plate"
+                / "generated/plate/scpf/solidcraft.json"
             )
             current.parent.mkdir(parents=True)
             stable.parent.mkdir(parents=True)
@@ -73,6 +73,48 @@ class ModelItemTests(unittest.TestCase):
 
             self.assertEqual(path, current)
             self.assertEqual(source, "current-run")
+
+
+    def test_stored_model_paths_prefers_generic_item_store(self):
+        """The post-cutover model-root layout is the primary stable source."""
+
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            result = root / "models/basic/plate/results/plate"
+            generated = root / "models/basic/plate/generated/plate"
+            (result / "native").mkdir(parents=True)
+            (result / "verification.json").write_text(
+                '{"verified":true}',
+                encoding="utf-8",
+            )
+
+            actual_result, actual_generated = model_item.stored_model_paths(
+                root,
+                "plate",
+            )
+
+        self.assertEqual(actual_result, result)
+        self.assertEqual(actual_generated, generated)
+
+    def test_stored_model_paths_reads_legacy_store_during_cutover(self):
+        """The first cutover run can package unchanged old build output."""
+
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            legacy = root / model_item.model_build_path("plate")
+            (legacy / "native").mkdir(parents=True)
+            (legacy / "verification.json").write_text(
+                '{"verified":true}',
+                encoding="utf-8",
+            )
+
+            actual_result, actual_generated = model_item.stored_model_paths(
+                root,
+                "plate",
+            )
+
+        self.assertEqual(actual_result, legacy)
+        self.assertEqual(actual_generated, legacy / "generated")
 
     def test_package_item_combines_current_and_stable_shared_variants(self):
         """A shared item packages fresh output plus an unchanged stable sibling."""

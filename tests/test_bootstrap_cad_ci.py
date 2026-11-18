@@ -65,7 +65,7 @@ class BootstrapCadCiTests(unittest.TestCase):
         )
         self.assertEqual(
             sha,
-            "aee6509975e28be996f460e09d2a2f9dece36d33",
+            "556e8d43dde9218b28a8d991ab9f2021232e76ab",
         )
 
     def test_checkout_moves_to_new_exact_revision(self):

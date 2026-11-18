@@ -84,6 +84,36 @@ def item_dependencies(item_id: str) -> tuple[str, ...]:
     return tuple(result)
 
 
+
+def stored_model_paths(store_root: Path, slug: str) -> tuple[Path, Path]:
+    """Return verified result and generated-command roots for one model.
+
+    The new durable store is organized by physical model-root item. During the
+    one-time cutover the checked-out build branch still uses the older
+    per-catalog-model path, so read that layout only as a fallback.
+    """
+
+    item_root = store_root / catalog_root(slug)
+    result_root = item_root / "results" / slug
+    generated_root = item_root / "generated" / slug
+    if (
+        (result_root / "verification.json").is_file()
+        and (result_root / "native").is_dir()
+    ):
+        return result_root, generated_root
+
+    legacy_root = store_root / model_build_path(slug)
+    if (
+        (legacy_root / "verification.json").is_file()
+        and (legacy_root / "native").is_dir()
+    ):
+        return legacy_root, legacy_root / "generated"
+
+    raise RuntimeError(
+        f"{slug}: no verified generic or legacy stored result is available"
+    )
+
+
 def output_root() -> Path:
     """Return the item output directory supplied by tool.cad.ci."""
 
@@ -214,16 +244,20 @@ def _existing_commands(slug: str, language: str) -> tuple[Path, str]:
     if current.is_file():
         return current, "current-run"
 
+    try:
+        _result_root, generated_root = stored_model_paths(
+            ROOT / "generated-build" / "main",
+            slug,
+        )
+    except RuntimeError:
+        generated_root = None
+
     stable = (
-        ROOT
-        / "generated-build"
-        / "main"
-        / model_build_path(slug)
-        / "generated"
-        / language
-        / "solidcraft.json"
+        generated_root / language / "solidcraft.json"
+        if generated_root is not None
+        else None
     )
-    if stable.is_file():
+    if stable is not None and stable.is_file():
         return stable, "stable-build"
 
     raise RuntimeError(
@@ -277,12 +311,14 @@ def _existing_result(slug: str) -> tuple[Path, str]:
     ):
         return current, "current-run"
 
-    stable = ROOT / "generated-build" / "main" / model_build_path(slug)
-    if (
-        (stable / "verification.json").is_file()
-        and (stable / "native").is_dir()
-    ):
+    try:
+        stable, _generated = stored_model_paths(
+            ROOT / "generated-build" / "main",
+            slug,
+        )
         return stable, "stable-build"
+    except RuntimeError:
+        pass
 
     raise RuntimeError(
         f"{slug}: no current or stable verified native result is available"

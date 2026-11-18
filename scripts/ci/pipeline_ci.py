@@ -20,7 +20,7 @@ import build_plan
 import cad_ci
 import native_ci
 from model_catalog import MODELS, model_build_path, model_slugs
-from model_item import item_id_for_slug
+from model_item import item_id_for_slug, stored_model_paths
 from output_store import migrate_legacy_store_layout
 from select_models import parse_models
 
@@ -66,15 +66,13 @@ def missing_stable_models(stable_store: Path) -> tuple[str, ...]:
     without that file still counts as missing.
     """
 
-    return tuple(
-        slug
-        for slug in model_slugs("native")
-        if not (
-            stable_store
-            / model_build_path(slug)
-            / "verification.json"
-        ).is_file()
-    )
+    missing: list[str] = []
+    for slug in model_slugs("native"):
+        try:
+            stored_model_paths(stable_store, slug)
+        except RuntimeError:
+            missing.append(slug)
+    return tuple(missing)
 
 
 def extend_plan_for_missing_stable(plan: dict, stable_store: Path) -> dict:

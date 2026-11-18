@@ -1,4 +1,4 @@
-"""Tests for CAD closed-PR cleanup."""
+"""Tests for CAD closed-PR cleanup through tool.cad.ci."""
 
 from pathlib import Path
 import sys
@@ -15,36 +15,32 @@ import cleanup_ci  # noqa: E402
 
 
 class CleanupCiTests(unittest.TestCase):
-    def test_cleanup_removes_only_requested_pr_namespaces(self):
+    def test_cleanup_delegates_both_generated_namespaces_to_tool(self):
         with TemporaryDirectory() as temp:
-            root = Path(temp)
-            build = root / "build"
-            pages = root / "pages"
-            (build / "pr/12").mkdir(parents=True)
-            (build / "pr/13").mkdir(parents=True)
-            (pages / "preview/pr-12").mkdir(parents=True)
-            (pages / "preview/pr-13").mkdir(parents=True)
-
-            with patch.object(cleanup_ci, "commit_and_push") as commit:
+            source = Path(temp) / "source"
+            source.mkdir()
+            calls = []
+            with patch.object(
+                cleanup_ci,
+                "run_tool",
+                side_effect=lambda _source, *args: calls.append(args),
+            ):
                 cleanup_ci.execute(
-                    build_root=build,
-                    pages_root=pages,
+                    source_root=source,
                     pull_request=12,
                 )
 
-            self.assertFalse((build / "pr/12").exists())
-            self.assertTrue((build / "pr/13").is_dir())
-            self.assertFalse((pages / "preview/pr-12").exists())
-            self.assertTrue((pages / "preview/pr-13").is_dir())
-            self.assertEqual(commit.call_count, 2)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0][:2], ("publish", "build-cleanup"))
+        self.assertEqual(calls[1][:2], ("publish", "pages-cleanup"))
+        self.assertIn("12", calls[0])
+        self.assertIn("12", calls[1])
 
     def test_cleanup_rejects_invalid_pr_number(self):
         with TemporaryDirectory() as temp:
-            root = Path(temp)
             with self.assertRaisesRegex(ValueError, "positive"):
                 cleanup_ci.execute(
-                    build_root=root / "build",
-                    pages_root=root / "pages",
+                    source_root=Path(temp),
                     pull_request=0,
                 )
 

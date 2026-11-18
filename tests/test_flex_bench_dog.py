@@ -95,14 +95,16 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(sketches[-1]["name"], "Top logo")
         self.assertEqual(sketches[-1]["plane"]["origin"], [0, 0, 20])
 
-        joins = [
+        logo_cuts = [
             row["params"]
             for row in commands
             if row["command"] == "solid.extrude"
-            and row["params"]["operation"] == "join"
+            and row["params"]["operation"] == "cut"
         ]
-        self.assertEqual(len(joins), 1)
-        self.assertEqual(joins[0]["distance"], 0.6)
+        self.assertEqual(len(logo_cuts), 3)
+        logo_cut = logo_cuts[-1]
+        self.assertEqual(logo_cut["distance"], 0.6)
+        self.assertEqual(logo_cut["direction"], "negative")
 
 
 if __name__ == "__main__":

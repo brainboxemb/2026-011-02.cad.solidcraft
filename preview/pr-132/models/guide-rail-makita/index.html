@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GuideRail — Makita profile · SolidCraft CAD projects</title><link rel="stylesheet" href="../../results.css"></head>
+<body><header class="top"><div class="wrap nav">
+<a class="brand" href="../../">SolidCraft <span>CAD models</span></a>
+<nav aria-label="Main"><a href="../../">Models</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/cheatsheet/">Cheatsheet</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF library</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC library</a>
+<a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
+</div></header>
+<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / guide-rail-makita</div>
+<h1>GuideRail — Makita profile</h1><p>The same GuideRail component with the Makita 199141-8 profile</p></div></section>
+<main class="wrap"><div class="metadata"><span class="badge pending">Previously published render · verification metadata unavailable</span>
+<span class="badge">5 commands</span><span class="badge">182.50 × 10.28 mm profile; 600 mm standalone example</span><span class="badge">SolidCraft native version not verified</span></div>
+<div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
+<p class="small muted">Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size.</p>
+<p>A second fixed cross-section of the generic GuideRail component. The aluminium shape comes from the Makita 199141-8 STEP reference and is calibrated to the TSO measured 182.50 × 10.28 mm envelope. The standalone CAD example uses 600 mm for compact visual inspection; Makita&#x27;s referenced product length is 1500 mm.</p></section>
+<section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
+<div class="links"><a class="btn" href="source/models/components/guide_rail/scpf/model.py">Actual component source</a><a class="btn secondary" href="model.py">Model entry point</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
+</div>
+<p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
+<h3>Construction stages</h3><ol><li>Select the fixed Makita cross-section at build time</li><li>Create one detailed XZ Polygon2D</li><li>Approximate the STEP&#x27;s small round edges with short line segments</li><li>Extrude symmetrically along Y to the 600 mm example length</li></ol></section></div>
+
+
+<section class="source-section source-launcher"><h2>Model script — how the component is used</h2><p><code>model.py</code> is the assembly entry point. It imports and places the shared definition; it is not a second copy of the component geometry.</p><p><a class="btn secondary" href="model.py">Download model.py</a></p><pre><code>&quot;&quot;&quot;Standalone Makita GuideRail variant for qualification/results.&quot;&quot;&quot;
+
+from models.components.guide_rail.scpf.model import GuideRail
+
+GuideRail(length=600.0, profile=&quot;makita&quot;)
+</code></pre></section><section class="source-section source-definition"><h2>Python component — actual geometry</h2><p>The sketch, extrusion, fillets and other editable CAD features live in <code>models/components/guide_rail/scpf/model.py</code>. This file is reused by other models.</p><p><a class="btn secondary" href="source/models/components/guide_rail/scpf/model.py">Download component source</a></p><pre><code>&quot;&quot;&quot;Reusable guide rail with interchangeable fixed cross-sections.
+
+`length` is the only native CAD parameter. `profile` is a non-parametric
+component input selecting one fixed measured reference cross-section.
+&quot;&quot;&quot;
+from scpf import Polygon2D, Sketch, component
+
+from models.components.guide_rail.scpf.profiles import get_profile
+
+
+@component(include=(&quot;length&quot;,))
+class GuideRail:
+    length = 600.0
+    profile = None
+
+    def build(self):
+        profile_data = get_profile(self.profile or &quot;festool&quot;)
+        points = [
+            (f&quot;p{index:03d}&quot;, point)
+            for index, point in enumerate(profile_data.POINTS)
+        ]
+
+        with Sketch(
+            name=f&quot;Guide rail profile - {profile_data.PROFILE_NAME}&quot;,
+            plane=&quot;XZ&quot;,
+        ) as profile_sketch:
+            Polygon2D(points, plane=&quot;XZ&quot;, world=True)
+
+        return profile_sketch.extrude(self.length, sym=True)
+</code></pre></section>
+
+<h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline"><li><strong>Named CAD parameter</strong><small>parameters.add · name: length</small><pre><code>{
+  &quot;command&quot;: &quot;parameters.add&quot;,
+  &quot;params&quot;: {
+    &quot;name&quot;: &quot;length&quot;,
+    &quot;expression&quot;: &quot;600&quot;,
+    &quot;unit&quot;: &quot;mm&quot;
+  }
+}</code></pre></li>
+<li><strong>Create sketch</strong><small>sketch.create · name: Guide rail profile - makita, plane: XZ</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.create&quot;,
+  &quot;params&quot;: {
+    &quot;plane&quot;: &quot;XZ&quot;,
+    &quot;name&quot;: &quot;Guide rail profile - makita&quot;
+  }
+}</code></pre></li>
+<li><strong>Profile edges</strong><small>sketch.line</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.line&quot;,
+  &quot;params&quot;: {
+    &quot;points&quot;: [
+      [
+        0.0,
+        -0.0
+      ],
+      [
+        0.0,
+        -8.797
+      ],
+      [
+        0.029,
+        -9.087
+      ],
+      [
+        0.114,
+        -9.365
+      ],
+      [
+        0.252,
+        -9.621
+      ],
+      [
+        0.438,
+        -9.846
+      ],
+      [
+        0.665,
+        -10.03
+      ],
+      [
+        0.923,
+        -10.167
+      ],
+      [
+        1.204,
+        -10.252
+      ],
+      [
+        1.496,
+        -10.28
+      ],
+      [
+        3.59,
+        -10.28
+      ],
+      [
+        3.59,
+        -8.501
+      ],
+      [
+        1.795,
+        -8.501
+      ],
+      [
+        1.795,
+        -1.779
+      ],
+      [
+        14.261,
+        -1.779
+      ],
+      [
+        14.261,
+        -8.501
+      ],
+      [
+        12.366,
+        -8.501
+      ],
+      [
+        12.366,
+        -10.28
+      ],
+      [
+        15.583,
+        -10.28
+      ],
+      [
+        15.799,
+        -10.264
+      ],
+      [
+        16.01,
+        -10.218
+      ],
+      [
+        16.213,
+        -10.142
+      ],
+      [
+        16.402,
+        -10.038
+      ],
+      [
+        16.574,
+        -9.908
+      ],
+      [
+        16.725,
+        -9.754
+      ],
+      [
+        16.853,
+        -9.58
+      ],
+      [
+        16.954,
+        -9.39
+      ],
+      [
+        17.851,
+        -9.39
+      ],
+      [
+        18.007,
+        -9.375
+      ],
+      [
+        18.156,
+        -9.33
+      ],
+      [
+        18.294,
+        -9.257
+      ],
+      [
+        18.415,
+        -9.159
+      ],
+      [
+        18.514,
+        -9.039
+      ],
+      [
+        18.588,
+        -8.902
+      ],
+      [
+        18.634,
+        -8.754
+      ],
+      [
+        18.649,
+        -8.6
+      ],
+      [
+        18.649,
+        -7.413
+      ],
+      [
+        18.634,
+        -7.259
+      ],
+      [
+        18.588,
+        -7.111
+      ],
+      [
+        18.514,
+        -6.974
+      ],
+      [
+        18.415,
+        -6.854
+      ],
+      [
+        18.294,
+        -6.756
+      ],
+      [
+        18.156,
+        -6.683
+      ],
+      [
+        18.007,
+        -6.638
+      ],
+      [
+        17.851,
+        -6.623
+      ],
+      [
+        16.255,
+        -6.623
+      ],
+      [
+        16.255,
+        -3.954
+      ],
+      [
+        23.735,
+        -3.954
+      ],
+      [
+        23.735,
+        -2.965
+      ],
+      [
+        45.675,
+        -2.965
+      ],
+      [
+        45.675,
+        -3.954
+      ],
+      [
+        48.467,
+        -3.954
+      ],
+      [
+        48.467,
+        -8.797
+      ],
+      [
+        48.496,
+        -9.087
+      ],
+      [
+        48.581,
+        -9.365
+      ],
+      [
+        48.719,
+        -9.621
+      ],
+      [
+        48.905,
+        -9.846
+      ],
+      [
+        49.132,
+        -10.03
+      ],
+      [
+        49.391,
+        -10.167
+      ],
+      [
+        49.671,
+        -10.252
+      ],
+      [
+        49.963,
+        -10.28
+      ],
+      [
+        62.628,
+        -10.28
+      ],
+      [
+        62.92,
+        -10.252
+      ],
+      [
+        63.201,
+        -10.167
+      ],
+      [
+        63.459,
+        -10.03
+      ],
+      [
+        63.686,
+        -9.846
+      ],
+      [
+        63.872,
+        -9.621
+      ],
+      [
+        64.01,
+        -9.365
+      ],
+      [
+        64.096,
+        -9.087
+      ],
+      [
+        64.124,
+        -8.797
+      ],
+      [
+        64.124,
+        -3.756
+      ],
+      [
+        84.07,
+        -3.756
+      ],
+      [
+        84.07,
+        -2.965
+      ],
+      [
+        128.947,
+        -2.965
+      ],
+      [
+        128.947,
+        -3.756
+      ],
+      [
+        140.914,
+        -3.756
+      ],
+      [
+        140.914,
+        -2.965
+      ],
+      [
+        162.854,
+        -2.965
+      ],
+      [
+        162.854,
+        -3.756
+      ],
+      [
+        182.5,
+        -3.756
+      ],
+      [
+        182.5,
+        -1.977
+      ],
+      [
+        166.045,
+        -1.977
+      ],
+      [
+        166.045,
+        -0.988
+      ],
+      [
+        90.053,
+        -0.988
+      ],
+      [
+        90.053,
+        -1.186
+      ],
+      [
+        64.124,
+        -1.186
+      ],
+      [
+        64.124,
+        -0.0
+      ],
+      [
+        60.684,
+        -0.0
+      ],
+      [
+        60.684,
+        -1.68
+      ],
+      [
+        62.529,
+        -1.68
+      ],
+      [
+        62.529,
+        -8.501
+      ],
+      [
+        50.063,
+        -8.501
+      ],
+      [
+        50.063,
+        -1.68
+      ],
+      [
+        51.908,
+        -1.68
+      ],
+      [
+        51.908,
+        -0.0
+      ],
+      [
+        48.467,
+        -0.0
+      ],
+      [
+        48.467,
+        -0.988
+      ],
+      [
+        16.255,
+        -0.988
+      ],
+      [
+        16.255,
+        -0.0
+      ]
+    ],
+    &quot;closed&quot;: true,
+    &quot;ids&quot;: [
+      &quot;p000&quot;,
+      &quot;p001&quot;,
+      &quot;p002&quot;,
+      &quot;p003&quot;,
+      &quot;p004&quot;,
+      &quot;p005&quot;,
+      &quot;p006&quot;,
+      &quot;p007&quot;,
+      &quot;p008&quot;,
+      &quot;p009&quot;,
+      &quot;p010&quot;,
+      &quot;p011&quot;,
+      &quot;p012&quot;,
+      &quot;p013&quot;,
+      &quot;p014&quot;,
+      &quot;p015&quot;,
+      &quot;p016&quot;,
+      &quot;p017&quot;,
+      &quot;p018&quot;,
+      &quot;p019&quot;,
+      &quot;p020&quot;,
+      &quot;p021&quot;,
+      &quot;p022&quot;,
+      &quot;p023&quot;,
+      &quot;p024&quot;,
+      &quot;p025&quot;,
+      &quot;p026&quot;,
+      &quot;p027&quot;,
+      &quot;p028&quot;,
+      &quot;p029&quot;,
+      &quot;p030&quot;,
+      &quot;p031&quot;,
+      &quot;p032&quot;,
+      &quot;p033&quot;,
+      &quot;p034&quot;,
+      &quot;p035&quot;,
+      &quot;p036&quot;,
+      &quot;p037&quot;,
+      &quot;p038&quot;,
+      &quot;p039&quot;,
+      &quot;p040&quot;,
+      &quot;p041&quot;,
+      &quot;p042&quot;,
+      &quot;p043&quot;,
+      &quot;p044&quot;,
+      &quot;p045&quot;,
+      &quot;p046&quot;,
+      &quot;p047&quot;,
+      &quot;p048&quot;,
+      &quot;p049&quot;,
+      &quot;p050&quot;,
+      &quot;p051&quot;,
+      &quot;p052&quot;,
+      &quot;p053&quot;,
+      &quot;p054&quot;,
+      &quot;p055&quot;,
+      &quot;p056&quot;,
+      &quot;p057&quot;,
+      &quot;p058&quot;,
+      &quot;p059&quot;,
+      &quot;p060&quot;,
+      &quot;p061&quot;,
+      &quot;p062&quot;,
+      &quot;p063&quot;,
+      &quot;p064&quot;,
+      &quot;p065&quot;,
+      &quot;p066&quot;,
+      &quot;p067&quot;,
+      &quot;p068&quot;,
+      &quot;p069&quot;,
+      &quot;p070&quot;,
+      &quot;p071&quot;,
+      &quot;p072&quot;,
+      &quot;p073&quot;,
+      &quot;p074&quot;,
+      &quot;p075&quot;,
+      &quot;p076&quot;,
+      &quot;p077&quot;,
+      &quot;p078&quot;,
+      &quot;p079&quot;,
+      &quot;p080&quot;,
+      &quot;p081&quot;,
+      &quot;p082&quot;,
+      &quot;p083&quot;,
+      &quot;p084&quot;,
+      &quot;p085&quot;,
+      &quot;p086&quot;,
+      &quot;p087&quot;,
+      &quot;p088&quot;,
+      &quot;p089&quot;,
+      &quot;p090&quot;,
+      &quot;p091&quot;,
+      &quot;p092&quot;,
+      &quot;p093&quot;,
+      &quot;p094&quot;,
+      &quot;p095&quot;,
+      &quot;p096&quot;,
+      &quot;p097&quot;,
+      &quot;p098&quot;
+    ]
+  }
+}</code></pre></li>
+<li><strong>Finish sketch</strong><small>sketch.finish</small><pre><code>{
+  &quot;command&quot;: &quot;sketch.finish&quot;,
+  &quot;params&quot;: {}
+}</code></pre></li>
+<li><strong>Extrusion / cut</strong><small>solid.extrude · direction: symmetric, body_name: GuideRail</small><pre><code>{
+  &quot;command&quot;: &quot;solid.extrude&quot;,
+  &quot;params&quot;: {
+    &quot;distance&quot;: &quot;length&quot;,
+    &quot;direction&quot;: &quot;symmetric&quot;,
+    &quot;body_name&quot;: &quot;GuideRail&quot;
+  }
+}</code></pre></li></ol></section>
+<div class="notice"><strong>Verification:</strong> Previously published render · verification metadata unavailable.
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
+<p><a href="../../">← Back to all models</a></p></main><footer><div class="wrap"><strong>SolidCraft CAD</strong> renders and verifies the real geometry.
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.forge/">SCPF examples &amp; cheatsheet →</a>
+<a href="https://brainboxemb.github.io/lib.py.solidcraft.cmd/">SCPC API &amp; examples →</a></div></footer>
+</body></html>

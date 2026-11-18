@@ -381,6 +381,29 @@ MODELS = {
         "native": True,
         "native_snapshot_required": True,
     },
+    "hub75-display2": {
+        "source": "models/advanced/hub75-display2/scpf/model.py",
+        "dependencies": ("corner-bracket",),
+        "extra_inputs": (
+            "models/advanced/hub75-display2/scpf/",
+            "models/components/hub75_panel/basic/scpf/",
+        ),
+        "section": "advanced",
+        "title": "HUB75Display2",
+        "tagline": "Parallel second-generation HUB75 enclosure starting from the verified v1 baseline",
+        "description": "A separately evolvable second HUB75 display design. Its first revision deliberately matches the current five-panel wooden display geometry and parameter set, but owns its own model-local parts and assemblies so later v2 experiments do not change v1. Generic Hub75PanelBasic and CornerBracket components remain shared.",
+        "parameters": "Baseline: 844 × 362 mm opening; 12 mm frame; 9 mm rear; 100 mm depth; five panels; eight brackets",
+        "diagram": "hub75-wood-frame",
+        "stages": [
+            "Snapshot the verified v1 parameter and datum baseline",
+            "Own a separate v2 parts and assemblies source tree",
+            "Reuse only genuine cross-model HUB75 panel and bracket components",
+            "Verify the initial five-panel geometry independently",
+            "Allow subsequent v2 design changes to diverge without modifying v1",
+        ],
+        "native": True,
+        "native_snapshot_required": True,
+    },
 }
 
 

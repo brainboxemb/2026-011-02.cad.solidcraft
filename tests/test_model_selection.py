@@ -74,22 +74,25 @@ class TargetedModelSelectionTests(unittest.TestCase):
             },
         )
 
-    def test_corner_bracket_change_selects_component_and_wood_frame(self):
+    def test_corner_bracket_change_selects_all_real_dependants(self):
         selected = affected_models(
             ["models/components/corner_bracket/scpf/model.py"],
             kind="native",
         )
         self.assertEqual(
             set(selected),
-            {"corner-bracket", "hub75-wood-frame"},
+            {"corner-bracket", "hub75-wood-frame", "hub75-display2"},
         )
 
-    def test_non_catalog_basic_hub75_component_selects_wood_frame_only(self):
+    def test_non_catalog_basic_hub75_component_selects_both_displays(self):
         selected = affected_models(
             ["models/components/hub75_panel/basic/scpf/model.py"],
             kind="native",
         )
-        self.assertEqual(selected, ("hub75-wood-frame",))
+        self.assertEqual(
+            selected,
+            ("hub75-wood-frame", "hub75-display2"),
+        )
 
     def test_forge_dependency_pin_does_not_implicitly_select_all(self):
         self.assertEqual(

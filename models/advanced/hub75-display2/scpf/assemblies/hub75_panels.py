@@ -1,0 +1,50 @@
+"""Five-panel HUB75 subassembly."""
+
+from scpf import Placement, assembly, half
+
+from models.components.hub75_panel.basic.scpf.model import (
+    HUB75_PANEL_DEPTH,
+    HUB75_PANEL_HEIGHT,
+    Hub75PanelBasic,
+)
+
+# This model is specifically the five-panel display. Count and pitch define
+# that fixed product layout; they are not editable SolidCraft parameters.
+PANEL_COUNT = 5
+PANEL_PITCH = 160.0
+
+
+@assembly
+class HUB75Panels:
+    opening_height = 362.0
+    opening_bottom_z = 12.0
+    panel_recess_depth = 25.0
+
+    def build(self):
+        panel_y = self.panel_recess_depth + half(HUB75_PANEL_DEPTH)
+        panel_z = (
+            self.opening_bottom_z
+            + half(self.opening_height - HUB75_PANEL_HEIGHT)
+        )
+
+        middle = Hub75PanelBasic(
+            placement=Placement(
+                y=panel_y,
+                z=panel_z,
+            ),
+        )
+        panels = middle
+
+        for column in range(PANEL_COUNT):
+            if column == PANEL_COUNT // 2:
+                continue
+            x = (column - PANEL_COUNT // 2) * PANEL_PITCH
+            panels = panels + middle.copy(
+                placement=Placement(
+                    x=x,
+                    y=panel_y,
+                    z=panel_z,
+                ),
+            )
+
+        return panels.group("HUB75Panels")

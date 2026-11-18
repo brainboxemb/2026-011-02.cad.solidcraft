@@ -28,3 +28,4 @@ Current records:
 - [0007-parallel-hub75-display2.md](0007-parallel-hub75-display2.md) — add HUB75Display2 as a separately evolvable advanced model alongside the existing wooden display (#142).
 - [0008-model-root-input-selection.md](0008-model-root-input-selection.md) — select model-root README/check metadata without propagating it through geometry dependencies (#144).
 - [0009-model-page-warnings.md](0009-model-page-warnings.md) — render optional model-specific warnings from catalog metadata on result pages (#147).
+- [0010-stable-catalog-growth.md](0010-stable-catalog-growth.md) — extend an existing modern stable store when new catalog models are added instead of falling back to legacy Pages bootstrap (#150).

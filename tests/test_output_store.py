@@ -10,6 +10,7 @@ CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
 from output_store import (  # noqa: E402
+    input_fingerprint,
     prepare_candidate,
     promote_candidate,
     prune_removed_models,
@@ -62,6 +63,23 @@ class OutputStoreTests(unittest.TestCase):
             },
         )
 
+    def test_input_fingerprint_changes_only_with_declared_inputs(self):
+        first = input_fingerprint("bolted-flange")
+        unrelated = ROOT / "tests" / "_fingerprint_unrelated.tmp"
+        try:
+            unrelated.write_text("not a model input", encoding="utf-8")
+            self.assertEqual(input_fingerprint("bolted-flange"), first)
+        finally:
+            unrelated.unlink(missing_ok=True)
+
+        source = ROOT / "models/basic/bolted_flange/scpf/model.py"
+        original = source.read_bytes()
+        try:
+            source.write_bytes(original + b"\n# fingerprint probe\n")
+            self.assertNotEqual(input_fingerprint("bolted-flange"), first)
+        finally:
+            source.write_bytes(original)
+
     def test_prepare_candidate_writes_verification_per_model(self):
         self.make_model_output("bolted-flange", "new")
         self.prepare(("bolted-flange",))
@@ -76,6 +94,10 @@ class OutputStoreTests(unittest.TestCase):
         self.assertEqual(verification["source_commit"], "cad123")
         self.assertEqual(verification["scpf_commit"], "forge123")
         self.assertEqual(verification["solidcraft_version"], "0.42.0")
+        self.assertEqual(
+            verification["input_fingerprint"],
+            input_fingerprint("bolted-flange"),
+        )
         self.assertTrue(verification["verified"])
 
     def test_stable_promotion_replaces_only_selected_model(self):

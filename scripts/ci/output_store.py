@@ -6,6 +6,7 @@ model-output branch and call these functions/CLI against that working tree.
 from __future__ import annotations
 
 from argparse import ArgumentParser
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -13,7 +14,9 @@ import shutil
 import tempfile
 import zipfile
 
-from model_catalog import MODELS
+from model_catalog import MODELS, model_input_paths
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 VERIFICATION_FILE = "verification.json"
@@ -35,6 +38,37 @@ def safe_preview_key(value):
     if not value:
         raise ValueError("preview key must contain a usable character")
     return value
+
+
+def input_fingerprint(slug, root=ROOT):
+    """Hash the exact source/component inputs declared for one model."""
+    if slug not in MODELS:
+        raise ValueError(f"unknown model: {slug}")
+    digest = hashlib.sha256()
+    files = set()
+    for watched in model_input_paths(slug):
+        candidate = root / watched
+        if watched.endswith("/"):
+            if candidate.is_dir():
+                files.update(
+                    path for path in candidate.rglob("*")
+                    if path.is_file()
+                    and "__pycache__" not in path.parts
+                    and not path.name.endswith((".pyc", ".pyo"))
+                )
+        elif candidate.is_file():
+            files.add(candidate)
+
+    if not files:
+        raise FileNotFoundError(f"{slug}: no declared input files found")
+
+    for path in sorted(files):
+        relative = path.relative_to(root).as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def verification_metadata(
@@ -122,6 +156,7 @@ def prepare_candidate(
         row = dict(metadata)
         row["model"] = slug
         row["verified"] = True
+        row["input_fingerprint"] = input_fingerprint(slug)
         file_format = native_file_format(native_root / slug / "model.sc")
         if file_format:
             row["native_file_format"] = file_format

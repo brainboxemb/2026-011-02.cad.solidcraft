@@ -22,6 +22,7 @@ from model_catalog import (
     COMPONENT_DEFINITION_PRIMARY,
     source_path,
 )
+from output_store import input_fingerprint
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -81,22 +82,59 @@ def library_revision():
     return dependency_revision("scpf")
 
 
-def screenshot_info(native_root, commit, model, scpf_commit):
+def current_run_verification(native_root, commit, scpf_commit, scpc_commit):
     if native_root is None:
         return None
     manifest = native_root / "verification.json"
     if not manifest.is_file():
         return None
     metadata = read_json(manifest)
-    if (metadata.get("source_commit") != commit
-            or metadata.get("scpf_commit") != scpf_commit
-            or metadata.get("verified") is not True):
+    if (
+        metadata.get("source_commit") != commit
+        or metadata.get("scpf_commit") != scpf_commit
+        or metadata.get("scpc_commit") != scpc_commit
+        or metadata.get("verified") is not True
+    ):
         return None
-    if model not in MODELS:
-        return None
-    candidate = native_root / model / "model.png"
-    return candidate if candidate.is_file() and candidate.stat().st_size else None
+    return metadata
 
+
+def stored_model_output(store_root, slug):
+    """Return verified stored output only when declared model inputs still match."""
+    if store_root is None:
+        return None
+    root = store_root / "models" / slug
+    manifest = root / "verification.json"
+    native = root / "native"
+    if not manifest.is_file() or not native.is_dir():
+        return None
+    metadata = read_json(manifest)
+    if (
+        metadata.get("model") != slug
+        or metadata.get("verified") is not True
+        or metadata.get("input_fingerprint") != input_fingerprint(slug)
+    ):
+        return None
+    return {
+        "root": root,
+        "native": native,
+        "generated": root / "generated",
+        "verification": metadata,
+    }
+
+
+def native_document_format(native_file):
+    if not native_file.is_file() or not zipfile.is_zipfile(native_file):
+        return None
+    with zipfile.ZipFile(native_file) as archive:
+        document = json.loads(archive.read("document.json"))
+        container = json.loads(archive.read("container.json"))
+    value = document.get("format")
+    if not isinstance(value, str) or re.fullmatch(r"solidcraft/\d+", value) is None:
+        raise ValueError(f"unsupported SolidCraft document format {value!r}")
+    if container.get("format") != "solidcraft-container/1":
+        raise ValueError("unsupported SolidCraft archive")
+    return value
 
 def diagram(model):
     return f'<svg role="img" aria-label="Schematic illustration; not a native CAD render" viewBox="0 0 500 260" xmlns="http://www.w3.org/2000/svg">{DIAGRAMS[MODELS[model]["diagram"]]}</svg>'
@@ -178,30 +216,21 @@ def copy_if_exists(source, target):
         shutil.copy2(source, target)
 
 
-def build(out, commit, native_root=None, generated_root=None, previous_site=None):
+def build(out, commit, native_root=None, generated_root=None, previous_site=None, stable_store=None, public_base=PUBLIC_SITE):
     out.mkdir(parents=True, exist_ok=True)
     copy_if_exists(ROOT / "site/results.css", out / "results.css")
     cards = {key: [] for key in SECTIONS}
+    category_cards = {key: [] for key in SECTIONS}
     scpf_commit = library_revision()
     scpc_commit = dependency_revision("scpc")
-    verification = None
-    if native_root is not None and (native_root / "verification.json").is_file():
-        candidate = read_json(native_root / "verification.json")
-        if (
-            candidate.get("source_commit") == commit
-            and candidate.get("scpf_commit") == scpf_commit
-            and candidate.get("scpc_commit") == scpc_commit
-            and candidate.get("verified") is True
-        ):
-            verification = candidate
-    engine_version = (
-        verification.get("solidcraft_version") if verification is not None else None
+    run_verification = current_run_verification(
+        native_root,
+        commit,
+        scpf_commit,
+        scpc_commit,
     )
-    scpf_release = (
-        verification.get("scpf_release") if verification is not None else None
-    )
-    native_file_format = None
     verified_models = []
+    model_verifications = {}
     verified_count = 0
     for slug, info in MODELS.items():
         work = out / "models" / slug
@@ -215,6 +244,12 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             if generated_root is not None
             else None
         )
+        stored = stored_model_output(stable_store, slug)
+        stored_command_file = (
+            stored["generated"] / "scpf" / "solidcraft.json"
+            if stored is not None
+            else None
+        )
         previous_command_file = (
             previous_site / "models" / slug / "solidcraft.json"
             if previous_site is not None
@@ -225,6 +260,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 candidate
                 for candidate in (
                     generated_command_file,
+                    stored_command_file,
                     previous_command_file,
                     committed_command_file,
                 )
@@ -239,45 +275,100 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
         commands = read_json(command_file)["commands"]
         copy_if_exists(source, work / "model.py")
         copy_if_exists(command_file, work / "solidcraft.json")
-        screenshot = screenshot_info(native_root, commit, slug, scpf_commit)
-        has_native = screenshot is not None
-        # A lightweight preview may reuse a published render as an illustration,
-        # but MUST NOT report that older render as verified for this PR revision.
+
+        fresh_native = (
+            native_root / slug
+            if run_verification is not None
+            and native_root is not None
+            and (native_root / slug).is_dir()
+            else None
+        )
+        if fresh_native is not None:
+            model_verification = dict(run_verification)
+            model_verification.update({
+                "model": slug,
+                "input_fingerprint": input_fingerprint(slug),
+            })
+            native_source = fresh_native
+            native_origin = "current"
+        elif stored is not None:
+            model_verification = stored["verification"]
+            native_source = stored["native"]
+            native_origin = "stable"
+        else:
+            model_verification = None
+            native_source = None
+            native_origin = None
+
+        screenshot = (
+            native_source / "model.png"
+            if native_source is not None
+            and (native_source / "model.png").is_file()
+            and (native_source / "model.png").stat().st_size
+            else None
+        )
+        native_file = (
+            native_source / "model.sc"
+            if native_source is not None
+            else None
+        )
+        has_native = (
+            model_verification is not None
+            and native_file is not None
+            and native_file.is_file()
+            and zipfile.is_zipfile(native_file)
+        )
+        if has_native:
+            file_format = native_document_format(native_file)
+            declared_format = model_verification.get("native_file_format")
+            if declared_format is not None and declared_format != file_format:
+                raise ValueError(
+                    f"{slug}: verification format {declared_format!r} "
+                    f"does not match native file {file_format!r}"
+                )
+            model_verification = dict(model_verification)
+            model_verification["native_file_format"] = file_format
+            model_verifications[slug] = model_verification
+            verified_models.append(slug)
+            verified_count += 1
+            copy_if_exists(model_verification and native_source / "model.png", work / "native.png")
+            copy_if_exists(native_file, work / "model.sc")
+            (work / "verification.json").write_text(
+                json.dumps(model_verification, indent=2, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+
+        # Legacy preview fallback for repositories that have not yet populated
+        # model-output. This image is illustrative only and is never marked
+        # verified for the current preview.
         previously_verified = None
         if not has_native and previous_site is not None and slug != "sample-plate":
             prior = previous_site / "models" / slug / "native.png"
             if prior.is_file() and prior.stat().st_size:
                 previously_verified = prior
         preview_image = screenshot or previously_verified
-        if preview_image is not None:
+        if preview_image is not None and not (work / "native.png").is_file():
             copy_if_exists(preview_image, work / "native.png")
+
+        engine_version = (
+            model_verification.get("solidcraft_version")
+            if model_verification is not None
+            else None
+        )
+        scpf_release = (
+            model_verification.get("scpf_release")
+            if model_verification is not None
+            else None
+        )
+        model_source_commit = (
+            model_verification.get("source_commit")
+            if model_verification is not None
+            else None
+        )
+
         browser_controls = ""
         if has_native:
-            # Only a native file from the exact verified source/engine run is
-            # published. A previous-site preview must NEVER ship a stale .sc.
-            native_file = native_root / slug / "model.sc"
-            if not native_file.is_file() or not zipfile.is_zipfile(native_file):
-                raise ValueError(f"Missing/invalid native SolidCraft file: {native_file}")
-            with zipfile.ZipFile(native_file) as archive:
-                doc = json.loads(archive.read("document.json"))
-                doc_format = doc.get("format")
-                if not isinstance(doc_format, str) or re.fullmatch(
-                    r"solidcraft/\d+", doc_format
-                ) is None:
-                    raise ValueError(
-                        f"{slug}: unsupported SolidCraft document format {doc_format!r}"
-                    )
-                if native_file_format is None:
-                    native_file_format = doc_format
-                elif doc_format != native_file_format:
-                    raise ValueError(
-                        f"{slug}: mixed SolidCraft document formats: "
-                        f"{native_file_format!r} and {doc_format!r}"
-                    )
-                if json.loads(archive.read("container.json")).get("format") != "solidcraft-container/1":
-                    raise ValueError(f"{slug}: unsupported SolidCraft archive")
-            copy_if_exists(native_file, work / "model.sc")
-            model_url = f"{PUBLIC_SITE}/models/{slug}/model.sc"
+            model_url = f"{public_base}/models/{slug}/model.sc"
             encoded_url = quote(model_url, safe="")
             full_url = f"{SOLIDCRAFT_WEB}?open={encoded_url}"
             # The model page deliberately does NOT embed SolidCraft.
@@ -309,8 +400,6 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 'SolidCraft release.'
                 '</p></section>'
             )
-            verified_count += 1
-            verified_models.append(slug)
         photo = (
             '<a class="preview-fullsize" href="native.png" '
             'target="_blank" rel="noopener noreferrer" '
@@ -357,7 +446,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             faces = []
             for title, filename in (("Front — LED mask", "front.png"),
                                     ("Rear — pockets and mounting bores", "rear.png")):
-                candidate = native_root / slug / filename
+                candidate = native_source / filename
                 if not candidate.is_file() or not candidate.stat().st_size:
                     raise ValueError(f"Verified HUB75 face view is missing: {candidate}")
                 copy_if_exists(candidate, work / filename)
@@ -371,14 +460,21 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                            '<p class="small muted">Both are native SolidCraft '
                            'snapshots of the same single-component design.</p>')
         version_label = (
-            f"SolidCraft {engine_version} · verified native run"
+            f"SolidCraft {engine_version} · verified"
             if has_native and engine_version else
-            "SolidCraft native version not verified for this revision"
+            "SolidCraft native version not verified"
         )
-        status = ("Native verified · snapshot from matching run" if has_native
-                  else "Previously verified render from main · not verified for this PR"
-                  if previously_verified else
-                  "Generated command plan · native render not verified for this commit")
+        if has_native:
+            short_source = (model_source_commit or "")[:8]
+            status = (
+                "Native verified · current build"
+                if native_origin == "current"
+                else f"Native verified · stored build {short_source}"
+            )
+        elif previously_verified:
+            status = "Previously published render · verification metadata unavailable"
+        else:
+            status = "Generated command plan · native render not verified"
         badge = "verified" if has_native else "pending"
         stage_summary = "".join(f"<li>{esc(s)}</li>" for s in info["stages"])
         launcher_code = esc(source.read_text(encoding="utf-8"))
@@ -458,6 +554,11 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                 if generated_root is not None
                 else None
             )
+            stored_scpc_plan = (
+                stored["generated"] / "scpc" / "solidcraft.json"
+                if stored is not None
+                else None
+            )
             previous_scpc_plan = (
                 previous_site / "models" / slug / "scpc-commands.json"
                 if previous_site is not None
@@ -469,6 +570,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
                     candidate
                     for candidate in (
                         generated_scpc_plan,
+                        stored_scpc_plan,
                         previous_scpc_plan,
                         committed_scpc_plan,
                     )
@@ -500,7 +602,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
 <span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span><span class="badge">{esc(version_label)}</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
-<p class="small muted">{"Native SolidCraft image, matching this source revision. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
+<p class="small muted">{"Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
 <p>{esc(info["description"])}</p></section>
 <section class="panel"><h2>Files</h2><p>Download the original Python sources and generated command plan.</p>
 <div class="links">{source_links}<a class="btn secondary" href="solidcraft.json">Command JSON</a>
@@ -513,24 +615,45 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 {scpc_source_block}
 <h2>Native SolidCraft command sequence (SCPF)</h2><section class="panel"><ol class="timeline">{command_stages(commands)}</ol></section>
 <div class="notice"><strong>Verification:</strong> {esc(status)}.
-The source and JSON here are from this checkout. A matching native snapshot appears only after successful SolidCraft verification.
-Native qualification is reported only when the matching verified image exists.</div>
+The source and JSON here are from this checkout. Native qualification is reported only when the stored input fingerprint matches the current model inputs. Exact source and tool versions are recorded in this model's verification.json.</div>
 <p><a href="../../">← Back to all models</a></p></main>"""
         (work / "index.html").write_text(
             layout(info["title"], view, "../../results.css", "../../"),
             encoding="utf-8",
         )
         group = next(key for key, (_, _, names) in SECTIONS.items() if slug in names)
-        cards[group].append(f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
-<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Render from main' if previously_verified else 'Command plan available'}</span>
+        card = f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
+<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Published render' if previously_verified else 'Command plan available'}</span>
 <h3><a href="models/{slug}/">{esc(info["title"])}</a></h3><p>{esc(info["tagline"])}</p>
 <p class="small muted">{esc(info["parameters"])}</p>
-<a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
+<a class="btn" href="models/{slug}/">Explore model →</a></div></article>"""
+        category_cards[group].append(
+            card.replace(f"models/{slug}/", f"../{slug}/")
+        )
+        if info.get("featured", True):
+            cards[group].append(card)
     sections_html = "".join(
         f'<section class="model-category" id="{key}"><h2>{esc(title)}</h2>'
-        f'<p class="muted">{esc(description)}</p><div class="grid">{"".join(cards[key])}</div></section>'
+        f'<p class="muted">{esc(description)}</p>'
+        f'<p><a href="models/{key}/">Browse all {esc(title.lower())} →</a></p>'
+        f'<div class="grid">{"".join(cards[key])}</div></section>'
         for key, (title, description, _names) in SECTIONS.items()
     )
+
+    # Category pages list every model in that section, independent of the
+    # curated home-page featured flag.
+    for key, (title, description, _names) in SECTIONS.items():
+        category = out / "models" / key
+        category.mkdir(parents=True, exist_ok=True)
+        category_body = f"""<section class="hero cad-hero"><div class="wrap">
+<div class="eyebrow">CAD model category</div><h1>{esc(title)}</h1>
+<p>{esc(description)}</p></div></section>
+<main class="wrap"><p><a href="../../">← Back to model overview</a></p>
+<div class="grid">{"".join(category_cards[key])}</div></main>"""
+        (category / "index.html").write_text(
+            layout(title, category_body, "../../results.css", "../../"),
+            encoding="utf-8",
+        )
     home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
@@ -542,19 +665,31 @@ Native qualification is reported only when the matching verified image exists.</
 <h3>2 · Compile commands</h3><p>SCPF outputs native SolidCraft commands, with named parameters and a sequence of CAD operations.</p></section>
 <section class="panel"><h3>3 · Execute in SolidCraft</h3><p>The SolidCraft engine creates editable geometry, and CI validates its results. CAD and verification assets are only published when they match the source revision.</p>
 <h3>4 · Inspect the result</h3><p>Review the command timeline, native measurements and optional rendered preview. An unverified model is labelled as such.</p></section></div>
-<p class="small muted">CAD source revision: <code>{esc(commit)}</code><br>
-SCPF Forge revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a>{f" · release {esc(scpf_release)}" if scpf_release else ""}<br>SCPC Commands revision: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/{esc(scpc_commit)}"><code>{esc(scpc_commit)}</code></a><br>SolidCraft engine: <strong>{esc(engine_version) if engine_version else "native version not verified for this revision"}</strong>.</p></main>"""
+<p class="small muted">Catalog source revision: <code>{esc(commit)}</code><br>
+Current SCPF dependency: <a href="https://github.com/brainboxemb/lib.py.solidcraft.forge/commit/{esc(scpf_commit)}"><code>{esc(scpf_commit)}</code></a><br>
+Current SCPC dependency: <a href="https://github.com/brainboxemb/lib.py.solidcraft.cmd/commit/{esc(scpc_commit)}"><code>{esc(scpc_commit)}</code></a><br>
+Each native model page records the exact Forge, SolidCraft and source revision used for that model.</p></main>"""
     provenance = {
+        "schema": 2,
         "source_commit": commit,
+        "catalog_commit": commit,
         "scpf_commit": scpf_commit,
         "scpc_commit": scpc_commit,
         "native_verified_models": verified_models,
+        "models": model_verifications,
     }
-    if verification is not None:
-        provenance["scpf_release"] = scpf_release
-        provenance["solidcraft_version"] = engine_version
-        provenance["workflow_run"] = verification.get("workflow_run")
-        provenance["native_file_format"] = native_file_format
+    for key in (
+        "scpf_release",
+        "solidcraft_version",
+        "native_file_format",
+    ):
+        values = {
+            row.get(key)
+            for row in model_verifications.values()
+            if row.get(key) is not None
+        }
+        if len(values) == 1:
+            provenance[key] = values.pop()
     (out / "provenance.json").write_text(
         json.dumps(provenance, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -596,8 +731,20 @@ def main():
                         help="Published main site renders for non-verified previews")
     parser.add_argument("--generated", type=Path,
                         help="Root of freshly compiled output/models")
+    parser.add_argument("--stable-store", type=Path,
+                        help="model-output stable root containing models/<slug>")
+    parser.add_argument("--public-base", default=PUBLIC_SITE,
+                        help="Published base URL used by external SolidCraft open links")
     args = parser.parse_args()
-    build(args.out, args.commit, args.native, args.generated, args.previous_site)
+    build(
+        args.out,
+        args.commit,
+        args.native,
+        args.generated,
+        args.previous_site,
+        args.stable_store,
+        args.public_base,
+    )
 
 
 if __name__ == "__main__":

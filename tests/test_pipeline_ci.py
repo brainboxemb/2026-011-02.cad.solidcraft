@@ -16,8 +16,8 @@ import pipeline_ci  # noqa: E402
 
 
 class PipelineCiTests(unittest.TestCase):
-    def test_execute_extends_plan_and_runs_tool_proof_before_native(self):
-        """The stable plan and Plate proof feed the same native pipeline run."""
+    def test_execute_extends_plan_and_runs_tool_proof_after_native(self):
+        """Native verification finishes before model-root packaging runs."""
 
         initial = {
             "schema": 1,
@@ -34,6 +34,8 @@ class PipelineCiTests(unittest.TestCase):
         extended = dict(initial)
         extended["scpf_models"] = ["plate", "new-model"]
         extended["native_models"] = ["plate", "new-model"]
+
+        order = []
 
         with TemporaryDirectory() as temp:
             root = Path(temp)
@@ -73,6 +75,11 @@ class PipelineCiTests(unittest.TestCase):
                 pipeline_ci.native_ci,
                 "execute",
             ) as native:
+                cheap.side_effect = lambda *args, **kwargs: order.append("cheap")
+                native.side_effect = lambda *args, **kwargs: order.append("native")
+                tool_proof.side_effect = (
+                    lambda *args, **kwargs: order.append("tool") or ("plate",)
+                )
                 result = pipeline_ci.execute(
                     mode="changed",
                     models="",
@@ -91,6 +98,7 @@ class PipelineCiTests(unittest.TestCase):
                     (out / "plan.json").read_text(encoding="utf-8")
                 )
 
+        self.assertEqual(order, ["cheap", "native", "tool"])
         self.assertEqual(result, extended)
         configure.assert_called_once_with()
         changed.assert_called_once_with("base", "head")

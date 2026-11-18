@@ -19,3 +19,8 @@ steps:
     run: [python, ../../../scripts/ci/model_item.py, compare-current]
     outputs:
       - checks/current-pipeline.json
+  - id: package
+    run: [python, ../../../scripts/ci/model_item.py, package]
+    outputs:
+      - results
+      - checks/package.json

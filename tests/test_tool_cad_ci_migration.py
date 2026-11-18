@@ -136,8 +136,11 @@ class ToolCadCiMigrationTests(unittest.TestCase):
             self.assertFalse(config["strategy"]["reuse"])
             self.assertEqual(
                 [step["id"] for step in config["steps"]],
-                ["compile", "compare-current"],
+                ["compile", "compare-current", "package"],
             )
+            package = config["steps"][-1]
+            self.assertIn("results", package["outputs"])
+            self.assertIn("checks/package.json", package["outputs"])
 
     def test_workflow_keeps_generated_branch_out_of_local_build(self):
         """Local tool output and durable generated-branch checkout stay separate."""

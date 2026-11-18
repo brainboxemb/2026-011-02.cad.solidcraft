@@ -13,6 +13,7 @@ import tempfile
 import build_plan
 import cad_ci
 import native_ci
+from model_catalog import MODELS, model_build_path, model_slugs
 from output_store import migrate_legacy_store_layout
 from select_models import parse_models
 
@@ -47,6 +48,50 @@ def resolve_build_baseline(build_root: Path, destination: Path) -> Path:
     return destination / "main"
 
 
+def missing_stable_models(stable_store: Path) -> tuple[str, ...]:
+    """Current native catalog models not yet present in the stable store."""
+    return tuple(
+        slug
+        for slug in model_slugs("native")
+        if not (
+            stable_store
+            / model_build_path(slug)
+            / "verification.json"
+        ).is_file()
+    )
+
+
+def extend_plan_for_missing_stable(plan: dict, stable_store: Path) -> dict:
+    """Add catalog models missing from stable output to this build plan.
+
+    A newly added model must be built before a complete catalog site can be
+    generated. Selection is derived from the central catalog and each build
+    kind's eligibility; there is no model-name or catalog-count special case.
+    """
+    missing = set(missing_stable_models(stable_store))
+    if not missing:
+        return plan
+
+    result = dict(plan)
+    kinds = {
+        "scpf_models": "scpf",
+        "scpc_models": "scpc",
+        "native_models": "native",
+        "snapshot_models": "native-snapshot-required",
+    }
+    for key, kind in kinds.items():
+        eligible = set(model_slugs(kind))
+        selected = set(plan.get(key, ())) | (missing & eligible)
+        result[key] = [
+            slug for slug in MODELS
+            if slug in selected
+        ]
+
+    result["site_refresh"] = True
+    result["publishable"] = True
+    return result
+
+
 def execute(
     *,
     mode: str,
@@ -78,15 +123,16 @@ def execute(
     )
     output_root.mkdir(parents=True, exist_ok=True)
     plan_path = output_root / "plan.json"
-    plan_path.write_text(
-        json.dumps(plan, indent=2) + "\n",
-        encoding="utf-8",
-    )
 
     with tempfile.TemporaryDirectory(prefix="cad-build-baseline-") as temp:
         stable_store = resolve_build_baseline(
             build_root,
             Path(temp) / "build",
+        )
+        plan = extend_plan_for_missing_stable(plan, stable_store)
+        plan_path.write_text(
+            json.dumps(plan, indent=2) + "\n",
+            encoding="utf-8",
         )
         cad_ci.execute(
             plan_path=plan_path,

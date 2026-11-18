@@ -1,0 +1,51 @@
+"""Tests for one CAD CI build plan."""
+
+from pathlib import Path
+import sys
+import unittest
+
+
+ROOT = Path(__file__).resolve().parents[1]
+CI = ROOT / "scripts" / "ci"
+sys.path.insert(0, str(CI))
+
+from build_plan import make_plan  # noqa: E402
+
+
+class BuildPlanTests(unittest.TestCase):
+    def test_one_model_change_selects_only_that_model(self):
+        plan = make_plan(
+            mode="changed",
+            paths=("models/basic/bolted_flange/scpf/model.py",),
+        )
+        self.assertEqual(plan["scpf_models"], ["bolted-flange"])
+        self.assertEqual(plan["native_models"], ["bolted-flange"])
+        self.assertTrue(plan["site_refresh"])
+
+    def test_toolchain_pin_change_does_not_select_catalog(self):
+        plan = make_plan(
+            mode="changed",
+            paths=("dependencies.repos",),
+        )
+        self.assertEqual(plan["scpf_models"], [])
+        self.assertEqual(plan["scpc_models"], [])
+        self.assertEqual(plan["native_models"], [])
+        self.assertFalse(plan["site_refresh"])
+
+    def test_explicit_models_mode_stays_targeted(self):
+        plan = make_plan(
+            mode="models",
+            models=("bolted-flange",),
+        )
+        self.assertEqual(plan["scpf_models"], ["bolted-flange"])
+        self.assertEqual(plan["native_models"], ["bolted-flange"])
+        self.assertTrue(plan["site_refresh"])
+
+    def test_all_mode_is_explicit(self):
+        plan = make_plan(mode="all")
+        self.assertGreater(len(plan["scpf_models"]), 1)
+        self.assertGreater(len(plan["native_models"]), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -65,7 +65,7 @@ def validate_simple_mft_assembly(root: Path):
     )
     thick_rail = _one_body_with_size(
         thickness_data,
-        (184.20, 1080.0, 10.50),
+        (184.20, 800.0, 10.50),
     )
     require(
         _bounds_close(

@@ -51,12 +51,20 @@ fixed occurrence offset.
 it moves the intermediate shelf, display opening, roof, rear-board height and
 top corner brackets together. The lower outside cabinet datum remains Z=0.
 
+Two 12 mm vertical dividers split the lower compartment into three clear bays.
+The ratio applies to the free space after subtracting both divider thicknesses:
+**30% / 40% / 30%**. With the default 844 mm internal width this gives
+**246 mm / 328 mm / 246 mm** clear openings, with divider centre-lines at
+**X = -170 mm and +170 mm**.
+
 ## Current main dimensions
 
 | Item | Value |
 | --- | ---: |
 | Opening | 844 × 362 mm |
 | Lower compartment clear height | 70 mm |
+| Lower compartment bays | 246 / 328 / 246 mm clear (30 / 40 / 30%) |
+| Lower divider plates | 2 × 12 mm |
 | Panel count | 5 |
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |

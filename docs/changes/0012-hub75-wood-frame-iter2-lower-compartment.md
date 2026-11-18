@@ -35,8 +35,14 @@ parameter. The opening bottom is derived from that parameter and
 `frame_wood_thickness`.
 
 The side boards run continuously from the top of the bottom board to the
-underside of the roof. The intermediate shelf spans the cabinet width at the
-top of the lower compartment.
+underside of the roof. The intermediate shelf sits between the two side walls
+at the top of the lower compartment.
+
+Add two vertical 12 mm lower-compartment dividers. The requested 30% / 40% /
+30% ratio applies to the clear openings after subtracting both divider
+thicknesses. At the default 844 mm internal width, 820 mm remains for the clear
+bays, giving 246 mm / 328 mm / 246 mm. The divider centre-lines are therefore
+X=-170 mm and X=+170 mm.
 
 All display-dependent geometry must follow the derived opening datum:
 
@@ -51,14 +57,16 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 
 ## Scope
 
-This change creates only the basic lower compartment volume. It does not yet
-add divider walls, doors, removable ground panels, hardware or lower-compartment
-service details from the OpenSCAD reference.
+This change creates the basic lower compartment, including its two vertical
+divider plates. It does not yet add the 3 mm divider grooves/tongues, doors,
+removable ground panels, hardware or other lower-compartment service details
+from the OpenSCAD reference.
 
 ## Verification
 
 - regression tests check the new native parameter;
 - tests check the 12 + 70 + 12 stack and dependent command expressions;
+- tests check two divider occurrences and the 30% / 40% / 30% clear-bay calculation;
 - the five-panel X layout remains unchanged;
 - a native mutation changes `lower_compartment_height` to 90 mm and verifies
   that the saved SolidCraft design rebuilds from the parameter;

@@ -159,10 +159,9 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         rows = commands()
         creates = [row["name"] for row in of(rows, "component.create")]
 
-        # One additional Board component is introduced for the unfilleted
-        # intermediate shelf. Left and right remain copies of one side board.
-        self.assertEqual(len(creates), 14)
-        self.assertIn("Board 5", creates)
+        # The intermediate shelf adds one Board shape. The two equal lower
+        # dividers share one additional Board shape and become two occurrences.
+        self.assertEqual(len(creates), 15)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -185,6 +184,50 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertEqual(len(sides), 2)
         self.assertTrue(
             all("frame_wood_thickness" in str(row["translate"][2]) for row in sides)
+        )
+
+        dividers = [
+            row for row in moves
+            if row["occurrence"] in {
+                "$lower_divider_left",
+                "$lower_divider_right",
+            }
+        ]
+        self.assertEqual(len(dividers), 2)
+        self.assertTrue(
+            all(
+                "opening_width" in str(row["translate"][0])
+                and "frame_wood_thickness" in str(row["translate"][0])
+                for row in dividers
+            )
+        )
+        self.assertTrue(
+            all(
+                "frame_wood_thickness" in str(row["translate"][2])
+                for row in dividers
+            )
+        )
+
+    def test_lower_compartment_clear_bays_are_30_40_30(self):
+        frame_source = (
+            SCPF_DIR / "assemblies" / "wood_frame.py"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("LOWER_SIDE_BAY_FRACTION = 0.30", frame_source)
+        self.assertIn("LOWER_CENTER_BAY_FRACTION = 0.40", frame_source)
+        self.assertIn(
+            "self.opening_width\n            - 2 * self.frame_wood_thickness",
+            frame_source,
+        )
+
+        # Default geometry: 844 mm internal width minus two 12 mm dividers
+        # leaves 820 mm of clear bay width: 246 / 328 / 246 mm.
+        clear_width = 844.0 - 2 * 12.0
+        self.assertEqual(clear_width * 0.30, 246.0)
+        self.assertEqual(clear_width * 0.40, 328.0)
+        self.assertEqual(
+            844.0 / 2 - 246.0 - 12.0 / 2,
+            170.0,
         )
 
     def test_five_panel_x_layout_is_unchanged(self):

@@ -76,15 +76,19 @@ rear-access geometry is being developed.
 
 ### Side-handle concept
 
-For visual evaluation, each side recess contains only one straight **Ø22 mm
-beech roundwood handle**. No bracket, socket or other mounting hardware is
-modelled yet.
+For visual evaluation, each side recess contains one straight **Ø22 mm beech
+roundwood handle**. The rod remains clamped directly between the lower and upper
+limits of the recess.
 
-The rod is shown clamped directly between the lower and upper limits of the
-recess. Its rear surface is exactly flush with the **Y=110 mm** rear edge of
-the side panel, putting the rod centre at **Y=99 mm**. The recessed plywood edge
-is at Y=60, so the clear space between that edge and the front of the Ø22 rod is
-**28 mm**. This stage is intentionally only an ergonomic/position study.
+The rear surface of the rod stays flush with the **Y=110 mm** rear edge of the
+side panel, putting the rod centre at **Y=99 mm**. In X, the rod is moved
+**5 mm inward**: its outside surface now aligns with the outside face of the
+12 mm side wall instead of its centreline.
+
+A simple plastic ring is added around each rod end. The current concept ring is
+**10 mm high**, **3 mm radial thickness** (Ø28 mm outside around Ø22 mm wood)
+and has a small 0.4 mm assembly clearance. These rings are only a first visual
+mounting study; no final attachment to the plywood is modelled yet.
 
 ## Current main dimensions
 

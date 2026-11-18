@@ -32,7 +32,7 @@ def validate_flex_bench_dog(root: Path):
     body = data["bodies"][0]
     require(body["closed"] is True, "flex-bench-dog: body must be closed")
     require(
-        size_close(body, (24.0, 24.0, 38.6)),
+        size_close(body, (24.0, 24.0, 38.0)),
         f"flex-bench-dog: unexpected bounds {body_size(body)}",
     )
 

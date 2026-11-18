@@ -22,7 +22,7 @@ class FlexBenchDog:
     TOP_FILLET = 1.0
     TOP_CHAMFER = 0.6
     LOGO_SIZE = 8.0
-    LOGO_HEIGHT = 0.6
+    LOGO_DEPTH = 0.6
 
     def build(self):
         # Rim bottom is the worktop datum. The narrower working cylinder starts
@@ -88,7 +88,7 @@ class FlexBenchDog:
             edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
         )
 
-        # Small raised square used as a simple BBE/box mark.
+        # Small recessed square used as a simple BBE/box mark.
         with Sketch(
             name="Top logo",
             on=dog,
@@ -96,6 +96,6 @@ class FlexBenchDog:
             origin=(0, 0, self.ABOVE_WORKTOP),
         ) as logo:
             Rectangle2D(self.LOGO_SIZE, self.LOGO_SIZE)
-        dog = dog + logo.extrude(self.LOGO_HEIGHT)
+        dog = dog - logo.extrude(-self.LOGO_DEPTH)
 
         return dog

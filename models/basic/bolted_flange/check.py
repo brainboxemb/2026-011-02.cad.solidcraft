@@ -14,14 +14,18 @@ from model_check import (
 
 def check_native(root, slug):
     rows = commands(root, slug)
-    require(count(rows, "sketch.create") == 0,
-            f"{slug}: simple model must not create sketches")
     require(count(rows, "solid.cylinder") == 2,
             f"{slug}: expected flange and hub cylinders")
-    require(count(rows, "solid.hole") == 7,
-            f"{slug}: expected one bore and six bolt holes")
-    require(count(rows, "solid.pattern.circular") == 0,
-            f"{slug}: simple model must not require a native pattern")
+    require(count(rows, "sketch.create") == 1,
+            f"{slug}: expected one seed bolt-hole sketch")
+    require(count(rows, "sketch.circle.center") == 1,
+            f"{slug}: expected one seed bolt-hole circle")
+    require(count(rows, "solid.extrude") == 1,
+            f"{slug}: expected one seed through-cut")
+    require(count(rows, "solid.pattern.circular") == 1,
+            f"{slug}: expected one native circular bolt pattern")
+    require(count(rows, "solid.hole") == 1,
+            f"{slug}: only the central bore should use solid.hole")
 
     data = measurements(root, slug)
     require(data["body_count"] == 1, f"{slug}: expected one joined/cut body")

@@ -10,15 +10,16 @@ MODEL = ROOT / "models" / "components" / "flex_bench_dog" / "scpf" / "model.py"
 
 
 class FlexBenchDogTests(unittest.TestCase):
-    def test_passive_flex_geometry_uses_simple_primitives(self):
+    def test_uses_native_cylinders_sketch_cuts_and_edge_finish(self):
         commands = run_script(MODEL)["commands"]
         names = [row["command"] for row in commands]
 
         self.assertEqual(names.count("solid.cylinder"), 4)
-        self.assertEqual(names.count("solid.box"), 4)
+        self.assertEqual(names.count("sketch.create"), 3)
+        self.assertEqual(names.count("sketch.rectangle.two_point"), 3)
+        self.assertEqual(names.count("solid.extrude"), 3)
         self.assertEqual(names.count("solid.fillet"), 1)
         self.assertEqual(names.count("solid.chamfer"), 1)
-        self.assertFalse(any(name.startswith("sketch.") for name in names))
         self.assertFalse(any(name == "solid.hole" for name in names))
 
     def test_native_parameters_are_fit_dimensions(self):
@@ -58,19 +59,25 @@ class FlexBenchDogTests(unittest.TestCase):
             ("hole_diameter + interference", "hole_diameter + (interference)"),
         )
 
-    def test_cross_slots_leave_four_mm_flex_root(self):
+    def test_cross_slots_start_at_insert_tip_and_leave_four_mm_root(self):
         commands = run_script(MODEL)["commands"]
-        boxes = [
-            row["params"] for row in commands
-            if row["command"] == "solid.box"
+        sketches = [
+            row["params"]
+            for row in commands
+            if row["command"] == "sketch.create"
         ]
-        slots = boxes[:2]
-        self.assertEqual(slots[0]["height"], 14)
-        self.assertEqual(slots[1]["height"], 14)
-        self.assertEqual(slots[0]["corner"][2], -18)
-        self.assertEqual(slots[1]["corner"][2], -18)
-        self.assertEqual(slots[0]["width"], "slot_width")
-        self.assertEqual(slots[1]["length"], "slot_width")
+        self.assertEqual([row["name"] for row in sketches[:2]], ["Flex slot X", "Flex slot Y"])
+        self.assertEqual(sketches[0]["origin"], [0, 0, -18])
+        self.assertEqual(sketches[1]["origin"], [0, 0, -18])
+
+        cuts = [
+            row["params"]
+            for row in commands
+            if row["command"] == "solid.extrude"
+            and row["params"]["operation"] == "cut"
+        ]
+        self.assertEqual(len(cuts), 2)
+        self.assertTrue(all(row["distance"] == 14 for row in cuts))
 
     def test_top_finish_and_logo_are_present(self):
         commands = run_script(MODEL)["commands"]
@@ -80,13 +87,22 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(fillet["radius"], 1.0)
         self.assertEqual(chamfer["distance"], 0.6)
 
-        boxes = [
-            row["params"] for row in commands
-            if row["command"] == "solid.box"
+        sketches = [
+            row["params"]
+            for row in commands
+            if row["command"] == "sketch.create"
         ]
-        logo_outer, logo_inner = boxes[2], boxes[3]
-        self.assertEqual((logo_outer["length"], logo_outer["width"], logo_outer["height"]), (8, 8, 0.6))
-        self.assertEqual((logo_inner["length"], logo_inner["width"], logo_inner["height"]), (5, 5, 0.6))
+        self.assertEqual(sketches[-1]["name"], "Top logo")
+        self.assertEqual(sketches[-1]["origin"], [0, 0, 20])
+
+        joins = [
+            row["params"]
+            for row in commands
+            if row["command"] == "solid.extrude"
+            and row["params"]["operation"] == "join"
+        ]
+        self.assertEqual(len(joins), 1)
+        self.assertEqual(joins[0]["distance"], 0.6)
 
 
 if __name__ == "__main__":

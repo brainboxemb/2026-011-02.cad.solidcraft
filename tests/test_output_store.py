@@ -1,4 +1,4 @@
-"""Staging and stable model-output contracts."""
+"""Candidate and build-branch output contracts."""
 from pathlib import Path
 import json
 import sys
@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CI = ROOT / "scripts" / "ci"
 sys.path.insert(0, str(CI))
 
-from model_catalog import MODELS  # noqa: E402
+from model_catalog import MODELS, model_build_path  # noqa: E402
 from output_store import (  # noqa: E402
     input_fingerprint,
     migrate_legacy_pages,
@@ -91,7 +91,8 @@ class OutputStoreTests(unittest.TestCase):
         verification = json.loads(
             (
                 self.candidate
-                / "models/bolted-flange/verification.json"
+                / model_build_path("bolted-flange")
+                / "verification.json"
             ).read_text(encoding="utf-8")
         )
         self.assertEqual(verification["model"], "bolted-flange")
@@ -109,8 +110,8 @@ class OutputStoreTests(unittest.TestCase):
         self.assertTrue(verification["verified"])
 
     def test_stable_promotion_replaces_only_selected_model(self):
-        old_a = self.store / "stable/models/bolted-flange"
-        old_b = self.store / "stable/models/bracket"
+        old_a = self.store / "main" / model_build_path("bolted-flange")
+        old_b = self.store / "main" / model_build_path("bracket")
         old_a.mkdir(parents=True)
         old_b.mkdir(parents=True)
         (old_a / "old.txt").write_text("old flange", encoding="utf-8")
@@ -126,25 +127,29 @@ class OutputStoreTests(unittest.TestCase):
         )
 
         self.assertFalse(
-            (self.store / "stable/models/bolted-flange/old.txt").exists()
+            (self.store / "main" / model_build_path("bolted-flange") / "old.txt").exists()
         )
         self.assertEqual(
             (
                 self.store
-                / "stable/models/bolted-flange/native/model.sc"
+                / "main"
+                / model_build_path("bolted-flange")
+                / "native/model.sc"
             ).read_text(encoding="utf-8"),
             "new flange",
         )
         self.assertEqual(
             (
                 self.store
-                / "stable/models/bracket/old.txt"
+                / "main"
+                / model_build_path("bracket")
+                / "old.txt"
             ).read_text(encoding="utf-8"),
             "keep bracket",
         )
 
     def test_preview_promotion_never_changes_stable(self):
-        stable = self.store / "stable/models/bolted-flange"
+        stable = self.store / "main" / model_build_path("bolted-flange")
         stable.mkdir(parents=True)
         (stable / "marker.txt").write_text("stable", encoding="utf-8")
 
@@ -165,14 +170,16 @@ class OutputStoreTests(unittest.TestCase):
         self.assertEqual(
             (
                 self.store
-                / "previews/pr-129/models/bolted-flange/native/model.sc"
+                / "pr/129"
+                / model_build_path("bolted-flange")
+                / "native/model.sc"
             ).read_text(encoding="utf-8"),
             "preview",
         )
 
     def test_incomplete_candidate_changes_nothing(self):
-        stable_a = self.store / "stable/models/bolted-flange"
-        stable_b = self.store / "stable/models/bracket"
+        stable_a = self.store / "main" / model_build_path("bolted-flange")
+        stable_b = self.store / "main" / model_build_path("bracket")
         stable_a.mkdir(parents=True)
         stable_b.mkdir(parents=True)
         (stable_a / "marker.txt").write_text("a", encoding="utf-8")
@@ -199,7 +206,7 @@ class OutputStoreTests(unittest.TestCase):
         )
 
     def test_prune_removes_only_models_missing_from_catalog(self):
-        known = self.store / "stable/models/bolted-flange"
+        known = self.store / "main" / model_build_path("bolted-flange")
         removed = self.store / "stable/models/retired-model"
         known.mkdir(parents=True)
         removed.mkdir(parents=True)
@@ -262,8 +269,8 @@ class OutputStoreTests(unittest.TestCase):
             verification = json.loads(
                 (
                     self.store
-                    / "stable/models"
-                    / slug
+                    / "main"
+                    / model_build_path(slug)
                     / "verification.json"
                 ).read_text(encoding="utf-8")
             )
@@ -292,7 +299,7 @@ class OutputStoreTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(ValueError, "not a complete native catalog"):
             migrate_legacy_pages(pages=pages, store=self.store)
-        self.assertFalse((self.store / "stable").exists())
+        self.assertFalse((self.store / "main").exists())
 
     def test_preview_key_is_safe_and_stable(self):
         self.assertEqual(safe_preview_key("PR 129 / test"), "pr-129-test")

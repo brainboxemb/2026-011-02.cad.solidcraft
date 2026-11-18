@@ -241,11 +241,11 @@ class PipelineCiTests(unittest.TestCase):
                 destination,
             )
 
-        self.assertEqual(stable, destination / "main")
-        self.assertEqual(
-            (stable / "marker.txt").read_text(encoding="utf-8"),
-            "ok",
-        )
+            self.assertEqual(stable, destination / "main")
+            self.assertEqual(
+                (stable / "marker.txt").read_text(encoding="utf-8"),
+                "ok",
+            )
 
     def test_resolve_build_baseline_rejects_legacy_layout(self):
         """A missing generic manifest must fail instead of migrating old data."""

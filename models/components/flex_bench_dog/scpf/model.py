@@ -1,9 +1,9 @@
 """Reusable 20 mm flex bench dog based on the supplied Mini-MFT reference image.
 
 The CAD orientation is functional rather than a prescribed print orientation:
-the worktop surface is Z=0, the 18 mm insert points downward and the dog rises
-20 mm above the worktop. A small flare at the free insert end provides passive
-spring preload after the stem is split into four flexible quadrants.
+the worktop surface is Z=0, the insert extends 20 mm downward and the dog rises
+20 mm upward. A small flare at the free insert end provides passive spring
+preload after the stem is split into four flexible quadrants.
 """
 
 
@@ -16,17 +16,17 @@ class FlexBenchDog:
 
     ABOVE_WORKTOP = 20.0
     RIM_THICKNESS = 3.0
-    INSERTION_LENGTH = 18.0
+    INSERTION_LENGTH = 20.0
     TIP_FLARE_LENGTH = 2.0
-    SLOT_LENGTH = 14.0
-    TOP_FILLET = 1.0
+    SLOT_LENGTH = 16.0
     TOP_CHAMFER = 0.6
+    BOTTOM_CHAMFER = 1.0
     LOGO_SIZE = 8.0
     LOGO_DEPTH = 0.6
 
     def build(self):
         # Rim bottom is the worktop datum. The narrower working cylinder starts
-        # on the rim and ends at the requested 20 mm height above the worktop.
+        # on the rim and ends at 20 mm above the worktop.
         rim = Cylinder(
             d=self.rim_diameter,
             h=self.RIM_THICKNESS,
@@ -56,6 +56,17 @@ class FlexBenchDog:
         ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
         dog = dog + flare
 
+        # Give the complete free insert edge a larger lead-in before splitting
+        # it into four flexible legs.
+        dog = dog.chamfer(
+            self.BOTTOM_CHAMFER,
+            edges=[(
+                (self.hole_diameter + self.interference) / 2,
+                0,
+                -self.INSERTION_LENGTH,
+            )],
+        )
+
         # Two native sketch cuts form the cross slots. They start at the free
         # end and stop 4 mm below the worktop, leaving a solid flex root.
         slot_span = self.hole_diameter + self.interference + 2.0
@@ -78,11 +89,7 @@ class FlexBenchDog:
             Rectangle2D(self.slot_width, slot_span)
         dog = dog - slot_y.extrude(self.SLOT_LENGTH)
 
-        # Finish the visible upper body after the main solid has been formed.
-        dog = dog.fillet(
-            self.TOP_FILLET,
-            edges=[(self.hole_diameter / 2, 0, self.RIM_THICKNESS)],
-        )
+        # Light chamfer on the visible upper perimeter.
         dog = dog.chamfer(
             self.TOP_CHAMFER,
             edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],

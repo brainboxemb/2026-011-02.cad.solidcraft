@@ -46,6 +46,40 @@ class BuildPlanTests(unittest.TestCase):
         self.assertGreater(len(plan["scpf_models"]), 1)
         self.assertGreater(len(plan["native_models"]), 1)
 
+    def test_pull_request_publication_is_scoped_to_pr(self):
+        plan = make_plan(
+            mode="changed",
+            paths=("models/basic/bolted_flange/scpf/model.py",),
+            event_name="pull_request",
+            ref_name="feature/test",
+            pull_request=42,
+        )
+        self.assertEqual(plan["channel"], "preview")
+        self.assertEqual(plan["preview_key"], "pr-42")
+        self.assertTrue(plan["publishable"])
+        self.assertTrue(plan["public_base"].endswith("/preview/pr-42"))
+
+    def test_push_to_main_targets_stable_publication(self):
+        plan = make_plan(
+            mode="changed",
+            paths=("site/results.css",),
+            event_name="push",
+            ref_name="main",
+        )
+        self.assertEqual(plan["channel"], "stable")
+        self.assertEqual(plan["preview_key"], "")
+        self.assertTrue(plan["publishable"])
+
+    def test_manual_stable_publication_is_rejected_off_main(self):
+        from build_plan import publication_target
+
+        with self.assertRaisesRegex(ValueError, "only allowed from main"):
+            publication_target(
+                event_name="workflow_dispatch",
+                ref_name="feature/test",
+                publish="stable",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

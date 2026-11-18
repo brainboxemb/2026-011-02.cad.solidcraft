@@ -598,10 +598,21 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             )
             source_links += ('<a class="btn secondary" href="scpc-model.py">'
                              'SCPC native-command script</a>')
+        warning = info.get("warning")
+        warning_html = ""
+        if warning:
+            warning_html = (
+                '<section class="model-warning" role="note">'
+                f'<strong>{esc(warning["title"])}</strong>'
+                f'<p>{esc(warning["body"])}</p>'
+                '</section>'
+            )
+
         view = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / {esc(slug)}</div>
 <h1>{esc(info["title"])}</h1><p>{esc(info["tagline"])}</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge {badge}">{esc(status)}</span>
 <span class="badge">{len(commands)} commands</span><span class="badge">{esc(info["parameters"])}</span><span class="badge">{esc(version_label)}</span></div>
+{warning_html}
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture">{photo}</div>
 <p class="small muted">{"Verified native SolidCraft image. See verification metadata below for the exact source and tool versions. Click to view full size." if has_native else "Previously verified SolidCraft render from main; this PR revision is not yet native-verified. Click to view full size." if previously_verified else "Schematic drawing only; it is not a SolidCraft geometry render."}</p>
 <p>{esc(info["description"])}</p></section>

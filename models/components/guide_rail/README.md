@@ -42,6 +42,11 @@ The profile is calibrated to the measured Festool envelope in:
 
 - [TSO Products — Guide Rail Extrusion Comparison Guide](https://tsoproducts.com/content/guide-rail-extrusion-comparison-guide.pdf)
 
+<div style="border: 2px solid #d32f2f; border-radius: 6px; padding: 0.8rem 1rem; margin: 1rem 0; color: #b71c1c; background: #fff5f5;">
+<strong>Important — measured/reference geometry, not an official specification</strong><br><br>
+The dimensions used to calibrate this GuideRail profile are based on the measurements published by TSO Products. They have <strong>not been independently verified</strong> against a physical rail or an official manufacturer drawing. The detailed profile shape also comes from third-party STEP/reference material, not from a formal Festool dimensional source. No official Festool extrusion drawing or other formal manufacturer dimensional specification has been found or is available here for validation. Treat this model as a practical assembly/layout reference, <strong>not as verified manufacturing geometry or authoritative Festool dimensions</strong>.
+</div>
+
 TSO reports **H = 184.20 mm** and **D = 10.50 mm**. The STEP X coordinates are
 therefore scaled from 183.60 to 184.20 mm; the 10.50 mm height already matches.
 

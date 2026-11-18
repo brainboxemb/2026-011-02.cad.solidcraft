@@ -1,0 +1,133 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "cols",
+        "expression": "6",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "pitch",
+        "expression": "16",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rows",
+        "expression": "3",
+        "unit": ""
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 120,
+        "width": 80,
+        "height": 4,
+        "corner": [
+          0.0,
+          0.0,
+          0
+        ],
+        "body_name": "Plate"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            0.0,
+            2.0
+          ],
+          [
+            120.0,
+            0.0,
+            2.0
+          ],
+          [
+            120.0,
+            80.0,
+            2.0
+          ],
+          [
+            0.0,
+            80.0,
+            2.0
+          ]
+        ],
+        "radius": 8,
+        "body": "Plate"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Vent"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          18.0,
+          12.0
+        ],
+        "p1": [
+          24.0,
+          26.0
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "Plate"
+        ],
+        "name": "Vent",
+        "distance": 4,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Vent"
+        ],
+        "dir1": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "count1": "cols",
+        "spacing1": "pitch",
+        "alignment": "right",
+        "reversed": false,
+        "dir2": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count2": "rows",
+        "spacing2": 22,
+        "alignment2": "right",
+        "reversed2": false
+      }
+    }
+  ]
+}

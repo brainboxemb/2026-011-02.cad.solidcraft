@@ -69,6 +69,11 @@ Makita lists part **199141-8** as a **1500 mm** guide rail:
 
 - [Makita — 199141-8 guide rail product sheet](https://www.makitauk.com/data/sr/productinfo/generated/199141-8_2.pdf)
 
+<div style="border: 2px solid #d32f2f; border-radius: 6px; padding: 0.8rem 1rem; margin: 1rem 0; color: #b71c1c; background: #fff5f5;">
+<strong style="font-size: 1.05em;">WARNING — measured/reference geometry, not an official dimensional specification</strong><br><br>
+The Makita cross-section is based on a third-party STEP reference and calibrated to the <strong>182.50 × 10.28 mm</strong> envelope measured by TSO Products. It has <strong>not been independently verified</strong> against a physical rail or an official Makita extrusion drawing. The official Makita 199141-8 product sheet confirms the guide-rail product and 1500 mm length, but does not provide the full extrusion geometry used here. Treat this model as an assembly/layout reference, <strong>not as verified manufacturing geometry or authoritative Makita dimensions</strong>.
+</div>
+
 The Makita product reference is therefore 1500 mm. The standalone CAD example
 still uses 600 mm for a compact, readable result.
 

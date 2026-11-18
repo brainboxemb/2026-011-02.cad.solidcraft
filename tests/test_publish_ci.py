@@ -4,6 +4,8 @@ from pathlib import Path
 import sys
 from tempfile import TemporaryDirectory
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -43,6 +45,57 @@ class PublishCiTests(unittest.TestCase):
                 workflow_head_branch="feature/test",
                 workflow_head_sha="a" * 40,
             )
+
+    def test_commit_and_push_rebases_and_retries_after_concurrent_update(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            with patch.object(publish_ci, "run") as run, patch.object(
+                publish_ci.subprocess,
+                "run",
+                side_effect=[
+                    SimpleNamespace(returncode=1),
+                    SimpleNamespace(returncode=1, stderr="rejected", stdout=""),
+                    SimpleNamespace(returncode=0, stderr="", stdout=""),
+                ],
+            ) as process:
+                changed = publish_ci.commit_and_push(
+                    root,
+                    branch="build",
+                    message="Publish generated output",
+                )
+
+        self.assertTrue(changed)
+        self.assertEqual(process.call_count, 3)
+        commands = [call.args[0] for call in run.call_args_list]
+        self.assertIn(["git", "fetch", "origin", "build"], commands)
+        self.assertIn(["git", "rebase", "origin/build"], commands)
+        self.assertNotIn(
+            ["git", "push", "--force", "origin", "HEAD:build"],
+            commands,
+        )
+
+    def test_commit_and_push_fails_after_bounded_retries(self):
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            with patch.object(publish_ci, "run"), patch.object(
+                publish_ci.subprocess,
+                "run",
+                side_effect=[
+                    SimpleNamespace(returncode=1),
+                    SimpleNamespace(returncode=1, stderr="rejected", stdout=""),
+                    SimpleNamespace(returncode=1, stderr="rejected", stdout=""),
+                ],
+            ):
+                with self.assertRaisesRegex(
+                    RuntimeError,
+                    "failed to publish build after 2 attempts",
+                ):
+                    publish_ci.commit_and_push(
+                        root,
+                        branch="build",
+                        message="Publish generated output",
+                        attempts=2,
+                    )
 
     def test_replace_stable_pages_preserves_preview_namespace(self):
         with TemporaryDirectory() as temp:

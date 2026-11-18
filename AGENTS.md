@@ -194,6 +194,11 @@ SolidCraft or CAD revision merely because another model was rebuilt.
   output set and publish that assembled site to the root of `gh-pages`.
 - A failed main build must never partially update stable output or the stable
   Pages root.
+- `build` and `gh-pages` may have legitimate concurrent writers, such as
+  stable promotion and closed-PR cleanup. Publish with normal non-force pushes;
+  on a non-fast-forward, fetch the target branch, rebase the prepared generated
+  commit, and retry a bounded number of times. Never force-push generated
+  branches or discard the other writer's change.
 
 ### Site/catalog scaling
 

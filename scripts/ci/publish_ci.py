@@ -26,8 +26,8 @@ This branch stores verified technical CAD build output only.
 
 - `main/<source-item-path>/` contains the last promoted successful main build.
 - `pr/<number>/<source-item-path>/` contains isolated verified PR output.
-- `<model-root>` mirrors the source model root, for example
-  `models/basic/plate/`.
+- `<source-item-path>` is the catalog source-file path without `.py`, for
+  example `models/basic/plate/scpf/model/`.
 - Every built model directory carries its own `verification.json`.
 
 The website lives on `gh-pages`. Do not edit generated build output by hand.
@@ -108,7 +108,17 @@ def remove_legacy_build_layout(build_root: Path) -> None:
             shutil.rmtree(path)
 
 
-def commit_and_push(root: Path, *, branch: str, message: str) -> bool:
+def commit_and_push(
+    root: Path,
+    *,
+    branch: str,
+    message: str,
+    attempts: int = 3,
+) -> bool:
+    """Commit generated output and retry non-fast-forward publication safely."""
+    if attempts < 1:
+        raise ValueError("attempts must be positive")
+
     run(["git", "config", "user.name", "github-actions[bot]"], cwd=root)
     run(
         [
@@ -126,9 +136,35 @@ def commit_and_push(root: Path, *, branch: str, message: str) -> bool:
     ).returncode != 0
     if not changed:
         return False
+
     run(["git", "commit", "-m", message], cwd=root)
-    run(["git", "push", "origin", f"HEAD:{branch}"], cwd=root)
-    return True
+
+    for attempt in range(1, attempts + 1):
+        pushed = subprocess.run(
+            ["git", "push", "origin", f"HEAD:{branch}"],
+            cwd=root,
+            text=True,
+            capture_output=True,
+        )
+        if pushed.returncode == 0:
+            return True
+        if attempt == attempts:
+            detail = (pushed.stderr or pushed.stdout or "").strip()
+            raise RuntimeError(
+                f"failed to publish {branch} after {attempts} attempts"
+                + (f": {detail}" if detail else "")
+            )
+
+        run(
+            ["git", "fetch", "origin", branch],
+            cwd=root,
+        )
+        run(
+            ["git", "rebase", f"origin/{branch}"],
+            cwd=root,
+        )
+
+    raise AssertionError("unreachable publication retry state")
 
 
 def replace_stable_pages(site: Path, pages: Path) -> None:

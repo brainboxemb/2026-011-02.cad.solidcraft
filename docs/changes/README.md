@@ -22,3 +22,4 @@ Current records:
 - [0001-targeted-model-builds.md](0001-targeted-model-builds.md) — targeted model selection, per-model verified output and incremental publication (#129).
 - [0002-tested-ci-orchestration.md](0002-tested-ci-orchestration.md) — move selection, model checks and publication policy out of workflow YAML into tested Python (#134).
 - [0003-reusable-cad-ci-image.md](0003-reusable-cad-ci-image.md) — build and reuse one immutable CAD/SolidCraft/SCPF/SCPC CI toolchain image (#136).
+- [0004-concurrent-generated-publication.md](0004-concurrent-generated-publication.md) — retry generated-branch publication safely when CAD cleanup or promotion races (#138).

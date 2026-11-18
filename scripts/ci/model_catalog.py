@@ -240,7 +240,7 @@ MODELS = {
             "Cylinder — join Ø20 × 18 mm insertion below worktop",
             "Cylinder — add Ø20.2 × 2 mm flared free tip",
             "Two 1.5 × 14 mm crossing cuts create four flex legs",
-            "Fillet/chamfer the upper body and add a raised square box logo",
+            "Fillet/chamfer the upper body and cut a recessed square box logo",
         ],
         "component_source": "models/components/flex_bench_dog/scpf/model.py",
         "component_definition_primary": True,

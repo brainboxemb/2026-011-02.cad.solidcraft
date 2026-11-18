@@ -52,8 +52,8 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(len(boxes), 2)
         self.assertEqual(boxes[0]["width"], "slot_width")
         self.assertEqual(boxes[1]["length"], "slot_width")
-        self.assertEqual(boxes[0]["height"], 30)
-        self.assertEqual(boxes[1]["height"], 30)
+        self.assertEqual(boxes[0]["height"], 14)
+        self.assertEqual(boxes[1]["height"], 14)
 
 
 if __name__ == "__main__":

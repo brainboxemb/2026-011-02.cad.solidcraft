@@ -16,6 +16,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -261,17 +262,91 @@ def compare_current() -> None:
     )
 
 
+def _existing_result(slug: str) -> tuple[Path, str]:
+    """Find verified native output for one catalog model.
+
+    Prefer the candidate produced by this workflow. Shared model-root items can
+    also contain an unchanged sibling variant; for that variant the accepted
+    stable build is the correct package source.
+    """
+
+    current = ROOT / "output" / "candidate" / model_build_path(slug)
+    if (
+        (current / "verification.json").is_file()
+        and (current / "native").is_dir()
+    ):
+        return current, "current-run"
+
+    stable = ROOT / "generated-build" / "main" / model_build_path(slug)
+    if (
+        (stable / "verification.json").is_file()
+        and (stable / "native").is_dir()
+    ):
+        return stable, "stable-build"
+
+    raise RuntimeError(
+        f"{slug}: no current or stable verified native result is available"
+    )
+
+
+def package_item() -> None:
+    """Package verified native output below the owning model-root item.
+
+    Command JSON already lives below this item's generated/ directory. The
+    package step adds native files and verification metadata under
+    results/<slug>/ so the complete item can later be published by tool.cad.ci.
+    """
+
+    members = item_members(current_item_root())
+    if not members:
+        raise RuntimeError(
+            f"no catalog model belongs to {current_item_root()}"
+        )
+
+    results = output_root() / "results"
+    if results.exists():
+        shutil.rmtree(results)
+    results.mkdir(parents=True)
+
+    rows: dict[str, dict] = {}
+    for slug in members:
+        source, source_kind = _existing_result(slug)
+        target = results / slug
+        shutil.copytree(source / "native", target / "native")
+        shutil.copy2(
+            source / "verification.json",
+            target / "verification.json",
+        )
+        verification = _read_json(source / "verification.json")
+        if not isinstance(verification, dict):
+            raise RuntimeError(f"{slug}: verification.json is not an object")
+        rows[slug] = {
+            "source": source_kind,
+            "source_commit": verification.get("source_commit"),
+            "verification_sha256": _sha256(
+                source / "verification.json"
+            ),
+        }
+
+    _write_check(
+        "package.json",
+        {"schema": 1, "status": "pass", "models": rows},
+    )
+
+
 def main() -> int:
     """Run one shared model-root migration step."""
 
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=("compile", "compare-current"))
+    parser.add_argument("command", choices=("compile", "compare-current", "package"))
     args = parser.parse_args()
 
     if args.command == "compile":
         compile_item()
-    else:
+    elif args.command == "compare-current":
         compare_current()
+    else:
+        package_item()
     return 0
 
 

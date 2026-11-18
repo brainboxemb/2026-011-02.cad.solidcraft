@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 import sys
 from tempfile import TemporaryDirectory
 import unittest
@@ -72,6 +73,82 @@ class ModelItemTests(unittest.TestCase):
 
             self.assertEqual(path, current)
             self.assertEqual(source, "current-run")
+
+    def test_package_item_combines_current_and_stable_shared_variants(self):
+        """A shared item packages fresh output plus an unchanged stable sibling."""
+
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            item_root = root / "models/components/guide_rail"
+            item_root.mkdir(parents=True)
+            output = root / "build/models/components/guide_rail"
+
+            def write_result(base, slug, commit):
+                target = base / model_item.model_build_path(slug)
+                native = target / "native"
+                native.mkdir(parents=True)
+                (native / "model.sc").write_text(
+                    f"{slug}-native",
+                    encoding="utf-8",
+                )
+                (target / "verification.json").write_text(
+                    json.dumps(
+                        {
+                            "model": slug,
+                            "verified": True,
+                            "source_commit": commit,
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+
+            write_result(
+                root / "output/candidate",
+                "guide-rail",
+                "current",
+            )
+            write_result(
+                root / "generated-build/main",
+                "guide-rail-makita",
+                "stable",
+            )
+
+            with patch.object(model_item, "ROOT", root), patch.dict(
+                model_item.os.environ,
+                {
+                    "CAD_CI_ITEM_PATH": str(item_root),
+                    "CAD_CI_OUTPUT": str(output),
+                },
+            ):
+                model_item.package_item()
+
+            current = json.loads(
+                (output / "results/guide-rail/verification.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            stable = json.loads(
+                (
+                    output
+                    / "results/guide-rail-makita/verification.json"
+                ).read_text(encoding="utf-8")
+            )
+            summary = json.loads(
+                (output / "checks/package.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+
+        self.assertEqual(current["source_commit"], "current")
+        self.assertEqual(stable["source_commit"], "stable")
+        self.assertEqual(
+            summary["models"]["guide-rail"]["source"],
+            "current-run",
+        )
+        self.assertEqual(
+            summary["models"]["guide-rail-makita"]["source"],
+            "stable-build",
+        )
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 
 The current CAD pipeline remains authoritative during change 0012. The
 pipeline also handles catalog growth before site generation and, in parallel,
-runs every configured model-root item through the pinned tool.cad.ci release as a parallel migration proof.
+runs every configured model-root item through the pinned tool.cad.ci release after native verification so each item can package the verified result.
 """
 
 from __future__ import annotations
@@ -148,10 +148,11 @@ def run_tool_cad_ci_proof(
     paths: tuple[str, ...],
     output_root: Path,
 ) -> tuple[str, ...]:
-    """Plan and run selected model-root items through the pinned external tool.
+    """Run selected model-root items through the pinned external tool.
 
-    Each item compiles every catalog variant owned by its folder and compares
-    the new command JSON with current-run or accepted stable output.
+    Each item compiles every catalog variant owned by its folder, compares the
+    new command JSON with current-run or accepted stable output, and packages
+    verified native output produced earlier in this pipeline run.
     """
 
     if not TOOL_CAD_CI.is_file():
@@ -228,7 +229,7 @@ def execute(
     workflow_run: str,
     image_reference: str,
 ) -> dict:
-    """Run current CAD checks plus the parallel model-root tool.cad.ci proof."""
+    """Run current CAD checks, native verification and model-root packaging."""
 
     configure_git_workspace()
     paths = (
@@ -269,17 +270,6 @@ def execute(
             build_site_output=False,
         )
 
-        # Run the model-root items after the old cheap compile so changed models
-        # can compare against current-run output.
-        run_tool_cad_ci_proof(
-            mode=mode,
-            models=models,
-            base_sha=base_sha,
-            head_sha=head_sha,
-            paths=paths,
-            output_root=output_root,
-        )
-
         native_ci.execute(
             plan_path=plan_path,
             output_root=output_root,
@@ -288,6 +278,17 @@ def execute(
             source_sha=head_sha,
             workflow_run=workflow_run,
             image_reference=image_reference,
+        )
+
+        # Run the model-root items only after native verification. Their final
+        # package step can then use fresh candidate output or a stable sibling.
+        run_tool_cad_ci_proof(
+            mode=mode,
+            models=models,
+            base_sha=base_sha,
+            head_sha=head_sha,
+            paths=paths,
+            output_root=output_root,
         )
     return plan
 

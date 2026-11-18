@@ -14,6 +14,7 @@ from build_plan import PUBLIC_SITE
 from model_catalog import model_build_path, model_slugs
 from output_store import (
     migrate_legacy_pages,
+    migrate_legacy_store_layout,
     promote_candidate,
     prune_removed_models,
 )
@@ -236,11 +237,13 @@ def execute(
 
     if publish["channel"] == "stable":
         if not stable_complete(build_root):
-            migrate_legacy_pages(
-                pages=pages_root,
-                store=build_root,
-                source_root=source_root,
-            )
+            migrated = migrate_legacy_store_layout(store=build_root)
+            if not migrated:
+                migrate_legacy_pages(
+                    pages=pages_root,
+                    store=build_root,
+                    source_root=source_root,
+                )
         if models:
             promote_candidate(
                 candidate=candidate,

@@ -1,9 +1,9 @@
 """Reusable 20 mm flex bench dog based on the supplied Mini-MFT reference image.
 
-The CAD orientation is functional rather than a prescribed print orientation:
-the worktop surface is Z=0, the insert extends 20 mm downward and the dog rises
-20 mm upward. A small flare at the free insert end provides passive spring
-preload after the stem is split into four flexible quadrants.
+The worktop surface is Z=0. The dog extends 20 mm upward and the insert extends
+20 mm downward. The complete insert is a shallow frustum: Ø20.0 mm at the rim
+and Ø20.2 mm at the free end. Two crossing slots turn that taper into four
+flexible legs that provide passive spring preload without separate hardware.
 """
 
 
@@ -11,22 +11,32 @@ preload after the stem is split into four flexible quadrants.
 class FlexBenchDog:
     hole_diameter = 20.0
     interference = 0.20
-    rim_diameter = 24.0
+    rim_diameter = 22.0
     slot_width = 1.5
 
     ABOVE_WORKTOP = 20.0
-    RIM_THICKNESS = 3.0
+    RIM_THICKNESS = 1.5
     INSERTION_LENGTH = 20.0
-    TIP_FLARE_LENGTH = 2.0
     SLOT_LENGTH = 16.0
     TOP_CHAMFER = 0.6
     BOTTOM_CHAMFER = 1.0
-    LOGO_SIZE = 8.0
+    LOGO_LINE_WIDTH = 0.6
     LOGO_DEPTH = 0.6
 
+    LOGO_SEGMENTS = (
+        ((0.0, 4.0), (3.5, 2.0)),
+        ((3.5, 2.0), (3.5, -2.0)),
+        ((3.5, -2.0), (0.0, -4.0)),
+        ((0.0, -4.0), (-3.5, -2.0)),
+        ((-3.5, -2.0), (-3.5, 2.0)),
+        ((-3.5, 2.0), (0.0, 4.0)),
+        ((0.0, 0.0), (0.0, 4.0)),
+        ((0.0, 0.0), (3.5, -2.0)),
+        ((0.0, 0.0), (-3.5, -2.0)),
+    )
+
     def build(self):
-        # Rim bottom is the worktop datum. The narrower working cylinder starts
-        # on the rim and ends at 20 mm above the worktop.
+        # Very small stop rim: only 1 mm radial overhang around the Ø20 body.
         rim = Cylinder(
             d=self.rim_diameter,
             h=self.RIM_THICKNESS,
@@ -41,23 +51,17 @@ class FlexBenchDog:
         ).at(0, 0, self.RIM_THICKNESS, anchor=Anchor.BOTTOM)
         dog = rim + upper
 
-        # Straight insert root below Z=0, with only the free 2 mm flared.
-        insert = Cylinder(
-            d=self.hole_diameter,
+        # One true full-length taper. The base/free end is slightly larger;
+        # Anchor.TOP keeps the Ø20 top end exactly at the worktop datum Z=0.
+        insert = Cone(
+            d=self.hole_diameter + self.interference,
+            top_d=self.hole_diameter,
             h=self.INSERTION_LENGTH,
-            anchor=Anchor.BOTTOM,
-        ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
+            anchor=Anchor.TOP,
+        )
         dog = dog + insert
 
-        flare = Cylinder(
-            d=self.hole_diameter + self.interference,
-            h=self.TIP_FLARE_LENGTH,
-            anchor=Anchor.BOTTOM,
-        ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
-        dog = dog + flare
-
-        # Give the complete free insert edge a larger lead-in before splitting
-        # it into four flexible legs.
+        # Larger lead-in chamfer on the free lower edge.
         dog = dog.chamfer(
             self.BOTTOM_CHAMFER,
             edges=[(
@@ -67,8 +71,7 @@ class FlexBenchDog:
             )],
         )
 
-        # Two native sketch cuts form the cross slots. They start at the free
-        # end and stop 4 mm below the worktop, leaving a solid flex root.
+        # Cross slots start at the free end and stop 4 mm below the rim.
         slot_span = self.hole_diameter + self.interference + 2.0
 
         with Sketch(
@@ -95,14 +98,15 @@ class FlexBenchDog:
             edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
         )
 
-        # Small recessed square used as a simple BBE/box mark.
+        # Recess the cube/box wireframe from the supplied logo reference.
         with Sketch(
             name="Top logo",
             on=dog,
             plane="XY",
             origin=(0, 0, self.ABOVE_WORKTOP),
         ) as logo:
-            Rectangle2D(self.LOGO_SIZE, self.LOGO_SIZE)
+            for p0, p1 in self.LOGO_SEGMENTS:
+                SlotCenterToCenter2D(p0, p1, self.LOGO_LINE_WIDTH)
         dog = dog - logo.extrude(-self.LOGO_DEPTH)
 
         return dog

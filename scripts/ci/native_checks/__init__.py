@@ -2,6 +2,7 @@
 from .basic import (
     validate_bolted_flange,
     validate_corner_bracket,
+    validate_flex_bench_dog,
     validate_guide_rail,
     validate_guide_rail_makita,
     validate_plastic_enclosure,
@@ -19,6 +20,7 @@ VALIDATORS = {
     "simple-mft-assembly": validate_simple_mft_assembly,
     "hub75-screen": validate_hub75_screen,
     "corner-bracket": validate_corner_bracket,
+    "flex-bench-dog": validate_flex_bench_dog,
     "bolted-flange": validate_bolted_flange,
     "sample-plate": validate_sample_plate,
     "plastic-enclosure": validate_plastic_enclosure,

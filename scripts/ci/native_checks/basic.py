@@ -12,6 +12,23 @@ from .common import (
     size_close,
 )
 
+def validate_flex_bench_dog(root: Path):
+    rows = commands(root, "flex-bench-dog")
+    require(count(rows, "solid.cylinder") == 3,
+            "flex-bench-dog: expected working body, rim and stem cylinders")
+    require(count(rows, "solid.box") == 2,
+            "flex-bench-dog: expected two perpendicular slot cuts")
+
+    data = measurements(root, "flex-bench-dog")
+    require(data["body_count"] == 1, "flex-bench-dog: expected one body")
+    body = data["bodies"][0]
+    require(body["closed"] is True, "flex-bench-dog: body must be closed")
+    require(
+        size_close(body, (24.0, 24.0, 76.0)),
+        f"flex-bench-dog: unexpected bounds {body_size(body)}",
+    )
+
+
 def validate_guide_rail(root: Path):
     data = measurements(root, "guide-rail")
     require(data["body_count"] == 1, "guide-rail: expected one body")

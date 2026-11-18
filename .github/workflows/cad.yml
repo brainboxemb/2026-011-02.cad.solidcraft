@@ -1,50 +1,64 @@
-name: CAD models and site smoke tests
+name: CAD
 
 on:
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, closed]
   push:
     branches: [main]
   workflow_dispatch:
     inputs:
       mode:
-        description: Model selection mode
+        description: Models to check
         type: choice
         required: true
         default: changed
         options: [changed, models, all]
       models:
-        description: Space- or comma-separated model slugs for models mode
+        description: Model slugs when mode is models
         type: string
         required: false
         default: ""
 
 permissions:
-  contents: read
+  contents: write
   packages: read
 
 concurrency:
   group: cad-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
 
 jobs:
   cad:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
       BUILD_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
       BUILD_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || '' }}
       BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || '' }}
       HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      EVENT_NAME: ${{ github.event_name }}
+      REF_NAME: ${{ github.head_ref || github.ref_name }}
+      PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
-      - name: Checkout current stable site
+      - name: Checkout verified build output
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          path: build
+
+      - name: Checkout current Pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
-          path: previous-site
+          path: pages
 
       - uses: actions/setup-python@v5
         with:
@@ -67,7 +81,7 @@ jobs:
       - name: Pull immutable CAD image
         run: docker pull "${{ steps.image.outputs.reference }}"
 
-      - name: Run selected CAD CI in immutable image
+      - name: Run selected CAD pipeline
         run: |
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/workspace" \
@@ -76,28 +90,114 @@ jobs:
             -e BUILD_MODELS \
             -e BASE_SHA \
             -e HEAD_SHA \
+            -e EVENT_NAME \
+            -e REF_NAME \
+            -e PR_NUMBER \
+            -e GITHUB_RUN_ID \
             "${{ steps.image.outputs.reference }}" \
             bash -c '
               set -euo pipefail
               git config --global --add safe.directory /workspace
-              python scripts/ci/build_plan.py \
-                --mode "$BUILD_MODE" \
-                --models "$BUILD_MODELS" \
-                --base "$BASE_SHA" \
-                --head "$HEAD_SHA" \
+
+              rm -rf resolved-build
+              cp -a build resolved-build
+              if [ ! -d resolved-build/main ]; then
+                python scripts/ci/output_store.py migrate-store \
+                  --store resolved-build
+              fi
+
+              plan_args=(
+                --mode "$BUILD_MODE"
+                --models "$BUILD_MODELS"
+                --base "$BASE_SHA"
+                --head "$HEAD_SHA"
+                --event-name "$EVENT_NAME"
+                --ref-name "$REF_NAME"
                 --out output/plan.json
+              )
+              if [ "$PR_NUMBER" != "0" ]; then
+                plan_args+=(--pull-request "$PR_NUMBER")
+              fi
+
+              python scripts/ci/build_plan.py "${plan_args[@]}"
+
               python scripts/ci/cad_ci.py \
                 --plan output/plan.json \
                 --out output \
-                --previous-site previous-site \
-                --source-sha "$HEAD_SHA"
+                --previous-site pages \
+                --source-sha "$HEAD_SHA" \
+                --skip-site
+
+              python scripts/ci/native_ci.py \
+                --plan output/plan.json \
+                --out output \
+                --stable-store resolved-build/main \
+                --previous-site pages \
+                --source-sha "$HEAD_SHA" \
+                --workflow-run "$GITHUB_RUN_ID" \
+                --image-reference "${{ steps.image.outputs.reference }}"
             '
 
-      - uses: actions/upload-artifact@v4
+      - name: Publish verified build and site
+        if: >-
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          python scripts/ci/publish_ci.py \
+            --bundle output \
+            --source-root . \
+            --build-root build \
+            --pages-root pages \
+            --workflow-event "$EVENT_NAME" \
+            --workflow-head-branch "$REF_NAME" \
+            --workflow-head-sha "$HEAD_SHA"
+
+      - name: Upload CAD diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: cad-site-smoke
+          name: cad-${{ github.run_id }}
           path: |
             output/plan.json
             output/models/
+            output/native/
+            output/candidate/
             output/site/
-          if-no-files-found: error
+            output/publish.json
+          if-no-files-found: ignore
+
+  cleanup:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trusted cleanup code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source
+
+      - name: Checkout build output
+        uses: actions/checkout@v4
+        with:
+          ref: build
+          path: build
+
+      - name: Checkout Pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: pages
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Remove closed PR output
+        run: |
+          python source/scripts/ci/cleanup_ci.py \
+            --build-root build \
+            --pages-root pages \
+            --pull-request "${{ github.event.pull_request.number }}"

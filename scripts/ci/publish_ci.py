@@ -207,7 +207,10 @@ def execute(
     candidate_root = source_root / "build"
     generic_main = build_root / "main"
     has_generic_main = (generic_main / "build.json").is_file()
-    work = bundle / "tool-publication"
+    # The container writes bundle/output as root. Keep host-side publication
+    # candidates beside that directory so the runner user can create them
+    # without changing ownership of verified container output.
+    work = bundle.parent / "publication-output"
     if work.exists():
         shutil.rmtree(work)
     work.mkdir(parents=True)

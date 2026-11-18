@@ -147,7 +147,7 @@ jobs:
             output/candidate/
             output/site/
             output/publish.json
-            output/tool-publication/
+            publication-output/
             build/models/**
           if-no-files-found: ignore
 

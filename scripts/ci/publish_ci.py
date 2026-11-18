@@ -87,16 +87,48 @@ def is_pr_preview(publish: dict) -> bool:
     )
 
 
-def stable_complete(build_root: Path) -> bool:
-    return all(
-        (
+def stable_model_state(build_root: Path):
+    """Return current native catalog models present/missing in build/main."""
+    expected = tuple(model_slugs("native"))
+    present = []
+    missing = []
+    for slug in expected:
+        verification = (
             build_root
             / "main"
             / model_build_path(slug)
             / "verification.json"
-        ).is_file()
-        for slug in model_slugs("native")
-    )
+        )
+        (present if verification.is_file() else missing).append(slug)
+    return tuple(present), tuple(missing)
+
+
+def stable_complete(build_root: Path) -> bool:
+    _present, missing = stable_model_state(build_root)
+    return not missing
+
+
+def needs_legacy_bootstrap(build_root: Path, candidate_models) -> bool:
+    """Decide whether legacy bootstrap is still appropriate.
+
+    Once any current catalog model exists in build/main, that modern store is
+    authoritative. Catalog growth may leave only candidate models missing;
+    those are filled by normal promotion. Missing non-candidate models indicate
+    an incomplete/corrupt modern store and must fail rather than silently
+    falling back to gh-pages.
+    """
+    present, missing = stable_model_state(build_root)
+    if not present:
+        return True
+
+    candidate = set(candidate_models)
+    uncovered = tuple(slug for slug in missing if slug not in candidate)
+    if uncovered:
+        raise RuntimeError(
+            "build/main is incomplete outside the current candidate; missing: "
+            + ", ".join(uncovered)
+        )
+    return False
 
 
 def write_build_readme(build_root: Path) -> None:
@@ -275,7 +307,7 @@ def execute(
     if publish["channel"] == "stable":
         if not stable_complete(build_root):
             migrated = migrate_legacy_store_layout(store=build_root)
-            if not migrated:
+            if not migrated and needs_legacy_bootstrap(build_root, models):
                 migrate_legacy_pages(
                     pages=pages_root,
                     store=build_root,

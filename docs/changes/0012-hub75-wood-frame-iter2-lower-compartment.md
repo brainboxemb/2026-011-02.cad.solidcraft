@@ -73,6 +73,13 @@ attached to the side-wall body because Forge currently cannot use a standalone
 tracked separately in Forge issue #354. The rear board remains temporarily
 disabled while this rear-access shape is developed.
 
+Add a first side-handle concept for visual evaluation. Each side gets one
+vertical Ø22 mm beech roundwood rod centred in the 50 mm rear recess at Y=75.
+Do not slot the roundwood around the 12 mm plywood. Instead keep the rod intact
+and show two temporary printed sockets per side. The current sockets use a Ø34
+outer sleeve, Ø22.6 bore and a short bridge to the recessed plywood edge. These
+socket dimensions are concept values, not the final mounting design.
+
 ## Scope
 
 This change creates the basic lower compartment, including its two vertical

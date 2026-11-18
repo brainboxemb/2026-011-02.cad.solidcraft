@@ -68,6 +68,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "corner_brackets.py",
                 "glass_frame.py",
                 "hub75_panels.py",
+                "side_handles.py",
                 "wood_frame.py",
             },
         )
@@ -76,7 +77,9 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             {
                 "board.py",
                 "glass_strip.py",
+                "roundwood_handle.py",
                 "side_board.py",
+                "side_handle_socket.py",
                 "window.py",
             },
         )
@@ -166,7 +169,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         # The intermediate shelf adds one Board shape. The two equal lower
         # dividers share one additional Board shape and become two occurrences.
-        self.assertEqual(len(creates), 14)
+        self.assertEqual(len(creates), 16)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -281,6 +284,42 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         # side height 444 mm; -80 mm = recess ends at 364 mm.
         self.assertEqual(70.0 + 12.0 + 80.0, 162.0)
         self.assertEqual(70.0 + 12.0 + 362.0 - 80.0, 364.0)
+
+    def test_side_handle_concept_is_centered_in_each_recess(self):
+        rows = commands()
+        moves = of(rows, "occurrence.move")
+
+        rods = [
+            row for row in moves
+            if row["occurrence"] in {
+                "$left_handle_rod",
+                "$right_handle_rod",
+            }
+        ]
+        self.assertEqual(len(rods), 2)
+
+        # Default recess runs from Y=50 to Y=100, so both Ø22 handle centres
+        # are deliberately placed at Y=75 for the first visual concept.
+        self.assertTrue(all(row["translate"][1] == 75.0 for row in rods))
+
+        sockets = [
+            row for row in moves
+            if row["occurrence"] in {
+                "$left_handle_socket_bottom",
+                "$left_handle_socket_top",
+                "$right_handle_socket_bottom",
+                "$right_handle_socket_top",
+            }
+        ]
+        self.assertEqual(len(sockets), 4)
+        self.assertTrue(all(row["translate"][1] == 75.0 for row in sockets))
+
+        handle_source = (
+            SCPF_DIR / "assemblies" / "side_handles.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("ROD_DIAMETER = 22.0", handle_source)
+        self.assertIn("SOCKET_OUTER_DIAMETER = 34.0", handle_source)
+        self.assertIn("ROD_SOCKET_INSERT = 8.0", handle_source)
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

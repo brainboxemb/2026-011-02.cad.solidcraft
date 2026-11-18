@@ -3,6 +3,7 @@
 from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
+from assemblies.side_handles import SideHandles
 from assemblies.wood_frame import WoodFrame
 from parts.window import Window
 
@@ -96,6 +97,17 @@ class WoodenHub75BoxIter2:
             side_recess_upper_keep=self.side_recess_upper_keep,
         )
 
+        side_handles = SideHandles(
+            opening_width=self.opening_width,
+            opening_height=self.opening_height,
+            lower_compartment_height=self.lower_compartment_height,
+            frame_wood_thickness=self.frame_wood_thickness,
+            cabinet_depth=self.cabinet_depth,
+            side_recess_depth=self.side_recess_depth,
+            side_recess_lower_keep=self.side_recess_lower_keep,
+            side_recess_upper_keep=self.side_recess_upper_keep,
+        )
+
         brackets = CornerBrackets(
             opening_width=self.opening_width,
             opening_height=self.opening_height,
@@ -120,4 +132,4 @@ class WoodenHub75BoxIter2:
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + brackets + glazing + window
+        return panels + frame + side_handles + brackets + glazing + window

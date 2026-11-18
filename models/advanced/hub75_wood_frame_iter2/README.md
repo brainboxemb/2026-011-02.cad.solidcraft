@@ -72,6 +72,18 @@ The recess is cut as a real rounded YZ profile in each 12 mm side wall. The
 front edge remains straight. The rear board is temporarily disabled while this
 rear-access geometry is being developed.
 
+### Side-handle concept
+
+For visual evaluation, each side recess now contains one straight **Ø22 mm
+beech roundwood handle**. The rod is not slotted or weakened. Its centre is
+placed halfway through the 50 mm recess: **Y=75 mm** between the recessed
+plywood edge at Y=50 and the cabinet rear at Y=100.
+
+Two temporary printed socket concepts hold each rod. Each socket has a Ø34 mm
+outer sleeve, Ø22.6 mm bore and a short bridge back to the recessed plywood
+edge. The sockets and exact handle position are still concept geometry; they
+can be moved or redesigned after checking hand clearance in the full model.
+
 ## Current main dimensions
 
 | Item | Value |

@@ -251,6 +251,7 @@ MODELS = {
     },
     "guide-rail": {
         "source": "models/components/guide_rail/scpf/model.py",
+        "extra_inputs": ("models/components/guide_rail/scpf/",),
         "section": "components",
         "title": "GuideRail — Festool profile",
         "tagline": "Parametric guide rail using the detailed Festool reference extrusion",
@@ -270,6 +271,7 @@ MODELS = {
     },
     "guide-rail-makita": {
         "source": "models/components/guide_rail/scpf/makita.py",
+        "extra_inputs": ("models/components/guide_rail/scpf/",),
         "section": "components",
         "title": "GuideRail — Makita profile",
         "tagline": "The same GuideRail component with the Makita 199141-8 profile",
@@ -349,7 +351,10 @@ MODELS = {
     "hub75-wood-frame": {
         "source": "models/advanced/hub75_wood_frame/scpf/model.py",
         "dependencies": ("corner-bracket",),
-        "extra_inputs": ("models/components/hub75_panel/basic/scpf/",),
+        "extra_inputs": (
+            "models/advanced/hub75_wood_frame/scpf/",
+            "models/components/hub75_panel/basic/scpf/",
+        ),
         "section": "advanced",
         "title": "WoodenHub75Box",
         "tagline": "Parametrized 12 mm plywood box, eight brackets and one GlassStrip type",
@@ -411,13 +416,17 @@ def _model_root(path):
 
 
 def direct_input_paths(slug):
-    """Paths whose change directly affects one catalog model."""
+    """Paths whose change directly affects one catalog model.
+
+    Source files are exact by default. Multi-file model packages opt in to
+    prefix matching through extra_inputs.
+    """
     model = MODELS[slug]
-    paths = {_model_root(model["source"])}
+    paths = {model["source"]}
     if model.get("scpc_source"):
-        paths.add(_model_root(model["scpc_source"]))
+        paths.add(model["scpc_source"])
     if model.get("component_source"):
-        paths.add(_model_root(model["component_source"]))
+        paths.add(model["component_source"])
     paths.update(model.get("extra_inputs", ()))
     return tuple(sorted(paths))
 

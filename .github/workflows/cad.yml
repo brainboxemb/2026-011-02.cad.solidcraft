@@ -95,48 +95,19 @@ jobs:
             -e PR_NUMBER \
             -e GITHUB_RUN_ID \
             "${{ steps.image.outputs.reference }}" \
-            bash -c '
-              set -euo pipefail
-              git config --global --add safe.directory /workspace
-
-              rm -rf resolved-build
-              cp -a build resolved-build
-              if [ ! -d resolved-build/main ]; then
-                python scripts/ci/output_store.py migrate-store \
-                  --store resolved-build
-              fi
-
-              plan_args=(
-                --mode "$BUILD_MODE"
-                --models "$BUILD_MODELS"
-                --base "$BASE_SHA"
-                --head "$HEAD_SHA"
-                --event-name "$EVENT_NAME"
-                --ref-name "$REF_NAME"
-                --out output/plan.json
-              )
-              if [ "$PR_NUMBER" != "0" ]; then
-                plan_args+=(--pull-request "$PR_NUMBER")
-              fi
-
-              python scripts/ci/build_plan.py "${plan_args[@]}"
-
-              python scripts/ci/cad_ci.py \
-                --plan output/plan.json \
-                --out output \
-                --previous-site pages \
-                --source-sha "$HEAD_SHA" \
-                --skip-site
-
-              python scripts/ci/native_ci.py \
-                --plan output/plan.json \
-                --out output \
-                --stable-store resolved-build/main \
-                --previous-site pages \
-                --source-sha "$HEAD_SHA" \
-                --workflow-run "$GITHUB_RUN_ID" \
-                --image-reference "${{ steps.image.outputs.reference }}"
-            '
+            python scripts/ci/pipeline_ci.py \
+              --mode "$BUILD_MODE" \
+              --models "$BUILD_MODELS" \
+              --base-sha "$BASE_SHA" \
+              --head-sha "$HEAD_SHA" \
+              --event-name "$EVENT_NAME" \
+              --ref-name "$REF_NAME" \
+              --pull-request "$PR_NUMBER" \
+              --out output \
+              --build-root build \
+              --previous-site pages \
+              --workflow-run "$GITHUB_RUN_ID" \
+              --image-reference "${{ steps.image.outputs.reference }}"
 
       - name: Publish verified build and site
         if: >-

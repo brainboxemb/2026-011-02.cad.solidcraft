@@ -21,6 +21,10 @@ The public labels are also too vague. "Published render" can be an older image
 carried forward only as a visual reference and is not proof of current native
 verification.
 
+SamplePlate is the concrete regression case: a genuine stored SolidCraft 0.42.0
+verification exists, but the public page falls back to a schematic when page
+metadata changes alter the verification fingerprint.
+
 ## Decision
 
 Keep two explicit path sets:

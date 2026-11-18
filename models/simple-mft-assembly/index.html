@@ -10,9 +10,9 @@
 <a href="https://github.com/brainboxemb/2026-011-02.cad.solidcraft">Source</a></nav>
 </div></header>
 <section class="hero cad-hero"><div class="wrap"><div class="eyebrow">CAD design / simple-mft-assembly</div>
-<h1>Simple MFT assembly</h1><p>Reusable Simple MFT worktop with a 1080 mm Festool-profile GuideRail</p></div></section>
+<h1>Simple MFT assembly</h1><p>Reusable Simple MFT worktop with an 800 mm Festool-profile GuideRail</p></div></section>
 <main class="wrap"><div class="metadata"><span class="badge verified">Native verified · snapshot from matching run</span>
-<span class="badge">33 commands</span><span class="badge">805 × 555 mm worktop; shared worktop thickness 18 mm; Festool GuideRail 1080 mm</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
+<span class="badge">33 commands</span><span class="badge">805 × 555 mm worktop; shared worktop thickness 18 mm; Festool GuideRail 800 mm</span><span class="badge">SolidCraft 0.42.0 · verified native run</span></div>
 <div class="two model-preview-layout"><section class="panel"><h2>Model preview</h2><div class="picture"><a class="preview-fullsize" href="native.png" target="_blank" rel="noopener noreferrer" aria-label="Open native CAD screenshot at full size"><img src="native.png" alt="Native SolidCraft CAD model, full-size image available"></a></div>
 <p class="small muted">Native SolidCraft image, matching this source revision. Click to view full size.</p>
 <p>The first Simple MFT assembly reuses the exact worktop component and the generic GuideRail component. The rail runs along the short Y/depth direction, is centred over X=0 and rests on the parametrically shared worktop top face.</p></section>
@@ -20,10 +20,10 @@
 <div class="links"><a class="btn" href="model.py">SCPF source</a><a class="btn secondary" href="solidcraft.json">Command JSON</a>
 </div>
 <p class="small muted">Command JSON describes CAD actions; it is not an already-saved .sc design.</p>
-<h3>Construction stages</h3><ol><li>Instantiate the reusable SimpleMFT worktop</li><li>Share worktop_thickness with the worktop component</li><li>Instantiate GuideRail with the Festool profile at 1080 mm</li><li>Centre the 184.20 mm rail width over X=0</li><li>Place the rail bottom at Z=worktop_thickness</li></ol></section></div>
+<h3>Construction stages</h3><ol><li>Instantiate the reusable SimpleMFT worktop</li><li>Share worktop_thickness with the worktop component</li><li>Instantiate GuideRail with the Festool profile at 800 mm</li><li>Centre the 184.20 mm rail width over X=0</li><li>Place the rail bottom at Z=worktop_thickness</li></ol></section></div>
 <section class="panel browser-open"><h2>Open this model in SolidCraft Web</h2><p>The native editable model is available in SolidCraft’s official web application, hosted at <strong>docs.solidcraft.io</strong>.</p><p><strong>External website:</strong> selecting the link below opens the SolidCraft website in a new tab. Your browser downloads the web application from SolidCraft’s servers, which generates network traffic for SolidCraft. The .sc model itself is hosted here on our GitHub Pages site. We do not embed the application.</p><div class="links"><a class="btn" href="https://docs.solidcraft.io/app/?open=https%3A%2F%2Fbrainboxemb.github.io%2F2026-011-02.cad.solidcraft%2Fmodels%2Fsimple-mft-assembly%2Fmodel.sc" target="_blank" rel="noopener noreferrer" aria-label="Open model on external website docs.solidcraft.io">Open in SolidCraft Web (external website)</a><a class="btn secondary" href="model.sc" download>Download native .sc</a></div><p class="small muted">You are leaving brainboxemb.github.io for docs.solidcraft.io. If you prefer not to use the external web app, download the native .sc file and open it locally in the matching SolidCraft release.</p></section>
 
-<h2>Python model</h2><pre><code>&quot;&quot;&quot;Simple MFT worktop with one reusable 1080 mm guide rail.
+<h2>Python model</h2><pre><code>&quot;&quot;&quot;Simple MFT worktop with one reusable 800 mm guide rail.
 
 World axes:
     X: left/right across the worktop width
@@ -45,8 +45,8 @@ class SimpleMFTAssembly:
     # rail together instead of leaving the rail at a hard-coded Z=18 position.
     worktop_thickness = SimpleMFT.thickness
 
-    # Festool MFT/3 uses FS 1080/2. Keep the length editable in the assembly.
-    guide_rail_length = 1080.0
+    # Compact assembly example. Keep the length editable in the assembly.
+    guide_rail_length = 800.0
 
     GUIDE_RAIL_PROFILE = &quot;festool&quot;
 
@@ -769,7 +769,7 @@ SimpleMFTAssembly()
   &quot;command&quot;: &quot;parameters.add&quot;,
   &quot;params&quot;: {
     &quot;name&quot;: &quot;guide_rail_length&quot;,
-    &quot;expression&quot;: &quot;1080&quot;,
+    &quot;expression&quot;: &quot;800&quot;,
     &quot;unit&quot;: &quot;mm&quot;
   }
 }</code></pre></li>

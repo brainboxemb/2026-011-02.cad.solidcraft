@@ -692,7 +692,7 @@
       "command": "parameters.add",
       "params": {
         "name": "guide_rail_length",
-        "expression": "1080",
+        "expression": "800",
         "unit": "mm"
       }
     },

@@ -3,7 +3,7 @@ name: CAD toolchain image
 on:
   push:
     branches-ignore:
-      - model-output
+      - build
       - gh-pages
     paths:
       - "docker/cad/**"

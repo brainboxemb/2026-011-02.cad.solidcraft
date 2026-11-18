@@ -1,24 +1,19 @@
-# Plate is the first real CAD consumer of tool.cad.ci.
+# This folder is one tool.cad.ci item. The shared runner derives its
+# catalog variants from model_catalog.py; this file owns execution policy.
 id: plate
 kind: qualification
 watch:
   - models/basic/plate/**
-  - dependencies.repos
+  - scripts/ci/model_item.py
 strategy:
-  affected: changed
-  # During the parallel migration proof every selected run must compare against
-  # the existing pipeline again. Reuse is enabled after the cutover is proven.
+  # Keep every parallel comparison fresh until the old CAD path is removed.
   reuse: false
 steps:
   - id: compile
-    run: [python, ci.py, compile]
+    run: [python, ../../../scripts/ci/model_item.py, compile]
     outputs:
-      - generated/scpf/solidcraft.json
-  - id: verify
-    run: [python, ci.py, verify]
-    outputs:
-      - checks/reference.json
+      - checks/compile.json
   - id: compare-current
-    run: [python, ci.py, compare-current]
+    run: [python, ../../../scripts/ci/model_item.py, compare-current]
     outputs:
       - checks/current-pipeline.json

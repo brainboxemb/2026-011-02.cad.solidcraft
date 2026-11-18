@@ -184,42 +184,34 @@ class PipelineCiTests(unittest.TestCase):
         self.assertTrue(result["site_refresh"])
         self.assertTrue(result["publishable"])
 
-    def test_named_non_plate_run_skips_migration_proof(self):
-        """A deliberate named run must not silently add the temporary Plate proof."""
+    def test_named_models_map_shared_variants_to_unique_item_roots(self):
+        """Named catalog variants are grouped by their owning model-root item."""
 
-        with TemporaryDirectory() as temp:
-            output = Path(temp)
-            with patch.object(
-                pipeline_ci,
-                "TOOL_CAD_CI",
-            ) as tool, patch.object(
-                pipeline_ci.subprocess,
-                "check_output",
-            ) as check_output, patch.object(
-                pipeline_ci.subprocess,
-                "run",
-            ) as run:
-                tool.is_file.return_value = True
-                selected = pipeline_ci.run_tool_cad_ci_proof(
-                    mode="models",
-                    models="bracket",
-                    base_sha="",
-                    head_sha="head",
-                    paths=(),
-                    output_root=output,
-                )
-
-            self.assertEqual(selected, ())
-            self.assertEqual(
-                json.loads(
-                    (output / "tool-cad-ci-plan.json").read_text(
-                        encoding="utf-8"
-                    )
-                ),
-                [],
+        mapping = {
+            "guide-rail": "guide-rail",
+            "guide-rail-makita": "guide-rail",
+            "bracket": "bracket",
+        }
+        with patch.object(
+            pipeline_ci,
+            "item_id_for_slug",
+            side_effect=mapping.get,
+        ):
+            groups = pipeline_ci._tool_selection_groups(
+                mode="models",
+                models="guide-rail guide-rail-makita bracket",
+                base_sha="",
+                head_sha="head",
+                paths=(),
             )
-            check_output.assert_not_called()
-            run.assert_not_called()
+
+        self.assertEqual(
+            groups,
+            (
+                ("--item", "guide-rail"),
+                ("--item", "bracket"),
+            ),
+        )
 
     def test_existing_build_main_needs_no_legacy_migration(self):
         with TemporaryDirectory() as temp:

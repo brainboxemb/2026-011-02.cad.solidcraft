@@ -7,15 +7,15 @@ script = Script()
 for name, value in (
     ("hole_diameter", 20.0),
     ("interference", 0.20),
-    ("rim_diameter", 24.0),
+    ("rim_diameter", 22.0),
     ("slot_width", 1.5),
 ):
     script.add("parameters.add", name=name, expression=str(value), unit="mm")
 
-# Rim at the worktop datum.
+# Small stop rim at the worktop datum.
 script.add(
     "solid.cylinder",
-    height=3,
+    height=1.5,
     diameter="rim_diameter",
     base=[0, 0, 0],
     axis="Z",
@@ -23,31 +23,23 @@ script.add(
     body_name="FlexBenchDog",
 )
 
-# Working section: top of rim to 20 mm above the worktop.
+# Working section to Z=20.
 script.add(
     "solid.cylinder",
-    height=17,
+    height=18.5,
     diameter="hole_diameter",
-    base=[0, 0, 3],
+    base=[0, 0, 1.5],
     axis="Z",
     operation="join",
     targets=["FlexBenchDog"],
 )
 
-# Straight 20 mm insert and a slightly oversized free tip.
+# Full-length shallow taper: Ø20.2 at the free end to Ø20.0 at the rim.
 script.add(
-    "solid.cylinder",
+    "solid.cone",
     height=20,
-    diameter="hole_diameter",
-    base=[0, 0, -20],
-    axis="Z",
-    operation="join",
-    targets=["FlexBenchDog"],
-)
-script.add(
-    "solid.cylinder",
-    height=2,
     diameter="hole_diameter + interference",
+    top_diameter="hole_diameter",
     base=[0, 0, -20],
     axis="Z",
     operation="join",
@@ -112,17 +104,29 @@ script.add(
     edges=[[10, 0, 20]],
 )
 
-# Recessed square box logo.
+# Recessed isometric cube/box wireframe.
 script.add(
     "sketch.create",
     plane={"origin": [0, 0, 20], "x_dir": [1, 0, 0], "y_dir": [0, 1, 0]},
     name="Top logo",
 )
-script.add(
-    "sketch.rectangle.two_point",
-    p0=[-4, -4],
-    p1=[4, 4],
-)
+for p0, p1 in (
+    ([0.0, 4.0], [3.5, 2.0]),
+    ([3.5, 2.0], [3.5, -2.0]),
+    ([3.5, -2.0], [0.0, -4.0]),
+    ([0.0, -4.0], [-3.5, -2.0]),
+    ([-3.5, -2.0], [-3.5, 2.0]),
+    ([-3.5, 2.0], [0.0, 4.0]),
+    ([0.0, 0.0], [0.0, 4.0]),
+    ([0.0, 0.0], [3.5, -2.0]),
+    ([0.0, 0.0], [-3.5, -2.0]),
+):
+    script.add(
+        "sketch.slot.center_to_center",
+        p0=p0,
+        p1=p1,
+        width=0.6,
+    )
 script.add("sketch.finish")
 script.add(
     "solid.extrude",

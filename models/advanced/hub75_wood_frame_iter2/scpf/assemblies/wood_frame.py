@@ -54,7 +54,7 @@ class WoodFrame:
         ).group("WoodBoxFrame")
 
         shelf = Board(
-            name="intermediate shelf",
+            name="intermediate_shelf",
             width=outer_width,
             depth=self.cabinet_depth,
             height=self.frame_wood_thickness,

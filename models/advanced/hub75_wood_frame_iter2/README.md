@@ -57,50 +57,25 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 **246 mm / 328 mm / 246 mm** clear openings, with divider centre-lines at
 **X = -170 mm and +170 mm**.
 
-## Rear side-wall recess
+## Hand openings and inset rear board
 
-Like the second reference design, the side walls are allowed to extend farther
-rearward through the full wooden frame. The bottom and both side panels are **120 mm** deep. The intermediate shelf
-and both vertical lower dividers stop at **110 mm**, leaving a 10 mm rear zone
-for the inset rear board. Only the rear edge of the display section of the side panels
-is reduced.
-The current iteration-2 values are:
+The side walls remain full **120 mm** deep. The previous open rear recess and
+the roundwood handle experiment have been removed.
 
-- rear recess depth: **50 mm**, leaving a 70 mm deep middle section;
-- transition radius: **R20**;
-- full-depth side wall above the intermediate shelf before the recess: **80 mm**;
-- full-depth side wall below the roof after the recess: **80 mm**.
+Each 12 mm side wall now has one closed vertical rounded hand opening:
 
-The recess is cut as a real rounded YZ profile in each 12 mm side wall. The
-front edge remains straight.
+- opening width in Y: **30 mm**;
+- rear-edge clearance: **20 mm**;
+- opening therefore spans **Y=70..100 mm**;
+- corner radius: **R10**;
+- vertical limits stay at the previous hand zone, from local Z=162 to 364 mm.
 
-The **9 mm rear board is enabled again**. It sits between the side walls and
-between the bottom and roof, occupying Y=111..120. The intermediate shelf and
-lower dividers stop at Y=110, leaving 1 mm assembly clearance before the rear
-board. At both handle positions, the rear board has matching **50 mm deep R20
-openings** with the same vertical limits as the side-wall recess.
+The **9 mm rear board** remains inset between the side walls at Y=111..120.
+The intermediate shelf and both lower dividers stop at Y=110, leaving 1 mm
+assembly clearance. The rear board has two matching 30 mm wide R10 vertical
+openings, each 20 mm from its nearest side edge.
 
-### Side-handle concept
-
-For visual evaluation, each side recess contains one straight **Ø22 mm beech
-roundwood handle**. The rod remains clamped directly between the lower and upper
-limits of the recess.
-
-The rear surface of the rod stays flush with the **Y=120 mm** rear edge of the
-side panel, putting the rod centre at **Y=109 mm**. In X, the handle is moved
-outward so its axis lies exactly on the outside face of the side wall:
-**X=±434 mm**.
-
-The wood extends **15 mm beyond the recess at both the top and bottom**. In each
-of those 15 mm end extensions, the half facing the plywood side wall is removed:
-an **11 mm deep × 15 mm high** notch. Because 11 mm is exactly half of Ø22, the
-outer half-cylinder remains intact and the extension can overlap the side-wall
-zone without passing through the plywood. The right handle reuses the same
-part rotated 180° so its notches face its own side wall.
-
-A simple plastic ring remains around each rod at the recess boundary. The ring
-is **10 mm high**, **3 mm radial thickness** (Ø28 mm outside around Ø22 mm wood)
-and has 0.4 mm assembly clearance. Final attachment is still not defined.
+There is no separate roundwood, plastic ring or handle assembly anymore.
 
 ## Current main dimensions
 
@@ -114,8 +89,8 @@ and has 0.4 mm assembly clearance. Final attachment is still not defined.
 | Panel pitch | 160 mm |
 | Panel recess | 25 mm |
 | Frame wood | 12 mm |
-| Rear board | 9 mm, inset between side walls at Y=111..120 |
-| Side-wall rear recess | 50 mm deep, R20, 80 mm full-depth top/bottom zones |
+| Rear board | 9 mm inset at Y=111..120; two matching 30 mm R10 openings |
+| Side hand opening | 30 mm wide, R10, Y=70..100, 20 mm from rear edge |
 | Bottom depth | 120 mm |
 | Intermediate shelf depth | 110 mm |
 | Lower divider depth | 110 mm |

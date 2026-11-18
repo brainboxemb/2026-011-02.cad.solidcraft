@@ -1,29 +1,21 @@
 """Rear plywood panel fitted between the side walls."""
 
-from scpf import (
-    BOTTOM,
-    FRONT,
-    Box,
-    RoundedRectangle2D,
-    Sketch,
-    component,
-    half,
-)
+from scpf import BOTTOM, FRONT, Box, RoundedRectangle2D, Sketch, component, half
 
 
 @component
 class RearBoard:
-    """9 mm rear board with matching left/right handle openings."""
+    """9 mm rear board with closed rounded hand openings near both sides."""
 
     width = 844.0
     depth = 9.0
     height = 444.0
 
-    # Match the vertical handle opening in the side-wall profile.
-    recess_depth = 50.0
-    recess_radius = 20.0
-    recess_bottom = 162.0
-    recess_top = 364.0
+    opening_width = 30.0
+    opening_edge_clearance = 20.0
+    opening_radius = 10.0
+    opening_bottom = 162.0
+    opening_top = 364.0
 
     def build(self):
         body = Box(
@@ -37,49 +29,46 @@ class RearBoard:
             anchor=FRONT + BOTTOM,
         )
 
-        # Use the same R20 transition principle as the side panels. Each
-        # rounded cut starts 50 mm in from the rear-board side edge and extends
-        # one radius beyond that edge so the opening remains fully open.
-        recess_height = self.recess_top - self.recess_bottom
-        cut_width = self.recess_depth + self.recess_radius
-        cut_center_x = (
+        opening_height = self.opening_top - self.opening_bottom
+
+        # Mirror the side-wall hand-hole idea on the rear panel. Each 30 mm
+        # opening keeps 20 mm of plywood to the nearest side edge.
+        opening_center_x = (
             half(self.width)
-            - self.recess_depth
-            + half(cut_width)
+            - self.opening_edge_clearance
+            - half(self.opening_width)
         )
-        cut_center_z = (
-            self.recess_bottom
-            + half(recess_height)
+        opening_center_z = (
+            self.opening_bottom
+            + half(opening_height)
         )
 
         with Sketch(
-            name="Rear handle openings",
+            name="Rear hand openings",
             on=body,
             plane="XZ",
-        ) as recess_sketch:
+        ) as opening_sketch:
             left = RoundedRectangle2D(
-                cut_width,
-                recess_height,
-                self.recess_radius,
+                self.opening_width,
+                opening_height,
+                self.opening_radius,
             )
-            recess_sketch.add(
+            opening_sketch.add(
                 left,
-                offset=(-cut_center_x, cut_center_z),
+                offset=(-opening_center_x, opening_center_z),
             )
 
             right = RoundedRectangle2D(
-                cut_width,
-                recess_height,
-                self.recess_radius,
+                self.opening_width,
+                opening_height,
+                self.opening_radius,
             )
-            recess_sketch.add(
+            opening_sketch.add(
                 right,
-                offset=(cut_center_x, cut_center_z),
+                offset=(opening_center_x, opening_center_z),
             )
 
-        # Cut slightly beyond both 9 mm panel faces so no coplanar face is left
-        # behind by the boolean operation.
-        openings = recess_sketch.extrude(
+        openings = opening_sketch.extrude(
             self.depth + 2,
             sym=True,
         )

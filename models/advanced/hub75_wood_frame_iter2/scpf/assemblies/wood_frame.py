@@ -29,11 +29,12 @@ class WoodFrame:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Rear recess in the display section of both side walls.
-    side_recess_depth = 50.0
-    side_recess_radius = 20.0
-    side_recess_lower_keep = 80.0
-    side_recess_upper_keep = 80.0
+    # Closed vertical hand openings.
+    handle_opening_width = 30.0
+    handle_opening_edge_clearance = 20.0
+    handle_opening_radius = 10.0
+    handle_opening_lower_keep = 80.0
+    handle_opening_upper_keep = 80.0
 
     def build(self):
         # The future 9 mm rear board will sit inside the 120 mm cabinet depth
@@ -65,22 +66,19 @@ class WoodFrame:
             + half(self.frame_wood_thickness)
         )
 
-        # The lower storage section remains full depth. The rear recess starts
-        # only after 80 mm of full-depth side wall above the intermediate shelf
-        # and stops 80 mm before the roof. These distances are measured inside
-        # the SideBoard's local Z system, whose bottom is the top of the bottom
-        # board.
+        # Keep the same vertical hand zone used by the previous study, but cut
+        # a closed rounded hole instead of opening the complete rear edge.
         shelf_top_local = (
             self.lower_compartment_height
             + self.frame_wood_thickness
         )
-        side_recess_bottom = (
+        handle_opening_bottom = (
             shelf_top_local
-            + self.side_recess_lower_keep
+            + self.handle_opening_lower_keep
         )
-        side_recess_top = (
+        handle_opening_top = (
             side_height
-            - self.side_recess_upper_keep
+            - self.handle_opening_upper_keep
         )
 
         # Two 12 mm dividers split the clear lower-compartment space into
@@ -154,10 +152,11 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             depth=self.side_panel_depth,
             height=side_height,
-            recess_depth=self.side_recess_depth,
-            recess_radius=self.side_recess_radius,
-            recess_bottom=side_recess_bottom,
-            recess_top=side_recess_top,
+            opening_width=self.handle_opening_width,
+            opening_edge_clearance=self.handle_opening_edge_clearance,
+            opening_radius=self.handle_opening_radius,
+            opening_bottom=handle_opening_bottom,
+            opening_top=handle_opening_top,
             placement=Placement(
                 x=-side_center_x,
                 z=bottom_top,
@@ -169,10 +168,11 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             depth=self.side_panel_depth,
             height=side_height,
-            recess_depth=self.side_recess_depth,
-            recess_radius=self.side_recess_radius,
-            recess_bottom=side_recess_bottom,
-            recess_top=side_recess_top,
+            opening_width=self.handle_opening_width,
+            opening_edge_clearance=self.handle_opening_edge_clearance,
+            opening_radius=self.handle_opening_radius,
+            opening_bottom=handle_opening_bottom,
+            opening_top=handle_opening_top,
             placement=Placement(
                 x=side_center_x,
                 z=bottom_top,
@@ -198,10 +198,11 @@ class WoodFrame:
             width=self.opening_width,
             depth=self.panel_wood_thickness,
             height=side_height,
-            recess_depth=self.side_recess_depth,
-            recess_radius=self.side_recess_radius,
-            recess_bottom=side_recess_bottom,
-            recess_top=side_recess_top,
+            opening_width=self.handle_opening_width,
+            opening_edge_clearance=self.handle_opening_edge_clearance,
+            opening_radius=self.handle_opening_radius,
+            opening_bottom=handle_opening_bottom,
+            opening_top=handle_opening_top,
             placement=Placement(
                 y=rear_y,
                 z=bottom_top,

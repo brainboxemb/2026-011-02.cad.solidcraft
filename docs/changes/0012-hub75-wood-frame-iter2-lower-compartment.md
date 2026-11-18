@@ -55,50 +55,27 @@ All display-dependent geometry must follow the derived opening datum:
 
 No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 
-The second reference design also reduces the rear depth of the upper side-wall
-section. Apply the same principle here while keeping the iteration-2 dimensions:
+Replace the previous rear-edge recess and roundwood-handle experiment with
+closed hand openings cut directly into the plywood.
 
-- bottom extends to 120 mm depth;
-- intermediate shelf and both lower dividers stop at 110 mm, leaving a 10 mm
-  rear zone for the inset rear board;
-- the roof no longer reserves 9 mm behind the cabinet because the rear board
-  will sit inside it: 10 mm front overhang + 120 mm cabinet + 1 mm rear
-  overhang = 131 mm total;
-- both side panels extend to the same 120 mm depth;
-- the middle display-zone side wall is recessed 50 mm from the 120 mm rear
-  edge, leaving 70 mm depth there;
-- use R20 rounded transitions;
-- keep at least 80 mm of full-depth side wall above the intermediate shelf;
-- keep at least 80 mm of full-depth side wall below the roof;
-- keep the lower storage-compartment side wall at the full 120 mm depth.
+Use these hand-opening dimensions:
 
-Model this as a separate `SideBoard` part with a rounded YZ recess. Do not
-approximate the radius with straight polygon segments. The recess sketch is
-attached to the side-wall body because Forge currently cannot use a standalone
-`sketch_base_extrusion` as a boolean operand; that missing Forge capability is
-tracked separately in Forge issue #354. The rear board remains temporarily
-enabled again as a dedicated `RearBoard` part. The 9 mm board fits between
-the side walls and between bottom and roof, occupying Y=111..120 inside the
-120 mm cabinet depth. The shelf and lower dividers end at Y=110. Cut matching
-50 mm deep R20 handle openings from both side edges of the rear board using the
-same vertical recess limits as the side panels.
+- side walls remain full 120 mm deep;
+- each side-wall opening is 30 mm wide in Y;
+- keep 20 mm of plywood between the opening and the 120 mm rear edge, so the
+  opening spans Y=70..100;
+- use **R10** rounded corners;
+- keep the same vertical opening zone as before: local Z=162..364 by default;
+- remove the separate roundwood, plastic rings and `SideHandles` assembly.
 
-Add a first side-handle position study with Ø22 mm beech roundwood. The rod is
-clamped visually between the lower and upper limits of the recess. Keep its rear
-surface aligned with the 120 mm rear edge of the side panel, so the rod centre
-is Y=109 mm.
+Keep the inset rear-board construction:
 
-Move the handle axes outward onto the outside faces of the side walls, placing
-the centres at X=±434 mm. Extend the roundwood 15 mm beyond both the lower and
-upper recess limits. In each 15 mm end extension, remove the side-wall-facing
-half of the Ø22 rod with an 11 mm deep × 15 mm high notch. The remaining
-outside half-cylinder then stays outside the plywood while the notched half
-overlaps the side-wall zone.
-
-Keep the simple plastic rings at the recess boundaries: 10 mm high and 3 mm
-radial thickness, giving Ø28 mm outside around the Ø22 mm wood. The ring uses
-0.4 mm bore clearance. This is still only a mounting study; no final
-ring-to-plywood connection is defined yet.
+- bottom stays 120 mm deep;
+- intermediate shelf and both lower dividers stop at 110 mm;
+- 9 mm rear board occupies Y=111..120 between the side walls;
+- roof remains 131 mm total: 10 mm front overhang + 120 mm cabinet + 1 mm rear;
+- rear board gets two matching 30 mm wide R10 vertical openings, each 20 mm
+  from its nearest side edge.
 
 ## Scope
 

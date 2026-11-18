@@ -3,7 +3,6 @@
 from assemblies.corner_brackets import CornerBrackets
 from assemblies.glass_frame import GlassFrame
 from assemblies.hub75_panels import HUB75Panels
-from assemblies.side_handles import SideHandles
 from assemblies.wood_frame import WoodFrame
 from parts.window import Window
 
@@ -58,11 +57,12 @@ class WoodenHub75BoxIter2:
     roof_rear_overhang = 1.0
     corner_radius = 4.0
 
-    # Rear side-wall recess. The lower compartment itself stays full depth.
-    side_recess_depth = 50.0
-    side_recess_radius = 20.0
-    side_recess_lower_keep = 80.0
-    side_recess_upper_keep = 80.0
+    # Closed hand openings in the side walls and rear board.
+    handle_opening_width = 30.0
+    handle_opening_edge_clearance = 20.0
+    handle_opening_radius = 10.0
+    handle_opening_lower_keep = 80.0
+    handle_opening_upper_keep = 80.0
 
     # Printed corner brackets
     bracket_width = 24.0
@@ -94,20 +94,11 @@ class WoodenHub75BoxIter2:
             roof_front_overhang=self.roof_front_overhang,
             roof_rear_overhang=self.roof_rear_overhang,
             corner_radius=self.corner_radius,
-            side_recess_depth=self.side_recess_depth,
-            side_recess_radius=self.side_recess_radius,
-            side_recess_lower_keep=self.side_recess_lower_keep,
-            side_recess_upper_keep=self.side_recess_upper_keep,
-        )
-
-        side_handles = SideHandles(
-            opening_width=self.opening_width,
-            opening_height=self.opening_height,
-            lower_compartment_height=self.lower_compartment_height,
-            frame_wood_thickness=self.frame_wood_thickness,
-            side_panel_depth=self.side_panel_depth,
-            side_recess_lower_keep=self.side_recess_lower_keep,
-            side_recess_upper_keep=self.side_recess_upper_keep,
+            handle_opening_width=self.handle_opening_width,
+            handle_opening_edge_clearance=self.handle_opening_edge_clearance,
+            handle_opening_radius=self.handle_opening_radius,
+            handle_opening_lower_keep=self.handle_opening_lower_keep,
+            handle_opening_upper_keep=self.handle_opening_upper_keep,
         )
 
         brackets = CornerBrackets(
@@ -134,4 +125,4 @@ class WoodenHub75BoxIter2:
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + side_handles + brackets + glazing + window
+        return panels + frame + brackets + glazing + window

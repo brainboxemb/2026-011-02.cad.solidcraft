@@ -68,7 +68,6 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "corner_brackets.py",
                 "glass_frame.py",
                 "hub75_panels.py",
-                "side_handles.py",
                 "wood_frame.py",
             },
         )
@@ -77,9 +76,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             {
                 "board.py",
                 "glass_strip.py",
-                "handle_ring.py",
                 "rear_board.py",
-                "roundwood_handle.py",
                 "side_board.py",
                 "window.py",
             },
@@ -109,10 +106,11 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "roof_front_overhang",
                 "roof_rear_overhang",
                 "corner_radius",
-                "side_recess_depth",
-                "side_recess_radius",
-                "side_recess_lower_keep",
-                "side_recess_upper_keep",
+                "handle_opening_width",
+                "handle_opening_edge_clearance",
+                "handle_opening_radius",
+                "handle_opening_lower_keep",
+                "handle_opening_upper_keep",
                 "bracket_width",
                 "glazing_wood_width",
                 "glazing_wood_depth",
@@ -171,7 +169,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         # The intermediate shelf adds one Board shape. The two equal lower
         # dividers share one additional Board shape and become two occurrences.
-        self.assertEqual(len(creates), 17)
+        self.assertEqual(len(creates), 15)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -274,136 +272,40 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             170.0,
         )
 
-    def test_side_walls_follow_v11_rear_recess_principle(self):
+    def test_closed_hand_openings_replace_rear_recess_and_roundwood(self):
         source = MODEL.read_text(encoding="utf-8")
-        frame_source = (
-            SCPF_DIR / "assemblies" / "wood_frame.py"
-        ).read_text(encoding="utf-8")
         side_source = (
             SCPF_DIR / "parts" / "side_board.py"
         ).read_text(encoding="utf-8")
-
-        self.assertIn("cabinet_depth = 120.0", source)
-        self.assertIn("side_panel_depth = 120.0", source)
-        self.assertIn("side_recess_depth = 50.0", source)
-        self.assertIn("side_recess_radius = 20.0", source)
-        self.assertIn("side_recess_lower_keep = 80.0", source)
-        self.assertIn("side_recess_upper_keep = 80.0", source)
-
-        # The assembly derives the recess from the top of the intermediate
-        # shelf and from the roof, so changing the vertical stack keeps both
-        # 80 mm full-depth end zones.
-        self.assertIn(
-            "self.lower_compartment_height\n            + self.frame_wood_thickness",
-            frame_source,
-        )
-        self.assertIn(
-            "side_height\n            - self.side_recess_upper_keep",
-            frame_source,
-        )
-        self.assertIn("depth=self.side_panel_depth", frame_source)
-
-        # The side part uses one real rounded YZ cut, not a faceted polygon.
-        # The sketch is attached to the SideBoard body because Forge #354
-        # currently blocks standalone sketch extrusions as boolean operands.
-        self.assertIn('name="Rear recess"', side_source)
-        self.assertIn("on=body", side_source)
-        self.assertIn('plane="YZ"', side_source)
-        self.assertIn("RoundedRectangle2D(", side_source)
-        self.assertIn("self.recess_radius", side_source)
-
         rear_source = (
             SCPF_DIR / "parts" / "rear_board.py"
         ).read_text(encoding="utf-8")
-        self.assertIn('name="Rear handle openings"', rear_source)
+
+        self.assertIn("handle_opening_width = 30.0", source)
+        self.assertIn("handle_opening_edge_clearance = 20.0", source)
+        self.assertIn("handle_opening_radius = 10.0", source)
+
+        # 120 mm deep side wall: 20 mm rear margin + 30 mm hole => Y=70..100.
+        self.assertIn('name="Side hand opening"', side_source)
+        self.assertIn('plane="YZ"', side_source)
+        self.assertIn("opening_width = 30.0", side_source)
+        self.assertIn("opening_edge_clearance = 20.0", side_source)
+        self.assertIn("opening_radius = 10.0", side_source)
+        self.assertIn("RoundedRectangle2D(", side_source)
+
+        # Rear panel uses the same rounded 30 mm opening on both sides.
+        self.assertIn('name="Rear hand openings"', rear_source)
         self.assertIn('plane="XZ"', rear_source)
         self.assertEqual(rear_source.count("RoundedRectangle2D("), 2)
-        self.assertIn("recess_depth = 50.0", rear_source)
-        self.assertIn("recess_radius = 20.0", rear_source)
+        self.assertIn("opening_radius = 10.0", rear_source)
 
-        # Default local geometry:
-        # shelf top 82 mm; +80 mm = recess starts at 162 mm.
-        # side height 444 mm; -80 mm = recess ends at 364 mm.
-        self.assertEqual(70.0 + 12.0 + 80.0, 162.0)
-        self.assertEqual(70.0 + 12.0 + 362.0 - 80.0, 364.0)
-
-    def test_side_handle_alignment_and_end_rings(self):
-        rows = commands()
-        moves = of(rows, "occurrence.move")
-
-        rods = [
-            row for row in moves
-            if row["occurrence"] in {
-                "$left_handle_rod",
-                "$right_handle_rod",
-            }
-        ]
-        self.assertEqual(len(rods), 2)
-
-        # Ø22 radius is 11 mm. With a 120 mm side-panel depth, Y=109 puts the
-        # rear surface of the rod exactly flush with the rear panel edge.
-        self.assertTrue(all(row["translate"][1] == 109.0 for row in rods))
-
-        # Put each handle axis on the outside face of its side wall.
-        self.assertEqual(
-            sorted(row["translate"][0] for row in rods),
-            [-434.0, 434.0],
+        all_source = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in SCPF_DIR.glob("**/*.py")
         )
-
-        rings = [
-            row for row in moves
-            if row["occurrence"] in {
-                "$left_handle_ring_bottom",
-                "$left_handle_ring_top",
-                "$right_handle_ring_bottom",
-                "$right_handle_ring_top",
-            }
-        ]
-        self.assertEqual(len(rings), 4)
-        self.assertEqual(
-            sorted({row["translate"][0] for row in rings}),
-            [-434.0, 434.0],
-        )
-
-        handle_source = (
-            SCPF_DIR / "assemblies" / "side_handles.py"
-        ).read_text(encoding="utf-8")
-        self.assertIn("ROD_DIAMETER = 22.0", handle_source)
-        self.assertIn("ROD_END_EXTENSION = 15.0", handle_source)
-        self.assertIn("ROD_END_NOTCH_DEPTH = 11.0", handle_source)
-        self.assertIn("ROD_END_NOTCH_HEIGHT = 15.0", handle_source)
-        self.assertIn("RING_RADIAL_THICKNESS = 3.0", handle_source)
-        self.assertIn("RING_HEIGHT = 10.0", handle_source)
-        self.assertIn(
-            "half(self.opening_width)\n            + self.frame_wood_thickness",
-            handle_source,
-        )
-        self.assertIn(
-            "self.side_panel_depth - half(ROD_DIAMETER)",
-            handle_source,
-        )
-        self.assertIn(
-            "rod_bottom_z = recess_bottom_z - ROD_END_EXTENSION",
-            handle_source,
-        )
-        self.assertIn(
-            "+ 2 * ROD_END_EXTENSION",
-            handle_source,
-        )
-
-        rod_source = (
-            SCPF_DIR / "parts" / "roundwood_handle.py"
-        ).read_text(encoding="utf-8")
-        self.assertIn("notch_depth = 11.0", rod_source)
-        self.assertIn("notch_height = 15.0", rod_source)
-        self.assertIn("NOTCH_BOOLEAN_MARGIN = 0.1", rod_source)
-        self.assertEqual(rod_source.count("Box("), 2)
-        self.assertIn("body = body - bottom_cut - top_cut", rod_source)
-        self.assertNotIn("Sketch(", rod_source)
-        self.assertIn("x=-handle_x", handle_source)
-        self.assertIn("rotation=(Z, 180)", handle_source)
-        self.assertNotIn("cabinet_depth =", handle_source)
-        self.assertNotIn("side_recess_depth =", handle_source)
+        self.assertNotIn("SideHandles", all_source)
+        self.assertNotIn("RoundwoodHandle", all_source)
+        self.assertNotIn("HandleRing", all_source)
 
     def test_five_panel_x_layout_is_unchanged(self):
         panels = moved(commands(), "$hub75panelbasic")

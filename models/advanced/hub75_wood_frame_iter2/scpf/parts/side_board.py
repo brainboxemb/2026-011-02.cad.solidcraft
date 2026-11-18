@@ -1,36 +1,26 @@
-"""Shaped side wall for the second wooden HUB75 frame iteration."""
+"""Side wall with one closed rounded hand opening."""
 
-from scpf import (
-    BOTTOM,
-    FRONT,
-    Box,
-    RoundedRectangle2D,
-    Sketch,
-    component,
-)
+from scpf import BOTTOM, FRONT, Box, RoundedRectangle2D, Sketch, component
 
 
 @component
 class SideBoard:
-    """Full-depth side wall with one rounded rear recess in the display zone."""
+    """Full-depth side wall with a closed vertical hand opening."""
 
     thickness = 12.0
-    depth = 100.0
+    depth = 120.0
     height = 444.0
 
-    # Rear-profile inputs.
-    recess_depth = 50.0
-    recess_radius = 20.0
-    recess_bottom = 162.0
-    recess_top = 364.0
+    opening_width = 30.0
+    opening_edge_clearance = 20.0
+    opening_radius = 10.0
+    opening_bottom = 162.0
+    opening_top = 364.0
 
-    # Build-only material details.
     material_name = None
     color = None
 
     def build(self):
-        # Start with the complete side wall. X is plywood thickness, Y is
-        # cabinet depth from the front face and Z is vertical height.
         body = Box(
             self.thickness,
             self.depth,
@@ -42,49 +32,40 @@ class SideBoard:
             anchor=FRONT + BOTTOM,
         )
 
-        # The recess is cut from the rear. Its rounded rectangle extends one
-        # radius beyond the physical rear face, so the visible result is the
-        # same side-profile principle as the V1.1 reference: full depth at both
-        # ends, a reduced-depth middle zone and R20 transitions.
-        recess_height = self.recess_top - self.recess_bottom
-        cut_depth = self.recess_depth + self.recess_radius
-        cut_center_y = (
+        opening_height = self.opening_top - self.opening_bottom
+
+        # Keep 20 mm of plywood between the opening and the 120 mm rear edge.
+        # With a 30 mm opening this places the hole at Y=70..100.
+        opening_center_y = (
             self.depth
-            - self.recess_depth
-            + cut_depth / 2
+            - self.opening_edge_clearance
+            - self.opening_width / 2
         )
-        cut_center_z = (
-            self.recess_bottom
-            + recess_height / 2
+        opening_center_z = (
+            self.opening_bottom
+            + opening_height / 2
         )
 
-        # Attach the YZ sketch to the side-wall body. Forge currently cannot
-        # use a standalone sketch_base_extrusion as a boolean operand
-        # (Forge issue #354), while an attached explicit sketch extrusion is
-        # supported natively.
         with Sketch(
-            name="Rear recess",
+            name="Side hand opening",
             on=body,
             plane="YZ",
-        ) as recess_sketch:
+        ) as opening_sketch:
             profile = RoundedRectangle2D(
-                cut_depth,
-                recess_height,
-                self.recess_radius,
+                self.opening_width,
+                opening_height,
+                self.opening_radius,
             )
-            recess_sketch.add(
+            opening_sketch.add(
                 profile,
-                offset=(cut_center_y, cut_center_z),
+                offset=(opening_center_y, opening_center_z),
             )
 
-        # The sketch plane passes through the centre of the 12 mm side wall.
-        # Extrude slightly beyond both plywood faces so the cut remains robust
-        # if the wall thickness changes.
-        recess = recess_sketch.extrude(
+        opening = opening_sketch.extrude(
             self.thickness + 2,
             sym=True,
         )
-        body = body - recess
+        body = body - opening
 
         return body.with_material(
             self.material_name or "LIGHTPLY side board",

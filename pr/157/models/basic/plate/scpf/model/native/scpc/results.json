@@ -1,0 +1,104 @@
+[
+  {
+    "display_value": 100.0,
+    "name": "length",
+    "unit": "mm",
+    "value": 100.0
+  },
+  {
+    "display_value": 60.0,
+    "name": "width",
+    "unit": "mm",
+    "value": 60.0
+  },
+  {
+    "display_value": 10.0,
+    "name": "thickness",
+    "unit": "mm",
+    "value": 10.0
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [],
+    "created_bodies": [
+      "Plate"
+    ],
+    "feature": 1,
+    "ms": 2.309968,
+    "name": "Box1",
+    "removed_bodies": [],
+    "warning": null
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [
+      "Plate"
+    ],
+    "created_bodies": [],
+    "feature": 2,
+    "ms": 31.469069,
+    "name": "Fillet1",
+    "removed_bodies": [],
+    "warning": null
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [
+      "Plate"
+    ],
+    "created_bodies": [],
+    "feature": 3,
+    "ms": 15.546516,
+    "name": "Hole1",
+    "removed_bodies": [],
+    "warning": null
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [
+      "Plate"
+    ],
+    "created_bodies": [],
+    "feature": 4,
+    "ms": 17.265445,
+    "name": "Hole2",
+    "removed_bodies": [],
+    "warning": null
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [
+      "Plate"
+    ],
+    "created_bodies": [],
+    "feature": 5,
+    "ms": 18.176897,
+    "name": "Hole3",
+    "removed_bodies": [],
+    "warning": null
+  },
+  {
+    "bodies": [
+      "Plate"
+    ],
+    "changed_bodies": [
+      "Plate"
+    ],
+    "created_bodies": [],
+    "feature": 6,
+    "ms": 20.428196999999997,
+    "name": "Hole4",
+    "removed_bodies": [],
+    "warning": null
+  }
+]

@@ -19,9 +19,15 @@ cross-section:
 Examples:
 
 ```python
+GuideRail()  # 600 mm standalone CAD example
 GuideRail(length=1080)
-GuideRail(length=1500, profile="makita")
+GuideRail(length=600, profile="makita")
 ```
+
+The standalone CAD examples deliberately use **600 mm** so the cross-section
+and profile details remain easy to inspect on the results site. Product and
+assembly lengths are documented separately and can still be passed through the
+native `length` parameter.
 
 Changing `profile` creates a different reusable component definition; it does
 not add a text/string parameter to SolidCraft.
@@ -58,7 +64,8 @@ Makita lists part **199141-8** as a **1500 mm** guide rail:
 
 - [Makita — 199141-8 guide rail product sheet](https://www.makitauk.com/data/sr/productinfo/generated/199141-8_2.pdf)
 
-The standalone `guide-rail-makita` result therefore uses 1500 mm.
+The Makita product reference is therefore 1500 mm. The standalone CAD example
+still uses 600 mm for a compact, readable result.
 
 The Makita STEP contains a few small round edges. `Polygon2D` is line-based, so
 those rounds are represented by short line segments. The important rail

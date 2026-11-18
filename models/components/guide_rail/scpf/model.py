@@ -10,7 +10,7 @@ from models.components.guide_rail.scpf.profiles import get_profile
 
 @component(include=("length",))
 class GuideRail:
-    length = 1400.0
+    length = 600.0
     profile = None
 
     def build(self):

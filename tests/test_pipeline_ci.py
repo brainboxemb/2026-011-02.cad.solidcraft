@@ -73,6 +73,9 @@ class PipelineCiTests(unittest.TestCase):
                     workflow_run="77",
                     image_reference="ghcr.io/example/cad-ci:toolchain-abc",
                 )
+                persisted = json.loads(
+                    (out / "plan.json").read_text(encoding="utf-8")
+                )
 
         self.assertEqual(result, plan)
         configure.assert_called_once_with()
@@ -86,7 +89,6 @@ class PipelineCiTests(unittest.TestCase):
             native.call_args.kwargs["stable_store"],
             root / "resolved/main",
         )
-        persisted = json.loads((out / "plan.json").read_text(encoding="utf-8"))
         self.assertEqual(persisted["preview_key"], "pr-12")
 
     def test_existing_build_main_needs_no_legacy_migration(self):

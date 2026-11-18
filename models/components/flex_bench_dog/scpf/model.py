@@ -16,10 +16,10 @@ class FlexBenchDog:
     slot_width = 1.5
 
     # Fixed first-prototype proportions inferred from the supplied image.
-    WORKING_HEIGHT = 35.0
+    WORKING_HEIGHT = 20.0
     RIM_THICKNESS = 3.0
-    INSERTION_LENGTH = 38.0
-    SLOT_LENGTH = 30.0
+    INSERTION_LENGTH = 18.0
+    SLOT_LENGTH = 14.0
 
     def build(self):
         dog = Cylinder(

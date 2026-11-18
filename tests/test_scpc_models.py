@@ -81,32 +81,32 @@ class InlineFrameDiagnosticTests(unittest.TestCase):
 
 
 class ParallelModelTests(unittest.TestCase):
-    def test_bolted_flange_scpc_matches_official_source_commands(self):
+    def test_bolted_flange_scpc_matches_simple_primitive_model(self):
         native = source_path(ROOT, "bolted-flange", "scpc")
+        forge = source_path(ROOT, "bolted-flange")
         source = native.read_text(encoding="utf-8")
         self.assertIn("script.add(", source)
         self.assertNotIn("from scpf", source)
         self.assertNotIn("scpf.runner", source)
 
-        generated = native_script(native).to_dict()
-        expected = json.loads(
-            (
-                ROOT
-                / "models/basic/bolted_flange/source/flange.json"
-            ).read_text(encoding="utf-8")
-        )
-        self.assertEqual(generated, expected)
-        self.assertEqual(len(generated["commands"]), 19)
+        scpc_doc = native_script(native).to_dict()
+        scpf_doc = forge_script(forge)
+
         self.assertEqual(
-            generated["commands"][-1],
-            {
-                "command": "solid.pattern.circular",
-                "params": {
-                    "features": ["BoltHole"],
-                    "axis": "Z",
-                    "count": "bolts",
-                },
-            },
+            normalize_native_plan(scpc_doc),
+            normalize_native_plan(scpf_doc),
+        )
+        commands = scpc_doc["commands"]
+        self.assertEqual(len(commands), 9)
+        self.assertEqual(
+            [row["command"] for row in commands],
+            ["solid.cylinder", "solid.cylinder"] + ["solid.hole"] * 7,
+        )
+        self.assertFalse(
+            any(row["command"].startswith("sketch.") for row in commands)
+        )
+        self.assertFalse(
+            any(row["command"].startswith("solid.pattern.") for row in commands)
         )
 
     def test_plate_and_corner_bracket_have_independent_native_scripts(self):

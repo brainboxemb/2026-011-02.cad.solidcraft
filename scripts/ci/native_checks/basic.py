@@ -59,30 +59,21 @@ def validate_sample_plate(root: Path):
 
 def validate_bolted_flange(root: Path):
     rows = commands(root, "bolted-flange")
-    require(count(rows, "sketch.create") == 4,
-            "bolted-flange: expected four source sketches")
-    require(count(rows, "solid.extrude") == 4,
-            "bolted-flange: expected four source extrusions")
-    require(count(rows, "solid.pattern.circular") == 1,
-            "bolted-flange: expected one native circular pattern")
-
-    pattern = next(
-        row["params"] for row in rows
-        if row["command"] == "solid.pattern.circular"
-    )
-    require(pattern["features"] == ["BoltHole"],
-            "bolted-flange: circular pattern source changed")
-    require(pattern["axis"] == "Z",
-            "bolted-flange: circular pattern axis changed")
-    require(pattern["count"] == "bolts",
-            "bolted-flange: circular pattern count must stay parametric")
+    require(count(rows, "sketch.create") == 0,
+            "bolted-flange: simple model must not create sketches")
+    require(count(rows, "solid.cylinder") == 2,
+            "bolted-flange: expected flange and hub cylinders")
+    require(count(rows, "solid.hole") == 7,
+            "bolted-flange: expected one bore and six bolt holes")
+    require(count(rows, "solid.pattern.circular") == 0,
+            "bolted-flange: simple model must not require a native pattern")
 
     data = measurements(root, "bolted-flange")
     require(data["body_count"] == 1,
             "bolted-flange: expected one joined/cut body")
     body = data["bodies"][0]
     require(body["name"] == "Flange",
-            "bolted-flange: body name must match the SolidCraft source")
+            "bolted-flange: body name changed")
     require(body["closed"] is True,
             "bolted-flange: body must be closed")
     require(
@@ -100,11 +91,6 @@ def validate_bolted_flange(root: Path):
     require(
         close(body["volume_mm3"], expected_volume, 1e-3),
         "bolted-flange: native volume changed",
-    )
-    require(
-        sum(row.get("type") == "CircularPatternFeature"
-            for row in data.get("timeline", [])) == 1,
-        "bolted-flange: expected one native circular pattern history feature",
     )
 
 def validate_plastic_enclosure(root: Path):

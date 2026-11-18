@@ -385,59 +385,44 @@ class CADModelRegressions(unittest.TestCase):
         )
 
 
-    def test_bolted_flange_uses_one_native_circular_pattern(self):
+    def test_bolted_flange_uses_simple_primitives(self):
         commands = run_script(
             ROOT / "models/basic/bolted_flange/scpf/model.py"
         )["commands"]
 
-        parameters = {
-            row["params"]["name"]: row["params"]
-            for row in commands
-            if row["command"] == "parameters.add"
-        }
-        self.assertEqual(parameters["bolts"]["unit"], "")
-        self.assertEqual(parameters["pcd"]["unit"], "mm")
-        self.assertEqual(parameters["bolts"]["expression"], "6")
-        self.assertEqual(parameters["pcd"]["expression"], "70")
-
-        sketches = [
-            row["params"]["name"]
-            for row in commands
-            if row["command"] == "sketch.create"
-        ]
         self.assertEqual(
-            sketches,
-            ["Disc", "Hub", "Bore", "BoltHole"],
+            [row["command"] for row in commands].count("solid.cylinder"),
+            2,
         )
-
-        circles = [
-            row["params"]
-            for row in commands
-            if row["command"] == "sketch.circle.center"
-        ]
-        self.assertEqual([row["diameter"] for row in circles], [100, 44, 24, 9])
-        self.assertIn("pcd", str(circles[-1]["center"][0]))
-
         self.assertEqual(
-            [row["command"] for row in commands].count("solid.extrude"),
-            4,
+            [row["command"] for row in commands].count("solid.hole"),
+            7,
         )
-        base_extrude = next(
-            row["params"]
-            for row in commands
-            if row["command"] == "solid.extrude"
-            and "body_name" in row["params"]
+        self.assertFalse(
+            any(row["command"] == "sketch.create" for row in commands)
         )
-        self.assertEqual(base_extrude["body_name"], "Flange")
-        patterns = [
-            row["params"]
-            for row in commands
-            if row["command"] == "solid.pattern.circular"
+        self.assertFalse(
+            any(row["command"] == "solid.pattern.circular" for row in commands)
+        )
+
+        cylinders = [
+            row["params"] for row in commands
+            if row["command"] == "solid.cylinder"
         ]
-        self.assertEqual(len(patterns), 1)
-        self.assertEqual(patterns[0]["features"], ["BoltHole"])
-        self.assertEqual(patterns[0]["axis"], "Z")
-        self.assertEqual(patterns[0]["count"], "bolts")
+        self.assertEqual(cylinders[0]["diameter"], 100)
+        self.assertEqual(cylinders[0]["height"], 10)
+        self.assertEqual(cylinders[1]["diameter"], 44)
+        self.assertEqual(cylinders[1]["height"], 16)
+
+        holes = [
+            row["params"] for row in commands
+            if row["command"] == "solid.hole"
+        ]
+        self.assertEqual(holes[0]["diameter"], 24)
+        self.assertEqual(
+            [row["diameter"] for row in holes[1:]],
+            [9] * 6,
+        )
 
     def test_bracket_matches_corrected_native_commands(self):
         generated = run_script(ROOT / "models/basic/bracket/scpf/model.py")

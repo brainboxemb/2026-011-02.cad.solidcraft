@@ -83,6 +83,80 @@ below before opening or merging the PR.
    - Do not call the model complete while one of those checks is failing.
    - Keep one logical model change in one branch/PR.
 
+## Targeted CI and publication
+
+Build selection, tool versions and publication state are separate concerns.
+
+### Select only the models that need work
+
+- Normal model work uses targeted builds. A change to one model should compile,
+  test and native-build that model only.
+- Model selection comes from the central catalog and the shared selector under
+  `scripts/ci/`; do not reimplement path filtering in workflow YAML.
+- Shared component dependencies must be declared in the catalog so a component
+  change selects its actual dependants.
+- Adding a new model should normally build only that model.
+- Changing `dependencies.repos` or the configured SolidCraft version does not
+  automatically mean "build the whole catalog".
+- Use an explicit full-build mode when deliberately testing every model against
+  a new Forge revision/release or SolidCraft version.
+- Keep explicit modes for changed models, named model(s), and all models.
+
+### Keep build output separate from Pages
+
+Use `model-output` as the durable store of verified model build results.
+`gh-pages` is generated publication output, not the source of truth for CAD
+verification.
+
+The output branch has two states:
+
+- `previews/<preview-key>/models/<slug>/` for branch/PR staging output;
+- `stable/models/<slug>/` for accepted output from a successful `main` build.
+
+Each model output directory contains its own `verification.json` with the CAD
+source commit, Forge revision/release, SolidCraft version, workflow run and
+native file format that actually produced that model.
+
+Do not describe an unchanged model as verified against a newer Forge,
+SolidCraft or CAD revision merely because another model was rebuilt.
+
+### Preview/staging rules
+
+- Every PR/branch writes only to its own preview namespace.
+- A preview must never overwrite `model-output/stable/`.
+- Build and validate candidate output before publishing the preview.
+- Preview Pages are generated from the branch catalog/source, that preview's
+  freshly built models and stable output for unchanged models where needed.
+- A failed preview build must not replace the previous preview or any stable
+  output.
+- Preview namespaces may be cleaned up after a PR closes or merges.
+
+### Stable promotion rules
+
+- Only a successful accepted `main` build may update stable model output.
+- Build selected models into a temporary/candidate directory first.
+- Run all selected-model checks against that candidate.
+- Only after every required check is green, replace those selected model
+  directories in `model-output/stable/models/`.
+- Preserve every unchanged stable model directory byte-for-byte.
+- Regenerate the stable site from the current catalog plus the complete stable
+  output set and publish that assembled site to the root of `gh-pages`.
+- A failed main build must never partially update stable output or the stable
+  Pages root.
+
+### Site/catalog scaling
+
+- Model pages stay at `/models/<slug>/`.
+- Generate category pages from the central catalog, for example
+  `/models/basic/`, `/models/components/` and `/models/advanced/`.
+- The home page is a curated view, not an eventual list of every model.
+- Use one catalog flag such as `featured`/`show_on_home`; do not maintain a
+  second hand-written home-page list.
+- Category pages, home page and navigation may be regenerated cheaply even when
+  no model geometry needs rebuilding.
+
+See issue #129 for the current CI/publication implementation work.
+
 ## When a model exposes a Forge problem
 
 Do not add a CAD-specific workaround just to get the model green.

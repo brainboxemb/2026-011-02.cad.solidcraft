@@ -26,8 +26,11 @@ def mutation_commands(changes):
     }
 
 
-def run_mutations(root: Path):
+def run_mutations(root: Path, models=None):
+    selected = set(models) if models is not None else None
     for slug, mutations in NATIVE_MUTATIONS.items():
+        if selected is not None and slug not in selected:
+            continue
         model_root = root / slug
         source = model_root / "model.sc"
         if not source.is_file():
@@ -67,8 +70,9 @@ def run_mutations(root: Path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("native_root", type=Path)
+    parser.add_argument("--models", nargs="*")
     args = parser.parse_args()
-    run_mutations(args.native_root)
+    run_mutations(args.native_root, args.models)
 
 
 if __name__ == "__main__":

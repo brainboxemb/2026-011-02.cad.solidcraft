@@ -36,6 +36,18 @@ class ModelCatalogTests(unittest.TestCase):
             "native",
             "native_snapshot_required",
         }
+        self.assertEqual(
+            model_build_path("guide-rail-makita"),
+            Path("models/components/guide_rail/scpf/makita"),
+        )
+        self.assertEqual(
+            model_build_path("simple-mft-assembly"),
+            Path("models/advanced/simple_mft/scpf/assemblies/guide_rail"),
+        )
+        self.assertEqual(
+            len({model_build_path(slug) for slug in MODELS}),
+            len(MODELS),
+        )
         for slug, model in MODELS.items():
             with self.subTest(slug=slug):
                 self.assertFalse(required - set(model))
@@ -102,11 +114,11 @@ class ModelCatalogTests(unittest.TestCase):
     def test_build_paths_mirror_source_model_roots(self):
         self.assertEqual(
             model_build_path("plate"),
-            Path("models/basic/plate"),
+            Path("models/basic/plate/scpf"),
         )
         self.assertEqual(
             model_build_path("hub75-panel"),
-            Path("models/components/hub75_panel/detailed"),
+            Path("models/components/hub75_panel/detailed/scpf"),
         )
         for slug, model in MODELS.items():
             with self.subTest(slug=slug):

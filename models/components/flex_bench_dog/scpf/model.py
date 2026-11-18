@@ -8,52 +8,52 @@ No screw, nut, O-ring or separate expansion part is used.
 
 @component
 class FlexBenchDog:
+    # Native fit parameters. These are the dimensions most useful to tune after
+    # a first print in a real 20 mm worktop.
     hole_diameter = 20.0
     interference = 0.20
-    working_height = 35.0
     rim_diameter = 24.0
-    rim_thickness = 3.0
-    insertion_length = 38.0
     slot_width = 1.5
-    slot_length = 30.0
+
+    # Fixed first-prototype proportions inferred from the supplied image.
+    WORKING_HEIGHT = 35.0
+    RIM_THICKNESS = 3.0
+    INSERTION_LENGTH = 38.0
+    SLOT_LENGTH = 30.0
 
     def build(self):
-        # The lower cylinder is the part that remains above the worktop.
         dog = Cylinder(
             d=self.hole_diameter,
-            h=self.working_height,
+            h=self.WORKING_HEIGHT,
             anchor=Anchor.BOTTOM,
         )
 
-        # Small stop rim rests on the worktop.
         rim = Cylinder(
             d=self.rim_diameter,
-            h=self.rim_thickness,
+            h=self.RIM_THICKNESS,
             anchor=Anchor.BOTTOM,
-        ).at(0, 0, self.working_height, anchor=Anchor.BOTTOM)
+        ).at(0, 0, self.WORKING_HEIGHT, anchor=Anchor.BOTTOM)
         dog = dog + rim
 
-        # The insertion stem is 0.2 mm oversized by default. The crossed slots
-        # turn it into four flexible quadrants that can compress into the hole.
         stem_diameter = self.hole_diameter + self.interference
-        stem_z = self.working_height + self.rim_thickness
+        stem_z = self.WORKING_HEIGHT + self.RIM_THICKNESS
         stem = Cylinder(
             d=stem_diameter,
-            h=self.insertion_length,
+            h=self.INSERTION_LENGTH,
             anchor=Anchor.BOTTOM,
         ).at(0, 0, stem_z, anchor=Anchor.BOTTOM)
         dog = dog + stem
 
-        slot_z = stem_z + self.insertion_length - self.slot_length
+        slot_z = stem_z + self.INSERTION_LENGTH - self.SLOT_LENGTH
         slot_x = Box(
-            stem_diameter + 2.0,
+            22.2,
             self.slot_width,
-            self.slot_length,
+            self.SLOT_LENGTH,
         ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
         slot_y = Box(
             self.slot_width,
-            stem_diameter + 2.0,
-            self.slot_length,
+            22.2,
+            self.SLOT_LENGTH,
         ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
 
         dog = dog - slot_x

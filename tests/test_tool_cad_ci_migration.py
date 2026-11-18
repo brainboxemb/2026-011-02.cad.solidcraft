@@ -49,6 +49,14 @@ class ToolCadCiMigrationTests(unittest.TestCase):
             "python scripts/ci/bootstrap_cad_ci.py",
             workflow,
         )
+        self.assertIn(
+            "ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}",
+            workflow,
+        )
+        self.assertIn(
+            "github.event.pull_request.head.repo.full_name == github.repository",
+            workflow,
+        )
 
 
 if __name__ == "__main__":

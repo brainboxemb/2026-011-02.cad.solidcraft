@@ -2,27 +2,23 @@ name: CAD
 
 on:
   pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, closed]
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
     inputs:
       mode:
-        description: Build changed models, named models, or all models
-        required: false
-        default: changed
+        description: Models to check
         type: choice
-        options:
-          - changed
-          - models
-          - all
+        required: true
+        default: changed
+        options: [changed, models, all]
       models:
-        description: Space- or comma-separated model slugs for models mode
+        description: Model slugs when mode is models
+        type: string
         required: false
         default: ""
-        type: string
-  schedule:
-    - cron: "23 4 * * 1"
 
 permissions:
   contents: write
@@ -30,23 +26,28 @@ permissions:
 
 concurrency:
   group: cad-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
 
 jobs:
-  verify-publish:
+  cad:
     if: github.event_name != 'pull_request' || github.event.action != 'closed'
     runs-on: ubuntu-latest
     env:
-      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
-      BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before || '' }}
-      SOURCE_REF: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      BUILD_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'changed' }}
+      BUILD_MODELS: ${{ github.event_name == 'workflow_dispatch' && inputs.models || '' }}
+      BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before || '' }}
+      HEAD_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      EVENT_NAME: ${{ github.event_name }}
+      REF_NAME: ${{ github.head_ref || github.ref_name }}
       PR_NUMBER: ${{ github.event.pull_request.number || 0 }}
-      MODE: ${{ github.event_name == 'schedule' && 'all' || inputs.mode || 'changed' }}
-      MODELS: ${{ inputs.models || '' }}
+
     steps:
-      - name: Checkout CAD source
+      - name: Checkout source
         uses: actions/checkout@v4
         with:
+          # Publication checks the real source commit, not GitHub's temporary
+          # PR merge ref.
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
 
       - name: Checkout verified build output
@@ -70,7 +71,7 @@ jobs:
       - name: Bootstrap pinned tool.cad.ci
         run: python scripts/ci/bootstrap_cad_ci.py
 
-      - name: Resolve CAD toolchain image
+      - name: Resolve immutable CAD image
         id: image
         run: |
           python scripts/ci/cad_image.py \
@@ -84,7 +85,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Pull immutable CAD toolchain image
+      - name: Pull immutable CAD image
         run: python scripts/ci/pull_cad_image.py "${{ steps.image.outputs.reference }}"
 
       - name: Run selected CAD pipeline
@@ -92,14 +93,22 @@ jobs:
           docker run --rm \
             -v "$GITHUB_WORKSPACE:/workspace" \
             -w /workspace \
+            -e BUILD_MODE \
+            -e BUILD_MODELS \
+            -e BASE_SHA \
+            -e HEAD_SHA \
+            -e EVENT_NAME \
+            -e REF_NAME \
+            -e PR_NUMBER \
+            -e GITHUB_RUN_ID \
             "${{ steps.image.outputs.reference }}" \
             python scripts/ci/pipeline_ci.py \
-              --mode "$MODE" \
-              --models "$MODELS" \
+              --mode "$BUILD_MODE" \
+              --models "$BUILD_MODELS" \
               --base-sha "$BASE_SHA" \
-              --head-sha "$SOURCE_SHA" \
-              --event-name "${{ github.event_name }}" \
-              --ref-name "$SOURCE_REF" \
+              --head-sha "$HEAD_SHA" \
+              --event-name "$EVENT_NAME" \
+              --ref-name "$REF_NAME" \
               --pull-request "$PR_NUMBER" \
               --out output \
               --build-root generated-build \
@@ -107,37 +116,48 @@ jobs:
               --workflow-run "$GITHUB_RUN_ID" \
               --image-reference "${{ steps.image.outputs.reference }}"
 
-      - name: Upload CAD verification bundle
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cad-verification-${{ github.run_id }}
-          path: |
-            output/**
-            build/models/basic/plate/**
-          if-no-files-found: warn
-          retention-days: 14
-
       - name: Publish verified build and site
-        if: success()
+        if: >-
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
         run: |
           python scripts/ci/publish_ci.py \
             --bundle output \
             --source-root . \
             --build-root generated-build \
             --pages-root pages \
-            --workflow-event "${{ github.event_name }}" \
-            --workflow-head-branch "$SOURCE_REF" \
-            --workflow-head-sha "$SOURCE_SHA"
+            --workflow-event "$EVENT_NAME" \
+            --workflow-head-branch "$REF_NAME" \
+            --workflow-head-sha "$HEAD_SHA"
+
+      - name: Upload CAD diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cad-${{ github.run_id }}
+          path: |
+            output/plan.json
+            output/tool-cad-ci-plan.json
+            output/models/
+            output/native/
+            output/candidate/
+            output/site/
+            output/publish.json
+            build/models/basic/plate/
+          if-no-files-found: ignore
 
   cleanup:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    env:
-      PR_NUMBER: ${{ github.event.pull_request.number }}
     steps:
-      - name: Checkout CAD source
+      - name: Checkout trusted cleanup code
         uses: actions/checkout@v4
+        with:
+          ref: main
+          path: source
 
       - name: Checkout build output
         uses: actions/checkout@v4
@@ -159,6 +179,7 @@ jobs:
 
       - name: Remove closed PR output
         run: |
-          python scripts/ci/cleanup_ci.py "$PR_NUMBER" \
+          python source/scripts/ci/cleanup_ci.py \
             --build-root generated-build \
-            --pages-root pages
+            --pages-root pages \
+            --pull-request "${{ github.event.pull_request.number }}"

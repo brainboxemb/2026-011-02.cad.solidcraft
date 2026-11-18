@@ -216,10 +216,11 @@ def copy_if_exists(source, target):
         shutil.copy2(source, target)
 
 
-def build(out, commit, native_root=None, generated_root=None, previous_site=None, stable_store=None):
+def build(out, commit, native_root=None, generated_root=None, previous_site=None, stable_store=None, public_base=PUBLIC_SITE):
     out.mkdir(parents=True, exist_ok=True)
     copy_if_exists(ROOT / "site/results.css", out / "results.css")
     cards = {key: [] for key in SECTIONS}
+    category_cards = {key: [] for key in SECTIONS}
     scpf_commit = library_revision()
     scpc_commit = dependency_revision("scpc")
     run_verification = current_run_verification(
@@ -367,7 +368,7 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
 
         browser_controls = ""
         if has_native:
-            model_url = f"{PUBLIC_SITE}/models/{slug}/model.sc"
+            model_url = f"{public_base}/models/{slug}/model.sc"
             encoded_url = quote(model_url, safe="")
             full_url = f"{SOLIDCRAFT_WEB}?open={encoded_url}"
             # The model page deliberately does NOT embed SolidCraft.
@@ -621,16 +622,38 @@ The source and JSON here are from this checkout. Native qualification is reporte
             encoding="utf-8",
         )
         group = next(key for key, (_, _, names) in SECTIONS.items() if slug in names)
-        cards[group].append(f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
-<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Render from main' if previously_verified else 'Command plan available'}</span>
+        card = f"""<article class="card"><div class="picture">{f'<img src="models/{slug}/native.png" alt="SolidCraft model render">' if preview_image else diagram(slug)}</div>
+<div class="inside"><span class="badge {badge}">{'Native verified' if has_native else 'Published render' if previously_verified else 'Command plan available'}</span>
 <h3><a href="models/{slug}/">{esc(info["title"])}</a></h3><p>{esc(info["tagline"])}</p>
 <p class="small muted">{esc(info["parameters"])}</p>
-<a class="btn" href="models/{slug}/">Explore model →</a></div></article>""")
+<a class="btn" href="models/{slug}/">Explore model →</a></div></article>"""
+        category_cards[group].append(
+            card.replace(f"models/{slug}/", f"../{slug}/")
+        )
+        if info.get("featured", True):
+            cards[group].append(card)
     sections_html = "".join(
         f'<section class="model-category" id="{key}"><h2>{esc(title)}</h2>'
-        f'<p class="muted">{esc(description)}</p><div class="grid">{"".join(cards[key])}</div></section>'
+        f'<p class="muted">{esc(description)}</p>'
+        f'<p><a href="models/{key}/">Browse all {esc(title.lower())} →</a></p>'
+        f'<div class="grid">{"".join(cards[key])}</div></section>'
         for key, (title, description, _names) in SECTIONS.items()
     )
+
+    # Category pages list every model in that section, independent of the
+    # curated home-page featured flag.
+    for key, (title, description, _names) in SECTIONS.items():
+        category = out / "models" / key
+        category.mkdir(parents=True, exist_ok=True)
+        category_body = f"""<section class="hero cad-hero"><div class="wrap">
+<div class="eyebrow">CAD model category</div><h1>{esc(title)}</h1>
+<p>{esc(description)}</p></div></section>
+<main class="wrap"><p><a href="../../">← Back to model overview</a></p>
+<div class="grid">{"".join(category_cards[key])}</div></main>"""
+        (category / "index.html").write_text(
+            layout(title, category_body, "../../results.css", "../../"),
+            encoding="utf-8",
+        )
     home = f"""<section class="hero cad-hero"><div class="wrap"><div class="eyebrow">SCPF · SolidCraft</div>
 <h1>CAD models, from readable code to native geometry</h1>
 <p>Explore ten CAD designs and their construction stages. Python SCPF emits native SolidCraft commands; SolidCraft creates the final BRep model.</p></div></section>
@@ -648,12 +671,25 @@ Current SCPC dependency: <a href="https://github.com/brainboxemb/lib.py.solidcra
 Each native model page records the exact Forge, SolidCraft and source revision used for that model.</p></main>"""
     provenance = {
         "schema": 2,
+        "source_commit": commit,
         "catalog_commit": commit,
         "scpf_commit": scpf_commit,
         "scpc_commit": scpc_commit,
         "native_verified_models": verified_models,
         "models": model_verifications,
     }
+    for key in (
+        "scpf_release",
+        "solidcraft_version",
+        "native_file_format",
+    ):
+        values = {
+            row.get(key)
+            for row in model_verifications.values()
+            if row.get(key) is not None
+        }
+        if len(values) == 1:
+            provenance[key] = values.pop()
     (out / "provenance.json").write_text(
         json.dumps(provenance, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -697,6 +733,8 @@ def main():
                         help="Root of freshly compiled output/models")
     parser.add_argument("--stable-store", type=Path,
                         help="model-output stable root containing models/<slug>")
+    parser.add_argument("--public-base", default=PUBLIC_SITE,
+                        help="Published base URL used by external SolidCraft open links")
     args = parser.parse_args()
     build(
         args.out,
@@ -705,6 +743,7 @@ def main():
         args.generated,
         args.previous_site,
         args.stable_store,
+        args.public_base,
     )
 
 

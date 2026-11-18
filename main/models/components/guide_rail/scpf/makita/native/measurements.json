@@ -1,0 +1,98 @@
+{
+  "bodies": [
+    {
+      "area_mm2": 274600.8093393329,
+      "bbox": {
+        "max": [
+          182.5,
+          300.0,
+          10.28
+        ],
+        "min": [
+          0.0,
+          -300.0,
+          0.0
+        ]
+      },
+      "center_of_mass": [
+        80.55856931581206,
+        6.5376272166527206e-15,
+        3.1076681378068103
+      ],
+      "closed": true,
+      "density_g_cm3": 1.29,
+      "edges": 297,
+      "face_types": {
+        "plane": 101
+      },
+      "faces": 101,
+      "kernel": {
+        "edges": 297,
+        "faces": 101,
+        "shells": 1,
+        "vertices": 198
+      },
+      "mass_g": 357.03210971699986,
+      "material": "Default",
+      "measured_by": "smlib",
+      "name": "GuideRail",
+      "notes": [],
+      "vertices": 198,
+      "volume_mm3": 276769.0772999999
+    }
+  ],
+  "body_count": 1,
+  "params": [
+    {
+      "comment": "",
+      "error": null,
+      "expression": "600",
+      "model": false,
+      "name": "length",
+      "unit": "mm",
+      "value": 600.0
+    }
+  ],
+  "sketches": [
+    {
+      "curves": 99,
+      "dof": 196,
+      "id": 1,
+      "name": "Guide rail profile - makita",
+      "profiles": 1,
+      "status": "solved",
+      "visible": false
+    }
+  ],
+  "timeline": [
+    {
+      "error": null,
+      "id": 1,
+      "ms": 0.774215,
+      "name": "Guide rail profile - makita",
+      "rolled_back": false,
+      "suppressed": false,
+      "type": "Sketch",
+      "warning": null
+    },
+    {
+      "error": null,
+      "id": 2,
+      "ms": 24.58165,
+      "name": "Extrude1",
+      "rolled_back": false,
+      "suppressed": false,
+      "type": "ExtrudeFeature",
+      "warning": null
+    }
+  ],
+  "total": {
+    "area_mm2": 274600.8093393329,
+    "edges": 297,
+    "faces": 101,
+    "mass_g": 357.03210971699986,
+    "open_bodies_skipped": 0,
+    "vertices": 198,
+    "volume_mm3": 276769.0772999999
+  }
+}

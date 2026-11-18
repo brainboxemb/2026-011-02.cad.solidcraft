@@ -79,7 +79,6 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "glass_strip.py",
                 "roundwood_handle.py",
                 "side_board.py",
-                "side_handle_socket.py",
                 "window.py",
             },
         )
@@ -170,7 +169,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
 
         # The intermediate shelf adds one Board shape. The two equal lower
         # dividers share one additional Board shape and become two occurrences.
-        self.assertEqual(len(creates), 16)
+        self.assertEqual(len(creates), 15)
 
         frame_source = (
             SCPF_DIR / "assemblies" / "wood_frame.py"
@@ -288,7 +287,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertEqual(70.0 + 12.0 + 80.0, 162.0)
         self.assertEqual(70.0 + 12.0 + 362.0 - 80.0, 364.0)
 
-    def test_side_handle_concept_is_centered_in_each_recess(self):
+    def test_side_handle_is_flush_with_rear_and_fills_recess_height(self):
         rows = commands()
         moves = of(rows, "occurrence.move")
 
@@ -301,35 +300,26 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         ]
         self.assertEqual(len(rods), 2)
 
-        # The 110 mm side wall extends 10 mm behind the 100 mm cabinet.
-        # Its 50 mm recess runs from Y=60 to Y=110, so the handle centre is Y=85.
-        self.assertTrue(all(row["translate"][1] == 85.0 for row in rods))
+        # Ø22 radius is 11 mm. With a 110 mm side-panel depth, Y=99 puts the
+        # rear surface of the rod exactly flush with the rear panel edge.
+        self.assertTrue(all(row["translate"][1] == 99.0 for row in rods))
 
-        sockets = [
-            row for row in moves
-            if row["occurrence"] in {
-                "$left_handle_socket_bottom",
-                "$left_handle_socket_top",
-                "$right_handle_socket_bottom",
-                "$right_handle_socket_top",
-            }
-        ]
-        self.assertEqual(len(sockets), 4)
-        self.assertTrue(all(row["translate"][1] == 85.0 for row in sockets))
+        # No mounting hardware is part of this first ergonomic study.
+        self.assertFalse(
+            any("socket" in row["occurrence"] for row in moves)
+        )
 
         handle_source = (
             SCPF_DIR / "assemblies" / "side_handles.py"
         ).read_text(encoding="utf-8")
         self.assertIn("ROD_DIAMETER = 22.0", handle_source)
-        self.assertIn("SOCKET_OUTER_DIAMETER = 34.0", handle_source)
-        self.assertIn("ROD_SOCKET_INSERT = 8.0", handle_source)
-        socket_source = (
-            SCPF_DIR / "parts" / "side_handle_socket.py"
-        ).read_text(encoding="utf-8")
-        self.assertIn("BRIDGE_SLEEVE_OVERLAP = 3.0", socket_source)
         self.assertIn(
-            "self.bridge_depth + BRIDGE_SLEEVE_OVERLAP",
-            socket_source,
+            "self.side_panel_depth - half(ROD_DIAMETER)",
+            handle_source,
+        )
+        self.assertIn(
+            "rod_length = recess_top_z - recess_bottom_z",
+            handle_source,
         )
 
     def test_five_panel_x_layout_is_unchanged(self):

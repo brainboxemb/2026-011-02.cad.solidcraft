@@ -3,26 +3,19 @@
 from scpf import Placement, assembly, half
 
 from parts.roundwood_handle import RoundwoodHandle
-from parts.side_handle_socket import SideHandleSocket
 
 
-# Concept dimensions. These stay fixed until the handle position has been
-# checked visually in the complete cabinet.
 ROD_DIAMETER = 22.0
-SOCKET_OUTER_DIAMETER = 34.0
-SOCKET_HEIGHT = 24.0
-SOCKET_BORE_CLEARANCE = 0.6
-SOCKET_EDGE_INSET = 8.0
-ROD_SOCKET_INSERT = 8.0
 
 
 @assembly
 class SideHandles:
+    """First handle study: only the roundwood, with no mounting hardware."""
+
     opening_width = 844.0
     opening_height = 362.0
     lower_compartment_height = 70.0
     frame_wood_thickness = 12.0
-    cabinet_depth = 100.0
     side_panel_depth = 110.0
 
     side_recess_depth = 50.0
@@ -35,18 +28,14 @@ class SideHandles:
             + half(self.frame_wood_thickness)
         )
 
-        # The handle sits exactly halfway through the 50 mm rear recess in
-        # the deeper side panel. Default geometry: recessed plywood edge Y=60,
-        # side-panel rear edge Y=110, therefore handle centre Y=85.
-        recessed_edge_y = self.side_panel_depth - self.side_recess_depth
-        handle_y = recessed_edge_y + half(self.side_recess_depth)
-        bridge_depth = (
-            handle_y
-            - recessed_edge_y
-            - half(SOCKET_OUTER_DIAMETER)
-        )
+        # Align the back of the Ø22 rod exactly with the 110 mm rear edge of
+        # the side panel. The rod centre therefore sits one radius forward.
+        # Default: Y=110 - 11 = 99 mm.
+        handle_y = self.side_panel_depth - half(ROD_DIAMETER)
 
-        # Use the same vertical reference planes as the SideBoard profile.
+        # Use exactly the same vertical limits as the visible side-wall recess.
+        # The rod is shown clamped directly between those two limits. Mounting
+        # details are intentionally left out until the ergonomics are right.
         opening_bottom_z = (
             2 * self.frame_wood_thickness
             + self.lower_compartment_height
@@ -60,71 +49,28 @@ class SideHandles:
             + self.opening_height
             - self.side_recess_upper_keep
         )
+        rod_length = recess_top_z - recess_bottom_z
 
-        # Keep both sockets fully inside the visible recess for this concept.
-        # The rod overlaps each socket by 8 mm, so its ends disappear naturally
-        # inside the printed sleeves.
-        bottom_socket_z = recess_bottom_z + SOCKET_EDGE_INSET
-        top_socket_z = (
-            recess_top_z
-            - SOCKET_EDGE_INSET
-            - SOCKET_HEIGHT
-        )
-        rod_bottom_z = (
-            bottom_socket_z
-            + SOCKET_HEIGHT
-            - ROD_SOCKET_INSERT
-        )
-        rod_top_z = top_socket_z + ROD_SOCKET_INSERT
-        rod_length = rod_top_z - rod_bottom_z
+        left = RoundwoodHandle(
+            name="left_handle_rod",
+            diameter=ROD_DIAMETER,
+            length=rod_length,
+            placement=Placement(
+                x=-side_center_x,
+                y=handle_y,
+                z=recess_bottom_z,
+            ),
+        ).group("SideHandles")
 
-        result = None
-        for side_name, side_x in (
-            ("left", -side_center_x),
-            ("right", side_center_x),
-        ):
-            bottom_socket = SideHandleSocket(
-                name=f"{side_name}_handle_socket_bottom",
-                panel_thickness=self.frame_wood_thickness,
-                rod_diameter=ROD_DIAMETER,
-                outer_diameter=SOCKET_OUTER_DIAMETER,
-                height=SOCKET_HEIGHT,
-                bridge_depth=bridge_depth,
-                bore_clearance=SOCKET_BORE_CLEARANCE,
-                placement=Placement(
-                    x=side_x,
-                    y=handle_y,
-                    z=bottom_socket_z,
-                ),
-            ).group("SideHandles")
+        right = RoundwoodHandle(
+            name="right_handle_rod",
+            diameter=ROD_DIAMETER,
+            length=rod_length,
+            placement=Placement(
+                x=side_center_x,
+                y=handle_y,
+                z=recess_bottom_z,
+            ),
+        ).group("SideHandles")
 
-            top_socket = SideHandleSocket(
-                name=f"{side_name}_handle_socket_top",
-                panel_thickness=self.frame_wood_thickness,
-                rod_diameter=ROD_DIAMETER,
-                outer_diameter=SOCKET_OUTER_DIAMETER,
-                height=SOCKET_HEIGHT,
-                bridge_depth=bridge_depth,
-                bore_clearance=SOCKET_BORE_CLEARANCE,
-                placement=Placement(
-                    x=side_x,
-                    y=handle_y,
-                    z=top_socket_z,
-                ),
-            ).group("SideHandles")
-
-            rod = RoundwoodHandle(
-                name=f"{side_name}_handle_rod",
-                diameter=ROD_DIAMETER,
-                length=rod_length,
-                placement=Placement(
-                    x=side_x,
-                    y=handle_y,
-                    z=rod_bottom_z,
-                ),
-            ).group("SideHandles")
-
-            side_result = bottom_socket + top_socket + rod
-            result = side_result if result is None else result + side_result
-
-        return result
+        return left + right

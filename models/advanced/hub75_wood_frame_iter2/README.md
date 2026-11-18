@@ -65,7 +65,7 @@ lower dividers remain **100 mm** deep, while both side panels are now **110 mm**
 deep. Only the rear edge of the display section of those side panels is reduced.
 The current iteration-2 values are:
 
-- rear recess depth: **50 mm**, leaving a 50 mm deep middle section;
+- rear recess depth: **50 mm**, leaving a 60 mm deep middle section;
 - transition radius: **R20**;
 - full-depth side wall above the intermediate shelf before the recess: **80 mm**;
 - full-depth side wall below the roof after the recess: **80 mm**.
@@ -76,15 +76,15 @@ rear-access geometry is being developed.
 
 ### Side-handle concept
 
-For visual evaluation, each side recess now contains one straight **Ø22 mm
-beech roundwood handle**. The rod is not slotted or weakened. Its centre is
-placed halfway through the 50 mm recess: **Y=85 mm** between the recessed
-side-wall edge at Y=60 and the side-panel rear at Y=110.
+For visual evaluation, each side recess contains only one straight **Ø22 mm
+beech roundwood handle**. No bracket, socket or other mounting hardware is
+modelled yet.
 
-Two temporary printed socket concepts hold each rod. Each socket has a Ø34 mm
-outer sleeve, Ø22.6 mm bore and a short bridge back to the recessed plywood
-edge. The sockets and exact handle position are still concept geometry; they
-can be moved or redesigned after checking hand clearance in the full model.
+The rod is shown clamped directly between the lower and upper limits of the
+recess. Its rear surface is exactly flush with the **Y=110 mm** rear edge of
+the side panel, putting the rod centre at **Y=99 mm**. The recessed plywood edge
+is at Y=60, so the clear space between that edge and the front of the Ø22 rod is
+**28 mm**. This stage is intentionally only an ergonomic/position study.
 
 ## Current main dimensions
 

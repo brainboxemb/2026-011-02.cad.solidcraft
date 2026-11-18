@@ -74,12 +74,12 @@ attached to the side-wall body because Forge currently cannot use a standalone
 tracked separately in Forge issue #354. The rear board remains temporarily
 disabled while this rear-access shape is developed.
 
-Add a first side-handle concept for visual evaluation. Each side gets one
-vertical Ø22 mm beech roundwood rod centred in the 50 mm rear recess at Y=85.
-Do not slot the roundwood around the 12 mm plywood. Instead keep the rod intact
-and show two temporary printed sockets per side. The current sockets use a Ø34
-outer sleeve, Ø22.6 bore and a short bridge to the recessed plywood edge. These
-socket dimensions are concept values, not the final mounting design.
+Add a first side-handle position study with only the Ø22 mm beech roundwood.
+Do not design mounting hardware yet. The rod is clamped visually between the
+lower and upper limits of the recess. Align its rear surface exactly with the
+110 mm rear edge of the side panel, so the rod centre is Y=99 mm. With the
+recessed plywood edge at Y=60, this leaves 28 mm clear finger space between the
+side wall and the front of the rod.
 
 ## Scope
 

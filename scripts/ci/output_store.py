@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 import shutil
 import tempfile
+import zipfile
 
 from model_catalog import MODELS
 
@@ -65,6 +66,16 @@ def verification_metadata(
     return data
 
 
+def native_file_format(model_sc):
+    """Read the SolidCraft document format from a native .sc ZIP."""
+    if not model_sc.is_file() or not zipfile.is_zipfile(model_sc):
+        return None
+    with zipfile.ZipFile(model_sc) as archive:
+        document = json.loads(archive.read("document.json"))
+    value = document.get("format")
+    return value if isinstance(value, str) else None
+
+
 def _copy_tree_if_present(source, destination):
     if source is None or not source.is_dir():
         return
@@ -111,6 +122,9 @@ def prepare_candidate(
         row = dict(metadata)
         row["model"] = slug
         row["verified"] = True
+        file_format = native_file_format(native_root / slug / "model.sc")
+        if file_format:
+            row["native_file_format"] = file_format
         (target / VERIFICATION_FILE).write_text(
             json.dumps(row, indent=2, sort_keys=True) + "\n",
             encoding="utf-8",

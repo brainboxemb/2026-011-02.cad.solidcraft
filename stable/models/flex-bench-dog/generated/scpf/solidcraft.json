@@ -1,0 +1,286 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rim_diameter",
+        "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "interference",
+        "expression": "0.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "slot_width",
+        "expression": "1.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3.0,
+        "diameter": "rim_diameter",
+        "base": [
+          0,
+          0,
+          0.0
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 17.0,
+        "diameter": "hole_diameter",
+        "base": [
+          0,
+          0,
+          3.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 20.0,
+        "diameter": "hole_diameter",
+        "base": [
+          0,
+          0,
+          -20.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 2.0,
+        "diameter": "hole_diameter + (interference)",
+        "base": [
+          0,
+          0,
+          -20.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.1,
+            0.0,
+            -20.0
+          ]
+        ],
+        "distance": 1.0,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1,
+            0,
+            0
+          ],
+          "y_dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "name": "Flex slot X"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "(-((hole_diameter + (interference) + 2 mm) / 2))",
+          "(-(slot_width / 2))"
+        ],
+        "p1": [
+          "((hole_diameter + (interference) + 2 mm) / 2)",
+          "(slot_width / 2)"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot X",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1,
+            0,
+            0
+          ],
+          "y_dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "name": "Flex slot Y"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "(-(slot_width / 2))",
+          "(-((hole_diameter + (interference) + 2 mm) / 2))"
+        ],
+        "p1": [
+          "(slot_width / 2)",
+          "((hole_diameter + (interference) + 2 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot Y",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.0,
+            0.0,
+            20.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1,
+            0,
+            0
+          ],
+          "y_dir": [
+            0,
+            1,
+            0
+          ]
+        },
+        "name": "Top logo"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -4.0,
+          -4.0
+        ],
+        "p1": [
+          4.0,
+          4.0
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    }
+  ]
+}

@@ -9,7 +9,14 @@ from pathlib import Path
 import re
 import subprocess
 
-from select_models import needs_site_refresh, parse_models, select_models
+from model_catalog import MODELS
+from select_models import (
+    PIPELINE_SMOKE_MODEL,
+    needs_pipeline_smoke,
+    needs_site_refresh,
+    parse_models,
+    select_models,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -101,6 +108,19 @@ def make_plan(
             "native-snapshot-required",
         )
     }
+    if mode == "changed" and needs_pipeline_smoke(paths):
+        for kind in selections:
+            smoke_models = select_models(
+                mode="models",
+                kind=kind,
+                models=(PIPELINE_SMOKE_MODEL,),
+            )
+            selections[kind] = tuple(
+                slug
+                for slug in MODELS
+                if slug in set(selections[kind]) | set(smoke_models)
+            )
+
     target = publication_target(
         event_name=event_name,
         ref_name=ref_name,

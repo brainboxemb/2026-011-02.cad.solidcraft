@@ -19,7 +19,7 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertFalse(any(name.startswith("sketch.") for name in names))
         self.assertFalse(any(name == "solid.hole" for name in names))
 
-    def test_default_fit_is_20_mm_hole_plus_point_two_interference(self):
+    def test_native_parameters_are_fit_dimensions(self):
         commands = run_script(MODEL)["commands"]
         params = {
             row["params"]["name"]: row["params"]["expression"]
@@ -27,10 +27,15 @@ class FlexBenchDogTests(unittest.TestCase):
             if row["command"] == "parameters.add"
         }
 
-        self.assertEqual(params["hole_diameter"], "20")
-        self.assertEqual(params["interference"], "0.2")
-        self.assertEqual(params["slot_width"], "1.5")
-        self.assertEqual(params["slot_length"], "30")
+        self.assertEqual(
+            params,
+            {
+                "hole_diameter": "20",
+                "interference": "0.2",
+                "rim_diameter": "24",
+                "slot_width": "1.5",
+            },
+        )
 
         cylinders = [
             row["params"] for row in commands
@@ -47,6 +52,8 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(len(boxes), 2)
         self.assertEqual(boxes[0]["width"], "slot_width")
         self.assertEqual(boxes[1]["length"], "slot_width")
+        self.assertEqual(boxes[0]["height"], 30)
+        self.assertEqual(boxes[1]["height"], 30)
 
 
 if __name__ == "__main__":

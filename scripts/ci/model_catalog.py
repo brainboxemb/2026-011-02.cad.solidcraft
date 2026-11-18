@@ -245,7 +245,7 @@ MODELS = {
         "component_source": "models/components/flex_bench_dog/scpf/model.py",
         "component_definition_primary": True,
         "scpc_source": "models/components/flex_bench_dog/scpc/model.py",
-        "scpc_command_count": 13,
+        "scpc_command_count": 9,
         "native": True,
         "native_snapshot_required": True,
     },

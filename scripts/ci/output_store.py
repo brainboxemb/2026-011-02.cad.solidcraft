@@ -457,6 +457,9 @@ def main():
     migrate.add_argument("--pages", type=Path, required=True)
     migrate.add_argument("--store", type=Path, required=True)
 
+    migrate_store = sub.add_parser("migrate-store")
+    migrate_store.add_argument("--store", type=Path, required=True)
+
     prune = sub.add_parser("prune")
     prune.add_argument("--store", type=Path, required=True)
     prune.add_argument("--channel", choices=("stable", "preview"), default="stable")
@@ -491,6 +494,9 @@ def main():
             pages=args.pages,
             store=args.store,
         )
+        print(" ".join(migrated))
+    elif args.command == "migrate-store":
+        migrated = migrate_legacy_store_layout(store=args.store)
         print(" ".join(migrated))
     elif args.command == "promote":
         promote_candidate(

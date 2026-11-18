@@ -153,10 +153,9 @@ Normal CAD CI must not reinstall the same heavy toolchain for every model run.
 ### Keep build output separate from Pages
 
 Use `build` as the durable store of verified model build results.
-The build item path mirrors the catalog item's source location and must be
-unique. A conventional `model.py` item uses its source directory; a named
-source such as `makita.py` or `assemblies/guide_rail.py` gets a directory
-with that source stem. Do not flatten model output to a slug-only directory.
+The build item path is the catalog source-file path without the `.py` suffix.
+This makes every item unique and prevents one item directory from being the
+parent of another. Do not flatten model output to a slug-only directory.
 `gh-pages` is generated publication output, not the source of truth for CAD
 verification.
 

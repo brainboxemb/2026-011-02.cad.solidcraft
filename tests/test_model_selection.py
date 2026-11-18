@@ -42,10 +42,14 @@ class TargetedModelSelectionTests(unittest.TestCase):
         self.assertIn(watched, model_input_paths("simple-mft-assembly"))
         self.assertTrue(_matches(changed, watched))
 
-    def test_model_root_readme_selects_only_owning_model(self):
+    def test_model_root_readme_selects_models_sharing_that_root(self):
         changed = ["models/components/guide_rail/README.md"]
         selected = affected_models(changed, kind="native")
-        self.assertEqual(selected, ("guide-rail",))
+        self.assertEqual(
+            selected,
+            ("guide-rail", "guide-rail-makita"),
+        )
+        self.assertNotIn("simple-mft-assembly", selected)
 
     def test_model_root_check_selects_only_owning_model(self):
         changed = ["models/advanced/hub75_wood_frame/check.py"]

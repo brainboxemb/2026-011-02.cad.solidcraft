@@ -10,16 +10,19 @@ MODEL = ROOT / "models" / "components" / "flex_bench_dog" / "scpf" / "model.py"
 
 
 class FlexBenchDogTests(unittest.TestCase):
-    def test_uses_native_cylinders_sketch_cuts_and_chamfers(self):
+    def test_uses_native_taper_sketch_cuts_and_chamfers(self):
         commands = run_script(MODEL)["commands"]
         names = [row["command"] for row in commands]
 
-        self.assertEqual(names.count("solid.cylinder"), 4)
+        self.assertEqual(names.count("solid.cylinder"), 2)
+        self.assertEqual(names.count("solid.cone"), 1)
         self.assertEqual(names.count("sketch.create"), 3)
-        self.assertEqual(names.count("sketch.rectangle.two_point"), 3)
+        self.assertEqual(names.count("sketch.rectangle.two_point"), 2)
+        self.assertEqual(names.count("sketch.slot.center_to_center"), 9)
         self.assertEqual(names.count("solid.extrude"), 3)
         self.assertEqual(names.count("solid.fillet"), 0)
         self.assertEqual(names.count("solid.chamfer"), 2)
+        self.assertFalse(any(name == "solid.box" for name in names))
         self.assertFalse(any(name == "solid.hole" for name in names))
 
     def test_native_parameters_are_fit_dimensions(self):
@@ -34,29 +37,46 @@ class FlexBenchDogTests(unittest.TestCase):
             {
                 "hole_diameter": "20",
                 "interference": "0.2",
-                "rim_diameter": "24",
+                "rim_diameter": "22",
                 "slot_width": "1.5",
             },
         )
 
-    def test_body_is_symmetric_twenty_mm_around_worktop(self):
+    def test_small_rim_and_twenty_mm_upper_body(self):
         commands = run_script(MODEL)["commands"]
         cylinders = [
-            row["params"] for row in commands
+            row["params"]
+            for row in commands
             if row["command"] == "solid.cylinder"
         ]
 
+        self.assertEqual(len(cylinders), 2)
         self.assertEqual(cylinders[0]["base"], [0, 0, 0])
-        self.assertEqual(cylinders[0]["height"], 3)
-        self.assertEqual(cylinders[1]["base"], [0, 0, 3])
-        self.assertEqual(cylinders[1]["height"], 17)
-        self.assertEqual(cylinders[2]["base"], [0, 0, -20])
-        self.assertEqual(cylinders[2]["height"], 20)
-        self.assertEqual(cylinders[3]["base"], [0, 0, -20])
-        self.assertEqual(cylinders[3]["height"], 2)
+        self.assertEqual(cylinders[0]["height"], 1.5)
+        self.assertEqual(cylinders[0]["diameter"], "rim_diameter")
+
+        self.assertEqual(cylinders[1]["base"], [0, 0, 1.5])
+        self.assertEqual(cylinders[1]["height"], 18.5)
+        self.assertEqual(cylinders[1]["diameter"], "hole_diameter")
+
+    def test_insert_is_one_full_length_conical_frustum(self):
+        commands = run_script(MODEL)["commands"]
+        cone = next(
+            row["params"]
+            for row in commands
+            if row["command"] == "solid.cone"
+        )
+
+        self.assertEqual(cone["base"], [0, 0, -20])
+        self.assertEqual(cone["height"], 20)
+        self.assertEqual(cone["axis"], "Z")
+        self.assertEqual(cone["top_diameter"], "hole_diameter")
         self.assertIn(
-            cylinders[3]["diameter"],
-            ("hole_diameter + interference", "hole_diameter + (interference)"),
+            cone["diameter"],
+            (
+                "hole_diameter + interference",
+                "hole_diameter + (interference)",
+            ),
         )
 
     def test_cross_slots_leave_four_mm_flex_root(self):
@@ -94,7 +114,7 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(chamfers[0]["distance"], 1.0)
         self.assertEqual(chamfers[1]["distance"], 0.6)
 
-    def test_recessed_top_logo_is_present(self):
+    def test_recessed_logo_is_cube_wireframe_not_filled_square(self):
         commands = run_script(MODEL)["commands"]
         sketches = [
             row["params"]
@@ -104,13 +124,39 @@ class FlexBenchDogTests(unittest.TestCase):
         self.assertEqual(sketches[-1]["name"], "Top logo")
         self.assertEqual(sketches[-1]["plane"]["origin"], [0, 0, 20])
 
-        cuts = [
+        logo_slots = [
+            row["params"]
+            for row in commands
+            if row["command"] == "sketch.slot.center_to_center"
+        ]
+        self.assertEqual(len(logo_slots), 9)
+        self.assertTrue(all(row["width"] == 0.6 for row in logo_slots))
+
+        # Six perimeter edges plus three spokes to the cube's centre.
+        expected = {
+            ((0.0, 4.0), (3.5, 2.0)),
+            ((3.5, 2.0), (3.5, -2.0)),
+            ((3.5, -2.0), (0.0, -4.0)),
+            ((0.0, -4.0), (-3.5, -2.0)),
+            ((-3.5, -2.0), (-3.5, 2.0)),
+            ((-3.5, 2.0), (0.0, 4.0)),
+            ((0.0, 0.0), (0.0, 4.0)),
+            ((0.0, 0.0), (3.5, -2.0)),
+            ((0.0, 0.0), (-3.5, -2.0)),
+        }
+        actual = {
+            (tuple(row["p0"]), tuple(row["p1"]))
+            for row in logo_slots
+        }
+        self.assertEqual(actual, expected)
+
+        logo_cut = next(
             row["params"]
             for row in commands
             if row["command"] == "solid.extrude"
-            and row["params"]["operation"] == "cut"
-        ]
-        logo_cut = next(row for row in cuts if row["name"] == "Top logo")
+            and row["params"]["name"] == "Top logo"
+        )
+        self.assertEqual(logo_cut["operation"], "cut")
         self.assertEqual(logo_cut["distance"], 0.6)
         self.assertEqual(logo_cut["direction"], "negative")
 

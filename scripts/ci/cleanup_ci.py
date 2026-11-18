@@ -34,6 +34,9 @@ def execute(*, source_root: Path, pull_request: int) -> None:
     if pull_request < 1:
         raise ValueError("pull request number must be positive")
 
+    # The workflow checks trusted cleanup code out below source/. Resolve that
+    # path once so the tool path and its cwd cannot apply "source" twice.
+    source_root = source_root.resolve()
     common = ["--repo", str(source_root), "--pull-request", str(pull_request)]
     run_tool(
         source_root,

@@ -1,6 +1,7 @@
 """Tests for CAD closed-PR cleanup through tool.cad.ci."""
 
 from pathlib import Path
+import os
 import sys
 from tempfile import TemporaryDirectory
 import unittest
@@ -35,6 +36,35 @@ class CleanupCiTests(unittest.TestCase):
         self.assertEqual(calls[1][:2], ("publish", "pages-cleanup"))
         self.assertIn("12", calls[0])
         self.assertIn("12", calls[1])
+
+
+    def test_cleanup_resolves_relative_source_root_once(self):
+        """A nested checkout must not become source/source/ext/cad-ci."""
+
+        with TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "source").mkdir()
+            previous = Path.cwd()
+            calls = []
+            try:
+                os.chdir(root)
+                with patch.object(
+                    cleanup_ci,
+                    "run_tool",
+                    side_effect=lambda source, *args: calls.append(
+                        (source, args)
+                    ),
+                ):
+                    cleanup_ci.execute(
+                        source_root=Path("source"),
+                        pull_request=12,
+                    )
+            finally:
+                os.chdir(previous)
+
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0][0], (root / "source").resolve())
+        self.assertEqual(calls[1][0], (root / "source").resolve())
 
     def test_cleanup_rejects_invalid_pr_number(self):
         with TemporaryDirectory() as temp:

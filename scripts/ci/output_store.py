@@ -1,7 +1,7 @@
 """Prepare and promote verified per-model CAD build output.
 
 This module contains no GitHub-specific code. Workflows check out the
-model-output branch and call these functions/CLI against that working tree.
+build branch and call these functions/CLI against that working tree.
 """
 from __future__ import annotations
 
@@ -171,6 +171,46 @@ def prepare_candidate(
         json.dumps({"models": list(models)}, indent=2) + "\n",
         encoding="utf-8",
     )
+
+
+def migrate_legacy_store_layout(*, store):
+    """Copy a complete legacy stable/models tree into build/main source paths."""
+    legacy = store / "stable" / "models"
+    expected = tuple(model_slugs("native"))
+    if not legacy.is_dir():
+        return ()
+
+    missing = [
+        slug
+        for slug in expected
+        if not (legacy / slug / VERIFICATION_FILE).is_file()
+    ]
+    if missing:
+        raise ValueError(
+            "legacy build store is incomplete; missing: " + ", ".join(missing)
+        )
+
+    with tempfile.TemporaryDirectory() as tmp:
+        candidate = Path(tmp) / "candidate"
+        candidate.mkdir(parents=True)
+        for slug in expected:
+            source = legacy / slug
+            row = json.loads(
+                (source / VERIFICATION_FILE).read_text(encoding="utf-8")
+            )
+            if row.get("model") != slug or row.get("verified") is not True:
+                raise ValueError(f"{slug}: invalid legacy verification")
+            target = candidate / model_build_path(slug)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(source, target)
+
+        promote_candidate(
+            candidate=candidate,
+            store=store,
+            models=expected,
+            channel="stable",
+        )
+    return expected
 
 
 def migrate_legacy_pages(*, pages, store, source_root=ROOT):

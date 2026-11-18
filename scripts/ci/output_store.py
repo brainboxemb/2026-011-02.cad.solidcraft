@@ -14,7 +14,7 @@ import shutil
 import tempfile
 import zipfile
 
-from model_catalog import MODELS, model_input_paths, model_slugs
+from model_catalog import MODELS, model_build_path, model_input_paths, model_slugs
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -144,10 +144,10 @@ def prepare_candidate(
 
     if out.exists():
         shutil.rmtree(out)
-    (out / "models").mkdir(parents=True)
+    out.mkdir(parents=True)
 
     for slug in models:
-        target = out / "models" / slug
+        target = out / model_build_path(slug)
         target.mkdir(parents=True)
         shutil.copytree(native_root / slug, target / "native")
         _copy_tree_if_present(
@@ -205,7 +205,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
 
     with tempfile.TemporaryDirectory() as tmp:
         candidate = Path(tmp) / "candidate"
-        (candidate / "models").mkdir(parents=True)
+        candidate.mkdir(parents=True)
 
         for slug in expected:
             published = pages / "models" / slug
@@ -230,7 +230,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
                     f"legacy Pages command JSON is missing: {slug}"
                 )
 
-            target = candidate / "models" / slug
+            target = candidate / model_build_path(slug)
             native = target / "native"
             generated = target / "generated" / "scpf"
             native.mkdir(parents=True)
@@ -279,7 +279,7 @@ def migrate_legacy_pages(*, pages, store, source_root=ROOT):
 def _validate_candidate(candidate, models):
     missing = []
     for slug in models:
-        model = candidate / "models" / slug
+        model = candidate / model_build_path(slug)
         verification = model / VERIFICATION_FILE
         if not model.is_dir() or not verification.is_file():
             missing.append(slug)
@@ -295,11 +295,14 @@ def _validate_candidate(candidate, models):
 
 def destination_root(store, *, channel, preview_key=None):
     if channel == "stable":
-        return store / "stable"
+        return store / "main"
     if channel == "preview":
         if preview_key is None:
             raise ValueError("preview channel requires preview_key")
-        return store / "previews" / safe_preview_key(preview_key)
+        key = safe_preview_key(preview_key)
+        if key.startswith("pr-") and key[3:].isdigit():
+            return store / "pr" / key[3:]
+        return store / "preview" / key
     raise ValueError(f"unknown output channel: {channel}")
 
 
@@ -326,26 +329,24 @@ def promote_candidate(
         channel=channel,
         preview_key=preview_key,
     )
-    model_root = root / "models"
-    model_root.mkdir(parents=True, exist_ok=True)
-
     staged = []
     try:
         for slug in models:
-            source = candidate / "models" / slug
+            source = candidate / model_build_path(slug)
+            target = root / model_build_path(slug)
+            target.parent.mkdir(parents=True, exist_ok=True)
             temp = Path(
                 tempfile.mkdtemp(
-                    prefix=f".{slug}-",
-                    dir=model_root,
+                    prefix=f".{target.name}-",
+                    dir=target.parent,
                 )
             )
             shutil.rmtree(temp)
             shutil.copytree(source, temp)
-            staged.append((slug, temp))
+            staged.append((slug, target, temp))
 
-        for slug, temp in staged:
-            target = model_root / slug
-            backup = model_root / f".{slug}.previous"
+        for slug, target, temp in staged:
+            backup = target.parent / f".{target.name}.previous"
             if backup.exists():
                 shutil.rmtree(backup)
             if target.exists():
@@ -359,26 +360,32 @@ def promote_candidate(
             if backup.exists():
                 shutil.rmtree(backup)
     finally:
-        for _, temp in staged:
+        for _, _, temp in staged:
             if temp.exists():
                 shutil.rmtree(temp)
 
 
 def prune_removed_models(store, *, channel="stable", preview_key=None):
-    """Remove stored model directories that no longer exist in the catalog."""
+    """Remove stored build items whose verification names a retired model."""
     root = destination_root(
         store,
         channel=channel,
         preview_key=preview_key,
-    ) / "models"
+    )
     if not root.is_dir():
         return ()
     removed = []
-    for path in root.iterdir():
-        if path.is_dir() and not path.name.startswith(".") and path.name not in MODELS:
-            shutil.rmtree(path)
-            removed.append(path.name)
-    return tuple(sorted(removed))
+    for verification in tuple(root.rglob(VERIFICATION_FILE)):
+        model_root = verification.parent
+        try:
+            row = json.loads(verification.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        slug = row.get("model")
+        if isinstance(slug, str) and slug not in MODELS:
+            shutil.rmtree(model_root)
+            removed.append(slug)
+    return tuple(sorted(set(removed)))
 
 
 def main():

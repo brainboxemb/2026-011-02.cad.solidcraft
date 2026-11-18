@@ -25,3 +25,4 @@ Current records:
 - [0004-concurrent-generated-publication.md](0004-concurrent-generated-publication.md) — retry generated-branch publication safely when CAD cleanup or promotion races (#138).
 - [0005-host-owned-stable-pages-workspace.md](0005-host-owned-stable-pages-workspace.md) — build/test stable Pages in a host-owned temporary workspace (#139).
 - [0006-canonical-native-screenshot-filename.md](0006-canonical-native-screenshot-filename.md) — normalize migrated primary screenshots to `native/model.png` before stable Pages generation (#140).
+- [0007-bolted-flange-circular-pattern.md](0007-bolted-flange-circular-pattern.md) — express the Bolted Flange bolt circle as one seed cut plus one native circular pattern (#135).

@@ -1,8 +1,7 @@
 # Bolted Flange
 
-This basic model uses the original SolidCraft flange sample only as its
-dimension source. The CAD-library implementation intentionally does **not**
-copy the sample's sketch-by-sketch construction history.
+This basic model uses the original SolidCraft flange sample as its dimension
+source while expressing the bolt circle as a native CAD relationship.
 
 The dimensions are:
 
@@ -13,24 +12,27 @@ The dimensions are:
 
 ## SCPF
 
-The SCPF model is deliberately small and uses the direct Forge primitives that
-match the geometry:
+The SCPF model uses:
 
-- two `Cylinder` solids for the flange and hub;
-- one `Hole` for the central bore;
-- six `Hole` features for the bolt circle.
+- one `Cylinder` for the Ø100 flange;
+- one face-attached sketch containing a single Ø9 seed circle at `pcd / 2`;
+- one through-cut for that seed hole;
+- one native `solid.pattern.circular` around the Z axis;
+- one joined `Cylinder` for the hub;
+- one native `Hole` for the central bore.
 
-A `Hole` is added to the body with `+`; it is already a subtractive CAD
-feature and is not represented as a subtraction cylinder.
+`bolts` and `pcd` are lowercase class attributes because they are editable
+native CAD parameters. Changing `pcd` moves the seed feature radially; changing
+`bolts` changes the native pattern count.
 
-The six bolt holes are generated in a short Python loop. This model is meant to
-show clear CAD-library code, not to qualify SolidCraft's native circular
-feature-pattern history.
+No Python loop calculates repeated bolt coordinates.
 
 ## SCPC
 
-The SCPC implementation follows the same simple construction directly with
-`solid.cylinder` and `solid.hole` commands.
+The SCPC implementation remains an independent direct-command geometry
+reference. It currently expands the six bolt holes explicitly; native
+qualification compares the resulting geometry with the SCPF model, not its
+history shape.
 
 ## Source
 

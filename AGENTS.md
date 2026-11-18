@@ -149,6 +149,19 @@ Normal CAD CI must not reinstall the same heavy toolchain for every model run.
 - Use an explicit full-build mode when deliberately testing every model against
   a new Forge revision/release or SolidCraft version.
 - Keep explicit modes for changed models, named model(s), and all models.
+- Keep **selection inputs** separate from **native verification inputs**:
+  `model_input_paths()` may include model-root README/check metadata so those
+  changes select the owning model/page, while `verification_input_paths()`
+  contains only geometry/source inputs and declared geometry dependencies.
+  Documentation/site metadata must never invalidate an unchanged native CAD
+  verification. A `check.py` change still selects and reruns its model.
+- Public verification wording must be literal:
+  **Native verified** means a real SolidCraft `.sc` exists and its stored
+  verification fingerprint matches the current geometry/source inputs.
+  An older retained screenshot must be labelled as an older render that is not
+  current verification; a command-only model must say native output is not
+  verified. SolidCraft Web links and `.sc` downloads are user actions, not
+  evidence of verification.
 
 ### Keep build output separate from Pages
 

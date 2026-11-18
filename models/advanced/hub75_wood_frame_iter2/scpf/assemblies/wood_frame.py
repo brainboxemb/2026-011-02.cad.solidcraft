@@ -34,11 +34,16 @@ class WoodFrame:
     def build(self):
         rear_y = self.cabinet_depth
         roof_front = -self.roof_front_overhang
-        # The horizontal frame boards and lower dividers now share the same
-        # 110 mm cabinet depth as the side panels.
-        # The rear board is disabled, so the roof overhang is measured directly
-        # from the side-panel rear edge instead of from a rear-sheet thickness.
-        roof_rear = self.side_panel_depth + self.roof_rear_overhang
+        # The horizontal frame boards and lower dividers share the 110 mm
+        # cabinet depth. The roof keeps the original construction allowance for
+        # the 9 mm rear board even while that board is temporarily disabled.
+        # With 10 mm front overhang and 1 mm rear overhang this gives:
+        # 10 + 110 + 9 + 1 = 130 mm total roof depth.
+        roof_rear = (
+            self.side_panel_depth
+            + self.panel_wood_thickness
+            + self.roof_rear_overhang
+        )
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
 
         bottom_top = self.frame_wood_thickness

@@ -7,7 +7,6 @@ from parts.roundwood_handle import RoundwoodHandle
 
 
 ROD_DIAMETER = 22.0
-ROD_INSET = 1.0
 ROD_END_EXTENSION = 15.0
 ROD_END_NOTCH_DEPTH = 11.0
 ROD_END_NOTCH_HEIGHT = 15.0
@@ -30,18 +29,13 @@ class SideHandles:
     side_recess_upper_keep = 80.0
 
     def build(self):
-        # Start from the side-wall outside face, then move the Ø22 rod one
-        # millimetre farther inward than flush. With a 12 mm side wall this
-        # makes exactly 11 mm of the rod overlap the plywood X range, matching
-        # the half-depth notch at each extended end.
-        side_outer_x = (
+        # Put the handle axis on the outside face of the 12 mm side wall.
+        # Default side-wall span is X=422..434 on the right and -434..-422
+        # on the left, so handle centres become X=±434. The 11 mm end notch
+        # removes the complete side-wall-facing half of the Ø22 rod.
+        handle_x = (
             half(self.opening_width)
             + self.frame_wood_thickness
-        )
-        handle_x = (
-            side_outer_x
-            - half(ROD_DIAMETER)
-            - ROD_INSET
         )
 
         # Align the back of the Ø22 rod exactly with the 110 mm rear edge of
@@ -84,6 +78,7 @@ class SideHandles:
                 x=-handle_x,
                 y=handle_y,
                 z=rod_bottom_z,
+                rotation=(Z, 180),
             ),
         ).group("SideHandles")
 
@@ -97,7 +92,6 @@ class SideHandles:
                 x=handle_x,
                 y=handle_y,
                 z=rod_bottom_z,
-                rotation=(Z, 180),
             ),
         ).group("SideHandles")
 

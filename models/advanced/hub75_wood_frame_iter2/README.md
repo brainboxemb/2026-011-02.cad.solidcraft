@@ -82,9 +82,9 @@ roundwood handle**. The rod remains clamped directly between the lower and upper
 limits of the recess.
 
 The rear surface of the rod stays flush with the **Y=110 mm** rear edge of the
-side panel, putting the rod centre at **Y=99 mm**. In X, the rod is now moved
-**1 mm farther inward** than the previous flush position. Its centre is therefore
-X=±422 mm.
+side panel, putting the rod centre at **Y=99 mm**. In X, the handle is moved
+outward so its axis lies exactly on the outside face of the side wall:
+**X=±434 mm**.
 
 The wood extends **15 mm beyond the recess at both the top and bottom**. In each
 of those 15 mm end extensions, the half facing the plywood side wall is removed:
@@ -114,8 +114,8 @@ and has 0.4 mm assembly clearance. Final attachment is still not defined.
 | Bottom / intermediate shelf base depth | 110 mm |
 | Lower divider depth | 110 mm |
 | Side-panel depth | 110 mm |
-| Roof base depth | 110 mm |
-| Roof overhang | 10 mm front / 1 mm rear |
+| Roof total depth | 130 mm |
+| Roof construction | 10 mm front + 110 mm cabinet + 9 mm rear-board zone + 1 mm rear |
 | Window | 840 × 360 × 4 mm |
 | Corner brackets | 8 |
 

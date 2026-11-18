@@ -58,7 +58,9 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 The second reference design also reduces the rear depth of the upper side-wall
 section. Apply the same principle here while keeping the iteration-2 dimensions:
 
-- bottom, intermediate shelf and roof base extend to 110 mm depth;
+- bottom and intermediate shelf extend to 110 mm depth;
+- the roof keeps the original 9 mm rear-board allowance: 10 mm front overhang
+  + 110 mm cabinet + 9 mm rear-board zone + 1 mm rear overhang = 130 mm total;
 - both side panels extend to the same 110 mm depth;
 - both vertical lower dividers also extend to 110 mm depth;
 - the middle display-zone side wall is recessed 50 mm from the 110 mm rear
@@ -66,7 +68,7 @@ section. Apply the same principle here while keeping the iteration-2 dimensions:
 - use R20 rounded transitions;
 - keep at least 80 mm of full-depth side wall above the intermediate shelf;
 - keep at least 80 mm of full-depth side wall below the roof;
-- keep the lower storage-compartment side wall at the full 100 mm depth.
+- keep the lower storage-compartment side wall at the full 110 mm depth.
 
 Model this as a separate `SideBoard` part with a rounded YZ recess. Do not
 approximate the radius with straight polygon segments. The recess sketch is
@@ -80,12 +82,12 @@ clamped visually between the lower and upper limits of the recess. Keep its rear
 surface aligned with the 110 mm rear edge of the side panel, so the rod centre
 is Y=99 mm.
 
-Move each rod another 1 mm inward from the flush position, placing the handle
-centres at X=±422 mm. Extend the roundwood 15 mm beyond both the lower and upper
-recess limits. In each 15 mm end extension, remove the side-wall-facing half of
-the Ø22 rod with an 11 mm deep × 15 mm high notch. The remaining outside
-half-cylinder can then overlap the full-depth side-wall zone without intersecting
-the plywood.
+Move the handle axes outward onto the outside faces of the side walls, placing
+the centres at X=±434 mm. Extend the roundwood 15 mm beyond both the lower and
+upper recess limits. In each 15 mm end extension, remove the side-wall-facing
+half of the Ø22 rod with an 11 mm deep × 15 mm high notch. The remaining
+outside half-cylinder then stays outside the plywood while the notched half
+overlaps the side-wall zone.
 
 Keep the simple plastic rings at the recess boundaries: 10 mm high and 3 mm
 radial thickness, giving Ø28 mm outside around the Ø22 mm wood. The ring uses

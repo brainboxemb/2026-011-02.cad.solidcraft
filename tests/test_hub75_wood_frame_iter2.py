@@ -186,9 +186,12 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         # its separate front/rear overhangs around that base depth.
         self.assertIn("depth=self.side_panel_depth", frame_source)
         self.assertIn(
-            "roof_rear = self.side_panel_depth + self.roof_rear_overhang",
+            "self.side_panel_depth\n            + self.panel_wood_thickness\n            + self.roof_rear_overhang",
             frame_source,
         )
+        # Default roof depth is 10 mm front + 110 mm cabinet + 9 mm rear-board
+        # allowance + 1 mm rear overhang = 130 mm.
+        self.assertEqual(10.0 + 110.0 + 9.0 + 1.0, 130.0)
 
         moves = of(rows, "occurrence.move")
         shelf = [row for row in moves if row["occurrence"] == "$intermediate_shelf"]
@@ -322,11 +325,10 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         # rear surface of the rod exactly flush with the rear panel edge.
         self.assertTrue(all(row["translate"][1] == 99.0 for row in rods))
 
-        # Side-wall outside faces are at X=±434. The previous flush handle
-        # centres were X=±423; move another 1 mm inward to X=±422.
+        # Put each handle axis on the outside face of its side wall.
         self.assertEqual(
             sorted(row["translate"][0] for row in rods),
-            [-422.0, 422.0],
+            [-434.0, 434.0],
         )
 
         rings = [
@@ -341,21 +343,20 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertEqual(len(rings), 4)
         self.assertEqual(
             sorted({row["translate"][0] for row in rings}),
-            [-422.0, 422.0],
+            [-434.0, 434.0],
         )
 
         handle_source = (
             SCPF_DIR / "assemblies" / "side_handles.py"
         ).read_text(encoding="utf-8")
         self.assertIn("ROD_DIAMETER = 22.0", handle_source)
-        self.assertIn("ROD_INSET = 1.0", handle_source)
         self.assertIn("ROD_END_EXTENSION = 15.0", handle_source)
         self.assertIn("ROD_END_NOTCH_DEPTH = 11.0", handle_source)
         self.assertIn("ROD_END_NOTCH_HEIGHT = 15.0", handle_source)
         self.assertIn("RING_RADIAL_THICKNESS = 3.0", handle_source)
         self.assertIn("RING_HEIGHT = 10.0", handle_source)
         self.assertIn(
-            "side_outer_x\n            - half(ROD_DIAMETER)\n            - ROD_INSET",
+            "half(self.opening_width)\n            + self.frame_wood_thickness",
             handle_source,
         )
         self.assertIn(
@@ -378,6 +379,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertIn("notch_height = 15.0", rod_source)
         self.assertIn('plane="XZ"', rod_source)
         self.assertIn("Rectangle2D(", rod_source)
+        self.assertIn("x=-handle_x", handle_source)
         self.assertIn("rotation=(Z, 180)", handle_source)
         self.assertNotIn("cabinet_depth =", handle_source)
         self.assertNotIn("side_recess_depth =", handle_source)
@@ -412,6 +414,14 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             if row["translate"][2] == 0
         ]
         self.assertEqual(len(bottom), 4)
+
+        # Rear bracket centres follow the 110 mm cabinet rear edge:
+        # 110 - 24/2 = Y=98 mm.
+        rear = [
+            row for row in brackets
+            if row["translate"][1] == 98.0
+        ]
+        self.assertEqual(len(rear), 4)
 
 
 if __name__ == "__main__":

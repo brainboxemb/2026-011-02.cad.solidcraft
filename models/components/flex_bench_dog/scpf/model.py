@@ -21,13 +21,12 @@ class FlexBenchDog:
     SLOT_LENGTH = 14.0
     TOP_FILLET = 1.0
     TOP_CHAMFER = 0.6
-    LOGO_OUTER = 8.0
-    LOGO_INNER = 5.0
+    LOGO_SIZE = 8.0
     LOGO_HEIGHT = 0.6
 
     def build(self):
-        # The rim rests on the worktop at Z=0. The cylindrical working section
-        # starts on top of the rim and finishes at Z=ABOVE_WORKTOP.
+        # Rim bottom is the worktop datum. The narrower working cylinder starts
+        # on the rim and ends at the requested 20 mm height above the worktop.
         rim = Cylinder(
             d=self.rim_diameter,
             h=self.RIM_THICKNESS,
@@ -40,19 +39,9 @@ class FlexBenchDog:
             h=working_height,
             anchor=Anchor.BOTTOM,
         ).at(0, 0, self.RIM_THICKNESS, anchor=Anchor.BOTTOM)
-
-        # Round the shoulder slightly and soften the upper perimeter.
-        upper = upper.fillet(
-            self.TOP_FILLET,
-            edges=[(self.hole_diameter / 2, 0, self.RIM_THICKNESS)],
-        )
-        upper = upper.chamfer(
-            self.TOP_CHAMFER,
-            edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
-        )
         dog = rim + upper
 
-        # Straight insert root, with only the free 2 mm flared outward.
+        # Straight insert root below Z=0, with only the free 2 mm flared.
         insert = Cylinder(
             d=self.hole_diameter,
             h=self.INSERTION_LENGTH,
@@ -67,36 +56,46 @@ class FlexBenchDog:
         ).at(0, 0, -self.INSERTION_LENGTH, anchor=Anchor.BOTTOM)
         dog = dog + flare
 
-        # Slots start at the free end and stop 4 mm before the worktop. The
-        # resulting four legs can spring inward when the flared tips enter a
-        # nominal 20 mm dog hole.
-        slot_z = -self.INSERTION_LENGTH
+        # Two native sketch cuts form the cross slots. They start at the free
+        # end and stop 4 mm below the worktop, leaving a solid flex root.
         slot_span = self.hole_diameter + self.interference + 2.0
-        slot_x = Box(
-            slot_span,
-            self.slot_width,
-            self.SLOT_LENGTH,
-        ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
-        slot_y = Box(
-            self.slot_width,
-            slot_span,
-            self.SLOT_LENGTH,
-        ).at(0, 0, slot_z, anchor=Anchor.BOTTOM)
-        dog = dog - slot_x
-        dog = dog - slot_y
 
-        # Small raised box-outline logo on the top face.
-        logo = Box(
-            self.LOGO_OUTER,
-            self.LOGO_OUTER,
-            self.LOGO_HEIGHT,
-        ).at(0, 0, self.ABOVE_WORKTOP, anchor=Anchor.BOTTOM)
-        logo_cut = Box(
-            self.LOGO_INNER,
-            self.LOGO_INNER,
-            self.LOGO_HEIGHT,
-        ).at(0, 0, self.ABOVE_WORKTOP, anchor=Anchor.BOTTOM)
-        logo = logo - logo_cut
-        dog = dog + logo
+        with Sketch(
+            name="Flex slot X",
+            on=dog,
+            plane="XY",
+            origin=(0, 0, -self.INSERTION_LENGTH),
+        ) as slot_x:
+            Rectangle2D(slot_span, self.slot_width)
+        dog = dog - slot_x.extrude(self.SLOT_LENGTH)
+
+        with Sketch(
+            name="Flex slot Y",
+            on=dog,
+            plane="XY",
+            origin=(0, 0, -self.INSERTION_LENGTH),
+        ) as slot_y:
+            Rectangle2D(self.slot_width, slot_span)
+        dog = dog - slot_y.extrude(self.SLOT_LENGTH)
+
+        # Finish the visible upper body after the main solid has been formed.
+        dog = dog.fillet(
+            self.TOP_FILLET,
+            edges=[(self.hole_diameter / 2, 0, self.RIM_THICKNESS)],
+        )
+        dog = dog.chamfer(
+            self.TOP_CHAMFER,
+            edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
+        )
+
+        # Small raised square used as a simple BBE/box mark.
+        with Sketch(
+            name="Top logo",
+            on=dog,
+            plane="XY",
+            origin=(0, 0, self.ABOVE_WORKTOP),
+        ) as logo:
+            Rectangle2D(self.LOGO_SIZE, self.LOGO_SIZE)
+        dog = dog + logo.extrude(self.LOGO_HEIGHT)
 
         return dog

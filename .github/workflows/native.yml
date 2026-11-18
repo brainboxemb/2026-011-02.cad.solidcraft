@@ -96,6 +96,7 @@ jobs:
             -e EVENT_NAME \
             -e REF_NAME \
             -e PR_NUMBER \
+            -e GITHUB_RUN_ID \
             "${{ steps.image.outputs.reference }}" \
             bash -c '
               set -euo pipefail

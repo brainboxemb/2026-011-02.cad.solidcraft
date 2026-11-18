@@ -80,6 +80,7 @@ def verification_metadata(
     scpc_commit,
     solidcraft_version,
     workflow_run,
+    toolchain_image,
     native_file_format=None,
 ):
     if slug not in MODELS:
@@ -93,6 +94,7 @@ def verification_metadata(
         "scpc_commit": scpc_commit,
         "solidcraft_version": solidcraft_version,
         "workflow_run": str(workflow_run),
+        "toolchain_image": toolchain_image,
         "verified": True,
     }
     if native_file_format:
@@ -394,6 +396,7 @@ def main():
     prepare.add_argument("--scpc-commit", required=True)
     prepare.add_argument("--solidcraft-version", required=True)
     prepare.add_argument("--workflow-run", required=True)
+    prepare.add_argument("--toolchain-image", required=True)
     prepare.add_argument("--native-file-format")
 
     promote = sub.add_parser("promote")
@@ -424,6 +427,7 @@ def main():
             "scpc_commit": args.scpc_commit,
             "solidcraft_version": args.solidcraft_version,
             "workflow_run": str(args.workflow_run),
+            "toolchain_image": args.toolchain_image,
             "verified": True,
         }
         if args.native_file_format:

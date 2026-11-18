@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 import subprocess
 
 from select_models import needs_site_refresh, parse_models, select_models
@@ -13,6 +14,50 @@ from select_models import needs_site_refresh, parse_models, select_models
 
 ROOT = Path(__file__).resolve().parents[2]
 ZERO_SHA = "0" * 40
+PUBLIC_SITE = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft"
+
+
+def safe_branch_key(value: str) -> str:
+    value = re.sub(r"[^a-zA-Z0-9._-]+", "-", value.strip()).strip(".-")
+    if not value:
+        raise ValueError("branch name must contain a usable character")
+    return value.lower()
+
+
+def publication_target(
+    *,
+    event_name: str,
+    ref_name: str,
+    publish: str = "preview",
+    pull_request: int | None = None,
+) -> dict:
+    if event_name == "pull_request":
+        if not pull_request:
+            raise ValueError("pull_request event requires PR number")
+        channel = "preview"
+        preview_key = f"pr-{pull_request}"
+    elif event_name == "push" and ref_name == "main":
+        channel = "stable"
+        preview_key = ""
+    elif event_name == "workflow_dispatch" and publish == "stable":
+        if ref_name != "main":
+            raise ValueError("stable manual publication is only allowed from main")
+        channel = "stable"
+        preview_key = ""
+    else:
+        channel = "preview"
+        preview_key = f"branch-{safe_branch_key(ref_name)}"
+
+    public_base = (
+        PUBLIC_SITE
+        if channel == "stable"
+        else f"{PUBLIC_SITE}/preview/{preview_key}"
+    )
+    return {
+        "channel": channel,
+        "preview_key": preview_key,
+        "public_base": public_base,
+    }
 
 
 def changed_paths(base: str, head: str, *, root: Path = ROOT) -> tuple[str, ...]:
@@ -41,6 +86,10 @@ def make_plan(
     mode: str,
     models: tuple[str, ...] = (),
     paths: tuple[str, ...] = (),
+    event_name: str = "workflow_dispatch",
+    ref_name: str = "local",
+    publish: str = "preview",
+    pull_request: int | None = None,
 ) -> dict:
     selections = {
         kind: select_models(
@@ -56,6 +105,13 @@ def make_plan(
             "native-snapshot-required",
         )
     }
+    target = publication_target(
+        event_name=event_name,
+        ref_name=ref_name,
+        publish=publish,
+        pull_request=pull_request,
+    )
+    site_refresh = needs_site_refresh(paths, selections["scpf"])
     return {
         "schema": 1,
         "mode": mode,
@@ -64,7 +120,9 @@ def make_plan(
         "scpc_models": list(selections["scpc"]),
         "native_models": list(selections["native"]),
         "snapshot_models": list(selections["native-snapshot-required"]),
-        "site_refresh": needs_site_refresh(paths, selections["scpf"]),
+        "site_refresh": site_refresh,
+        "publishable": bool(selections["native"]) or site_refresh,
+        **target,
     }
 
 
@@ -74,6 +132,10 @@ def main() -> int:
     parser.add_argument("--models", default="")
     parser.add_argument("--base", default="")
     parser.add_argument("--head", required=True)
+    parser.add_argument("--event-name", default="workflow_dispatch")
+    parser.add_argument("--ref-name", default="local")
+    parser.add_argument("--publish", choices=("preview", "stable"), default="preview")
+    parser.add_argument("--pull-request", type=int)
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
 
@@ -82,6 +144,10 @@ def main() -> int:
         mode=args.mode,
         models=parse_models(args.models),
         paths=paths,
+        event_name=args.event_name,
+        ref_name=args.ref_name,
+        publish=args.publish,
+        pull_request=args.pull_request,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
@@ -92,6 +158,8 @@ def main() -> int:
     for key in ("scpf_models", "scpc_models", "native_models", "snapshot_models"):
         print(f"{key}: " + (" ".join(result[key]) if result[key] else "none"))
     print(f"site_refresh: {str(result['site_refresh']).lower()}")
+    print(f"publishable: {str(result['publishable']).lower()}")
+    print(f"publication: {result['channel']} {result['preview_key']}")
     return 0
 
 

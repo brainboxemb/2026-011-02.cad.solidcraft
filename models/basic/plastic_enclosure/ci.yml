@@ -1,5 +1,5 @@
 # This folder is one tool.cad.ci item. The shared runner derives its
-# catalog variants from model_catalog.py; this file owns only execution policy.
+# catalog variants from model_catalog.py; this file owns execution policy.
 id: plastic-enclosure
 kind: qualification
 watch:

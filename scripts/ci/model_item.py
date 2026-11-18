@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """Run the cheap compile/compare proof for one model-root CI item.
 
-A model-root item can own more than one catalog slug. GuideRail, for example,
-owns both the Festool and Makita catalog variants; Simple MFT owns its worktop
-and guide-rail assembly. The mapping is derived from model_catalog.py so ci.yml
-does not become a second model catalog.
+A physical model folder can own more than one catalog slug. GuideRail owns both
+Festool and Makita variants, and Simple MFT owns both the worktop and assembly.
+The mapping is derived from model_catalog.py so ci.yml is not a second catalog.
 
-This runner is deliberately limited to the parallel migration proof. Native
-SolidCraft verification remains in the existing CAD pipeline until the build
-and publication cutover is proven.
+This is migration proof code. Native SolidCraft verification and durable
+publication remain on the existing CAD pipeline until the later cutover.
 """
 
 from __future__ import annotations
@@ -29,35 +27,28 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def catalog_root(slug: str) -> Path:
-    """Return the model-root directory that owns one catalog slug."""
+    """Return the physical model-root path that owns one catalog slug."""
 
     source = Path(MODELS[slug]["source"])
-    parts = source.parts
     try:
-        index = parts.index("scpf")
+        index = source.parts.index("scpf")
     except ValueError as exc:
         raise ValueError(f"{slug}: source path has no scpf directory") from exc
-    return Path(*parts[:index])
+    return Path(*source.parts[:index])
 
 
 def item_members(item_root: Path) -> tuple[str, ...]:
-    """Return every catalog slug whose source belongs to one model root."""
+    """Return all catalog slugs owned by one physical model folder."""
 
     relative = item_root.resolve().relative_to(ROOT.resolve())
     return tuple(
-        slug
-        for slug in MODELS
+        slug for slug in MODELS
         if catalog_root(slug) == relative
     )
 
 
 def item_id_for_slug(slug: str) -> str:
-    """Return the first catalog slug for the folder that owns `slug`.
-
-    The first slug is the stable item ID. Additional catalog variants in that
-    same folder are built by the same item instead of inventing nested CI
-    folders just to make their IDs unique.
-    """
+    """Return the stable item ID for the folder that owns one catalog slug."""
 
     root = catalog_root(slug)
     for candidate in MODELS:
@@ -67,10 +58,11 @@ def item_id_for_slug(slug: str) -> str:
 
 
 def item_dependencies(item_id: str) -> tuple[str, ...]:
-    """Return unique item IDs required by all catalog variants in an item."""
+    """Return unique folder-level dependencies from all variants in the item."""
 
     if item_id not in MODELS:
         raise ValueError(f"unknown model item: {item_id}")
+
     root = catalog_root(item_id)
     members = tuple(
         slug for slug in MODELS
@@ -103,8 +95,20 @@ def current_item_root() -> Path:
     return Path(value)
 
 
+def generated_path(slug: str, language: str) -> Path:
+    """Return the new command JSON path for one catalog variant."""
+
+    return (
+        output_root()
+        / "generated"
+        / slug
+        / language
+        / "solidcraft.json"
+    )
+
+
 def _sha256(path: Path) -> str:
-    """Return a content hash for inspectable comparison evidence."""
+    """Hash one file for the inspectable proof summaries."""
 
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -119,7 +123,7 @@ def _read_json(path: Path) -> object:
 
 
 def _write_check(name: str, data: dict) -> None:
-    """Write one summary only after every model in the item passed."""
+    """Write one proof file only after the complete item step passed."""
 
     target = output_root() / "checks" / name
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -129,8 +133,8 @@ def _write_check(name: str, data: dict) -> None:
     )
 
 
-def _run_module(module: str, source: Path, target: Path) -> None:
-    """Compile one model with the already-pinned library in the CAD image."""
+def _compile(module: str, source: Path, target: Path) -> None:
+    """Compile one source through the pinned library in the CAD image."""
 
     target.parent.mkdir(parents=True, exist_ok=True)
     subprocess.run(
@@ -147,24 +151,8 @@ def _run_module(module: str, source: Path, target: Path) -> None:
     )
 
 
-def generated_path(slug: str, language: str) -> Path:
-    """Return this item's command JSON path for one catalog variant."""
-
-    return (
-        output_root()
-        / "generated"
-        / slug
-        / language
-        / "solidcraft.json"
-    )
-
-
 def compile_item() -> None:
-    """Compile all SCPF/SCPC variants in the current model root.
-
-    Existing model-owned command checks remain authoritative. When a reviewed
-    `scpf/reference.json` exists, it is also compared semantically.
-    """
+    """Compile all SCPF and applicable SCPC variants in this model root."""
 
     members = item_members(current_item_root())
     if not members:
@@ -175,12 +163,10 @@ def compile_item() -> None:
     rows: dict[str, dict] = {}
     for slug in members:
         scpf_target = generated_path(slug, "scpf")
-        _run_module("scpf", source_path(ROOT, slug), scpf_target)
+        _compile("scpf", source_path(ROOT, slug), scpf_target)
         command_check(slug, scpf_target)
 
-        row = {
-            "scpf_sha256": _sha256(scpf_target),
-        }
+        row = {"scpf_sha256": _sha256(scpf_target)}
         reference = source_path(ROOT, slug).parent / "reference.json"
         if reference.is_file():
             if _read_json(scpf_target) != _read_json(reference):
@@ -192,7 +178,7 @@ def compile_item() -> None:
 
         if slug in COMMAND_SOURCES:
             scpc_target = generated_path(slug, "scpc")
-            _run_module(
+            _compile(
                 "scpc",
                 source_path(ROOT, slug, "scpc"),
                 scpc_target,
@@ -203,20 +189,16 @@ def compile_item() -> None:
 
     _write_check(
         "compile.json",
-        {
-            "schema": 1,
-            "status": "pass",
-            "models": rows,
-        },
+        {"schema": 1, "status": "pass", "models": rows},
     )
 
 
 def _existing_commands(slug: str, language: str) -> tuple[Path, str]:
-    """Find command JSON from the current run or accepted stable build.
+    """Find old-pipeline output, preferring output from the current run.
 
-    Changed models are normally present in `output/models`. Unchanged sibling
-    variants in a shared model-root item can legitimately come from the
-    complete stable build baseline.
+    A shared item can contain an unchanged sibling variant that the old
+    selector did not rebuild. Its accepted stable command JSON is then the
+    correct comparison source.
     """
 
     current = (
@@ -243,7 +225,7 @@ def _existing_commands(slug: str, language: str) -> tuple[Path, str]:
 
 
 def compare_current() -> None:
-    """Require every new command document to match the current CAD pipeline."""
+    """Require all new command documents to equal current/stable CAD output."""
 
     rows: dict[str, dict] = {}
     for slug in item_members(current_item_root()):
@@ -269,11 +251,7 @@ def compare_current() -> None:
 
     _write_check(
         "current-pipeline.json",
-        {
-            "schema": 1,
-            "status": "pass",
-            "models": rows,
-        },
+        {"schema": 1, "status": "pass", "models": rows},
     )
 
 

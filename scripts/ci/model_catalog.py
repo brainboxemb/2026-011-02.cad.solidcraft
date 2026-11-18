@@ -423,10 +423,11 @@ def model_build_path(slug):
 
 
 def direct_input_paths(slug):
-    """Paths whose change directly affects one catalog model.
+    """Geometry/source paths whose change directly affects one catalog model.
 
-    Source files are exact by default. Multi-file model packages opt in to
-    prefix matching through extra_inputs.
+    These paths propagate through declared model dependencies.
+    Model-root metadata is intentionally kept separate so README or snapshot
+    settings changes do not rebuild dependent assemblies.
     """
     model = MODELS[slug]
     paths = {model["source"]}
@@ -436,6 +437,15 @@ def direct_input_paths(slug):
         paths.add(model["component_source"])
     paths.update(model.get("extra_inputs", ()))
     return tuple(sorted(paths))
+
+
+def model_metadata_paths(slug):
+    """Model-root metadata that affects only the owning model."""
+    root = _model_root(MODELS[slug]["source"])
+    return (
+        root + "README.md",
+        root + "check.py",
+    )
 
 
 def model_dependencies(slug):
@@ -463,8 +473,12 @@ def dependency_closure(slug):
 
 
 def model_input_paths(slug):
-    """All direct and dependency paths that can affect one model."""
-    paths = set()
+    """All paths that can affect one model.
+
+    Geometry/source inputs from dependencies propagate to dependants. Root
+    metadata belongs only to the selected model itself.
+    """
+    paths = set(model_metadata_paths(slug))
     for dependency in dependency_closure(slug):
         paths.update(direct_input_paths(dependency))
     return tuple(sorted(paths))

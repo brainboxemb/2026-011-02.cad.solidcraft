@@ -7,8 +7,8 @@
   "scpf_commit": "5b4963f25f76c4e3b09926d691251ed1b1e7173b",
   "scpf_release": "0.9.0",
   "solidcraft_version": "0.42.0",
-  "source_commit": "f640c17b652818ac6dc278abaaa50b0ba7465c61",
+  "source_commit": "378991dee747d7fbccff7fb26474542d3d37f2f4",
   "toolchain_image": "ghcr.io/brainboxemb/2026-011-02.cad.solidcraft/cad-ci:toolchain-738fc48a56d0a6a60eef3f370f0d82d7a5d971a45972708efe417700d268baba",
   "verified": true,
-  "workflow_run": "44366575107"
+  "workflow_run": "44371439115"
 }

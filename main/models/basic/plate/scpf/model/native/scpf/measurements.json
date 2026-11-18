@@ -77,7 +77,7 @@
     {
       "error": null,
       "id": 1,
-      "ms": 2.77568,
+      "ms": 2.125381,
       "name": "Box1",
       "rolled_back": false,
       "suppressed": false,
@@ -87,7 +87,7 @@
     {
       "error": null,
       "id": 2,
-      "ms": 57.799023999999996,
+      "ms": 36.223326,
       "name": "Fillet1",
       "rolled_back": false,
       "suppressed": false,
@@ -97,7 +97,7 @@
     {
       "error": null,
       "id": 3,
-      "ms": 28.297684,
+      "ms": 19.502526,
       "name": "Hole1",
       "rolled_back": false,
       "suppressed": false,
@@ -107,7 +107,7 @@
     {
       "error": null,
       "id": 4,
-      "ms": 31.128908,
+      "ms": 21.30471,
       "name": "Hole2",
       "rolled_back": false,
       "suppressed": false,
@@ -117,7 +117,7 @@
     {
       "error": null,
       "id": 5,
-      "ms": 44.282592,
+      "ms": 30.277827,
       "name": "Hole3",
       "rolled_back": false,
       "suppressed": false,
@@ -127,7 +127,7 @@
     {
       "error": null,
       "id": 6,
-      "ms": 52.200811,
+      "ms": 33.163672999999996,
       "name": "Hole4",
       "rolled_back": false,
       "suppressed": false,

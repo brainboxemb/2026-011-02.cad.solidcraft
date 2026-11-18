@@ -2,47 +2,58 @@
 
 Reusable 3D-printable bench dog for a **20 mm MFT dog hole**.
 
-The first version is based on the supplied Mini-MFT video still rather than a
-manufacturer drawing or an existing downloadable CAD model. The visible design
-idea is deliberately kept simple: one cylindrical dog, a small stop rim and an
-insertion stem split by two crossing slots into four flexible quadrants.
+The model uses a functional CAD orientation: the worktop surface is **Z=0**,
+the insert extends downward and the working dog extends upward. Print
+orientation is deliberately not encoded in the model.
 
 ## Passive clamping
 
 There is no screw mechanism.
 
-The default insertion stem is **20.20 mm** for a nominal **20.00 mm** hole.
-Two 1.5 mm crossing slots leave four flexible segments. When the stem is pushed
-into the dog hole those segments can flex inward and provide a light friction
-fit.
+The main insert is nominally **20.00 mm**. At the free end, the final 2 mm
+flares to **20.20 mm**. Two 1.5 mm crossing slots split the lower 14 mm into
+four flexible legs. Those free ends can spring inward when inserted into the
+hole, providing passive tension without separate hardware.
 
-The important tuning parameter is therefore `interference`. The initial
-**0.20 mm** value is a design starting point, not a measured value from the
-reference part. A first print should be used to determine the best value for
-the printer, filament and actual dog-hole diameter.
+The initial **0.20 mm** flare is a prototype value. The useful fit will depend
+on the actual dog-hole diameter, printer, filament and print settings.
+
+## Shape
+
+- **18 mm** insertion below the worktop;
+- **20 mm** overall body height above the worktop, including the 3 mm rim;
+- Ø24 × 3 mm stop rim;
+- small fillet at the rim-to-dog shoulder;
+- light chamfer around the upper edge;
+- small **raised box-outline logo** on the top face;
+- 2 mm long flared flex tips.
 
 ## Initial dimensions
 
 | Parameter | Default |
 | --- | ---: |
 | Dog-hole diameter | 20.00 mm |
-| Interference | 0.20 mm |
-| Working section height | 20 mm |
+| Tip flare / interference | 0.20 mm |
+| Height above worktop | 20 mm |
 | Rim diameter | 24 mm |
 | Rim thickness | 3 mm |
 | Insertion length | 18 mm |
+| Flared tip length | 2 mm |
 | Cross-slot width | 1.5 mm |
 | Cross-slot length | 14 mm |
+| Top fillet | 1.0 mm |
+| Top chamfer | 0.6 mm |
+| Logo relief | 0.6 mm |
 
-Total height is **41 mm**.
+The physical body spans 38 mm from the bottom of the insert to the top face,
+plus the 0.6 mm raised logo.
 
 ## Source and confidence
 
-The overall construction is inferred from the supplied image. Only the nominal
-20 mm dog-hole size was supplied explicitly. Rim size, lengths, slot dimensions
-and the 0.20 mm interference are our first practical design values and have not
-yet been verified against the physical part shown in the video.
+The overall construction is inferred from the supplied Mini-MFT image. Only
+the nominal 20 mm dog-hole size and the later chosen 18/20 mm proportions are
+project decisions. Rim size, flex-slot dimensions and the 0.20 mm tip flare
+have not yet been verified by a physical fit test.
 
-The model should therefore be treated as a prototype for print/fit testing.
-After a first test print, `interference`, `slot_width` and `slot_length`
-are the first values to tune.
+After a first print, the first value to tune is `interference`, followed by
+`slot_width` if more or less spring movement is needed.

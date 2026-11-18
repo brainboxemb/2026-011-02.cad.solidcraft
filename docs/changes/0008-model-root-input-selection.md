@@ -16,7 +16,7 @@ The same gap can hide changes to a model-owned native `check.py`.
 
 ## Decision
 
-Treat model-root metadata as an input of the **owning model only**:
+Treat model-root metadata as an input of the **catalog models that own that root**:
 
 - `<model-root>/README.md`
 - `<model-root>/check.py`
@@ -35,8 +35,8 @@ Therefore:
 
 ## Verification
 
-- GuideRail README-only changes select `guide-rail`;
-- GuideRail README-only changes do not select Simple MFT or the Makita variant;
+- GuideRail README-only changes select both GuideRail profile pages that share the root;
+- GuideRail README-only changes do not select Simple MFT;
 - a model-root `check.py` change selects only that model;
 - source changes still select all declared geometry dependants;
 - unrelated README files select no CAD model;

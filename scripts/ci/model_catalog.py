@@ -75,9 +75,9 @@ MODELS = {
         "diagram": "plate",
         "stages": [
             "Cylinder — Ø100 × 10 mm flange",
-            "Cylinder — Ø44 × 16 mm hub joined at Z=10",
             "Sketch — one Ø9 seed hole at PCD / 2",
             "Circular pattern — six bolt holes around Z",
+            "Cylinder — Ø44 × 16 mm hub joined at Z=10",
             "Hole — central Ø24 bore through 26 mm",
         ],
         "scpc_source": "models/basic/bolted_flange/scpc/model.py",

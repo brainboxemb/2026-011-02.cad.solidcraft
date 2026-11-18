@@ -94,13 +94,13 @@ script.add(
     targets=["FlexBenchDog"],
 )
 
-# Raised square box logo.
+# Recessed square box logo.
 script.add(
     "solid.box",
     length=8,
     width=8,
     height=0.6,
-    corner=[-4, -4, 20],
-    operation="join",
+    corner=[-4, -4, 19.4],
+    operation="cut",
     targets=["FlexBenchDog"],
 )

@@ -47,10 +47,14 @@ class NativeInfrastructureTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/cad.yml").read_text(
             encoding="utf-8"
         )
+        pipeline = (ROOT / "scripts/ci/pipeline_ci.py").read_text(
+            encoding="utf-8"
+        )
         runner = (ROOT / "scripts/ci/native_ci.py").read_text(
             encoding="utf-8"
         )
-        self.assertIn("python scripts/ci/native_ci.py", workflow)
+        self.assertIn("python scripts/ci/pipeline_ci.py", workflow)
+        self.assertIn("native_ci.execute(", pipeline)
         self.assertNotIn("run_native_mutations.py", workflow)
         self.assertNotIn("native_validation.py", workflow)
         self.assertIn("scripts/ci/run_native_mutations.py", runner)

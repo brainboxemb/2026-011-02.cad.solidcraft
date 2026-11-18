@@ -63,7 +63,10 @@ Side walls:
 - use one native `SlotCenterToCenter2D` each;
 - slot width is 30 mm, so both round ends are **R15**;
 - keep 20 mm plywood to the rear edge, giving Y=70..100 overall;
-- keep the existing global vertical hand zone.
+- keep the existing global vertical hand zone;
+- keep the Slot dimensions as ordinary build-time Python values for this
+  iteration and derive p0/p1 from those values before calling
+  `SlotCenterToCenter2D`.
 
 Rear board:
 

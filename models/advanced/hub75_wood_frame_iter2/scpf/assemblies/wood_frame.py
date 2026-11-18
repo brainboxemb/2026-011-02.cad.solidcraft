@@ -4,7 +4,11 @@ from scpf import BOTTOM, LEFT, RIGHT, TOP, Placement, assembly, half
 
 from parts.board import Board
 from parts.rear_board import RearBoard
-from parts.side_board import SideBoard
+from parts.side_board import (
+    HANDLE_SLOT_BOTTOM,
+    HANDLE_SLOT_TOP,
+    SideBoard,
+)
 
 
 # Fixed lower-compartment layout. These are product-layout constants rather
@@ -28,12 +32,6 @@ class WoodFrame:
     roof_front_overhang = 10.0
     roof_rear_overhang = 1.0
     corner_radius = 4.0
-
-    # Closed native slots in the side walls.
-    handle_opening_width = 30.0
-    handle_opening_edge_clearance = 20.0
-    handle_opening_lower_keep = 80.0
-    handle_opening_upper_keep = 80.0
 
     # Rear board keeps the original open side cutouts.
     rear_opening_depth = 50.0
@@ -74,31 +72,18 @@ class WoodFrame:
             + half(self.frame_wood_thickness)
         )
 
-        # Keep the same vertical hand zone used by the previous study, but cut
-        # a closed rounded hole instead of opening the complete rear edge.
-        shelf_top_local = (
-            self.lower_compartment_height
-            + self.frame_wood_thickness
-        )
-        handle_opening_bottom = (
-            shelf_top_local
-            + self.handle_opening_lower_keep
-        )
-        handle_opening_top = (
-            side_height
-            - self.handle_opening_upper_keep
-        )
-
-        # Convert the side-wall-local hand zone to RearBoard-local Z. SideBoard
-        # starts at global Z=12; RearBoard starts at global Z=82.
+        # The side-wall hand slot is deliberately a fixed build-time design
+        # detail. Its local Z limits are plain Python numbers so the native Slot
+        # constructor receives numeric points. Convert those same global limits
+        # to RearBoard-local Z so both side openings stay vertically aligned.
         rear_opening_bottom = (
             bottom_top
-            + handle_opening_bottom
+            + HANDLE_SLOT_BOTTOM
             - rear_bottom
         )
         rear_opening_top = (
             bottom_top
-            + handle_opening_top
+            + HANDLE_SLOT_TOP
             - rear_bottom
         )
 
@@ -173,10 +158,6 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             depth=self.side_panel_depth,
             height=side_height,
-            opening_width=self.handle_opening_width,
-            opening_edge_clearance=self.handle_opening_edge_clearance,
-            opening_bottom=handle_opening_bottom,
-            opening_top=handle_opening_top,
             placement=Placement(
                 x=-side_center_x,
                 z=bottom_top,
@@ -188,10 +169,6 @@ class WoodFrame:
             thickness=self.frame_wood_thickness,
             depth=self.side_panel_depth,
             height=side_height,
-            opening_width=self.handle_opening_width,
-            opening_edge_clearance=self.handle_opening_edge_clearance,
-            opening_bottom=handle_opening_bottom,
-            opening_top=handle_opening_top,
             placement=Placement(
                 x=side_center_x,
                 z=bottom_top,

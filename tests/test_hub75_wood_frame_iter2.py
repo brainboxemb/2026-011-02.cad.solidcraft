@@ -106,10 +106,6 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
                 "roof_front_overhang",
                 "roof_rear_overhang",
                 "corner_radius",
-                "handle_opening_width",
-                "handle_opening_edge_clearance",
-                "handle_opening_lower_keep",
-                "handle_opening_upper_keep",
                 "bracket_width",
                 "glazing_wood_width",
                 "glazing_wood_depth",
@@ -227,7 +223,7 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         rear = [row for row in moves if row["occurrence"] == "$rear"]
         self.assertEqual(len(rear), 1)
         self.assertEqual(rear[0]["translate"][1], 111.0)
-        self.assertEqual(rear[0]["translate"][2], 12.0)
+        self.assertEqual(rear[0]["translate"][2], 82.0)
         self.assertTrue(
             all(
                 "frame_wood_thickness" in str(row["translate"][2])
@@ -283,15 +279,28 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             SCPF_DIR / "parts" / "rear_board.py"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("handle_opening_width = 30.0", source)
-        self.assertIn("handle_opening_edge_clearance = 20.0", source)
-
-        # Side walls use a true 30 mm native slot: its end radius is R15.
+        # Side walls use a true 30 mm native slot from fixed Python design
+        # values. The derived p0/p1 coordinates stay numeric for Forge.
         self.assertIn("SlotCenterToCenter2D(", side_source)
         self.assertIn('name="Side hand slot"', side_source)
         self.assertIn('plane="YZ"', side_source)
-        self.assertIn("self.opening_width / 2", side_source)
+        self.assertIn("HANDLE_SLOT_WIDTH = 30.0", side_source)
+        self.assertIn("HANDLE_SLOT_REAR_CLEARANCE = 20.0", side_source)
+        self.assertIn("HANDLE_SLOT_BOTTOM = 162.0", side_source)
+        self.assertIn("HANDLE_SLOT_TOP = 364.0", side_source)
+        self.assertIn("slot_radius = HANDLE_SLOT_WIDTH / 2", side_source)
+        self.assertIn("p0 = (slot_center_y, lower_center_z)", side_source)
+        self.assertIn("p1 = (slot_center_y, upper_center_z)", side_source)
+        self.assertNotIn("self.opening_width", side_source)
         self.assertNotIn("RoundedRectangle2D(", side_source)
+
+        # Derived default coordinates: Y=85, end centres Z=177 and Z=349.
+        slot_width = 30.0
+        slot_radius = slot_width / 2
+        slot_y = 120.0 - 20.0 - slot_radius
+        self.assertEqual(slot_y, 85.0)
+        self.assertEqual(162.0 + slot_radius, 177.0)
+        self.assertEqual(364.0 - slot_radius, 349.0)
 
         # Rear board starts above the 70 mm lower dividers at global Z=82.
         rows = commands()

@@ -10,18 +10,26 @@ from scpf import (
 )
 
 
+# Build-time hand-slot geometry.
+#
+# Keep these as normal Python numbers, not editable SolidCraft parameters.
+# SlotCenterToCenter2D can therefore use the native direct Slot command while
+# the dimensions still have one readable source and are calculated from each
+# other instead of duplicating 85/177/349 as unrelated magic numbers.
+SIDE_PANEL_DEPTH = 120.0
+HANDLE_SLOT_WIDTH = 30.0
+HANDLE_SLOT_REAR_CLEARANCE = 20.0
+HANDLE_SLOT_BOTTOM = 162.0
+HANDLE_SLOT_TOP = 364.0
+
+
 @component
 class SideBoard:
     """Full-depth side wall with one vertical 30 mm native slot."""
 
     thickness = 12.0
-    depth = 120.0
+    depth = SIDE_PANEL_DEPTH
     height = 444.0
-
-    opening_width = 30.0
-    opening_edge_clearance = 20.0
-    opening_bottom = 162.0
-    opening_top = 364.0
 
     material_name = None
     color = None
@@ -38,21 +46,23 @@ class SideBoard:
             anchor=FRONT + BOTTOM,
         )
 
-        # Keep 20 mm of plywood between the slot and the 120 mm rear edge.
-        # For a 30 mm wide slot the centreline is Y=85, so the slot spans
-        # Y=70..100 and its round ends are R15 by definition.
-        opening_center_y = (
-            self.depth
-            - self.opening_edge_clearance
-            - self.opening_width / 2
+        # Calculate the native Slot points from the design dimensions.
+        # 120 - 20 - 30/2 = Y=85 mm, so the complete slot spans Y=70..100.
+        slot_radius = HANDLE_SLOT_WIDTH / 2
+        slot_center_y = (
+            SIDE_PANEL_DEPTH
+            - HANDLE_SLOT_REAR_CLEARANCE
+            - slot_radius
         )
 
-        # SlotCenterToCenter2D uses the centres of the two round ends. Move
-        # those centres 15 mm inward from the requested overall top/bottom so
-        # the complete slot still spans opening_bottom..opening_top.
-        end_radius = self.opening_width / 2
-        lower_center_z = self.opening_bottom + end_radius
-        upper_center_z = self.opening_top - end_radius
+        # SlotCenterToCenter2D takes the centres of the round ends. Moving both
+        # centres one radius inward preserves the requested overall Z limits:
+        # 162..364 becomes centre points Z=177 and Z=349.
+        lower_center_z = HANDLE_SLOT_BOTTOM + slot_radius
+        upper_center_z = HANDLE_SLOT_TOP - slot_radius
+
+        p0 = (slot_center_y, lower_center_z)
+        p1 = (slot_center_y, upper_center_z)
 
         with Sketch(
             name="Side hand slot",
@@ -60,9 +70,9 @@ class SideBoard:
             plane="YZ",
         ) as opening_sketch:
             profile = SlotCenterToCenter2D(
-                (opening_center_y, lower_center_z),
-                (opening_center_y, upper_center_z),
-                self.opening_width,
+                p0,
+                p1,
+                HANDLE_SLOT_WIDTH,
             )
             opening_sketch.add(profile)
 

@@ -71,6 +71,10 @@ Each 12 mm side wall now uses one native **30 mm wide vertical slot** made with
 - slot spans **Y=70..100 mm**;
 - total vertical extent remains the previous hand zone.
 
+These slot dimensions are currently **build-time Python values**, not editable
+SolidCraft model parameters. The script derives the native Slot points from the
+120 / 30 / 20 mm dimensions so they stay internally consistent.
+
 The **9 mm rear board** is inset at Y=111..120, but it now starts only above
 the lower divider plates: **Z=82 mm**. It does not cover the lower storage
 compartment.

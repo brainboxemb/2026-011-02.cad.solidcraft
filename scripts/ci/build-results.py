@@ -215,12 +215,27 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             if generated_root is not None
             else None
         )
-        command_file = (
-            generated_command_file
-            if generated_command_file is not None
-            and generated_command_file.is_file()
-            else committed_command_file
+        previous_command_file = (
+            previous_site / "models" / slug / "solidcraft.json"
+            if previous_site is not None
+            else None
         )
+        command_file = next(
+            (
+                candidate
+                for candidate in (
+                    generated_command_file,
+                    previous_command_file,
+                    committed_command_file,
+                )
+                if candidate is not None and candidate.is_file()
+            ),
+            None,
+        )
+        if command_file is None:
+            raise FileNotFoundError(
+                f"{slug}: no generated, previously published, or committed command JSON"
+            )
         commands = read_json(command_file)["commands"]
         copy_if_exists(source, work / "model.py")
         copy_if_exists(command_file, work / "solidcraft.json")
@@ -438,10 +453,30 @@ def build(out, commit, native_root=None, generated_root=None, previous_site=None
             if not native_script.is_file():
                 raise ValueError(f"Missing SCPC model for {slug}")
             copy_if_exists(native_script, work / "scpc-model.py")
-            scpc_plan = ((generated_root / slug / "scpc" / "solidcraft.json")
-                         if generated_root is not None else
-                         native_script.parent / "solidcraft.json")
-            if not scpc_plan.is_file():
+            generated_scpc_plan = (
+                generated_root / slug / "scpc" / "solidcraft.json"
+                if generated_root is not None
+                else None
+            )
+            previous_scpc_plan = (
+                previous_site / "models" / slug / "scpc-commands.json"
+                if previous_site is not None
+                else None
+            )
+            committed_scpc_plan = native_script.parent / "solidcraft.json"
+            scpc_plan = next(
+                (
+                    candidate
+                    for candidate in (
+                        generated_scpc_plan,
+                        previous_scpc_plan,
+                        committed_scpc_plan,
+                    )
+                    if candidate is not None and candidate.is_file()
+                ),
+                None,
+            )
+            if scpc_plan is None:
                 raise ValueError(f"Missing independently compiled SCPC JSON for {slug}")
             copy_if_exists(scpc_plan, work / "scpc-commands.json")
             scpc_source_block = (

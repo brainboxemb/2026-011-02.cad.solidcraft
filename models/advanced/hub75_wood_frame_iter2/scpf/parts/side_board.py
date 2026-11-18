@@ -58,7 +58,15 @@ class SideBoard:
             + recess_height / 2
         )
 
-        with Sketch(name="Rear recess", plane="YZ") as recess_sketch:
+        # Attach the YZ sketch to the side-wall body. Forge currently cannot
+        # use a standalone sketch_base_extrusion as a boolean operand
+        # (Forge issue #354), while an attached explicit sketch extrusion is
+        # supported natively.
+        with Sketch(
+            name="Rear recess",
+            on=body,
+            plane="YZ",
+        ) as recess_sketch:
             profile = RoundedRectangle2D(
                 cut_depth,
                 recess_height,
@@ -69,8 +77,9 @@ class SideBoard:
                 offset=(cut_center_y, cut_center_z),
             )
 
-        # Extrude slightly past both plywood faces so the subtraction is robust
-        # even when the side-board thickness is changed later.
+        # The sketch plane passes through the centre of the 12 mm side wall.
+        # Extrude slightly beyond both plywood faces so the cut remains robust
+        # if the wall thickness changes.
         recess = recess_sketch.extrude(
             self.thickness + 2,
             sym=True,

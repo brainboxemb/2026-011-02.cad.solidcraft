@@ -67,8 +67,11 @@ section. Apply the same principle here while keeping the iteration-2 dimensions:
 - keep the lower storage-compartment side wall at the full 100 mm depth.
 
 Model this as a separate `SideBoard` part with a rounded YZ recess. Do not
-approximate the radius with straight polygon segments. The rear board remains
-temporarily disabled while this rear-access shape is developed.
+approximate the radius with straight polygon segments. The recess sketch is
+attached to the side-wall body because Forge currently cannot use a standalone
+`sketch_base_extrusion` as a boolean operand; that missing Forge capability is
+tracked separately in Forge issue #354. The rear board remains temporarily
+disabled while this rear-access shape is developed.
 
 ## Scope
 

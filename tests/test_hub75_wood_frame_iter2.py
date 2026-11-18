@@ -268,7 +268,11 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         )
 
         # The side part uses one real rounded YZ cut, not a faceted polygon.
-        self.assertIn('Sketch(name="Rear recess", plane="YZ")', side_source)
+        # The sketch is attached to the SideBoard body because Forge #354
+        # currently blocks standalone sketch extrusions as boolean operands.
+        self.assertIn('name="Rear recess"', side_source)
+        self.assertIn("on=body", side_source)
+        self.assertIn('plane="YZ"', side_source)
         self.assertIn("RoundedRectangle2D(", side_source)
         self.assertIn("self.recess_radius", side_source)
 

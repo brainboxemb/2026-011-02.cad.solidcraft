@@ -30,7 +30,7 @@ class Parser(html.parser.HTMLParser):
             self.images.append(values.get("src", ""))
 
 
-def check(site, commit):
+def check(site, commit, public_base="https://brainboxemb.github.io/2026-011-02.cad.solidcraft"):
     homepage = site / "index.html"
     assert homepage.is_file()
     assert (site / "results.css").is_file()
@@ -165,8 +165,7 @@ def check(site, commit):
             assert "network traffic" in page
             assert "You are leaving" in page
             expected_model_url = (
-                "https://brainboxemb.github.io/2026-011-02.cad.solidcraft/"
-                f"models/{slug}/model.sc"
+                public_base.rstrip("/") + f"/models/{slug}/model.sc"
             )
             parser_page = Parser()
             parser_page.feed(page)
@@ -249,6 +248,13 @@ def check(site, commit):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        raise SystemExit("usage: test-results.py <output/site> <git-sha>")
-    check(Path(sys.argv[1]), sys.argv[2])
+    if len(sys.argv) not in (3, 4):
+        raise SystemExit(
+            "usage: test-results.py <output/site> <git-sha> [public-base]"
+        )
+    check(
+        Path(sys.argv[1]),
+        sys.argv[2],
+        sys.argv[3] if len(sys.argv) == 4 else
+        "https://brainboxemb.github.io/2026-011-02.cad.solidcraft",
+    )

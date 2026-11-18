@@ -1,12 +1,16 @@
 """Two vertical roundwood side handles placed in the rear side-wall recesses."""
 
-from scpf import Placement, assembly, half
+from scpf import Placement, Z, assembly, half
 
 from parts.handle_ring import HandleRing
 from parts.roundwood_handle import RoundwoodHandle
 
 
 ROD_DIAMETER = 22.0
+ROD_INSET = 1.0
+ROD_END_EXTENSION = 15.0
+ROD_END_NOTCH_DEPTH = 11.0
+ROD_END_NOTCH_HEIGHT = 15.0
 RING_RADIAL_THICKNESS = 3.0
 RING_HEIGHT = 10.0
 RING_BORE_CLEARANCE = 0.4
@@ -26,9 +30,10 @@ class SideHandles:
     side_recess_upper_keep = 80.0
 
     def build(self):
-        # The side-wall outside face is one full plywood thickness outside
-        # the clear opening. Move the Ø22 rod inward until its outside surface
-        # is flush with that plywood outside face.
+        # Start from the side-wall outside face, then move the Ø22 rod one
+        # millimetre farther inward than flush. With a 12 mm side wall this
+        # makes exactly 11 mm of the rod overlap the plywood X range, matching
+        # the half-depth notch at each extended end.
         side_outer_x = (
             half(self.opening_width)
             + self.frame_wood_thickness
@@ -36,6 +41,7 @@ class SideHandles:
         handle_x = (
             side_outer_x
             - half(ROD_DIAMETER)
+            - ROD_INSET
         )
 
         # Align the back of the Ø22 rod exactly with the 110 mm rear edge of
@@ -59,16 +65,25 @@ class SideHandles:
             + self.opening_height
             - self.side_recess_upper_keep
         )
-        rod_length = recess_top_z - recess_bottom_z
+        # Extend the wood 15 mm beyond both visible recess limits. Those two
+        # end extensions are the only areas where the half-depth notches exist.
+        rod_bottom_z = recess_bottom_z - ROD_END_EXTENSION
+        rod_length = (
+            recess_top_z
+            - recess_bottom_z
+            + 2 * ROD_END_EXTENSION
+        )
 
         left_rod = RoundwoodHandle(
             name="left_handle_rod",
             diameter=ROD_DIAMETER,
             length=rod_length,
+            notch_depth=ROD_END_NOTCH_DEPTH,
+            notch_height=ROD_END_NOTCH_HEIGHT,
             placement=Placement(
                 x=-handle_x,
                 y=handle_y,
-                z=recess_bottom_z,
+                z=rod_bottom_z,
             ),
         ).group("SideHandles")
 
@@ -76,10 +91,13 @@ class SideHandles:
             name="right_handle_rod",
             diameter=ROD_DIAMETER,
             length=rod_length,
+            notch_depth=ROD_END_NOTCH_DEPTH,
+            notch_height=ROD_END_NOTCH_HEIGHT,
             placement=Placement(
                 x=handle_x,
                 y=handle_y,
-                z=recess_bottom_z,
+                z=rod_bottom_z,
+                rotation=(Z, 180),
             ),
         ).group("SideHandles")
 

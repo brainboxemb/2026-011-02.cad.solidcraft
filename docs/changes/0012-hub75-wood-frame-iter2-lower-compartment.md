@@ -79,11 +79,17 @@ clamped visually between the lower and upper limits of the recess. Keep its rear
 surface aligned with the 110 mm rear edge of the side panel, so the rod centre
 is Y=99 mm.
 
-Move each rod 5 mm inward in X so its outside cylindrical surface is flush with
-the outside face of the 12 mm side wall. Add one simple plastic ring around each
-rod end: 10 mm high and 3 mm radial thickness, giving Ø28 mm outside around the
-Ø22 mm wood. The ring uses 0.4 mm bore clearance. This is still only a mounting
-study; no final ring-to-plywood connection is defined yet.
+Move each rod another 1 mm inward from the flush position, placing the handle
+centres at X=±422 mm. Extend the roundwood 15 mm beyond both the lower and upper
+recess limits. In each 15 mm end extension, remove the side-wall-facing half of
+the Ø22 rod with an 11 mm deep × 15 mm high notch. The remaining outside
+half-cylinder can then overlap the full-depth side-wall zone without intersecting
+the plywood.
+
+Keep the simple plastic rings at the recess boundaries: 10 mm high and 3 mm
+radial thickness, giving Ø28 mm outside around the Ø22 mm wood. The ring uses
+0.4 mm bore clearance. This is still only a mounting study; no final
+ring-to-plywood connection is defined yet.
 
 ## Scope
 

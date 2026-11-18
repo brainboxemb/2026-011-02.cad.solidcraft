@@ -81,14 +81,20 @@ roundwood handle**. The rod remains clamped directly between the lower and upper
 limits of the recess.
 
 The rear surface of the rod stays flush with the **Y=110 mm** rear edge of the
-side panel, putting the rod centre at **Y=99 mm**. In X, the rod is moved
-**5 mm inward**: its outside surface now aligns with the outside face of the
-12 mm side wall instead of its centreline.
+side panel, putting the rod centre at **Y=99 mm**. In X, the rod is now moved
+**1 mm farther inward** than the previous flush position. Its centre is therefore
+X=±422 mm.
 
-A simple plastic ring is added around each rod end. The current concept ring is
-**10 mm high**, **3 mm radial thickness** (Ø28 mm outside around Ø22 mm wood)
-and has a small 0.4 mm assembly clearance. These rings are only a first visual
-mounting study; no final attachment to the plywood is modelled yet.
+The wood extends **15 mm beyond the recess at both the top and bottom**. In each
+of those 15 mm end extensions, the half facing the plywood side wall is removed:
+an **11 mm deep × 15 mm high** notch. Because 11 mm is exactly half of Ø22, the
+outer half-cylinder remains intact and the extension can overlap the side-wall
+zone without passing through the plywood. The right handle reuses the same
+part rotated 180° so its notches face its own side wall.
+
+A simple plastic ring remains around each rod at the recess boundary. The ring
+is **10 mm high**, **3 mm radial thickness** (Ø28 mm outside around Ø22 mm wood)
+and has 0.4 mm assembly clearance. Final attachment is still not defined.
 
 ## Current main dimensions
 

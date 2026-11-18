@@ -305,11 +305,11 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         # rear surface of the rod exactly flush with the rear panel edge.
         self.assertTrue(all(row["translate"][1] == 99.0 for row in rods))
 
-        # Side-wall outside faces are at X=±434. Moving the Ø22 rod centres to
-        # X=±423 makes the rod outside surfaces exactly flush with those faces.
+        # Side-wall outside faces are at X=±434. The previous flush handle
+        # centres were X=±423; move another 1 mm inward to X=±422.
         self.assertEqual(
             sorted(row["translate"][0] for row in rods),
-            [-423.0, 423.0],
+            [-422.0, 422.0],
         )
 
         rings = [
@@ -324,17 +324,21 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         self.assertEqual(len(rings), 4)
         self.assertEqual(
             sorted({row["translate"][0] for row in rings}),
-            [-423.0, 423.0],
+            [-422.0, 422.0],
         )
 
         handle_source = (
             SCPF_DIR / "assemblies" / "side_handles.py"
         ).read_text(encoding="utf-8")
         self.assertIn("ROD_DIAMETER = 22.0", handle_source)
+        self.assertIn("ROD_INSET = 1.0", handle_source)
+        self.assertIn("ROD_END_EXTENSION = 15.0", handle_source)
+        self.assertIn("ROD_END_NOTCH_DEPTH = 11.0", handle_source)
+        self.assertIn("ROD_END_NOTCH_HEIGHT = 15.0", handle_source)
         self.assertIn("RING_RADIAL_THICKNESS = 3.0", handle_source)
         self.assertIn("RING_HEIGHT = 10.0", handle_source)
         self.assertIn(
-            "side_outer_x\n            - half(ROD_DIAMETER)",
+            "side_outer_x\n            - half(ROD_DIAMETER)\n            - ROD_INSET",
             handle_source,
         )
         self.assertIn(
@@ -342,9 +346,22 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
             handle_source,
         )
         self.assertIn(
-            "rod_length = recess_top_z - recess_bottom_z",
+            "rod_bottom_z = recess_bottom_z - ROD_END_EXTENSION",
             handle_source,
         )
+        self.assertIn(
+            "+ 2 * ROD_END_EXTENSION",
+            handle_source,
+        )
+
+        rod_source = (
+            SCPF_DIR / "parts" / "roundwood_handle.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("notch_depth = 11.0", rod_source)
+        self.assertIn("notch_height = 15.0", rod_source)
+        self.assertIn('plane="XZ"', rod_source)
+        self.assertIn("Rectangle2D(", rod_source)
+        self.assertIn("rotation=(Z, 180)", handle_source)
         self.assertNotIn("cabinet_depth =", handle_source)
         self.assertNotIn("side_recess_depth =", handle_source)
 

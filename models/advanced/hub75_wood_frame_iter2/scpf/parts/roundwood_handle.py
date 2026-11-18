@@ -1,13 +1,11 @@
 """Vertical beech roundwood used as the side carry handle."""
 
-from scpf import (
-    BOTTOM,
-    Cylinder,
-    Rectangle2D,
-    Sketch,
-    component,
-    half,
-)
+from scpf import BOTTOM, Box, Cylinder, component, half
+
+
+# Extend boolean cutters slightly beyond the physical rod ends. This avoids
+# coplanar end faces, which are fragile in CAD boolean operations.
+NOTCH_BOOLEAN_MARGIN = 0.1
 
 
 @component
@@ -26,45 +24,40 @@ class RoundwoodHandle:
             anchor=BOTTOM,
         )
 
-        # The left-side handle is the reference orientation. At both extended
-        # ends remove the half of the rod that faces the plywood side wall.
-        # The 11 mm notch depth is exactly half of the Ø22 rod, so the outside
-        # half-cylinder remains intact over the 15 mm end extension.
-        notch_x = -half(self.notch_depth)
-        bottom_notch_z = half(self.notch_height)
-        top_notch_z = self.length - half(self.notch_height)
+        # The component is authored for the right-hand side. The side wall is
+        # on local -X, so remove X=-11..0 from both 15 mm end extensions.
+        # This leaves the outside half-cylinder (X=0..+11) intact.
+        cut_x = -half(self.notch_depth)
 
-        with Sketch(
-            name="Handle end notches",
-            on=body,
-            plane="XZ",
-        ) as notch_sketch:
-            lower = Rectangle2D(
-                self.notch_depth,
-                self.notch_height,
-            )
-            notch_sketch.add(
-                lower,
-                offset=(notch_x, bottom_notch_z),
-            )
+        # Cut completely through Y and slightly beyond both rod end faces.
+        # Using simple Box cutters is deliberate: the notch is rectangular and
+        # does not need a sketch, and the overlap makes the boolean robust.
+        cut_depth_y = self.diameter + 2.0
+        cut_height_z = self.notch_height + 2 * NOTCH_BOOLEAN_MARGIN
 
-            upper = Rectangle2D(
-                self.notch_depth,
-                self.notch_height,
-            )
-            notch_sketch.add(
-                upper,
-                offset=(notch_x, top_notch_z),
-            )
-
-        # Cut through the full Y thickness of the roundwood. The right handle
-        # reuses this same component rotated 180 degrees around Z, which puts
-        # the notches on its own side-wall-facing half.
-        notches = notch_sketch.extrude(
-            self.diameter + 2,
-            sym=True,
+        bottom_cut = Box(
+            self.notch_depth,
+            cut_depth_y,
+            cut_height_z,
+        ).at(
+            cut_x,
+            0,
+            -NOTCH_BOOLEAN_MARGIN,
+            anchor=BOTTOM,
         )
-        body = body - notches
+
+        top_cut = Box(
+            self.notch_depth,
+            cut_depth_y,
+            cut_height_z,
+        ).at(
+            cut_x,
+            0,
+            self.length - self.notch_height - NOTCH_BOOLEAN_MARGIN,
+            anchor=BOTTOM,
+        )
+
+        body = body - bottom_cut - top_cut
 
         return body.with_material(
             "Beech roundwood",

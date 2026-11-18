@@ -310,12 +310,13 @@ def execute(
     )
     native_root = output_root / "native"
     generated_root = output_root / "models"
+    native_root.mkdir(parents=True, exist_ok=True)
+    generated_root.mkdir(parents=True, exist_ok=True)
 
     metadata = toolchain_metadata(
         image_reference=image_reference,
         workflow_run=workflow_run,
     )
-    (native_root).mkdir(parents=True, exist_ok=True)
     (native_root / "verification.json").write_text(
         json.dumps(
             {

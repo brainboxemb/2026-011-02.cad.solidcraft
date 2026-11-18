@@ -30,18 +30,18 @@ class NativeInfrastructureTests(unittest.TestCase):
                     self.assertIsInstance(parameter, str)
                     self.assertIsInstance(expression, str)
 
-    def test_native_workflow_calls_runners_instead_of_inline_mutation_json(self):
-        workflow = (ROOT / ".github/workflows/native-cad.yml").read_text(
+    def test_native_workflow_is_thin_and_runner_owns_native_checks(self):
+        workflow = (ROOT / ".github/workflows/native.yml").read_text(
             encoding="utf-8"
         )
-        self.assertIn(
-            "python scripts/ci/run_native_mutations.py output/native",
-            workflow,
+        runner = (ROOT / "scripts/ci/native_ci.py").read_text(
+            encoding="utf-8"
         )
-        self.assertIn(
-            "python scripts/ci/native_validation.py output/native",
-            workflow,
-        )
+        self.assertIn("python scripts/ci/native_ci.py", workflow)
+        self.assertNotIn("run_native_mutations.py", workflow)
+        self.assertNotIn("native_validation.py", workflow)
+        self.assertIn("scripts/ci/run_native_mutations.py", runner)
+        self.assertIn("scripts/ci/native_validation.py", runner)
         self.assertNotIn('"command":"parameters.change"', workflow)
         self.assertNotIn("measurements-height-400.json", workflow)
 

@@ -58,8 +58,9 @@ No occurrence gets a separate hard-coded 70, 82 or 94 mm placement.
 The second reference design also reduces the rear depth of the upper side-wall
 section. Apply the same principle here while keeping the iteration-2 dimensions:
 
-- bottom, intermediate shelf and lower dividers remain 100 mm deep;
-- both side panels extend to 110 mm depth;
+- bottom, intermediate shelf and roof base extend to 110 mm depth;
+- both side panels extend to the same 110 mm depth;
+- the two vertical lower dividers remain 100 mm deep for now;
 - the middle display-zone side wall is recessed 50 mm from the 110 mm rear
   edge, leaving 60 mm depth there;
 - use R20 rounded transitions;

@@ -33,9 +33,11 @@ class WoodFrame:
 
     def build(self):
         rear_y = self.cabinet_depth
-        back_outer = rear_y + self.panel_wood_thickness
         roof_front = -self.roof_front_overhang
-        roof_rear = back_outer + self.roof_rear_overhang
+        # The horizontal frame boards now follow the 110 mm side-panel depth.
+        # The rear board is disabled, so the roof overhang is measured directly
+        # from the side-panel rear edge instead of from a rear-sheet thickness.
+        roof_rear = self.side_panel_depth + self.roof_rear_overhang
         outer_width = self.opening_width + 2 * self.frame_wood_thickness
 
         bottom_top = self.frame_wood_thickness
@@ -94,7 +96,7 @@ class WoodFrame:
         bottom = Board(
             name="bottom",
             width=outer_width,
-            depth=self.cabinet_depth,
+            depth=self.side_panel_depth,
             height=self.frame_wood_thickness,
             corner_radius=self.corner_radius,
             fillet=(BOTTOM + LEFT, BOTTOM + RIGHT),
@@ -108,7 +110,7 @@ class WoodFrame:
             # here would make the shelf pass through both 12 mm side boards.
             # Grooves can be added later as explicit joinery features.
             width=self.opening_width,
-            depth=self.cabinet_depth,
+            depth=self.side_panel_depth,
             height=self.frame_wood_thickness,
             material_name="LIGHTPLY intermediate shelf",
             placement=Placement(z=shelf_bottom),

@@ -180,6 +180,15 @@ class WoodenHub75BoxIter2Tests(unittest.TestCase):
         shelf_source = frame_source[shelf_start:shelf_end]
         self.assertIn("width=self.opening_width", shelf_source)
         self.assertNotIn("width=outer_width", shelf_source)
+        self.assertIn("depth=self.side_panel_depth", shelf_source)
+
+        # Bottom and roof use the same 110 mm side-panel datum. The roof keeps
+        # its separate front/rear overhangs around that base depth.
+        self.assertIn("depth=self.side_panel_depth", frame_source)
+        self.assertIn(
+            "roof_rear = self.side_panel_depth + self.roof_rear_overhang",
+            frame_source,
+        )
 
         moves = of(rows, "occurrence.move")
         shelf = [row for row in moves if row["occurrence"] == "$intermediate_shelf"]

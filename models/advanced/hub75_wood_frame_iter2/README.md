@@ -60,9 +60,10 @@ The ratio applies to the free space after subtracting both divider thicknesses:
 ## Rear side-wall recess
 
 Like the second reference design, the side walls are allowed to extend farther
-rearward than the internal cabinet boards. The bottom, intermediate shelf and
-lower dividers remain **100 mm** deep, while both side panels are now **110 mm**
-deep. Only the rear edge of the display section of those side panels is reduced.
+rearward than the lower compartment dividers. The bottom, intermediate shelf,
+roof base and both side panels are now **110 mm** deep. The two vertical lower
+dividers remain **100 mm** deep for now. Only the rear edge of the display
+section of the side panels is reduced.
 The current iteration-2 values are:
 
 - rear recess depth: **50 mm**, leaving a 60 mm deep middle section;
@@ -110,8 +111,10 @@ and has 0.4 mm assembly clearance. Final attachment is still not defined.
 | Frame wood | 12 mm |
 | Rear board | temporarily disabled |
 | Side-wall rear recess | 50 mm deep, R20, 80 mm full-depth top/bottom zones |
-| Cabinet depth (bottom/shelf/dividers) | 100 mm |
+| Bottom / intermediate shelf base depth | 110 mm |
+| Lower divider depth | 100 mm |
 | Side-panel depth | 110 mm |
+| Roof base depth | 110 mm |
 | Roof overhang | 10 mm front / 1 mm rear |
 | Window | 840 × 360 × 4 mm |
 | Corner brackets | 8 |

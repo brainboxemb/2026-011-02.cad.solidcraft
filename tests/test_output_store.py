@@ -62,6 +62,7 @@ class OutputStoreTests(unittest.TestCase):
                 "scpc_commit": "cmd123",
                 "solidcraft_version": "0.42.0",
                 "workflow_run": "99",
+                "toolchain_image": "ghcr.io/brainboxemb/cad-ci:toolchain-test",
                 "verified": True,
             },
         )
@@ -97,6 +98,10 @@ class OutputStoreTests(unittest.TestCase):
         self.assertEqual(verification["source_commit"], "cad123")
         self.assertEqual(verification["scpf_commit"], "forge123")
         self.assertEqual(verification["solidcraft_version"], "0.42.0")
+        self.assertEqual(
+            verification["toolchain_image"],
+            "ghcr.io/brainboxemb/cad-ci:toolchain-test",
+        )
         self.assertEqual(
             verification["input_fingerprint"],
             input_fingerprint("bolted-flange"),

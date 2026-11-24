@@ -46,11 +46,20 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--build-scope prepared-build/dev", workflow)
         self.assertIn("--destination generated-site/dev", workflow)
         self.assertIn(
-            'https://brainboxemb.github.io/template.cad.model-project/dev/',
+            'https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/',
             workflow,
         )
         self.assertNotIn("simple-box", workflow)
         self.assertNotIn("simple-mft", workflow)
+
+    def test_pages_pr_check_is_limited_to_pages_implementation(self):
+        workflow = (ROOT / ".github/workflows/pages.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"site/**"', workflow)
+        self.assertIn('"modules/pages/**"', workflow)
+        self.assertNotIn('"models/**/model.yml"', workflow)
+        self.assertNotIn('"models/**/page.md"', workflow)
 
     def test_pages_publish_jobs_run_only_from_explicit_dispatch(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(

@@ -70,6 +70,25 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
 
     _require_file(site / "index.html")
     _require_file(site / "models" / "index.html")
+    category_html = {}
+    for category in ("basic", "components", "advanced"):
+        path = site / "models" / category / "index.html"
+        _require_file(path)
+        html = path.read_text(encoding="utf-8")
+        if "cad-category-page" not in html or "cad-model-grid" not in html or "cad-model-detail" in html:
+            raise PagesVerificationError(f"{path}: expected a category grid, not a model detail")
+        category_html[category] = html
+
+    home_html = (site / "index.html").read_text(encoding="utf-8")
+    if "Recently updated models" not in home_html:
+        raise PagesVerificationError("home page lacks recently-updated catalog")
+
+    catalog_html = (site / "models" / "index.html").read_text(encoding="utf-8")
+    for heading in ("Basic Models", "Components", "Advanced Models"):
+        if heading not in catalog_html:
+            raise PagesVerificationError(
+                f"model catalog lacks category heading {heading!r}"
+            )
 
     seen: set[str] = set()
     for row in rows:
@@ -90,8 +109,14 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
         seen.add(variant_id)
 
         model_path = repo / model_root / "model.yml"
+        root_metadata = _load_yaml(model_path)
+        category = root_metadata.get("section")
+        if category not in category_html:
+            raise PagesVerificationError(f"{model_path}: unsupported category {category!r}")
+        if f"/models/{variant_id}/" not in category_html[category]:
+            raise PagesVerificationError(f"{category}: missing model link for {variant_id}")
         metadata = _metadata_for_variant(
-            _load_yaml(model_path),
+            root_metadata,
             variant_id,
             model_path,
         )

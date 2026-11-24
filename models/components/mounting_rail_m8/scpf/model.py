@@ -5,7 +5,7 @@ perforation is authored as ONE four-profile repeat unit:
 
     round -> longitudinal slot -> round -> transverse slot
 
-That unit becomes one through-all cut feature and one native rectangular
+That unit becomes one web-through cut feature and one native rectangular
 feature pattern. Pattern count, spacing and all profile dimensions remain
 editable Forge/SolidCraft parameters.
 """
@@ -14,7 +14,6 @@ from scpf import (
     Anchor,
     Axis,
     Circle2D,
-    Depth,
     Sketch,
     SlotCenterToCenter2D,
     component,
@@ -24,7 +23,7 @@ from scpf import (
 @component(include="*")
 class MountingRailM8:
     # Product / section dimensions.
-    length = 1000.0
+    length = 250.0
     profile_width = 27.0
     profile_height = 18.0
     thickness = 1.25
@@ -36,9 +35,8 @@ class MountingRailM8:
 
     # One complete perforation cycle contains four features. The default
     # 25 mm feature pitch therefore gives a 100 mm native repeat pitch.
-    end_offset = 12.5
     feature_pitch = 25.0
-    repeat_count = 10
+    repeat_count = 2
 
     round_diameter = 12.5
 
@@ -73,7 +71,15 @@ class MountingRailM8:
         )
 
         # Author one complete 4-feature repeat unit on the real top web.
-        y0 = self.end_offset
+        # Centre the requested number of whole units inside the current rail.
+        # For the 1000 mm product reference with repeat_count=10 this resolves
+        # to the observed 12.5 mm first-centre offset automatically.
+        repeat_pitch = 4 * self.feature_pitch
+        pattern_span = (
+            (self.repeat_count - 1) * repeat_pitch
+            + 3 * self.feature_pitch
+        )
+        y0 = (self.length - pattern_span) / 2
         y1 = y0 + self.feature_pitch
         y2 = y0 + 2 * self.feature_pitch
         y3 = y0 + 3 * self.feature_pitch
@@ -114,15 +120,16 @@ class MountingRailM8:
                 self.vertical_slot_width,
             )
 
-        # One cut owns the complete 4-profile unit. One native feature pattern
-        # then repeats that cut as a whole. count includes the source feature.
-        unit_cut = unit.extrude(Depth.THROUGH_ALL)
+        # One shallow cut owns the complete 4-profile unit. Cutting only
+        # through the web avoids SolidCraft's unsupported sheet-bend recess
+        # case that THROUGH_ALL triggers for a compound profile.
+        unit_cut = unit.extrude(-2 * self.thickness)
         rail = rail - unit_cut
 
         return rail.rectangular_pattern(
             unit_cut,
             count=self.repeat_count,
-            spacing=4 * self.feature_pitch,
+            spacing=repeat_pitch,
             direction=Axis.Y,
         )
 

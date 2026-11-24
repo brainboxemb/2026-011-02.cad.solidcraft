@@ -13,9 +13,9 @@ parameters: 250 mm default length; 27 × 18 × 1.25 mm nominal profile; 15 mm op
 stages:
   - C profile — one native open XZ sheet contour
   - Contour flange — 250 mm default native sheet-metal rail
-  - Repeat-unit Sketch — round, longitudinal slot, round, transverse slot
-  - Unit cut — one shallow web-through feature containing all four profiles
-  - Native pattern — repeat the complete cut 2 times at 100 mm default pitch
+  - Repeat source — four native cuts: round, longitudinal slot, round, transverse slot
+  - Native pattern — one Rectangular Pattern repeats all four source features together
+  - Parameters — 37.5 mm end offset, 25 mm feature pitch, 2 repeat units
 warning:
   title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
   body: >

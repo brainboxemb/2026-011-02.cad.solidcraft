@@ -376,6 +376,53 @@
     },
     {
       "artifacts": [],
+      "built_source_sha": "73ecc1e239bdd489ef5c8fa5dc2b1627680a87bb",
+      "commands": "models/mounting-rail-m8/solidcraft.json",
+      "dependencies": [],
+      "id": "mounting-rail-m8",
+      "native": {
+        "png": "models/mounting-rail-m8/model.png",
+        "sc": "models/mounting-rail-m8/model.sc",
+        "step": "models/mounting-rail-m8/model.step",
+        "stl": null
+      },
+      "owner": "mounting-rail-m8",
+      "priority": 20,
+      "root": "models/components/mounting_rail_m8",
+      "snapshot": {
+        "camera": {
+          "distance": 1150,
+          "fov": 0,
+          "pitch": 0.28,
+          "target": [
+            0,
+            500,
+            9
+          ],
+          "yaw": -0.6
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 155,
+            "fov": 0,
+            "pitch": 0.55,
+            "target": [
+              0,
+              100,
+              18
+            ],
+            "yaw": -0.4
+          },
+          "name": "pattern-closeup.png",
+          "path": "models/mounting-rail-m8/pattern-closeup.png"
+        }
+      ],
+      "source": "models/components/mounting_rail_m8/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "c596dc1f33cc2c625af86fbb5a8fb041c7edcc5d",
       "commands": "models/plastic-enclosure/solidcraft.json",
       "dependencies": [],
@@ -571,5 +618,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9"
+  "source_sha": "73ecc1e239bdd489ef5c8fa5dc2b1627680a87bb"
 }

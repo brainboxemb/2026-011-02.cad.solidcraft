@@ -1,0 +1,437 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "length",
+        "expression": "1000",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting Rail M8 Rule",
+        "thickness": 1.25,
+        "k_factor": 0.4,
+        "bend_radius": 1.25,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "C profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -7.5,
+            0.625
+          ],
+          [
+            -12.875,
+            0.625
+          ]
+        ],
+        "ids": [
+          "l1"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$contour_curves_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -12.875,
+            0.625
+          ],
+          [
+            -12.875,
+            17.375
+          ]
+        ],
+        "ids": [
+          "l2"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$contour_curves_2": {
+          "field": "curves",
+          "prepend": "$contour_curves_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -12.875,
+            17.375
+          ],
+          [
+            12.875,
+            17.375
+          ]
+        ],
+        "ids": [
+          "l3"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$contour_curves_3": {
+          "field": "curves",
+          "prepend": "$contour_curves_2"
+        }
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            12.875,
+            17.375
+          ],
+          [
+            12.875,
+            0.625
+          ]
+        ],
+        "ids": [
+          "l4"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$contour_curves_4": {
+          "field": "curves",
+          "prepend": "$contour_curves_3"
+        }
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            12.875,
+            0.625
+          ],
+          [
+            7.5,
+            0.625
+          ]
+        ],
+        "ids": [
+          "l5"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$contour_curves_5": {
+          "field": "curves",
+          "prepend": "$contour_curves_4"
+        }
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "contour",
+        "sketch": "C profile",
+        "curves": "$contour_curves_5",
+        "distance": "length",
+        "rule": "Mounting Rail M8 Rule",
+        "body_name": "MountingRailM8"
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "MountingRailM8"
+      },
+      "bind": {
+        "$face_point_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$face_index_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$face_point_1",
+          "body": "MountingRailM8",
+          "index": "$face_index_1"
+        },
+        "project_edges": false,
+        "name": "Round hole"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          12.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Round hole",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Round hole"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": 20,
+        "spacing1": 50.0,
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "MountingRailM8"
+      },
+      "bind": {
+        "$face_point_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$face_index_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$face_point_2",
+          "body": "MountingRailM8",
+          "index": "$face_index_2"
+        },
+        "project_edges": false,
+        "name": "Horizontal slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          0.0,
+          35.7
+        ],
+        "p1": [
+          0.0,
+          39.3
+        ],
+        "width": 6.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Horizontal slot",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Horizontal slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": 10,
+        "spacing1": 100.0,
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "MountingRailM8"
+      },
+      "bind": {
+        "$face_point_3": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$face_index_3": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$face_point_3",
+          "body": "MountingRailM8",
+          "index": "$face_index_3"
+        },
+        "project_edges": false,
+        "name": "Vertical slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          -3.3,
+          87.5
+        ],
+        "p1": [
+          3.3,
+          87.5
+        ],
+        "width": 8.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Vertical slot",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Vertical slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": 10,
+        "spacing1": 100.0,
+        "alignment": "right",
+        "reversed": false
+      }
+    }
+  ]
+}

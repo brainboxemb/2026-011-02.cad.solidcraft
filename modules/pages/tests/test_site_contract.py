@@ -25,6 +25,11 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('resources.Get "build/build-plan.json"', adapter)
         self.assertIn('index $ci "variants"', adapter)
         self.assertIn('where $rows "id" $slug', adapter)
+        self.assertIn("hugo.Data.cad.model_history", adapter)
+        self.assertIn('"dates" (dict "lastmod" $lastmod)', adapter)
+        self.assertIn('"basic" "Basic Models"', adapter)
+        self.assertIn('"components" "Components"', adapter)
+        self.assertIn('"advanced" "Advanced Models"', adapter)
         self.assertNotIn("simple-box", adapter)
         self.assertNotIn("simple-mft", adapter)
 
@@ -36,6 +41,25 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('.Resources.Get "solidcraft.json"', page)
         self.assertNotIn("simple-box", page)
         self.assertNotIn("simple-mft", page)
+
+    def test_catalog_layout_restores_recent_and_grouped_navigation(self):
+        home = (SITE / "layouts/home.html").read_text(encoding="utf-8")
+        catalog = (SITE / "layouts/models/list.html").read_text(encoding="utf-8")
+        card = (SITE / "layouts/partials/cad/model-card.html").read_text(
+            encoding="utf-8"
+        )
+        menu = (SITE / "config/_default/menus.en.toml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("Recently updated models", home)
+        self.assertIn("ByLastmod.Reverse", home)
+        self.assertIn("showUpdated", home)
+        for section in ("basic", "components", "advanced"):
+            self.assertIn(f'"{section}"', catalog)
+        for name in ("Models", "Basic", "Components", "Advanced"):
+            self.assertIn(f'name = "{name}"', menu)
+        self.assertIn("Updated {{ $page.Lastmod.Format", card)
 
     def test_pages_workflow_builds_main_and_dev_scopes(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
@@ -51,13 +75,14 @@ class SiteContractTests(unittest.TestCase):
         )
         self.assertNotIn("simple-box", workflow)
         self.assertNotIn("simple-mft", workflow)
+        self.assertIn("fetch-depth: 0", workflow)
 
-    def test_pages_pr_check_is_limited_to_pages_implementation(self):
+    def test_pages_pr_verifies_matching_durable_scope(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
             encoding="utf-8"
         )
-        self.assertIn('"site/**"', workflow)
-        self.assertIn('"modules/pages/**"', workflow)
+        self.assertIn("github.base_ref == 'dev' || github.head_ref == 'dev'", workflow)
+        self.assertIn("--build-scope prepared-build/$PAGES_SCOPE", workflow)
         self.assertNotIn('"models/**/model.yml"', workflow)
         self.assertNotIn('"models/**/page.md"', workflow)
 

@@ -1,10 +1,9 @@
 schema: 1
-branch: feature/simple-mft-support-rails
+branch: feature/forge-release-bootstrap
 
-modules: []
-models:
-  - mounting-rail-m8
-  - simple-mft-assembly
+modules:
+  - ci
+  - build
+models: []
 tasks:
   - test
-  - build

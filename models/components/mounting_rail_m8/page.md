@@ -44,7 +44,9 @@ Nominal profile used by the model:
 - clear C-opening: **15 mm**.
 
 The rail is built as native sheet metal from one connected XZ contour and one
-native contour flange along the 1000 mm length.
+native contour flange. The reference product is 1000 mm long; the standalone
+model intentionally defaults to a shorter **250 mm** piece for clearer CAD and
+Pages presentation.
 
 ## Repeating perforation pattern
 
@@ -70,10 +72,15 @@ the far end.
 
 The implementation follows the physical repeat directly. One face-attached
 Sketch contains the complete four-feature unit. That Sketch creates one
-through-all cut, and **one native rectangular feature pattern** repeats the
-whole cut. The default editable `feature_pitch = 25 mm` therefore produces a
-native repeat spacing of `4 × feature_pitch = 100 mm`; `repeat_count = 10`
-is a separate editable dimensionless parameter.
+web-through cut, and **one native rectangular feature pattern** repeats the
+whole cut. The editable `feature_pitch = 25 mm` therefore produces a native
+repeat spacing of `4 × feature_pitch = 100 mm`.
+
+The standalone example uses `length = 250 mm` and `repeat_count = 2`.
+The first-unit position is derived from length, repeat count and pitch so the
+complete pattern is centred. With `length = 1000 mm` and
+`repeat_count = 10`, the same expression resolves to the 12.5 mm
+product-reference end offset.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

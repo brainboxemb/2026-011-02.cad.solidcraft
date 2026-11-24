@@ -33,6 +33,7 @@ class CadModel:
     source: Path | None = None
     watch: tuple[str, ...] = ()
     priority: int = _DEFAULT_MODEL_PRIORITY
+    dependencies: tuple[str, ...] = ()
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -68,6 +69,53 @@ def _watch(
     ):
         raise ConfigError(f"watch must be a string list: {path}")
     return (default, *extra)
+
+
+def _dependencies(
+    data: dict[str, Any],
+    *,
+    model_id: str,
+    path: Path,
+) -> tuple[str, ...]:
+    raw = data.get("dependencies", [])
+    if not isinstance(raw, list):
+        raise ConfigError(f"dependencies must be a list: {path}")
+    if not all(isinstance(item, str) and _ID.fullmatch(item) for item in raw):
+        raise ConfigError(f"dependencies contains an invalid id: {path}")
+    if len(set(raw)) != len(raw):
+        raise ConfigError(f"dependencies must be unique: {path}")
+    if model_id in raw:
+        raise ConfigError(f"model cannot depend on itself: {path}")
+    return tuple(raw)
+
+
+def _validate_dependencies(models: list[CadModel]) -> None:
+    by_id = {model.id: model for model in models}
+    for model in models:
+        unknown = [item for item in model.dependencies if item not in by_id]
+        if unknown:
+            raise ConfigError(
+                f"unknown model dependency {unknown[0]!r}: {model.root / 'ci.yml'}"
+            )
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(model_id: str, trail: tuple[str, ...]) -> None:
+        if model_id in visited:
+            return
+        if model_id in visiting:
+            cycle = " -> ".join((*trail, model_id))
+            raise ConfigError(f"cyclic model dependency: {cycle}")
+        visiting.add(model_id)
+        model = by_id[model_id]
+        for dependency in model.dependencies:
+            visit(dependency, (*trail, model_id))
+        visiting.remove(model_id)
+        visited.add(model_id)
+
+    for model in models:
+        visit(model.id, ())
 
 
 def _source_path(value: object, *, field: str, path: Path) -> Path:
@@ -216,8 +264,15 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[CadModel, ...]:
                 source=source,
                 watch=tuple(watch),
                 priority=priority,
+                dependencies=_dependencies(
+                    data,
+                    model_id=model_id,
+                    path=path,
+                ),
             )
         )
+
+    _validate_dependencies(result)
     return tuple(sorted(result, key=lambda model: (model.priority, model.id)))
 
 

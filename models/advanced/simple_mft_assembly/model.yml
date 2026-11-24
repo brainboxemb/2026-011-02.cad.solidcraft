@@ -9,10 +9,10 @@ description: >
   mounting rails run underneath and are shifted 18 mm right to meet a third
   519 mm cross rail on the left short side without blocking the channel ends.
   All C-openings face outward. The 800 mm Festool-profile GuideRail is shifted
-  414 mm toward +X. A reusable FlexBenchDog is inserted in the rightmost
-  centre-row MFT hole at X=+304 mm. MDF, galvanized-steel and aluminium materials distinguish
+  414 mm toward +X. A reusable FlexBenchDog is inserted in the bottom hole of the rightmost
+  MFT column at X=+304 mm, Y=-228 mm. MDF, galvanized-steel and aluminium materials distinguish
   the assembly visually.
-parameters: 805 × 555 × 18 mm MFT worktop; 195 × 555 × 18 mm right extension; 1000 mm total width; 2 × 1000 mm long M8 rails shifted +18 mm; 1 × 519 mm left cross rail; GuideRail 800 mm shifted +414 mm; FlexBenchDog at X=+304 mm, Y=0
+parameters: 805 × 555 × 18 mm MFT worktop; 195 × 555 × 18 mm right extension; 1000 mm total width; 2 × 1000 mm long M8 rails shifted +18 mm; 1 × 519 mm left cross rail; GuideRail 800 mm shifted +414 mm; FlexBenchDog at X=+304 mm, Y=-228 mm
 stages:
   - Instantiate the reusable SimpleMFT worktop
   - Add a plain 195 mm right-hand extension so the complete top reaches 1000 mm
@@ -24,7 +24,7 @@ stages:
   - Keep all three C-openings outward and the rail ends accessible
   - Place the worktop underside on the upper edges of both support rails
   - Shift the 800 mm Festool-profile GuideRail 414 mm toward +X
-  - Insert a reusable FlexBenchDog in the rightmost centre-row MFT hole
+  - Insert a reusable FlexBenchDog in the bottom hole of the rightmost MFT column
 extra_views:
   title: Support-rail layout
   items:

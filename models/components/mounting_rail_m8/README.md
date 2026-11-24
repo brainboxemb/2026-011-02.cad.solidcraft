@@ -47,18 +47,27 @@ Do not rename the generic component to the reference brand.
 
 ## Parametric pattern contract
 
-The perforation is not three independent patterns.
+The perforation is not three independent patterns and it is not one compound
+multi-profile sheet extrusion.
 
-Forge authors one attached Sketch containing all four profiles, creates one
-web-through cut from that Sketch, and patterns that cut as one native history
-feature. `repeat_count` remains dimensionless/editable and the native repeat
-spacing is the expression `4 * feature_pitch`.
+The source unit consists of four native cut features:
 
-The standalone example defaults to **250 mm** with **2 complete repeat units**
-and an editable **37.5 mm end offset**, which centres those units in the short
-example.
+1. round opening;
+2. longitudinal slot;
+3. round opening;
+4. transverse slot.
 
-`end_offset` is a separate native parameter. For the full 1000 mm reference,
-use `repeat_count = 10` and `end_offset = 12.5 mm`. This keeps length,
-repeat count, pitch and offset independently editable in SolidCraft without
-relying on unsupported Expression × Expression arithmetic in Forge 0.15.
+Forge 0.15 allows `rectangular_pattern()` to receive a non-empty sequence of
+already-applied feature Shapes. The model therefore passes all four source cuts
+together to **one native rectangular feature pattern**. SolidCraft stores one
+pattern history feature with the four source feature names in its `features`
+list.
+
+`repeat_count` remains dimensionless/editable and the native repeat spacing is
+the expression `4 * feature_pitch`.
+
+The standalone example defaults to **250 mm**, **2 complete repeat units** and
+an editable **37.5 mm end offset**, centring the two units in the short example.
+
+For the full 1000 mm product reference, use `repeat_count = 10` and
+`end_offset = 12.5 mm`.

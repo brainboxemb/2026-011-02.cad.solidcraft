@@ -1,9 +1,13 @@
 schema: 1
-branch: feature/1-migrate-plate
+branch: feature/1-migrate-basic-five
 
 modules: []
 models:
   - plate
+  - vent-plate
+  - csg-cube
+  - bracket
+  - sample-plate
 
 tasks:
   - test

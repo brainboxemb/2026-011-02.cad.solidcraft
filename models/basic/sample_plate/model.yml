@@ -1,0 +1,17 @@
+purpose: [example]
+section: basic
+priority: 60
+title: SamplePlate
+tagline: Three named sketches, a native two-hole pattern and a raised boss
+description: >
+  Builds a centered plate with native Base, Holes and Bore sketches. One
+  parameter-driven Ø8 hole cut is repeated by a native rectangular pattern,
+  while a Ø24 boss is joined between the two cuts.
+parameters: 80 × 50 × 8 mm; R6; Ø24 × 14 boss
+stages:
+  - Sketch and extrude the centered base
+  - Fillet the four vertical corners R6
+  - Cut one Ø8 source hole
+  - Repeat it as a native two-hole rectangular pattern
+  - Join the Ø24 boss
+  - Cut the central Ø12 bore

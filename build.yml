@@ -6,3 +6,4 @@ models:
   - mounting-rail-m8
 tasks:
   - test
+  - build

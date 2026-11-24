@@ -50,9 +50,12 @@ Do not rename the generic component to the reference brand.
 The perforation is not three independent patterns.
 
 Forge authors one attached Sketch containing all four profiles, creates one
-through-all cut from that Sketch, and patterns that cut as one native history
-feature. `repeat_count` remains dimensionless/editable and the native repeat
-spacing is the expression `4 * feature_pitch`.
+web-through cut from that Sketch, and patterns that cut as one native history
+feature. \`repeat_count\` remains dimensionless/editable and the native repeat
+spacing is the expression \`4 * feature_pitch\`.
 
-The default 10 units × 100 mm repeat occupy the 1000 mm reference rail with
-12.5 mm end offsets.
+The standalone example defaults to **250 mm** with **2 complete repeat units**.
+The first unit is positioned from the rail length, repeat count and pitch so the
+whole pattern is centred. Setting \`length = 1000\` and
+\`repeat_count = 10\` resolves to the 12.5 mm product-reference end offset
+without a separate hard-coded offset parameter.

@@ -70,20 +70,23 @@ interpretation:
 For the 1000 mm rail this gives 40 perforation positions, ending 12.5 mm before
 the far end.
 
-The implementation follows the physical repeat directly. One face-attached
-Sketch contains the complete four-feature unit. That Sketch creates one
-web-through cut, and **one native rectangular feature pattern** repeats the
-whole cut. The editable `feature_pitch = 25 mm` therefore produces a native
-repeat spacing of `4 × feature_pitch = 100 mm`.
+The implementation follows the physical repeat directly. The source repeat
+contains four separate native cut features: round opening, longitudinal slot,
+round opening and transverse slot.
 
-The standalone example uses `length = 250 mm`, `repeat_count = 2` and an
-editable `end_offset = 37.5 mm`, which centres the two complete units in the
-short example.
+Forge 0.15 can pass several already-applied native features to one
+`rectangular_pattern()`. The model therefore supplies those four source cuts
+as one feature-set to **one native Rectangular Pattern**. This avoids three
+independent patterns while also avoiding SolidCraft 0.48.1's unsupported
+compound multi-profile sheet recess.
 
-`end_offset` remains a separate native parameter. For the 1000 mm reference,
-`repeat_count = 10` with `end_offset = 12.5 mm` reproduces the documented
-full-length layout. Length, count, pitch and offset can therefore be edited
-independently in SolidCraft.
+The editable `feature_pitch = 25 mm` produces a repeat spacing of
+`4 × feature_pitch = 100 mm`.
+
+The standalone example uses `length = 250 mm`, `repeat_count = 2` and
+`end_offset = 37.5 mm`. For the 1000 mm product reference,
+`repeat_count = 10` with `end_offset = 12.5 mm` reproduces the full-length
+layout. Length, count, pitch and offset remain independently editable.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

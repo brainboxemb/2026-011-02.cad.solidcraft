@@ -9,13 +9,13 @@ description: >
   galvanized steel, M8 use and 1.25 mm thickness. The 27 × 18 mm C-profile and
   perforation dimensions use a generic published 27/18 rail reference and are
   not claimed as DRESSELHAUS manufacturing dimensions.
-parameters: 250 mm default length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 37.5 mm end offset; 25 mm feature pitch; 2 repeat units
+parameters: 250 mm default length; 2 repeat units at editable 100 mm repeat pitch; fixed 27 × 18 × 1.25 mm reference profile
 stages:
   - C profile — one native open XZ sheet contour
   - Contour flange — 250 mm default native sheet-metal rail
   - Repeat source — four native cuts: round, longitudinal slot, round, transverse slot
   - Native pattern — one Rectangular Pattern repeats all four source features together
-  - Parameters — 37.5 mm end offset, 25 mm feature pitch, 2 repeat units
+  - Native parameters — 250 mm length, repeat_count 2, repeat_pitch 100 mm
 warning:
   title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
   body: >

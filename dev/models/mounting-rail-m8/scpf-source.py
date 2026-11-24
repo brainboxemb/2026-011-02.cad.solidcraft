@@ -1,20 +1,19 @@
 """Generic M8 mounting rail using native SolidCraft sheet metal.
 
-The rail body is one native 27/18-style C-profile contour flange. One physical
-perforation repeat unit consists of four fixed reference cut features:
+The rail is manufactured in the same order as a real perforated rail:
 
-    round -> longitudinal slot -> round -> transverse slot
+    flat blank -> four-source perforation pattern -> four 90-degree folds
 
-Those four already-applied source features are passed together to ONE native
-rectangular feature pattern. The rail length plus pattern count and spacing are
-native editable Forge/SolidCraft parameters.
+The flat-first route avoids attaching recess Sketches to an already-bent sheet
+panel. The four physical source cuts remain one native repeated feature group.
 """
 
+from math import pi
+
 from scpf import (
-    Anchor,
     Axis,
     Circle2D,
-    Depth,
+    Polygon2D,
     Sketch,
     SlotCenterToCenter2D,
     component,
@@ -30,10 +29,7 @@ class MountingRailM8:
     repeat_count = 2
     repeat_pitch = 100.0
 
-    # Generic 27/18 reference geometry. Keep source punch geometry fixed:
-    # SolidCraft 0.48.1 sheet recess validation is reliable for these numeric
-    # profiles, while symbolic disconnected sheet-cut geometry can be
-    # misclassified as reaching a bend.
+    # Generic 27/18 reference geometry.
     PROFILE_WIDTH = 27.0
     PROFILE_HEIGHT = 18.0
     THICKNESS = 1.25
@@ -52,32 +48,63 @@ class MountingRailM8:
 
     def build(self):
         thickness = self.THICKNESS
-        half_side = (self.PROFILE_WIDTH - thickness) / 2
-        lower_z = thickness / 2
-        upper_z = self.PROFILE_HEIGHT - thickness / 2
-        opening_half = self.OPENING / 2
 
-        with Sketch(name="C profile", plane="XZ") as profile:
-            chain = profile.chain(start=(-opening_half, lower_z))
-            chain.line_to((-half_side, lower_z))
-            chain.line_to((-half_side, upper_z))
-            chain.line_to((half_side, upper_z))
-            chain.line_to((half_side, lower_z))
-            chain.line_to((opening_half, lower_z))
-            contour = chain.finish()
+        # Develop the requested 27 x 18 outer section with the same 15 mm
+        # opening. For a 90-degree centreline fold SolidCraft removes a bend
+        # zone equal to BA = pi/2 * (R + K*T). Relative to the requested
+        # outside virtual sharp, each fold centre therefore sits inward by:
+        #
+        #   projection = (R + T) - BA/2
+        #
+        # Applying that projection at every bend gives the flat distances
+        # between fold centre lines and the free lip edges.
+        bend_allowance = (
+            pi / 2 * (self.BEND_RADIUS + self.K_FACTOR * thickness)
+        )
+        bend_projection = (
+            self.BEND_RADIUS + thickness - bend_allowance / 2
+        )
 
-        rail = contour.contour_flange(
-            distance=self.length,
+        back_span = self.PROFILE_WIDTH - 2 * bend_projection
+        side_span = self.PROFILE_HEIGHT - 2 * bend_projection
+        lip_outer = (self.PROFILE_WIDTH - self.OPENING) / 2
+        lip_span = lip_outer - bend_projection
+
+        flat_width = back_span + 2 * side_span + 2 * lip_span
+        flat_half = flat_width / 2
+        inner_fold_x = back_span / 2
+        outer_fold_x = inner_fold_x + side_span
+
+        # Preserve the existing local component contract:
+        #   +Y is rail length, Y=0 is the rail start, opening points toward -Z,
+        #   outer back face reaches Z=PROFILE_HEIGHT.
+        back_inner_z = self.PROFILE_HEIGHT - thickness
+        back_outer_z = self.PROFILE_HEIGHT
+
+        with Sketch(
+            name="Flat rail blank",
+            plane="XY",
+            origin=(0, 0, back_inner_z),
+        ) as blank:
+            Polygon2D(
+                [
+                    (-flat_half, 0),
+                    (flat_half, 0),
+                    (flat_half, self.length),
+                    (-flat_half, self.length),
+                ]
+            )
+
+        rail = blank.sheet_metal(
             thickness=thickness,
             bend_radius=self.BEND_RADIUS,
             k_factor=self.K_FACTOR,
             rule_name="Mounting Rail M8 Rule",
         )
 
-        # Centre the authored numeric source unit for the requested initial
-        # length/count/pitch. This keeps the 250 mm default at 37.5 mm and a
-        # 1000 mm / 10-repeat rail at the product-like 12.5 mm end margin,
-        # while the native pattern count and spacing remain editable.
+        # Centre the four-feature source unit for the requested initial
+        # length/count/pitch. The 250 mm standalone rail starts at 37.5 mm;
+        # the 1000 mm / 10-repeat assembly rail starts at 12.5 mm.
         length_value = float(self.length.value)
         repeat_count_value = int(self.repeat_count.value)
         repeat_pitch_value = float(self.repeat_pitch.value)
@@ -104,22 +131,29 @@ class MountingRailM8:
             self.VERTICAL_SLOT_LENGTH - self.VERTICAL_SLOT_WIDTH
         )
 
+        # Cut the still-flat back panel from an explicit world XY plane. This
+        # intentionally avoids the already-bent sheet face/panel attachment
+        # state that SolidCraft 0.48.1 misclassifies in live replay.
+        cut_depth = -(2 * thickness)
+
         with Sketch(
             name="Repeat round A",
             on=rail,
-            parent=Anchor.TOP,
+            plane="XY",
+            origin=(0, 0, back_outer_z),
         ) as round_a:
             round_a.add(
                 Circle2D(d=self.ROUND_DIAMETER),
                 offset=(0, y0),
             )
-        round_a_cut = round_a.extrude(Depth.THROUGH_ALL)
+        round_a_cut = round_a.extrude(cut_depth)
         rail = rail - round_a_cut
 
         with Sketch(
             name="Repeat horizontal slot",
             on=rail,
-            parent=Anchor.TOP,
+            plane="XY",
+            origin=(0, 0, back_outer_z),
         ) as horizontal_slot:
             half = horizontal_center_distance / 2
             SlotCenterToCenter2D(
@@ -127,25 +161,27 @@ class MountingRailM8:
                 (0, y1 + half),
                 self.HORIZONTAL_SLOT_WIDTH,
             )
-        horizontal_cut = horizontal_slot.extrude(Depth.THROUGH_ALL)
+        horizontal_cut = horizontal_slot.extrude(cut_depth)
         rail = rail - horizontal_cut
 
         with Sketch(
             name="Repeat round B",
             on=rail,
-            parent=Anchor.TOP,
+            plane="XY",
+            origin=(0, 0, back_outer_z),
         ) as round_b:
             round_b.add(
                 Circle2D(d=self.ROUND_DIAMETER),
                 offset=(0, y2),
             )
-        round_b_cut = round_b.extrude(Depth.THROUGH_ALL)
+        round_b_cut = round_b.extrude(cut_depth)
         rail = rail - round_b_cut
 
         with Sketch(
             name="Repeat vertical slot",
             on=rail,
-            parent=Anchor.TOP,
+            plane="XY",
+            origin=(0, 0, back_outer_z),
         ) as vertical_slot:
             half = vertical_center_distance / 2
             SlotCenterToCenter2D(
@@ -153,10 +189,10 @@ class MountingRailM8:
                 (half, y3),
                 self.VERTICAL_SLOT_WIDTH,
             )
-        vertical_cut = vertical_slot.extrude(Depth.THROUGH_ALL)
+        vertical_cut = vertical_slot.extrude(cut_depth)
         rail = rail - vertical_cut
 
-        return rail.rectangular_pattern(
+        rail = rail.rectangular_pattern(
             (
                 round_a_cut,
                 horizontal_cut,
@@ -167,6 +203,52 @@ class MountingRailM8:
             spacing=self.repeat_pitch,
             direction=Axis.Y,
         )
+
+        # Fold the lips first while all four bend lines are still available in
+        # the original flat plane. Then fold both side walls down. Keeping the
+        # centre/back panel fixed preserves the component's existing +Y and -Z
+        # orientation contract.
+        fixed = (0.0, length_value / 2, back_inner_z)
+        line_y = (0.0, length_value)
+
+        rail = rail.fold(
+            line=(
+                (-outer_fold_x, line_y[0], back_inner_z),
+                (-outer_fold_x, line_y[1], back_inner_z),
+            ),
+            angle=90,
+            fixed=fixed,
+            flip=True,
+        )
+        rail = rail.fold(
+            line=(
+                (outer_fold_x, line_y[0], back_inner_z),
+                (outer_fold_x, line_y[1], back_inner_z),
+            ),
+            angle=90,
+            fixed=fixed,
+            flip=True,
+        )
+        rail = rail.fold(
+            line=(
+                (-inner_fold_x, line_y[0], back_inner_z),
+                (-inner_fold_x, line_y[1], back_inner_z),
+            ),
+            angle=90,
+            fixed=fixed,
+            flip=True,
+        )
+        rail = rail.fold(
+            line=(
+                (inner_fold_x, line_y[0], back_inner_z),
+                (inner_fold_x, line_y[1], back_inner_z),
+            ),
+            angle=90,
+            fixed=fixed,
+            flip=True,
+        )
+
+        return rail
 
 
 MountingRailM8()

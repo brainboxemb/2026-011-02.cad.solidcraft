@@ -12,8 +12,8 @@ accepted batches.
 
 Current stage:
 
-1. accept the template baseline in this repository;
-2. create `dev` from the accepted baseline;
+1. template baseline accepted on `main`;
+2. permanent `dev` created from that exact baseline;
 3. migrate one real model: `models/basic/plate`;
 4. prove normal PR, `dev`, build publication and Pages behavior;
 5. only then widen to five real models.

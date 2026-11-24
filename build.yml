@@ -1,9 +1,10 @@
 schema: 1
-branch: fix/pages-pr-durable-boundary
+branch: feature/1-migrate-plate
 
-modules:
-  - pages
-models: []
+modules: []
+models:
+  - plate
 
 tasks:
   - test
+  - build

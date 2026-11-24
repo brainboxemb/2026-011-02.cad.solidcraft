@@ -1,8 +1,8 @@
 """Latch reconstruction from the supplied native SolidCraft reference.
 
 This file deliberately starts with the design vocabulary and parameter set only.
-Do not approximate the blocked native sheet-metal or revolved features with
-ordinary fused solids. See models/advanced/latch/README.md and docs/plan.md.
+Do not approximate the native sheet-metal or revolved features with ordinary
+fused solids. See models/advanced/latch/README.md and docs/plan.md.
 """
 
 
@@ -55,8 +55,8 @@ class Latch:
 
     def build(self):
         raise NotImplementedError(
-            "Latch geometry is intentionally blocked on generic Forge sheet "
-            "profile/flange/contour and revolve support; see README.md."
+            "Latch reconstruction is waiting for the released Forge #843 "
+            "Revolve API and the exact latch.sc reference contours; see README.md."
         )
 
 

@@ -92,7 +92,7 @@ Forge 0.15 currently requires `Shape.fold()` point-based fold lines to use
 fixed numeric coordinates. The component therefore resolves the fold-line
 length when the component instance is built. Changing the native SolidCraft
 `length` parameter after generation does not yet move those fold-line
-endpoints; associative fold-line authoring is a separate Forge improvement.
+endpoints; associative fold-line authoring is tracked as Forge #847.
 
 ## Open verification
 

@@ -1083,8 +1083,24 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XZ",
-        "name": "d3_MountingRailM8__C profile"
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            16.75
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d3_MountingRailM8__Flat rail blank"
       }
     },
     {
@@ -1092,121 +1108,29 @@
       "params": {
         "points": [
           [
-            -7.5,
-            0.625
+            -32.99778714378214,
+            0
           ],
           [
-            -12.875,
-            0.625
-          ]
-        ],
-        "ids": [
-          "l1"
-        ],
-        "connect": true
-      },
-      "bind": {
-        "$d3_MountingRailM8_contour_curves_1": "curves"
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -12.875,
-            0.625
+            32.99778714378214,
+            0
           ],
           [
-            -12.875,
-            17.375
-          ]
-        ],
-        "ids": [
-          "l2"
-        ],
-        "connect": true
-      },
-      "bind": {
-        "$d3_MountingRailM8_contour_curves_2": {
-          "field": "curves",
-          "prepend": "$d3_MountingRailM8_contour_curves_1"
-        }
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -12.875,
-            17.375
+            32.99778714378214,
+            "d3_MountingRailM8_length"
           ],
           [
-            12.875,
-            17.375
+            -32.99778714378214,
+            "d3_MountingRailM8_length"
           ]
         ],
+        "closed": true,
         "ids": [
-          "l3"
-        ],
-        "connect": true
-      },
-      "bind": {
-        "$d3_MountingRailM8_contour_curves_3": {
-          "field": "curves",
-          "prepend": "$d3_MountingRailM8_contour_curves_2"
-        }
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            12.875,
-            17.375
-          ],
-          [
-            12.875,
-            0.625
-          ]
-        ],
-        "ids": [
-          "l4"
-        ],
-        "connect": true
-      },
-      "bind": {
-        "$d3_MountingRailM8_contour_curves_4": {
-          "field": "curves",
-          "prepend": "$d3_MountingRailM8_contour_curves_3"
-        }
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            12.875,
-            0.625
-          ],
-          [
-            7.5,
-            0.625
-          ]
-        ],
-        "ids": [
-          "l5"
-        ],
-        "connect": true
-      },
-      "bind": {
-        "$d3_MountingRailM8_contour_curves_5": {
-          "field": "curves",
-          "prepend": "$d3_MountingRailM8_contour_curves_4"
-        }
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
       }
     },
     {
@@ -1216,55 +1140,32 @@
     {
       "command": "sheet.flange",
       "params": {
-        "type": "contour",
-        "sketch": "d3_MountingRailM8__C profile",
-        "curves": "$d3_MountingRailM8_contour_curves_5",
-        "distance": "d3_MountingRailM8_length",
+        "type": "base",
+        "sketch": "d3_MountingRailM8__Flat rail blank",
         "rule": "Mounting Rail M8 Rule",
         "body_name": "MountingRailM8"
-      }
-    },
-    {
-      "command": "model.faces",
-      "params": {
-        "body": "MountingRailM8"
-      },
-      "bind": {
-        "$d3_MountingRailM8_face_point_1": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "point"
-        },
-        "$d3_MountingRailM8_face_index_1": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "index"
-        }
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$d3_MountingRailM8_face_point_1",
-          "body": "MountingRailM8",
-          "index": "$d3_MountingRailM8_face_index_1"
+          "origin": [
+            0.0,
+            0.0,
+            18.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
         },
-        "project_edges": false,
         "name": "d3_MountingRailM8__Repeat round A"
       }
     },
@@ -1290,51 +1191,30 @@
           "MountingRailM8"
         ],
         "name": "Repeat round A",
-        "through_all": true,
+        "distance": 2.5,
         "direction": "negative"
-      }
-    },
-    {
-      "command": "model.faces",
-      "params": {
-        "body": "MountingRailM8"
-      },
-      "bind": {
-        "$d3_MountingRailM8_face_point_2": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "point"
-        },
-        "$d3_MountingRailM8_face_index_2": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "index"
-        }
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$d3_MountingRailM8_face_point_2",
-          "body": "MountingRailM8",
-          "index": "$d3_MountingRailM8_face_index_2"
+          "origin": [
+            0.0,
+            0.0,
+            18.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
         },
-        "project_edges": false,
         "name": "d3_MountingRailM8__Repeat horizontal slot"
       }
     },
@@ -1364,51 +1244,30 @@
           "MountingRailM8"
         ],
         "name": "Repeat horizontal slot",
-        "through_all": true,
+        "distance": 2.5,
         "direction": "negative"
-      }
-    },
-    {
-      "command": "model.faces",
-      "params": {
-        "body": "MountingRailM8"
-      },
-      "bind": {
-        "$d3_MountingRailM8_face_point_3": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "point"
-        },
-        "$d3_MountingRailM8_face_index_3": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "index"
-        }
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$d3_MountingRailM8_face_point_3",
-          "body": "MountingRailM8",
-          "index": "$d3_MountingRailM8_face_index_3"
+          "origin": [
+            0.0,
+            0.0,
+            18.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
         },
-        "project_edges": false,
         "name": "d3_MountingRailM8__Repeat round B"
       }
     },
@@ -1434,51 +1293,30 @@
           "MountingRailM8"
         ],
         "name": "Repeat round B",
-        "through_all": true,
+        "distance": 2.5,
         "direction": "negative"
-      }
-    },
-    {
-      "command": "model.faces",
-      "params": {
-        "body": "MountingRailM8"
-      },
-      "bind": {
-        "$d3_MountingRailM8_face_point_4": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "point"
-        },
-        "$d3_MountingRailM8_face_index_4": {
-          "field": "faces",
-          "where": {
-            "plane_normal": [
-              0,
-              0,
-              1
-            ]
-          },
-          "max": "area",
-          "select": "index"
-        }
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$d3_MountingRailM8_face_point_4",
-          "body": "MountingRailM8",
-          "index": "$d3_MountingRailM8_face_index_4"
+          "origin": [
+            0.0,
+            0.0,
+            18.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
         },
-        "project_edges": false,
         "name": "d3_MountingRailM8__Repeat vertical slot"
       }
     },
@@ -1508,7 +1346,7 @@
           "MountingRailM8"
         ],
         "name": "Repeat vertical slot",
-        "through_all": true,
+        "distance": 2.5,
         "direction": "negative"
       }
     },
@@ -1530,6 +1368,110 @@
         "spacing1": "d3_MountingRailM8_repeat_pitch",
         "alignment": "right",
         "reversed": false
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "points": [
+          [
+            -28.123340357836604,
+            0.0,
+            16.75
+          ],
+          [
+            -28.123340357836604,
+            1000.0,
+            16.75
+          ]
+        ],
+        "angle": 90,
+        "position": "centerline",
+        "flip": true,
+        "body": "MountingRailM8",
+        "fixed": [
+          0.0,
+          500.0,
+          16.75
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "points": [
+          [
+            28.123340357836604,
+            0.0,
+            16.75
+          ],
+          [
+            28.123340357836604,
+            1000.0,
+            16.75
+          ]
+        ],
+        "angle": 90,
+        "position": "centerline",
+        "flip": true,
+        "body": "MountingRailM8",
+        "fixed": [
+          0.0,
+          500.0,
+          16.75
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "points": [
+          [
+            -12.374446785945535,
+            0.0,
+            16.75
+          ],
+          [
+            -12.374446785945535,
+            1000.0,
+            16.75
+          ]
+        ],
+        "angle": 90,
+        "position": "centerline",
+        "flip": true,
+        "body": "MountingRailM8",
+        "fixed": [
+          0.0,
+          500.0,
+          16.75
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "points": [
+          [
+            12.374446785945535,
+            0.0,
+            16.75
+          ],
+          [
+            12.374446785945535,
+            1000.0,
+            16.75
+          ]
+        ],
+        "angle": 90,
+        "position": "centerline",
+        "flip": true,
+        "body": "MountingRailM8",
+        "fixed": [
+          0.0,
+          500.0,
+          16.75
+        ]
       }
     },
     {

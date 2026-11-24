@@ -375,7 +375,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "b7b14a62cbfa7a4487240cb8b73a8d92d64e4823",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
       "id": "mounting-rail-m8",
@@ -596,7 +596,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "b7b14a62cbfa7a4487240cb8b73a8d92d64e4823",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "simple-mft",
@@ -688,5 +688,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c"
+  "source_sha": "b7b14a62cbfa7a4487240cb8b73a8d92d64e4823"
 }

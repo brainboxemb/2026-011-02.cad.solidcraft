@@ -26,4 +26,11 @@ class GuideRail:
         ) as profile_sketch:
             Polygon2D(points, plane="XZ", world=True)
 
-        return profile_sketch.extrude(self.length, sym=True)
+        return profile_sketch.extrude(
+            self.length,
+            sym=True,
+        ).with_material(
+            "Aluminium",
+            density_g_cm3=2.70,
+            color="#C4C8CB",
+        )

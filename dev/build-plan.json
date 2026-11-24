@@ -6,6 +6,23 @@
   },
   "models": [
     {
+      "artifacts": [],
+      "built_source_sha": "b8f081ed944a5678ee9e1afc6a0759c3f939c8fc",
+      "commands": "models/plate/solidcraft.json",
+      "id": "plate",
+      "native": {
+        "png": "models/plate/model.png",
+        "sc": "models/plate/model.sc",
+        "step": "models/plate/model.step",
+        "stl": null
+      },
+      "owner": "plate",
+      "priority": 10,
+      "root": "models/basic/plate",
+      "snapshots": [],
+      "source": "models/basic/plate/scpf/model.py"
+    },
+    {
       "artifacts": [
         "stl"
       ],
@@ -47,5 +64,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "4f78f59356e7546972448a2edac895d3f576d3ef"
+  "source_sha": "b8f081ed944a5678ee9e1afc6a0759c3f939c8fc"
 }

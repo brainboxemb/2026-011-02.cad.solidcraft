@@ -1,0 +1,16 @@
+purpose: [example]
+section: basic
+priority: 20
+title: Vent Plate
+tagline: One source vent repeated by a native 6 × 3 feature pattern
+description: >
+  Recreates the SolidCraft Vent Plate example with a rounded 120 × 80 × 4 mm
+  plate, one rectangular source cut and one native two-direction rectangular
+  pattern.
+parameters: 120 × 80 × 4 mm; R8; 6 × 3 vents; 16 × 22 mm pitch
+stages:
+  - Create the 120 × 80 × 4 mm plate
+  - Fillet the four vertical edges R8
+  - Create one 6 × 14 mm source vent
+  - Cut the source vent through the plate
+  - Repeat it as a native 6 × 3 rectangular pattern

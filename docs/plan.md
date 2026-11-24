@@ -42,6 +42,26 @@ Next:
 3. port only relevant model-owned source/data onto the new contracts;
 4. integrate every branch exclusively through local `/merge`.
 
+### #30 — reconstruct native latch from the preserved SolidCraft design
+
+The latch migration is active on `feature/30-latch`.
+
+Available generic Forge capabilities:
+
+- connected straight/arc closed profiles (#567);
+- native sheet base/fold/flange/contour operations (#568 and follow-up coverage);
+- SolidCraft 0.48.1 runtime.
+
+Current blockers:
+
+1. Forge #843 must qualify and release native profile-driven `Sketch.revolve()`
+   for the two bail rivets and locking-lip rivet;
+2. the exact 498,569-byte `latch.sc` reference must be committed before
+   source-specific blank contours, fold locations and rivet profiles are
+   reconstructed.
+
+No latch-local geometric approximation is allowed for either blocker.
+
 ## Mandatory integration rule
 
 Agents do not choose merge methods themselves.

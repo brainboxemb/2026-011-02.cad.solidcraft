@@ -3,9 +3,11 @@ Generic model page adapter.
 
 - model.yml owns presentation metadata;
 - ci.yml owns build/source identity;
-- prepared-build/main owns accepted generated artifacts;
-- model_history.json owns derived Git last-modified presentation data;
-- this adapter never executes CAD and contains no model-name branches.
+- prepared-build/main is mounted read-only so Pages can inspect the accepted
+  build-plan and command JSON during rendering;
+- generated CAD artifacts remain owned by the build branch and are never copied
+  into gh-pages;
+- model_history.json owns derived Git last-modified presentation data.
 */}}
 
 {{ $planResource := resources.Get "build/build-plan.json" }}
@@ -119,11 +121,6 @@ Generic model page adapter.
       (dict "source" (printf "cad-source/%s/model.yml" $modelRoot) "target" "model.yml" "media" "text/plain")
       (dict "source" (printf "cad-source/%s/ci.yml" $modelRoot) "target" "ci.yml" "media" "text/plain")
       (dict "source" (printf "cad-source/%s/%s" $modelRoot $sourcePath) "target" "scpf-source.py" "media" "text/plain")
-      (dict "source" (printf "build/models/%s/solidcraft.json" $slug) "target" "solidcraft.json" "media" "application/json")
-      (dict "source" (printf "build/models/%s/model.png" $slug) "target" "model.png" "media" "image/png")
-      (dict "source" (printf "build/models/%s/model.sc" $slug) "target" "model.sc" "media" "application/octet-stream")
-      (dict "source" (printf "build/models/%s/model.step" $slug) "target" "model.step" "media" "application/octet-stream")
-      (dict "source" (printf "build/models/%s/model.stl" $slug) "target" "model.stl" "media" "application/octet-stream")
     }}
       {{ with resources.Get (index $resource "source") }}
         {{ $.AddResource (dict
@@ -140,29 +137,11 @@ Generic model page adapter.
       ) }}
     {{ end }}
 
-    {{ range $snapshot := index $build "snapshots" }}
-      {{ $name := index $snapshot "name" }}
-      {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
-        {{ $.AddResource (dict
-          "content" (dict "mediaType" .MediaType.Type "value" .Content)
-          "path" (printf "%s/%s" $slug $name)
-        ) }}
-      {{ end }}
-    {{ end }}
-
     {{ with $views := index $model "extra_views" }}
       {{ range $view := index $views "items" }}
-        {{ $kind := index $view "kind" }}
-        {{ $name := index $view "src" }}
-        {{ if eq $kind "asset" }}
+        {{ if eq (index $view "kind") "asset" }}
+          {{ $name := index $view "src" }}
           {{ with resources.Get (printf "cad-source/%s/%s" $modelRoot $name) }}
-            {{ $.AddResource (dict
-              "content" (dict "mediaType" .MediaType.Type "value" .Content)
-              "path" (printf "%s/%s" $slug $name)
-            ) }}
-          {{ end }}
-        {{ else if eq $kind "build" }}
-          {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
             {{ $.AddResource (dict
               "content" (dict "mediaType" .MediaType.Type "value" .Content)
               "path" (printf "%s/%s" $slug $name)

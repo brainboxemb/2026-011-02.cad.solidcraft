@@ -40,6 +40,7 @@ class BuildPlanTests(unittest.TestCase):
                 variants=(ModelVariant("box", Path("scpf/model.py")),),
                 artifacts=("stl",),
                 snapshots=(SnapshotSpec("top.png", {"pitch": -1.55}),),
+                snapshot_camera={"yaw": -0.4},
             )
             plan = resolve_plan(
                 repo=repo,
@@ -52,6 +53,7 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(row["id"], "box")
             self.assertEqual(row["owner"], "box")
             self.assertEqual(row["commands"], "models/box/solidcraft.json")
+            self.assertEqual(row["snapshot"]["camera"], {"yaw": -0.4})
             self.assertEqual(row["native"]["stl"], "models/box/model.stl")
             self.assertEqual(row["snapshots"][0]["path"], "models/box/top.png")
 
@@ -132,6 +134,44 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(
                 [row["priority"] for row in plan["models"]],
                 [20, 20, 30],
+            )
+
+    @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
+    def test_dependency_precedes_consumer_even_when_priority_would_not(self, _source_sha):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            root = repo / "models"
+            dependency = ModelConfig(
+                id="component",
+                root=root / "component",
+                variants=(ModelVariant("component", Path("scpf/model.py")),),
+                artifacts=(),
+                snapshots=(),
+                priority=50,
+            )
+            consumer = ModelConfig(
+                id="assembly",
+                root=root / "assembly",
+                variants=(ModelVariant("assembly", Path("scpf/model.py")),),
+                artifacts=(),
+                snapshots=(),
+                priority=10,
+                dependencies=("component",),
+            )
+            plan = resolve_plan(
+                repo=repo,
+                project=self.project(),
+                models=(consumer, dependency),
+                selected_ids=("assembly", "component"),
+                namespace="dev",
+            )
+            self.assertEqual(
+                [row["id"] for row in plan["models"]],
+                ["component", "assembly"],
+            )
+            self.assertEqual(
+                plan["models"][1]["dependencies"],
+                ["component"],
             )
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)

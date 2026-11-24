@@ -19,6 +19,38 @@ def source_sha(repo: Path) -> str:
     return result.stdout.strip()
 
 
+def _selected_in_build_order(
+    models: tuple[ModelConfig, ...],
+    selected_ids: tuple[str, ...],
+) -> tuple[ModelConfig, ...]:
+    by_id = {model.id: model for model in models}
+    missing = [model_id for model_id in selected_ids if model_id not in by_id]
+    if missing:
+        raise BuildConfigError(f"unknown selected model(s): {', '.join(missing)}")
+
+    selected = {model_id for model_id in selected_ids}
+    remaining = {model_id: by_id[model_id] for model_id in selected}
+    ordered: list[ModelConfig] = []
+
+    while remaining:
+        ready = [
+            model
+            for model in remaining.values()
+            if not any(
+                dependency in remaining
+                for dependency in model.dependencies
+                if dependency in selected
+            )
+        ]
+        if not ready:
+            raise BuildConfigError("selected model dependency graph contains a cycle")
+        model = min(ready, key=lambda item: (item.priority, item.id))
+        ordered.append(model)
+        del remaining[model.id]
+
+    return tuple(ordered)
+
+
 def resolve_plan(
     *,
     repo: Path,
@@ -35,17 +67,9 @@ def resolve_plan(
     if len(set(selected_ids)) != len(selected_ids):
         raise BuildConfigError("selected model ids must be unique")
 
-    by_id = {model.id: model for model in models}
-    missing = [model_id for model_id in selected_ids if model_id not in by_id]
-    if missing:
-        raise BuildConfigError(f"unknown selected model(s): {', '.join(missing)}")
-
     built_source_sha = source_sha(repo)
     rows = []
-    selected = sorted(
-        (by_id[owner_id] for owner_id in selected_ids),
-        key=lambda model: (model.priority, model.id),
-    )
+    selected = _selected_in_build_order(models, selected_ids)
     for model in selected:
         relative_root = model.root.relative_to(repo).as_posix()
         for variant in sorted(model.variants, key=lambda item: item.id):
@@ -55,10 +79,14 @@ def resolve_plan(
                     "id": variant.id,
                     "owner": model.id,
                     "priority": model.priority,
+                    "dependencies": list(model.dependencies),
                     "built_source_sha": built_source_sha,
                     "root": relative_root,
                     "source": (model.root / variant.source).relative_to(repo).as_posix(),
                     "commands": f"{target}/solidcraft.json",
+                    "snapshot": {
+                        "camera": model.snapshot_camera,
+                    },
                     "native": {
                         "sc": f"{target}/model.sc",
                         "step": f"{target}/model.step",

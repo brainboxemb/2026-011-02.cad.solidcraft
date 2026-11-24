@@ -2,7 +2,8 @@ from pathlib import Path
 import unittest
 
 from cad_model_ci.items import CadModel, PythonModule
-from cad_model_ci.selection import changed_selection
+from cad_model_ci.config import BuildSelection
+from cad_model_ci.selection import changed_selection, expand_model_dependents
 
 
 MODULES = (
@@ -25,6 +26,22 @@ MODELS = (
         Path("scpf/model.py"),
         watch=("models/plate/**",),
     ),
+    CadModel(
+        "screen",
+        Path("models/screen"),
+        "forge",
+        Path("scpf/model.py"),
+        watch=("models/screen/**",),
+        dependencies=("box",),
+    ),
+    CadModel(
+        "case",
+        Path("models/case"),
+        "forge",
+        Path("scpf/model.py"),
+        watch=("models/case/**",),
+        dependencies=("screen",),
+    ),
 )
 
 
@@ -39,6 +56,16 @@ class SelectionTests(unittest.TestCase):
         self.assertEqual(result.modules, ())
         self.assertEqual(result.models, ("box",))
 
+
+    def test_selected_component_expands_to_transitive_dependents(self):
+        selection = BuildSelection(
+            branch="dev",
+            modules=(),
+            models=("box",),
+            tasks=("test", "build"),
+        )
+        result = expand_model_dependents(selection, MODELS)
+        self.assertEqual(result.models, ("box", "screen", "case"))
 
     def test_changed_group_config_selects_models_in_that_group(self):
         result = changed_selection(
@@ -68,7 +95,7 @@ class SelectionTests(unittest.TestCase):
             models=MODELS,
         )
         self.assertEqual(result.modules, ("build",))
-        self.assertEqual(result.models, ("box", "plate"))
+        self.assertEqual(result.models, ("box", "case", "plate", "screen"))
 
     def test_changed_ci_module_is_full(self):
         result = changed_selection(

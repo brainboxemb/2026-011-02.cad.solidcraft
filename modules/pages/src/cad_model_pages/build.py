@@ -38,6 +38,7 @@ def build(
 ) -> None:
     source_root = source_root.resolve()
     build_scope = build_scope.resolve()
+    build_namespace = build_scope.name
     destination = destination.resolve()
 
     site_root = source_root / "site"
@@ -54,6 +55,7 @@ def build(
     env = dict(os.environ)
     env["HUGO_BASEURL"] = base_url
     env["HUGO_PARAMS_SOURCEREF"] = source_ref
+    env["HUGO_PARAMS_BUILDSCOPE"] = build_namespace
 
     graph = subprocess.run(
         ["hugo", "mod", "graph"],

@@ -111,8 +111,27 @@ advanced / assemblies  30
 ```
 
 Priority controls ordering only. It does not imply a model dependency and does
-not propagate selection. Explicit dependencies are deferred until an actual
-assembly requires them.
+not propagate selection.
+
+### Model dependencies
+
+A model that consumes another physical model owner declares that relationship
+explicitly in its own `ci.yml`:
+
+```yaml
+dependencies:
+  - hub75-panel
+  - corner-bracket
+```
+
+Dependencies name physical owner ids, not build-variant ids. Unknown, self and
+cyclic dependencies are invalid.
+
+Any explicit or incremental model selection is closed transitively over
+downstream dependents. A change to a reusable component therefore also rebuilds
+every consuming assembly. The build plan orders selected dependencies before
+their consumers; directory priority and owner id remain the deterministic order
+among models that are otherwise ready.
 
 ## Output
 
@@ -127,8 +146,20 @@ Root `ci.yml` pins the complete qualified CAD toolchain:
 - released SolidCraft runtime image and exact SolidCraft version.
 
 Model-local `ci.yml` owns build execution. A minimal processed model declares
-its id and Forge source. The primary `model.png` is always produced with the
-normal SolidCraft snapshot view and therefore needs no model configuration.
+its id and Forge source. The primary `model.png` uses the normal SolidCraft
+snapshot view unless the model explicitly owns a primary review camera.
+
+The primary camera is optional and separate from additional named snapshots:
+
+```yaml
+snapshot:
+  camera:
+    target: [0, 0, 160]
+    yaw: -0.24
+    pitch: 0.20
+    distance: 920
+    fov: 0
+```
 
 Only optional build extras belong in the model config, for example STL or
 additional named snapshots:
@@ -153,8 +184,10 @@ snapshots:
       fov: 0
 ```
 
-If `snapshots` is omitted, only the standard `model.png` is rendered.
-Additional snapshots may provide their own camera.
+If `snapshot` is omitted, the primary `model.png` uses SolidCraft's default
+camera. If `snapshots` is omitted, no additional named PNGs are rendered.
+Additional snapshots may provide their own camera independently of the primary
+snapshot camera.
 
 A physical model root may own multiple build variants. CI still selects the
 physical owner once; the build plan expands all of its variants:
@@ -232,8 +265,12 @@ points at the source SHA being published.
 
 Stable Pages use Hugo 0.169.0 with Hextra v0.13.0.
 
-The site consumes source and generated build output without rebuilding CAD.
-One Pages deployment contains both source/build scopes:
+The site consumes source metadata and reads durable build metadata without
+rebuilding CAD. Generated CAD artifacts remain owned exclusively by the
+generated `build` branch; Pages never republishes those files into
+`gh-pages`.
+
+One Pages deployment contains both presentation scopes:
 
 ```text
 /       <- main source + build/main
@@ -244,7 +281,17 @@ Both scopes use the same Hugo/Hextra layouts. Each scope is verified against
 its matching build plan before the combined generated site is published.
 
 `model.yml` owns presentation text. `ci.yml` owns source/variant identity.
-The generated `build/main` scope owns JSON, SC, STEP, PNG and optional STL.
+The generated `build/main` / `build/dev` scopes own JSON, SC, STEP, PNG,
+optional STL and model-owned snapshot images.
+
+Model pages link directly to those durable artifacts:
+
+- normal GitHub `blob/build/<scope>/...` URLs for inspection and downloads;
+- raw GitHub build URLs for inline preview images and SolidCraft Web input;
+- STL blob URLs open in GitHub's native 3D viewer.
+
+Only source-owned presentation resources such as `page.md` and declared local
+reference assets are copied into the generated site.
 
 The primary model layout is shared. Model-specific additions use optional
 `page.md` for background prose and declarative `extra_views` in metadata for

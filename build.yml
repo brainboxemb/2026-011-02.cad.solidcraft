@@ -1,9 +1,8 @@
 schema: 1
-branch: feature/simple-mft-support-rails
+branch: fix/simple-mft-support-rail-openings
 
 modules: []
 models:
-  - mounting-rail-m8
   - simple-mft-assembly
 tasks:
   - test

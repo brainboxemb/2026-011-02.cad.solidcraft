@@ -7,6 +7,26 @@ exact Forge/SolidCraft pins and repository roots.
 
 ## Branch integration
 
+All source-branch integrations are executed through the repository-local merge
+policy. After the PR-specific central `ci` check is green, post:
+
+```text
+/merge
+```
+
+on the PR conversation. `.github/workflows/merge-policy.yml` then validates
+the PR and selects the merge method.
+
+Agents must never call GitHub's direct merge API, enable auto-merge, use the UI
+merge button as a fallback, or manually choose squash/merge/rebase. If the
+`/merge` path fails, fix that path instead of bypassing it.
+
+The merge-policy owns:
+
+- short-lived branch -> `dev`: squash;
+- `dev` -> `main`: merge commit;
+- exceptional `main` -> `dev`: merge commit.
+
 Promote accepted development with a merge-commit PR from `dev` to `main`.
 
 Do not routinely merge `main` back into `dev` after that promotion. The

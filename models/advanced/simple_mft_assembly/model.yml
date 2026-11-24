@@ -2,15 +2,30 @@ purpose: [example]
 section: advanced
 priority: 20
 title: Simple MFT assembly
-tagline: Reusable Simple MFT worktop with an 800 mm Festool-profile GuideRail
+tagline: Simple MFT worktop on two 1 m M8 support rails with an 800 mm GuideRail
 description: >
-  An assembly that reuses the standalone Simple MFT component and the generic
-  GuideRail component. The rail runs along the short Y/depth direction, is
-  centred over X=0 and rests on the parametrically shared worktop top face.
-parameters: 805 × 555 mm worktop; shared worktop thickness 18 mm; Festool GuideRail 800 mm
+  The Simple MFT worktop is supported by two full-length M8 mounting rails
+  underneath. Both rails start at the worktop left edge and extend 195 mm past
+  the right edge. Their C-profile openings face outward while their perforation
+  patterns run in the same left-to-right direction. The existing 800 mm
+  Festool-profile GuideRail remains on top.
+parameters: 805 × 555 × 18 mm worktop; 2 × 1000 mm Mounting Rail M8; 10 × 100 mm repeats per support rail; GuideRail 800 mm
 stages:
-  - Instantiate the reusable SimpleMFT component
-  - Share worktop_thickness with the worktop component
-  - Instantiate GuideRail with the Festool profile at 800 mm
-  - Centre the 184.20 mm rail width over X=0
-  - Place the rail bottom at Z=worktop_thickness
+  - Instantiate the reusable SimpleMFT worktop
+  - Place two 1000 mm MountingRailM8 components below the worktop
+  - Align both rail starts with the worktop left edge for 195 mm right overhang
+  - Rotate upper and lower rails so both C-openings face outward
+  - Keep both perforation sequences running in the same +X direction
+  - Place the worktop underside on the upper edges of both support rails
+  - Keep the 800 mm Festool-profile GuideRail on the worktop
+extra_views:
+  title: Support-rail layout
+  items:
+    - kind: build
+      src: support-rails-top.png
+      alt: Top view of the Simple MFT with two one-metre support rails
+      caption: Top view — both 1 m rails extend 195 mm beyond the right edge
+    - kind: build
+      src: support-rails-right.png
+      alt: Right-end view showing the two outward-facing C-profiles under the worktop
+      caption: Right-end view — C-profile openings face outward

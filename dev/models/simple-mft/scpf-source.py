@@ -153,4 +153,8 @@ class SimpleMFT:
             edges=Edges.VERTICAL,
         )
 
-        return board
+        return board.with_material(
+            "MDF",
+            density_g_cm3=0.70,
+            color="#C8A46A",
+        )

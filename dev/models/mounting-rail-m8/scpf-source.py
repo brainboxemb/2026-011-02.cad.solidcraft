@@ -249,7 +249,11 @@ class MountingRailM8:
             flip=False,
         )
 
-        return rail
+        return rail.with_material(
+            "Galvanized steel",
+            density_g_cm3=7.85,
+            color="#9EA6AA",
+        )
 
 
 MountingRailM8()

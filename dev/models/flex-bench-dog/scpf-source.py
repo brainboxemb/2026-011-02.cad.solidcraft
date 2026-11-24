@@ -7,7 +7,15 @@ the worktop surface is Z=0, the insert extends 20 mm downward and the dog rises
 into four flexible quadrants.
 """
 
-
+from scpf import (
+    Anchor,
+    Cone,
+    Cylinder,
+    Rectangle2D,
+    Sketch,
+    SlotCenterToCenter2D,
+    component,
+)
 
 
 @component

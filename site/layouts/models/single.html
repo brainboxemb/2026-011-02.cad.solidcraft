@@ -1,14 +1,31 @@
 {{ define "main" }}
+{{ if .Params.categoryIndex }}
+  {{ $models := where site.RegularPages "Params.cadSection" .Params.cadSection }}
+  {{ $models = where $models "Params.categoryIndex" "!=" true }}
+  <main class="cad-page-shell cad-category-page">
+    <section class="cad-model-hero cad-model-hero-small">
+      <p class="cad-model-kicker">CAD category</p>
+      <h1>{{ .Title }}</h1>
+      <p>{{ len $models }} model variants.</p>
+    </section>
+    <div class="cad-model-grid">{{ range sort $models "Params.model.priority" }}{{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}{{ end }}</div>
+  </main>
+{{ else }}
 {{ $m := .Params.model }}
 {{ $repo := site.Params.cadSourceRepository }}
 {{ $ref := site.Params.sourceRef }}
+{{ $scope := site.Params.buildScope }}
 {{ $root := printf "models/%s" .Params.cadRoot }}
 {{ $build := .Params.build }}
+{{ $native := index $build "native" }}
+{{ $commandsPath := index $build "commands" }}
+{{ $blobBase := printf "https://github.com/%s/blob/build/%s/" $repo $scope }}
+{{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" $repo $scope }}
 {{ $toolchain := .Params.toolchain }}
 {{ $forge := index $toolchain "forge" }}
 {{ $solidcraft := index $toolchain "solidcraft" }}
 {{ $commandCount := 0 }}
-{{ with .Resources.Get "solidcraft.json" }}
+{{ with resources.Get (printf "build/%s" $commandsPath) }}
   {{ $commandDoc := .Content | transform.Unmarshal }}
   {{ with index $commandDoc "commands" }}{{ $commandCount = len . }}{{ end }}
 {{ end }}
@@ -33,8 +50,9 @@
     <section class="cad-panel cad-preview-panel">
       <h2 class="cad-section-title">Model preview</h2>
       <div class="cad-preview">
-        {{ with .Resources.Get "model.png" }}
-          <a href="{{ .RelPermalink }}" class="cad-preview-link"><img src="{{ .RelPermalink }}" alt="{{ $.Title }} SolidCraft build"></a>
+        {{ with index $native "png" }}
+          {{ $url := printf "%s%s" $rawBase . }}
+          <a href="{{ printf "%s%s" $blobBase . }}" class="cad-preview-link" target="_blank" rel="noopener noreferrer"><img src="{{ $url }}" alt="{{ $.Title }} SolidCraft build"></a>
         {{ else }}
           <div class="cad-preview-empty">No durable model preview is available.</div>
         {{ end }}
@@ -45,31 +63,35 @@
 
     <aside class="cad-panel cad-files-panel">
       <h2 class="cad-section-title">Files</h2>
-      <p>Open the source and generated build artifacts for this accepted model build.</p>
+      <p>Source stays on the source branch; generated CAD artifacts stay on the durable build branch.</p>
       <div class="cad-links cad-file-links">
         <a class="cad-file-primary" href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/{{ .Params.sourcePath }}">SCPF source</a>
-        {{ with .Resources.Get "solidcraft.json" }}<a href="{{ .RelPermalink }}">Command JSON</a>{{ end }}
-        {{ with .Resources.Get "model.sc" }}<a href="{{ .RelPermalink }}" download>SolidCraft .sc</a>{{ end }}
-        {{ with .Resources.Get "model.stl" }}<a href="{{ .RelPermalink }}" download>STL</a>{{ end }}
-        {{ with .Resources.Get "model.step" }}<a href="{{ .RelPermalink }}">STEP</a>{{ end }}
-        {{ with .Resources.Get "model.yml" }}<a href="{{ .RelPermalink }}">model.yml</a>{{ end }}
+        {{ with $commandsPath }}<a href="{{ printf "%s%s" $blobBase . }}" target="_blank" rel="noopener noreferrer">Command JSON ↗</a>{{ end }}
+        {{ with index $native "sc" }}<a href="{{ printf "%s%s" $blobBase . }}" target="_blank" rel="noopener noreferrer">SolidCraft .sc ↗</a>{{ end }}
+        {{ with index $native "stl" }}
+          <a href="{{ printf "%s%s" $blobBase . }}" target="_blank" rel="noopener noreferrer">View STL on GitHub ↗</a>
+          <a href="{{ printf "%s%s" $rawBase . }}" download>Download STL</a>
+        {{ end }}
+        {{ with index $native "step" }}<a href="{{ printf "%s%s" $blobBase . }}" target="_blank" rel="noopener noreferrer">STEP ↗</a>{{ end }}
+        <a href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/model.yml">model.yml</a>
+        <a href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/ci.yml">ci.yml</a>
       </div>
-      <p class="cad-section-help">The .sc file is the editable SolidCraft model; STL is the printable mesh; STEP is the interchange CAD export.</p>
+      <p class="cad-section-help">Generated files are not republished in gh-pages; these links point to the accepted build scope.</p>
 
       <h3 class="cad-section-subtitle">Construction stages</h3>
       <ul class="cad-stages">{{ range index $m "stages" }}<li>{{ . }}</li>{{ end }}</ul>
     </aside>
   </div>
 
-  {{ with .Resources.Get "model.sc" }}
-    {{ $nativeURL := .Permalink }}
+  {{ with index $native "sc" }}
+    {{ $nativeURL := printf "%s%s" $rawBase . }}
     <section class="cad-panel cad-web-open">
       <p class="cad-section-label">SolidCraft model</p>
       <h2 class="cad-section-title">Open in SolidCraft Web</h2>
-      <p>The editable <code>.sc</code> model can be opened in SolidCraft's web application.</p>
+      <p>The editable <code>.sc</code> model is loaded directly from the accepted build branch.</p>
       <div class="cad-links">
         <a href="https://docs.solidcraft.io/app/?open={{ urlquery $nativeURL }}" target="_blank" rel="noopener noreferrer">Open in SolidCraft Web ↗</a>
-        <a href="{{ .RelPermalink }}" download>Download model .sc</a>
+        <a href="{{ $nativeURL }}" download>Download model .sc</a>
       </div>
     </section>
   {{ end }}
@@ -95,11 +117,20 @@
             <strong>{{ index $view "caption" }}</strong>
             {{ if eq $kind "url" }}
               <p><a href="{{ $src }}" target="_blank" rel="noopener noreferrer">Open external reference ↗</a></p>
-            {{ else }}
+            {{ else if eq $kind "asset" }}
               {{ with $.Resources.Get $src }}
                 <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}"></a>
               {{ else }}
-                <p class="cad-muted">This declared view is not present in the current build scope.</p>
+                <p class="cad-muted">This declared source asset is not present.</p>
+              {{ end }}
+            {{ else if eq $kind "build" }}
+              {{ $matches := where (index $build "snapshots") "name" $src }}
+              {{ if eq (len $matches) 1 }}
+                {{ $snapshot := index $matches 0 }}
+                {{ $snapshotPath := index $snapshot "path" }}
+                <a href="{{ printf "%s%s" $blobBase $snapshotPath }}" target="_blank" rel="noopener noreferrer"><img src="{{ printf "%s%s" $rawBase $snapshotPath }}" alt="{{ index $view "alt" }}"></a>
+              {{ else }}
+                <p class="cad-muted">This declared build view is not present in the accepted build plan.</p>
               {{ end }}
             {{ end }}
           </article>
@@ -117,7 +148,7 @@
     {{ end }}
   </section>
 
-  {{ with .Resources.Get "solidcraft.json" }}
+  {{ with resources.Get (printf "build/%s" $commandsPath) }}
     {{ $commandsDoc := .Content | transform.Unmarshal }}
     {{ with index $commandsDoc "commands" }}
       <details class="cad-code-section cad-commands-section cad-collapsible">
@@ -133,9 +164,7 @@
             {{ range . }}
               <li class="cad-command-step">
                 <div class="cad-command-name"><code>{{ index . "command" }}</code></div>
-                {{ with index . "params" }}
-                  <pre class="cad-command-json"><code>{{ . | transform.Remarshal "json" }}</code></pre>
-                {{ end }}
+                {{ with index . "params" }}<pre class="cad-command-json"><code>{{ . | transform.Remarshal "json" }}</code></pre>{{ end }}
               </li>
             {{ end }}
           </ol>
@@ -148,6 +177,7 @@
     <p class="cad-section-label">Durable build evidence</p>
     <h2 class="cad-section-title">Build information</h2>
     <dl class="cad-verification-grid">
+      <dt>Build scope</dt><dd><code>{{ $scope }}</code></dd>
       <dt>Build variant</dt><dd><code>{{ index $build "id" }}</code></dd>
       <dt>Physical owner</dt><dd><code>{{ index $build "owner" }}</code></dd>
       <dt>Built source</dt><dd><code>{{ index $build "built_source_sha" }}</code></dd>
@@ -157,4 +187,5 @@
     </dl>
   </section>
 </article>
+{{ end }}
 {{ end }}

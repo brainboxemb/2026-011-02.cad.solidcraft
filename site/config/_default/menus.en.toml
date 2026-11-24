@@ -4,6 +4,21 @@ pageRef = "/models"
 weight = 10
 
 [[main]]
+name = "Basic"
+pageRef = "/models/basic"
+weight = 20
+
+[[main]]
+name = "Components"
+pageRef = "/models/components"
+weight = 30
+
+[[main]]
+name = "Advanced"
+pageRef = "/models/advanced"
+weight = 40
+
+[[main]]
 name = "Search"
 weight = 50
 [main.params]

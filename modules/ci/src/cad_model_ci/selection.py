@@ -44,3 +44,31 @@ def changed_selection(
         models=tuple(sorted(selected_models)),
         tasks=("test", "build"),
     )
+
+
+def expand_model_dependents(
+    selection: BuildSelection,
+    models: tuple[CadModel, ...],
+) -> BuildSelection:
+    """Close an explicit model selection over downstream dependents."""
+    if selection.models is None:
+        return selection
+
+    selected = set(selection.models)
+    changed = True
+    while changed:
+        changed = False
+        for model in models:
+            if model.id in selected:
+                continue
+            if any(dependency in selected for dependency in model.dependencies):
+                selected.add(model.id)
+                changed = True
+
+    ordered = tuple(model.id for model in models if model.id in selected)
+    return BuildSelection(
+        branch=selection.branch,
+        modules=selection.modules,
+        models=ordered,
+        tasks=selection.tasks,
+    )

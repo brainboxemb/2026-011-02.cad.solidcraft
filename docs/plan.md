@@ -4,23 +4,39 @@ This file contains unfinished work only.
 
 ## Now
 
-### #1 — bootstrap and staged model migration
+### #1 — final historical catalog migration
 
-Bootstrap the accepted CAD model-project architecture, establish permanent
-`dev` / `main` operation and migrate the historical CAD catalog in widening
-accepted batches.
+Accepted stages:
 
-Current stage:
+1. one real physical owner;
+2. five real physical owners;
+3. ten real physical owners;
+4. accepted template catalog presentation synced;
+5. accepted primary snapshot-camera and physical dependency contracts synced;
+6. accepted build-branch artifact ownership fix synced.
 
-1. accept the template baseline in this repository;
-2. create `dev` from the accepted baseline;
-3. migrate one real model: `models/basic/plate`;
-4. prove normal PR, `dev`, build publication and Pages behavior;
-5. only then widen to five real models.
+Current stage migrates the six remaining historical physical roots:
 
-## Migration ordering
+- `corner-bracket`;
+- `hub75-panel`;
+- `hub75-screen`;
+- `hub75-wood-frame` — Hub75DisplayCase;
+- `hub75-display2` — Hub75DisplayCase v2;
+- `simple-mft` — standalone + assembly variants.
 
-Directory priorities are:
+The final PR deliberately selects all sixteen real physical owners so the whole
+migrated catalog is accepted together.
+
+## Dependency graph
+
+Explicit physical-owner edges used by the final batch:
+
+- `hub75-screen` -> `hub75-panel`;
+- `hub75-wood-frame` -> `hub75-panel`, `corner-bracket`;
+- `hub75-display2` -> `hub75-panel`, `corner-bracket`;
+- `simple-mft` -> `guide-rail`.
+
+Directory priorities remain ordering metadata only:
 
 ```text
 models/basic       10
@@ -28,40 +44,26 @@ models/components  20
 models/advanced    30
 ```
 
-Lower priority builds first. Equal priority is ordered by owner id.
+## Migration boundaries
 
-This is ordering only. It does not imply dependencies or propagate selection.
+The historical repository remains the source for current geometry and open
+model-design issues until this batch is accepted.
 
-## Source boundary
+Do not silently solve open geometry work during transfer:
 
-The historical repository
-`brainboxemb/2026-011-02.cad.solidcraft` remains the source for existing model
-geometry and open model-design issues until each model is migrated.
+- CornerBracket #362 remains separate;
+- Bolted Flange #135 remains separate;
+- DisplayCase path/id rename #417 remains separate.
 
-Do not copy its repository-local CI/site architecture or its historical
-CAD-specific `model.yml` schema.
+The current ids `hub75-wood-frame` and `hub75-display2` stay stable during
+migration even though their presentation titles are Hub75DisplayCase and
+Hub75DisplayCase v2.
 
-## Accepted architecture
-
-- work branch selection from matching `build.yml`;
-- incremental `dev` CI from the last successful integration baseline;
-- full `main` CI;
-- cancel-in-progress;
-- item-local impact/watch metadata;
-- directory-local model build priority;
-- local merge-policy dispatches target CI and branch cleanup;
-- standalone cleanup removes merged temporary branches;
-- direct Forge -> JSON -> one SolidCraft replay batch;
-- Forge v0.14.0 / SolidCraft 0.48.1 baseline;
-- generated `build` branch with `dev/` and `main/` scopes;
-- compact model `ci.yml` with implicit primary snapshot;
-- physical model owners may expand into multiple build variants;
-- internal Python capabilities run directly from source;
-- Pages runs separately from CAD CI and is explicitly dispatched after build publication;
-- Pages publishes stable `/` and development `/dev/` as one generated `gh-pages` tree.
+Generated CAD artifacts remain owned exclusively by the generated `build`
+branch. Pages links them and does not copy them into `gh-pages`.
 
 ## Next
 
-After the one-model Plate acceptance is green, migrate four additional basic
-models as the five-model batch. Do not widen further until that batch is
-accepted.
+Accept the complete sixteen-owner catalog on PR, durable `dev`, build
+publication and Pages. Then migrate the remaining open issues and relevant open
+pull requests from the historical repository.

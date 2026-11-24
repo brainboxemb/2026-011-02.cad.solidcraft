@@ -1,0 +1,18 @@
+purpose: [example]
+section: advanced
+priority: 50
+title: Hub75DisplayCase v2
+tagline: Five-panel plywood enclosure with a 70 mm lower storage compartment
+description: >
+  Second-generation wooden HUB75 enclosure. It keeps the 844 × 362 mm display
+  opening and five-panel layout while adding a 70 mm clear lower compartment,
+  a 12 mm intermediate shelf, two 12 mm dividers, full-depth side walls with
+  hand slots, and an inset display-only rear board.
+parameters: 844 × 362 mm opening; 70 mm lower compartment; 12 mm ply; 120 mm depth; 30/40/30 bays
+stages:
+  - Keep Z=0 at the outside bottom face
+  - Add a 70 mm clear lower compartment above the 12 mm bottom
+  - Add two divider plates and a 12 mm intermediate shelf
+  - Move the display opening and all dependent geometry to Z=94 mm
+  - Use full-depth side walls with 30 mm hand slots and an inset rear board
+  - Keep five panels and eight CornerBrackets on the existing layout

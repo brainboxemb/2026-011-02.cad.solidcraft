@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 
+from .history import build_manifest, write_manifest
 from .verify import PagesVerificationError, verify
 
 
@@ -37,6 +38,7 @@ def build(
 ) -> None:
     source_root = source_root.resolve()
     build_scope = build_scope.resolve()
+    build_namespace = build_scope.name
     destination = destination.resolve()
 
     site_root = source_root / "site"
@@ -44,6 +46,7 @@ def build(
         raise PagesVerificationError(f"missing site root: {site_root}")
 
     staged_scope = _stage_build_scope(source_root, build_scope)
+    write_manifest(source_root, build_manifest(source_root))
 
     if destination.exists():
         shutil.rmtree(destination)
@@ -52,6 +55,7 @@ def build(
     env = dict(os.environ)
     env["HUGO_BASEURL"] = base_url
     env["HUGO_PARAMS_SOURCEREF"] = source_ref
+    env["HUGO_PARAMS_BUILDSCOPE"] = build_namespace
 
     graph = subprocess.run(
         ["hugo", "mod", "graph"],

@@ -3,8 +3,11 @@ Generic model page adapter.
 
 - model.yml owns presentation metadata;
 - ci.yml owns build/source identity;
-- prepared-build/main owns accepted generated artifacts;
-- this adapter never executes CAD and contains no model-name branches.
+- prepared-build/main is mounted read-only so Pages can inspect the accepted
+  build-plan and command JSON during rendering;
+- generated CAD artifacts remain owned by the build branch and are never copied
+  into gh-pages;
+- model_history.json owns derived Git last-modified presentation data.
 */}}
 
 {{ $planResource := resources.Get "build/build-plan.json" }}
@@ -17,6 +20,27 @@ Generic model page adapter.
   {{ errorf "durable build plan contains no model rows" }}
 {{ end }}
 
+{{ $history := hugo.Data.cad.model_history }}
+{{ if not $history }}
+  {{ errorf "missing generated data/cad/model_history.json" }}
+{{ end }}
+{{ $historyRoots := index $history "roots" }}
+
+{{ $categoryTitles := dict
+  "basic" "Basic Models"
+  "components" "Components"
+  "advanced" "Advanced Models"
+}}
+
+{{ range $section := slice "basic" "components" "advanced" }}
+  {{ $.AddPage (dict
+    "kind" "page"
+    "path" $section
+    "title" (index $categoryTitles $section)
+    "params" (dict "categoryIndex" true "cadSection" $section)
+  ) }}
+{{ end }}
+
 {{ range $modelResource := resources.Match "cad-source/**/model.yml" }}
   {{ $modelRootPath := strings.TrimPrefix "/" (path.Dir $modelResource.Name) }}
   {{ $modelRoot := strings.TrimPrefix "cad-source/" $modelRootPath }}
@@ -26,6 +50,12 @@ Generic model page adapter.
     {{ errorf "%s: missing ci.yml" $modelRoot }}
   {{ end }}
   {{ $ci := $ciResource | transform.Unmarshal }}
+
+  {{ $lastmodRaw := index $historyRoots $modelRoot }}
+  {{ if not $lastmodRaw }}
+    {{ errorf "missing model history for %s" $modelRoot }}
+  {{ end }}
+  {{ $lastmod := time.AsTime $lastmodRaw }}
 
   {{ $entries := slice }}
   {{ with $variants := index $ci "variants" }}
@@ -69,6 +99,7 @@ Generic model page adapter.
         "mediaType" "text/markdown"
         "value" (index $model "description")
       )
+      "dates" (dict "lastmod" $lastmod)
       "kind" "page"
       "path" $slug
       "title" (index $model "title")
@@ -90,11 +121,6 @@ Generic model page adapter.
       (dict "source" (printf "cad-source/%s/model.yml" $modelRoot) "target" "model.yml" "media" "text/plain")
       (dict "source" (printf "cad-source/%s/ci.yml" $modelRoot) "target" "ci.yml" "media" "text/plain")
       (dict "source" (printf "cad-source/%s/%s" $modelRoot $sourcePath) "target" "scpf-source.py" "media" "text/plain")
-      (dict "source" (printf "build/models/%s/solidcraft.json" $slug) "target" "solidcraft.json" "media" "application/json")
-      (dict "source" (printf "build/models/%s/model.png" $slug) "target" "model.png" "media" "image/png")
-      (dict "source" (printf "build/models/%s/model.sc" $slug) "target" "model.sc" "media" "application/octet-stream")
-      (dict "source" (printf "build/models/%s/model.step" $slug) "target" "model.step" "media" "application/octet-stream")
-      (dict "source" (printf "build/models/%s/model.stl" $slug) "target" "model.stl" "media" "application/octet-stream")
     }}
       {{ with resources.Get (index $resource "source") }}
         {{ $.AddResource (dict
@@ -111,29 +137,11 @@ Generic model page adapter.
       ) }}
     {{ end }}
 
-    {{ range $snapshot := index $build "snapshots" }}
-      {{ $name := index $snapshot "name" }}
-      {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
-        {{ $.AddResource (dict
-          "content" (dict "mediaType" .MediaType.Type "value" .Content)
-          "path" (printf "%s/%s" $slug $name)
-        ) }}
-      {{ end }}
-    {{ end }}
-
     {{ with $views := index $model "extra_views" }}
       {{ range $view := index $views "items" }}
-        {{ $kind := index $view "kind" }}
-        {{ $name := index $view "src" }}
-        {{ if eq $kind "asset" }}
+        {{ if eq (index $view "kind") "asset" }}
+          {{ $name := index $view "src" }}
           {{ with resources.Get (printf "cad-source/%s/%s" $modelRoot $name) }}
-            {{ $.AddResource (dict
-              "content" (dict "mediaType" .MediaType.Type "value" .Content)
-              "path" (printf "%s/%s" $slug $name)
-            ) }}
-          {{ end }}
-        {{ else if eq $kind "build" }}
-          {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
             {{ $.AddResource (dict
               "content" (dict "mediaType" .MediaType.Type "value" .Content)
               "path" (printf "%s/%s" $slug $name)

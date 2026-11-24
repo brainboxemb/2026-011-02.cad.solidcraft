@@ -1,0 +1,51 @@
+purpose: [example]
+section: components
+variants:
+  guide-rail:
+    priority: 40
+    title: GuideRail — Festool profile
+    tagline: Parametric guide rail using the detailed Festool reference extrusion
+    description: >
+      The generic GuideRail component with its default Festool profile. The
+      aluminium cross-section comes from the FS 1400/2 STEP reference and is
+      calibrated to the TSO measured 184.20 × 10.50 mm envelope. Only rail
+      length is a native CAD parameter.
+    parameters: 184.20 × 10.50 mm profile; 600 mm standalone example; editable length
+    stages:
+      - Load the fixed Festool cross-section profile
+      - Create one detailed XZ Polygon2D
+      - Extrude symmetrically along Y by the editable length
+      - Keep profile choice outside the native parameter list
+    warning:
+      title: WARNING — measured/reference geometry, not an official specification
+      body: >
+        The dimensions used to calibrate this GuideRail profile are based on
+        measurements published by TSO Products. They have not been independently
+        verified against a physical rail or an official manufacturer drawing.
+        The detailed profile shape also comes from third-party STEP/reference
+        material. Treat this model as a practical assembly/layout reference, not
+        as verified manufacturing geometry or authoritative Festool dimensions.
+  guide-rail-makita:
+    priority: 50
+    title: GuideRail — Makita profile
+    tagline: The same GuideRail component with the Makita 199141-8 profile
+    description: >
+      A second fixed cross-section of the generic GuideRail component. The
+      aluminium shape comes from the Makita 199141-8 STEP reference and is
+      calibrated to the TSO measured 182.50 × 10.28 mm envelope. The standalone
+      CAD example uses 600 mm for compact visual inspection.
+    parameters: 182.50 × 10.28 mm profile; 600 mm standalone example
+    stages:
+      - Select the fixed Makita cross-section at build time
+      - Create one detailed XZ Polygon2D
+      - Approximate the STEP's small round edges with short line segments
+      - Extrude symmetrically along Y to the 600 mm example length
+    warning:
+      title: WARNING — measured/reference geometry, not an official dimensional specification
+      body: >
+        The Makita cross-section is based on a third-party STEP reference and
+        calibrated to the 182.50 × 10.28 mm envelope measured by TSO Products.
+        It has not been independently verified against a physical rail or an
+        official Makita extrusion drawing. Treat this model as an
+        assembly/layout reference, not as verified manufacturing geometry or
+        authoritative Makita dimensions.

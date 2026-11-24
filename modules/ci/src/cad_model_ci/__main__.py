@@ -9,7 +9,7 @@ from .config import current_branch, full_selection, load_build, load_project
 from .history import changed_paths, last_successful_dev_sha
 from .items import discover_models, discover_modules, select
 from .runner import execute
-from .selection import changed_selection
+from .selection import changed_selection, expand_model_dependents
 
 
 def _selection(repo, project, branch, modules, models):
@@ -77,7 +77,10 @@ def main() -> None:
 
     modules = discover_modules(repo, project)
     models = discover_models(repo, project)
-    selection = _selection(repo, project, branch, modules, models)
+    selection = expand_model_dependents(
+        _selection(repo, project, branch, modules, models),
+        models,
+    )
 
     execute(
         repo=repo,

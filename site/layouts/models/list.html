@@ -5,14 +5,15 @@
     <h1>{{ .Title }}</h1>
     <p>{{ .Description }}</p>
   </section>
-
-  {{ $models := where site.RegularPages "Params.cadSlug" "!=" nil }}
+{{ range $key := slice "basic" "components" "advanced" }}
+  {{ $models := where site.RegularPages "Params.cadSection" $key }}
+  {{ $models = where $models "Params.categoryIndex" "!=" true }}
   <section class="cad-section cad-catalog-section">
+    <h2>{{ (site.GetPage (printf "/models/%s" $key)).Title }}</h2>
     <div class="cad-model-grid">
-      {{ range sort $models "Params.model.priority" }}
-        {{ partial "cad/model-card.html" (dict "page" .) }}
-      {{ end }}
+      {{ range sort $models "Params.model.priority" }}{{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}{{ end }}
     </div>
   </section>
+{{ end }}
 </main>
 {{ end }}

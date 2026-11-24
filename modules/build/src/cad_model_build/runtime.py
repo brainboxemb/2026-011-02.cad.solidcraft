@@ -69,7 +69,11 @@ def _build_one(output_root: Path, row: dict) -> None:
             work_dir=Path(tmp),
         )
 
-    _snapshot(saved, png, None)
+    _snapshot(
+        saved,
+        png,
+        row.get("snapshot", {}).get("camera"),
+    )
 
     stl_value = native.get("stl")
     if stl_value:

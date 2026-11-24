@@ -36,6 +36,12 @@ class SimpleMFTAssembly:
     # rotations. Put its upper edge at Z=0 so the MFT underside rests on it.
     SUPPORT_RAIL_Z = -MountingRailM8.PROFILE_WIDTH / 2
 
+    # The local +Z profile depth becomes the outward world-Y direction.
+    # Inset each rail by the full 18 mm profile depth so its outer face is
+    # flush with the corresponding worktop edge and the complete rail sits
+    # underneath the plate instead of just outside it.
+    SUPPORT_RAIL_INSET = MountingRailM8.PROFILE_HEIGHT
+
     # Axis-angle rotations:
     #   local +Y (rail length) -> world +X for BOTH rails;
     #   local +Z (C opening)   -> world +Y / -Y respectively.
@@ -62,8 +68,8 @@ class SimpleMFTAssembly:
         worktop_depth = float(SimpleMFT.depth)
 
         rail_x = -worktop_width / 2
-        upper_y = worktop_depth / 2
-        lower_y = -worktop_depth / 2
+        upper_y = worktop_depth / 2 - self.SUPPORT_RAIL_INSET
+        lower_y = -worktop_depth / 2 + self.SUPPORT_RAIL_INSET
 
         upper_support = MountingRailM8(
             length=self.SUPPORT_RAIL_LENGTH,

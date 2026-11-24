@@ -1,7 +1,7 @@
-baseURL = "https://brainboxemb.github.io/template.cad.model-project/"
+baseURL = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
 locale = "en"
 defaultContentLanguage = "en"
-title = "SolidCraft CAD model project"
+title = "SolidCraft CAD"
 enableRobotsTXT = false
 summaryLength = 28
 
@@ -13,7 +13,7 @@ summaryLength = 28
     noClasses = false
 
 [params]
-  description = "SolidCraft CAD models from model-owned metadata and durable build output."
-  cadSourceRepository = "brainboxemb/template.cad.model-project"
+  description = "SolidCraft CAD models migrated onto the accepted model-project architecture."
+  cadSourceRepository = "brainboxemb/2026-011-02.cad.solidcraft.NEW"
   sourceRef = "main"
   buildScope = "main"

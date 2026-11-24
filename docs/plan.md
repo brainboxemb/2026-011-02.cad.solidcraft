@@ -20,6 +20,51 @@ rotated HUB75 occurrences.
 Acceptance rebuilds `hub75-panel` and `hub75-screen` and compares the
 resulting screen preview against the known-correct historical `dev-cad` image.
 
+### #39 — add generic M8 mounting rail component
+
+Active on `feature/mounting-rail-m8`.
+
+Model a 1000 mm galvanized light installation rail under
+`models/components/mounting_rail_m8`.
+
+Accepted source split:
+
+- product facts: 1000 mm, galvanized steel, 1.25 mm sheet, M8 application;
+- generic 27/18 reference: section and repeating perforation geometry;
+- explicit model assumptions: bend radius and K-factor.
+
+Use native sheet metal. Keep the component/model name generic; DRESSELHAUS and
+HORNBACH are provenance only.
+
+### #43 — make Mounting Rail M8 perforation one parametric repeat unit
+
+Active on `fix/mounting-rail-m8-repeat-unit`.
+
+Replace the three independent perforation feature patterns with the actual
+product design intent:
+
+- one attached four-profile repeat-unit Sketch;
+- one through-all unit cut;
+- one native rectangular pattern of that complete cut;
+- editable `repeat_count`, `feature_pitch` and individual profile dimensions.
+
+No Forge change is required.
+
+### #49 — add two 1 m support rails to Simple MFT assembly
+
+Active on `feature/simple-mft-support-rails`.
+
+Reuse two `MountingRailM8` occurrences below the Simple MFT worktop:
+
+- 1000 mm each;
+- left ends align with the 805 mm worktop left edge;
+- 195 mm right overhang;
+- openings face outward;
+- perforation direction remains equal left-to-right;
+- worktop underside rests on the rail upper edges.
+
+Keep the existing GuideRail on top.
+
 ### #12 — migrate remaining historical CAD issues and open pull requests
 
 The full CAD catalog is accepted on stable `main`.

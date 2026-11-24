@@ -1,0 +1,38 @@
+purpose: [example]
+section: advanced
+priority: 20
+title: Simple MFT assembly
+tagline: 1 m MFT work surface with 195 mm right extension, twin M8 rails and shifted GuideRail
+description: >
+  The 805 mm Simple MFT worktop is extended on the right by a plain
+  195 × 555 × 18 mm plank, creating a 1000 mm-wide work surface. Two long M8
+  mounting rails run underneath and are shifted 18 mm right to meet a third
+  519 mm cross rail on the left short side without blocking the channel ends.
+  All C-openings face outward. The 800 mm Festool-profile GuideRail is shifted
+  414 mm toward +X. A reusable FlexBenchDog is inserted in the bottom hole of the rightmost
+  MFT column at X=+304 mm, Y=-228 mm. MDF, galvanized-steel and aluminium materials distinguish
+  the assembly visually.
+parameters: 805 × 555 × 18 mm MFT worktop; 195 × 555 × 18 mm right extension; 1000 mm total width; 2 × 1000 mm long M8 rails shifted +18 mm; 1 × 519 mm left cross rail; GuideRail 800 mm shifted +414 mm; FlexBenchDog at X=+304 mm, Y=-228 mm
+stages:
+  - Instantiate the reusable SimpleMFT worktop
+  - Add a plain 195 mm right-hand extension so the complete top reaches 1000 mm
+  - Place two 1000 mm MountingRailM8 components below the worktop
+  - Shift both long rails 18 mm right and add a 519 mm left cross rail between them
+  - Align both rail starts with the worktop left edge for 195 mm right overhang
+  - Rotate upper and lower rails so both C-openings face outward
+  - Keep both long perforation sequences running in the same +X direction
+  - Keep all three C-openings outward and the rail ends accessible
+  - Place the worktop underside on the upper edges of both support rails
+  - Shift the 800 mm Festool-profile GuideRail 414 mm toward +X
+  - Insert a reusable FlexBenchDog in the bottom hole of the rightmost MFT column
+extra_views:
+  title: Support-rail layout
+  items:
+    - kind: build
+      src: support-rails-top.png
+      alt: Top view of the Simple MFT with two one-metre support rails
+      caption: Top view — 805 mm MFT plus 195 mm extension spans the full 1 m rails
+    - kind: build
+      src: support-rails-right.png
+      alt: Right-end view showing the two outward-facing C-profiles under the worktop
+      caption: Right-end view — C-profile openings face outward

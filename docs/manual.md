@@ -3,7 +3,30 @@
 ## Stable configuration
 
 Root `ci.yml` defines permanent source branches, the generated build branch,
-exact Forge/SolidCraft pins and repository roots.
+Forge/SolidCraft versions and repository roots. Forge is selected by its
+released Git tag, for example `version: v0.15.0`. Local bootstrap and CI use
+that same release version.
+
+## Local bootstrap
+
+Run the repository bootstrap after cloning or whenever the pinned Forge release
+changes:
+
+```powershell
+.\bootstrap.ps1
+```
+
+The bootstrap reads `dependencies.forge.version` from root `ci.yml`,
+installs SCPF directly from that release tag and checks the installed package
+version plus the SolidCraft version qualified by that Forge release.
+
+After bootstrap, models can be sent directly to an open SolidCraft GUI:
+
+```powershell
+python -m scpf models/advanced/simple_mft_assembly/scpf/model.py --connect --new
+```
+
+No Forge SHA is part of the normal model-project workflow.
 
 ## Branch integration
 
@@ -162,7 +185,7 @@ Generated artifacts remain below root `build/`.
 
 Root `ci.yml` pins the complete qualified CAD toolchain:
 
-- Forge repository, version and exact commit;
+- Forge repository and released version tag;
 - released SolidCraft runtime image and exact SolidCraft version.
 
 Model-local `ci.yml` owns build execution. A minimal processed model declares
@@ -315,8 +338,13 @@ reference assets are copied into the generated site.
 
 The primary model layout is shared. Model-specific additions use optional
 `page.md` for background prose and declarative `extra_views` in metadata for
-reference/build images. Do not add model-name branches to shared Hugo
-templates.
+reference/build images. Extra-view kinds distinguish ownership explicitly:
+`url` renders a normal external provenance/reference link, `asset` renders a
+source-owned local presentation asset, and `build` renders a durable generated
+snapshot. Remote images used visually on a model page must be acquired once,
+downscaled to an appropriate review size, stored beside the model source and
+referenced through `asset`; the generated page must not depend on a remote
+image URL. Do not add model-name branches to shared Hugo templates.
 
 Pages runs in a separate workflow from CAD CI. After a successful permanent
 build publishes its build scope, CI sends a `workflow_dispatch` for

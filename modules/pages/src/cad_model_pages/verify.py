@@ -1,10 +1,11 @@
-"""Verify generated model Pages against one build scope."""
+"""Verify generated model Pages against one durable build scope."""
 
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 import json
+import tomllib
 
 import yaml
 
@@ -15,7 +16,7 @@ class PagesVerificationError(RuntimeError):
 
 def _require_file(path: Path) -> None:
     if not path.is_file() or path.stat().st_size == 0:
-        raise PagesVerificationError(f"missing generated Pages file: {path}")
+        raise PagesVerificationError(f"missing file: {path}")
 
 
 def _load_json(path: Path) -> dict:
@@ -51,6 +52,18 @@ def _metadata_for_variant(model: dict, variant_id: str, path: Path) -> dict:
     return value
 
 
+def _repository_name(repo: Path) -> str:
+    config_path = repo / "site/config/_default/hugo.toml"
+    _require_file(config_path)
+    config = tomllib.loads(config_path.read_text(encoding="utf-8"))
+    value = config.get("params", {}).get("cadSourceRepository")
+    if not isinstance(value, str) or not value:
+        raise PagesVerificationError(
+            f"{config_path}: missing params.cadSourceRepository"
+        )
+    return value
+
+
 def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
     repo = repo.resolve()
     site = site.resolve()
@@ -60,6 +73,13 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
     rows = plan.get("models")
     if not isinstance(rows, list) or not rows:
         raise PagesVerificationError("build plan contains no models")
+
+    namespace = plan.get("namespace")
+    if namespace not in {"main", "dev"}:
+        raise PagesVerificationError("build plan has invalid namespace")
+    repository = _repository_name(repo)
+    blob_base = f"https://github.com/{repository}/blob/build/{namespace}/"
+    raw_base = f"https://raw.githubusercontent.com/{repository}/build/{namespace}/"
 
     solidcraft = plan.get("solidcraft")
     if not isinstance(solidcraft, dict) or not isinstance(
@@ -75,8 +95,14 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
         path = site / "models" / category / "index.html"
         _require_file(path)
         html = path.read_text(encoding="utf-8")
-        if "cad-category-page" not in html or "cad-model-grid" not in html or "cad-model-detail" in html:
-            raise PagesVerificationError(f"{path}: expected a category grid, not a model detail")
+        if (
+            "cad-category-page" not in html
+            or "cad-model-grid" not in html
+            or "cad-model-detail" in html
+        ):
+            raise PagesVerificationError(
+                f"{path}: expected a category grid, not a model detail"
+            )
         category_html[category] = html
 
     home_html = (site / "index.html").read_text(encoding="utf-8")
@@ -112,14 +138,15 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
         root_metadata = _load_yaml(model_path)
         category = root_metadata.get("section")
         if category not in category_html:
-            raise PagesVerificationError(f"{model_path}: unsupported category {category!r}")
+            raise PagesVerificationError(
+                f"{model_path}: unsupported category {category!r}"
+            )
         if f"/models/{variant_id}/" not in category_html[category]:
-            raise PagesVerificationError(f"{category}: missing model link for {variant_id}")
-        metadata = _metadata_for_variant(
-            root_metadata,
-            variant_id,
-            model_path,
-        )
+            raise PagesVerificationError(
+                f"{category}: missing model link for {variant_id}"
+            )
+
+        metadata = _metadata_for_variant(root_metadata, variant_id, model_path)
         title = metadata.get("title")
         parameters = metadata.get("parameters")
         if not isinstance(title, str) or not title:
@@ -135,47 +162,90 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
             title,
             parameters,
             f"Built in SolidCraft {solidcraft_version}",
+            f"<code>{namespace}</code>",
         ):
             if expected not in html:
                 raise PagesVerificationError(
                     f"{page_path}: expected rendered text {expected!r}"
                 )
 
-        for name in (
-            "model.png",
-            "model.sc",
-            "model.step",
-            "solidcraft.json",
-            "scpf-source.py",
-            "model.yml",
-            "ci.yml",
-        ):
-            _require_file(page_root / name)
+        for source_name in ("scpf-source.py", "model.yml", "ci.yml"):
+            _require_file(page_root / source_name)
+
+        commands = row.get("commands")
+        if not isinstance(commands, str) or not commands:
+            raise PagesVerificationError(f"{variant_id}: missing command path")
+        command_path = build_scope / commands
+        command_doc = _load_json(command_path)
+        if not isinstance(command_doc.get("commands"), list) or not command_doc["commands"]:
+            raise PagesVerificationError(
+                f"{variant_id}: generated command JSON contains no commands"
+            )
+        if f"{blob_base}{commands}" not in html:
+            raise PagesVerificationError(
+                f"{variant_id}: page does not link durable command JSON"
+            )
 
         native = row.get("native")
         if not isinstance(native, dict):
-            raise PagesVerificationError(f"{variant_id}: missing native artifact map")
-        if native.get("stl"):
-            _require_file(page_root / "model.stl")
+            raise PagesVerificationError(
+                f"{variant_id}: missing native artifact map"
+            )
+        for key in ("png", "sc", "step"):
+            artifact = native.get(key)
+            if not isinstance(artifact, str) or not artifact:
+                raise PagesVerificationError(
+                    f"{variant_id}: missing native {key} path"
+                )
+            _require_file(build_scope / artifact)
+            if key == "png":
+                if f"{raw_base}{artifact}" not in html:
+                    raise PagesVerificationError(
+                        f"{variant_id}: preview does not use durable build image"
+                    )
+            elif f"{blob_base}{artifact}" not in html:
+                raise PagesVerificationError(
+                    f"{variant_id}: page does not link native {key}"
+                )
 
+        stl = native.get("stl")
+        if stl:
+            _require_file(build_scope / stl)
+            if f"{blob_base}{stl}" not in html:
+                raise PagesVerificationError(
+                    f"{variant_id}: STL does not link GitHub build viewer"
+                )
+
+        generated_names = {
+            "model.png",
+            "model.sc",
+            "model.step",
+            "model.stl",
+            "solidcraft.json",
+        }
         snapshots = row.get("snapshots", [])
         if not isinstance(snapshots, list):
-            raise PagesVerificationError(f"{variant_id}: snapshots must be a list")
+            raise PagesVerificationError(
+                f"{variant_id}: snapshots must be a list"
+            )
         for snapshot in snapshots:
-            if not isinstance(snapshot, dict) or not isinstance(
-                snapshot.get("name"), str
+            if (
+                not isinstance(snapshot, dict)
+                or not isinstance(snapshot.get("name"), str)
+                or not isinstance(snapshot.get("path"), str)
             ):
                 raise PagesVerificationError(
                     f"{variant_id}: invalid snapshot declaration"
                 )
-            _require_file(page_root / snapshot["name"])
+            _require_file(build_scope / snapshot["path"])
+            generated_names.add(snapshot["name"])
 
-        command_doc = _load_json(page_root / "solidcraft.json")
-        commands = command_doc.get("commands")
-        if not isinstance(commands, list) or not commands:
-            raise PagesVerificationError(
-                f"{variant_id}: generated command JSON contains no commands"
-            )
+        for name in generated_names:
+            duplicate = page_root / name
+            if duplicate.exists():
+                raise PagesVerificationError(
+                    f"{variant_id}: generated artifact duplicated in Pages: {duplicate}"
+                )
 
 
 def main(argv=None) -> int:
@@ -186,7 +256,7 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
 
     verify(repo=args.repo, site=args.site, build_scope=args.build_scope)
-    print("Generated Pages match build plan")
+    print("Generated Pages link durable build artifacts without copying them")
     return 0
 
 

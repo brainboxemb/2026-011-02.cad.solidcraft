@@ -16,14 +16,6 @@ stages:
   - Repeat source — four native cuts: round, longitudinal slot, round, transverse slot
   - Native pattern — one Rectangular Pattern repeats all four source features together
   - Native parameters — 250 mm length, repeat_count 2, repeat_pitch 100 mm
-warning:
-  title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
-  body: >
-    Product material, thickness, length and M8 application come from the
-    supplied DRESSELHAUS/HORNBACH reference. Profile and perforation dimensions
-    are based on a generic published 27/18 installation-rail drawing. Bend
-    radius and K-factor are modelling assumptions until a manufacturer drawing
-    or physical measurement is available.
 extra_views:
   title: Product reference and perforation review
   note: The local product image is retained for visual comparison; only the cropped derivative is rendered on the page.

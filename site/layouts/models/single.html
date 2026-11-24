@@ -1,4 +1,16 @@
 {{ define "main" }}
+{{ if .Params.categoryIndex }}
+  {{ $models := where site.RegularPages "Params.cadSection" .Params.cadSection }}
+  {{ $models = where $models "Params.categoryIndex" "!=" true }}
+  <main class="cad-page-shell cad-category-page">
+    <section class="cad-model-hero cad-model-hero-small">
+      <p class="cad-model-kicker">CAD category</p>
+      <h1>{{ .Title }}</h1>
+      <p>{{ len $models }} model variants.</p>
+    </section>
+    <div class="cad-model-grid">{{ range sort $models "Params.model.priority" }}{{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}{{ end }}</div>
+  </main>
+{{ else }}
 {{ $m := .Params.model }}
 {{ $repo := site.Params.cadSourceRepository }}
 {{ $ref := site.Params.sourceRef }}
@@ -157,4 +169,5 @@
     </dl>
   </section>
 </article>
+{{ end }}
 {{ end }}

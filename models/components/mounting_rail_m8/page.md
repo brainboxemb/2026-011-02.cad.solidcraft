@@ -71,22 +71,20 @@ For the 1000 mm rail this gives 40 perforation positions, ending 12.5 mm before
 the far end.
 
 The implementation follows the physical repeat directly. The source repeat
-contains four separate native cut features: round opening, longitudinal slot,
+contains four fixed native cut features: round opening, longitudinal slot,
 round opening and transverse slot.
 
-Forge 0.15 can pass several already-applied native features to one
-`rectangular_pattern()`. The model therefore supplies those four source cuts
-as one feature-set to **one native Rectangular Pattern**. This avoids three
-independent patterns while also avoiding SolidCraft 0.48.1's unsupported
-compound multi-profile sheet recess.
+Forge 0.15 accepts a sequence of already-applied native features as one
+`rectangular_pattern()` source. The model therefore supplies all four cuts to
+**one native Rectangular Pattern**. SolidCraft stores one pattern history
+feature whose source list contains the complete four-feature repeat unit.
 
-The editable `feature_pitch = 25 mm` produces a repeat spacing of
-`4 × feature_pitch = 100 mm`.
-
-The standalone example uses `length = 250 mm`, `repeat_count = 2` and
-`end_offset = 37.5 mm`. For the 1000 mm product reference,
-`repeat_count = 10` with `end_offset = 12.5 mm` reproduces the full-length
-layout. Length, count, pitch and offset remain independently editable.
+The standalone example is intentionally **250 mm** long and exposes the
+pattern controls `repeat_count = 2` and `repeat_pitch = 100 mm` as native
+editable parameters. The four punch shapes themselves stay at the fixed
+reference dimensions because SolidCraft 0.48.1 sheet-recess validation is
+reliable for those numeric profiles but can misclassify symbolic disconnected
+sheet cuts as reaching a bend.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

@@ -42,7 +42,6 @@ class MountingRailM8:
     BEND_RADIUS = 1.25
     K_FACTOR = 0.40
 
-    END_OFFSET = 37.5
     FEATURE_PITCH = 25.0
 
     ROUND_DIAMETER = 12.5
@@ -75,7 +74,25 @@ class MountingRailM8:
             rule_name="Mounting Rail M8 Rule",
         )
 
-        y0 = self.END_OFFSET
+        # Centre the authored numeric source unit for the requested initial
+        # length/count/pitch. This keeps the 250 mm default at 37.5 mm and a
+        # 1000 mm / 10-repeat rail at the product-like 12.5 mm end margin,
+        # while the native pattern count and spacing remain editable.
+        length_value = float(self.length.value)
+        repeat_count_value = int(self.repeat_count.value)
+        repeat_pitch_value = float(self.repeat_pitch.value)
+        source_span = 3 * self.FEATURE_PITCH
+        patterned_span = (
+            (repeat_count_value - 1) * repeat_pitch_value
+            + source_span
+        )
+        end_offset = (length_value - patterned_span) / 2
+        if end_offset < 0:
+            raise ValueError(
+                "mounting rail repeat pattern does not fit inside the rail length"
+            )
+
+        y0 = end_offset
         y1 = y0 + self.FEATURE_PITCH
         y2 = y0 + 2 * self.FEATURE_PITCH
         y3 = y0 + 3 * self.FEATURE_PITCH

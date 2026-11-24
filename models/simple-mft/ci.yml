@@ -1,12 +1,5 @@
 schema: 1
 id: simple-mft
 builder: forge
+source: scpf/model.py
 process: true
-dependencies:
-  - guide-rail
-
-variants:
-  - id: simple-mft
-    source: scpf/model.py
-  - id: simple-mft-assembly
-    source: scpf/assemblies/guide_rail.py

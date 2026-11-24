@@ -4,10 +4,11 @@ The Simple MFT worktop is a photo-based study of the CRAFTMAKER ProStation S30
 replacement worktop. The model covers the worktop plate, not the complete
 workbench.
 
-The front product reference shown below is useful because the complete worktop,
-the 9 × 7 hole grid and all eight clamp slots are visible at once. The local
+The product photograph shown below identifies the replacement worktop. The original front reference was used to estimate the hole and slot pattern. The local
 2D expectation is kept beside it so the inferred layout can be reviewed without
 opening SolidCraft.
+
+Product photograph source: [CRAFTMAKER replacement worktop](https://cdn.myshoptet.com/usr/www.craftmaker.nl/user/shop/big/181_craftmaker-pro-station-s30-vervangend-mdf-werkblad-met-gaten-voor-20-mm-bankhaken.jpg?ff=1&x=1024&y=1024&q=85&ts=69836430&sg=38cb01fe). The local source is `craftmaker_s30_worktop.jpg`; the page uses its `_w320` derivative.
 
 ## Known dimensions
 
@@ -46,7 +47,5 @@ estimates.
 
 ## Reuse
 
-The standalone worktop is also a reusable SCPF component. The assembly variant
-uses the same worktop definition and adds the generic GuideRail component with
-the Festool profile at 800 mm. The rail is centred over X=0 and rests on the
-worktop top face.
+The worktop is a standalone reusable SCPF component. Assemblies should import
+`SimpleMFT` from this owner rather than duplicating the worktop geometry.

@@ -34,6 +34,24 @@ Required integration:
 - `main` -> `dev`: merge commit only when `main` contains actual content
   that is not already present on `dev`, for example a stable-branch hotfix.
 
+### Mandatory merge execution rule
+
+This repository deliberately does **not** let an agent choose the merge method.
+
+For every source-branch integration above, an agent MUST post `/merge` on the
+pull request and let `.github/workflows/merge-policy.yml` perform the merge.
+
+An agent MUST NOT:
+
+- call GitHub's direct merge API;
+- enable or use auto-merge;
+- use a UI merge as a fallback;
+- manually choose squash, merge or rebase.
+
+If `/merge` fails, stop the integration and repair the merge-policy path.
+Never bypass the policy. This rule exists specifically to prevent an agent from
+selecting the wrong merge method.
+
 Do not create a `main` -> `dev` PR merely to copy the promotion merge
 commit back into `dev`.
 

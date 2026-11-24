@@ -4,66 +4,56 @@ This file contains unfinished work only.
 
 ## Now
 
-### #1 — final historical catalog migration
+### #12 — migrate remaining historical CAD issues and open pull requests
 
-Accepted stages:
+The full CAD catalog is accepted on stable `main`.
 
-1. one real physical owner;
-2. five real physical owners;
-3. ten real physical owners;
-4. accepted template catalog presentation synced;
-5. accepted primary snapshot-camera and physical dependency contracts synced;
-6. accepted build-branch artifact ownership fix synced.
+Stable baseline:
 
-Current stage migrates the six remaining historical physical roots:
+- source: `128f71fd0bdb85f92752b7e77ff3937157341332`;
+- Forge v0.14.0;
+- SolidCraft 0.48.1 / runtime v0.3.5;
+- 16 real physical owners / 18 real build variants;
+- generated CAD artifacts owned only by the `build` branch.
 
-- `corner-bracket`;
-- `hub75-panel`;
-- `hub75-screen`;
-- `hub75-wood-frame` — Hub75DisplayCase;
-- `hub75-display2` — Hub75DisplayCase v2;
-- `simple-mft` — standalone + assembly variants.
+Active transferred model work is tracked in #13 through #22. Generic gallery
+and embedded-viewer work is routed to the template project (#84/#85 there).
 
-The final PR deliberately selects all sixteen real physical owners so the whole
-migrated catalog is accepted together.
+Next:
 
-## Dependency graph
+1. close or update historical issue copies with explicit pointers;
+2. assess the remaining historical open PRs listed in #12;
+3. port only relevant model-owned source/data onto the new contracts;
+4. integrate every branch exclusively through local `/merge`.
 
-Explicit physical-owner edges used by the final batch:
+## Mandatory integration rule
 
-- `hub75-screen` -> `hub75-panel`;
-- `hub75-wood-frame` -> `hub75-panel`, `corner-bracket`;
-- `hub75-display2` -> `hub75-panel`, `corner-bracket`;
-- `simple-mft` -> `guide-rail`.
+Agents do not choose merge methods themselves.
 
-Directory priorities remain ordering metadata only:
+Every source-branch integration uses a PR conversation comment:
 
 ```text
-models/basic       10
-models/components  20
-models/advanced    30
+/merge
 ```
 
-## Migration boundaries
+Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
+If merge-policy fails, repair it rather than bypassing it.
 
-The historical repository remains the source for current geometry and open
-model-design issues until this batch is accepted.
+## Accepted architecture
 
-Do not silently solve open geometry work during transfer:
-
-- CornerBracket #362 remains separate;
-- Bolted Flange #135 remains separate;
-- DisplayCase path/id rename #417 remains separate.
-
-The current ids `hub75-wood-frame` and `hub75-display2` stay stable during
-migration even though their presentation titles are Hub75DisplayCase and
-Hub75DisplayCase v2.
-
-Generated CAD artifacts remain owned exclusively by the generated `build`
-branch. Pages links them and does not copy them into `gh-pages`.
-
-## Next
-
-Accept the complete sixteen-owner catalog on PR, durable `dev`, build
-publication and Pages. Then migrate the remaining open issues and relevant open
-pull requests from the historical repository.
+- work branch selection from matching `build.yml`;
+- incremental `dev` CI from the last successful integration baseline;
+- full `main` CI;
+- cancel-in-progress;
+- item-local impact/watch metadata;
+- directory-local model build priority;
+- explicit physical-model dependency graph for assembly impact;
+- local merge-policy owns all source-branch integration and dispatches target CI;
+- standalone cleanup removes merged temporary branches;
+- direct Forge -> JSON -> one SolidCraft replay batch;
+- Forge v0.14.0 / SolidCraft 0.48.1 baseline;
+- generated `build` branch with `dev/` and `main/` scopes;
+- compact model `ci.yml` with optional primary snapshot camera;
+- physical model owners may expand into multiple build variants;
+- Pages links durable CAD artifacts from `build` and never republishes them;
+- Pages publishes stable `/` and development `/dev/` presentation as one generated `gh-pages` tree.

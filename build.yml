@@ -1,28 +1,9 @@
 schema: 1
-branch: feature/1-migrate-final-six
+branch: docs/mandatory-local-merge
 
 modules:
-  - ci
-  - build
-  - pages
-models:
-  - plate
-  - vent-plate
-  - csg-cube
-  - bracket
-  - sample-plate
-  - plastic-enclosure
-  - plastic-enclosure-pi
-  - bolted-flange
-  - guide-rail
-  - flex-bench-dog
-  - corner-bracket
-  - hub75-panel
-  - hub75-screen
-  - hub75-wood-frame
-  - hub75-display2
-  - simple-mft
+  - merge-policy
+models: []
 
 tasks:
   - test
-  - build

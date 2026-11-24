@@ -117,8 +117,6 @@
             <strong>{{ index $view "caption" }}</strong>
             {{ if eq $kind "url" }}
               <p><a href="{{ $src }}" target="_blank" rel="noopener noreferrer">Open external reference ↗</a></p>
-            {{ else if eq $kind "image_url" }}
-              <a href="{{ $src }}" target="_blank" rel="noopener noreferrer"><img src="{{ $src }}" alt="{{ index $view "alt" }}"></a>
             {{ else if eq $kind "asset" }}
               {{ with $.Resources.Get $src }}
                 <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}"></a>

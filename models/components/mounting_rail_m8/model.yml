@@ -13,7 +13,7 @@ parameters: 1000 mm length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 
 stages:
   - C profile — one native open XZ sheet contour
   - Contour flange — 1000 mm native sheet-metal rail
-  - Round Hole — one native Hole seed patterned every 50 mm
+  - Round Hole — one face-attached Circle cut patterned every 50 mm
   - Horizontal Slot — one attached Sketch cut patterned every 100 mm
   - Vertical Slot — one attached Sketch cut patterned every 100 mm
   - Repeat — 25 mm feature spacing / 100 mm four-feature visual cycle

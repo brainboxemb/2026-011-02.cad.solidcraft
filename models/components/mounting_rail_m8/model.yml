@@ -13,9 +13,10 @@ parameters: 1000 mm length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 
 stages:
   - C profile — one native open XZ sheet contour
   - Contour flange — 1000 mm native sheet-metal rail
-  - Perforation Sketch — circle, horizontal slot, circle, vertical slot
-  - Repeat — 25 mm feature pitch / 100 mm four-feature cycle
-  - Cut — one perforation cutter through the 1.25 mm back web
+  - Round Hole — one native Hole seed patterned every 50 mm
+  - Horizontal Slot — one attached Sketch cut patterned every 100 mm
+  - Vertical Slot — one attached Sketch cut patterned every 100 mm
+  - Repeat — 25 mm feature spacing / 100 mm four-feature visual cycle
 warning:
   title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
   body: >

@@ -1,0 +1,13 @@
+purpose: [example]
+section: basic
+priority: 40
+title: CsgCube
+tagline: A box, sphere and three crossing bores
+description: >
+  A constructive solid geometry demonstration: intersect a cube with a sphere,
+  then subtract cylinders along three axes.
+parameters: 50 mm cube; three crossing cylindrical cuts
+stages:
+  - Create the sphere
+  - Intersect with a cube
+  - Cut along X, Y and Z

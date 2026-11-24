@@ -1,13 +1,10 @@
 schema: 1
-branch: feature/1-migrate-basic-five
+branch: feature/template-catalog-sync
 
-modules: []
+modules:
+  - pages
 models:
-  - plate
-  - vent-plate
-  - csg-cube
-  - bracket
-  - sample-plate
+  - simple-box
 
 tasks:
   - test

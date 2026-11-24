@@ -43,7 +43,7 @@ jobs:
         if: github.head_ref == 'fix/mounting-rail-flat-before-fold'
         run: |
           cat > build/dev/measure-rail.json <<'JSON'
-          {"commands":[{"command":"document.inspect","params":{"measure":true,"timeline":false,"sketch_counts":false}}]}
+          {"commands":[{"command":"model.faces","params":{"body":"MountingRailM8"}},{"command":"document.inspect","params":{"measure":true,"timeline":false,"sketch_counts":false}}]}
           JSON
           docker run --rm --pull=never \
             -v "$PWD/build/dev:/output:ro" \

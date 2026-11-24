@@ -55,7 +55,9 @@ class ModelConfig:
     variants: tuple[ModelVariant, ...]
     artifacts: tuple[str, ...]
     snapshots: tuple[SnapshotSpec, ...]
+    snapshot_camera: dict[str, object] | None = None
     priority: int = _DEFAULT_MODEL_PRIORITY
+    dependencies: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -110,6 +112,20 @@ def _camera(value: object, field: str, path: Path) -> dict[str, object] | None:
     return dict(value)
 
 
+def _primary_snapshot_camera(
+    data: dict[str, Any],
+    path: Path,
+) -> dict[str, object] | None:
+    raw = data.get("snapshot")
+    if raw is None:
+        return None
+    if not isinstance(raw, dict) or set(raw) != {"camera"}:
+        raise BuildConfigError(
+            f"snapshot must contain only camera: {path}"
+        )
+    return _camera(raw.get("camera"), "snapshot.camera", path)
+
+
 def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
     raw = data.get("snapshots", [])
     if raw is None:
@@ -139,6 +155,53 @@ def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
             )
         )
     return tuple(result)
+
+
+def _dependencies(
+    data: dict[str, Any],
+    *,
+    owner_id: str,
+    path: Path,
+) -> tuple[str, ...]:
+    raw = data.get("dependencies", [])
+    if not isinstance(raw, list):
+        raise BuildConfigError(f"dependencies must be a list: {path}")
+    if not all(isinstance(item, str) and _ID.fullmatch(item) for item in raw):
+        raise BuildConfigError(f"dependencies contains an invalid id: {path}")
+    if len(set(raw)) != len(raw):
+        raise BuildConfigError(f"dependencies must be unique: {path}")
+    if owner_id in raw:
+        raise BuildConfigError(f"model cannot depend on itself: {path}")
+    return tuple(raw)
+
+
+def _validate_dependencies(models: list[ModelConfig]) -> None:
+    by_id = {model.id: model for model in models}
+    for model in models:
+        unknown = [item for item in model.dependencies if item not in by_id]
+        if unknown:
+            raise BuildConfigError(
+                f"unknown model dependency {unknown[0]!r}: {model.root / 'ci.yml'}"
+            )
+
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(model_id: str, trail: tuple[str, ...]) -> None:
+        if model_id in visited:
+            return
+        if model_id in visiting:
+            cycle = " -> ".join((*trail, model_id))
+            raise BuildConfigError(f"cyclic model dependency: {cycle}")
+        visiting.add(model_id)
+        model = by_id[model_id]
+        for dependency in model.dependencies:
+            visit(dependency, (*trail, model_id))
+        visiting.remove(model_id)
+        visited.add(model_id)
+
+    for model in models:
+        visit(model.id, ())
 
 
 def _source_variant(
@@ -376,14 +439,21 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[ModelConfig, ..
                 variants=variants,
                 artifacts=tuple(artifacts),
                 snapshots=_snapshots(data, path),
+                snapshot_camera=_primary_snapshot_camera(data, path),
                 priority=_resolved_priority(
                     model_root=model_root,
                     models_root=root,
                     groups=groups,
                 ),
+                dependencies=_dependencies(
+                    data,
+                    owner_id=owner_id,
+                    path=path,
+                ),
             )
         )
 
+    _validate_dependencies(result)
     return tuple(sorted(result, key=lambda model: (model.priority, model.id)))
 
 

@@ -30,6 +30,8 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('"basic" "Basic Models"', adapter)
         self.assertIn('"components" "Components"', adapter)
         self.assertIn('"advanced" "Advanced Models"', adapter)
+        self.assertNotIn('dict "source" (printf "build/models/', adapter)
+        self.assertNotIn('kind "build"', adapter)
         self.assertNotIn("simple-box", adapter)
         self.assertNotIn("simple-mft", adapter)
 
@@ -38,7 +40,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('.Resources.Get "page.md"', page)
         self.assertIn('index $m "extra_views"', page)
         self.assertIn('.Resources.Get "scpf-source.py"', page)
-        self.assertIn('.Resources.Get "solidcraft.json"', page)
+        self.assertIn('resources.Get (printf "build/%s" $commandsPath)', page)
+        self.assertIn("raw.githubusercontent.com", page)
+        self.assertIn("blob/build/%s/", page)
+        self.assertIn("View STL on GitHub", page)
         self.assertNotIn("simple-box", page)
         self.assertNotIn("simple-mft", page)
 
@@ -60,6 +65,12 @@ class SiteContractTests(unittest.TestCase):
         for name in ("Models", "Basic", "Components", "Advanced"):
             self.assertIn(f'name = "{name}"', menu)
         self.assertIn("Updated {{ $page.Lastmod.Format", card)
+
+    def test_pages_build_passes_durable_scope_to_hugo(self):
+        build = (ROOT / "modules/pages/src/cad_model_pages/build.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('env["HUGO_PARAMS_BUILDSCOPE"] = build_namespace', build)
 
     def test_pages_workflow_builds_main_and_dev_scopes(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(

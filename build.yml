@@ -1,14 +1,9 @@
 schema: 1
-branch: feature/bootstrap-template
+branch: feature/1-migrate-plate
 
-modules:
-  - branch-cleanup
-  - build
-  - ci
-  - merge-policy
-  - pages
+modules: []
 models:
-  - simple-box
+  - plate
 
 tasks:
   - test

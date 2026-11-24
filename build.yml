@@ -1,10 +1,9 @@
 schema: 1
-branch: issue/15-corner-bracket-arm-tip-wedges
+branch: fix/34-simple-mft-image-reference
 
-modules: []
+modules:
+  - pages
 models:
-  - corner-bracket
-
+  - simple-mft
 tasks:
   - test
-  - build

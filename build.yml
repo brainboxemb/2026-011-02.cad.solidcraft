@@ -4,5 +4,7 @@ branch: fix/simple-mft-component-classification
 modules: []
 models:
   - simple-mft
+  - simple-mft-assembly
 tasks:
   - test
+  - build

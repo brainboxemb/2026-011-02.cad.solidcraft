@@ -1,0 +1,16 @@
+purpose: [example]
+section: advanced
+priority: 20
+title: Simple MFT assembly
+tagline: Reusable Simple MFT worktop with an 800 mm Festool-profile GuideRail
+description: >
+  An assembly that reuses the standalone Simple MFT component and the generic
+  GuideRail component. The rail runs along the short Y/depth direction, is
+  centred over X=0 and rests on the parametrically shared worktop top face.
+parameters: 805 × 555 mm worktop; shared worktop thickness 18 mm; Festool GuideRail 800 mm
+stages:
+  - Instantiate the reusable SimpleMFT component
+  - Share worktop_thickness with the worktop component
+  - Instantiate GuideRail with the Festool profile at 800 mm
+  - Centre the 184.20 mm rail width over X=0
+  - Place the rail bottom at Z=worktop_thickness

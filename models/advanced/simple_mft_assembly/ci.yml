@@ -1,0 +1,8 @@
+schema: 1
+id: simple-mft-assembly
+builder: forge
+source: scpf/model.py
+process: true
+dependencies:
+  - simple-mft
+  - guide-rail

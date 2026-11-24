@@ -20,6 +20,7 @@ from models.components.simple_mft.scpf.model import SimpleMFT
 from models.components.guide_rail.scpf.model import GuideRail
 from models.components.guide_rail.scpf.profiles import get_profile
 from models.components.mounting_rail_m8.scpf.model import MountingRailM8
+from models.components.flex_bench_dog.scpf.model import FlexBenchDog
 
 
 @component(include="*")
@@ -46,7 +47,7 @@ class SimpleMFTAssembly:
     guide_rail_length = 800.0
 
     GUIDE_RAIL_PROFILE = "festool"
-    GUIDE_RAIL_X_SHIFT = 340.0
+    GUIDE_RAIL_X_SHIFT = 414.0
 
     SUPPORT_RAIL_LENGTH = 1000.0
     SUPPORT_RAIL_REPEAT_COUNT = 10
@@ -95,6 +96,17 @@ class SimpleMFTAssembly:
 
         worktop_width = float(SimpleMFT.width)
         worktop_depth = float(SimpleMFT.depth)
+        dog_hole_pitch = float(SimpleMFT.hole_pitch)
+
+        # Place one reusable bench dog in the rightmost hole of the centre row.
+        # The dog model uses its local Z=0 as the worktop top surface datum.
+        rightmost_dog = FlexBenchDog(
+            placement=Placement(
+                x=4 * dog_hole_pitch,
+                y=0,
+                z=self.worktop_thickness,
+            ),
+        )
 
         extension_width = self.SUPPORT_RAIL_LENGTH - worktop_width
         extension_x = worktop_width / 2 + extension_width / 2
@@ -154,6 +166,7 @@ class SimpleMFTAssembly:
             + upper_support
             + lower_support
             + left_support
+            + rightmost_dog
         )
 
 

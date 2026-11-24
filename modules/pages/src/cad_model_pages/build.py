@@ -8,6 +8,7 @@ from pathlib import Path
 import shutil
 import subprocess
 
+from .history import build_manifest, write_manifest
 from .verify import PagesVerificationError, verify
 
 
@@ -44,6 +45,7 @@ def build(
         raise PagesVerificationError(f"missing site root: {site_root}")
 
     staged_scope = _stage_build_scope(source_root, build_scope)
+    write_manifest(source_root, build_manifest(source_root))
 
     if destination.exists():
         shutil.rmtree(destination)

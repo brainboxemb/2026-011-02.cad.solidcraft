@@ -3,7 +3,7 @@ import json
 import tempfile
 import unittest
 
-from cad_model_pages.verify import verify
+from cad_model_pages.verify import PagesVerificationError, verify
 
 
 class PagesVerifyTests(unittest.TestCase):
@@ -18,11 +18,24 @@ class PagesVerifyTests(unittest.TestCase):
             model.mkdir(parents=True)
             page.mkdir(parents=True)
             build.mkdir(parents=True)
-            (site / "index.html").write_text("home", encoding="utf-8")
-            (site / "models/index.html").write_text("models", encoding="utf-8")
+            (site / "index.html").write_text(
+                "home · Recently updated models",
+                encoding="utf-8",
+            )
+            (site / "models/index.html").write_text(
+                "Basic Models · Components · Advanced Models",
+                encoding="utf-8",
+            )
+            for category in ("basic", "components", "advanced"):
+                category_page = site / "models" / category
+                category_page.mkdir(parents=True)
+                (category_page / "index.html").write_text(
+                    f'<main class="cad-category-page"><div class="cad-model-grid">{"<a href=/models/variant-a/>Variant A</a>" if category == "components" else ""}</div></main>',
+                    encoding="utf-8",
+                )
 
             (model / "model.yml").write_text(
-                "title: Variant A\nparameters: 10 × 20 mm\n",
+                "section: components\ntitle: Variant A\nparameters: 10 × 20 mm\n",
                 encoding="utf-8",
             )
             plan = {
@@ -63,6 +76,9 @@ class PagesVerifyTests(unittest.TestCase):
             )
 
             verify(repo=repo, site=site, build_scope=build)
+            (site / "models/components/index.html").write_text("cad-model-detail", encoding="utf-8")
+            with self.assertRaisesRegex(PagesVerificationError, "expected a category grid"):
+                verify(repo=repo, site=site, build_scope=build)
 
 
 if __name__ == "__main__":

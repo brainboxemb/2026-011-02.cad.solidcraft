@@ -4,19 +4,46 @@ This file contains unfinished work only.
 
 ## Now
 
-### #1 — bootstrap and staged model migration
+### #1 — staged model migration
 
-Bootstrap the accepted CAD model-project architecture, establish permanent
-`dev` / `main` operation and migrate the historical CAD catalog in widening
-accepted batches.
+The repository has accepted the self-contained CAD model-project architecture
+and is migrating the historical catalog from
+`brainboxemb/2026-011-02.cad.solidcraft`.
 
-Current stage:
+Accepted migration stages:
 
-1. template baseline accepted on `main`;
-2. permanent `dev` created from that exact baseline;
-3. migrate one real model: `models/basic/plate`;
-4. prove normal PR, `dev`, build publication and Pages behavior;
-5. only then widen to five real models.
+1. one real model — `plate`;
+2. five real models — `plate`, `vent-plate`, `csg-cube`, `bracket`,
+   `sample-plate`.
+
+Current work:
+
+1. sync the accepted template catalog presentation:
+   - Recently updated models on the landing page;
+   - Models / Basic / Components / Advanced navigation;
+   - grouped model catalog;
+   - real category index pages;
+   - Git-derived last-modified dates;
+   - Pages PR verification against the matching durable build scope;
+2. accept that sync on `dev`;
+3. continue to the ten-real-model stage.
+
+## Stage 3 — ten real models
+
+Target five additional roots:
+
+- `plastic-enclosure`;
+- `plastic-enclosure-pi`;
+- `bolted-flange`;
+- `guide-rail`;
+- `flex-bench-dog`.
+
+The ten-model acceptance branch must select all ten real models, not only the
+five newly added roots.
+
+`bolted-flange` retains historical issue #135 about replacing the Python
+bolt-hole loop with a native circular pattern. Migration preserves the current
+accepted source; do not silently solve that issue during transfer.
 
 ## Migration ordering
 
@@ -62,6 +89,6 @@ CAD-specific `model.yml` schema.
 
 ## Next
 
-After the one-model Plate acceptance is green, migrate four additional basic
-models as the five-model batch. Do not widen further until that batch is
-accepted.
+After the template catalog sync is accepted, build and validate the ten-model
+stage. Do not widen beyond ten real models until PR CI, durable `dev`, build
+publication and Pages are all green.

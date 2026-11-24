@@ -261,7 +261,12 @@ The explicit dispatch is intentional: GitHub suppresses most chained workflow
 events created by `GITHUB_TOKEN`, while `workflow_dispatch` is allowed. CAD
 CI never waits for Hugo or Pages deployment.
 
-PRs that change site-related files get a separate read-only Pages check.
+PRs that change the site or Pages implementation get a separate read-only
+Pages check. Development-target PRs and dev-to-main promotions use the durable
+`build/dev` scope; other main-target PRs use `build/main`. Model-only changes
+are verified by CAD CI and receive their published pages after permanent build
+publication. Keep new-model migrations separate from Pages implementation
+changes, because unpublished model variants do not have durable build rows.
 
 Repository Pages uses the generated `gh-pages` branch as its publication source.
 The workflow itself updates that branch; no `github-pages` deployment environment

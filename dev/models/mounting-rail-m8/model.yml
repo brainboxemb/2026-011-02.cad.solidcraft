@@ -2,7 +2,7 @@ purpose: [example]
 section: components
 priority: 30
 title: Mounting Rail M8
-tagline: 250 mm parametric 27/18 perforated sheet rail, punched flat and then folded
+tagline: 250 mm 27/18 perforated sheet rail, product-aligned from one end and folded opening-up
 description: >
   A reusable light mounting-rail component authored in fabrication order as
   native sheet metal: developed flat blank, four source perforations, one
@@ -11,8 +11,9 @@ description: >
   M8 use and 1.25 mm thickness. The 27 × 18 mm section and perforation
   dimensions use a generic published 27/18 rail reference and are not claimed
   as DRESSELHAUS manufacturing dimensions.
-parameters: 250 mm default length; 2 repeat units at editable 100 mm repeat pitch; fixed 27 × 18 × 1.25 mm reference section; 15 mm opening; R1.25/K0.40 bend rule
+parameters: 250 mm default length; first round opening 12.5 mm from Y=0; 2 repeat units at editable 100 mm repeat pitch; fixed 27 × 18 × 1.25 mm reference section; 15 mm opening; R1.25/K0.40 bend rule
 stages:
+  - Local orientation — +Y from the product-pattern start side, perforated back web below, C-opening toward +Z
   - Flat development — native sheet blank developed for the 27 × 18 mm formed section and 15 mm opening
   - Repeat source — four native cuts while flat: round, longitudinal slot, round, transverse slot
   - Native pattern — one Rectangular Pattern repeats all four source features together

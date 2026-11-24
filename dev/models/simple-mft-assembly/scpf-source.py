@@ -11,7 +11,7 @@ right. Both perforation sequences therefore run in the same left-to-right
 direction.
 
 The mounting-rail component is locally built along +Y with its C-opening toward
--Z. Two different 120-degree occurrence rotations map local +Y to world +X,
++Z. Two different 120-degree occurrence rotations map local +Y to world +X,
 while mapping the opening to opposite outward Y directions.
 """
 from scpf import Placement, half
@@ -36,11 +36,17 @@ class SimpleMFTAssembly:
     # rotations. Put its upper edge at Z=0 so the MFT underside rests on it.
     SUPPORT_RAIL_Z = -MountingRailM8.PROFILE_WIDTH / 2
 
+    # The local +Z profile depth becomes the outward world-Y direction.
+    # Inset each rail by the full 18 mm profile depth so its outer face is
+    # flush with the corresponding worktop edge and the complete rail sits
+    # underneath the plate instead of just outside it.
+    SUPPORT_RAIL_INSET = MountingRailM8.PROFILE_HEIGHT
+
     # Axis-angle rotations:
     #   local +Y (rail length) -> world +X for BOTH rails;
-    #   local -Z (C opening)   -> world +Y / -Y respectively.
-    UPPER_RAIL_ROTATION = ((1, 1, -1), 120)
-    LOWER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    #   local +Z (C opening)   -> world +Y / -Y respectively.
+    UPPER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    LOWER_RAIL_ROTATION = ((1, 1, -1), 120)
 
     def build(self):
         profile = get_profile(self.GUIDE_RAIL_PROFILE)
@@ -62,8 +68,8 @@ class SimpleMFTAssembly:
         worktop_depth = float(SimpleMFT.depth)
 
         rail_x = -worktop_width / 2
-        upper_y = worktop_depth / 2
-        lower_y = -worktop_depth / 2
+        upper_y = worktop_depth / 2 - self.SUPPORT_RAIL_INSET
+        lower_y = -worktop_depth / 2 + self.SUPPORT_RAIL_INSET
 
         upper_support = MountingRailM8(
             length=self.SUPPORT_RAIL_LENGTH,

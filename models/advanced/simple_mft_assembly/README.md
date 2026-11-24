@@ -23,8 +23,8 @@ The system is 1000 mm wide overall:
 - two 1000 mm support rails run underneath the complete width;
 - the 800 mm GuideRail is shifted 414 mm toward +X from its original assembly
   position;
-- one FlexBenchDog is placed in the rightmost hole of the centre dog-hole row
-  at X=+304 mm, Y=0.
+- one FlexBenchDog is placed in the bottom hole of the rightmost dog-hole
+  column at X=+304 mm, Y=-228 mm.
 
 The extension starts at the MFT right edge (X=+402.5 mm) and ends at
 X=+597.5 mm, exactly matching the right ends of the 1000 mm support rails.
@@ -61,11 +61,11 @@ The native component materials are intentionally distinct for visual review:
 ## Bench dog
 
 The assembly reuses `models/components/flex_bench_dog` rather than drawing a
-decorative pin. It is inserted in the rightmost existing hole of the MFT centre
-row:
+decorative pin. It is inserted in the bottom existing hole of the rightmost
+MFT dog-hole column:
 
 - X = +4 × 76 mm = +304 mm;
-- Y = 0;
+- Y = -3 × 76 mm = -228 mm;
 - worktop surface datum Z = 18 mm.
 
 The dog therefore keeps its own 20 mm insertion depth below the top surface and

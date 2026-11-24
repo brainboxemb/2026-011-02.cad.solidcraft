@@ -7,11 +7,11 @@ from cad_model_build.forge import compile_plan, install_url
 
 
 class ForgeBuildTests(unittest.TestCase):
-    def test_install_url_contains_exact_commit(self):
-        commit = "a" * 40
+    def test_install_url_contains_release_version(self):
+        version = "v0.15.0"
         self.assertIn(
-            commit,
-            install_url("brainboxemb/lib.py.solidcraft.forge", commit),
+            "@v0.15.0#subdirectory=scpf",
+            install_url("brainboxemb/lib.py.solidcraft.forge", version),
         )
 
     @patch("cad_model_build.forge.subprocess.run")

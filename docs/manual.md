@@ -265,8 +265,12 @@ points at the source SHA being published.
 
 Stable Pages use Hugo 0.169.0 with Hextra v0.13.0.
 
-The site consumes source and generated build output without rebuilding CAD.
-One Pages deployment contains both source/build scopes:
+The site consumes source metadata and reads durable build metadata without
+rebuilding CAD. Generated CAD artifacts remain owned exclusively by the
+generated `build` branch; Pages never republishes those files into
+`gh-pages`.
+
+One Pages deployment contains both presentation scopes:
 
 ```text
 /       <- main source + build/main
@@ -277,7 +281,17 @@ Both scopes use the same Hugo/Hextra layouts. Each scope is verified against
 its matching build plan before the combined generated site is published.
 
 `model.yml` owns presentation text. `ci.yml` owns source/variant identity.
-The generated `build/main` scope owns JSON, SC, STEP, PNG and optional STL.
+The generated `build/main` / `build/dev` scopes own JSON, SC, STEP, PNG,
+optional STL and model-owned snapshot images.
+
+Model pages link directly to those durable artifacts:
+
+- normal GitHub `blob/build/<scope>/...` URLs for inspection and downloads;
+- raw GitHub build URLs for inline preview images and SolidCraft Web input;
+- STL blob URLs open in GitHub's native 3D viewer.
+
+Only source-owned presentation resources such as `page.md` and declared local
+reference assets are copied into the generated site.
 
 The primary model layout is shared. Model-specific additions use optional
 `page.md` for background prose and declarative `extra_views` in metadata for

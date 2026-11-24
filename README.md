@@ -1,50 +1,33 @@
-# template.cad.model-project
+# 2026-011-02.cad.solidcraft.NEW
 
-Self-contained template for CAD model repositories.
+SolidCraft CAD model repository rebuilt on the accepted self-contained CAD
+model-project architecture.
 
-Models and Python capabilities are independent build items.
+The repository is being migrated from
+`brainboxemb/2026-011-02.cad.solidcraft` in staged batches. The old repository
+remains the source for existing model geometry and open model-design issues
+until each model has been accepted here.
 
-```text
-ci.yml
-build.yml
+## Architecture
 
-modules/
-  ci/
-    ci.yml
-    pyproject.toml
-    src/
-    tests/
-  build/
-    ci.yml
-    pyproject.toml
-    src/
-    tests/
-  merge-policy/
-    ci.yml
-    pyproject.toml
-    src/
-    tests/
+- permanent source branches: `dev` and `main`;
+- generated technical output: `build`;
+- generated site: `gh-pages`;
+- Forge and SolidCraft are pinned in root `ci.yml`;
+- every model owns its own `ci.yml`, `model.yml` and source;
+- directory group priority controls build ordering only;
+- Pages is rebuilt separately after successful permanent build publication.
 
-models/
-  simple-box/
-    ci.yml
-    model.yml
-    scpf/model.py
+The template `simple-box` remains as an explicit example while real CAD models
+are migrated.
 
-build/                  # generated, ignored
-```
+## Migration
 
-## Selection
+Migration is tracked by #1 and expands only after each stage is green:
 
-`ci.yml` is stable project configuration and contains the exact Forge pin.
+1. one real model;
+2. five real models;
+3. ten real models;
+4. remaining catalog.
 
-`build.yml` is the current branch's execution plan. A module-only PR selects
-only that module; a model-only PR selects only that model.
-
-`main` ignores `build.yml` and runs the complete repository.
-
-## Branches
-
-- short-lived branch -> `dev`: squash;
-- `dev` -> `main`: merge commit;
-- `main` -> `dev`: merge commit.
+The first real acceptance root is `models/basic/plate`.

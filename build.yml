@@ -6,6 +6,7 @@ models:
   - simple-mft
   - mounting-rail-m8
   - guide-rail
+  - flex-bench-dog
   - simple-mft-assembly
 tasks:
   - test

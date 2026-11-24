@@ -76,11 +76,14 @@ web-through cut, and **one native rectangular feature pattern** repeats the
 whole cut. The editable `feature_pitch = 25 mm` therefore produces a native
 repeat spacing of `4 × feature_pitch = 100 mm`.
 
-The standalone example uses `length = 250 mm` and `repeat_count = 2`.
-The first-unit position is derived from length, repeat count and pitch so the
-complete pattern is centred. With `length = 1000 mm` and
-`repeat_count = 10`, the same expression resolves to the 12.5 mm
-product-reference end offset.
+The standalone example uses `length = 250 mm`, `repeat_count = 2` and an
+editable `end_offset = 37.5 mm`, which centres the two complete units in the
+short example.
+
+`end_offset` remains a separate native parameter. For the 1000 mm reference,
+`repeat_count = 10` with `end_offset = 12.5 mm` reproduces the documented
+full-length layout. Length, count, pitch and offset can therefore be edited
+independently in SolidCraft.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

@@ -75,11 +75,12 @@ class MountingRailM8:
         inner_fold_x = back_span / 2
         outer_fold_x = inner_fold_x + side_span
 
-        # Preserve the existing local component contract:
-        #   +Y is rail length, Y=0 is the rail start, opening points toward -Z,
-        #   outer back face reaches Z=PROFILE_HEIGHT.
-        back_inner_z = self.PROFILE_HEIGHT - thickness
-        back_outer_z = self.PROFILE_HEIGHT
+        # Local component contract:
+        #   +Y is rail length and Y=0 is the product-pattern start side.
+        #   The C-opening points toward +Z for the standalone rail.
+        #   The perforated back web occupies Z=0..THICKNESS.
+        back_inner_z = 0.0
+        back_outer_z = thickness
 
         with Sketch(
             name="Flat rail blank",
@@ -102,9 +103,10 @@ class MountingRailM8:
             rule_name="Mounting Rail M8 Rule",
         )
 
-        # Centre the four-feature source unit for the requested initial
-        # length/count/pitch. The 250 mm standalone rail starts at 37.5 mm;
-        # the 1000 mm / 10-repeat assembly rail starts at 12.5 mm.
+        # The physical product pattern starts from one rail end instead of
+        # being centred in whatever presentation length happens to be used.
+        # The first round opening is 12.5 mm from Y=0 for both the standalone
+        # 250 mm example and the 1000 mm assembly rail.
         length_value = float(self.length.value)
         repeat_count_value = int(self.repeat_count.value)
         repeat_pitch_value = float(self.repeat_pitch.value)
@@ -113,8 +115,8 @@ class MountingRailM8:
             (repeat_count_value - 1) * repeat_pitch_value
             + source_span
         )
-        end_offset = (length_value - patterned_span) / 2
-        if end_offset < 0:
+        end_offset = 12.5
+        if end_offset + patterned_span > length_value:
             raise ValueError(
                 "mounting rail repeat pattern does not fit inside the rail length"
             )
@@ -205,9 +207,8 @@ class MountingRailM8:
         )
 
         # Fold the lips first while all four bend lines are still available in
-        # the original flat plane. Then fold both side walls down. Keeping the
-        # centre/back panel fixed preserves the component's existing +Y and -Z
-        # orientation contract.
+        # the original flat plane. Then fold both side walls upward. Keeping
+        # the centre/back panel fixed gives the standalone rail a +Z opening.
         fixed = (0.0, length_value / 2, back_inner_z)
         line_y = (0.0, length_value)
 
@@ -218,7 +219,7 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
-            flip=True,
+            flip=False,
         )
         rail = rail.fold(
             line=(
@@ -227,7 +228,7 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
-            flip=True,
+            flip=False,
         )
         rail = rail.fold(
             line=(
@@ -236,7 +237,7 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
-            flip=True,
+            flip=False,
         )
         rail = rail.fold(
             line=(
@@ -245,7 +246,7 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
-            flip=True,
+            flip=False,
         )
 
         return rail

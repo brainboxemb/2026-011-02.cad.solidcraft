@@ -35,6 +35,10 @@ Generic 27/18 reference geometry:
 
 ## Fabrication-order model
 
+The standalone rail uses a fixed local orientation: +Y runs from the
+product-pattern start end toward the far end, the perforated back web is at the
+bottom, and the C-opening faces +Z.
+
 The rail is deliberately authored in fabrication order:
 
 1. develop one flat sheet blank from the requested 27 × 18 mm outer section,
@@ -83,10 +87,11 @@ The standalone model exposes the repeat controls that should remain editable:
 - `repeat_count = 2`;
 - `repeat_pitch = 100 mm`.
 
-For a full 1000 mm reference rail, use `length = 1000`,
-`repeat_count = 10` and `repeat_pitch = 100 mm`. The source unit is centred
-inside the requested initial length, giving a 37.5 mm end offset for the
-250 mm / 2-repeat example and 12.5 mm for the 1000 mm / 10-repeat rail.
+For both the standalone 250 mm example and the full 1000 mm reference rail,
+the product-pattern origin is the same physical end: the first round opening is
+centred 12.5 mm from Y=0. With `repeat_pitch = 100 mm`, the complete
+round -> longitudinal slot -> round -> transverse slot unit then repeats toward
++Y. This keeps pattern registration independent from the presentation length.
 
 Forge 0.15 currently requires `Shape.fold()` point-based fold lines to use
 fixed numeric coordinates. The component therefore resolves the fold-line

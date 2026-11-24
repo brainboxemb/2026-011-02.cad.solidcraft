@@ -11,7 +11,7 @@ right. Both perforation sequences therefore run in the same left-to-right
 direction.
 
 The mounting-rail component is locally built along +Y with its C-opening toward
--Z. Two different 120-degree occurrence rotations map local +Y to world +X,
++Z. Two different 120-degree occurrence rotations map local +Y to world +X,
 while mapping the opening to opposite outward Y directions.
 """
 from scpf import Placement, half
@@ -38,9 +38,9 @@ class SimpleMFTAssembly:
 
     # Axis-angle rotations:
     #   local +Y (rail length) -> world +X for BOTH rails;
-    #   local -Z (C opening)   -> world +Y / -Y respectively.
-    UPPER_RAIL_ROTATION = ((1, 1, -1), 120)
-    LOWER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    #   local +Z (C opening)   -> world +Y / -Y respectively.
+    UPPER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    LOWER_RAIL_ROTATION = ((1, 1, -1), 120)
 
     def build(self):
         profile = get_profile(self.GUIDE_RAIL_PROFILE)

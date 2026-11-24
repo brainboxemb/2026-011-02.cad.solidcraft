@@ -2,20 +2,20 @@ purpose: [example]
 section: components
 priority: 30
 title: Mounting Rail M8
-tagline: 1000 mm galvanized 27/18 light C-profile with repeating M8 installation perforations
+tagline: 250 mm parametric 27/18 light C-profile with one repeated M8 perforation unit
 description: >
   A reusable light mounting-rail component modelled as native sheet metal.
   The supplied DRESSELHAUS/HORNBACH product establishes 1000 mm length,
   galvanized steel, M8 use and 1.25 mm thickness. The 27 × 18 mm C-profile and
   perforation dimensions use a generic published 27/18 rail reference and are
   not claimed as DRESSELHAUS manufacturing dimensions.
-parameters: 1000 mm length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 25 mm feature pitch; 10 repeat units
+parameters: 250 mm default length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 25 mm feature pitch; 2 repeat units
 stages:
   - C profile — one native open XZ sheet contour
-  - Contour flange — 1000 mm native sheet-metal rail
+  - Contour flange — 250 mm default native sheet-metal rail
   - Repeat-unit Sketch — round, longitudinal slot, round, transverse slot
-  - Unit cut — one through-all feature containing all four profiles
-  - Native pattern — repeat the complete cut 10 times at 100 mm default pitch
+  - Unit cut — one shallow web-through feature containing all four profiles
+  - Native pattern — repeat the complete cut 2 times at 100 mm default pitch
 warning:
   title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
   body: >
@@ -32,6 +32,14 @@ extra_views:
       src: mounting_rail_m8_reference_w320.jpg
       alt: Galvanized M8 mounting rail reference
       caption: 'Reference product — Source: HORNBACH / DRESSELHAUS'
+    - kind: build
+      src: rear-pattern.png
+      alt: Mounting Rail M8 straight rear view showing the perforation pattern
+      caption: Rear view — complete repeat pattern
+    - kind: build
+      src: right-profile.png
+      alt: Mounting Rail M8 right-end view showing the C-profile
+      caption: Right-end view — 27 × 18 C-profile
     - kind: build
       src: pattern-closeup.png
       alt: Mounting Rail M8 perforation pattern close-up

@@ -83,7 +83,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--build-scope prepared-build/dev", workflow)
         self.assertIn("--destination generated-site/dev", workflow)
         self.assertIn(
-            'https://brainboxemb.github.io/template.cad.model-project/dev/',
+            'https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/',
             workflow,
         )
         self.assertNotIn("simple-box", workflow)

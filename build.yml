@@ -1,5 +1,5 @@
 schema: 1
-branch: feature/mounting-rail-m8
+branch: fix/mounting-rail-m8-repeat-unit
 
 modules: []
 models:

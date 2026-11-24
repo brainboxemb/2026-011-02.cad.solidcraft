@@ -23,9 +23,11 @@ Generic 27/18 reference geometry:
 - 27 × 18 mm outer section;
 - 15 mm C-opening;
 - native sheet-metal contour flange;
-- repeating punch sequence:
+- one authored four-profile punch unit:
   `round -> horizontal slot -> round -> vertical slot`;
-- 25 mm centre pitch and 100 mm full repeat;
+- one native feature pattern repeats that complete unit;
+- editable 25 mm feature pitch gives a 100 mm default repeat pitch;
+- standalone default repeat count: 2; 10 reproduces the full 1000 mm reference;
 - Ø12.5 round hole;
 - 10 × 6.4 mm horizontal slot;
 - 15 × 8.4 mm vertical slot.
@@ -42,3 +44,33 @@ DRESSELHAUS dimensional drawing or a physical rail:
 - material bend rule.
 
 Do not rename the generic component to the reference brand.
+
+## Parametric pattern contract
+
+The physical source unit is one fixed reference punch sequence:
+
+1. round opening;
+2. longitudinal slot;
+3. round opening;
+4. transverse slot.
+
+Each source opening remains its own native cut feature because SolidCraft
+0.48.1 rejects a disconnected compound sheet recess and can also misclassify
+symbolic sheet-cut geometry as reaching a bend.
+
+Forge 0.15 allows `rectangular_pattern()` to receive a sequence of several
+already-applied native features. The four source cuts are therefore passed
+together to **one native Rectangular Pattern**.
+
+The standalone model exposes exactly the repeat controls that should remain
+editable:
+
+- `length = 250 mm`;
+- `repeat_count = 2`;
+- `repeat_pitch = 100 mm`.
+
+The source-unit dimensions remain the fixed generic 27/18 reference values.
+For a full 1000 mm reference rail, use `length = 1000`,
+`repeat_count = 10` and keep `repeat_pitch = 100 mm`; a product-end-aligned
+version would use the corresponding 12.5 mm source offset rather than the
+37.5 mm centred short-example offset.

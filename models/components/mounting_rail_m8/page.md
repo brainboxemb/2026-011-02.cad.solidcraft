@@ -44,7 +44,9 @@ Nominal profile used by the model:
 - clear C-opening: **15 mm**.
 
 The rail is built as native sheet metal from one connected XZ contour and one
-native contour flange along the 1000 mm length.
+native contour flange. The reference product is 1000 mm long; the standalone
+model intentionally defaults to a shorter **250 mm** piece for clearer CAD and
+Pages presentation.
 
 ## Repeating perforation pattern
 
@@ -66,9 +68,23 @@ interpretation:
 - full four-feature repeat: **100 mm**.
 
 For the 1000 mm rail this gives 40 perforation positions, ending 12.5 mm before
-the far end. The implementation keeps the history compact: one face-attached Circle cut is
-patterned at 50 mm pitch, while one horizontal and one vertical Slot cut are
-each patterned at 100 mm pitch.
+the far end.
+
+The implementation follows the physical repeat directly. The source repeat
+contains four fixed native cut features: round opening, longitudinal slot,
+round opening and transverse slot.
+
+Forge 0.15 accepts a sequence of already-applied native features as one
+`rectangular_pattern()` source. The model therefore supplies all four cuts to
+**one native Rectangular Pattern**. SolidCraft stores one pattern history
+feature whose source list contains the complete four-feature repeat unit.
+
+The standalone example is intentionally **250 mm** long and exposes the
+pattern controls `repeat_count = 2` and `repeat_pitch = 100 mm` as native
+editable parameters. The four punch shapes themselves stay at the fixed
+reference dimensions because SolidCraft 0.48.1 sheet-recess validation is
+reliable for those numeric profiles but can misclassify symbolic disconnected
+sheet cuts as reaching a bend.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

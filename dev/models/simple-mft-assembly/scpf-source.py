@@ -10,7 +10,7 @@ profile and length; SimpleMFT owns only the worktop geometry.
 """
 from scpf import Placement, half
 
-from models.advanced.simple_mft.scpf.model import SimpleMFT
+from models.components.simple_mft.scpf.model import SimpleMFT
 from models.components.guide_rail.scpf.model import GuideRail
 from models.components.guide_rail.scpf.profiles import get_profile
 

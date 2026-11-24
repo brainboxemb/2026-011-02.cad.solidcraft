@@ -376,7 +376,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "e7d101b59d8c44316b6331eda9a8cd19d7f2fc9b",
+      "built_source_sha": "409bc7b069d249158b5985d57cf31c0a12f46fd8",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
       "id": "mounting-rail-m8",
@@ -597,11 +597,12 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "54aafcc2ff7605c0999ce6d145fef4a4cdc6ff96",
+      "built_source_sha": "409bc7b069d249158b5985d57cf31c0a12f46fd8",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "simple-mft",
-        "guide-rail"
+        "guide-rail",
+        "mounting-rail-m8"
       ],
       "id": "simple-mft-assembly",
       "native": {
@@ -614,9 +615,50 @@
       "priority": 30,
       "root": "models/advanced/simple_mft_assembly",
       "snapshot": {
-        "camera": null
+        "camera": {
+          "distance": 1250,
+          "fov": 0,
+          "pitch": 0.55,
+          "target": [
+            90,
+            0,
+            0
+          ],
+          "yaw": -0.65
+        }
       },
-      "snapshots": [],
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 1250,
+            "fov": 0,
+            "pitch": 1.5,
+            "target": [
+              97.5,
+              0,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "support-rails-top.png",
+          "path": "models/simple-mft-assembly/support-rails-top.png"
+        },
+        {
+          "camera": {
+            "distance": 720,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              500,
+              0,
+              -5
+            ],
+            "yaw": 1.5708
+          },
+          "name": "support-rails-right.png",
+          "path": "models/simple-mft-assembly/support-rails-right.png"
+        }
+      ],
       "source": "models/advanced/simple_mft_assembly/scpf/model.py"
     },
     {
@@ -647,5 +689,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "e7d101b59d8c44316b6331eda9a8cd19d7f2fc9b"
+  "source_sha": "409bc7b069d249158b5985d57cf31c0a12f46fd8"
 }

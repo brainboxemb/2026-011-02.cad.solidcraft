@@ -1,0 +1,19 @@
+baseURL = "https://brainboxemb.github.io/template.cad.model-project/"
+locale = "en"
+defaultContentLanguage = "en"
+title = "SolidCraft CAD model project"
+enableRobotsTXT = false
+summaryLength = 28
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+
+[params]
+  description = "SolidCraft CAD models from model-owned metadata and durable build output."
+  cadSourceRepository = "brainboxemb/template.cad.model-project"
+  sourceRef = "main"
+  buildScope = "main"

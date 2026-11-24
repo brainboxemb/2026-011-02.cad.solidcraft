@@ -1,0 +1,12 @@
+purpose: [example]
+section: fundamentals
+priority: 10
+title: Simple Box
+tagline: One parameterized native Forge box
+description: >
+  Minimal model proving that one independent model root can be authored with
+  Forge and built without repository-specific Python orchestration.
+parameters: 40 × 30 × 10 mm
+stages:
+  - Define editable length, width and height
+  - Create one bottom-anchored Box

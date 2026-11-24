@@ -1,0 +1,12 @@
+{{ $page := index . "page" }}
+{{ $m := $page.Params.model }}
+<a class="cad-model-card cad-model-card-has-section" href="{{ $page.RelPermalink }}">
+  <span class="cad-card-picture">
+    {{ with $page.Resources.Get "model.png" }}<img src="{{ .RelPermalink }}" alt="">{{ end }}
+  </span>
+  <span class="cad-card-section">{{ $page.Params.cadSection }}</span>
+  <strong class="cad-card-title">{{ $page.Title }}</strong>
+  <span class="cad-card-tagline">{{ index $m "tagline" }}</span>
+  <small class="cad-card-parameters">{{ index $m "parameters" }}</small>
+  <b class="cad-card-state">built</b>
+</a>

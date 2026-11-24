@@ -1,0 +1,146 @@
+{{/*
+Generic model page adapter.
+
+- model.yml owns presentation metadata;
+- ci.yml owns build/source identity;
+- prepared-build/main owns accepted generated artifacts;
+- this adapter never executes CAD and contains no model-name branches.
+*/}}
+
+{{ $planResource := resources.Get "build/build-plan.json" }}
+{{ if not $planResource }}
+  {{ errorf "missing durable build/main/build-plan.json" }}
+{{ end }}
+{{ $plan := $planResource | transform.Unmarshal }}
+{{ $rows := index $plan "models" }}
+{{ if not $rows }}
+  {{ errorf "durable build plan contains no model rows" }}
+{{ end }}
+
+{{ range $modelResource := resources.Match "cad-source/**/model.yml" }}
+  {{ $modelRootPath := strings.TrimPrefix "/" (path.Dir $modelResource.Name) }}
+  {{ $modelRoot := strings.TrimPrefix "cad-source/" $modelRootPath }}
+  {{ $rootMeta := $modelResource | transform.Unmarshal }}
+  {{ $ciResource := resources.Get (printf "cad-source/%s/ci.yml" $modelRoot) }}
+  {{ if not $ciResource }}
+    {{ errorf "%s: missing ci.yml" $modelRoot }}
+  {{ end }}
+  {{ $ci := $ciResource | transform.Unmarshal }}
+
+  {{ $entries := slice }}
+  {{ with $variants := index $ci "variants" }}
+    {{ $metaVariants := index $rootMeta "variants" }}
+    {{ range $variant := $variants }}
+      {{ $slug := index $variant "id" }}
+      {{ $meta := $rootMeta }}
+      {{ with $metaVariants }}
+        {{ $meta = index . $slug }}
+        {{ if not $meta }}
+          {{ errorf "%s: model.yml has no metadata for build variant %s" $modelRoot $slug }}
+        {{ end }}
+      {{ end }}
+      {{ $entries = $entries | append (dict
+        "slug" $slug
+        "source" (index $variant "source")
+        "model" $meta
+      ) }}
+    {{ end }}
+  {{ else }}
+    {{ $entries = $entries | append (dict
+      "slug" (index $ci "id")
+      "source" (index $ci "source")
+      "model" $rootMeta
+    ) }}
+  {{ end }}
+
+  {{ range $entry := $entries }}
+    {{ $slug := index $entry "slug" }}
+    {{ $sourcePath := index $entry "source" }}
+    {{ $model := index $entry "model" }}
+    {{ $matches := where $rows "id" $slug }}
+    {{ if ne (len $matches) 1 }}
+      {{ errorf "%s: expected exactly one durable build row, found %d" $slug (len $matches) }}
+    {{ end }}
+    {{ $build := index $matches 0 }}
+    {{ $section := index $rootMeta "section" }}
+
+    {{ $.AddPage (dict
+      "content" (dict
+        "mediaType" "text/markdown"
+        "value" (index $model "description")
+      )
+      "kind" "page"
+      "path" $slug
+      "title" (index $model "title")
+      "params" (dict
+        "model" $model
+        "cadSection" $section
+        "cadRoot" $modelRoot
+        "cadSlug" $slug
+        "sourcePath" $sourcePath
+        "build" $build
+        "toolchain" (dict
+          "forge" (index $plan "forge")
+          "solidcraft" (index $plan "solidcraft")
+        )
+      )
+    ) }}
+
+    {{ range $resource := slice
+      (dict "source" (printf "cad-source/%s/model.yml" $modelRoot) "target" "model.yml" "media" "text/plain")
+      (dict "source" (printf "cad-source/%s/ci.yml" $modelRoot) "target" "ci.yml" "media" "text/plain")
+      (dict "source" (printf "cad-source/%s/%s" $modelRoot $sourcePath) "target" "scpf-source.py" "media" "text/plain")
+      (dict "source" (printf "build/models/%s/solidcraft.json" $slug) "target" "solidcraft.json" "media" "application/json")
+      (dict "source" (printf "build/models/%s/model.png" $slug) "target" "model.png" "media" "image/png")
+      (dict "source" (printf "build/models/%s/model.sc" $slug) "target" "model.sc" "media" "application/octet-stream")
+      (dict "source" (printf "build/models/%s/model.step" $slug) "target" "model.step" "media" "application/octet-stream")
+      (dict "source" (printf "build/models/%s/model.stl" $slug) "target" "model.stl" "media" "application/octet-stream")
+    }}
+      {{ with resources.Get (index $resource "source") }}
+        {{ $.AddResource (dict
+          "content" (dict "mediaType" (index $resource "media") "value" .Content)
+          "path" (printf "%s/%s" $slug (index $resource "target"))
+        ) }}
+      {{ end }}
+    {{ end }}
+
+    {{ with resources.Get (printf "cad-source/%s/page.md" $modelRoot) }}
+      {{ $.AddResource (dict
+        "content" (dict "mediaType" "text/markdown" "value" .Content)
+        "path" (printf "%s/page.md" $slug)
+      ) }}
+    {{ end }}
+
+    {{ range $snapshot := index $build "snapshots" }}
+      {{ $name := index $snapshot "name" }}
+      {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
+        {{ $.AddResource (dict
+          "content" (dict "mediaType" .MediaType.Type "value" .Content)
+          "path" (printf "%s/%s" $slug $name)
+        ) }}
+      {{ end }}
+    {{ end }}
+
+    {{ with $views := index $model "extra_views" }}
+      {{ range $view := index $views "items" }}
+        {{ $kind := index $view "kind" }}
+        {{ $name := index $view "src" }}
+        {{ if eq $kind "asset" }}
+          {{ with resources.Get (printf "cad-source/%s/%s" $modelRoot $name) }}
+            {{ $.AddResource (dict
+              "content" (dict "mediaType" .MediaType.Type "value" .Content)
+              "path" (printf "%s/%s" $slug $name)
+            ) }}
+          {{ end }}
+        {{ else if eq $kind "build" }}
+          {{ with resources.Get (printf "build/models/%s/%s" $slug $name) }}
+            {{ $.AddResource (dict
+              "content" (dict "mediaType" .MediaType.Type "value" .Content)
+              "path" (printf "%s/%s" $slug $name)
+            ) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

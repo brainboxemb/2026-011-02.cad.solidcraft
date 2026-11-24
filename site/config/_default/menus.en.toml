@@ -1,0 +1,16 @@
+[[main]]
+name = "Models"
+pageRef = "/models"
+weight = 10
+
+[[main]]
+name = "Search"
+weight = 50
+[main.params]
+type = "search"
+
+[[main]]
+name = "Theme"
+weight = 60
+[main.params]
+type = "theme-toggle"

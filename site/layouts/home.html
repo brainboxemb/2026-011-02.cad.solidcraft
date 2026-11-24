@@ -1,0 +1,28 @@
+{{ define "main" }}
+<main class="cad-page-shell cad-home">
+  <section class="cad-hero">
+    <p class="cad-eyebrow">SolidCraft CAD</p>
+    <h1>CAD models from readable SCPF source</h1>
+    <p>This project keeps source metadata, build execution and generated SolidCraft artifacts separate. Each model page joins those accepted inputs without rebuilding CAD.</p>
+    <div class="cad-actions">
+      <a class="cad-button" href="{{ "models/" | relURL }}">Browse models</a>
+      <a class="cad-button cad-button-secondary" href="https://brainboxemb.github.io/lib.py.solidcraft.forge/" target="_blank" rel="noopener noreferrer">Forge / SCPF</a>
+    </div>
+  </section>
+
+  {{ $models := where site.RegularPages "Params.cadSlug" "!=" nil }}
+  {{ if gt (len $models) 0 }}
+    <section class="cad-section">
+      <div class="cad-section-heading">
+        <h2>Models</h2>
+        <p>Source-owned metadata with accepted durable build output.</p>
+      </div>
+      <div class="cad-model-grid">
+        {{ range sort $models "Params.model.priority" }}
+          {{ partial "cad/model-card.html" (dict "page" .) }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+</main>
+{{ end }}

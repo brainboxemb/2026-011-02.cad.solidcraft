@@ -1,0 +1,268 @@
+# Model project manual
+
+## Stable configuration
+
+Root `ci.yml` defines permanent source branches, the generated build branch,
+exact Forge/SolidCraft pins and repository roots.
+
+## Branch integration
+
+Promote accepted development with a merge-commit PR from `dev` to `main`.
+
+Do not routinely merge `main` back into `dev` after that promotion. The
+promotion merge commit itself does not need to be copied back.
+
+Use `main` -> `dev` only when `main` contains real content that `dev`
+does not have, such as a stable-branch hotfix. That integration also uses a
+merge commit.
+
+## CI modes
+
+### Work branch / PR
+
+A matching root `build.yml` controls exactly what runs:
+
+```yaml
+schema: 1
+branch: issue/15-ci-change
+
+modules:
+  - ci
+models: []
+tasks:
+  - test
+  - build
+```
+
+If the branch field does not match the actual work branch, the file is ignored
+and CI falls back to full.
+
+### dev
+
+`build.yml` is ignored.
+
+CI finds the most recent successful push/workflow_dispatch run on `dev` and
+uses its SHA as the baseline. The current `dev` SHA is the target.
+
+```text
+git diff --name-only <successful-baseline> <current-dev>
+```
+
+Only changed items plus declared impact run.
+
+Because superseded runs are cancelled, an unfinished run never becomes the
+baseline. A later dev run therefore automatically catches all changes since
+the last successful one.
+
+### main
+
+`build.yml` is ignored and the complete repository runs.
+
+## Item impact
+
+Item-local `ci.yml` may declare:
+
+```yaml
+impact: self
+```
+
+or:
+
+```yaml
+impact: models
+```
+
+or:
+
+```yaml
+impact: full
+```
+
+Items can add extra watched paths:
+
+```yaml
+watch:
+  - .github/workflows/ci.yml
+```
+
+Model ids are discovered from model roots; they are never centrally listed in
+Python.
+
+### Model group priority
+
+A directory above one or more model roots may define build ordering:
+
+```yaml
+schema: 1
+kind: group
+priority: 20
+```
+
+Models inherit the nearest ancestor group. Lower values build first; equal
+values are ordered by physical owner id. If no group exists, priority `1000`
+is used.
+
+Typical migration ordering is:
+
+```text
+basic / fundamentals   10
+components             20
+advanced / assemblies  30
+```
+
+Priority controls ordering only. It does not imply a model dependency and does
+not propagate selection. Explicit dependencies are deferred until an actual
+assembly requires them.
+
+## Output
+
+Generated artifacts remain below root `build/`.
+
+
+## Model builds
+
+Root `ci.yml` pins the complete qualified CAD toolchain:
+
+- Forge repository, version and exact commit;
+- released SolidCraft runtime image and exact SolidCraft version.
+
+Model-local `ci.yml` owns build execution. A minimal processed model declares
+its id and Forge source. The primary `model.png` is always produced with the
+normal SolidCraft snapshot view and therefore needs no model configuration.
+
+Only optional build extras belong in the model config, for example STL or
+additional named snapshots:
+
+```yaml
+schema: 1
+id: simple-box
+builder: forge
+source: scpf/model.py
+process: true
+
+artifacts:
+  - stl
+
+snapshots:
+  - name: top.png
+    camera:
+      target: [0, 0, 5]
+      yaw: 0
+      pitch: -1.55
+      distance: 90
+      fov: 0
+```
+
+If `snapshots` is omitted, only the standard `model.png` is rendered.
+Additional snapshots may provide their own camera.
+
+A physical model root may own multiple build variants. CI still selects the
+physical owner once; the build plan expands all of its variants:
+
+```yaml
+schema: 1
+id: guide-rail
+builder: forge
+process: true
+
+variants:
+  - id: guide-rail
+    source: scpf/model.py
+  - id: guide-rail-makita
+    source: scpf/makita.py
+```
+
+`source` and `variants` are mutually exclusive. Owner-level `artifacts` and
+`snapshots` apply to every variant. Variant output is stored by variant id,
+while the plan also records the physical owner id.
+
+
+CI selects physical model ids. The build module then performs one repository
+scan and writes a deterministic `build-plan.json`.
+
+For every selected model the normal build path is fixed:
+
+```text
+model.py
+  -> pinned Forge on the CI runner
+  -> solidcraft.json
+  -> one shared SolidCraft Docker replay batch
+  -> model.sc
+  -> model.step
+  -> model.png
+  -> optional model.stl / extra PNG snapshots
+```
+
+Forge compilation and SolidCraft replay are separate visible phases. The
+stored `solidcraft.json` is exactly the document replayed by SolidCraft.
+
+During a run, generated output is written below the checkout:
+
+```text
+build/
+  dev/
+    build-plan.json
+    models/
+  main/
+    build-plan.json
+    models/
+```
+
+Successful permanent-branch runs then publish that scope to the generated
+`build` branch. On that branch the repository root is:
+
+```text
+dev/
+  build-plan.json
+  models/
+main/
+  build-plan.json
+  models/
+```
+
+PR/work-branch builds are verification-only and never publish. Incremental
+`dev` publication replaces only selected model directories, preserves
+unselected active models, and removes model directories that are no longer
+active. A full `main` build replaces the complete `main/` scope.
+
+Publication uses normal non-force pushes and checks that the source branch still
+points at the source SHA being published.
+
+## Pages
+
+Stable Pages use Hugo 0.169.0 with Hextra v0.13.0.
+
+The site consumes source and generated build output without rebuilding CAD.
+One Pages deployment contains both source/build scopes:
+
+```text
+/       <- main source + build/main
+/dev/   <- dev source  + build/dev
+```
+
+Both scopes use the same Hugo/Hextra layouts. Each scope is verified against
+its matching build plan before the combined generated site is published.
+
+`model.yml` owns presentation text. `ci.yml` owns source/variant identity.
+The generated `build/main` scope owns JSON, SC, STEP, PNG and optional STL.
+
+The primary model layout is shared. Model-specific additions use optional
+`page.md` for background prose and declarative `extra_views` in metadata for
+reference/build images. Do not add model-name branches to shared Hugo
+templates.
+
+Pages runs in a separate workflow from CAD CI. After a successful permanent
+build publishes its build scope, CI sends a `workflow_dispatch` for
+`pages.yml` and then finishes. The Pages workflow independently rebuilds both
+the stable root and `/dev/`, then publishes the complete tree atomically to the
+generated `gh-pages` branch.
+
+The explicit dispatch is intentional: GitHub suppresses most chained workflow
+events created by `GITHUB_TOKEN`, while `workflow_dispatch` is allowed. CAD
+CI never waits for Hugo or Pages deployment.
+
+PRs that change site-related files get a separate read-only Pages check.
+
+Repository Pages uses the generated `gh-pages` branch as its publication source.
+The workflow itself updates that branch; no `github-pages` deployment environment
+or `actions/deploy-pages` path is part of the template contract.

@@ -1,0 +1,9 @@
+schema: 1
+branch: fix/48-gh-pages-ci-contract
+
+modules:
+  - ci
+models: []
+
+tasks:
+  - test

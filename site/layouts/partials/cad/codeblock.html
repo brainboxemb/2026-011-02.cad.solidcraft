@@ -1,0 +1,10 @@
+{{- $lang := .lang | default "text" -}}
+{{- $content := .content -}}
+{{- $label := .label | default "" -}}
+<div class="cad-code-frame">
+  {{ with $label }}<div class="cad-code-label">{{ . }}</div>{{ end }}
+  <div class="hextra-code-block cad-code-block hx:relative hx:group/code">
+    {{- partial "components/codeblock" (dict "filename" "" "lang" $lang "content" $content) -}}
+    {{- partial "components/codeblock-copy-button" (dict "filename" "") -}}
+  </div>
+</div>

@@ -1,10 +1,18 @@
 schema: 1
-branch: feature/template-catalog-sync
+branch: feature/1-migrate-ten
 
-modules:
-  - pages
+modules: []
 models:
-  - simple-box
+  - plate
+  - vent-plate
+  - csg-cube
+  - bracket
+  - sample-plate
+  - plastic-enclosure
+  - plastic-enclosure-pi
+  - bolted-flange
+  - guide-rail
+  - flex-bench-dog
 
 tasks:
   - test

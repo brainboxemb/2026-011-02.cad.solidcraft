@@ -6,42 +6,39 @@ This file contains unfinished work only.
 
 ### #1 — staged model migration
 
-The repository has accepted the self-contained CAD model-project architecture
-and is migrating the historical catalog from
-`brainboxemb/2026-011-02.cad.solidcraft`.
+The repository is migrating the historical CAD catalog from
+`brainboxemb/2026-011-02.cad.solidcraft` onto the accepted self-contained
+CAD model-project architecture.
 
-Accepted migration stages:
+Accepted stages:
 
 1. one real model — `plate`;
 2. five real models — `plate`, `vent-plate`, `csg-cube`, `bracket`,
-   `sample-plate`.
+   `sample-plate`;
+3. accepted template catalog presentation synced to this repository.
 
-Current work:
+Current stage: **ten real model roots**.
 
-1. sync the accepted template catalog presentation:
-   - Recently updated models on the landing page;
-   - Models / Basic / Components / Advanced navigation;
-   - grouped model catalog;
-   - real category index pages;
-   - Git-derived last-modified dates;
-   - Pages PR verification against the matching durable build scope;
-2. accept that sync on `dev`;
-3. continue to the ten-real-model stage.
+The ten-root acceptance branch selects all ten physical owners:
 
-## Stage 3 — ten real models
-
-Target five additional roots:
-
+- `plate`;
+- `vent-plate`;
+- `csg-cube`;
+- `bracket`;
+- `sample-plate`;
 - `plastic-enclosure`;
 - `plastic-enclosure-pi`;
 - `bolted-flange`;
 - `guide-rail`;
 - `flex-bench-dog`.
 
-The ten-model acceptance branch must select all ten real models, not only the
-five newly added roots.
+`guide-rail` is one physical owner with two build variants:
+`guide-rail` and `guide-rail-makita`.
 
-`bolted-flange` retains historical issue #135 about replacing the Python
+`flex-bench-dog` retains STL export and its model-owned underside snapshot
+through declarative `ci.yml` configuration.
+
+`bolted-flange` retains historical issue #135 about replacing its Python
 bolt-hole loop with a native circular pattern. Migration preserves the current
 accepted source; do not silently solve that issue during transfer.
 
@@ -61,12 +58,12 @@ This is ordering only. It does not imply dependencies or propagate selection.
 
 ## Source boundary
 
-The historical repository
-`brainboxemb/2026-011-02.cad.solidcraft` remains the source for existing model
-geometry and open model-design issues until each model is migrated.
+The historical repository remains the source for existing model geometry and
+open model-design issues until each model is migrated.
 
-Do not copy its repository-local CI/site architecture or its historical
-CAD-specific `model.yml` schema.
+Do not copy its repository-local CI/site architecture or historical CAD-specific
+`model.yml` schema. Build/source identity belongs in model-local `ci.yml`;
+presentation belongs in canonical `model.yml`.
 
 ## Accepted architecture
 
@@ -89,6 +86,5 @@ CAD-specific `model.yml` schema.
 
 ## Next
 
-After the template catalog sync is accepted, build and validate the ten-model
-stage. Do not widen beyond ten real models until PR CI, durable `dev`, build
-publication and Pages are all green.
+Accept the full ten-root batch on PR, durable `dev`, build publication and
+Pages before widening to the remaining catalog.

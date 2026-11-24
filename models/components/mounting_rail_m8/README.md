@@ -47,27 +47,30 @@ Do not rename the generic component to the reference brand.
 
 ## Parametric pattern contract
 
-The perforation is not three independent patterns and it is not one compound
-multi-profile sheet extrusion.
-
-The source unit consists of four native cut features:
+The physical source unit is one fixed reference punch sequence:
 
 1. round opening;
 2. longitudinal slot;
 3. round opening;
 4. transverse slot.
 
-Forge 0.15 allows `rectangular_pattern()` to receive a non-empty sequence of
-already-applied feature Shapes. The model therefore passes all four source cuts
-together to **one native rectangular feature pattern**. SolidCraft stores one
-pattern history feature with the four source feature names in its `features`
-list.
+Each source opening remains its own native cut feature because SolidCraft
+0.48.1 rejects a disconnected compound sheet recess and can also misclassify
+symbolic sheet-cut geometry as reaching a bend.
 
-`repeat_count` remains dimensionless/editable and the native repeat spacing is
-the expression `4 * feature_pitch`.
+Forge 0.15 allows `rectangular_pattern()` to receive a sequence of several
+already-applied native features. The four source cuts are therefore passed
+together to **one native Rectangular Pattern**.
 
-The standalone example defaults to **250 mm**, **2 complete repeat units** and
-an editable **37.5 mm end offset**, centring the two units in the short example.
+The standalone model exposes exactly the repeat controls that should remain
+editable:
 
-For the full 1000 mm product reference, use `repeat_count = 10` and
-`end_offset = 12.5 mm`.
+- `length = 250 mm`;
+- `repeat_count = 2`;
+- `repeat_pitch = 100 mm`.
+
+The source-unit dimensions remain the fixed generic 27/18 reference values.
+For a full 1000 mm reference rail, use `length = 1000`,
+`repeat_count = 10` and keep `repeat_pitch = 100 mm`; a product-end-aligned
+version would use the corresponding 12.5 mm source offset rather than the
+37.5 mm centred short-example offset.

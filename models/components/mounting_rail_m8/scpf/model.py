@@ -201,8 +201,9 @@ class MountingRailM8:
                 (-outer_fold_x, line_y[0], back_inner_z),
                 (-outer_fold_x, line_y[1], back_inner_z),
             ),
-            angle=-90,
+            angle=90,
             fixed=fixed,
+            flip=True,
         )
         rail = rail.fold(
             line=(
@@ -211,14 +212,16 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
+            flip=True,
         )
         rail = rail.fold(
             line=(
                 (-inner_fold_x, line_y[0], back_inner_z),
                 (-inner_fold_x, line_y[1], back_inner_z),
             ),
-            angle=-90,
+            angle=90,
             fixed=fixed,
+            flip=True,
         )
         rail = rail.fold(
             line=(
@@ -227,6 +230,7 @@ class MountingRailM8:
             ),
             angle=90,
             fixed=fixed,
+            flip=True,
         )
 
         return rail

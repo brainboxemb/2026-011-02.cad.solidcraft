@@ -2,7 +2,12 @@
 
 ## Purpose
 
-This repository is a reusable, self-contained CAD model-project template.
+This repository owns the migrated SolidCraft CAD model catalog.
+
+It uses the accepted architecture from
+`brainboxemb/template.cad.model-project`. Do not reintroduce CI, build or Pages
+patterns from the historical repository when the template already owns that
+behavior.
 
 Models and Python capabilities use the same ownership pattern: each item has
 its own directory, configuration and tests/verification.
@@ -39,12 +44,39 @@ source branch is removed by `modules/branch-cleanup`.
 
 `main` and `dev` are never cleanup candidates.
 
-The generated `build` branch is not a source branch. It stores generated technical
-output for the permanent source scopes and is never a cleanup candidate.
+The generated `build` branch is not a source branch. It stores generated
+technical output for the permanent source scopes and is never a cleanup
+candidate.
 
 The generated `gh-pages` branch is also not a source branch. Pages are built
 from `main + build/main` and `dev + build/dev`, assembled as one tree, and
 published there after successful build publication.
+
+## Migration discipline
+
+The historical repository
+`brainboxemb/2026-011-02.cad.solidcraft` is the source for model geometry and
+open design work while migration is incomplete.
+
+Migration widens only through the staged sequence recorded in #1:
+
+1. one real model;
+2. five real models;
+3. ten real models;
+4. remaining catalog.
+
+Use directory groups for ordering:
+
+- basic: priority 10;
+- components: priority 20;
+- advanced: priority 30.
+
+Priority is ordering only. Do not encode dependencies through priority.
+
+Do not copy the historical CAD-specific `model.yml` schema. Presentation stays
+in canonical `model.yml`; source/build identity stays in model-local `ci.yml`.
+Add verification, SCPC or dependencies only through an explicit supported
+contract rather than repository-local exceptions.
 
 ## CI selection modes
 
@@ -113,8 +145,8 @@ model-owned metadata/resources. Pages never runs Forge or SolidCraft.
 
 Pages runs separately from CAD CI. After successful permanent build
 publication, CI dispatches `pages.yml` and finishes without waiting. That
-workflow rebuilds both the stable root and `/dev/`, then publishes the complete
-tree to `ci.yml.generated.pages_branch` (`gh-pages`).
+workflow rebuilds both the stable root and `/dev/`, then publishes the
+complete tree to `ci.yml.generated.pages_branch` (`gh-pages`).
 
 ## Item impact
 
@@ -144,7 +176,7 @@ allowed.
 
 ## Models
 
-Every CAD model is a standalone item under `models/<id>/`.
+Every CAD model is a standalone item below `models/`.
 
 Do not create a central model catalog in Python.
 
@@ -160,5 +192,5 @@ older run for the same Git ref.
 Forge compiler/API behavior remains owned by
 `lib.py.solidcraft.forge`.
 
-Normal repository CI/build/merge/cleanup behavior is local to repositories
-created from this template.
+Normal repository CI/build/merge/cleanup behavior is inherited from the
+accepted template architecture and remains local to this repository.

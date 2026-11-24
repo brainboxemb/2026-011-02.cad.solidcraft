@@ -8,6 +8,8 @@ The flat-first route avoids attaching recess Sketches to an already-bent sheet
 panel. The four physical source cuts remain one native repeated feature group.
 """
 
+from math import pi
+
 from scpf import (
     Axis,
     Circle2D,
@@ -47,13 +49,26 @@ class MountingRailM8:
     def build(self):
         thickness = self.THICKNESS
 
-        # The old contour-flange profile was authored on the sheet centreline:
-        #   lip -> side -> back -> side -> lip
-        # Keep those same nominal centreline spans as the first flat-fold
-        # prototype. SolidCraft owns the actual bend zones/allowance.
-        back_span = self.PROFILE_WIDTH - thickness
-        side_span = self.PROFILE_HEIGHT - thickness
-        lip_span = back_span / 2 - self.OPENING / 2
+        # Develop the requested 27 x 18 outer section with the same 15 mm
+        # opening. For a 90-degree centreline fold SolidCraft removes a bend
+        # zone equal to BA = pi/2 * (R + K*T). Relative to the requested
+        # outside virtual sharp, each fold centre therefore sits inward by:
+        #
+        #   projection = (R + T) - BA/2
+        #
+        # Applying that projection at every bend gives the flat distances
+        # between fold centre lines and the free lip edges.
+        bend_allowance = (
+            pi / 2 * (self.BEND_RADIUS + self.K_FACTOR * thickness)
+        )
+        bend_projection = (
+            self.BEND_RADIUS + thickness - bend_allowance / 2
+        )
+
+        back_span = self.PROFILE_WIDTH - 2 * bend_projection
+        side_span = self.PROFILE_HEIGHT - 2 * bend_projection
+        lip_outer = (self.PROFILE_WIDTH - self.OPENING) / 2
+        lip_span = lip_outer - bend_projection
 
         flat_width = back_span + 2 * side_span + 2 * lip_span
         flat_half = flat_width / 2

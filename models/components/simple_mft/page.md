@@ -47,7 +47,5 @@ estimates.
 
 ## Reuse
 
-The standalone worktop is also a reusable SCPF component. The assembly variant
-uses the same worktop definition and adds the generic GuideRail component with
-the Festool profile at 800 mm. The rail is centred over X=0 and rests on the
-worktop top face.
+The worktop is a standalone reusable SCPF component. Assemblies should import
+`SimpleMFT` from this owner rather than duplicating the worktop geometry.

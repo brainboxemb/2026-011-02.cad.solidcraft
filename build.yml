@@ -1,9 +1,10 @@
 schema: 1
-branch: fix/mounting-rail-m8-repeat-unit
+branch: fix/simple-mft-component-classification
 
 modules: []
 models:
-  - mounting-rail-m8
+  - simple-mft
+  - simple-mft-assembly
 tasks:
   - test
   - build

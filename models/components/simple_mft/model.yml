@@ -1,0 +1,30 @@
+purpose: [example]
+section: components
+priority: 10
+title: Simple MFT
+tagline: 805 × 555 mm reusable worktop with a 9 × 7 dog-hole grid and eight native clamp slots
+description: >
+  A reusable CRAFTMAKER-inspired worktop component: one 18 mm native Box,
+  four straight 20 mm corner chamfers, 59 Ø20 dog holes on the nominal
+  9 × 7 / 76 mm grid with the four diagonal ring-2 positions omitted, and
+  eight photo-measured native diagonal Slots.
+parameters: 805 × 555 × 18 mm; 59 × Ø20; nominal 9 × 7 at 76 mm; 8 Slots ≈104 × 24 mm
+stages:
+  - Box — 805 × 555 × 18 mm
+  - Dog holes Sketch — one Circle seed and one native 9 × 7 rectangular pattern create 63 profiles
+  - One selective cut uses 59 profiles and leaves the four diagonal ring-2 positions
+  - Clamp slots Sketch — one master Slot, one native sketch pattern and three mirrors create 8 Slots
+  - Two through-all cuts — one for dog holes and one for clamp slots
+  - Chamfer — four straight 20 × 20 mm plan-view corner cuts
+extra_views:
+  title: Reference and 2D expectation
+  note: The 76 mm pitch, 20 mm corner cuts and ≈104 × 24 mm Slot dimensions are photo-based estimates, not manufacturer specifications.
+  items:
+    - kind: asset
+      src: craftmaker_s30_worktop_w320.jpg
+      alt: CRAFTMAKER ProStation S30 reference worktop
+      caption: 'Replacement worktop — Source: CRAFTMAKER (craftmaker.nl)'
+    - kind: asset
+      src: expected-top-view.svg
+      alt: Simple MFT expected top view
+      caption: 2D expectation of the nominal hole and slot layout.

@@ -881,6 +881,258 @@
       }
     },
     {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            57.292893218813454,
+            12.707106781186548,
+            0.0
+          ],
+          "x_dir": [
+            0.7071067811865476,
+            0.7071067811865475,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "d8_CornerBracket__Horizontal tip relief +Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.6,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1.6
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 4.82842712474619,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            57.292893218813454,
+            -12.707106781186548,
+            0.0
+          ],
+          "x_dir": [
+            0.7071067811865476,
+            -0.7071067811865475,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "d8_CornerBracket__Horizontal tip relief -Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.6,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1.6
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 4.82842712474619,
+        "direction": "negative",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            9.292893218813452,
+            -60.707106781186546
+          ],
+          "x_dir": [
+            0.0,
+            0.7071067811865476,
+            -0.7071067811865475
+          ],
+          "y_dir": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "name": "d8_CornerBracket__Vertical tip relief +Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.6,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1.6
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 4.82842712474619,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            -9.292893218813452,
+            -60.707106781186546
+          ],
+          "x_dir": [
+            0.0,
+            -0.7071067811865476,
+            -0.7071067811865475
+          ],
+          "y_dir": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "name": "d8_CornerBracket__Vertical tip relief -Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.6,
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            1.6
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 4.82842712474619,
+        "direction": "negative",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
       "command": "solid.hole",
       "params": {
         "position": [

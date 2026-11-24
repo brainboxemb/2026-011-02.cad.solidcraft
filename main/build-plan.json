@@ -1,13 +1,12 @@
 {
   "forge": {
-    "commit": "efc88bfcaf452051d721347f2e5ca561decad654",
     "repository": "brainboxemb/lib.py.solidcraft.forge",
-    "version": "0.15.0"
+    "version": "v0.15.0"
   },
   "models": [
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/bolted-flange/solidcraft.json",
       "dependencies": [],
       "id": "bolted-flange",
@@ -28,7 +27,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/bracket/solidcraft.json",
       "dependencies": [],
       "id": "bracket",
@@ -49,7 +48,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/corner-bracket/solidcraft.json",
       "dependencies": [],
       "id": "corner-bracket",
@@ -63,14 +62,55 @@
       "priority": 20,
       "root": "models/components/corner_bracket",
       "snapshot": {
-        "camera": null
+        "camera": {
+          "distance": 125,
+          "fov": 0,
+          "pitch": 0.3,
+          "target": [
+            24,
+            0,
+            -24
+          ],
+          "yaw": -0.45
+        }
       },
-      "snapshots": [],
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": 0.2,
+            "target": [
+              58,
+              0,
+              0
+            ],
+            "yaw": -0.65
+          },
+          "name": "horizontal-tip.png",
+          "path": "models/corner-bracket/horizontal-tip.png"
+        },
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": 0.2,
+            "target": [
+              0,
+              0,
+              -58
+            ],
+            "yaw": -0.65
+          },
+          "name": "vertical-tip.png",
+          "path": "models/corner-bracket/vertical-tip.png"
+        }
+      ],
       "source": "models/components/corner_bracket/scpf/model.py"
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/csg-cube/solidcraft.json",
       "dependencies": [],
       "id": "csg-cube",
@@ -93,7 +133,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/flex-bench-dog/solidcraft.json",
       "dependencies": [],
       "id": "flex-bench-dog",
@@ -130,7 +170,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/guide-rail/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail",
@@ -151,7 +191,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/guide-rail-makita/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail-makita",
@@ -172,7 +212,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -206,7 +246,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
       "id": "hub75-panel",
@@ -268,7 +308,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/hub75-screen/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -301,7 +341,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -335,7 +375,84 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
+      "commands": "models/mounting-rail-m8/solidcraft.json",
+      "dependencies": [],
+      "id": "mounting-rail-m8",
+      "native": {
+        "png": "models/mounting-rail-m8/model.png",
+        "sc": "models/mounting-rail-m8/model.sc",
+        "step": "models/mounting-rail-m8/model.step",
+        "stl": null
+      },
+      "owner": "mounting-rail-m8",
+      "priority": 20,
+      "root": "models/components/mounting_rail_m8",
+      "snapshot": {
+        "camera": {
+          "distance": 340,
+          "fov": 0,
+          "pitch": 0.28,
+          "target": [
+            0,
+            125,
+            9
+          ],
+          "yaw": -0.6
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 290,
+            "fov": 0,
+            "pitch": 1.45,
+            "target": [
+              0,
+              125,
+              18
+            ],
+            "yaw": 0
+          },
+          "name": "rear-pattern.png",
+          "path": "models/mounting-rail-m8/rear-pattern.png"
+        },
+        {
+          "camera": {
+            "distance": 85,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              250,
+              9
+            ],
+            "yaw": 3.14159
+          },
+          "name": "right-profile.png",
+          "path": "models/mounting-rail-m8/right-profile.png"
+        },
+        {
+          "camera": {
+            "distance": 135,
+            "fov": 0,
+            "pitch": 0.72,
+            "target": [
+              0,
+              100,
+              18
+            ],
+            "yaw": -0.35
+          },
+          "name": "pattern-closeup.png",
+          "path": "models/mounting-rail-m8/pattern-closeup.png"
+        }
+      ],
+      "source": "models/components/mounting_rail_m8/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/plastic-enclosure/solidcraft.json",
       "dependencies": [],
       "id": "plastic-enclosure",
@@ -356,7 +473,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/plastic-enclosure-pi/solidcraft.json",
       "dependencies": [],
       "id": "plastic-enclosure-pi",
@@ -377,7 +494,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/plate/solidcraft.json",
       "dependencies": [],
       "id": "plate",
@@ -398,7 +515,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/sample-plate/solidcraft.json",
       "dependencies": [],
       "id": "sample-plate",
@@ -421,7 +538,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/simple-box/solidcraft.json",
       "dependencies": [],
       "id": "simple-box",
@@ -458,11 +575,9 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/simple-mft/solidcraft.json",
-      "dependencies": [
-        "guide-rail"
-      ],
+      "dependencies": [],
       "id": "simple-mft",
       "native": {
         "png": "models/simple-mft/model.png",
@@ -471,20 +586,22 @@
         "stl": null
       },
       "owner": "simple-mft",
-      "priority": 30,
-      "root": "models/advanced/simple_mft",
+      "priority": 20,
+      "root": "models/components/simple_mft",
       "snapshot": {
         "camera": null
       },
       "snapshots": [],
-      "source": "models/advanced/simple_mft/scpf/model.py"
+      "source": "models/components/simple_mft/scpf/model.py"
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
-        "guide-rail"
+        "simple-mft",
+        "guide-rail",
+        "mounting-rail-m8"
       ],
       "id": "simple-mft-assembly",
       "native": {
@@ -493,18 +610,59 @@
         "step": "models/simple-mft-assembly/model.step",
         "stl": null
       },
-      "owner": "simple-mft",
+      "owner": "simple-mft-assembly",
       "priority": 30,
-      "root": "models/advanced/simple_mft",
+      "root": "models/advanced/simple_mft_assembly",
       "snapshot": {
-        "camera": null
+        "camera": {
+          "distance": 1250,
+          "fov": 0,
+          "pitch": 0.55,
+          "target": [
+            90,
+            0,
+            0
+          ],
+          "yaw": -0.65
+        }
       },
-      "snapshots": [],
-      "source": "models/advanced/simple_mft/scpf/assemblies/guide_rail.py"
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 1250,
+            "fov": 0,
+            "pitch": 1.5,
+            "target": [
+              97.5,
+              0,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "support-rails-top.png",
+          "path": "models/simple-mft-assembly/support-rails-top.png"
+        },
+        {
+          "camera": {
+            "distance": 720,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              500,
+              0,
+              -5
+            ],
+            "yaw": 1.5708
+          },
+          "name": "support-rails-right.png",
+          "path": "models/simple-mft-assembly/support-rails-right.png"
+        }
+      ],
+      "source": "models/advanced/simple_mft_assembly/scpf/model.py"
     },
     {
       "artifacts": [],
-      "built_source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4",
+      "built_source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135",
       "commands": "models/vent-plate/solidcraft.json",
       "dependencies": [],
       "id": "vent-plate",
@@ -530,5 +688,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "a547e0333b8bf0238c153286e9dc55e9defedbf4"
+  "source_sha": "6ef14a509b006a3c3657598f2b56824b6aa6d135"
 }

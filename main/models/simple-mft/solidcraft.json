@@ -671,6 +671,23 @@
         "distance": "corner_chamfer",
         "body": "SimpleMFT"
       }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "MDF",
+        "density_g_cm3": 0.7,
+        "color": "#C8A46A"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "SimpleMFT"
+        ],
+        "material": "MDF"
+      }
     }
   ]
 }

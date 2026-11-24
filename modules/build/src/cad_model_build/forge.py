@@ -1,4 +1,4 @@
-"""Prepare one exact Forge revision and compile all planned models."""
+"""Prepare one released Forge version and compile all planned models."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import sys
 from .config import ForgePin
 
 
-def install_url(repository: str, commit: str) -> str:
-    return f"git+https://github.com/{repository}.git@{commit}#subdirectory=scpf"
+def install_url(repository: str, version: str) -> str:
+    return f"git+https://github.com/{repository}.git@{version}#subdirectory=scpf"
 
 
 def build_wheel(pin: ForgePin, wheel_dir: Path) -> Path:
@@ -26,7 +26,7 @@ def build_wheel(pin: ForgePin, wheel_dir: Path) -> Path:
             "--no-deps",
             "--wheel-dir",
             str(wheel_dir),
-            install_url(pin.repository, pin.commit),
+            install_url(pin.repository, pin.version),
         ],
         check=True,
     )

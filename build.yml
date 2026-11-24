@@ -3,6 +3,9 @@ branch: feature/simple-mft-right-extension-guide-shift
 
 modules: []
 models:
+  - simple-mft
+  - mounting-rail-m8
+  - guide-rail
   - simple-mft-assembly
 tasks:
   - test

@@ -80,11 +80,18 @@ carrying product-specific workarounds.
   — connected mixed line/arc closed Sketch profiles — **closed**.
 - [Forge #568](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/568)
   — native sheet flange coverage — **closed**.
+- [Forge #843](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/843)
+  — native profile-driven `Sketch.revolve()` required by the latch rivets — **in qualification**.
 - [Forge #349](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/349)
-  — remaining SolidCraft create-feature coverage, including Revolve — **open**.
+  — parent coverage issue for remaining SolidCraft create features — **open**.
 
-The remaining implementation must consume released generic capabilities and
-must not approximate the blocked native sheet/revolved history with fused
-solids.
+The connected mixed line/arc profiles and required sheet-metal primitives are
+now available generically in Forge. The remaining implementation must consume
+the released Revolve capability from #843 and must not approximate the native
+revolved history with fused solids.
+
+The exact `latch.sc` reference is still required before reconstructing the
+source-specific blank contours, fold locations and rivet profiles. Those
+details will not be guessed from screenshots or envelope dimensions.
 
 See the repository-wide `docs/plan.md` for execution order.

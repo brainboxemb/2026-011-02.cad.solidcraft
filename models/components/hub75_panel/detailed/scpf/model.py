@@ -1,12 +1,24 @@
 """Single measured HUB75 panel reused in the regression and screen assembly.
 
 Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
-The current CAD body is still an approximate rear-tapered envelope with
-four rear electronics-bay pockets and six blind mounting bores. The pocket
-outlines are currently square-cornered approximations; the rounded/stepped
-bay edges, tubes, PCB and connectors still need distinct features.
+The CAD body uses the measured rear taper, four explicit rounded/stepped rear
+electronics-bay contours and the accepted mounting/reinforcement interfaces.
+The shallow rail recess and connector envelopes remain separate follow-up
+features.
 """
-from scpf import Box, Cylinder, Hole, Sketch, Rectangle2D, Anchor, component, half, midpoint
+from math import sqrt
+
+from scpf import (
+    Anchor,
+    Box,
+    Cylinder,
+    Hole,
+    Polygon2D,
+    RoundedRectangle2D,
+    Sketch,
+    component,
+    half,
+)
 
 
 # Fixed mechanical interface dimensions from the existing v1.2 panel
@@ -31,6 +43,21 @@ LOCATOR_PIN_DIAMETER = 3.00
 LOCATOR_PIN_PROTRUSION = 3.00
 LOCATOR_PIN_X = 75.0
 LOCATOR_PIN_Y = 110.0
+
+# STEP-derived rear bay contour details. The reference values live in nominal
+# 160 x 320 mm panel space and are scaled into the measured 159.70 x 319.71 mm
+# envelope in build(), matching the preserved v1.2 OpenSCAD component.
+REAR_END_NARROW_WIDTH = 7.75
+REAR_END_NARROW_LENGTH = 30.0
+REAR_OPENING_CORNER_RADIUS = 5.0
+
+# Shallow STEP-derived rear rail recess. These values are explicitly
+# approximate rear-frame details from the v1.2 reference, not PDF dimensions.
+REAR_RECESS_DEPTH = 0.80
+REAR_SIDE_RECESS_MARGIN = 2.0
+REAR_END_RECESS_MARGIN = 2.0
+REAR_CROSSBAR_RECESS_MARGIN = 1.5
+REAR_RECESS_CORNER_RADIUS = 0.8
 
 
 @component
@@ -61,19 +88,35 @@ class Hub75Panel:
         )
 
         # Cut the four electronics bays FROM THE REAR, leaving the complete
-        # front mask + PCB stack at Z=0..2 mm. On the source panel the four
-        # openings are separated by 3 crossbars, 20 mm wide in reference
-        # coordinates. A single named sketch creates one editable cut.
+        # front mask + PCB stack at Z=0..2 mm. The v1.2 STEP/OpenSCAD
+        # reference uses one continuous contour per bay: R5 inner corners plus
+        # a central stepped relief at the top and bottom edge.
         #
         # OpenSCAD source coordinates use X/Z in the display face; SCPF uses
         # X/Y. The reference's 80/160/240 mm rib positions therefore become
         # Y=-H/4, Y=0 and Y=+H/4 in portrait orientation.
         side = self.rear_side_rail * (159.70 / 160.0)
         end = self.rear_end_rail * (319.71 / 320.0)
+        narrow_end = REAR_END_NARROW_WIDTH * (319.71 / 320.0)
         rib_half = half(self.rear_crossbar * (319.71 / 320.0))
         half_height = half(self.height)
         quarter_height = self.height / 4
         opening_width = self.width - 2 * side
+        left = -half(opening_width)
+        right = half(opening_width)
+
+        # The 10.75 -> 7.75 mm rail change is a nominal 3 mm step with 45°
+        # transitions. The 30 mm narrow section scales along panel X.
+        step_depth = end - narrow_end
+        half_narrow = half(
+            REAR_END_NARROW_LENGTH * (159.70 / 160.0)
+        )
+
+        # The reference takes the minimum of X/Y scaling for R5. The measured
+        # panel has the smaller X scale, so this exact expression preserves the
+        # reference default while staying associative with editable width.
+        corner_radius = REAR_OPENING_CORNER_RADIUS * (self.width / 160.0)
+
         bay_ranges = (
             (-half_height + end, -quarter_height - rib_half),
             (-quarter_height + rib_half, -rib_half),
@@ -86,16 +129,197 @@ class Hub75Panel:
             parent=Anchor.TOP,
         ) as bays:
             for bottom, top in bay_ranges:
-                bays.add(
-                    Rectangle2D(opening_width, top - bottom),
-                    offset=(0, midpoint(bottom, top)),
+                start_point = (left + corner_radius, bottom)
+                profile = bays.profile(start=start_point)
+
+                # Bottom edge with the central rail relief extending outward.
+                profile.line_to((-(step_depth + half_narrow), bottom))
+                profile.line_to((-half_narrow, bottom - step_depth))
+                profile.line_to((half_narrow, bottom - step_depth))
+                profile.line_to((half_narrow + step_depth, bottom))
+                profile.line_to((right - corner_radius, bottom))
+
+                # Right-side R5 corners and wall.
+                profile.arc_center_to(
+                    (right, bottom + corner_radius),
+                    center=(right - corner_radius, bottom + corner_radius),
                 )
+                profile.line_to((right, top - corner_radius))
+                profile.arc_center_to(
+                    (right - corner_radius, top),
+                    center=(right - corner_radius, top - corner_radius),
+                )
+
+                # Top edge with the same central relief mirrored upward.
+                profile.line_to((half_narrow + step_depth, top))
+                profile.line_to((half_narrow, top + step_depth))
+                profile.line_to((-half_narrow, top + step_depth))
+                profile.line_to((-(step_depth + half_narrow), top))
+                profile.line_to((left + corner_radius, top))
+
+                # Left-side R5 corners and wall, returning to the authored
+                # start point so Forge registers one closed profile region.
+                profile.arc_center_to(
+                    (left, top - corner_radius),
+                    center=(left + corner_radius, top - corner_radius),
+                )
+                profile.line_to((left, bottom + corner_radius))
+                profile.arc_center_to(
+                    start_point,
+                    center=(left + corner_radius, bottom + corner_radius),
+                )
+                profile.close()
+
         body = body - bays.extrude(-(self.depth - self.front_depth))
 
-        # These four rectangles create the real rails and 3 dividing ribs.
-        # Pending STEP details: 5 mm rounded corners, the stepped 7.75 mm
-        # central rail relief, shallow rear recess and reinforcement tubes.
-        # In particular this is not yet a complete molded HUB75 rear shell.
+        # The resulting contour keeps the normal 10.75 mm end rails, narrows
+        # them to 7.75 mm across the central 30 mm section, and leaves the
+        # three nominal 20 mm separators with the reference 14 mm stepped
+        # centre after both adjacent 3 mm reliefs.
+
+        # Recess the rear-facing rail strips by the reference 0.8 mm. Keep
+        # this as a separate cut from the electronics bays: the recess is a
+        # shallow surface feature, while the bay cut runs to front_depth.
+        #
+        # Side/end strips use the reference 0.8 mm corner radius. The three
+        # crossbar strips are the actual stepped rib profile inset by the
+        # reference 1.5 mm border. Reinforcement cylinders are joined after
+        # this cut, which preserves their Ø14 footprints at the nominal rear
+        # mounting plane just like rear_recess_2d() in the OpenSCAD source.
+        side_margin = (self.width / 160.0) * REAR_SIDE_RECESS_MARGIN
+        end_margin = (self.height / 320.0) * REAR_END_RECESS_MARGIN
+        cross_margin = (
+            (self.height / 320.0) * REAR_CROSSBAR_RECESS_MARGIN
+        )
+        recess_radius = (
+            (self.width / 160.0) * REAR_RECESS_CORNER_RADIUS
+        )
+
+        side_recess_width = (
+            side - self.rear_inset - 2 * side_margin
+        )
+        side_recess_height = self.height - 2 * end
+        left_side_center = (
+            -half(self.width)
+            + self.rear_inset
+            + side_margin
+            + half(side_recess_width)
+        )
+        right_side_center = (
+            half(self.width)
+            - self.rear_inset
+            - side_margin
+            - half(side_recess_width)
+        )
+
+        end_recess_width = opening_width
+        end_recess_height = (
+            end - self.rear_inset - 2 * end_margin
+        )
+        bottom_end_center = (
+            -half(self.height)
+            + self.rear_inset
+            + end_margin
+            + half(end_recess_height)
+        )
+        top_end_center = (
+            half(self.height)
+            - self.rear_inset
+            - end_margin
+            - half(end_recess_height)
+        )
+
+        # The OpenSCAD crossbar recess is offset(delta=-cross_margin) from the
+        # real stepped rib. For the 45-degree transition, the intersections
+        # with the inset horizontal edges move by m*(sqrt(2)-1).
+        transition_inset = cross_margin * (sqrt(2) - 1)
+        recess_left = left + cross_margin
+        recess_right = right - cross_margin
+        step_outer_left = -(
+            step_depth + half_narrow + transition_inset
+        )
+        step_inner_left = -(transition_inset + half_narrow)
+        step_inner_right = transition_inset + half_narrow
+        step_outer_right = (
+            step_depth + half_narrow + transition_inset
+        )
+
+        with Sketch(
+            name="Rear rail recesses",
+            on=body,
+            parent=Anchor.TOP,
+        ) as recess:
+            recess.add(
+                RoundedRectangle2D(
+                    side_recess_width,
+                    side_recess_height,
+                    recess_radius,
+                ),
+                offset=(left_side_center, 0),
+            )
+            recess.add(
+                RoundedRectangle2D(
+                    side_recess_width,
+                    side_recess_height,
+                    recess_radius,
+                ),
+                offset=(right_side_center, 0),
+            )
+            recess.add(
+                RoundedRectangle2D(
+                    end_recess_width,
+                    end_recess_height,
+                    recess_radius,
+                ),
+                offset=(0, bottom_end_center),
+            )
+            recess.add(
+                RoundedRectangle2D(
+                    end_recess_width,
+                    end_recess_height,
+                    recess_radius,
+                ),
+                offset=(0, top_end_center),
+            )
+
+            for index, center in enumerate(
+                (
+                    -quarter_height,
+                    self.height * 0,
+                    quarter_height,
+                ),
+                start=1,
+            ):
+                outer_bottom = center - rib_half + cross_margin
+                inner_bottom = (
+                    center - rib_half + step_depth + cross_margin
+                )
+                outer_top = center + rib_half - cross_margin
+                inner_top = (
+                    center + rib_half - step_depth - cross_margin
+                )
+                Polygon2D(
+                    [
+                        (recess_left, outer_bottom),
+                        (step_outer_left, outer_bottom),
+                        (step_inner_left, inner_bottom),
+                        (step_inner_right, inner_bottom),
+                        (step_outer_right, outer_bottom),
+                        (recess_right, outer_bottom),
+                        (recess_right, outer_top),
+                        (step_outer_right, outer_top),
+                        (step_inner_right, inner_top),
+                        (step_inner_left, inner_top),
+                        (step_outer_left, outer_top),
+                        (recess_left, outer_top),
+                    ],
+                    ids=tuple(
+                        f"r{index}_{segment}"
+                        for segment in range(1, 13)
+                    ),
+                )
+
+        body = body - recess.extrude(-REAR_RECESS_DEPTH)
 
         # Restore the mechanically relevant rear mounting interfaces from
         # the existing v1.2 OpenSCAD/STEP/PDF reference. The surrounding rail

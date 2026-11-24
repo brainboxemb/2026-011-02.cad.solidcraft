@@ -66,9 +66,14 @@ interpretation:
 - full four-feature repeat: **100 mm**.
 
 For the 1000 mm rail this gives 40 perforation positions, ending 12.5 mm before
-the far end. The implementation keeps the history compact: one face-attached Circle cut is
-patterned at 50 mm pitch, while one horizontal and one vertical Slot cut are
-each patterned at 100 mm pitch.
+the far end.
+
+The implementation follows the physical repeat directly. One face-attached
+Sketch contains the complete four-feature unit. That Sketch creates one
+through-all cut, and **one native rectangular feature pattern** repeats the
+whole cut. The default editable `feature_pitch = 25 mm` therefore produces a
+native repeat spacing of `4 × feature_pitch = 100 mm`; `repeat_count = 10`
+is a separate editable dimensionless parameter.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

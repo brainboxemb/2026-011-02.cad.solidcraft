@@ -1,64 +1,60 @@
-"""Generic M8 mounting rail based on a light 27/18 installation C-profile.
+"""Generic parametric M8 mounting rail using native SolidCraft sheet metal.
 
-Product facts retained from the supplied DRESSELHAUS/HORNBACH reference:
-- galvanized steel;
-- 1.25 mm material thickness;
-- 1000 mm product length;
-- intended for M8 threaded rods / pipe-clamp installation.
+The rail body is one native 27/18-style C-profile contour flange. The
+perforation is authored as ONE four-profile repeat unit:
 
-The 27 x 18 mm section and perforation geometry are generic 27/18 reference
-dimensions, not claimed DRESSELHAUS manufacturing specifications.
+    round -> longitudinal slot -> round -> transverse slot
+
+That unit becomes one through-all cut feature and one native rectangular
+feature pattern. Pattern count, spacing and all profile dimensions remain
+editable Forge/SolidCraft parameters.
 """
 
 from scpf import (
     Anchor,
     Axis,
-    Depth,
     Circle2D,
+    Depth,
     Sketch,
     SlotCenterToCenter2D,
     component,
 )
 
 
-@component(include=("length",))
+@component(include="*")
 class MountingRailM8:
+    # Product / section dimensions.
     length = 1000.0
+    profile_width = 27.0
+    profile_height = 18.0
+    thickness = 1.25
+    opening = 15.0
 
-    # Generic 27/18 light C-profile reference dimensions.
-    PROFILE_WIDTH = 27.0
-    PROFILE_HEIGHT = 18.0
-    THICKNESS = 1.25
-    OPENING = 15.0
+    # Native sheet rule. These remain explicit assumptions until measured.
+    bend_radius = 1.25
+    k_factor = 0.40
 
-    # Manufacturing assumptions until a specific maker drawing is available.
-    BEND_RADIUS = 1.25
-    K_FACTOR = 0.40
+    # One complete perforation cycle contains four features. The default
+    # 25 mm feature pitch therefore gives a 100 mm native repeat pitch.
+    end_offset = 12.5
+    feature_pitch = 25.0
+    repeat_count = 10
 
-    # Generic 27/18 perforation reference. Along the rail:
-    # round -> horizontal slot -> round -> vertical slot -> repeat.
-    END_OFFSET = 12.5
-    FEATURE_PITCH = 25.0
-    ROUND_PITCH = 50.0
-    SLOT_PITCH = 100.0
+    round_diameter = 12.5
 
-    ROUND_DIAMETER = 12.5
+    horizontal_slot_length = 10.0
+    horizontal_slot_width = 6.4
 
-    HORIZONTAL_SLOT_LENGTH = 10.0
-    HORIZONTAL_SLOT_WIDTH = 6.4
-
-    VERTICAL_SLOT_LENGTH = 15.0
-    VERTICAL_SLOT_WIDTH = 8.4
+    vertical_slot_length = 15.0
+    vertical_slot_width = 8.4
 
     def build(self):
-        thickness = self.THICKNESS
-        half_side = (self.PROFILE_WIDTH - thickness) / 2
-        lower_z = thickness / 2
-        upper_z = self.PROFILE_HEIGHT - thickness / 2
-        opening_half = self.OPENING / 2
+        half_side = (self.profile_width - self.thickness) / 2
+        lower_z = self.thickness / 2
+        upper_z = self.profile_height - self.thickness / 2
+        opening_half = self.opening / 2
 
-        # One open XZ sheet contour creates the complete C-profile as native
-        # SolidCraft sheet-metal history over the requested rail length.
+        # Native sheet-metal C-profile.
         with Sketch(name="C profile", plane="XZ") as profile:
             chain = profile.chain(start=(-opening_half, lower_z))
             chain.line_to((-half_side, lower_z))
@@ -70,95 +66,63 @@ class MountingRailM8:
 
         rail = contour.contour_flange(
             distance=self.length,
-            thickness=thickness,
-            bend_radius=self.BEND_RADIUS,
-            k_factor=self.K_FACTOR,
+            thickness=self.thickness,
+            bend_radius=self.bend_radius,
+            k_factor=self.k_factor,
             rule_name="Mounting Rail M8 Rule",
         )
 
-        length_value = float(self.length.value)
+        # Author one complete 4-feature repeat unit on the real top web.
+        y0 = self.end_offset
+        y1 = y0 + self.feature_pitch
+        y2 = y0 + 2 * self.feature_pitch
+        y3 = y0 + 3 * self.feature_pitch
 
-        # Round openings occur every 50 mm: 12.5, 62.5, 112.5, ...
-        round_first = self.END_OFFSET
-        round_count = int(
-            (length_value - self.END_OFFSET - round_first) // self.ROUND_PITCH
-        ) + 1
-        with Sketch(
-            name="Round hole",
-            on=rail,
-            parent=Anchor.TOP,
-        ) as round_hole:
-            round_hole.add(
-                Circle2D(d=self.ROUND_DIAMETER),
-                offset=(0, round_first),
-            )
-
-        round_cut = round_hole.extrude(Depth.THROUGH_ALL)
-        rail = rail - round_cut
-        rail = rail.rectangular_pattern(
-            round_cut,
-            count=round_count,
-            spacing=self.ROUND_PITCH,
-            direction=Axis.Y,
-        )
-
-        # Horizontal/longitudinal slot: first centre at 37.5 mm, then 100 mm.
-        horizontal_first = self.END_OFFSET + self.FEATURE_PITCH
         horizontal_center_distance = (
-            self.HORIZONTAL_SLOT_LENGTH - self.HORIZONTAL_SLOT_WIDTH
+            self.horizontal_slot_length - self.horizontal_slot_width
         )
-        with Sketch(
-            name="Horizontal slot",
-            on=rail,
-            parent=Anchor.TOP,
-        ) as horizontal_slot:
-            half = horizontal_center_distance / 2
-            SlotCenterToCenter2D(
-                (0, horizontal_first - half),
-                (0, horizontal_first + half),
-                self.HORIZONTAL_SLOT_WIDTH,
-            )
-
-        horizontal_cut = horizontal_slot.extrude(Depth.THROUGH_ALL)
-        rail = rail - horizontal_cut
-        horizontal_count = int(
-            (length_value - self.END_OFFSET - horizontal_first)
-            // self.SLOT_PITCH
-        ) + 1
-        rail = rail.rectangular_pattern(
-            horizontal_cut,
-            count=horizontal_count,
-            spacing=self.SLOT_PITCH,
-            direction=Axis.Y,
-        )
-
-        # Vertical/transverse slot: first centre at 87.5 mm, then 100 mm.
-        vertical_first = self.END_OFFSET + 3 * self.FEATURE_PITCH
         vertical_center_distance = (
-            self.VERTICAL_SLOT_LENGTH - self.VERTICAL_SLOT_WIDTH
+            self.vertical_slot_length - self.vertical_slot_width
         )
+
         with Sketch(
-            name="Vertical slot",
+            name="Perforation repeat unit",
             on=rail,
             parent=Anchor.TOP,
-        ) as vertical_slot:
-            half = vertical_center_distance / 2
-            SlotCenterToCenter2D(
-                (-half, vertical_first),
-                (half, vertical_first),
-                self.VERTICAL_SLOT_WIDTH,
+        ) as unit:
+            unit.add(
+                Circle2D(d=self.round_diameter),
+                offset=(0, y0),
             )
 
-        vertical_cut = vertical_slot.extrude(Depth.THROUGH_ALL)
-        rail = rail - vertical_cut
-        vertical_count = int(
-            (length_value - self.END_OFFSET - vertical_first)
-            // self.SLOT_PITCH
-        ) + 1
+            horizontal_half = horizontal_center_distance / 2
+            SlotCenterToCenter2D(
+                (0, y1 - horizontal_half),
+                (0, y1 + horizontal_half),
+                self.horizontal_slot_width,
+            )
+
+            unit.add(
+                Circle2D(d=self.round_diameter),
+                offset=(0, y2),
+            )
+
+            vertical_half = vertical_center_distance / 2
+            SlotCenterToCenter2D(
+                (-vertical_half, y3),
+                (vertical_half, y3),
+                self.vertical_slot_width,
+            )
+
+        # One cut owns the complete 4-profile unit. One native feature pattern
+        # then repeats that cut as a whole. count includes the source feature.
+        unit_cut = unit.extrude(Depth.THROUGH_ALL)
+        rail = rail - unit_cut
+
         return rail.rectangular_pattern(
-            vertical_cut,
-            count=vertical_count,
-            spacing=self.SLOT_PITCH,
+            unit_cut,
+            count=self.repeat_count,
+            spacing=4 * self.feature_pitch,
             direction=Axis.Y,
         )
 

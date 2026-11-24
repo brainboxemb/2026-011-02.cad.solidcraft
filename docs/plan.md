@@ -36,6 +36,20 @@ Accepted source split:
 Use native sheet metal. Keep the component/model name generic; DRESSELHAUS and
 HORNBACH are provenance only.
 
+### #43 — make Mounting Rail M8 perforation one parametric repeat unit
+
+Active on `fix/mounting-rail-m8-repeat-unit`.
+
+Replace the three independent perforation feature patterns with the actual
+product design intent:
+
+- one attached four-profile repeat-unit Sketch;
+- one through-all unit cut;
+- one native rectangular pattern of that complete cut;
+- editable `repeat_count`, `feature_pitch` and individual profile dimensions.
+
+No Forge change is required.
+
 ### #12 — migrate remaining historical CAD issues and open pull requests
 
 The full CAD catalog is accepted on stable `main`.

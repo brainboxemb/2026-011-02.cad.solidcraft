@@ -23,9 +23,11 @@ Generic 27/18 reference geometry:
 - 27 × 18 mm outer section;
 - 15 mm C-opening;
 - native sheet-metal contour flange;
-- repeating punch sequence:
+- one authored four-profile punch unit:
   `round -> horizontal slot -> round -> vertical slot`;
-- 25 mm centre pitch and 100 mm full repeat;
+- one native feature pattern repeats that complete unit;
+- editable 25 mm feature pitch gives a 100 mm default repeat pitch;
+- editable default repeat count: 10;
 - Ø12.5 round hole;
 - 10 × 6.4 mm horizontal slot;
 - 15 × 8.4 mm vertical slot.
@@ -42,3 +44,15 @@ DRESSELHAUS dimensional drawing or a physical rail:
 - material bend rule.
 
 Do not rename the generic component to the reference brand.
+
+## Parametric pattern contract
+
+The perforation is not three independent patterns.
+
+Forge authors one attached Sketch containing all four profiles, creates one
+through-all cut from that Sketch, and patterns that cut as one native history
+feature. `repeat_count` remains dimensionless/editable and the native repeat
+spacing is the expression `4 * feature_pitch`.
+
+The default 10 units × 100 mm repeat occupy the 1000 mm reference rail with
+12.5 mm end offsets.

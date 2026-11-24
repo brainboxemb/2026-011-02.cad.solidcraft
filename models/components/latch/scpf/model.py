@@ -2,7 +2,7 @@
 
 This file deliberately starts with the design vocabulary and parameter set only.
 Do not approximate the native sheet-metal or revolved features with ordinary
-fused solids. See models/advanced/latch/README.md and docs/plan.md.
+fused solids. See models/components/latch/README.md and docs/plan.md.
 """
 
 

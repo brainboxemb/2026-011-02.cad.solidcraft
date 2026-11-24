@@ -1,0 +1,19 @@
+baseURL = "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
+locale = "en"
+defaultContentLanguage = "en"
+title = "SolidCraft CAD"
+enableRobotsTXT = false
+summaryLength = 28
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+
+[params]
+  description = "SolidCraft CAD models migrated onto the accepted model-project architecture."
+  cadSourceRepository = "brainboxemb/2026-011-02.cad.solidcraft.NEW"
+  sourceRef = "main"
+  buildScope = "main"

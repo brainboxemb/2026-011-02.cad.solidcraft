@@ -1,0 +1,27 @@
+[theme]
+default = "light"
+displayToggle = true
+
+[navbar]
+displayTitle = true
+displayLogo = false
+width = "wide"
+
+[page]
+width = "wide"
+displayPagination = false
+
+[footer]
+width = "wide"
+displayCopyright = false
+displayPoweredBy = false
+
+[search]
+type = "flexsearch"
+
+[imageZoom]
+enable = true
+
+[highlight.copy]
+enable = true
+display = "always"

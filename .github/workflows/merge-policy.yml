@@ -1,0 +1,41 @@
+name: Merge policy
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+jobs:
+  merge:
+    if: >-
+      github.event.issue.pull_request &&
+      (github.event.comment.body == '/merge' ||
+       startsWith(github.event.comment.body, '/merge-resolved'))
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+      checks: read
+      statuses: read
+    steps:
+      - name: Check out policy source
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Execute repository merge policy
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONPATH: modules/merge-policy/src
+        run: >-
+          python -m cad_model_merge_policy
+          --repository "${{ github.repository }}"
+          --pull-request-number "${{ github.event.issue.number }}"
+          --actor "${{ github.actor }}"
+          --repository-owner "${{ github.repository_owner }}"

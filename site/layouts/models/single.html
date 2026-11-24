@@ -1,0 +1,160 @@
+{{ define "main" }}
+{{ $m := .Params.model }}
+{{ $repo := site.Params.cadSourceRepository }}
+{{ $ref := site.Params.sourceRef }}
+{{ $root := printf "models/%s" .Params.cadRoot }}
+{{ $build := .Params.build }}
+{{ $toolchain := .Params.toolchain }}
+{{ $forge := index $toolchain "forge" }}
+{{ $solidcraft := index $toolchain "solidcraft" }}
+{{ $commandCount := 0 }}
+{{ with .Resources.Get "solidcraft.json" }}
+  {{ $commandDoc := .Content | transform.Unmarshal }}
+  {{ with index $commandDoc "commands" }}{{ $commandCount = len . }}{{ end }}
+{{ end }}
+
+<article class="cad-page-shell cad-model-detail">
+  <header class="cad-model-hero">
+    <p class="cad-model-kicker">{{ upper .Params.cadSection }} / {{ upper .Params.cadSlug }}</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ index $m "tagline" }}</p>
+  </header>
+
+  <div class="cad-model-statusbar">
+    <span class="cad-status cad-status-built">Built in SolidCraft {{ index $solidcraft "version" }}</span>
+    {{ if gt $commandCount 0 }}<span class="cad-status">{{ $commandCount }} commands</span>{{ end }}
+  </div>
+
+  {{ with index $m "warning" }}
+    <aside class="cad-warning"><strong>{{ index . "title" }}</strong><p>{{ index . "body" }}</p></aside>
+  {{ end }}
+
+  <div class="cad-model-overview">
+    <section class="cad-panel cad-preview-panel">
+      <h2 class="cad-section-title">Model preview</h2>
+      <div class="cad-preview">
+        {{ with .Resources.Get "model.png" }}
+          <a href="{{ .RelPermalink }}" class="cad-preview-link"><img src="{{ .RelPermalink }}" alt="{{ $.Title }} SolidCraft build"></a>
+        {{ else }}
+          <div class="cad-preview-empty">No durable model preview is available.</div>
+        {{ end }}
+      </div>
+      <p class="cad-model-description">{{ index $m "description" }}</p>
+      <p class="cad-model-parameters"><strong>Key dimensions:</strong> {{ index $m "parameters" }}</p>
+    </section>
+
+    <aside class="cad-panel cad-files-panel">
+      <h2 class="cad-section-title">Files</h2>
+      <p>Open the source and generated build artifacts for this accepted model build.</p>
+      <div class="cad-links cad-file-links">
+        <a class="cad-file-primary" href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/{{ .Params.sourcePath }}">SCPF source</a>
+        {{ with .Resources.Get "solidcraft.json" }}<a href="{{ .RelPermalink }}">Command JSON</a>{{ end }}
+        {{ with .Resources.Get "model.sc" }}<a href="{{ .RelPermalink }}" download>SolidCraft .sc</a>{{ end }}
+        {{ with .Resources.Get "model.stl" }}<a href="{{ .RelPermalink }}" download>STL</a>{{ end }}
+        {{ with .Resources.Get "model.step" }}<a href="{{ .RelPermalink }}">STEP</a>{{ end }}
+        {{ with .Resources.Get "model.yml" }}<a href="{{ .RelPermalink }}">model.yml</a>{{ end }}
+      </div>
+      <p class="cad-section-help">The .sc file is the editable SolidCraft model; STL is the printable mesh; STEP is the interchange CAD export.</p>
+
+      <h3 class="cad-section-subtitle">Construction stages</h3>
+      <ul class="cad-stages">{{ range index $m "stages" }}<li>{{ . }}</li>{{ end }}</ul>
+    </aside>
+  </div>
+
+  {{ with .Resources.Get "model.sc" }}
+    {{ $nativeURL := .Permalink }}
+    <section class="cad-panel cad-web-open">
+      <p class="cad-section-label">SolidCraft model</p>
+      <h2 class="cad-section-title">Open in SolidCraft Web</h2>
+      <p>The editable <code>.sc</code> model can be opened in SolidCraft's web application.</p>
+      <div class="cad-links">
+        <a href="https://docs.solidcraft.io/app/?open={{ urlquery $nativeURL }}" target="_blank" rel="noopener noreferrer">Open in SolidCraft Web ↗</a>
+        <a href="{{ .RelPermalink }}" download>Download model .sc</a>
+      </div>
+    </section>
+  {{ end }}
+
+  {{ with .Resources.Get "page.md" }}
+    <section class="cad-panel cad-background">
+      <p class="cad-section-label">Model context</p>
+      <h2 class="cad-section-title">Background</h2>
+      <div class="cad-rich-text">{{ $.RenderString .Content }}</div>
+    </section>
+  {{ end }}
+
+  {{ with $views := index $m "extra_views" }}
+    <section class="cad-panel">
+      <p class="cad-section-label">Design reference</p>
+      <h2 class="cad-section-title">{{ index $views "title" }}</h2>
+      {{ with index $views "note" }}<p>{{ . }}</p>{{ end }}
+      <div class="cad-reference-grid">
+        {{ range $view := index $views "items" }}
+          {{ $kind := index $view "kind" }}
+          {{ $src := index $view "src" }}
+          <article class="cad-reference">
+            <strong>{{ index $view "caption" }}</strong>
+            {{ if eq $kind "url" }}
+              <p><a href="{{ $src }}" target="_blank" rel="noopener noreferrer">Open external reference ↗</a></p>
+            {{ else }}
+              {{ with $.Resources.Get $src }}
+                <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}"></a>
+              {{ else }}
+                <p class="cad-muted">This declared view is not present in the current build scope.</p>
+              {{ end }}
+            {{ end }}
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  <section class="cad-code-section cad-source-section">
+    <p class="cad-section-label">Source</p>
+    <h2 class="cad-section-title">SCPF source</h2>
+    <p class="cad-section-help">The exact SCPF Python source declared by this build variant.</p>
+    {{ with .Resources.Get "scpf-source.py" }}
+      {{ partial "cad/codeblock.html" (dict "lang" "python" "content" .Content "label" $.Params.sourcePath) }}
+    {{ end }}
+  </section>
+
+  {{ with .Resources.Get "solidcraft.json" }}
+    {{ $commandsDoc := .Content | transform.Unmarshal }}
+    {{ with index $commandsDoc "commands" }}
+      <details class="cad-code-section cad-commands-section cad-collapsible">
+        <summary>
+          <span class="cad-collapsible-summary">
+            <span class="cad-section-label">Generated output</span>
+            <span class="cad-section-title cad-collapsible-title">SolidCraft command sequence</span>
+            <span class="cad-section-help">{{ len . }} generated operations · expand to inspect</span>
+          </span>
+        </summary>
+        <div class="cad-collapsible-body">
+          <ol class="cad-command-sequence">
+            {{ range . }}
+              <li class="cad-command-step">
+                <div class="cad-command-name"><code>{{ index . "command" }}</code></div>
+                {{ with index . "params" }}
+                  <pre class="cad-command-json"><code>{{ . | transform.Remarshal "json" }}</code></pre>
+                {{ end }}
+              </li>
+            {{ end }}
+          </ol>
+        </div>
+      </details>
+    {{ end }}
+  {{ end }}
+
+  <section class="cad-panel cad-verification-panel">
+    <p class="cad-section-label">Durable build evidence</p>
+    <h2 class="cad-section-title">Build information</h2>
+    <dl class="cad-verification-grid">
+      <dt>Build variant</dt><dd><code>{{ index $build "id" }}</code></dd>
+      <dt>Physical owner</dt><dd><code>{{ index $build "owner" }}</code></dd>
+      <dt>Built source</dt><dd><code>{{ index $build "built_source_sha" }}</code></dd>
+      <dt>Forge</dt><dd><code>{{ index $forge "version" }} · {{ index $forge "commit" }}</code></dd>
+      <dt>SolidCraft</dt><dd><code>{{ index $solidcraft "version" }}</code></dd>
+      <dt>Runtime</dt><dd><code>{{ index $solidcraft "image" }}</code></dd>
+    </dl>
+  </section>
+</article>
+{{ end }}

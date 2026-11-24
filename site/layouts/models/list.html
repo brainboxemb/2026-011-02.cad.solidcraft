@@ -1,0 +1,18 @@
+{{ define "main" }}
+<main class="cad-page-shell cad-catalog-page">
+  <section class="cad-model-hero cad-model-hero-small">
+    <p class="cad-model-kicker">SolidCraft CAD</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Description }}</p>
+  </section>
+
+  {{ $models := where site.RegularPages "Params.cadSlug" "!=" nil }}
+  <section class="cad-section cad-catalog-section">
+    <div class="cad-model-grid">
+      {{ range sort $models "Params.model.priority" }}
+        {{ partial "cad/model-card.html" (dict "page" .) }}
+      {{ end }}
+    </div>
+  </section>
+</main>
+{{ end }}

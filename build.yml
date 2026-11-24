@@ -1,0 +1,15 @@
+schema: 1
+branch: feature/bootstrap-template
+
+modules:
+  - branch-cleanup
+  - build
+  - ci
+  - merge-policy
+  - pages
+models:
+  - simple-box
+
+tasks:
+  - test
+  - build

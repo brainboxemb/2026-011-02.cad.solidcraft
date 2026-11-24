@@ -1,0 +1,50 @@
+[[imports]]
+path = "github.com/imfing/hextra"
+
+[[mounts]]
+source = "archetypes"
+target = "archetypes"
+
+[[mounts]]
+source = "assets"
+target = "assets"
+
+[[mounts]]
+source = "content"
+target = "content"
+
+[[mounts]]
+source = "data"
+target = "data"
+
+[[mounts]]
+source = "i18n"
+target = "i18n"
+
+[[mounts]]
+source = "layouts"
+target = "layouts"
+
+[[mounts]]
+source = "static"
+target = "static"
+
+# Website presentation metadata and build ownership stay separate but are
+# available in one model-root data tree for the Hugo adapter.
+[[mounts]]
+source = "../models"
+target = "data/cad/models"
+files = ["**/model.yml", "**/ci.yml"]
+
+# Optional model-owned prose/assets and the exact declared SCPF sources are
+# presentation resources. They never control build execution.
+[[mounts]]
+source = "../models"
+target = "assets/cad-source"
+files = ["**/model.yml", "**/ci.yml", "**/page.md", "**/*.py", "**/*.svg", "**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.webp"]
+
+# CI checks out the generated build branch here. Only the stable main scope is
+# mounted for the first Pages slice.
+[[mounts]]
+source = "../prepared-build/main"
+target = "assets/build"

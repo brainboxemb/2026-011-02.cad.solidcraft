@@ -1,0 +1,14 @@
+schema: 1
+id: pages
+kind: python
+impact: self
+watch:
+  - .github/workflows/ci.yml
+  - site/**
+  - models/**/model.yml
+  - models/**/page.md
+  - models/**/*.svg
+  - models/**/*.png
+  - models/**/*.jpg
+  - models/**/*.jpeg
+  - models/**/*.webp

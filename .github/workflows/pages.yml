@@ -1,0 +1,147 @@
+name: Pages
+
+on:
+  pull_request:
+    branches: [dev, main]
+    paths:
+      - ".github/workflows/pages.yml"
+      - "site/**"
+      - "modules/pages/**"
+      - "models/**/model.yml"
+      - "models/**/page.md"
+      - "models/**/*.svg"
+      - "models/**/*.png"
+      - "models/**/*.jpg"
+      - "models/**/*.jpeg"
+      - "models/**/*.webp"
+  workflow_dispatch:
+
+concurrency:
+  group: pages-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'publish' }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: pages
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out pull request source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Check out build output
+        uses: actions/checkout@v7
+        with:
+          ref: build
+          path: prepared-build
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Pages runtime dependencies
+        run: python -m pip install PyYAML==6.0.2
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.169.0"
+          extended: true
+
+      - name: Build and verify Pages
+        env:
+          PYTHONPATH: modules/pages/src
+        run: >-
+          python -m cad_model_pages.build
+          --source-root .
+          --build-scope prepared-build/main
+          --destination generated-site
+          --base-url "https://brainboxemb.github.io/template.cad.model-project/"
+          --source-ref "${{ github.event.pull_request.head.sha }}"
+
+  assemble:
+    name: pages-build
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out stable source
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          path: source-main
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Check out development source
+        uses: actions/checkout@v7
+        with:
+          ref: dev
+          path: source-dev
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Check out build output
+        uses: actions/checkout@v7
+        with:
+          ref: build
+          path: prepared-build
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install Pages runtime dependencies
+        run: python -m pip install PyYAML==6.0.2
+
+      - name: Set up Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.169.0"
+          extended: true
+
+      - name: Build stable site
+        env:
+          PYTHONPATH: source-main/modules/pages/src
+        run: >-
+          python -m cad_model_pages.build
+          --source-root source-main
+          --build-scope prepared-build/main
+          --destination generated-site
+          --base-url "https://brainboxemb.github.io/template.cad.model-project/"
+          --source-ref main
+
+      - name: Build development site
+        env:
+          PYTHONPATH: source-dev/modules/pages/src
+        run: >-
+          python -m cad_model_pages.build
+          --source-root source-dev
+          --build-scope prepared-build/dev
+          --destination generated-site/dev
+          --base-url "https://brainboxemb.github.io/template.cad.model-project/dev/"
+          --source-ref dev
+
+      - name: Publish Pages branch
+        env:
+          PYTHONPATH: source-main/modules/pages/src
+        run: >-
+          python -m cad_model_pages.publish
+          --repo source-main
+          --site "${GITHUB_WORKSPACE}/generated-site"
+          --source-ref main
+          --source-sha "$(git -C source-main rev-parse HEAD)"

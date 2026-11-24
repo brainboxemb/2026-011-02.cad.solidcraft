@@ -11,7 +11,10 @@ dimensions, not claimed DRESSELHAUS manufacturing specifications.
 """
 
 from scpf import (
-    Circle2D,
+    Anchor,
+    Axis,
+    Depth,
+    Hole,
     Sketch,
     SlotCenterToCenter2D,
     component,
@@ -32,10 +35,13 @@ class MountingRailM8:
     BEND_RADIUS = 1.25
     K_FACTOR = 0.40
 
-    # Generic 27/18 perforation reference. The sequence is:
-    # round -> longitudinal slot -> round -> transverse slot -> repeat.
+    # Generic 27/18 perforation reference. Along the rail:
+    # round -> horizontal slot -> round -> vertical slot -> repeat.
     END_OFFSET = 12.5
     FEATURE_PITCH = 25.0
+    ROUND_PITCH = 50.0
+    SLOT_PITCH = 100.0
+
     ROUND_DIAMETER = 12.5
 
     HORIZONTAL_SLOT_LENGTH = 10.0
@@ -70,53 +76,84 @@ class MountingRailM8:
             rule_name="Mounting Rail M8 Rule",
         )
 
-        # The top/back web is perforated by one standalone XY Sketch at Z=18.
-        # Pattern centres are spaced at 25 mm, starting 12.5 mm from the end.
-        # Four positions make one 100 mm repeat unit.
         length_value = float(self.length.value)
-        feature_count = int(
-            (length_value - 2 * self.END_OFFSET) // self.FEATURE_PITCH
-        ) + 1
 
+        # Round openings occur every 50 mm: 12.5, 62.5, 112.5, ...
+        round_first = self.END_OFFSET
+        round_count = int(
+            (length_value - self.END_OFFSET - round_first) // self.ROUND_PITCH
+        ) + 1
+        round_hole = Hole(
+            d=self.ROUND_DIAMETER,
+            direction=(0, 0, -1),
+        ).at(0, round_first, self.PROFILE_HEIGHT)
+        rail = rail + round_hole
+        rail = rail.rectangular_pattern(
+            round_hole,
+            count=round_count,
+            spacing=self.ROUND_PITCH,
+            direction=Axis.Y,
+        )
+
+        # Horizontal/longitudinal slot: first centre at 37.5 mm, then 100 mm.
+        horizontal_first = self.END_OFFSET + self.FEATURE_PITCH
         horizontal_center_distance = (
             self.HORIZONTAL_SLOT_LENGTH - self.HORIZONTAL_SLOT_WIDTH
         )
+        with Sketch(
+            name="Horizontal slot",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as horizontal_slot:
+            half = horizontal_center_distance / 2
+            SlotCenterToCenter2D(
+                (0, horizontal_first - half),
+                (0, horizontal_first + half),
+                self.HORIZONTAL_SLOT_WIDTH,
+            )
+
+        horizontal_cut = horizontal_slot.extrude(Depth.THROUGH_ALL)
+        rail = rail - horizontal_cut
+        horizontal_count = int(
+            (length_value - self.END_OFFSET - horizontal_first)
+            // self.SLOT_PITCH
+        ) + 1
+        rail = rail.rectangular_pattern(
+            horizontal_cut,
+            count=horizontal_count,
+            spacing=self.SLOT_PITCH,
+            direction=Axis.Y,
+        )
+
+        # Vertical/transverse slot: first centre at 87.5 mm, then 100 mm.
+        vertical_first = self.END_OFFSET + 3 * self.FEATURE_PITCH
         vertical_center_distance = (
             self.VERTICAL_SLOT_LENGTH - self.VERTICAL_SLOT_WIDTH
         )
-
         with Sketch(
-            name="Perforation pattern",
-            plane="XY",
-            origin=(0, 0, self.PROFILE_HEIGHT),
-        ) as holes:
-            for index in range(feature_count):
-                y = self.END_OFFSET + index * self.FEATURE_PITCH
-                kind = index % 4
+            name="Vertical slot",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as vertical_slot:
+            half = vertical_center_distance / 2
+            SlotCenterToCenter2D(
+                (-half, vertical_first),
+                (half, vertical_first),
+                self.VERTICAL_SLOT_WIDTH,
+            )
 
-                if kind in (0, 2):
-                    holes.add(
-                        Circle2D(d=self.ROUND_DIAMETER),
-                        offset=(0, y),
-                    )
-                elif kind == 1:
-                    half = horizontal_center_distance / 2
-                    SlotCenterToCenter2D(
-                        (0, y - half),
-                        (0, y + half),
-                        self.HORIZONTAL_SLOT_WIDTH,
-                    )
-                else:
-                    half = vertical_center_distance / 2
-                    SlotCenterToCenter2D(
-                        (-half, y),
-                        (half, y),
-                        self.VERTICAL_SLOT_WIDTH,
-                    )
-
-        # The cutter starts on the outside of the 18 mm web and passes through
-        # only the 1.25 mm sheet; extra depth keeps the Boolean robust.
-        return rail - holes.extrude(-4.0)
+        vertical_cut = vertical_slot.extrude(Depth.THROUGH_ALL)
+        rail = rail - vertical_cut
+        vertical_count = int(
+            (length_value - self.END_OFFSET - vertical_first)
+            // self.SLOT_PITCH
+        ) + 1
+        return rail.rectangular_pattern(
+            vertical_cut,
+            count=vertical_count,
+            spacing=self.SLOT_PITCH,
+            direction=Axis.Y,
+        )
 
 
 MountingRailM8()

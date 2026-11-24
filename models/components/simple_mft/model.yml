@@ -1,5 +1,5 @@
 purpose: [example]
-section: advanced
+section: components
 variants:
   simple-mft:
     priority: 10

@@ -1,29 +1,46 @@
-"""Simple MFT worktop with one reusable 800 mm guide rail.
+"""Simple MFT assembly with guide rail and two 1 m M8 support rails.
 
 World axes:
     X: left/right across the worktop width
-    Y: front/rear along the worktop depth and guide-rail length
+    Y: front/rear across the worktop depth
     Z: up
 
-The rail is deliberately placed by this assembly. GuideRail owns only its local
-profile and length; SimpleMFT owns only the worktop geometry.
+The two mounting rails run along +X. Their left ends align with the worktop left
+edge, so the full 1000 mm rails extend 195 mm beyond the 805 mm worktop on the
+right. Both perforation sequences therefore run in the same left-to-right
+direction.
+
+The mounting-rail component is locally built along +Y with its C-opening toward
+-Z. Two different 120-degree occurrence rotations map local +Y to world +X,
+while mapping the opening to opposite outward Y directions.
 """
 from scpf import Placement, half
 
 from models.components.simple_mft.scpf.model import SimpleMFT
 from models.components.guide_rail.scpf.model import GuideRail
 from models.components.guide_rail.scpf.profiles import get_profile
+from models.components.mounting_rail_m8.scpf.model import MountingRailM8
 
 
 class SimpleMFTAssembly:
-    # Shared parent parameter: changing this moves the worktop top face and the
-    # rail together instead of leaving the rail at a hard-coded Z=18 position.
     worktop_thickness = SimpleMFT.thickness
-
-    # Compact assembly example. Keep the length editable in the assembly.
     guide_rail_length = 800.0
 
     GUIDE_RAIL_PROFILE = "festool"
+
+    SUPPORT_RAIL_LENGTH = 1000.0
+    SUPPORT_RAIL_REPEAT_COUNT = 10
+    SUPPORT_RAIL_REPEAT_PITCH = 100.0
+
+    # The 27 mm mounting-rail profile becomes vertical after the support-rail
+    # rotations. Put its upper edge at Z=0 so the MFT underside rests on it.
+    SUPPORT_RAIL_Z = -MountingRailM8.PROFILE_WIDTH / 2
+
+    # Axis-angle rotations:
+    #   local +Y (rail length) -> world +X for BOTH rails;
+    #   local -Z (C opening)   -> world +Y / -Y respectively.
+    UPPER_RAIL_ROTATION = ((1, 1, -1), 120)
+    LOWER_RAIL_ROTATION = ((-1, -1, -1), 120)
 
     def build(self):
         profile = get_profile(self.GUIDE_RAIL_PROFILE)
@@ -32,13 +49,6 @@ class SimpleMFTAssembly:
             thickness=self.worktop_thickness,
         )
 
-        # GuideRail's fixed profile starts at local X=0 and extends to +WIDTH,
-        # while its length is already symmetric about local Y=0. Shifting it by
-        # half its width centres the rail over worktop X=0 without a rotation.
-        #
-        # Z uses the same parent parameter passed into SimpleMFT.thickness, so
-        # the rail remains on the top face when worktop_thickness is edited in
-        # the saved SolidCraft model.
         guide_rail = GuideRail(
             length=self.guide_rail_length,
             profile=self.GUIDE_RAIL_PROFILE,
@@ -48,7 +58,38 @@ class SimpleMFTAssembly:
             ),
         )
 
-        return worktop + guide_rail
+        worktop_width = float(SimpleMFT.width)
+        worktop_depth = float(SimpleMFT.depth)
+
+        rail_x = -worktop_width / 2
+        upper_y = worktop_depth / 2
+        lower_y = -worktop_depth / 2
+
+        upper_support = MountingRailM8(
+            length=self.SUPPORT_RAIL_LENGTH,
+            repeat_count=self.SUPPORT_RAIL_REPEAT_COUNT,
+            repeat_pitch=self.SUPPORT_RAIL_REPEAT_PITCH,
+            placement=Placement(
+                x=rail_x,
+                y=upper_y,
+                z=self.SUPPORT_RAIL_Z,
+                rotation=self.UPPER_RAIL_ROTATION,
+            ),
+        )
+
+        lower_support = MountingRailM8(
+            length=self.SUPPORT_RAIL_LENGTH,
+            repeat_count=self.SUPPORT_RAIL_REPEAT_COUNT,
+            repeat_pitch=self.SUPPORT_RAIL_REPEAT_PITCH,
+            placement=Placement(
+                x=rail_x,
+                y=lower_y,
+                z=self.SUPPORT_RAIL_Z,
+                rotation=self.LOWER_RAIL_ROTATION,
+            ),
+        )
+
+        return worktop + guide_rail + upper_support + lower_support
 
 
 SimpleMFTAssembly()

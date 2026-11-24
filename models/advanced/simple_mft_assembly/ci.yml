@@ -6,3 +6,28 @@ process: true
 dependencies:
   - simple-mft
   - guide-rail
+  - mounting-rail-m8
+
+snapshot:
+  camera:
+    target: [90, 0, 0]
+    yaw: -0.65
+    pitch: 0.55
+    distance: 1250
+    fov: 0
+
+snapshots:
+  - name: support-rails-top.png
+    camera:
+      target: [97.5, 0, 0]
+      yaw: 0
+      pitch: 1.50
+      distance: 1250
+      fov: 0
+  - name: support-rails-right.png
+    camera:
+      target: [500, 0, -5]
+      yaw: 1.5708
+      pitch: 0
+      distance: 720
+      fov: 0

@@ -1,9 +1,9 @@
 schema: 1
-branch: fix/simple-mft-component-classification
+branch: feature/simple-mft-support-rails
 
 modules: []
 models:
-  - simple-mft
+  - mounting-rail-m8
   - simple-mft-assembly
 tasks:
   - test

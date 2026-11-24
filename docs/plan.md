@@ -50,6 +50,21 @@ product design intent:
 
 No Forge change is required.
 
+### #49 — add two 1 m support rails to Simple MFT assembly
+
+Active on `feature/simple-mft-support-rails`.
+
+Reuse two `MountingRailM8` occurrences below the Simple MFT worktop:
+
+- 1000 mm each;
+- left ends align with the 805 mm worktop left edge;
+- 195 mm right overhang;
+- openings face outward;
+- perforation direction remains equal left-to-right;
+- worktop underside rests on the rail upper edges.
+
+Keep the existing GuideRail on top.
+
 ### #12 — migrate remaining historical CAD issues and open pull requests
 
 The full CAD catalog is accepted on stable `main`.

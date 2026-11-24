@@ -1,16 +1,15 @@
-## Assembly intent
+## MFT support layout
 
-This is a separate assembly owner, not a build variant of the Simple MFT
-component.
+The 805 × 555 mm worktop rests on two **1000 mm Mounting Rail M8** components.
 
-It reuses:
+- one rail runs below the +Y edge;
+- one rail runs below the −Y edge;
+- both start at the worktop left edge;
+- both therefore extend **195 mm to the right**;
+- both perforation patterns run in the same left-to-right direction;
+- the two C-profile openings face outward.
 
-- `models/components/simple_mft` for the complete worktop;
-- `models/components/guide_rail` for the rail profile and length.
+Each support rail uses **10 repeats at 100 mm pitch**. The 1 m configuration
+centres the repeating punch pattern with a 12.5 mm end margin.
 
-The current assembly places an 800 mm Festool-profile GuideRail along the
-worktop Y/depth direction. The rail is centred over X=0 and its bottom follows
-the same `worktop_thickness` parameter used by the Simple MFT component.
-
-This owner is classified under **Advanced Models** for now. It can evolve
-independently as the MFT assembly gains more components and assembly logic.
+The existing **800 mm Festool-profile GuideRail** remains on top of the MFT.

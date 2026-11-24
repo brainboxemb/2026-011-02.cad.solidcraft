@@ -54,8 +54,11 @@ web-through cut from that Sketch, and patterns that cut as one native history
 feature. `repeat_count` remains dimensionless/editable and the native repeat
 spacing is the expression `4 * feature_pitch`.
 
-The standalone example defaults to **250 mm** with **2 complete repeat units**.
-The first unit is positioned from the rail length, repeat count and pitch so the
-whole pattern is centred. Setting `length = 1000` and
-`repeat_count = 10` resolves to the 12.5 mm product-reference end offset
-without a separate hard-coded offset parameter.
+The standalone example defaults to **250 mm** with **2 complete repeat units**
+and an editable **37.5 mm end offset**, which centres those units in the short
+example.
+
+`end_offset` is a separate native parameter. For the full 1000 mm reference,
+use `repeat_count = 10` and `end_offset = 12.5 mm`. This keeps length,
+repeat count, pitch and offset independently editable in SolidCraft without
+relying on unsupported Expression × Expression arithmetic in Forge 0.15.

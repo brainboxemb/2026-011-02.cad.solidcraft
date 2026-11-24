@@ -5,18 +5,22 @@ title: Simple MFT assembly
 tagline: 1 m MFT work surface with 195 mm right extension, twin M8 rails and shifted GuideRail
 description: >
   The 805 mm Simple MFT worktop is extended on the right by a plain
-  195 × 555 × 18 mm plank, creating a 1000 mm-wide work surface aligned with
-  the two full-length M8 mounting rails underneath. The rail openings face
-  outward and both top sections rest on their upper edges. The 800 mm
-  Festool-profile GuideRail is shifted 340 mm toward +X.
-parameters: 805 × 555 × 18 mm MFT worktop; 195 × 555 × 18 mm right extension; 1000 mm total width; 2 × 1000 mm Mounting Rail M8; 10 × 100 mm repeats per support rail; GuideRail 800 mm shifted +340 mm
+  195 × 555 × 18 mm plank, creating a 1000 mm-wide work surface. Two long M8
+  mounting rails run underneath and are shifted 18 mm right to meet a third
+  519 mm cross rail on the left short side without blocking the channel ends.
+  All C-openings face outward. The 800 mm Festool-profile GuideRail is shifted
+  340 mm toward +X. MDF, galvanized-steel and aluminium materials distinguish
+  the assembly visually.
+parameters: 805 × 555 × 18 mm MFT worktop; 195 × 555 × 18 mm right extension; 1000 mm total width; 2 × 1000 mm long M8 rails shifted +18 mm; 1 × 519 mm left cross rail; GuideRail 800 mm shifted +340 mm
 stages:
   - Instantiate the reusable SimpleMFT worktop
   - Add a plain 195 mm right-hand extension so the complete top reaches 1000 mm
   - Place two 1000 mm MountingRailM8 components below the worktop
+  - Shift both long rails 18 mm right and add a 519 mm left cross rail between them
   - Align both rail starts with the worktop left edge for 195 mm right overhang
   - Rotate upper and lower rails so both C-openings face outward
-  - Keep both perforation sequences running in the same +X direction
+  - Keep both long perforation sequences running in the same +X direction
+  - Keep all three C-openings outward and the rail ends accessible
   - Place the worktop underside on the upper edges of both support rails
   - Shift the 800 mm Festool-profile GuideRail 340 mm toward +X
 extra_views:

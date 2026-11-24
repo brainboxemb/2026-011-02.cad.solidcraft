@@ -1,0 +1,16 @@
+schema: 1
+id: hub75-wood-frame
+builder: forge
+source: scpf/model.py
+process: true
+dependencies:
+  - corner-bracket
+  - hub75-panel
+
+snapshot:
+  camera:
+    target: [0, 28, 181]
+    yaw: -0.40
+    pitch: 0.25
+    distance: 1020
+    fov: 0

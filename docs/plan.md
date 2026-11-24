@@ -4,47 +4,39 @@ This file contains unfinished work only.
 
 ## Now
 
-### #1 — staged model migration
-
-The repository is migrating the historical CAD catalog from
-`brainboxemb/2026-011-02.cad.solidcraft` onto the accepted self-contained
-CAD model-project architecture.
+### #1 — final historical catalog migration
 
 Accepted stages:
 
-1. one real model — `plate`;
-2. five real models — `plate`, `vent-plate`, `csg-cube`, `bracket`,
-   `sample-plate`;
-3. accepted template catalog presentation synced to this repository.
+1. one real physical owner;
+2. five real physical owners;
+3. ten real physical owners;
+4. accepted template catalog presentation synced;
+5. accepted primary snapshot-camera and physical dependency contracts synced;
+6. accepted build-branch artifact ownership fix synced.
 
-Current stage: **ten real model roots**.
+Current stage migrates the six remaining historical physical roots:
 
-The ten-root acceptance branch selects all ten physical owners:
+- `corner-bracket`;
+- `hub75-panel`;
+- `hub75-screen`;
+- `hub75-wood-frame` — Hub75DisplayCase;
+- `hub75-display2` — Hub75DisplayCase v2;
+- `simple-mft` — standalone + assembly variants.
 
-- `plate`;
-- `vent-plate`;
-- `csg-cube`;
-- `bracket`;
-- `sample-plate`;
-- `plastic-enclosure`;
-- `plastic-enclosure-pi`;
-- `bolted-flange`;
-- `guide-rail`;
-- `flex-bench-dog`.
+The final PR deliberately selects all sixteen real physical owners so the whole
+migrated catalog is accepted together.
 
-`guide-rail` is one physical owner with two build variants:
-`guide-rail` and `guide-rail-makita`.
+## Dependency graph
 
-`flex-bench-dog` retains STL export and its model-owned underside snapshot
-through declarative `ci.yml` configuration.
+Explicit physical-owner edges used by the final batch:
 
-`bolted-flange` retains historical issue #135 about replacing its Python
-bolt-hole loop with a native circular pattern. Migration preserves the current
-accepted source; do not silently solve that issue during transfer.
+- `hub75-screen` -> `hub75-panel`;
+- `hub75-wood-frame` -> `hub75-panel`, `corner-bracket`;
+- `hub75-display2` -> `hub75-panel`, `corner-bracket`;
+- `simple-mft` -> `guide-rail`.
 
-## Migration ordering
-
-Directory priorities are:
+Directory priorities remain ordering metadata only:
 
 ```text
 models/basic       10
@@ -52,39 +44,26 @@ models/components  20
 models/advanced    30
 ```
 
-Lower priority builds first. Equal priority is ordered by owner id.
+## Migration boundaries
 
-This is ordering only. It does not imply dependencies or propagate selection.
+The historical repository remains the source for current geometry and open
+model-design issues until this batch is accepted.
 
-## Source boundary
+Do not silently solve open geometry work during transfer:
 
-The historical repository remains the source for existing model geometry and
-open model-design issues until each model is migrated.
+- CornerBracket #362 remains separate;
+- Bolted Flange #135 remains separate;
+- DisplayCase path/id rename #417 remains separate.
 
-Do not copy its repository-local CI/site architecture or historical CAD-specific
-`model.yml` schema. Build/source identity belongs in model-local `ci.yml`;
-presentation belongs in canonical `model.yml`.
+The current ids `hub75-wood-frame` and `hub75-display2` stay stable during
+migration even though their presentation titles are Hub75DisplayCase and
+Hub75DisplayCase v2.
 
-## Accepted architecture
-
-- work branch selection from matching `build.yml`;
-- incremental `dev` CI from the last successful integration baseline;
-- full `main` CI;
-- cancel-in-progress;
-- item-local impact/watch metadata;
-- directory-local model build priority;
-- local merge-policy dispatches target CI and branch cleanup;
-- standalone cleanup removes merged temporary branches;
-- direct Forge -> JSON -> one SolidCraft replay batch;
-- Forge v0.14.0 / SolidCraft 0.48.1 baseline;
-- generated `build` branch with `dev/` and `main/` scopes;
-- compact model `ci.yml` with implicit primary snapshot;
-- physical model owners may expand into multiple build variants;
-- internal Python capabilities run directly from source;
-- Pages runs separately from CAD CI and is explicitly dispatched after build publication;
-- Pages publishes stable `/` and development `/dev/` as one generated `gh-pages` tree.
+Generated CAD artifacts remain owned exclusively by the generated `build`
+branch. Pages links them and does not copy them into `gh-pages`.
 
 ## Next
 
-Accept the full ten-root batch on PR, durable `dev`, build publication and
-Pages before widening to the remaining catalog.
+Accept the complete sixteen-owner catalog on PR, durable `dev`, build
+publication and Pages. Then migrate the remaining open issues and relevant open
+pull requests from the historical repository.

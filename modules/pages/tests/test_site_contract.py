@@ -39,6 +39,8 @@ class SiteContractTests(unittest.TestCase):
         page = (SITE / "layouts/models/single.html").read_text(encoding="utf-8")
         self.assertIn('.Resources.Get "page.md"', page)
         self.assertIn('index $m "extra_views"', page)
+        self.assertIn('eq $kind "image_url"', page)
+        self.assertIn('<img src="{{ $src }}"', page)
         self.assertIn('.Resources.Get "scpf-source.py"', page)
         self.assertIn('resources.Get (printf "build/%s" $commandsPath)', page)
         self.assertIn("raw.githubusercontent.com", page)
@@ -81,7 +83,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--build-scope prepared-build/dev", workflow)
         self.assertIn("--destination generated-site/dev", workflow)
         self.assertIn(
-            'https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/',
+            'https://brainboxemb.github.io/template.cad.model-project/dev/',
             workflow,
         )
         self.assertNotIn("simple-box", workflow)

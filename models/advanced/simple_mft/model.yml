@@ -25,7 +25,7 @@ variants:
         - kind: asset
           src: craftmaker_s30_worktop_w320.jpg
           alt: CRAFTMAKER ProStation S30 reference worktop
-          caption: CRAFTMAKER replacement worktop product photograph.
+          caption: 'Replacement worktop — Source: CRAFTMAKER (craftmaker.nl)'
         - kind: asset
           src: expected-top-view.svg
           alt: Simple MFT expected top view

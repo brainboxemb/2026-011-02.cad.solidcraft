@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Check out build output
@@ -54,10 +54,11 @@ jobs:
       - name: Build and verify Pages
         env:
           PYTHONPATH: modules/pages/src
+          PAGES_SCOPE: ${{ (github.base_ref == 'dev' || github.head_ref == 'dev') && 'dev' || 'main' }}
         run: >-
           python -m cad_model_pages.build
           --source-root .
-          --build-scope prepared-build/main
+          --build-scope prepared-build/$PAGES_SCOPE
           --destination generated-site
           --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
           --source-ref "${{ github.event.pull_request.head.sha }}"
@@ -74,7 +75,7 @@ jobs:
         with:
           ref: main
           path: source-main
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: true
 
       - name: Check out development source
@@ -82,7 +83,7 @@ jobs:
         with:
           ref: dev
           path: source-dev
-          fetch-depth: 1
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Check out build output

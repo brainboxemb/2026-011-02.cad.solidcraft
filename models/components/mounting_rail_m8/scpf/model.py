@@ -1,19 +1,20 @@
 """Generic parametric M8 mounting rail using native SolidCraft sheet metal.
 
-The rail body is one native 27/18-style C-profile contour flange. The
-perforation is authored as ONE four-profile repeat unit:
+The rail body is one native 27/18-style C-profile contour flange. One physical
+perforation repeat unit consists of four native cut features:
 
     round -> longitudinal slot -> round -> transverse slot
 
-That unit becomes one web-through cut feature and one native rectangular
-feature pattern. Pattern count, spacing and all profile dimensions remain
-editable Forge/SolidCraft parameters.
+Those four already-applied source features are passed together to ONE native
+rectangular feature pattern. Pattern count, spacing and all profile dimensions
+remain editable Forge/SolidCraft parameters.
 """
 
 from scpf import (
     Anchor,
     Axis,
     Circle2D,
+    Depth,
     Sketch,
     SlotCenterToCenter2D,
     component,
@@ -22,8 +23,10 @@ from scpf import (
 
 @component(include="*")
 class MountingRailM8:
-    # Product / section dimensions.
+    # Standalone presentation default. The reference retail product is 1000 mm.
     length = 250.0
+
+    # Generic 27/18 light C-profile reference dimensions.
     profile_width = 27.0
     profile_height = 18.0
     thickness = 1.25
@@ -33,8 +36,7 @@ class MountingRailM8:
     bend_radius = 1.25
     k_factor = 0.40
 
-    # One complete perforation cycle contains four features. The default
-    # 25 mm feature pitch therefore gives a 100 mm native repeat pitch.
+    # One complete perforation cycle contains four features.
     end_offset = 37.5
     feature_pitch = 25.0
     repeat_count = 2
@@ -71,10 +73,7 @@ class MountingRailM8:
             rule_name="Mounting Rail M8 Rule",
         )
 
-        # Author one complete 4-feature repeat unit on the real top web.
-        # end_offset is a native editable parameter instead of a derived
-        # Expression*Expression formula, which Forge 0.15 deliberately does
-        # not support.
+        # One physical four-feature repeat unit.
         repeat_pitch = 4 * self.feature_pitch
         y0 = self.end_offset
         y1 = y0 + self.feature_pitch
@@ -88,43 +87,72 @@ class MountingRailM8:
             self.vertical_slot_length - self.vertical_slot_width
         )
 
+        # Source feature 1: round opening.
         with Sketch(
-            name="Perforation repeat unit",
+            name="Repeat round A",
             on=rail,
             parent=Anchor.TOP,
-        ) as unit:
-            unit.add(
+        ) as round_a:
+            round_a.add(
                 Circle2D(d=self.round_diameter),
                 offset=(0, y0),
             )
+        round_a_cut = round_a.extrude(Depth.THROUGH_ALL)
+        rail = rail - round_a_cut
 
-            horizontal_half = horizontal_center_distance / 2
+        # Source feature 2: longitudinal slot.
+        with Sketch(
+            name="Repeat horizontal slot",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as horizontal_slot:
+            half = horizontal_center_distance / 2
             SlotCenterToCenter2D(
-                (0, y1 - horizontal_half),
-                (0, y1 + horizontal_half),
+                (0, y1 - half),
+                (0, y1 + half),
                 self.horizontal_slot_width,
             )
+        horizontal_cut = horizontal_slot.extrude(Depth.THROUGH_ALL)
+        rail = rail - horizontal_cut
 
-            unit.add(
+        # Source feature 3: second round opening.
+        with Sketch(
+            name="Repeat round B",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as round_b:
+            round_b.add(
                 Circle2D(d=self.round_diameter),
                 offset=(0, y2),
             )
+        round_b_cut = round_b.extrude(Depth.THROUGH_ALL)
+        rail = rail - round_b_cut
 
-            vertical_half = vertical_center_distance / 2
+        # Source feature 4: transverse slot.
+        with Sketch(
+            name="Repeat vertical slot",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as vertical_slot:
+            half = vertical_center_distance / 2
             SlotCenterToCenter2D(
-                (-vertical_half, y3),
-                (vertical_half, y3),
+                (-half, y3),
+                (half, y3),
                 self.vertical_slot_width,
             )
+        vertical_cut = vertical_slot.extrude(Depth.THROUGH_ALL)
+        rail = rail - vertical_cut
 
-        # One shallow cut owns the complete 4-profile unit. Cutting only
-        # through the web avoids SolidCraft's unsupported sheet-bend recess
-        # case that THROUGH_ALL triggers for a compound profile.
-        unit_cut = unit.extrude(-2 * self.thickness)
-        rail = rail - unit_cut
-
+        # Forge 0.15 accepts a sequence of already-applied native features.
+        # SolidCraft therefore stores ONE rectangular pattern whose source
+        # feature list is the complete four-feature physical repeat unit.
         return rail.rectangular_pattern(
-            unit_cut,
+            (
+                round_a_cut,
+                horizontal_cut,
+                round_b_cut,
+                vertical_cut,
+            ),
             count=self.repeat_count,
             spacing=repeat_pitch,
             direction=Axis.Y,

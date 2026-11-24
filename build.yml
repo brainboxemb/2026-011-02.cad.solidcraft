@@ -1,9 +1,10 @@
 schema: 1
-branch: feature/forge-release-bootstrap
+branch: fix/mounting-rail-flat-before-fold
 
-modules:
-  - ci
-  - build
-models: []
+modules: []
+models:
+  - mounting-rail-m8
+  - simple-mft-assembly
 tasks:
   - test
+  - build

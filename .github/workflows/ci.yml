@@ -39,18 +39,6 @@ jobs:
           PYTHONPATH: modules/ci/src
         run: python -m cad_model_ci
 
-      - name: Measure rail orientation
-        if: github.head_ref == 'fix/mounting-rail-orientation-pattern-start'
-        run: |
-          cat > build/dev/measure-rail.json <<'JSON'
-          {"commands":[{"command":"model.faces","params":{"body":"MountingRailM8"}},{"command":"document.inspect","params":{"measure":true,"timeline":false,"sketch_counts":false}}]}
-          JSON
-          docker run --rm --pull=never \
-            -v "$PWD/build/dev:/output:ro" \
-            ghcr.io/brainboxemb/cad-solidcraft:v0.3.5 \
-            solidcraft-cli run /output/measure-rail.json --results \
-            --in /output/models/mounting-rail-m8/model.sc
-
   build:
     name: build
     if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')

@@ -7,13 +7,6 @@ on:
       - ".github/workflows/pages.yml"
       - "site/**"
       - "modules/pages/**"
-      - "models/**/model.yml"
-      - "models/**/page.md"
-      - "models/**/*.svg"
-      - "models/**/*.png"
-      - "models/**/*.jpg"
-      - "models/**/*.jpeg"
-      - "models/**/*.webp"
   workflow_dispatch:
 
 concurrency:
@@ -66,7 +59,7 @@ jobs:
           --source-root .
           --build-scope prepared-build/main
           --destination generated-site
-          --base-url "https://brainboxemb.github.io/template.cad.model-project/"
+          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
           --source-ref "${{ github.event.pull_request.head.sha }}"
 
   assemble:
@@ -122,7 +115,7 @@ jobs:
           --source-root source-main
           --build-scope prepared-build/main
           --destination generated-site
-          --base-url "https://brainboxemb.github.io/template.cad.model-project/"
+          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
           --source-ref main
 
       - name: Build development site
@@ -133,7 +126,7 @@ jobs:
           --source-root source-dev
           --build-scope prepared-build/dev
           --destination generated-site/dev
-          --base-url "https://brainboxemb.github.io/template.cad.model-project/dev/"
+          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/"
           --source-ref dev
 
       - name: Publish Pages branch

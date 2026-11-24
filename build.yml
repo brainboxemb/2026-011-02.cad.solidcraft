@@ -1,15 +1,9 @@
 schema: 1
-branch: feature/bootstrap-template
+branch: fix/pages-pr-durable-boundary
 
 modules:
-  - branch-cleanup
-  - build
-  - ci
-  - merge-policy
   - pages
-models:
-  - simple-box
+models: []
 
 tasks:
   - test
-  - build

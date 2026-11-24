@@ -49,7 +49,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "c596dc1f33cc2c625af86fbb5a8fb041c7edcc5d",
+      "built_source_sha": "6a5e059ec5f8bf9c2afcdcc282a3e54d76ed76ce",
       "commands": "models/corner-bracket/solidcraft.json",
       "dependencies": [],
       "id": "corner-bracket",
@@ -63,9 +63,50 @@
       "priority": 20,
       "root": "models/components/corner_bracket",
       "snapshot": {
-        "camera": null
+        "camera": {
+          "distance": 125,
+          "fov": 0,
+          "pitch": 0.3,
+          "target": [
+            24,
+            0,
+            -24
+          ],
+          "yaw": -0.45
+        }
       },
-      "snapshots": [],
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": 0.2,
+            "target": [
+              58,
+              0,
+              0
+            ],
+            "yaw": -0.65
+          },
+          "name": "horizontal-tip.png",
+          "path": "models/corner-bracket/horizontal-tip.png"
+        },
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": 0.2,
+            "target": [
+              0,
+              0,
+              -58
+            ],
+            "yaw": -0.65
+          },
+          "name": "vertical-tip.png",
+          "path": "models/corner-bracket/vertical-tip.png"
+        }
+      ],
       "source": "models/components/corner_bracket/scpf/model.py"
     },
     {
@@ -172,7 +213,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "c596dc1f33cc2c625af86fbb5a8fb041c7edcc5d",
+      "built_source_sha": "6a5e059ec5f8bf9c2afcdcc282a3e54d76ed76ce",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -301,7 +342,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "c596dc1f33cc2c625af86fbb5a8fb041c7edcc5d",
+      "built_source_sha": "6a5e059ec5f8bf9c2afcdcc282a3e54d76ed76ce",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -530,5 +571,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "c596dc1f33cc2c625af86fbb5a8fb041c7edcc5d"
+  "source_sha": "6a5e059ec5f8bf9c2afcdcc282a3e54d76ed76ce"
 }

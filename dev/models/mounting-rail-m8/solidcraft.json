@@ -427,6 +427,23 @@
           0.0
         ]
       }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#9EA6AA"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MountingRailM8"
+        ],
+        "material": "Galvanized steel"
+      }
     }
   ]
 }

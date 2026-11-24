@@ -133,7 +133,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/flex-bench-dog/solidcraft.json",
       "dependencies": [],
       "id": "flex-bench-dog",
@@ -170,7 +170,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/guide-rail/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail",
@@ -191,7 +191,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/guide-rail-makita/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail-makita",
@@ -375,7 +375,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "9bdc50c9c9e4736b4046b7492d0299d73e179a10",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
       "id": "mounting-rail-m8",
@@ -575,7 +575,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "931ae5f9232c87593e0dfb2b54c999783dafa68c",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/simple-mft/solidcraft.json",
       "dependencies": [],
       "id": "simple-mft",
@@ -596,7 +596,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "9bdc50c9c9e4736b4046b7492d0299d73e179a10",
+      "built_source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "simple-mft",
@@ -688,5 +688,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "9bdc50c9c9e4736b4046b7492d0299d73e179a10"
+  "source_sha": "cb91a0d36902a2b97bdd74a371988311ffa64319"
 }

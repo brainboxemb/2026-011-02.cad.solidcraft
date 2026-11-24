@@ -331,6 +331,23 @@
         "direction": "symmetric",
         "body_name": "GuideRail"
       }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Aluminium",
+        "density_g_cm3": 2.7,
+        "color": "#C4C8CB"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "GuideRail"
+        ],
+        "material": "Aluminium"
+      }
     }
   ]
 }

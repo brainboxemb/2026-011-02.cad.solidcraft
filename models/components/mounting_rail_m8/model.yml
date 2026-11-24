@@ -1,0 +1,38 @@
+purpose: [example]
+section: components
+priority: 30
+title: Mounting Rail M8
+tagline: 1000 mm galvanized 27/18 light C-profile with repeating M8 installation perforations
+description: >
+  A reusable light mounting-rail component modelled as native sheet metal.
+  The supplied DRESSELHAUS/HORNBACH product establishes 1000 mm length,
+  galvanized steel, M8 use and 1.25 mm thickness. The 27 × 18 mm C-profile and
+  perforation dimensions use a generic published 27/18 rail reference and are
+  not claimed as DRESSELHAUS manufacturing dimensions.
+parameters: 1000 mm length; 27 × 18 × 1.25 mm nominal profile; 15 mm opening; 25 mm feature pitch
+stages:
+  - C profile — one native open XZ sheet contour
+  - Contour flange — 1000 mm native sheet-metal rail
+  - Perforation Sketch — circle, horizontal slot, circle, vertical slot
+  - Repeat — 25 mm feature pitch / 100 mm four-feature cycle
+  - Cut — one perforation cutter through the 1.25 mm back web
+warning:
+  title: REFERENCE GEOMETRY — not a DRESSELHAUS manufacturing drawing
+  body: >
+    Product material, thickness, length and M8 application come from the
+    supplied DRESSELHAUS/HORNBACH reference. Profile and perforation dimensions
+    are based on a generic published 27/18 installation-rail drawing. Bend
+    radius and K-factor are modelling assumptions until a manufacturer drawing
+    or physical measurement is available.
+extra_views:
+  title: Product reference and perforation review
+  note: The local product image is retained for visual comparison; only the cropped derivative is rendered on the page.
+  items:
+    - kind: asset
+      src: mounting_rail_m8_reference_w320.jpg
+      alt: Galvanized M8 mounting rail reference
+      caption: 'Reference product — Source: HORNBACH / DRESSELHAUS'
+    - kind: build
+      src: pattern-closeup.png
+      alt: Mounting Rail M8 perforation pattern close-up
+      caption: Four-feature repeat — round, horizontal slot, round, vertical slot

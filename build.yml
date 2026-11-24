@@ -1,8 +1,8 @@
 schema: 1
-branch: fix/34-simple-mft-local-reference
+branch: feature/mounting-rail-m8
 
-modules:
-  - pages
-models: []
+modules: []
+models:
+  - mounting-rail-m8
 tasks:
   - test

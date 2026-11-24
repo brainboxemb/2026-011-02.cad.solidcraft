@@ -59,9 +59,9 @@ interpretation:
 - full four-feature repeat: **100 mm**.
 
 For the 1000 mm rail this gives 40 perforation positions, ending 12.5 mm before
-the far end. The implementation keeps the history compact: one direct native
-Hole seed is patterned at 50 mm pitch, while one horizontal and one vertical
-Slot cut are each patterned at 100 mm pitch.
+the far end. The implementation keeps the history compact: one face-attached Circle cut is
+patterned at 50 mm pitch, while one horizontal and one vertical Slot cut are
+each patterned at 100 mm pitch.
 
 These are reference-derived generic dimensions. If a DRESSELHAUS drawing or a
 physical measurement differs, the model should be corrected to the measured

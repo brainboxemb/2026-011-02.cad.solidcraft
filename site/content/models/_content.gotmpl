@@ -4,6 +4,7 @@ Generic model page adapter.
 - model.yml owns presentation metadata;
 - ci.yml owns build/source identity;
 - prepared-build/main owns accepted generated artifacts;
+- model_history.json owns derived Git last-modified presentation data;
 - this adapter never executes CAD and contains no model-name branches.
 */}}
 
@@ -17,6 +18,27 @@ Generic model page adapter.
   {{ errorf "durable build plan contains no model rows" }}
 {{ end }}
 
+{{ $history := hugo.Data.cad.model_history }}
+{{ if not $history }}
+  {{ errorf "missing generated data/cad/model_history.json" }}
+{{ end }}
+{{ $historyRoots := index $history "roots" }}
+
+{{ $categoryTitles := dict
+  "basic" "Basic Models"
+  "components" "Components"
+  "advanced" "Advanced Models"
+}}
+
+{{ range $section := slice "basic" "components" "advanced" }}
+  {{ $.AddPage (dict
+    "kind" "page"
+    "path" $section
+    "title" (index $categoryTitles $section)
+    "params" (dict "categoryIndex" true "cadSection" $section)
+  ) }}
+{{ end }}
+
 {{ range $modelResource := resources.Match "cad-source/**/model.yml" }}
   {{ $modelRootPath := strings.TrimPrefix "/" (path.Dir $modelResource.Name) }}
   {{ $modelRoot := strings.TrimPrefix "cad-source/" $modelRootPath }}
@@ -26,6 +48,12 @@ Generic model page adapter.
     {{ errorf "%s: missing ci.yml" $modelRoot }}
   {{ end }}
   {{ $ci := $ciResource | transform.Unmarshal }}
+
+  {{ $lastmodRaw := index $historyRoots $modelRoot }}
+  {{ if not $lastmodRaw }}
+    {{ errorf "missing model history for %s" $modelRoot }}
+  {{ end }}
+  {{ $lastmod := time.AsTime $lastmodRaw }}
 
   {{ $entries := slice }}
   {{ with $variants := index $ci "variants" }}
@@ -69,6 +97,7 @@ Generic model page adapter.
         "mediaType" "text/markdown"
         "value" (index $model "description")
       )
+      "dates" (dict "lastmod" $lastmod)
       "kind" "page"
       "path" $slug
       "title" (index $model "title")

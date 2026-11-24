@@ -1,11 +1,9 @@
 schema: 1
-branch: fix/forge-0.15-hub75-replay
+branch: issue/20-hub75-connector-envelopes
 
-modules:
-  - build
+modules: []
 models:
   - hub75-panel
-  - hub75-screen
 
 tasks:
   - test

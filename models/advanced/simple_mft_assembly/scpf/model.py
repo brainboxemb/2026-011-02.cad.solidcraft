@@ -38,9 +38,10 @@ class SimpleMFTAssembly:
 
     # Axis-angle rotations:
     #   local +Y (rail length) -> world +X for BOTH rails;
-    #   local -Z (C opening)   -> world +Y / -Y respectively.
-    UPPER_RAIL_ROTATION = ((1, 1, -1), 120)
-    LOWER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    #   the cross-profile orientation is flipped so the visible C/open
+    #   bracket sides face away from the worktop: +Y above, -Y below.
+    UPPER_RAIL_ROTATION = ((-1, -1, -1), 120)
+    LOWER_RAIL_ROTATION = ((1, 1, -1), 120)
 
     def build(self):
         profile = get_profile(self.GUIDE_RAIL_PROFILE)

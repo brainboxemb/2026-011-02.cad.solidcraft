@@ -22,7 +22,7 @@ variants:
       title: Reference and 2D expectation
       note: The 76 mm pitch, 20 mm corner cuts and ≈104 × 24 mm Slot dimensions are photo-based estimates, not manufacturer specifications.
       items:
-        - kind: url
+        - kind: image_url
           src: https://cdn.myshoptet.com/usr/www.craftmaker.nl/user/documents/upload/Product_description/craftmaker_pro_station_s30_accessories.jpg
           alt: CRAFTMAKER ProStation S30 reference worktop
           caption: Front product reference used to estimate the hole and Slot pattern.

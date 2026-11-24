@@ -20,7 +20,7 @@ class BuildPlanTests(unittest.TestCase):
             stable_branch="main",
             development_branch="dev",
             build_branch="build",
-            forge=ForgePin("brainboxemb/lib.py.solidcraft.forge", "0.14.0", "a" * 40),
+            forge=ForgePin("brainboxemb/lib.py.solidcraft.forge", "v0.14.0"),
             solidcraft=SolidCraftPin(
                 "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
                 "0.48.1",

@@ -14,7 +14,7 @@ The mounting-rail component is locally built along +Y with its C-opening toward
 +Z. Two different 120-degree occurrence rotations map local +Y to world +X,
 while mapping the opening to opposite outward Y directions.
 """
-from scpf import Placement, half
+from scpf import Anchor, Box, Placement, component, half
 
 from models.components.simple_mft.scpf.model import SimpleMFT
 from models.components.guide_rail.scpf.model import GuideRail
@@ -22,11 +22,27 @@ from models.components.guide_rail.scpf.profiles import get_profile
 from models.components.mounting_rail_m8.scpf.model import MountingRailM8
 
 
+@component(include="*")
+class SimpleMFTRightExtension:
+    width = 195.0
+    depth = 555.0
+    thickness = 18.0
+
+    def build(self):
+        return Box(
+            self.width,
+            self.depth,
+            self.thickness,
+            anchor=Anchor.BOTTOM,
+        )
+
+
 class SimpleMFTAssembly:
     worktop_thickness = SimpleMFT.thickness
     guide_rail_length = 800.0
 
     GUIDE_RAIL_PROFILE = "festool"
+    GUIDE_RAIL_X_SHIFT = 340.0
 
     SUPPORT_RAIL_LENGTH = 1000.0
     SUPPORT_RAIL_REPEAT_COUNT = 10
@@ -59,13 +75,23 @@ class SimpleMFTAssembly:
             length=self.guide_rail_length,
             profile=self.GUIDE_RAIL_PROFILE,
             placement=Placement(
-                x=-half(profile.WIDTH),
+                x=self.GUIDE_RAIL_X_SHIFT - half(profile.WIDTH),
                 z=self.worktop_thickness,
             ),
         )
 
         worktop_width = float(SimpleMFT.width)
         worktop_depth = float(SimpleMFT.depth)
+
+        extension_width = self.SUPPORT_RAIL_LENGTH - worktop_width
+        extension_x = worktop_width / 2 + extension_width / 2
+
+        right_extension = SimpleMFTRightExtension(
+            width=extension_width,
+            depth=worktop_depth,
+            thickness=self.worktop_thickness,
+            placement=Placement(x=extension_x),
+        )
 
         rail_x = -worktop_width / 2
         upper_y = worktop_depth / 2 - self.SUPPORT_RAIL_INSET
@@ -95,7 +121,13 @@ class SimpleMFTAssembly:
             ),
         )
 
-        return worktop + guide_rail + upper_support + lower_support
+        return (
+            worktop
+            + right_extension
+            + guide_rail
+            + upper_support
+            + lower_support
+        )
 
 
 SimpleMFTAssembly()

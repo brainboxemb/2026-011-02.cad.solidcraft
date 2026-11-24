@@ -7,6 +7,23 @@
   "models": [
     {
       "artifacts": [],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/bolted-flange/solidcraft.json",
+      "id": "bolted-flange",
+      "native": {
+        "png": "models/bolted-flange/model.png",
+        "sc": "models/bolted-flange/model.sc",
+        "step": "models/bolted-flange/model.step",
+        "stl": null
+      },
+      "owner": "bolted-flange",
+      "priority": 10,
+      "root": "models/basic/bolted_flange",
+      "snapshots": [],
+      "source": "models/basic/bolted_flange/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c",
       "commands": "models/bracket/solidcraft.json",
       "id": "bracket",
@@ -38,6 +55,109 @@
       "root": "models/basic/csg_cube",
       "snapshots": [],
       "source": "models/basic/csg_cube/scpf/model.py"
+    },
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/flex-bench-dog/solidcraft.json",
+      "id": "flex-bench-dog",
+      "native": {
+        "png": "models/flex-bench-dog/model.png",
+        "sc": "models/flex-bench-dog/model.sc",
+        "step": "models/flex-bench-dog/model.step",
+        "stl": "models/flex-bench-dog/model.stl"
+      },
+      "owner": "flex-bench-dog",
+      "priority": 20,
+      "root": "models/components/flex_bench_dog",
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": -1.35,
+            "target": [
+              0,
+              0,
+              -18
+            ],
+            "yaw": -0.45
+          },
+          "name": "underside.png",
+          "path": "models/flex-bench-dog/underside.png"
+        }
+      ],
+      "source": "models/components/flex_bench_dog/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/guide-rail/solidcraft.json",
+      "id": "guide-rail",
+      "native": {
+        "png": "models/guide-rail/model.png",
+        "sc": "models/guide-rail/model.sc",
+        "step": "models/guide-rail/model.step",
+        "stl": null
+      },
+      "owner": "guide-rail",
+      "priority": 20,
+      "root": "models/components/guide_rail",
+      "snapshots": [],
+      "source": "models/components/guide_rail/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/guide-rail-makita/solidcraft.json",
+      "id": "guide-rail-makita",
+      "native": {
+        "png": "models/guide-rail-makita/model.png",
+        "sc": "models/guide-rail-makita/model.sc",
+        "step": "models/guide-rail-makita/model.step",
+        "stl": null
+      },
+      "owner": "guide-rail",
+      "priority": 20,
+      "root": "models/components/guide_rail",
+      "snapshots": [],
+      "source": "models/components/guide_rail/scpf/makita.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/plastic-enclosure/solidcraft.json",
+      "id": "plastic-enclosure",
+      "native": {
+        "png": "models/plastic-enclosure/model.png",
+        "sc": "models/plastic-enclosure/model.sc",
+        "step": "models/plastic-enclosure/model.step",
+        "stl": null
+      },
+      "owner": "plastic-enclosure",
+      "priority": 10,
+      "root": "models/basic/plastic_enclosure",
+      "snapshots": [],
+      "source": "models/basic/plastic_enclosure/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329",
+      "commands": "models/plastic-enclosure-pi/solidcraft.json",
+      "id": "plastic-enclosure-pi",
+      "native": {
+        "png": "models/plastic-enclosure-pi/model.png",
+        "sc": "models/plastic-enclosure-pi/model.sc",
+        "step": "models/plastic-enclosure-pi/model.step",
+        "stl": null
+      },
+      "owner": "plastic-enclosure-pi",
+      "priority": 10,
+      "root": "models/basic/plastic_enclosure_pi",
+      "snapshots": [],
+      "source": "models/basic/plastic_enclosure_pi/scpf/model.py"
     },
     {
       "artifacts": [],
@@ -132,5 +252,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "32adcc5d4237b0acf1ed1c873e8080122299cf7b"
+  "source_sha": "3ce3025c4fd41d39e1583c7995e7ff0d8723d329"
 }

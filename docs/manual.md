@@ -315,11 +315,13 @@ reference assets are copied into the generated site.
 
 The primary model layout is shared. Model-specific additions use optional
 `page.md` for background prose and declarative `extra_views` in metadata for
-reference/build images. Extra-view kinds distinguish presentation explicitly:
-`url` renders a normal external link, while `image_url` renders a clickable
-remote image inside the responsive reference grid. Local source assets use
-`asset`; durable generated snapshots use `build`. Do not add model-name
-branches to shared Hugo templates.
+reference/build images. Extra-view kinds distinguish ownership explicitly:
+`url` renders a normal external provenance/reference link, `asset` renders a
+source-owned local presentation asset, and `build` renders a durable generated
+snapshot. Remote images used visually on a model page must be acquired once,
+downscaled to an appropriate review size, stored beside the model source and
+referenced through `asset`; the generated page must not depend on a remote
+image URL. Do not add model-name branches to shared Hugo templates.
 
 Pages runs in a separate workflow from CAD CI. After a successful permanent
 build publishes its build scope, CI sends a `workflow_dispatch` for

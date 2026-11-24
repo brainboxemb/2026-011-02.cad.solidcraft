@@ -27,7 +27,7 @@ Generic 27/18 reference geometry:
   `round -> horizontal slot -> round -> vertical slot`;
 - one native feature pattern repeats that complete unit;
 - editable 25 mm feature pitch gives a 100 mm default repeat pitch;
-- editable default repeat count: 10;
+- standalone default repeat count: 2; 10 reproduces the full 1000 mm reference;
 - Ø12.5 round hole;
 - 10 × 6.4 mm horizontal slot;
 - 15 × 8.4 mm vertical slot.
@@ -51,11 +51,11 @@ The perforation is not three independent patterns.
 
 Forge authors one attached Sketch containing all four profiles, creates one
 web-through cut from that Sketch, and patterns that cut as one native history
-feature. \`repeat_count\` remains dimensionless/editable and the native repeat
-spacing is the expression \`4 * feature_pitch\`.
+feature. `repeat_count` remains dimensionless/editable and the native repeat
+spacing is the expression `4 * feature_pitch`.
 
 The standalone example defaults to **250 mm** with **2 complete repeat units**.
 The first unit is positioned from the rail length, repeat count and pitch so the
-whole pattern is centred. Setting \`length = 1000\` and
-\`repeat_count = 10\` resolves to the 12.5 mm product-reference end offset
+whole pattern is centred. Setting `length = 1000` and
+`repeat_count = 10` resolves to the 12.5 mm product-reference end offset
 without a separate hard-coded offset parameter.

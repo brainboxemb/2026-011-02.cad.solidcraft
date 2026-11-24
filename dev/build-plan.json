@@ -7,6 +7,40 @@
   "models": [
     {
       "artifacts": [],
+      "built_source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c",
+      "commands": "models/bracket/solidcraft.json",
+      "id": "bracket",
+      "native": {
+        "png": "models/bracket/model.png",
+        "sc": "models/bracket/model.sc",
+        "step": "models/bracket/model.step",
+        "stl": null
+      },
+      "owner": "bracket",
+      "priority": 10,
+      "root": "models/basic/bracket",
+      "snapshots": [],
+      "source": "models/basic/bracket/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c",
+      "commands": "models/csg-cube/solidcraft.json",
+      "id": "csg-cube",
+      "native": {
+        "png": "models/csg-cube/model.png",
+        "sc": "models/csg-cube/model.sc",
+        "step": "models/csg-cube/model.step",
+        "stl": null
+      },
+      "owner": "csg-cube",
+      "priority": 10,
+      "root": "models/basic/csg_cube",
+      "snapshots": [],
+      "source": "models/basic/csg_cube/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "b8f081ed944a5678ee9e1afc6a0759c3f939c8fc",
       "commands": "models/plate/solidcraft.json",
       "id": "plate",
@@ -21,6 +55,23 @@
       "root": "models/basic/plate",
       "snapshots": [],
       "source": "models/basic/plate/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c",
+      "commands": "models/sample-plate/solidcraft.json",
+      "id": "sample-plate",
+      "native": {
+        "png": "models/sample-plate/model.png",
+        "sc": "models/sample-plate/model.sc",
+        "step": "models/sample-plate/model.step",
+        "stl": null
+      },
+      "owner": "sample-plate",
+      "priority": 10,
+      "root": "models/basic/sample_plate",
+      "snapshots": [],
+      "source": "models/basic/sample_plate/scpf/model.py"
     },
     {
       "artifacts": [
@@ -56,6 +107,23 @@
         }
       ],
       "source": "models/simple-box/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c",
+      "commands": "models/vent-plate/solidcraft.json",
+      "id": "vent-plate",
+      "native": {
+        "png": "models/vent-plate/model.png",
+        "sc": "models/vent-plate/model.sc",
+        "step": "models/vent-plate/model.step",
+        "stl": null
+      },
+      "owner": "vent-plate",
+      "priority": 10,
+      "root": "models/basic/vent_plate",
+      "snapshots": [],
+      "source": "models/basic/vent_plate/scpf/model.py"
     }
   ],
   "namespace": "dev",
@@ -64,5 +132,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "b8f081ed944a5678ee9e1afc6a0759c3f939c8fc"
+  "source_sha": "e903360137efe0dbc360d011fd1560116ee08a3c"
 }

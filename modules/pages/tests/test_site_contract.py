@@ -39,6 +39,8 @@ class SiteContractTests(unittest.TestCase):
         page = (SITE / "layouts/models/single.html").read_text(encoding="utf-8")
         self.assertIn('.Resources.Get "page.md"', page)
         self.assertIn('index $m "extra_views"', page)
+        self.assertIn('eq $kind "image_url"', page)
+        self.assertIn('<img src="{{ $src }}"', page)
         self.assertIn('.Resources.Get "scpf-source.py"', page)
         self.assertIn('resources.Get (printf "build/%s" $commandsPath)', page)
         self.assertIn("raw.githubusercontent.com", page)

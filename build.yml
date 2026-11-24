@@ -1,9 +1,15 @@
 schema: 1
-branch: fix/48-gh-pages-ci-contract
+branch: feature/bootstrap-template
 
 modules:
+  - branch-cleanup
+  - build
   - ci
-models: []
+  - merge-policy
+  - pages
+models:
+  - simple-box
 
 tasks:
   - test
+  - build

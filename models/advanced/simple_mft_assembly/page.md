@@ -12,5 +12,3 @@ The current assembly places an 800 mm Festool-profile GuideRail along the
 worktop Y/depth direction. The rail is centred over X=0 and its bottom follows
 the same `worktop_thickness` parameter used by the Simple MFT component.
 
-This owner is classified under **Advanced Models** for now. It can evolve
-independently as the MFT assembly gains more components and assembly logic.

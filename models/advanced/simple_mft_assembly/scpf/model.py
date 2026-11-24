@@ -58,8 +58,8 @@ class SimpleMFTAssembly:
             ),
         )
 
-        worktop_width = float(SimpleMFT.width.value)
-        worktop_depth = float(SimpleMFT.depth.value)
+        worktop_width = float(SimpleMFT.width)
+        worktop_depth = float(SimpleMFT.depth)
 
         rail_x = -worktop_width / 2
         upper_y = worktop_depth / 2

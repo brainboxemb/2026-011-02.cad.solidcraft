@@ -1,14 +1,14 @@
-"""Simple MFT assembly with guide rail and two 1 m M8 support rails.
+"""Simple MFT assembly with guide rail and a three-sided M8 support frame.
 
 World axes:
     X: left/right across the worktop width
     Y: front/rear across the worktop depth
     Z: up
 
-The two mounting rails run along +X. Their left ends align with the worktop left
-edge, so the full 1000 mm rails extend 195 mm beyond the 805 mm worktop on the
-right. Both perforation sequences therefore run in the same left-to-right
-direction.
+The two long mounting rails run along +X and a shorter rail closes the left
+side between them. The long rails are shifted one 18 mm profile-depth to the
+right so the left cross rail can meet them without overlapping their channel
+ends. Both long perforation sequences run in the same left-to-right direction.
 
 The mounting-rail component is locally built along +Y with its C-opening toward
 +Z. Two different 120-degree occurrence rotations map local +Y to world +X,
@@ -34,6 +34,10 @@ class SimpleMFTRightExtension:
             self.depth,
             self.thickness,
             anchor=Anchor.BOTTOM,
+        ).with_material(
+            "MDF",
+            density_g_cm3=0.70,
+            color="#C8A46A",
         )
 
 
@@ -47,6 +51,15 @@ class SimpleMFTAssembly:
     SUPPORT_RAIL_LENGTH = 1000.0
     SUPPORT_RAIL_REPEAT_COUNT = 10
     SUPPORT_RAIL_REPEAT_PITCH = 100.0
+
+    LEFT_RAIL_REPEAT_COUNT = 5
+
+    # Shift the two long rails one profile depth to the right. The left cross
+    # rail occupies that 18 mm X strip and runs between the inner edges of the
+    # long rails, keeping the channel ends accessible instead of overlapping.
+    SUPPORT_RAIL_X_OFFSET = MountingRailM8.PROFILE_HEIGHT
+
+    LEFT_RAIL_ROTATION = ((0, -1, 0), 90)
 
     # The 27 mm mounting-rail profile becomes vertical after the support-rail
     # rotations. Put its upper edge at Z=0 so the MFT underside rests on it.
@@ -93,9 +106,22 @@ class SimpleMFTAssembly:
             placement=Placement(x=extension_x),
         )
 
-        rail_x = -worktop_width / 2
+        rail_x = -worktop_width / 2 + self.SUPPORT_RAIL_X_OFFSET
         upper_y = worktop_depth / 2 - self.SUPPORT_RAIL_INSET
         lower_y = -worktop_depth / 2 + self.SUPPORT_RAIL_INSET
+
+        left_rail_length = worktop_depth - 2 * self.SUPPORT_RAIL_INSET
+        left_support = MountingRailM8(
+            length=left_rail_length,
+            repeat_count=self.LEFT_RAIL_REPEAT_COUNT,
+            repeat_pitch=self.SUPPORT_RAIL_REPEAT_PITCH,
+            placement=Placement(
+                x=rail_x,
+                y=lower_y,
+                z=self.SUPPORT_RAIL_Z,
+                rotation=self.LEFT_RAIL_ROTATION,
+            ),
+        )
 
         upper_support = MountingRailM8(
             length=self.SUPPORT_RAIL_LENGTH,
@@ -127,6 +153,7 @@ class SimpleMFTAssembly:
             + guide_rail
             + upper_support
             + lower_support
+            + left_support
         )
 
 

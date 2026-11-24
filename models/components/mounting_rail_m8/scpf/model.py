@@ -156,7 +156,7 @@ class MountingRailM8:
         vertical_cut = vertical_slot.extrude(Depth.THROUGH_ALL)
         rail = rail - vertical_cut
 
-        return rail.rectangular_pattern(
+        patterned = rail.rectangular_pattern(
             (
                 round_a_cut,
                 horizontal_cut,
@@ -166,6 +166,11 @@ class MountingRailM8:
             count=self.repeat_count,
             spacing=self.repeat_pitch,
             direction=Axis.Y,
+        )
+        return patterned.with_material(
+            "Galvanized steel",
+            density_g_cm3=7.85,
+            color="#9EA6AA",
         )
 
 

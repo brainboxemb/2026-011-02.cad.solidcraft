@@ -98,12 +98,13 @@ class SimpleMFTAssembly:
         worktop_depth = float(SimpleMFT.depth)
         dog_hole_pitch = float(SimpleMFT.hole_pitch)
 
-        # Place one reusable bench dog in the rightmost hole of the centre row.
-        # The dog model uses its local Z=0 as the worktop top surface datum.
+        # Place one reusable bench dog in the bottom hole of the rightmost
+        # dog-hole column. The dog model uses its local Z=0 as the worktop top
+        # surface datum.
         rightmost_dog = FlexBenchDog(
             placement=Placement(
                 x=4 * dog_hole_pitch,
-                y=0,
+                y=-3 * dog_hole_pitch,
                 z=self.worktop_thickness,
             ),
         )

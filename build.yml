@@ -1,8 +1,7 @@
 schema: 1
-branch: docs/mandatory-local-merge
+branch: feature/30-latch
 
-modules:
-  - merge-policy
+modules: []
 models: []
 
 tasks:

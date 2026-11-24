@@ -25,6 +25,23 @@ class SnapshotRuntimeTests(unittest.TestCase):
             self.assertNotIn("--camera", command)
 
     @patch("cad_model_build.runtime.subprocess.run")
+    def test_primary_snapshot_can_define_camera(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved = root / "model.sc"
+            saved.write_text("model", encoding="utf-8")
+            target = root / "model.png"
+
+            def fake_run(command, **kwargs):
+                Path(command[command.index("--out") + 1]).write_bytes(b"png")
+
+            run.side_effect = fake_run
+            _snapshot(saved, target, {"yaw": -0.4})
+
+            command = run.call_args.args[0]
+            self.assertIn("--camera", command)
+
+    @patch("cad_model_build.runtime.subprocess.run")
     def test_additional_snapshot_can_define_camera(self, run):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

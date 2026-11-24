@@ -1,0 +1,51 @@
+{
+  "forge": {
+    "commit": "cd46d6797df319b9d13605c11568990113772700",
+    "repository": "brainboxemb/lib.py.solidcraft.forge",
+    "version": "0.14.0"
+  },
+  "models": [
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "4f78f59356e7546972448a2edac895d3f576d3ef",
+      "commands": "models/simple-box/solidcraft.json",
+      "id": "simple-box",
+      "native": {
+        "png": "models/simple-box/model.png",
+        "sc": "models/simple-box/model.sc",
+        "step": "models/simple-box/model.step",
+        "stl": "models/simple-box/model.stl"
+      },
+      "owner": "simple-box",
+      "priority": 100,
+      "root": "models/simple-box",
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 90,
+            "fov": 0,
+            "pitch": -1.55,
+            "target": [
+              0,
+              0,
+              5
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/simple-box/top.png"
+        }
+      ],
+      "source": "models/simple-box/scpf/model.py"
+    }
+  ],
+  "namespace": "main",
+  "schema": 1,
+  "solidcraft": {
+    "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
+    "version": "0.48.1"
+  },
+  "source_sha": "4f78f59356e7546972448a2edac895d3f576d3ef"
+}

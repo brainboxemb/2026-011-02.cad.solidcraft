@@ -1,9 +1,8 @@
 schema: 1
-branch: fix/mounting-rail-orientation-pattern-start
+branch: fix/simple-mft-support-rails-under-top
 
 modules: []
 models:
-  - mounting-rail-m8
   - simple-mft-assembly
 tasks:
   - test

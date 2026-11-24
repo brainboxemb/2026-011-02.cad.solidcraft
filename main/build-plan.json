@@ -1,13 +1,13 @@
 {
   "forge": {
-    "commit": "cd46d6797df319b9d13605c11568990113772700",
+    "commit": "efc88bfcaf452051d721347f2e5ca561decad654",
     "repository": "brainboxemb/lib.py.solidcraft.forge",
-    "version": "0.14.0"
+    "version": "0.15.0"
   },
   "models": [
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/bolted-flange/solidcraft.json",
       "dependencies": [],
       "id": "bolted-flange",
@@ -28,7 +28,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/bracket/solidcraft.json",
       "dependencies": [],
       "id": "bracket",
@@ -49,7 +49,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/corner-bracket/solidcraft.json",
       "dependencies": [],
       "id": "corner-bracket",
@@ -70,7 +70,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/csg-cube/solidcraft.json",
       "dependencies": [],
       "id": "csg-cube",
@@ -93,7 +93,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/flex-bench-dog/solidcraft.json",
       "dependencies": [],
       "id": "flex-bench-dog",
@@ -130,7 +130,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/guide-rail/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail",
@@ -151,7 +151,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/guide-rail-makita/solidcraft.json",
       "dependencies": [],
       "id": "guide-rail-makita",
@@ -172,7 +172,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -206,7 +206,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
       "id": "hub75-panel",
@@ -268,7 +268,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/hub75-screen/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -301,7 +301,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -335,7 +335,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/plastic-enclosure/solidcraft.json",
       "dependencies": [],
       "id": "plastic-enclosure",
@@ -356,7 +356,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/plastic-enclosure-pi/solidcraft.json",
       "dependencies": [],
       "id": "plastic-enclosure-pi",
@@ -377,7 +377,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/plate/solidcraft.json",
       "dependencies": [],
       "id": "plate",
@@ -398,7 +398,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/sample-plate/solidcraft.json",
       "dependencies": [],
       "id": "sample-plate",
@@ -421,7 +421,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/simple-box/solidcraft.json",
       "dependencies": [],
       "id": "simple-box",
@@ -458,7 +458,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/simple-mft/solidcraft.json",
       "dependencies": [
         "guide-rail"
@@ -481,7 +481,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "guide-rail"
@@ -504,7 +504,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332",
+      "built_source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d",
       "commands": "models/vent-plate/solidcraft.json",
       "dependencies": [],
       "id": "vent-plate",
@@ -530,5 +530,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "128f71fd0bdb85f92752b7e77ff3937157341332"
+  "source_sha": "a3dad6476ef6c6406d2aec648a63a19774c8ed1d"
 }

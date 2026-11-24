@@ -29,6 +29,13 @@ about the DRESSELHAUS production tooling.
 Reference:
 [MÜPRO MPC system rail 27/18/1.25 data sheet](https://www.muepro.de/out/media/DATENBLATT_MA_MPC-SYSS_VZ_DEU_DEU.PDF).
 
+Possible supplementary generic reference:
+[MÜPRO European Technical Assessment for MPC rails](https://www.muepro.de/out/media/EUROPAISCHE_TECHNISCHE_BEWERTUNG_ETA-25-1243_MPC-SCHIENEN.PDF).
+
+Both MÜPRO documents are used only as generic installation-rail references.
+They are **not** DRESSELHAUS specifications and do not prove that the reference
+product uses identical production dimensions or tooling.
+
 Nominal profile used by the model:
 
 - outside width: **27 mm**;

@@ -376,7 +376,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a0d59cde10a870f2039a58d1f8f4e968684dd0d2",
+      "built_source_sha": "266be22320619fc3cc702cff6b5c91d2758ca3f4",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
       "id": "mounting-rail-m8",
@@ -391,12 +391,12 @@
       "root": "models/components/mounting_rail_m8",
       "snapshot": {
         "camera": {
-          "distance": 1150,
+          "distance": 340,
           "fov": 0,
           "pitch": 0.28,
           "target": [
             0,
-            500,
+            125,
             9
           ],
           "yaw": -0.6
@@ -405,15 +405,45 @@
       "snapshots": [
         {
           "camera": {
-            "distance": 155,
+            "distance": 290,
             "fov": 0,
-            "pitch": 0.55,
+            "pitch": 1.45,
+            "target": [
+              0,
+              125,
+              18
+            ],
+            "yaw": 0
+          },
+          "name": "rear-pattern.png",
+          "path": "models/mounting-rail-m8/rear-pattern.png"
+        },
+        {
+          "camera": {
+            "distance": 85,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              250,
+              9
+            ],
+            "yaw": 3.14159
+          },
+          "name": "right-profile.png",
+          "path": "models/mounting-rail-m8/right-profile.png"
+        },
+        {
+          "camera": {
+            "distance": 135,
+            "fov": 0,
+            "pitch": 0.72,
             "target": [
               0,
               100,
               18
             ],
-            "yaw": -0.4
+            "yaw": -0.35
           },
           "name": "pattern-closeup.png",
           "path": "models/mounting-rail-m8/pattern-closeup.png"
@@ -618,5 +648,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "a0d59cde10a870f2039a58d1f8f4e968684dd0d2"
+  "source_sha": "266be22320619fc3cc702cff6b5c91d2758ca3f4"
 }

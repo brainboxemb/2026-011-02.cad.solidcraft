@@ -576,11 +576,9 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9",
+      "built_source_sha": "54aafcc2ff7605c0999ce6d145fef4a4cdc6ff96",
       "commands": "models/simple-mft/solidcraft.json",
-      "dependencies": [
-        "guide-rail"
-      ],
+      "dependencies": [],
       "id": "simple-mft",
       "native": {
         "png": "models/simple-mft/model.png",
@@ -589,19 +587,20 @@
         "stl": null
       },
       "owner": "simple-mft",
-      "priority": 30,
-      "root": "models/advanced/simple_mft",
+      "priority": 20,
+      "root": "models/components/simple_mft",
       "snapshot": {
         "camera": null
       },
       "snapshots": [],
-      "source": "models/advanced/simple_mft/scpf/model.py"
+      "source": "models/components/simple_mft/scpf/model.py"
     },
     {
       "artifacts": [],
-      "built_source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9",
+      "built_source_sha": "54aafcc2ff7605c0999ce6d145fef4a4cdc6ff96",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
+        "simple-mft",
         "guide-rail"
       ],
       "id": "simple-mft-assembly",
@@ -611,14 +610,14 @@
         "step": "models/simple-mft-assembly/model.step",
         "stl": null
       },
-      "owner": "simple-mft",
+      "owner": "simple-mft-assembly",
       "priority": 30,
-      "root": "models/advanced/simple_mft",
+      "root": "models/advanced/simple_mft_assembly",
       "snapshot": {
         "camera": null
       },
       "snapshots": [],
-      "source": "models/advanced/simple_mft/scpf/assemblies/guide_rail.py"
+      "source": "models/advanced/simple_mft_assembly/scpf/model.py"
     },
     {
       "artifacts": [],
@@ -648,5 +647,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "266be22320619fc3cc702cff6b5c91d2758ca3f4"
+  "source_sha": "54aafcc2ff7605c0999ce6d145fef4a4cdc6ff96"
 }

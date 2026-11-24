@@ -4,6 +4,22 @@ This file contains unfinished work only.
 
 ## Now
 
+### #31 — adopt Forge v0.15.0 and restore HUB75 component replay
+
+The migrated repository must use the same accepted Forge baseline as the
+historical `dev-cad` source:
+
+- Forge v0.15.0;
+- commit `efc88bfcaf452051d721347f2e5ca561decad654`;
+- SolidCraft 0.48.1 / runtime v0.3.5.
+
+This fixes Forge #753: component context is restored across headless replay
+phases so component-local joined Cylinder features remain attached to copied and
+rotated HUB75 occurrences.
+
+Acceptance rebuilds `hub75-panel` and `hub75-screen` and compares the
+resulting screen preview against the known-correct historical `dev-cad` image.
+
 ### #12 — migrate remaining historical CAD issues and open pull requests
 
 The full CAD catalog is accepted on stable `main`.
@@ -11,7 +27,7 @@ The full CAD catalog is accepted on stable `main`.
 Stable baseline:
 
 - source: `128f71fd0bdb85f92752b7e77ff3937157341332`;
-- Forge v0.14.0;
+- Forge v0.15.0;
 - SolidCraft 0.48.1 / runtime v0.3.5;
 - 16 real physical owners / 18 real build variants;
 - generated CAD artifacts owned only by the `build` branch.
@@ -51,7 +67,7 @@ If merge-policy fails, repair it rather than bypassing it.
 - local merge-policy owns all source-branch integration and dispatches target CI;
 - standalone cleanup removes merged temporary branches;
 - direct Forge -> JSON -> one SolidCraft replay batch;
-- Forge v0.14.0 / SolidCraft 0.48.1 baseline;
+- Forge v0.15.0 / SolidCraft 0.48.1 baseline;
 - generated `build` branch with `dev/` and `main/` scopes;
 - compact model `ci.yml` with optional primary snapshot camera;
 - physical model owners may expand into multiple build variants;

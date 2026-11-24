@@ -5,6 +5,8 @@ The 2D XZ profile carries the 0.6 mm arm-tip print relief, while native
 SolidCraft features add the inside R4 fillet, broad-face chamfers and four
 recessed M5 clearance seats.
 """
+from math import sqrt
+
 from scpf import CountersinkHole, Edges, Hole, Polygon2D, Sketch, component
 
 
@@ -115,12 +117,6 @@ class CornerBracket:
         # not `o_*`: including them in the 2 mm side chamfer makes the native
         # blend rails overrun those 0.6 mm faces. OpenSCAD treats that local
         # junction separately in arm_tip_relief_cuts().
-        #
-        # TEMPORARY compatibility workaround — CAD #362 / Forge #750.
-        # The preserved OpenSCAD geometry also subtracts a small locally rotated
-        # triangular-prism wedge at each arm tip. Released Forge v0.11 cannot
-        # express that standalone 45-degree cutter generically, so the tip_*
-        # segments stay excluded here until Forge #750 is released and adopted.
         body = body.chamfer(
             self.side_edge_chamfer,
             edges=Edges.from_profile("o_*", sides="both"),
@@ -131,6 +127,72 @@ class CornerBracket:
             self.elephant_foot_relief,
             edges=Edges.from_profile("i_corner", sides="both"),
         )
+
+        # Preserve OpenSCAD arm_tip_relief_cuts(): one triangular prism at the
+        # horizontal and vertical arm tip on each printable broad face.
+        #
+        # The positive-Y cutters use the reference rotations directly. The
+        # mirrored negative-Y cutters use the mirrored local Sketch frame and
+        # a negative extrusion direction, which is the exact reflected prism
+        # without expanding the cutter into hand-written world coordinates.
+        s2 = sqrt(2) / 2
+        cut_length = self.side_edge_chamfer * sqrt(2) + 2
+        wedge_points = [
+            (-self.elephant_foot_relief - 1, -1),
+            (1, -1),
+            (1, self.elephant_foot_relief + 1),
+        ]
+        wedge_frames = (
+            (
+                "Horizontal tip relief +Y",
+                (
+                    self.horizontal_arm_length - self.side_edge_chamfer - s2,
+                    self.arm_width / 2 + s2,
+                    0,
+                ),
+                (90, 0, 45),
+                cut_length,
+            ),
+            (
+                "Horizontal tip relief -Y",
+                (
+                    self.horizontal_arm_length - self.side_edge_chamfer - s2,
+                    -(self.arm_width / 2 + s2),
+                    0,
+                ),
+                (90, 0, -45),
+                -cut_length,
+            ),
+            (
+                "Vertical tip relief +Y",
+                (
+                    0,
+                    self.arm_width / 2 - self.side_edge_chamfer - s2,
+                    -self.vertical_arm_length - s2,
+                ),
+                (0, 45, 90),
+                cut_length,
+            ),
+            (
+                "Vertical tip relief -Y",
+                (
+                    0,
+                    -(self.arm_width / 2 - self.side_edge_chamfer - s2),
+                    -self.vertical_arm_length - s2,
+                ),
+                (180, 45, -90),
+                -cut_length,
+            ),
+        )
+        for name, origin, rotation, distance in wedge_frames:
+            with Sketch(
+                name=name,
+                plane="XY",
+                origin=origin,
+                rotation=rotation,
+            ) as wedge:
+                Polygon2D(wedge_points)
+            body = body - wedge.extrude(distance)
 
         first = self.plywood_thickness + self.bolt_offset
         second = first + self.bolt_spacing

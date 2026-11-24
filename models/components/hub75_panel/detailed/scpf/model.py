@@ -4,7 +4,8 @@ Authoritative reference: lib.scad.hub75 / HUB75 frame project v1.2.
 The current CAD body is still an approximate rear-tapered envelope with
 four rear electronics-bay pockets and six blind mounting bores. The pocket
 outlines are currently square-cornered approximations; the rounded/stepped
-bay edges, tubes, PCB and connectors still need distinct features.
+bay edges and PCB/front-layer detail still need distinct features. Rear
+mounting interfaces and connector clearance envelopes are modelled explicitly.
 """
 from scpf import Box, Cylinder, Hole, Sketch, Rectangle2D, Anchor, component, half, midpoint
 
@@ -31,6 +32,27 @@ LOCATOR_PIN_DIAMETER = 3.00
 LOCATOR_PIN_PROTRUSION = 3.00
 LOCATOR_PIN_X = 75.0
 LOCATOR_PIN_Y = 110.0
+
+# Rear connector clearance envelopes from the preserved v1.2 panel source.
+# IDC values are explicit physical dimensions/positions. The power connector
+# remains a visual approximation: its source centre is in the nominal
+# 160 x 320 mm reference raster and is scaled to the measured panel before
+# centering in this component's local axes.
+DATA_CONNECTOR_CENTER_OFFSET = 113.5
+DATA_CONNECTOR_WIDTH = 27.90
+DATA_CONNECTOR_HEIGHT = 9.50
+DATA_CONNECTOR_DEPTH = 10.64
+DATA_CONNECTOR_FRONT_Z = 2.63
+
+POWER_CONNECTOR_REFERENCE_X = 53.0
+POWER_CONNECTOR_REFERENCE_Y = 128.0
+POWER_CONNECTOR_WIDTH = 13.0
+POWER_CONNECTOR_HEIGHT = 20.0
+POWER_CONNECTOR_DEPTH = 7.0
+POWER_CONNECTOR_FRONT_Z = 3.0
+
+REFERENCE_WIDTH = 160.0
+REFERENCE_HEIGHT = 320.0
 
 
 @component
@@ -174,6 +196,49 @@ class Hub75Panel:
             ).at(x, y, self.depth, anchor=Anchor.BOTTOM)
             body = body + pin
 
+        # Add the two physical IDC/HUB75 clearance envelopes as named native
+        # sketch/extrude features. The source landscape long axis maps directly
+        # to local Y after the portrait transformation, so the centres are
+        # y=±113.5 mm around the measured panel centre.
+        for label, y in (
+            ("lower", -DATA_CONNECTOR_CENTER_OFFSET),
+            ("upper", DATA_CONNECTOR_CENTER_OFFSET),
+        ):
+            with Sketch(
+                name=f"IDC connector {label}",
+                on=body,
+                plane="XY",
+                origin=(0, 0, DATA_CONNECTOR_FRONT_Z),
+            ) as connector:
+                connector.add(
+                    Rectangle2D(DATA_CONNECTOR_WIDTH, DATA_CONNECTOR_HEIGHT),
+                    offset=(0, y),
+                )
+            body = body + connector.extrude(DATA_CONNECTOR_DEPTH)
+
+        # Power connector: visual/clearance approximation only. The preserved
+        # v1.2 source stores its centre in nominal 160 x 320 reference-space
+        # coordinates, so reproduce that scaling before centering it here.
+        power_x = (
+            POWER_CONNECTOR_REFERENCE_X * self.width / REFERENCE_WIDTH
+            - self.width / 2
+        )
+        power_y = (
+            POWER_CONNECTOR_REFERENCE_Y * self.height / REFERENCE_HEIGHT
+            - self.height / 2
+        )
+        with Sketch(
+            name="Power connector approximate",
+            on=body,
+            plane="XY",
+            origin=(0, 0, POWER_CONNECTOR_FRONT_Z),
+        ) as power_connector:
+            power_connector.add(
+                Rectangle2D(POWER_CONNECTOR_WIDTH, POWER_CONNECTOR_HEIGHT),
+                offset=(power_x, power_y),
+            )
+        body = body + power_connector.extrude(POWER_CONNECTOR_DEPTH)
+
         # Keep the six Ø3 mounting bores open through the new 0.5 mm tube
         # protrusion while still stopping at the rear-housing start Z=2 mm.
         rear_bore_start = self.depth + MOUNTING_TUBE_PROTRUSION
@@ -186,8 +251,9 @@ class Hub75Panel:
                     direction=(0, 0, -1),
                 ).at(x, y, rear_bore_start)
 
-        # One gray housing material. Detailed PCB/front/connector colors
-        # require separate native bodies in a later panel-model iteration.
+        # One gray housing material for now. The connector envelopes are
+        # mechanically inspectable native features; distinct PCB/front/connector
+        # materials/bodies remain a separate presentation/detail milestone.
         return body.with_material(
             "HUB75 housing", density_g_cm3=1.20, color="#B8B8B8"
         )

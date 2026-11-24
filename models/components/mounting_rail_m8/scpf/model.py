@@ -14,7 +14,7 @@ from scpf import (
     Anchor,
     Axis,
     Depth,
-    Hole,
+    Circle2D,
     Sketch,
     SlotCenterToCenter2D,
     component,
@@ -83,13 +83,20 @@ class MountingRailM8:
         round_count = int(
             (length_value - self.END_OFFSET - round_first) // self.ROUND_PITCH
         ) + 1
-        round_hole = Hole(
-            d=self.ROUND_DIAMETER,
-            direction=(0, 0, -1),
-        ).at(0, round_first, self.PROFILE_HEIGHT)
-        rail = rail + round_hole
+        with Sketch(
+            name="Round hole",
+            on=rail,
+            parent=Anchor.TOP,
+        ) as round_hole:
+            round_hole.add(
+                Circle2D(d=self.ROUND_DIAMETER),
+                offset=(0, round_first),
+            )
+
+        round_cut = round_hole.extrude(Depth.THROUGH_ALL)
+        rail = rail - round_cut
         rail = rail.rectangular_pattern(
-            round_hole,
+            round_cut,
             count=round_count,
             spacing=self.ROUND_PITCH,
             direction=Axis.Y,

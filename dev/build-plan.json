@@ -499,7 +499,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "24d2eab4ebec0a43c604aa76f62afc3ecfeddeff",
+      "built_source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9",
       "commands": "models/simple-mft/solidcraft.json",
       "dependencies": [
         "guide-rail"
@@ -522,7 +522,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "24d2eab4ebec0a43c604aa76f62afc3ecfeddeff",
+      "built_source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "guide-rail"
@@ -571,5 +571,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
     "version": "0.48.1"
   },
-  "source_sha": "24d2eab4ebec0a43c604aa76f62afc3ecfeddeff"
+  "source_sha": "8c8b95498b652cbe1f5ec27e0e8bfcc6b1a912f9"
 }

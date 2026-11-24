@@ -144,6 +144,58 @@ variants:
             self.assertIsNone(models[0].source)
             self.assertIn("models/components/rail/**", models[0].watch)
 
+    def test_model_dependencies_are_discovered_and_validated(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            component = repo / "models" / "components" / "panel"
+            assembly = repo / "models" / "advanced" / "screen"
+            for root in (component, assembly):
+                (root / "scpf").mkdir(parents=True)
+                (root / "scpf/model.py").write_text("object()\n", encoding="utf-8")
+            (component / "ci.yml").write_text(
+                "schema: 1\nid: panel\nbuilder: forge\nsource: scpf/model.py\n",
+                encoding="utf-8",
+            )
+            (assembly / "ci.yml").write_text(
+                "schema: 1\nid: screen\nbuilder: forge\nsource: scpf/model.py\n"
+                "dependencies: [panel]\n",
+                encoding="utf-8",
+            )
+
+            models = discover_models(repo, self.project())
+            by_id = {model.id: model for model in models}
+            self.assertEqual(by_id["screen"].dependencies, ("panel",))
+
+    def test_unknown_model_dependency_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            model = repo / "models" / "screen"
+            (model / "scpf").mkdir(parents=True)
+            (model / "scpf/model.py").write_text("object()\n", encoding="utf-8")
+            (model / "ci.yml").write_text(
+                "schema: 1\nid: screen\nbuilder: forge\nsource: scpf/model.py\n"
+                "dependencies: [missing]\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(Exception, "unknown model dependency"):
+                discover_models(repo, self.project())
+
+    def test_cyclic_model_dependency_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            for model_id, dependency in (("a", "b"), ("b", "a")):
+                model = repo / "models" / model_id
+                (model / "scpf").mkdir(parents=True)
+                (model / "scpf/model.py").write_text("object()\n", encoding="utf-8")
+                (model / "ci.yml").write_text(
+                    f"schema: 1\nid: {model_id}\nbuilder: forge\n"
+                    "source: scpf/model.py\n"
+                    f"dependencies: [{dependency}]\n",
+                    encoding="utf-8",
+                )
+            with self.assertRaisesRegex(Exception, "cyclic model dependency"):
+                discover_models(repo, self.project())
+
     def test_process_false_model_is_not_selected_as_an_item(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

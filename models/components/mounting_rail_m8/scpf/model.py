@@ -35,6 +35,7 @@ class MountingRailM8:
 
     # One complete perforation cycle contains four features. The default
     # 25 mm feature pitch therefore gives a 100 mm native repeat pitch.
+    end_offset = 37.5
     feature_pitch = 25.0
     repeat_count = 2
 
@@ -71,15 +72,11 @@ class MountingRailM8:
         )
 
         # Author one complete 4-feature repeat unit on the real top web.
-        # Centre the requested number of whole units inside the current rail.
-        # For the 1000 mm product reference with repeat_count=10 this resolves
-        # to the observed 12.5 mm first-centre offset automatically.
+        # end_offset is a native editable parameter instead of a derived
+        # Expression*Expression formula, which Forge 0.15 deliberately does
+        # not support.
         repeat_pitch = 4 * self.feature_pitch
-        pattern_span = (
-            (self.repeat_count - 1) * repeat_pitch
-            + 3 * self.feature_pitch
-        )
-        y0 = (self.length - pattern_span) / 2
+        y0 = self.end_offset
         y1 = y0 + self.feature_pitch
         y2 = y0 + 2 * self.feature_pitch
         y3 = y0 + 3 * self.feature_pitch

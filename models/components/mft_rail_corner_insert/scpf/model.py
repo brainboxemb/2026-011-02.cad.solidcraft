@@ -32,7 +32,7 @@ class MFTRailCornerInsert:
             profile.arc_center_to(
                 (-8.485281374238571, -10.182337649086284),
                 center=(-9.33380951166243, -9.33380951166243),
-                clockwise=True,
+                clockwise=False,
             )
             profile.line_to((-1.4142135623730951, -3.1112698372208096))
             profile.line_to((0.0, -4.525483399593905))

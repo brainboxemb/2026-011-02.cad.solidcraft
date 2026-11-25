@@ -21,7 +21,7 @@ class WallHook:
     upper_hole_from_top = 10.0
     lower_hole_from_bottom = 17.0
     hole_chamfer = 1.0
-    tool_access_diameter = 10.0
+    tool_access_diameter = 8.0
 
     face_chamfer = 1.5
 
@@ -183,7 +183,7 @@ class WallHook:
         # but clear the diagonal reinforcement in front of it so a screwdriver
         # or bit can reach the screw head along the same world-X axis.
         #
-        # The Ø10 access bore starts exactly at X=rib, so it removes no material
+        # The Ø8 access bore starts exactly at X=rib, so it removes no material
         # from the mounting spine itself. With the 15 mm symmetric Y extrusion,
         # material remains on both sides of the access port and the diagonal
         # continues to act as a reinforcement.

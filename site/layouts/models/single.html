@@ -19,7 +19,7 @@
 {{ $build := .Params.build }}
 {{ $native := index $build "native" }}
 {{ $commandsPath := index $build "commands" }}
-{{ $drawings := index $build "drawings" }}
+{{ $drawings := default (slice) (index $build "drawings") }}
 {{ $blobBase := printf "https://github.com/%s/blob/build/%s/" $repo $scope }}
 {{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" $repo $scope }}
 {{ $toolchain := .Params.toolchain }}

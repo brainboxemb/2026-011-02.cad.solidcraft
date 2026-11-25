@@ -180,7 +180,7 @@ class LatchHook:
             )
             contour.line_to((0.0, _HOLE_PITCH / 2))
             contour.arc_center_to(
-                (_HOLE_X, _OVERALL_WIDTH / 2),
+                (self.hole_x, top_y),
                 center=(_HOLE_X, _HOLE_PITCH / 2),
                 clockwise=True,
             )

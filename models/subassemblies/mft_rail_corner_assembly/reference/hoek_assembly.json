@@ -997,8 +997,7 @@
     {
       "component": 19,
       "extent": {
-        "convention": "total_distance",
-        "direction": "positive",
+        "convention": "total_distance",        "direction": "positive",
         "distance": "d2_MFTRailCornerBracket_foot_thickness"
       },
       "id": 28,
@@ -1427,57 +1426,50 @@
       "sketch": {
         "constraints": [
           {
-            "id": "k4",
-            "p": 3,
-            "q": 5,
+            "id": "k6",
+            "p": 0,
+            "q": 4,
             "type": "coincident"
           },
           {
-            "id": "k5",
-            "p": 6,
+            "id": "k9",
+            "p": 5,
             "q": 7,
             "type": "coincident"
           },
           {
-            "id": "k6",
-            "p": 0,
+            "id": "k10",
+            "p": 2,
             "q": 10,
             "type": "coincident"
           },
           {
-            "id": "k7",
-            "p": 1,
+            "id": "k11",
+            "p": 3,
             "q": 11,
             "type": "coincident"
           },
           {
-            "id": "k8",
-            "p": 9,
-            "q": 12,
+            "id": "k12",
+            "p": 6,
+            "q": 14,
             "type": "coincident"
           }
         ],
         "counters": {
           "a": 3,
-          "k": 8,
+          "k": 12,
           "l": 4
         },
         "curves": [
           {
-            "a": 1,
-            "b": 2,
-            "construction": false,
-            "fixed": true,
-            "id": "l5",
-            "type": "line"
-          },
-          {
             "a": 2,
             "b": 3,
+            "c": 1,
             "construction": false,
             "fixed": true,
-            "id": "l6",
-            "type": "line"
+            "id": "a2",
+            "type": "arc"
           },
           {
             "a": 5,
@@ -1485,7 +1477,8 @@
             "c": 4,
             "construction": false,
             "fixed": true,
-            "id": "a2",
+            "id": "a3",
+            "reversed": true,
             "type": "arc"
           },
           {
@@ -1493,7 +1486,7 @@
             "b": 8,
             "construction": false,
             "fixed": true,
-            "id": "l7",
+            "id": "l9",
             "type": "line"
           },
           {
@@ -1501,18 +1494,40 @@
             "b": 9,
             "construction": false,
             "fixed": true,
-            "id": "l8",
+            "id": "l10",
+            "type": "line"
+          },
+          {
+            "a": 9,
+            "b": 10,
+            "construction": false,
+            "fixed": true,
+            "id": "l11",
             "type": "line"
           },
           {
             "a": 11,
             "b": 12,
-            "c": 10,
             "construction": false,
             "fixed": true,
-            "id": "a3",
-            "reversed": true,
-            "type": "arc"
+            "id": "l12",
+            "type": "line"
+          },
+          {
+            "a": 12,
+            "b": 13,
+            "construction": false,
+            "fixed": true,
+            "id": "l13",
+            "type": "line"
+          },
+          {
+            "a": 13,
+            "b": 14,
+            "construction": false,
+            "fixed": true,
+            "id": "l14",
+            "type": "line"
           }
         ],
         "points": [
@@ -1520,21 +1535,6 @@
             "fixed": true,
             "id": "origin",
             "pos": [0.0, 0.0]
-          },
-          {
-            "fixed": false,
-            "id": "l5.start",
-            "pos": [-18.0, 0.0]
-          },
-          {
-            "fixed": false,
-            "id": "l5.end",
-            "pos": [-1.6970562748477138, 0.0]
-          },
-          {
-            "fixed": false,
-            "id": "l6.end",
-            "pos": [-10.182337649086284, -8.485281374238571]
           },
           {
             "fixed": false,
@@ -1553,21 +1553,6 @@
           },
           {
             "fixed": false,
-            "id": "l7.start",
-            "pos": [-8.485281374238571, -10.182337649086284]
-          },
-          {
-            "fixed": false,
-            "id": "l7.end",
-            "pos": [0.0, -1.6970562748477138]
-          },
-          {
-            "fixed": false,
-            "id": "l8.end",
-            "pos": [0.0, -18.0]
-          },
-          {
-            "fixed": false,
             "id": "a3.center",
             "pos": [0.0, 0.0]
           },
@@ -1579,6 +1564,46 @@
           {
             "fixed": false,
             "id": "a3.end",
+            "pos": [3.3884482159362284e-15, -17.999999999999996]
+          },
+          {
+            "fixed": false,
+            "id": "l9.start",
+            "pos": [-17.999999999999996, 3.388448215936228e-15]
+          },
+          {
+            "fixed": false,
+            "id": "l9.end",
+            "pos": [-4.525483399593905, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l10.end",
+            "pos": [-3.1112698372208096, -1.4142135623730951]
+          },
+          {
+            "fixed": false,
+            "id": "l11.end",
+            "pos": [-10.182337649086284, -8.485281374238571]
+          },
+          {
+            "fixed": false,
+            "id": "l12.start",
+            "pos": [-8.485281374238571, -10.182337649086284]
+          },
+          {
+            "fixed": false,
+            "id": "l12.end",
+            "pos": [-1.4142135623730951, -3.1112698372208096]
+          },
+          {
+            "fixed": false,
+            "id": "l13.end",
+            "pos": [0.0, -4.525483399593905]
+          },
+          {
+            "fixed": false,
+            "id": "l14.end",
             "pos": [3.3884482159362284e-15, -17.999999999999996]
           }
         ]
@@ -1619,7 +1644,7 @@
           "name": "XY",
           "type": "origin"
         },
-        "distance": "-21.35",
+        "distance": "-22.25 mm",
         "type": "offset"
       },
       "sketch": {
@@ -1633,7 +1658,7 @@
             "b": 2,
             "construction": false,
             "fixed": true,
-            "id": "l11",
+            "id": "l21",
             "type": "line"
           },
           {
@@ -1641,7 +1666,7 @@
             "b": 3,
             "construction": false,
             "fixed": true,
-            "id": "l12",
+            "id": "l22",
             "type": "line"
           },
           {
@@ -1649,7 +1674,7 @@
             "b": 4,
             "construction": false,
             "fixed": true,
-            "id": "l13",
+            "id": "l23",
             "type": "line"
           },
           {
@@ -1657,7 +1682,7 @@
             "b": 5,
             "construction": false,
             "fixed": true,
-            "id": "l14",
+            "id": "l24",
             "type": "line"
           },
           {
@@ -1665,7 +1690,7 @@
             "b": 1,
             "construction": false,
             "fixed": true,
-            "id": "l15",
+            "id": "l25",
             "type": "line"
           },
           {
@@ -1673,7 +1698,7 @@
             "b": 7,
             "construction": false,
             "fixed": true,
-            "id": "l16",
+            "id": "l26",
             "type": "line"
           },
           {
@@ -1681,7 +1706,7 @@
             "b": 8,
             "construction": false,
             "fixed": true,
-            "id": "l17",
+            "id": "l27",
             "type": "line"
           },
           {
@@ -1689,7 +1714,7 @@
             "b": 9,
             "construction": false,
             "fixed": true,
-            "id": "l18",
+            "id": "l28",
             "type": "line"
           },
           {
@@ -1697,7 +1722,7 @@
             "b": 10,
             "construction": false,
             "fixed": true,
-            "id": "l19",
+            "id": "l29",
             "type": "line"
           },
           {
@@ -1705,7 +1730,7 @@
             "b": 6,
             "construction": false,
             "fixed": true,
-            "id": "l20",
+            "id": "l30",
             "type": "line"
           }
         ],
@@ -1717,52 +1742,52 @@
           },
           {
             "fixed": false,
-            "id": "l11.start",
+            "id": "l21.start",
             "pos": [-1.0, -16.5]
           },
           {
             "fixed": false,
-            "id": "l11.end",
-            "pos": [2.7, -16.5]
+            "id": "l21.end",
+            "pos": [4.5, -16.5]
           },
           {
             "fixed": false,
-            "id": "l12.end",
-            "pos": [3.5, -15.7]
+            "id": "l22.end",
+            "pos": [5.5, -15.5]
           },
           {
             "fixed": false,
-            "id": "l13.end",
-            "pos": [3.5, -13.7]
+            "id": "l23.end",
+            "pos": [5.5, -13.3]
           },
           {
             "fixed": false,
-            "id": "l14.end",
-            "pos": [-1.0, -13.7]
+            "id": "l24.end",
+            "pos": [-1.0, -13.3]
           },
           {
             "fixed": false,
-            "id": "l16.start",
-            "pos": [-13.7, -1.0]
+            "id": "l26.start",
+            "pos": [-13.3, -1.0]
           },
           {
             "fixed": false,
-            "id": "l16.end",
-            "pos": [-13.7, 3.5]
+            "id": "l26.end",
+            "pos": [-13.3, 5.5]
           },
           {
             "fixed": false,
-            "id": "l17.end",
-            "pos": [-15.7, 3.5]
+            "id": "l27.end",
+            "pos": [-15.5, 5.5]
           },
           {
             "fixed": false,
-            "id": "l18.end",
-            "pos": [-16.5, 2.7]
+            "id": "l28.end",
+            "pos": [-16.5, 4.5]
           },
           {
             "fixed": false,
-            "id": "l19.end",
+            "id": "l29.end",
             "pos": [-16.5, -1.0]
           }
         ]
@@ -1774,7 +1799,7 @@
       "extent": {
         "convention": "total_distance",
         "direction": "positive",
-        "distance": "15.7"
+        "distance": "17.5 mm"
       },
       "id": 41,
       "name": "Klemlippen met schuine invoer",
@@ -1791,6 +1816,220 @@
         "PETG-hoekinzetstuk"
       ],
       "type": "extrude"
+    },
+    {
+      "id": 42,
+      "name": "Opstaande nokken in C-profielen",
+      "param_names": [
+        "d38"
+      ],
+      "plane": {
+        "base": {
+          "name": "XY",
+          "type": "origin"
+        },
+        "distance": "-19.5",
+        "type": "offset"
+      },
+      "sketch": {
+        "constraints": [],
+        "counters": {
+          "l": 10
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "fixed": true,
+            "id": "l1",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "fixed": true,
+            "id": "l2",
+            "type": "line"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "fixed": true,
+            "id": "l3",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 5,
+            "construction": false,
+            "fixed": true,
+            "id": "l4",
+            "type": "line"
+          },
+          {
+            "a": 5,
+            "b": 1,
+            "construction": false,
+            "fixed": true,
+            "id": "l5",
+            "type": "line"
+          },
+          {
+            "a": 6,
+            "b": 7,
+            "construction": false,
+            "fixed": true,
+            "id": "l6",
+            "type": "line"
+          },
+          {
+            "a": 7,
+            "b": 8,
+            "construction": false,
+            "fixed": true,
+            "id": "l7",
+            "type": "line"
+          },
+          {
+            "a": 8,
+            "b": 9,
+            "construction": false,
+            "fixed": true,
+            "id": "l8",
+            "type": "line"
+          },
+          {
+            "a": 9,
+            "b": 10,
+            "construction": false,
+            "fixed": true,
+            "id": "l9",
+            "type": "line"
+          },
+          {
+            "a": 10,
+            "b": 6,
+            "construction": false,
+            "fixed": true,
+            "id": "l10",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l1.start",
+            "pos": [0.5, -16.0]
+          },
+          {
+            "fixed": false,
+            "id": "l1.end",
+            "pos": [0.5, -18.25]
+          },
+          {
+            "fixed": false,
+            "id": "l2.end",
+            "pos": [3.3, -18.25]
+          },
+          {
+            "fixed": false,
+            "id": "l3.end",
+            "pos": [4.5, -16.5]
+          },
+          {
+            "fixed": false,
+            "id": "l4.end",
+            "pos": [4.5, -16.0]
+          },
+          {
+            "fixed": false,
+            "id": "l6.start",
+            "pos": [-16.0, 4.5]
+          },
+          {
+            "fixed": false,
+            "id": "l6.end",
+            "pos": [-16.5, 4.5]
+          },
+          {
+            "fixed": false,
+            "id": "l7.end",
+            "pos": [-18.25, 3.3]
+          },
+          {
+            "fixed": false,
+            "id": "l8.end",
+            "pos": [-18.25, 0.5]
+          },
+          {
+            "fixed": false,
+            "id": "l9.end",
+            "pos": [-16.0, 0.5]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "12"
+      },
+      "id": 43,
+      "name": "Opstaande kliknokken met schuine invoer",
+      "operation": "join",
+      "param_names": [
+        "d39"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 42,
+      "suppressed": false,
+      "targets": [        "PETG-hoekinzetstuk"
+      ],
+      "type": "extrude"
+    },
+    {
+      "body": "PETG-hoekinzetstuk",
+      "edge_names": [
+        "F39:side:l14|F41:side:l24",
+        "F39:side:l9|F41:side:l26"
+      ],
+      "edge_refs": [
+        {
+          "dir": [0.0, 0.0, 1.0],
+          "max": [5.5, 5.5, -0.19999999999999074],
+          "min": [-18.25, -18.25, -26.800000000000004]
+        },
+        {
+          "dir": [0.0, 0.0, -1.0],
+          "max": [5.5, 5.5, -0.19999999999999074],
+          "min": [-18.25, -18.25, -26.800000000000004]
+        }
+      ],
+      "edges": [
+        [0.0, -13.3, -13.49999],
+        [-13.3, 0.0, -13.49999]
+      ],
+      "id": 44,
+      "name": "R0,8 binnenfillets aan lipvoeten",
+      "param_names": [
+        "d40"
+      ],
+      "radius": "0.8",
+      "suppressed": false,
+      "type": "fillet"
     }
   ],
   "format": "solidcraft/67",
@@ -1798,9 +2037,9 @@
     "MFTRailCornerBracket": "PETG prototype",
     "MountingRailM8": "Galvanized steel"
   },
-  "name": "hoek_assembly",
+  "name": "hoek_assembly_v2",
   "next_component_color_index": 2,
-  "next_id": 42,
+  "next_id": 45,
   "occurrences": [
     {
       "component": 1,
@@ -1983,5 +2222,16 @@
       "density": 1.27,
       "name": "PETG prototype"
     }
-  ]
+  ],
+  "visibility": {
+    "hidden_bodies": [],
+    "hidden_occurrences": [
+      [2],
+      [18],
+      [20]
+    ],
+    "hidden_origin": [],
+    "hidden_sketches": [],
+    "shown_sketches": []
+  }
 }

@@ -1,0 +1,31 @@
+purpose: [example]
+section: components
+group: display
+priority: 31
+title: Latch Hook
+tagline: 2 mm sheet-metal keeper with two mounting holes and one formed hook bend
+description: >
+  Generic matching hook/keeper for the latch. The part is built from one flat
+  2 mm galvanized-steel blank with two Ø4.3 mounting holes, then formed with
+  one native sheet-metal bend. The bend geometry is derived from the supplied
+  20 mm projection, 13.5 mm free-tip position, 10.5 mm height and R2.1 inside
+  radius.
+parameters: 2 mm sheet; 24 mm mounting width; 15 mm neck; 2 × Ø4.3 holes at 14 mm pitch; 5 mm edge datum; R2.1 hook bend; 20 mm formed projection; 10.5 mm height
+stages:
+  - Blank — tapered 24 mm mounting plate to 15 mm hook neck
+  - Mounting holes — two Ø4.3 through holes on 14 mm pitch
+  - Hook bend — one native sheet fold derived from the formed side profile
+  - Material — galvanized steel
+extra_views:
+  title: Formed hook review
+  note: The side view verifies the R2.1 formed hook; the top view verifies the mounting-hole and neck layout.
+  verified_only: true
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the latch hook
+      caption: Top — 24 mm mounting plate, two Ø4.3 holes and 15 mm neck
+    - kind: build
+      src: side.png
+      alt: Side view of the formed latch hook
+      caption: Side — 2 mm sheet and formed hook profile

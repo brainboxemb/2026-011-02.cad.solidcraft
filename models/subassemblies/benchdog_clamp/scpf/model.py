@@ -279,11 +279,10 @@ class BenchdogClampDog:
 
     def build(self):
         x = (
-            2.0
-            - self.profile_inside_width / 2
-            - 1.8
+            -self.profile_inside_width / 2
             - self.benchdog_rail_clearance
             - self.doghole_diameter / 2
+            + 0.2
         )
         return Cylinder(
             d=self.doghole_diameter,

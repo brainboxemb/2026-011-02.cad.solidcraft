@@ -28,10 +28,10 @@ class SheetMetalBracket:
         with Sketch(name="Base", plane="XY") as blank:
             Polygon2D(
                 [
-                    ("p1", (0.0, 0.0)),
-                    ("p2", (self.width, 0.0)),
-                    ("p3", (self.width, self.depth)),
-                    ("p4", (0.0, self.depth)),
+                    ("v1", (0.0, 0.0)),
+                    ("v2", (self.width, 0.0)),
+                    ("v3", (self.width, self.depth)),
+                    ("v4", (0.0, self.depth)),
                 ],
                 plane="XY",
             )

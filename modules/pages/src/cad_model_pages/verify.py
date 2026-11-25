@@ -313,6 +313,8 @@ def verify(
                 or not drawing["drawing"].startswith("$")
                 or not isinstance(drawing.get("path"), str)
                 or not drawing["path"].endswith(".pdf")
+                or not isinstance(drawing.get("preview"), str)
+                or not drawing["preview"].endswith(".png")
             ):
                 raise PagesVerificationError(
                     f"{variant_id}: invalid drawing artifact declaration"
@@ -327,6 +329,19 @@ def verify(
             if f"{blob_base}{artifact}" not in html:
                 raise PagesVerificationError(
                     f"{variant_id}: page does not link drawing PDF"
+                )
+
+            preview_artifact = drawing["preview"]
+            preview = build_scope / preview_artifact
+            _require_file(preview)
+            if preview.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
+                raise PagesVerificationError(
+                    f"{variant_id}: drawing preview is not a PNG: "
+                    f"{preview_artifact}"
+                )
+            if f"{raw_base}{preview_artifact}" not in html:
+                raise PagesVerificationError(
+                    f"{variant_id}: page does not render drawing preview"
                 )
             if f"{raw_base}{artifact}" not in html:
                 raise PagesVerificationError(

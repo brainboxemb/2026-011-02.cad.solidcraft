@@ -130,68 +130,6 @@
       "source": "models/basic/csg_cube/scpf/model.py"
     },
     {
-      "artifacts": [],
-      "built_source_sha": "4ad6a4241d1566a5e09a7c6e078d8c0362dc034c",
-      "commands": "models/display-hinge/solidcraft.json",
-      "dependencies": [],
-      "id": "display-hinge",
-      "native": {
-        "png": "models/display-hinge/model.png",
-        "sc": "models/display-hinge/model.sc",
-        "step": "models/display-hinge/model.step",
-        "stl": null
-      },
-      "owner": "display-hinge",
-      "priority": 20,
-      "root": "models/components/display_hinge",
-      "snapshot": {
-        "camera": {
-          "distance": 105,
-          "fov": 0,
-          "pitch": 0.42,
-          "target": [
-            0,
-            0,
-            -1
-          ],
-          "yaw": -0.72
-        }
-      },
-      "snapshots": [
-        {
-          "camera": {
-            "distance": 100,
-            "fov": 0,
-            "pitch": 1.35,
-            "target": [
-              0,
-              0,
-              -2
-            ],
-            "yaw": 0
-          },
-          "name": "top.png",
-          "path": "models/display-hinge/top.png"
-        },
-        {
-          "camera": {
-            "distance": 90,
-            "fov": 0,
-            "pitch": 0,
-            "target": [
-              0,
-              0,
-              -1
-            ],
-            "yaw": 1.57
-          },
-          "name": "barrel-end.png",
-          "path": "models/display-hinge/barrel-end.png"
-        }
-      ],
-      "source": "models/components/display_hinge/scpf/model.py"
-    },
-    {
       "artifacts": [
         "stl"
       ],
@@ -434,6 +372,68 @@
       },
       "snapshots": [],
       "source": "models/assemblies/hub75_wood_frame/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "cc4e56d4f3af09b037bd5be3c974941b2840baf9",
+      "commands": "models/latch/solidcraft.json",
+      "dependencies": [],
+      "id": "latch",
+      "native": {
+        "png": "models/latch/model.png",
+        "sc": "models/latch/model.sc",
+        "step": "models/latch/model.step",
+        "stl": null
+      },
+      "owner": "latch",
+      "priority": 20,
+      "root": "models/components/latch",
+      "snapshot": {
+        "camera": {
+          "distance": 120,
+          "fov": 0,
+          "pitch": 0.38,
+          "target": [
+            0,
+            0,
+            7
+          ],
+          "yaw": -0.72
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 105,
+            "fov": 0,
+            "pitch": 1.45,
+            "target": [
+              0,
+              0,
+              7
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/latch/top.png"
+        },
+        {
+          "camera": {
+            "distance": 105,
+            "fov": 0,
+            "pitch": 0.15,
+            "target": [
+              0,
+              0,
+              7
+            ],
+            "yaw": 1.5708
+          },
+          "name": "side.png",
+          "path": "models/latch/side.png"
+        }
+      ],
+      "source": "models/components/latch/scpf/model.py"
     },
     {
       "artifacts": [],
@@ -866,5 +866,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "4ad6a4241d1566a5e09a7c6e078d8c0362dc034c"
+  "source_sha": "cc4e56d4f3af09b037bd5be3c974941b2840baf9"
 }

@@ -74,7 +74,10 @@ def _export_drawings(
     produced: list[Path] = []
     seen: set[Path] = set()
     for index, item in enumerate(declarations, start=1):
-        if not isinstance(item, dict) or set(item) != {"name", "drawing", "path"}:
+        if (
+            not isinstance(item, dict)
+            or set(item) != {"name", "drawing", "path", "preview"}
+        ):
             raise RuntimeError(f"{row['id']}: invalid drawing declaration")
         variable = item["drawing"]
         declared = by_variable.get(variable)
@@ -88,13 +91,19 @@ def _export_drawings(
             )
 
         target = (output_root / item["path"]).resolve()
+        preview = (output_root / item["preview"]).resolve()
         root = output_root.resolve()
-        if root not in target.parents:
-            raise RuntimeError(f"{row['id']}: drawing path escapes build scope")
-        if target in seen:
-            raise RuntimeError(f"{row['id']}: duplicate drawing path {target}")
-        seen.add(target)
-        target.parent.mkdir(parents=True, exist_ok=True)
+        for artifact in (target, preview):
+            if root not in artifact.parents:
+                raise RuntimeError(
+                    f"{row['id']}: drawing path escapes build scope"
+                )
+            if artifact in seen:
+                raise RuntimeError(
+                    f"{row['id']}: duplicate drawing path {artifact}"
+                )
+            seen.add(artifact)
+            artifact.parent.mkdir(parents=True, exist_ok=True)
 
         script = work_dir / f"drawing-export-{index}.json"
         checkpoint = work_dir / f"drawing-export-{index}.sc"
@@ -111,6 +120,14 @@ def _export_drawings(
                             "params": {
                                 "format": "pdf",
                                 "path": str(target),
+                            },
+                        },
+                        {
+                            "command": "drawing.export",
+                            "params": {
+                                "format": "png",
+                                "path": str(preview),
+                                "dpi": 144,
                             },
                         },
                         {"command": "drawing.close", "params": {}},
@@ -138,7 +155,15 @@ def _export_drawings(
             raise RuntimeError(f"{row['id']}: SolidCraft produced no drawing PDF")
         if target.read_bytes()[:5] != b"%PDF-":
             raise RuntimeError(f"{row['id']}: drawing artifact is not a PDF")
-        produced.append(target)
+        if not preview.is_file() or preview.stat().st_size == 0:
+            raise RuntimeError(
+                f"{row['id']}: SolidCraft produced no drawing preview PNG"
+            )
+        if preview.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
+            raise RuntimeError(
+                f"{row['id']}: drawing preview artifact is not a PNG"
+            )
+        produced.extend((target, preview))
 
     return tuple(produced)
 

@@ -1,7 +1,8 @@
 schema: 1
-branch: feature/simple-mft-right-extension-guide-shift
+branch: issue/64-solidcraft-0.49-edge-qualification
 
-modules: []
+modules:
+  - build
 models:
   - simple-mft
   - mounting-rail-m8

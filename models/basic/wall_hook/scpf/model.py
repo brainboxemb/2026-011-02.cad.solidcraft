@@ -21,6 +21,7 @@ class WallHook:
     upper_hole_from_top = 10.0
     lower_hole_from_bottom = 17.0
     hole_chamfer = 1.0
+    tool_access_diameter = 10.0
 
     face_chamfer = 1.5
 
@@ -177,6 +178,26 @@ class WallHook:
             relief.close()
 
         body = body - window.extrude(self.thickness, sym=True)
+
+        # Keep the lower Ø4.2 mounting hole confined to the 6 mm rear spine,
+        # but clear the diagonal reinforcement in front of it so a screwdriver
+        # or bit can reach the screw head along the same world-X axis.
+        #
+        # The Ø10 access bore starts exactly at X=rib, so it removes no material
+        # from the mounting spine itself. With the 15 mm symmetric Y extrusion,
+        # material remains on both sides of the access port and the diagonal
+        # continues to act as a reinforcement.
+        body = body - Cylinder(
+            d=self.tool_access_diameter,
+            h=right_outer_x - self.rib,
+            axis=Axis.X,
+            anchor=Anchor.LEFT,
+        ).at(
+            self.rib,
+            0.0,
+            self.lower_hole_from_bottom,
+            anchor=Anchor.LEFT,
+        )
 
         # Forge v0.18 resolves the complete native boundary of both broad XZ
         # extrusion end faces. Apply this before the screw holes so their own

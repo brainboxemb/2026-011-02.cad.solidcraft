@@ -3,3 +3,13 @@ id: wall-hook
 builder: forge
 source: scpf/model.py
 process: true
+artifacts: [stl]
+
+snapshots:
+  - name: access.png
+    camera:
+      target: [14, 0, 17]
+      yaw: -1.05
+      pitch: 0.18
+      distance: 80
+      fov: 0

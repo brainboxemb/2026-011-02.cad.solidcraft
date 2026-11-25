@@ -12,9 +12,9 @@ class WallHook:
     overall_height = 57.0
     thickness = 15.0
     rib = 6.0
-    fork_gap = 20.0
-    tall_fork_depth = 25.0
-    short_fork_rise = 10.0
+    opening_width = 20.0
+    opening_depth = 25.0
+    short_tip_rise = 10.0
     short_outer_height = 16.0
 
     hole_diameter = 4.2
@@ -27,10 +27,10 @@ class WallHook:
     window_fillet = 2.0
 
     def build(self):
-        crossbar_y = self.overall_height - self.tall_fork_depth
-        right_inner_x = self.rib + self.fork_gap
+        crossbar_y = self.overall_height - self.opening_depth
+        right_inner_x = self.rib + self.opening_width
         right_outer_x = right_inner_x + self.rib
-        right_top_y = crossbar_y + self.short_fork_rise
+        right_top_y = crossbar_y + self.short_tip_rise
         right_outer_bottom_y = right_top_y - self.short_outer_height
 
         # The outside diagonal is exactly 45 degrees:
@@ -81,7 +81,7 @@ class WallHook:
                 clockwise=False,
             )
 
-            # Outer top of short fork.
+            # Outer top of the short hook tip.
             profile.line_to((right_outer_x, right_top_y - r))
             profile.arc_center_to(
                 (right_outer_x - r, right_top_y),
@@ -109,7 +109,7 @@ class WallHook:
                 clockwise=True,
             )
 
-            # Tall fork top and outside spine.
+            # Tall hook arm top and outside spine.
             profile.line_to((self.rib, self.overall_height - r))
             profile.arc_center_to(
                 (self.rib - r, self.overall_height),

@@ -499,7 +499,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "e44f271c9c212951a03758ad9f18857bd27dce93",
+      "built_source_sha": "d2cf3e7c802ff7a7b44c2921782c08988aba436f",
       "commands": "models/mft-rail-corner-assembly/solidcraft.json",
       "dependencies": [
         "mounting-rail-m8",
@@ -618,7 +618,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "e44f271c9c212951a03758ad9f18857bd27dce93",
+      "built_source_sha": "d2cf3e7c802ff7a7b44c2921782c08988aba436f",
       "commands": "models/mft-rail-corner-insert/solidcraft.json",
       "dependencies": [],
       "id": "mft-rail-corner-insert",
@@ -993,5 +993,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "e44f271c9c212951a03758ad9f18857bd27dce93"
+  "source_sha": "d2cf3e7c802ff7a7b44c2921782c08988aba436f"
 }

@@ -1199,7 +1199,7 @@
           -8.485281374238571,
           -10.182337649086284
         ],
-        "clockwise": true,
+        "clockwise": false,
         "connect": true
       }
     },

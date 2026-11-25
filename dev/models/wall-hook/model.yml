@@ -19,8 +19,8 @@ stages:
   - Add 1 mm 90-degree chamfers at both mounting-wall faces of each screw hole
 
 extra_views:
-  title: Functional access
-  note: The dedicated access view makes the lower-screw screwdriver path explicit.
+  title: Source and functional detail
+  note: The original tutorial is shown together with the lower-screw access detail.
   items:
     - kind: asset
       src: youtube-u6nd9k8c_t0-w320.webp

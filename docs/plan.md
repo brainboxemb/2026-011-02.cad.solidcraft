@@ -4,6 +4,21 @@ This file contains unfinished work only.
 
 ## Now
 
+### #102 — correct Wall Hook mounting-hole axis
+
+Active on `fix/102-wall-hook-rear-holes`.
+
+Move the two confirmed Ø4.2 screw holes from the 15 mm side/profile faces to
+the 6 mm rear mounting spine. Preserve the existing vertical centres and 1 mm
+hole-edge chamfers.
+
+Acceptance:
+
+1. both hole axes are perpendicular to the rear mounting wall;
+2. holes are centred across the 15 mm hook width;
+3. the cut depth is limited to the 6 mm rear spine and does not reach the diagonal web;
+4. Wall Hook qualifies and republishes on dev Pages.
+
 ### #18 / #19 / #20 — improved native HUB75 panel
 
 Active on `feature/18-hub75-improved-source`.

@@ -1,8 +1,10 @@
 schema: 1
-branch: docs/84-complete-latch-hook
+branch: fix/84-smooth-latch-hook-contour
 
 modules:
   - pages
-models: []
+models:
+  - latch-hook
 tasks:
   - test
+  - build

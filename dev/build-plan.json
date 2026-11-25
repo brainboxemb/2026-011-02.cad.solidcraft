@@ -375,6 +375,120 @@
     },
     {
       "artifacts": [],
+      "built_source_sha": "fa5898b32c26fc9c19be7f5de2fca3f8613f3a44",
+      "commands": "models/mft-rail-corner-assembly/solidcraft.json",
+      "dependencies": [
+        "mounting-rail-m8",
+        "mft-rail-corner-bracket"
+      ],
+      "id": "mft-rail-corner-assembly",
+      "native": {
+        "png": "models/mft-rail-corner-assembly/model.png",
+        "sc": "models/mft-rail-corner-assembly/model.sc",
+        "step": "models/mft-rail-corner-assembly/model.step",
+        "stl": null
+      },
+      "owner": "mft-rail-corner-assembly",
+      "priority": 30,
+      "root": "models/subassemblies/mft_rail_corner_assembly",
+      "snapshot": {
+        "camera": {
+          "distance": 245,
+          "fov": 0,
+          "pitch": 0.45,
+          "target": [
+            45,
+            45,
+            -13.5
+          ],
+          "yaw": -0.78
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 245,
+            "fov": 0,
+            "pitch": 1.48,
+            "target": [
+              45,
+              45,
+              -5
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/mft-rail-corner-assembly/top.png"
+        },
+        {
+          "camera": {
+            "distance": 230,
+            "fov": 0,
+            "pitch": 0.18,
+            "target": [
+              20,
+              20,
+              -13.5
+            ],
+            "yaw": 2.35
+          },
+          "name": "outside.png",
+          "path": "models/mft-rail-corner-assembly/outside.png"
+        }
+      ],
+      "source": "models/subassemblies/mft_rail_corner_assembly/scpf/model.py"
+    },
+    {
+      "artifacts": [],
+      "built_source_sha": "fa5898b32c26fc9c19be7f5de2fca3f8613f3a44",
+      "commands": "models/mft-rail-corner-bracket/solidcraft.json",
+      "dependencies": [
+        "mounting-rail-m8"
+      ],
+      "id": "mft-rail-corner-bracket",
+      "native": {
+        "png": "models/mft-rail-corner-bracket/model.png",
+        "sc": "models/mft-rail-corner-bracket/model.sc",
+        "step": "models/mft-rail-corner-bracket/model.step",
+        "stl": null
+      },
+      "owner": "mft-rail-corner-bracket",
+      "priority": 20,
+      "root": "models/components/mft_rail_corner_bracket",
+      "snapshot": {
+        "camera": {
+          "distance": 165,
+          "fov": 0,
+          "pitch": 0.42,
+          "target": [
+            28,
+            28,
+            -13.5
+          ],
+          "yaw": -0.78
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 165,
+            "fov": 0,
+            "pitch": -0.55,
+            "target": [
+              25,
+              25,
+              -18
+            ],
+            "yaw": -0.78
+          },
+          "name": "underside.png",
+          "path": "models/mft-rail-corner-bracket/underside.png"
+        }
+      ],
+      "source": "models/components/mft_rail_corner_bracket/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "501ec929258c42219940aac1881b71a7ac8aaf34",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
@@ -688,5 +802,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "501ec929258c42219940aac1881b71a7ac8aaf34"
+  "source_sha": "fa5898b32c26fc9c19be7f5de2fca3f8613f3a44"
 }

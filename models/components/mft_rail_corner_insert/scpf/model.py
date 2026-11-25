@@ -89,6 +89,7 @@ class MFTRailCornerInsert:
             lug_y.line_to((3.3, -18.25))
             lug_y.line_to((4.5, -16.5))
             lug_y.line_to((4.5, -16.0))
+            lug_y.line_to((0.5, -16.0))
             lug_y.close()
         insert = insert + lug_y_sketch.extrude(12.0)
 
@@ -102,6 +103,7 @@ class MFTRailCornerInsert:
             lug_x.line_to((-18.25, 3.3))
             lug_x.line_to((-18.25, 0.5))
             lug_x.line_to((-16.0, 0.5))
+            lug_x.line_to((-16.0, 4.5))
             lug_x.close()
         insert = insert + lug_x_sketch.extrude(12.0)
 

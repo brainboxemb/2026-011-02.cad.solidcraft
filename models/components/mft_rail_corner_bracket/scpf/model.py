@@ -42,8 +42,11 @@ class MFTRailCornerBracket:
     # The bracket is also a load-bearing foot. Both rail ends sit on this
     # plastic shoe instead of hanging beside the bracket.
     foot_thickness = 6.0
-    corner_bumper_radius = 22.0
-    corner_bumper_segments = 8
+    # Build-time polygon controls. These are intentionally private because the
+    # generated bumper polygon is resolved by Forge rather than kept associative
+    # as native SolidCraft parameters.
+    _corner_bumper_radius = 22.0
+    _corner_bumper_segments = 8
 
     rail_bolt_diameter = 8.5
     rail_hole_first = 12.5
@@ -57,8 +60,8 @@ class MFTRailCornerBracket:
     def build(self):
         rail_height = MountingRailM8.PROFILE_WIDTH
         foot_thickness_value = float(self.foot_thickness.value)
-        bumper_radius_value = float(self.corner_bumper_radius.value)
-        bumper_segments_value = int(self.corner_bumper_segments.value)
+        bumper_radius_value = float(self._corner_bumper_radius)
+        bumper_segments_value = int(self._corner_bumper_segments)
 
         # Two vertical arms lie against the inner/back web of each rail.
         x_arm = Box(

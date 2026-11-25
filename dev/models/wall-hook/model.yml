@@ -13,7 +13,8 @@ stages:
   - Extrude the profile symmetrically to 15 mm along Y
   - Author the provisional R2 outer corner rounds as native 2D circular arcs
   - Cut the 6 mm diagonal-wall triangular relief with native R2 corner arcs
-  - Cut a separate Ø8 mm X-axis screwdriver access bore through only the diagonal reinforcement at the lower screw centre\n  - Chamfer the complete FRONT/BACK face boundaries by 1.5 mm using Forge v0.18 native face selection
+  - Cut a separate Ø8 mm X-axis screwdriver access bore through only the diagonal reinforcement at the lower screw centre
+  - Chamfer the complete FRONT/BACK face boundaries by 1.5 mm using Forge v0.18 native face selection
   - Add two Ø4.2 holes along X through the rear 6 mm mounting wall at Y=0, 10 mm from top and 17 mm from bottom
   - Add 1 mm 90-degree chamfers at both mounting-wall faces of each screw hole
 
@@ -21,6 +22,11 @@ extra_views:
   title: Functional access
   note: The dedicated access view makes the lower-screw screwdriver path explicit.
   items:
+    - kind: asset
+      src: youtube-u6nd9k8c_t0-w320.webp
+      href: https://www.youtube.com/watch?v=u6nD9K8C_T0
+      alt: YouTube tutorial used as the Wall Hook design reference
+      caption: Original/reference YouTube tutorial
     - kind: build
       src: access.png
       alt: Oblique view of the Wall Hook lower mounting screw access opening

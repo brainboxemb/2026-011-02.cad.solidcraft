@@ -1,0 +1,776 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "profile_fillet",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rib",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "opening_width",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "overall_height",
+        "expression": "57",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "opening_depth",
+        "expression": "25",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "short_tip_rise",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "short_outer_height",
+        "expression": "16",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "thickness",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "window_fillet",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "face_chamfer",
+        "expression": "1.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "4.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_chamfer",
+        "expression": "1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "upper_hole_from_top",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "lower_hole_from_bottom",
+        "expression": "17",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "Rounded hook side profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "profile_fillet",
+            0.0
+          ],
+          [
+            "rib - (profile_fillet * 0.414214)",
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "rib - (profile_fillet * 0.414214)",
+          "profile_fillet"
+        ],
+        "start": [
+          "rib - (profile_fillet * 0.414214)",
+          0.0
+        ],
+        "end": [
+          "rib + ((profile_fillet * 0.414214) / 1.41421)",
+          "(profile_fillet * 0.414214) / 1.41421"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib + ((profile_fillet * 0.414214) / 1.41421)",
+            "(profile_fillet * 0.414214) / 1.41421"
+          ],
+          [
+            "((rib + (opening_width)) + (rib)) - ((profile_fillet * 0.414214) / 1.41421)",
+            "(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height)) - ((profile_fillet * 0.414214) / 1.41421)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((rib + (opening_width)) + (rib)) - (profile_fillet)",
+          "(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height)) + (profile_fillet * 0.414214)"
+        ],
+        "start": [
+          "((rib + (opening_width)) + (rib)) - ((profile_fillet * 0.414214) / 1.41421)",
+          "(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height)) - ((profile_fillet * 0.414214) / 1.41421)"
+        ],
+        "end": [
+          "(rib + (opening_width)) + (rib)",
+          "(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height)) + (profile_fillet * 0.414214)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(rib + (opening_width)) + (rib)",
+            "(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height)) + (profile_fillet * 0.414214)"
+          ],
+          [
+            "(rib + (opening_width)) + (rib)",
+            "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((rib + (opening_width)) + (rib)) - (profile_fillet)",
+          "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+        ],
+        "start": [
+          "(rib + (opening_width)) + (rib)",
+          "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+        ],
+        "end": [
+          "((rib + (opening_width)) + (rib)) - (profile_fillet)",
+          "(overall_height - (opening_depth)) + (short_tip_rise)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "((rib + (opening_width)) + (rib)) - (profile_fillet)",
+            "(overall_height - (opening_depth)) + (short_tip_rise)"
+          ],
+          [
+            "(rib + (opening_width)) + (profile_fillet)",
+            "(overall_height - (opening_depth)) + (short_tip_rise)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "(rib + (opening_width)) + (profile_fillet)",
+          "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+        ],
+        "start": [
+          "(rib + (opening_width)) + (profile_fillet)",
+          "(overall_height - (opening_depth)) + (short_tip_rise)"
+        ],
+        "end": [
+          "rib + (opening_width)",
+          "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib + (opening_width)",
+            "((overall_height - (opening_depth)) + (short_tip_rise)) - (profile_fillet)"
+          ],
+          [
+            "rib + (opening_width)",
+            "(overall_height - (opening_depth)) + (profile_fillet)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "(rib + (opening_width)) - (profile_fillet)",
+          "(overall_height - (opening_depth)) + (profile_fillet)"
+        ],
+        "start": [
+          "rib + (opening_width)",
+          "(overall_height - (opening_depth)) + (profile_fillet)"
+        ],
+        "end": [
+          "(rib + (opening_width)) - (profile_fillet)",
+          "overall_height - (opening_depth)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(rib + (opening_width)) - (profile_fillet)",
+            "overall_height - (opening_depth)"
+          ],
+          [
+            "rib + (profile_fillet)",
+            "overall_height - (opening_depth)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "rib + (profile_fillet)",
+          "(overall_height - (opening_depth)) + (profile_fillet)"
+        ],
+        "start": [
+          "rib + (profile_fillet)",
+          "overall_height - (opening_depth)"
+        ],
+        "end": [
+          "rib",
+          "(overall_height - (opening_depth)) + (profile_fillet)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib",
+            "(overall_height - (opening_depth)) + (profile_fillet)"
+          ],
+          [
+            "rib",
+            "overall_height - (profile_fillet)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "rib - (profile_fillet)",
+          "overall_height - (profile_fillet)"
+        ],
+        "start": [
+          "rib",
+          "overall_height - (profile_fillet)"
+        ],
+        "end": [
+          "rib - (profile_fillet)",
+          "overall_height"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib - (profile_fillet)",
+            "overall_height"
+          ],
+          [
+            "profile_fillet",
+            "overall_height"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "profile_fillet",
+          "overall_height - (profile_fillet)"
+        ],
+        "start": [
+          "profile_fillet",
+          "overall_height"
+        ],
+        "end": [
+          0.0,
+          "overall_height - (profile_fillet)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            "overall_height - (profile_fillet)"
+          ],
+          [
+            0.0,
+            "profile_fillet"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "profile_fillet",
+          "profile_fillet"
+        ],
+        "start": [
+          0.0,
+          "profile_fillet"
+        ],
+        "end": [
+          "profile_fillet",
+          0.0
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "thickness",
+        "direction": "symmetric",
+        "body_name": "WallHook"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "Rounded triangular gusset window"
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "rib + (window_fillet)",
+          "(rib * 1.41421) + (window_fillet * 2.41421)"
+        ],
+        "start": [
+          "rib + ((window_fillet * 2.41421) / 1.41421)",
+          "(rib * 1.41421) + ((window_fillet * 2.41421) / 1.41421)"
+        ],
+        "end": [
+          "rib",
+          "(rib * 1.41421) + (window_fillet * 2.41421)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib",
+            "(rib * 1.41421) + (window_fillet * 2.41421)"
+          ],
+          [
+            "rib",
+            "((overall_height - (opening_depth)) - (rib)) - (window_fillet)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "rib + (window_fillet)",
+          "((overall_height - (opening_depth)) - (rib)) - (window_fillet)"
+        ],
+        "start": [
+          "rib",
+          "((overall_height - (opening_depth)) - (rib)) - (window_fillet)"
+        ],
+        "end": [
+          "rib + (window_fillet)",
+          "(overall_height - (opening_depth)) - (rib)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "rib + (window_fillet)",
+            "(overall_height - (opening_depth)) - (rib)"
+          ],
+          [
+            "(((overall_height - (opening_depth)) - (rib)) - ((-(rib)) + (rib * 1.41421))) - (window_fillet * 2.41421)",
+            "(overall_height - (opening_depth)) - (rib)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "(((overall_height - (opening_depth)) - (rib)) - ((-(rib)) + (rib * 1.41421))) - (window_fillet * 2.41421)",
+          "((overall_height - (opening_depth)) - (rib)) - (window_fillet)"
+        ],
+        "start": [
+          "(((overall_height - (opening_depth)) - (rib)) - ((-(rib)) + (rib * 1.41421))) - (window_fillet * 2.41421)",
+          "(overall_height - (opening_depth)) - (rib)"
+        ],
+        "end": [
+          "(((overall_height - (opening_depth)) - (rib)) - ((-(rib)) + (rib * 1.41421))) - ((window_fillet * 2.41421) / 1.41421)",
+          "((overall_height - (opening_depth)) - (rib)) - ((window_fillet * 2.41421) / 1.41421)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(((overall_height - (opening_depth)) - (rib)) - ((-(rib)) + (rib * 1.41421))) - ((window_fillet * 2.41421) / 1.41421)",
+            "((overall_height - (opening_depth)) - (rib)) - ((window_fillet * 2.41421) / 1.41421)"
+          ],
+          [
+            "rib + ((window_fillet * 2.41421) / 1.41421)",
+            "(rib * 1.41421) + ((window_fillet * 2.41421) / 1.41421)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "thickness",
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "WallHook"
+        ]
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_face_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              -1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_edges_1": {
+          "field": "edges",
+          "boundary_of": "$topology_face_1",
+          "body": "WallHook"
+        }
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_face_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_edges_2": {
+          "field": "edges",
+          "boundary_of": "$topology_face_2",
+          "body": "WallHook",
+          "prepend": "$topology_edges_1"
+        }
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": "$topology_edges_2",
+        "distance": "face_chamfer",
+        "body": "WallHook"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "rib",
+          0.0,
+          "overall_height - (upper_hole_from_top)"
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": "hole_diameter",
+        "depth": "rib",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0.0,
+          0.0,
+          "overall_height - (upper_hole_from_top)"
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": "hole_diameter",
+        "depth": "rib",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "rib",
+          0.0,
+          "lower_hole_from_bottom"
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": "hole_diameter",
+        "depth": "rib",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0.0,
+          0.0,
+          "lower_hole_from_bottom"
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": "hole_diameter",
+        "depth": "rib",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    }
+  ]
+}

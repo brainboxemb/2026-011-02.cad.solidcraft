@@ -1,0 +1,639 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_inside_width",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_clearance",
+        "expression": "0.3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_top",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_opening",
+        "expression": "7",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hinge_height",
+        "expression": "3.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hinge_outer_radius",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hinge_axial_clearance",
+        "expression": "0.25",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hinge_left_shift",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "pin_diameter",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BenchdogClampSlide",
+        "grounded": false
+      },
+      "bind": {
+        "$benchdogclampslide": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "rail_inside_width - (rail_clearance * 2)",
+        "width": 16.0,
+        "height": "((rail_top - 2 mm) - (rail_clearance)) - ((rail_top - 8.4 mm) + (rail_clearance))",
+        "operation": "new",
+        "corner": [
+          "((((-(rail_inside_width)) / 2) + (rail_clearance) + 2 mm) + ((rail_inside_width - (rail_clearance * 2)) / 2)) + (-((rail_inside_width - (rail_clearance * 2)) / 2))",
+          -8.0,
+          "(rail_top - 8.4 mm) + (rail_clearance)"
+        ],
+        "body_name": "BenchdogClampSlide"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "rail_opening - (rail_clearance * 2)",
+        "width": 16.0,
+        "height": "(((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)) - ((rail_top - 2 mm) - (rail_clearance))",
+        "operation": "join",
+        "corner": [
+          "((((-(rail_opening)) / 2) + (rail_clearance) + 2 mm) + ((rail_opening - (rail_clearance * 2)) / 2)) + (-((rail_opening - (rail_clearance * 2)) / 2))",
+          -8.0,
+          "(rail_top - 2 mm) - (rail_clearance)"
+        ],
+        "targets": [
+          "BenchdogClampSlide"
+        ]
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 4.0,
+        "width": "hinge_axial_clearance * -2 + 8 mm",
+        "height": "(rail_top + (hinge_height)) - (((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance))",
+        "operation": "join",
+        "corner": [
+          "-(hinge_left_shift) + 2 mm + -2 mm",
+          "((hinge_axial_clearance + -4 mm) + ((hinge_axial_clearance * -2 + 8 mm) / 2)) + (-((hinge_axial_clearance * -2 + 8 mm) / 2))",
+          "((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)"
+        ],
+        "targets": [
+          "BenchdogClampSlide"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": "hinge_axial_clearance * -2 + 8 mm",
+        "diameter": "hinge_outer_radius * 2",
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          "hinge_axial_clearance + -4 mm",
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "BenchdogClampSlide"
+        ]
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm",
+        "width": "hinge_axial_clearance * -2 + 8 mm",
+        "height": "(rail_top + (hinge_height) + 2 mm) - (((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance))",
+        "operation": "join",
+        "corner": [
+          "((-(hinge_left_shift) + 3.75 mm) + ((-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm) / 2)) + (-((-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm) / 2))",
+          "((hinge_axial_clearance + -4 mm) + ((hinge_axial_clearance * -2 + 8 mm) / 2)) + (-((hinge_axial_clearance * -2 + 8 mm) / 2))",
+          "((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)"
+        ],
+        "targets": [
+          "BenchdogClampSlide"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 20.0,
+        "diameter": "pin_diameter + 0.2 mm",
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          -10.0,
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "BenchdogClampSlide"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BenchdogClampHingeArm",
+        "grounded": false
+      },
+      "bind": {
+        "$benchdogclamphingearm_occurrence_1": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 11.0,
+        "width": 4.0,
+        "height": 3.0,
+        "operation": "new",
+        "corner": [
+          "(-(hinge_left_shift)) - 9 mm + 5.5 mm + -5.5 mm",
+          -2.0,
+          "(rail_top + (hinge_height)) - 1.5 mm"
+        ],
+        "body_name": "BenchdogClampHingeArm"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 4.0,
+        "diameter": "hinge_outer_radius * 2",
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          -2.0,
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "BenchdogClampHingeArm"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 20.0,
+        "diameter": "pin_diameter + 0.2 mm",
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          -10.0,
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "BenchdogClampHingeArm"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "BenchdogClampHingeArm"
+      },
+      "bind": {
+        "$benchdogclamphingearm_occurrence_2": "occurrence"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BenchdogClampHingePin",
+        "grounded": false
+      },
+      "bind": {
+        "$benchdogclamphingepin": "occurrence"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 16.5,
+        "diameter": "pin_diameter",
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          -8.0,
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "new",
+        "body_name": "BenchdogClampHingePin"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.5,
+        "diameter": 5.0,
+        "base": [
+          "-(hinge_left_shift) + 2 mm",
+          -9.5,
+          "rail_top + (hinge_height)"
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "BenchdogClampHingePin"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "profile_length",
+        "expression": "40",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "profile_inside_width",
+        "expression": "12.55",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "profile_opening",
+        "expression": "8.3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BenchdogClampRailContext",
+        "grounded": false
+      },
+      "bind": {
+        "$benchdogclamprailcontext": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d4_BenchdogClampRailContext__Dummy rail profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(profile_inside_width / 2) + 0.2 mm",
+            "-(rail_top)"
+          ],
+          [
+            "-(profile_opening / 2) + 2 mm",
+            "-(rail_top)"
+          ],
+          [
+            "-(profile_opening / 2) + 2 mm",
+            "-(rail_top - 2 mm)"
+          ],
+          [
+            "-(profile_inside_width / 2) + 2 mm",
+            "-(rail_top - 2 mm)"
+          ],
+          [
+            "-(profile_inside_width / 2) + 2 mm",
+            "-(rail_top - 8.4 mm)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm",
+            "-(rail_top - 8.4 mm)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm",
+            "-(rail_top - 2 mm)"
+          ],
+          [
+            "profile_opening / 2 + 2 mm",
+            "-(rail_top - 2 mm)"
+          ],
+          [
+            "profile_opening / 2 + 2 mm",
+            "-(rail_top)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm + 1.8 mm",
+            "-(rail_top)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm + 1.8 mm",
+            "-(rail_top - 6.8 mm)"
+          ],
+          [
+            17.1,
+            "-(rail_top - 6.8 mm)"
+          ],
+          [
+            17.1,
+            "-(rail_top - 7.6 mm)"
+          ],
+          [
+            29.0,
+            "-(rail_top - 7.6 mm)"
+          ],
+          [
+            29.0,
+            "-(rail_top - 6.8 mm)"
+          ],
+          [
+            39.5,
+            "-(rail_top - 6.8 mm)"
+          ],
+          [
+            39.5,
+            "-(rail_top - 9.4 mm)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm + 1.8 mm",
+            "-(rail_top - 9.4 mm)"
+          ],
+          [
+            "profile_inside_width / 2 + 2 mm + 1.8 mm",
+            "-(rail_top - 10.4 mm)"
+          ],
+          [
+            "-(profile_inside_width / 2) + 0.2 mm",
+            "-(rail_top - 10.4 mm)"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "l1",
+          "l2",
+          "l3",
+          "l4",
+          "l5",
+          "l6",
+          "l7",
+          "l8",
+          "l9",
+          "l10",
+          "l11",
+          "l12",
+          "l13",
+          "l14",
+          "l15",
+          "l16",
+          "l17",
+          "l18",
+          "l19",
+          "l20"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "profile_length",
+        "direction": "symmetric",
+        "body_name": "BenchdogClampRailContext"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            -6.075,
+            0.0,
+            6.0
+          ],
+          [
+            10.075000000000001,
+            0.0,
+            6.0
+          ]
+        ],
+        "radius": 1.6,
+        "body": "BenchdogClampRailContext"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            -6.075,
+            0.0,
+            -4.4
+          ]
+        ],
+        "radius": 0.9,
+        "body": "BenchdogClampRailContext"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "doghole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "benchdog_rail_clearance",
+        "expression": "0.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "benchdog_along_position",
+        "expression": "19.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "BenchdogClampDog",
+        "grounded": false
+      },
+      "bind": {
+        "$benchdogclampdog": "occurrence"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 27.5,
+        "diameter": "doghole_diameter",
+        "base": [
+          "(((-(profile_inside_width)) / 2) - (benchdog_rail_clearance)) - (doghole_diameter / 2) + 0.2 mm",
+          "benchdog_along_position",
+          "rail_top - 10.4 mm"
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "BenchdogClampDog"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclampslide",
+        "translate": [
+          0,
+          0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclamphingearm_occurrence_1",
+        "translate": [
+          0,
+          -6.0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclamphingearm_occurrence_2",
+        "translate": [
+          0,
+          6.0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclamphingepin",
+        "translate": [
+          0,
+          0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclamprailcontext",
+        "translate": [
+          0,
+          0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$benchdogclampdog",
+        "translate": [
+          0,
+          0,
+          "-(rail_top) + 10.4 mm"
+        ]
+      }
+    }
+  ]
+}

@@ -1,4 +1,6 @@
 {
+  "format": "scpf-replay",
+  "version": 2,
   "commands": [
     {
       "command": "parameters.add",
@@ -47,14 +49,30 @@
       }
     },
     {
+      "command": "model.faces",
+      "params": {
+        "body": "Enclosure"
+      },
+      "bind": {
+        "$topology_face_name_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "name"
+        }
+      }
+    },
+    {
       "command": "solid.shell",
       "params": {
         "faces": [
-          [
-            0.0,
-            0.0,
-            30.0
-          ]
+          "$topology_face_name_1"
         ],
         "thickness": "wall",
         "body": "Enclosure"

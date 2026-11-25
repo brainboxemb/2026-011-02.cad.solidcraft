@@ -53,16 +53,16 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "rear_crossbar",
-        "expression": "20",
+        "name": "rear_end_rail",
+        "expression": "10.75",
         "unit": "mm"
       }
     },
     {
       "command": "parameters.add",
       "params": {
-        "name": "rear_end_rail",
-        "expression": "10.75",
+        "name": "rear_crossbar",
+        "expression": "20",
         "unit": "mm"
       }
     },
@@ -91,10 +91,20 @@
       }
     },
     {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75Panel",
+        "grounded": true
+      },
+      "bind": {
+        "$hub75panel": "occurrence"
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Hub75Panel footprint"
+        "name": "d1_Hub75Panel__Hub75Panel footprint"
       }
     },
     {
@@ -125,7 +135,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Hub75Panel rear start",
+        "name": "d1_Hub75Panel__Hub75Panel rear start",
         "offset": "front_depth"
       }
     },
@@ -150,7 +160,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Hub75Panel rear perimeter",
+        "name": "d1_Hub75Panel__Hub75Panel rear perimeter",
         "offset": "depth"
       }
     },
@@ -176,10 +186,10 @@
       "params": {
         "sections": [
           {
-            "sketch": "Hub75Panel rear start"
+            "sketch": "d1_Hub75Panel__Hub75Panel rear start"
           },
           {
-            "sketch": "Hub75Panel rear perimeter"
+            "sketch": "d1_Hub75Panel__Hub75Panel rear perimeter"
           }
         ],
         "operation": "join",
@@ -194,7 +204,7 @@
         "body": "Hub75Panel"
       },
       "bind": {
-        "$face_point_1": {
+        "$d1_Hub75Panel_face_point_1": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -206,7 +216,7 @@
           "max": "area",
           "select": "point"
         },
-        "$face_index_1": {
+        "$d1_Hub75Panel_face_index_1": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -224,64 +234,1084 @@
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$face_point_1",
+          "face": "$d1_Hub75Panel_face_point_1",
           "body": "Hub75Panel",
-          "index": "$face_index_1"
+          "index": "$d1_Hub75Panel_face_index_1"
         },
         "project_edges": false,
-        "name": "Rear electronics bays"
+        "name": "d1_Hub75Panel__Achtervakken met afgeronde hoeken en versmallingen"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2))"
+        "points": [
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ],
+          [
+            -17.969156249999997,
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ]
         ],
-        "p1": [
-          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "((((-(height / 2)) + (rear_end_rail * 0.999094)) + ((-(height / 4)) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - ((-(height / 2)) + (rear_end_rail * 0.999094))) / 2)"
-        ]
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (-(((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2))"
+        "points": [
+          [
+            -17.969156249999997,
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ],
+          [
+            -14.971874999999999,
+            "((-(height / 2)) + (rear_end_rail * 0.999094)) - 2.99728 mm"
+          ]
         ],
-        "p1": [
-          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "((((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) + (-((rear_crossbar * 0.999094) / 2))) / 2) + (((-((rear_crossbar * 0.999094) / 2)) - ((-(height / 4)) + ((rear_crossbar * 0.999094) / 2))) / 2)"
-        ]
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + (-((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2))"
+        "points": [
+          [
+            -14.971874999999999,
+            "((-(height / 2)) + (rear_end_rail * 0.999094)) - 2.99728 mm"
+          ],
+          [
+            14.971874999999999,
+            "((-(height / 2)) + (rear_end_rail * 0.999094)) - 2.99728 mm"
+          ]
         ],
-        "p1": [
-          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "((((rear_crossbar * 0.999094) / 2) + ((height / 4) - ((rear_crossbar * 0.999094) / 2))) / 2) + ((((height / 4) - ((rear_crossbar * 0.999094) / 2)) - ((rear_crossbar * 0.999094) / 2)) / 2)"
-        ]
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          "(-((width - ((rear_side_rail * 0.998125) * 2)) / 2))",
-          "((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + (-((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2))"
+        "points": [
+          [
+            14.971874999999999,
+            "((-(height / 2)) + (rear_end_rail * 0.999094)) - 2.99728 mm"
+          ],
+          [
+            17.969156249999997,
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ]
         ],
-        "p1": [
-          "((width - ((rear_side_rail * 0.998125) * 2)) / 2)",
-          "((((height / 4) + ((rear_crossbar * 0.999094) / 2)) + ((height / 2) - (rear_end_rail * 0.999094))) / 2) + ((((height / 2) - (rear_end_rail * 0.999094)) - ((height / 4) + ((rear_crossbar * 0.999094) / 2))) / 2)"
-        ]
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ],
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(-(height / 2)) + (rear_end_rail * 0.999094)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+        ],
+        "start": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-(height / 2)) + (rear_end_rail * 0.999094)"
+        ],
+        "end": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+          ],
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "end": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            17.969156249999997,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            14.971874999999999,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -14.971874999999999,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -17.969156249999997,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-(height / 4)) - ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "end": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "((-(height / 4)) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ],
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+        ],
+        "start": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "(-(height / 2)) + (rear_end_rail * 0.999094) + 4.99062 mm"
+        ],
+        "end": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-(height / 2)) + (rear_end_rail * 0.999094)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            -17.969156249999997,
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            -14.971874999999999,
+            "((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ],
+          [
+            14.971874999999999,
+            "((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "((-(height / 4)) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ],
+          [
+            17.969156249999997,
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "start": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "end": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+          ],
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "end": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "-((rear_crossbar * 0.999094) / 2)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "-((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            17.969156249999997,
+            "-((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "-((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            14.971874999999999,
+            "-((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "-((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -14.971874999999999,
+            "-((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "-((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -17.969156249999997,
+            "-((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "-((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "-((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "-((rear_crossbar * 0.999094) / 2)"
+        ],
+        "end": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "(-((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ],
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "start": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "end": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(-(height / 4)) + ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(rear_crossbar * 0.999094) / 2"
+          ],
+          [
+            -17.969156249999997,
+            "(rear_crossbar * 0.999094) / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(rear_crossbar * 0.999094) / 2"
+          ],
+          [
+            -14.971874999999999,
+            "((rear_crossbar * 0.999094) / 2) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "((rear_crossbar * 0.999094) / 2) - 2.99728 mm"
+          ],
+          [
+            14.971874999999999,
+            "((rear_crossbar * 0.999094) / 2) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "((rear_crossbar * 0.999094) / 2) - 2.99728 mm"
+          ],
+          [
+            17.969156249999997,
+            "(rear_crossbar * 0.999094) / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(rear_crossbar * 0.999094) / 2"
+          ],
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(rear_crossbar * 0.999094) / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+        ],
+        "start": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(rear_crossbar * 0.999094) / 2"
+        ],
+        "end": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+          ],
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "end": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            17.969156249999997,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            14.971874999999999,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -14.971874999999999,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2) + 2.99728 mm"
+          ],
+          [
+            -17.969156249999997,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "start": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(height / 4) - ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "end": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "((height / 4) - ((rear_crossbar * 0.999094) / 2)) - 4.99062 mm"
+          ],
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+        ],
+        "start": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "(rear_crossbar * 0.999094) / 2 + 4.99062 mm"
+        ],
+        "end": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(rear_crossbar * 0.999094) / 2"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            -17.969156249999997,
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            -14.971874999999999,
+            "((height / 4) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "((height / 4) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ],
+          [
+            14.971874999999999,
+            "((height / 4) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "((height / 4) + ((rear_crossbar * 0.999094) / 2)) - 2.99728 mm"
+          ],
+          [
+            17.969156249999997,
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ],
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "start": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "end": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+          ],
+          [
+            "(width / 2) - (rear_side_rail * 0.998125)",
+            "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+        ],
+        "start": [
+          "(width / 2) - (rear_side_rail * 0.998125)",
+          "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+        ],
+        "end": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+          "(height / 2) - (rear_end_rail * 0.999094)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm",
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ],
+          [
+            17.969156249999997,
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ],
+          [
+            14.971874999999999,
+            "(height / 2) - (rear_end_rail * 0.999094) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            "(height / 2) - (rear_end_rail * 0.999094) + 2.99728 mm"
+          ],
+          [
+            -14.971874999999999,
+            "(height / 2) - (rear_end_rail * 0.999094) + 2.99728 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            "(height / 2) - (rear_end_rail * 0.999094) + 2.99728 mm"
+          ],
+          [
+            -17.969156249999997,
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ],
+          [
+            "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+            "(height / 2) - (rear_end_rail * 0.999094)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+        ],
+        "start": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(height / 2) - (rear_end_rail * 0.999094)"
+        ],
+        "end": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "((height / 2) - (rear_end_rail * 0.999094)) - 4.99062 mm"
+          ],
+          [
+            "-((width / 2) - (rear_side_rail * 0.998125))",
+            "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "start": [
+          "-((width / 2) - (rear_side_rail * 0.998125))",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2) + 4.99062 mm"
+        ],
+        "end": [
+          "-(((width / 2) - (rear_side_rail * 0.998125)) - 4.99062 mm)",
+          "(height / 4) + ((rear_crossbar * 0.999094) / 2)"
+        ],
+        "clockwise": false,
+        "connect": true
       }
     },
     {
@@ -295,7 +1325,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "name": "Rear electronics bays",
+        "name": "Achtervakken met afgeronde hoeken en versmallingen",
         "distance": "depth - (front_depth)",
         "direction": "negative"
       }
@@ -642,7 +1672,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth - 12.5 mm"
         ],
@@ -657,7 +1687,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth"
         ],
@@ -677,7 +1707,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth - 2.5 mm"
         ],
@@ -699,7 +1729,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth - 12.5 mm"
         ],
@@ -714,7 +1744,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth"
         ],
@@ -734,7 +1764,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth - 2.5 mm"
         ],
@@ -870,7 +1900,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          -75.0,
+          75.0,
           110.0,
           "depth"
         ],
@@ -887,7 +1917,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          75.0,
+          -75.0,
           -110.0,
           "depth"
         ],
@@ -1019,6 +2049,110 @@
       }
     },
     {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim links"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(width / 2)",
+            "-(front_depth)"
+          ],
+          [
+            "-((width / 2) - (rear_inset))",
+            "-(depth)"
+          ],
+          [
+            "-(width / 2 + 5 mm)",
+            "-(depth)"
+          ],
+          [
+            "-(width / 2 + 5 mm)",
+            "-(front_depth)"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "height + 2 mm",
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim rechts"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "width / 2",
+            "-(front_depth)"
+          ],
+          [
+            "(width / 2) - (rear_inset)",
+            "-(depth)"
+          ],
+          [
+            "width / 2 + 5 mm",
+            "-(depth)"
+          ],
+          [
+            "width / 2 + 5 mm",
+            "-(front_depth)"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "height + 2 mm",
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
       "command": "material.create",
       "params": {
         "name": "HUB75 housing",
@@ -1033,6 +2167,380 @@
           "Hub75Panel"
         ],
         "material": "HUB75 housing"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75DataConnector",
+        "grounded": false
+      },
+      "bind": {
+        "$hub75_data_onder": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 27.9,
+        "width": 9.5,
+        "height": 10.64,
+        "operation": "new",
+        "corner": [
+          -13.95,
+          -4.75,
+          0
+        ],
+        "body_name": "Hub75DataConnector"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 21.762,
+        "width": 5.89,
+        "height": 0.8,
+        "operation": "cut",
+        "corner": [
+          -10.881,
+          -2.945,
+          10.24
+        ],
+        "targets": [
+          "Hub75DataConnector"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75DataConnector"
+      },
+      "bind": {
+        "$hub75_data_boven": "occurrence"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75PowerConnector",
+        "grounded": false
+      },
+      "bind": {
+        "$voedingsconnector": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": 13.0,
+        "width": 20.0,
+        "height": 7.0,
+        "corner": [
+          -6.5,
+          -10.0,
+          0
+        ],
+        "body_name": "Hub75PowerConnector"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75ArrowDown",
+        "grounded": false
+      },
+      "bind": {
+        "$orientatiepijl_1": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d4_Hub75ArrowDown__Witte pijl omlaag"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.68,
+            7.56
+          ],
+          [
+            1.68,
+            7.56
+          ],
+          [
+            1.68,
+            -2.1
+          ],
+          [
+            4.2,
+            -2.1
+          ],
+          [
+            0.0,
+            -7.56
+          ],
+          [
+            -4.2,
+            -2.1
+          ],
+          [
+            -1.68,
+            -2.1
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.1,
+        "direction": "positive",
+        "body_name": "Hub75ArrowDown"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Witte opdruk",
+        "density_g_cm3": 1.2,
+        "color": "#FFFFFF"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Hub75ArrowDown"
+        ],
+        "material": "Witte opdruk"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75ArrowDown"
+      },
+      "bind": {
+        "$orientatiepijl_3": "occurrence"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75ArrowRight",
+        "grounded": false
+      },
+      "bind": {
+        "$orientatiepijl_2": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d5_Hub75ArrowRight__Witte pijl rechts"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -9.0,
+            -2.0
+          ],
+          [
+            -9.0,
+            2.0
+          ],
+          [
+            2.5,
+            2.0
+          ],
+          [
+            2.5,
+            5.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            2.5,
+            -5.0
+          ],
+          [
+            2.5,
+            -2.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.1,
+        "direction": "positive",
+        "body_name": "Hub75ArrowRight"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Hub75ArrowRight"
+        ],
+        "material": "Witte opdruk"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75ArrowRight"
+      },
+      "bind": {
+        "$orientatiepijl_4": "occurrence"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75_data_onder",
+        "translate": [
+          0,
+          -113.5,
+          "front_depth + 0.63 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75_data_boven",
+        "translate": [
+          0,
+          113.5,
+          "front_depth + 0.63 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$voedingsconnector",
+        "translate": [
+          "width * 0.16875",
+          "height * -0.1",
+          "front_depth + 1 mm"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$orientatiepijl_1",
+        "translate": [
+          -38.0,
+          113.5,
+          "front_depth"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$orientatiepijl_2",
+        "translate": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 21 mm",
+          "height * 0.125",
+          "front_depth"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$orientatiepijl_3",
+        "translate": [
+          -38.0,
+          "((((rear_end_rail * 0.999094) + (height / 4)) - ((rear_crossbar * 0.999094) / 2)) / 2) - (height / 2)",
+          "front_depth"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$orientatiepijl_4",
+        "translate": [
+          "((width / 2) - (rear_side_rail * 0.998125)) - 21 mm",
+          "((((rear_end_rail * 0.999094) + (height / 4)) - ((rear_crossbar * 0.999094) / 2)) / 2) - (height / 2)",
+          "front_depth"
+        ]
       }
     }
   ]

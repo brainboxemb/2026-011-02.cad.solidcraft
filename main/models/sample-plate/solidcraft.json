@@ -3,46 +3,33 @@
   "version": 2,
   "commands": [
     {
-      "command": "parameters.add",
+      "command": "component.create",
       "params": {
-        "name": "width",
-        "expression": "80",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "depth",
-        "expression": "50",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "thickness",
-        "expression": "8",
-        "unit": "mm"
+        "name": "SamplePlate",
+        "grounded": true
+      },
+      "bind": {
+        "$sampleplate": "occurrence",
+        "$component_1": "component"
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Base"
+        "name": "d1_SamplePlate__Base"
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "-(width / 2)",
-          "-(depth / 2)"
+          -40.0,
+          -25.0
         ],
         "p1": [
-          "width / 2",
-          "depth / 2"
+          40.0,
+          25.0
         ]
       }
     },
@@ -53,7 +40,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "thickness",
+        "distance": 8.0,
         "direction": "positive",
         "body_name": "SamplePlate"
       }
@@ -93,7 +80,7 @@
         "body": "SamplePlate"
       },
       "bind": {
-        "$face_point_1": {
+        "$d1_SamplePlate_face_point_1": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -105,7 +92,7 @@
           "max": "area",
           "select": "point"
         },
-        "$face_index_1": {
+        "$d1_SamplePlate_face_index_1": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -123,19 +110,19 @@
       "command": "sketch.create",
       "params": {
         "plane": {
-          "face": "$face_point_1",
+          "face": "$d1_SamplePlate_face_point_1",
           "body": "SamplePlate",
-          "index": "$face_index_1"
+          "index": "$d1_SamplePlate_face_index_1"
         },
         "project_edges": false,
-        "name": "Holes"
+        "name": "d1_SamplePlate__Holes"
       }
     },
     {
       "command": "sketch.circle.center",
       "params": {
         "center": [
-          "(-((width - 24 mm) / 2))",
+          -28.0,
           0.0
         ],
         "diameter": 8
@@ -169,7 +156,7 @@
           0.0
         ],
         "count1": 2,
-        "spacing1": "width - 24 mm",
+        "spacing1": 56.0,
         "alignment": "right",
         "reversed": false
       }
@@ -196,7 +183,7 @@
               0.0,
               8.0
             ],
-            "distance": "(width / 2)"
+            "distance": 40.0
           },
           {
             "edge": [
@@ -204,7 +191,7 @@
               -25.0,
               8.0
             ],
-            "distance": "(depth / 2)"
+            "distance": 25.0
           }
         ]
       }
@@ -213,8 +200,8 @@
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Bore",
-        "offset": "thickness + 14 mm"
+        "name": "d1_SamplePlate__Bore",
+        "offset": 22.0
       }
     },
     {
@@ -234,7 +221,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "thickness + 14 mm",
+        "distance": 22.0,
         "direction": "negative",
         "operation": "cut",
         "targets": [
@@ -242,6 +229,101 @@
         ],
         "name": "Bore"
       }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "drawing.create",
+      "params": {
+        "name": "SamplePlate",
+        "template": "iso-a4-part",
+        "first_sheet_name": "Sheet 1"
+      },
+      "bind": {
+        "$drawing_1": "id",
+        "$drawing_1_source": {
+          "field": "sources",
+          "where": {
+            "path": null
+          },
+          "select": "id"
+        },
+        "$drawing_1_sheet": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "id"
+        }
+      }
+    },
+    {
+      "command": "drawing.sheet.set",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "documents": {
+          "source": "$drawing_1_source",
+          "component": "$component_1"
+        }
+      }
+    },
+    {
+      "command": "drawing.view.standard",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "iso": true
+      },
+      "bind": {
+        "$drawing_1_front": "view",
+        "$drawing_1_iso": "iso"
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_front",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$sampleplate"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_iso",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$sampleplate"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.close",
+      "params": {}
     }
-  ]
+  ],
+  "artifacts": {
+    "drawings": [
+      {
+        "name": "SamplePlate",
+        "drawing": "$drawing_1",
+        "pdf": "drawings/SamplePlate.pdf"
+      }
+    ]
+  }
 }

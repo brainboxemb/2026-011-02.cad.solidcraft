@@ -19,6 +19,14 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "foot_thickness",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "top_gusset_thickness",
         "expression": "5",
         "unit": "mm"
@@ -45,14 +53,6 @@
       "params": {
         "name": "bottom_gusset_thickness",
         "expression": "5",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "foot_thickness",
-        "expression": "6",
         "unit": "mm"
       }
     },
@@ -117,12 +117,12 @@
       "params": {
         "length": "arm_length",
         "width": "wall_thickness",
-        "height": 27.0,
+        "height": "foot_thickness + 27 mm",
         "operation": "new",
         "corner": [
           "(arm_length / 2) + (-(arm_length / 2))",
           0,
-          -27.0
+          "-(foot_thickness + 27 mm)"
         ],
         "body_name": "MFTRailCornerBracket"
       }
@@ -132,12 +132,12 @@
       "params": {
         "length": "wall_thickness",
         "width": "arm_length",
-        "height": 27.0,
+        "height": "foot_thickness + 27 mm",
         "operation": "join",
         "corner": [
           0,
           "(arm_length / 2) + (-(arm_length / 2))",
-          -27.0
+          "-(foot_thickness + 27 mm)"
         ],
         "targets": [
           "MFTRailCornerBracket"

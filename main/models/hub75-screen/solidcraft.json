@@ -151,59 +151,1079 @@
           "index": "$d1_Hub75Panel_face_index_1"
         },
         "project_edges": false,
-        "name": "d1_Hub75Panel__Rear electronics bays"
+        "name": "d1_Hub75Panel__Achtervakken met afgeronde hoeken en versmallingen"
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          -67.3734375,
+        "points": [
+          [
+            -62.38281249999999,
+            -149.11474218749998
+          ],
+          [
+            -17.969156249999997,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -149.11474218749998
+          ],
+          [
+            -14.971874999999999,
+            -152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -152.11202343749997
+          ],
+          [
+            14.971874999999999,
+            -152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -152.11202343749997
+          ],
+          [
+            17.969156249999997,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -149.11474218749998
+          ],
+          [
+            62.38281249999999,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -144.1241171875
+        ],
+        "start": [
+          62.38281249999999,
           -149.11474218749998
         ],
-        "p1": [
+        "end": [
           67.3734375,
-          -89.91843749999998
-        ]
+          -144.1241171875
+        ],
+        "clockwise": false,
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
+        "points": [
+          [
+            67.3734375,
+            -144.1241171875
+          ],
+          [
+            67.3734375,
+            -94.90906249999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -94.90906249999999
+        ],
+        "start": [
+          67.3734375,
+          -94.90906249999999
+        ],
+        "end": [
+          62.38281249999999,
+          -89.9184375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            -89.9184375
+          ],
+          [
+            17.969156249999997,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -89.9184375
+          ],
+          [
+            14.971874999999999,
+            -86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -86.92115625
+          ],
+          [
+            -14.971874999999999,
+            -86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -86.92115625
+          ],
+          [
+            -17.969156249999997,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -89.9184375
+          ],
+          [
+            -62.38281249999999,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -94.90906249999999
+        ],
+        "start": [
+          -62.38281249999999,
+          -89.9184375
+        ],
+        "end": [
           -67.3734375,
+          -94.90906249999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            -94.90906249999999
+          ],
+          [
+            -67.3734375,
+            -144.1241171875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -144.1241171875
+        ],
+        "start": [
+          -67.3734375,
+          -144.1241171875
+        ],
+        "end": [
+          -62.38281249999999,
+          -149.11474218749998
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            -69.9365625
+          ],
+          [
+            -17.969156249999997,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -69.9365625
+          ],
+          [
+            -14.971874999999999,
+            -72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -72.93384375
+          ],
+          [
+            14.971874999999999,
+            -72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -72.93384375
+          ],
+          [
+            17.969156249999997,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -69.9365625
+          ],
+          [
+            62.38281249999999,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -64.9459375
+        ],
+        "start": [
+          62.38281249999999,
           -69.9365625
         ],
-        "p1": [
+        "end": [
           67.3734375,
-          -9.990937500000001
-        ]
+          -64.9459375
+        ],
+        "clockwise": false,
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          -67.3734375,
-          9.990937500000001
+        "points": [
+          [
+            67.3734375,
+            -64.9459375
+          ],
+          [
+            67.3734375,
+            -14.981562499999999
+          ]
         ],
-        "p1": [
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -14.981562499999999
+        ],
+        "start": [
           67.3734375,
+          -14.981562499999999
+        ],
+        "end": [
+          62.38281249999999,
+          -9.9909375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            -9.9909375
+          ],
+          [
+            17.969156249999997,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -9.9909375
+          ],
+          [
+            14.971874999999999,
+            -6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -6.99365625
+          ],
+          [
+            -14.971874999999999,
+            -6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -6.99365625
+          ],
+          [
+            -17.969156249999997,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -9.9909375
+          ],
+          [
+            -62.38281249999999,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -14.981562499999999
+        ],
+        "start": [
+          -62.38281249999999,
+          -9.9909375
+        ],
+        "end": [
+          -67.3734375,
+          -14.981562499999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            -14.981562499999999
+          ],
+          [
+            -67.3734375,
+            -64.9459375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -64.9459375
+        ],
+        "start": [
+          -67.3734375,
+          -64.9459375
+        ],
+        "end": [
+          -62.38281249999999,
+          -69.9365625
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            9.9909375
+          ],
+          [
+            -17.969156249999997,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            9.9909375
+          ],
+          [
+            -14.971874999999999,
+            6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            6.99365625
+          ],
+          [
+            14.971874999999999,
+            6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            6.99365625
+          ],
+          [
+            17.969156249999997,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            9.9909375
+          ],
+          [
+            62.38281249999999,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          14.981562499999999
+        ],
+        "start": [
+          62.38281249999999,
+          9.9909375
+        ],
+        "end": [
+          67.3734375,
+          14.981562499999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            14.981562499999999
+          ],
+          [
+            67.3734375,
+            64.9459375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          64.9459375
+        ],
+        "start": [
+          67.3734375,
+          64.9459375
+        ],
+        "end": [
+          62.38281249999999,
           69.9365625
-        ]
+        ],
+        "clockwise": false,
+        "connect": true
       }
     },
     {
-      "command": "sketch.rectangle.two_point",
+      "command": "sketch.line",
       "params": {
-        "p0": [
-          -67.3734375,
-          89.91843749999998
+        "points": [
+          [
+            62.38281249999999,
+            69.9365625
+          ],
+          [
+            17.969156249999997,
+            69.9365625
+          ]
         ],
-        "p1": [
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            69.9365625
+          ],
+          [
+            14.971874999999999,
+            72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            72.93384375
+          ],
+          [
+            -14.971874999999999,
+            72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            72.93384375
+          ],
+          [
+            -17.969156249999997,
+            69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            69.9365625
+          ],
+          [
+            -62.38281249999999,
+            69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          64.9459375
+        ],
+        "start": [
+          -62.38281249999999,
+          69.9365625
+        ],
+        "end": [
+          -67.3734375,
+          64.9459375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            64.9459375
+          ],
+          [
+            -67.3734375,
+            14.981562499999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          14.981562499999999
+        ],
+        "start": [
+          -67.3734375,
+          14.981562499999999
+        ],
+        "end": [
+          -62.38281249999999,
+          9.9909375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            89.9184375
+          ],
+          [
+            -17.969156249999997,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            89.9184375
+          ],
+          [
+            -14.971874999999999,
+            86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            86.92115625
+          ],
+          [
+            14.971874999999999,
+            86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            86.92115625
+          ],
+          [
+            17.969156249999997,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            89.9184375
+          ],
+          [
+            62.38281249999999,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          94.90906249999999
+        ],
+        "start": [
+          62.38281249999999,
+          89.9184375
+        ],
+        "end": [
           67.3734375,
+          94.90906249999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            94.90906249999999
+          ],
+          [
+            67.3734375,
+            144.1241171875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          144.1241171875
+        ],
+        "start": [
+          67.3734375,
+          144.1241171875
+        ],
+        "end": [
+          62.38281249999999,
           149.11474218749998
-        ]
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            149.11474218749998
+          ],
+          [
+            17.969156249999997,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            149.11474218749998
+          ],
+          [
+            14.971874999999999,
+            152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            152.11202343749997
+          ],
+          [
+            -14.971874999999999,
+            152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            152.11202343749997
+          ],
+          [
+            -17.969156249999997,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            149.11474218749998
+          ],
+          [
+            -62.38281249999999,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          144.1241171875
+        ],
+        "start": [
+          -62.38281249999999,
+          149.11474218749998
+        ],
+        "end": [
+          -67.3734375,
+          144.1241171875
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            144.1241171875
+          ],
+          [
+            -67.3734375,
+            94.90906249999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          94.90906249999999
+        ],
+        "start": [
+          -67.3734375,
+          94.90906249999999
+        ],
+        "end": [
+          -62.38281249999999,
+          89.9184375
+        ],
+        "clockwise": false,
+        "connect": true
       }
     },
     {
@@ -217,7 +1237,7 @@
         "targets": [
           "Hub75Panel"
         ],
-        "name": "Rear electronics bays",
+        "name": "Achtervakken met afgeronde hoeken en versmallingen",
         "distance": 12.5,
         "direction": "negative"
       }
@@ -564,7 +1584,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          -72.0,
+          72.0,
           11.0,
           2.0
         ],
@@ -579,7 +1599,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          -72.0,
+          72.0,
           11.0,
           14.5
         ],
@@ -599,7 +1619,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          -72.0,
+          72.0,
           11.0,
           12.0
         ],
@@ -621,7 +1641,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          72.0,
+          -72.0,
           -11.0,
           2.0
         ],
@@ -636,7 +1656,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          72.0,
+          -72.0,
           -11.0,
           14.5
         ],
@@ -656,7 +1676,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          72.0,
+          -72.0,
           -11.0,
           12.0
         ],
@@ -792,7 +1812,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          -75.0,
+          75.0,
           110.0,
           14.5
         ],
@@ -809,7 +1829,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          75.0,
+          -75.0,
           -110.0,
           14.5
         ],
@@ -937,6 +1957,110 @@
           0.0,
           0.0,
           -1.0
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim links"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -79.85,
+            -2.0
+          ],
+          [
+            -78.6,
+            -14.5
+          ],
+          [
+            -84.85,
+            -14.5
+          ],
+          [
+            -84.85,
+            -2.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 321.71,
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim rechts"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            79.85,
+            -2.0
+          ],
+          [
+            78.6,
+            -14.5
+          ],
+          [
+            84.85,
+            -14.5
+          ],
+          [
+            84.85,
+            -2.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 321.71,
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
         ]
       }
     },

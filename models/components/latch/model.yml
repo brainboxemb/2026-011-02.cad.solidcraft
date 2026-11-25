@@ -1,3 +1,4 @@
+purpose: [example]
 section: components
 group: display
 priority: 30
@@ -24,3 +25,17 @@ stages:
   - Pull bail — 2.0 mm sheet, R1.0, K0.40
   - Locking spring/lip — 0.7 mm sheet, R0.8, K0.42
   - Pins and rivets — native cylindrical and revolved history
+
+extra_views:
+  title: Native latch review
+  note: These durable views expose the source-derived sheet folds, pivot geometry and locking spring.
+  verified_only: true
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the reconstructed latch
+      caption: Top — handle, pull bail, pivots and mounting foot
+    - kind: build
+      src: side.png
+      alt: Side view of the reconstructed latch
+      caption: Side — sheet folds, hinge axis and locking spring

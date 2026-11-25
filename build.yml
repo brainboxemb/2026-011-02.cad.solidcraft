@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/98-complete-wall-hook
+branch: fix/98-wall-hook-metadata
 
 modules: []
-models: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

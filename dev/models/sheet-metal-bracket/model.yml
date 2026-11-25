@@ -1,0 +1,29 @@
+purpose: [example]
+section: basic
+priority: 58
+title: Sheet Metal Bracket
+tagline: SolidCraft's default native sheet-metal bracket reproduced through Forge
+description: >
+  Native Forge reconstruction of the SolidCraft default Sheet Metal Bracket.
+  A 120 × 60 mm flat blank uses the Steel 2mm rule, then receives two 30 mm
+  90° inside flanges, one 20 mm 60° inside flange and an 8 mm hem. The model
+  intentionally preserves native sheet-metal history and rule inheritance so
+  it also exercises Forge's sheet-metal support and recoverable flat pattern.
+parameters: 120 × 60 mm blank; 2 mm steel; K0.44; R2 bend; 2 × 30 mm / 90° flanges; 20 mm / 60° flange; 8 mm hem
+stages:
+  - Base — create the 120 × 60 mm XY blank
+  - BaseFlange1 — create native sheet metal with Steel 2mm, K0.44 and R2 bend radius
+  - EdgeFlange1 — add 30 mm / 90° inside flanges to both long edges
+  - EdgeFlange2 — add a 20 mm / 60° inside flange to the right edge
+  - Hem1 — add an 8 mm hem to the left edge and inherit the rule hem gap
+extra_views:
+  title: Sheet-metal views
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the native Sheet Metal Bracket
+      caption: Top view — base blank and all four treated edges
+    - kind: build
+      src: side.png
+      alt: Side view of the native Sheet Metal Bracket
+      caption: Side view — 90° flanges, 60° flange and hem

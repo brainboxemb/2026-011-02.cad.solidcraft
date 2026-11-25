@@ -6,16 +6,20 @@ tagline: Two perpendicular Mounting Rail M8 profiles qualifying the printable co
 description: >
   Standalone qualification assembly for issue #62. Two 150 mm MountingRailM8
   pieces meet at 90 degrees with their C-openings facing outward. The dark
-  printable bracket sits only in the inside corner. Its four Ø8.5 rail holes
+  printable bracket sits in the inside corner and continues underneath both
+  rail ends as a 6 mm load-bearing foot. A low rounded plastic nose protects
+  the exposed outside corner below the channels. Its four Ø8.5 rail holes
   align with the first and second round perforations on the two galvanized
   profiles, while the top gusset exposes one provisional screw seat toward the
   future MFT underside.
-parameters: 2 × 150 mm rails; one repeat unit per rail; 75 mm bracket arms; rail holes at 12.5 / 62.5 mm
+parameters: 2 × 150 mm rails; one repeat unit per rail; 75 mm bracket arms; 6 mm under-rail feet; R22 outside bumper; rail holes at 12.5 / 62.5 mm
 stages:
   - X rail — 150 mm MountingRailM8, opening toward -Y
   - Y rail — 150 mm MountingRailM8, opening toward -X
   - Bracket — place the reusable MFT Rail Corner Bracket at the common inside corner
   - Alignment — use existing round perforations for both bracket fixing pairs
+  - Rail support — rest both rail ends on the 6 mm printed feet
+  - Corner protection — R22 plastic nose projects outside the sharp rail corner below channel level
   - Access — keep both C-openings and rail ends free for slide-in hardware
 extra_views:
   title: Corner fit review

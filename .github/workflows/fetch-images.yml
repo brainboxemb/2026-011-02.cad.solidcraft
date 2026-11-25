@@ -1,0 +1,13 @@
+name: Fetch requested images
+
+on:
+  push:
+    paths:
+      - "image-requests/*.json"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-images:
+    uses: brainboxemb/tool.image.downloader.PRV/.github/workflows/fetch-images.yml@main

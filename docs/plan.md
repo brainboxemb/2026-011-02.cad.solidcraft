@@ -4,51 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #109 — Benchdog Clamp WIP subassembly
-
-Active on `feature/109-benchdog-clamp-wip`.
-
-Establish a source-faithful WIP baseline from the supplied
-`doghole_clamp2.sc/json` before making new design changes.
-
-Current scope:
-
-- final visible T-slide with fixed centre hinge eye;
-- mirrored left/right hinge arms;
-- low Ø3 hinge pin;
-- source-derived 40 mm dummy rail profile;
-- straight Ø20 bench-dog reference;
-- native feature-83 final Z datum.
-
-Earlier hidden/replaced dog-expansion and compact-fork concepts remain reference
-history only.
-
-Acceptance for the first WIP baseline:
-
-1. publish under Sub Assemblies / MFT as `benchdog-clamp`;
-2. retain the source JSON and native-source hashes;
-3. reconstruct only the source's final visible bodies;
-4. qualify this model alone on the feature branch;
-5. keep the PR draft/open until visual parity is reviewed.
-
-### #103 — SamplePlate native A4 drawing PDF
-
-Active on `issue/103-sample-plate-drawing-pdf-v2`.
-
-Adopt released Forge v0.17.0 and make SamplePlate the first catalog model with
-a durable native technical drawing:
-
-- keep `SamplePlate` as a reusable `@component`;
-- add drawing intent only in the final root design;
-- use Forge's default ISO A4 part template;
-- project Forge drawing declarations into the CAD build plan;
-- export the native vector PDF through SolidCraft 0.49.0;
-- publish `models/sample-plate/drawings/SamplePlate.pdf` in the durable scope;
-- show the drawing generically on the model page without copying it to
-  `gh-pages`;
-- retain explicit A3 support through
-  `template="iso-a3-part"` for future complex models.
-
 ### #18 / #19 / #20 — HUB75 detailed follow-up
 
 Current dev baseline includes corrected `hub75_improved_v2` via PR #116.
@@ -176,7 +131,7 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 - work branch selection from matching `build.yml`;
 - incremental `dev` CI from the last successful integration baseline;
 - full `main` CI;
-- Forge v0.16.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
+- Forge v0.18.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
 - generated `build` branch with `dev/` and `main/` scopes;
 - Basic / Components / Sub Assemblies / Assemblies taxonomy;
 - metadata-driven Display / MFT grouping.

@@ -14,13 +14,17 @@ generated:
   build_branch: build
   pages_branch: gh-pages
 
+# Qualification-only runtime candidate for #64.
+# docker.cad.solidcraft main fa323fba8146d36e2598d08cb88b3a74e8c71761
+# owner main Build run 45579060882: both runtime roles PASS
+# The :edge pin must never merge into dev.
 dependencies:
   forge:
     repository: brainboxemb/lib.py.solidcraft.forge
     version: v0.15.0
   solidcraft:
-    image: ghcr.io/brainboxemb/cad-solidcraft:v0.3.5
-    version: 0.48.1
+    image: ghcr.io/brainboxemb/cad-solidcraft:edge
+    version: 0.49.0
 
 roots:
   modules: modules

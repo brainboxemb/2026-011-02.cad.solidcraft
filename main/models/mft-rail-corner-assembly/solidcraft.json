@@ -1,0 +1,1151 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_length",
+        "expression": "150",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_repeat_count",
+        "expression": "1",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_repeat_pitch",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "MountingRailM8",
+        "grounded": true
+      },
+      "bind": {
+        "$mountingrailm8_occurrence_1": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting Rail M8 Rule",
+        "thickness": 1.25,
+        "k_factor": 0.4,
+        "bend_radius": 1.25,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d1_MountingRailM8__Flat rail blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            "rail_length"
+          ],
+          [
+            -32.99778714378214,
+            "rail_length"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d1_MountingRailM8__Flat rail blank",
+        "rule": "Mounting Rail M8 Rule",
+        "body_name": "MountingRailM8"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d1_MountingRailM8__Repeat round A"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          12.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round A",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d1_MountingRailM8__Repeat horizontal slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          0.0,
+          35.7
+        ],
+        "p1": [
+          0.0,
+          39.3
+        ],
+        "width": 6.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat horizontal slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d1_MountingRailM8__Repeat round B"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          62.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round B",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d1_MountingRailM8__Repeat vertical slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          -3.3,
+          87.5
+        ],
+        "p1": [
+          3.3,
+          87.5
+        ],
+        "width": 8.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat vertical slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Repeat round A",
+          "Repeat horizontal slot",
+          "Repeat round B",
+          "Repeat vertical slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": "rail_repeat_count",
+        "spacing1": "rail_repeat_pitch",
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            -28.123340357836604,
+            150.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          75.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            28.123340357836604,
+            150.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          75.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            -12.374446785945535,
+            150.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          75.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            12.374446785945535,
+            150.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          75.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#9EA6AA"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MountingRailM8"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "MountingRailM8"
+      },
+      "bind": {
+        "$mountingrailm8_occurrence_2": "occurrence"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_arm_length",
+        "expression": "75",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_wall_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_top_gusset_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_top_gusset_leg",
+        "expression": "55",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_bottom_gusset_leg",
+        "expression": "55",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_bottom_gusset_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_foot_thickness",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+        "expression": "8.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_rail_hole_first",
+        "expression": "12.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_rail_hole_second",
+        "expression": "62.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_mft_screw_diameter",
+        "expression": "5.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_mft_screw_head_diameter",
+        "expression": "10.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_mft_screw_x",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_MFTRailCornerBracket_mft_screw_y",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "MFTRailCornerBracket",
+        "grounded": false
+      },
+      "bind": {
+        "$mftrailcornerbracket": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d2_MFTRailCornerBracket_arm_length",
+        "width": "d2_MFTRailCornerBracket_wall_thickness",
+        "height": 27.0,
+        "operation": "new",
+        "corner": [
+          "(d2_MFTRailCornerBracket_arm_length / 2) + (-(d2_MFTRailCornerBracket_arm_length / 2))",
+          0,
+          -27.0
+        ],
+        "body_name": "MFTRailCornerBracket"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d2_MFTRailCornerBracket_wall_thickness",
+        "width": "d2_MFTRailCornerBracket_arm_length",
+        "height": 27.0,
+        "operation": "join",
+        "corner": [
+          0,
+          "(d2_MFTRailCornerBracket_arm_length / 2) + (-(d2_MFTRailCornerBracket_arm_length / 2))",
+          -27.0
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -5.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d2_MFTRailCornerBracket__Top MFT gusset"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "d2_MFTRailCornerBracket_top_gusset_leg",
+            0
+          ],
+          [
+            0,
+            "d2_MFTRailCornerBracket_top_gusset_leg"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "d2_MFTRailCornerBracket_top_gusset_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -27.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d2_MFTRailCornerBracket__Bottom corner gusset"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "d2_MFTRailCornerBracket_bottom_gusset_leg",
+            0
+          ],
+          [
+            0,
+            "d2_MFTRailCornerBracket_bottom_gusset_leg"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "d2_MFTRailCornerBracket_bottom_gusset_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d2_MFTRailCornerBracket__X rail support foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            -18.0
+          ],
+          [
+            75.0,
+            -18.0
+          ],
+          [
+            75.0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "d2_MFTRailCornerBracket_foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d2_MFTRailCornerBracket__Y rail support foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -18.0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            75.0
+          ],
+          [
+            -18.0,
+            75.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "d2_MFTRailCornerBracket_foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d2_MFTRailCornerBracket__Rounded outside corner foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            -22.0,
+            0
+          ],
+          [
+            -21.57727616887107,
+            -4.291987084354824
+          ],
+          [
+            -20.32534971524831,
+            -8.419035512031973
+          ],
+          [
+            -18.292331470656,
+            -12.222545126431243
+          ],
+          [
+            -15.556349186104049,
+            -15.556349186104043
+          ],
+          [
+            -12.222545126431248,
+            -18.292331470655995
+          ],
+          [
+            -8.419035512031988,
+            -20.325349715248304
+          ],
+          [
+            -4.2919870843548305,
+            -21.577276168871066
+          ],
+          [
+            0,
+            -22.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d",
+          "e",
+          "f",
+          "g",
+          "h",
+          "i",
+          "j"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "d2_MFTRailCornerBracket_foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "d2_MFTRailCornerBracket_rail_hole_first",
+          "d2_MFTRailCornerBracket_wall_thickness",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+        "depth": "d2_MFTRailCornerBracket_wall_thickness",
+        "direction": [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "d2_MFTRailCornerBracket_rail_hole_second",
+          "d2_MFTRailCornerBracket_wall_thickness",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+        "depth": "d2_MFTRailCornerBracket_wall_thickness",
+        "direction": [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "d2_MFTRailCornerBracket_wall_thickness",
+          "d2_MFTRailCornerBracket_rail_hole_first",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+        "depth": "d2_MFTRailCornerBracket_wall_thickness",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "d2_MFTRailCornerBracket_wall_thickness",
+          "d2_MFTRailCornerBracket_rail_hole_second",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+        "depth": "d2_MFTRailCornerBracket_wall_thickness",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "d2_MFTRailCornerBracket_mft_screw_x",
+          "d2_MFTRailCornerBracket_mft_screw_y",
+          "-(d2_MFTRailCornerBracket_top_gusset_thickness)"
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "d2_MFTRailCornerBracket_mft_screw_diameter",
+        "depth": "d2_MFTRailCornerBracket_top_gusset_thickness",
+        "direction": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "d2_MFTRailCornerBracket_mft_screw_head_diameter",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "PETG prototype",
+        "density_g_cm3": 1.27,
+        "color": "#30343B"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MFTRailCornerBracket"
+        ],
+        "material": "PETG prototype"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$mountingrailm8_occurrence_1",
+        "translate": [
+          0,
+          0,
+          -13.5
+        ],
+        "axis": [
+          1.0,
+          1.0,
+          -1.0
+        ],
+        "angle": "120 deg",
+        "move_grounded": true
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$mountingrailm8_occurrence_2",
+        "translate": [
+          0,
+          0,
+          -13.5
+        ],
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "angle": "90 deg"
+      }
+    }
+  ]
+}

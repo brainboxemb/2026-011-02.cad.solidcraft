@@ -1,14 +1,8 @@
 schema: 1
-branch: feature/catalog-subassemblies-assemblies
+branch: chore/forge-old-repository
 
 modules:
   - ci
-  - pages
-models:
-  - hub75-screen
-  - simple-mft-assembly
-  - hub75-wood-frame
-  - hub75-display2
+models: []
 tasks:
   - test
-  - build

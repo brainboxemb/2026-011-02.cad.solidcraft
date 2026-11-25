@@ -23,17 +23,25 @@ The manufacturing intent is deliberately simple:
 | hole pitch | 14 mm |
 | hole-centre edge datum | 5 mm |
 
-The drawing does not separately dimension the outer mounting-lobe radius. The
-model resolves that contour from the supplied 24 mm overall width, 14 mm hole
-pitch and 5 mm left-edge datum, giving a 5 mm lobe radius with straight tangent
-transitions to the 15 mm neck.
+The drawing does not separately dimension the outer transition between the
+mounting lobes and the 15 mm neck. The model keeps the R5 mounting lobes implied
+by the 24 mm overall width / 14 mm hole pitch / 5 mm edge datum, then uses a
+second circular blend tangent to both each R5 lobe and the straight 15 mm neck.
+This removes the sharp polygonal transition from the first prototype while
+preserving every dimensioned datum.
 
 ## Bend derivation
 
 With 2 mm sheet and R2.1, the outside bend radius is 4.1 mm. Matching the
 20 mm formed projection places the bend centreline at X=15.9 mm. Tangency from
 that outside-radius circle to the dimensioned free tip at X=13.5 mm / Z=10.5 mm
-gives a bend angle of approximately 147.414 degrees.
+gives:
 
-The blank therefore extends beyond the bend centreline so SolidCraft can form
-the returned hook lip from the same sheet body.
+- outside tangent point ≈ (18.108, 7.555) mm;
+- straight returned lip ≈ 5.469 mm;
+- bend angle ≈ 147.414°;
+- bend allowance ≈ 7.461 mm at K=0.40;
+- flat blank end X ≈ 25.100 mm for a centerline fold.
+
+The 20 / 13.5 / 10.5 side projection is therefore solved from the formed
+geometry rather than chosen by eye.

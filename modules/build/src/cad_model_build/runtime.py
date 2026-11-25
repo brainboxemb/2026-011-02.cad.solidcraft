@@ -76,7 +76,7 @@ def _export_drawings(
     for index, item in enumerate(declarations, start=1):
         if (
             not isinstance(item, dict)
-            or set(item) != {"name", "drawing", "path", "preview"}
+            or set(item) != {"name", "drawing", "sheet", "path", "preview"}
         ):
             raise RuntimeError(f"{row['id']}: invalid drawing declaration")
         variable = item["drawing"]
@@ -88,6 +88,16 @@ def _export_drawings(
         if variable not in variables:
             raise RuntimeError(
                 f"{row['id']}: drawing variable {variable!r} was not replay-bound"
+            )
+        sheet_variable = item["sheet"]
+        if (
+            not isinstance(sheet_variable, str)
+            or not sheet_variable.startswith("$")
+            or sheet_variable not in variables
+        ):
+            raise RuntimeError(
+                f"{row['id']}: drawing sheet variable {sheet_variable!r} "
+                "was not replay-bound"
             )
 
         target = (output_root / item["path"]).resolve()
@@ -125,6 +135,7 @@ def _export_drawings(
                         {
                             "command": "drawing.export",
                             "params": {
+                                "sheet": variables[sheet_variable],
                                 "format": "png",
                                 "path": str(preview),
                                 "dpi": 144,

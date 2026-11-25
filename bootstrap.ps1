@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-    Install the exact Forge revision pinned by this CAD repository.
+    Install the Forge release pinned by this CAD repository.
 .DESCRIPTION
-    Reads dependencies.forge.version, dependencies.forge.commit and
-    dependencies.solidcraft.version from ci.yml. Local development and CI use
-    the same exact Forge revision.
+    Reads dependencies.forge.version and dependencies.solidcraft.version from
+    ci.yml. The Forge version is the released Git tag used by both local
+    development and CI.
 #>
 [CmdletBinding()]
 param()
@@ -43,87 +43,13 @@ function Read-ForgeValue([string]$Name) {
 
 $repository = Read-ForgeValue 'repository'
 $version = Read-ForgeValue 'version'
-$commit = Read-ForgeValue 'commit'
 
-if ($version -notmatch '^\d+\.\d+\.\d+
-
-& python -m pip install --disable-pip-version-check --no-deps --upgrade --force-reinstall $install
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to install Forge $version at $commit"
-}
-
-$expectedPackageVersion = $version
-$actualPackageVersion = (& python -c "from importlib.metadata import version; print(version('scpf'))").Trim()
-if ($LASTEXITCODE -ne 0 -or $actualPackageVersion -ne $expectedPackageVersion) {
-    throw "SCPF version mismatch: expected $expectedPackageVersion, found $actualPackageVersion"
-}
-
-$solidcraftMatch = [regex]::Match(
-    $source,
-    '(?ms)^  solidcraft:\s*\r?\n(?<body>.*?)(?=^\S|\z)'
-)
-if (-not $solidcraftMatch.Success) {
-    throw 'Missing dependencies.solidcraft in ci.yml'
-}
-$scVersionMatch = [regex]::Match(
-    $solidcraftMatch.Groups['body'].Value,
-    '(?m)^    version:\s*(\S+)\s*$'
-)
-if (-not $scVersionMatch.Success) {
-    throw 'Missing dependencies.solidcraft.version in ci.yml'
-}
-$expectedSolidCraft = $scVersionMatch.Groups[1].Value.Trim()
-$qualifiedSolidCraft = (& python -c "from scpf.version import TESTED_SOLIDCRAFT_VERSION; print(TESTED_SOLIDCRAFT_VERSION)").Trim()
-if ($LASTEXITCODE -ne 0 -or $qualifiedSolidCraft -ne $expectedSolidCraft) {
-    throw "Forge $version qualifies SolidCraft $qualifiedSolidCraft, but ci.yml pins $expectedSolidCraft"
-}
-
-Write-Host "Ready: Forge $version @ $commit (SCPF $actualPackageVersion)"
-Write-Host "Qualified SolidCraft: $qualifiedSolidCraft"
-) {
-    throw "Forge package version must be semantic X.Y.Z; found $version"
-}
-if ($commit -notmatch '^[0-9a-f]{40}
-
-& python -m pip install --disable-pip-version-check --no-deps --upgrade --force-reinstall $install
-if ($LASTEXITCODE -ne 0) {
-    throw "Failed to install Forge $version"
-}
-
-$expectedPackageVersion = $version.Substring(1)
-$actualPackageVersion = (& python -c "from importlib.metadata import version; print(version('scpf'))").Trim()
-if ($LASTEXITCODE -ne 0 -or $actualPackageVersion -ne $expectedPackageVersion) {
-    throw "SCPF version mismatch: expected $expectedPackageVersion, found $actualPackageVersion"
-}
-
-$solidcraftMatch = [regex]::Match(
-    $source,
-    '(?ms)^  solidcraft:\s*\r?\n(?<body>.*?)(?=^\S|\z)'
-)
-if (-not $solidcraftMatch.Success) {
-    throw 'Missing dependencies.solidcraft in ci.yml'
-}
-$scVersionMatch = [regex]::Match(
-    $solidcraftMatch.Groups['body'].Value,
-    '(?m)^    version:\s*(\S+)\s*$'
-)
-if (-not $scVersionMatch.Success) {
-    throw 'Missing dependencies.solidcraft.version in ci.yml'
-}
-$expectedSolidCraft = $scVersionMatch.Groups[1].Value.Trim()
-$qualifiedSolidCraft = (& python -c "from scpf.version import TESTED_SOLIDCRAFT_VERSION; print(TESTED_SOLIDCRAFT_VERSION)").Trim()
-if ($LASTEXITCODE -ne 0 -or $qualifiedSolidCraft -ne $expectedSolidCraft) {
-    throw "Forge $version qualifies SolidCraft $qualifiedSolidCraft, but ci.yml pins $expectedSolidCraft"
-}
-
-Write-Host "Ready: Forge $version (SCPF $actualPackageVersion)"
-Write-Host "Qualified SolidCraft: $qualifiedSolidCraft"
-) {
-    throw "Forge commit must be an exact 40-character SHA; found $commit"
+if ($version -notmatch '^v\d+\.\d+\.\d+$') {
+    throw "Forge version must be a v-prefixed release tag; found $version"
 }
 
 $remote = "https://github.com/$repository.git"
-$install = "git+$remote@$commit#subdirectory=cadlib"
+$install = "git+$remote@$version#subdirectory=cadlib"
 
 & python -m pip install --disable-pip-version-check --no-deps --upgrade --force-reinstall $install
 if ($LASTEXITCODE -ne 0) {

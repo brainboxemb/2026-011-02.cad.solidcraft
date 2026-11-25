@@ -20,11 +20,7 @@ class BuildPlanTests(unittest.TestCase):
             stable_branch="main",
             development_branch="dev",
             build_branch="build",
-            forge=ForgePin(
-                "brainboxemb/lib.py.solidcraft.forge",
-                "0.14.0",
-                "a" * 40,
-            ),
+            forge=ForgePin("brainboxemb/lib.py.solidcraft.forge", "v0.14.0"),
             solidcraft=SolidCraftPin(
                 "ghcr.io/brainboxemb/cad-solidcraft:v0.3.5",
                 "0.48.1",
@@ -54,10 +50,6 @@ class BuildPlanTests(unittest.TestCase):
                 namespace="dev",
             )
             row = plan["models"][0]
-            self.assertEqual(
-                plan["forge"]["commit"],
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            )
             self.assertEqual(row["id"], "box")
             self.assertEqual(row["owner"], "box")
             self.assertEqual(row["commands"], "models/box/solidcraft.json")

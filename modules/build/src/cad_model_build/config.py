@@ -16,8 +16,7 @@ class BuildConfigError(ValueError):
 
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
-_VERSION = re.compile(r"^\d+\.\d+\.\d+$")
-_COMMIT = re.compile(r"^[0-9a-f]{40}$")
+_VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
 _PNG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.png$")
 _SUPPORTED_ARTIFACTS = frozenset({"stl"})
 _CAMERA_KEYS = frozenset({"target", "yaw", "pitch", "distance", "fov"})
@@ -28,7 +27,6 @@ _DEFAULT_MODEL_PRIORITY = 1000
 class ForgePin:
     repository: str
     version: str
-    commit: str
 
 
 @dataclass(frozen=True)
@@ -310,13 +308,10 @@ def load_project(repo: Path) -> ProjectConfig:
 
     repository = forge.get("repository")
     version = forge.get("version")
-    commit = forge.get("commit")
     if not isinstance(repository, str) or not _REPOSITORY.fullmatch(repository):
         raise BuildConfigError(f"invalid Forge repository: {path}")
     if not isinstance(version, str) or not _VERSION.fullmatch(version):
-        raise BuildConfigError(f"invalid Forge package version: {path}")
-    if not isinstance(commit, str) or not _COMMIT.fullmatch(commit):
-        raise BuildConfigError(f"Forge commit must be an exact SHA: {path}")
+        raise BuildConfigError(f"Forge version must be a v-prefixed release tag: {path}")
 
     image = solidcraft.get("image")
     solidcraft_version = solidcraft.get("version")
@@ -332,7 +327,7 @@ def load_project(repo: Path) -> ProjectConfig:
         stable_branch=stable,
         development_branch=development,
         build_branch=build_branch,
-        forge=ForgePin(repository, version, commit),
+        forge=ForgePin(repository, version),
         solidcraft=SolidCraftPin(image, solidcraft_version),
         models_root=_relative(roots.get("models"), "roots.models", path),
         output_root=_relative(roots.get("output"), "roots.output", path),

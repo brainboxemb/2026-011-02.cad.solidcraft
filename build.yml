@@ -1,11 +1,7 @@
 schema: 1
-branch: issue/103-sample-plate-drawing-preview-v3
+branch: chore/109-reconcile-plan
 
-modules:
-  - build
-  - pages
-models:
-  - sample-plate
+modules: []
+models: []
 tasks:
   - test
-  - build

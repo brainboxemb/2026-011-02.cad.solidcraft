@@ -1,8 +1,9 @@
 schema: 1
-branch: issue/103-sample-plate-drawing-pdf-v2
+branch: feature/109-benchdog-clamp-wip
 
-modules: all
-models: all
+modules: []
+models:
+  - benchdog-clamp
 tasks:
   - test
   - build

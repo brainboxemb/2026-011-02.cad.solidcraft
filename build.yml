@@ -1,8 +1,7 @@
 schema: 1
-branch: fix/128-wall-hook-public-copy
+branch: issue/136-forge-v0.19.0
 
-modules:
-  - pages
+modules: []
 models:
   - wall-hook
 tasks:

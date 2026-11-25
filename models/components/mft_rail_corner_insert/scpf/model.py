@@ -78,7 +78,7 @@ class MFTRailCornerInsert:
         return insert.with_material(
             "PETG prototype",
             density_g_cm3=1.27,
-            color="#50555C",
+            color="#30343B",
         )
 
 

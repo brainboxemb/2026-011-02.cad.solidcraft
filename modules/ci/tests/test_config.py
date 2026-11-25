@@ -17,17 +17,12 @@ class ConfigTests(unittest.TestCase):
                 "dependencies:\n"
                 "  forge:\n"
                 "    repository: brainboxemb/lib.py.solidcraft.forge\n"
-                "    version: 0.13.2\n"
-                "    commit: ea5710a5d2d33b0633b93c5da95dd5b74f126aa4\n"
+                "    version: v0.13.2\n"
                 "roots: {modules: modules, models: models, output: build}\n",
                 encoding="utf-8",
             )
             config = load_project(repo)
-            self.assertEqual(config.forge.version, "0.13.2")
-            self.assertEqual(
-                config.forge.commit,
-                "ea5710a5d2d33b0633b93c5da95dd5b74f126aa4",
-            )
+            self.assertEqual(config.forge.version, "v0.13.2")
             self.assertEqual(config.modules_root, Path("modules"))
             self.assertEqual(config.output_root, Path("build"))
 

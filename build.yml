@@ -1,8 +1,12 @@
 schema: 1
-branch: fix/92-pages-repo-rename
+branch: fix/90-mft-corner-v2-parity
 
 modules:
   - pages
-models: []
+models:
+  - mft-rail-corner-bracket
+  - mft-rail-corner-insert
+  - mft-rail-corner-assembly
 tasks:
   - test
+  - build

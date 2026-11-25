@@ -39,7 +39,20 @@ class ForgeBuildTests(unittest.TestCase):
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_text(
                     """{
-  "commands": [{"command": "drawing.create"}],
+  "commands": [
+    {
+      "command": "drawing.create",
+      "params": {"first_sheet_name": "Sheet 1"},
+      "bind": {
+        "$drawing_1": "id",
+        "$drawing_1_sheet": {
+          "field": "sheets",
+          "where": {"name": "Sheet 1"},
+          "select": "id"
+        }
+      }
+    }
+  ],
   "artifacts": {
     "drawings": [
       {
@@ -63,6 +76,7 @@ class ForgeBuildTests(unittest.TestCase):
                     {
                         "name": "Box drawing",
                         "drawing": "$drawing_1",
+                        "sheet": "$drawing_1_sheet",
                         "path": "models/box/drawings/Box-drawing.pdf",
                         "preview": "models/box/drawings/Box-drawing.png",
                     }

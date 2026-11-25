@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/111-sheet-metal-bracket
+branch: chore/111-complete-sheet-metal-bracket
 
 modules: []
-models:
-  - sheet-metal-bracket
+models: []
 tasks:
   - test
-  - build

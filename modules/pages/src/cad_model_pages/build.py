@@ -35,6 +35,7 @@ def build(
     destination: Path,
     base_url: str,
     source_ref: str,
+    source_repository: str | None = None,
 ) -> None:
     source_root = source_root.resolve()
     build_scope = build_scope.resolve()
@@ -56,6 +57,8 @@ def build(
     env["HUGO_BASEURL"] = base_url
     env["HUGO_PARAMS_SOURCEREF"] = source_ref
     env["HUGO_PARAMS_BUILDSCOPE"] = build_namespace
+    if source_repository:
+        env["HUGO_PARAMS_CADSOURCEREPOSITORY"] = source_repository
 
     graph = subprocess.run(
         ["hugo", "mod", "graph"],
@@ -87,6 +90,7 @@ def build(
         repo=source_root,
         site=destination,
         build_scope=staged_scope,
+        source_repository=source_repository,
     )
 
 
@@ -97,6 +101,7 @@ def main(argv=None) -> int:
     parser.add_argument("--destination", type=Path, required=True)
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--source-ref", required=True)
+    parser.add_argument("--source-repository")
     args = parser.parse_args(argv)
 
     build(
@@ -105,6 +110,7 @@ def main(argv=None) -> int:
         destination=args.destination,
         base_url=args.base_url,
         source_ref=args.source_ref,
+        source_repository=args.source_repository,
     )
     print(f"Built verified Pages scope: {args.destination}")
     return 0

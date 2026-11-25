@@ -569,41 +569,20 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "rib / 2",
+          "rib",
           "overall_height - (upper_hole_from_top)",
-          "thickness"
+          "thickness / 2"
         ],
         "targets": [
           "WallHook"
         ],
         "diameter": "hole_diameter",
+        "depth": "rib",
         "direction": [
+          -1.0,
           0.0,
-          0.0,
-          -1.0
-        ],
-        "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
-        "cs_angle": 90
-      }
-    },
-    {
-      "command": "solid.hole",
-      "params": {
-        "position": [
-          "rib / 2",
-          "overall_height - (upper_hole_from_top)",
           0.0
         ],
-        "targets": [
-          "WallHook"
-        ],
-        "diameter": "hole_diameter",
-        "direction": [
-          0.0,
-          0.0,
-          1.0
-        ],
         "type": "countersink",
         "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
         "cs_angle": 90
@@ -613,40 +592,65 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "rib / 2",
-          "lower_hole_from_bottom",
-          "thickness"
+          0.0,
+          "overall_height - (upper_hole_from_top)",
+          "thickness / 2"
         ],
         "targets": [
           "WallHook"
         ],
         "diameter": "hole_diameter",
+        "depth": "rib",
         "direction": [
+          1.0,
           0.0,
-          0.0,
-          -1.0
-        ],
-        "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
-        "cs_angle": 90
-      }
-    },
-    {
-      "command": "solid.hole",
-      "params": {
-        "position": [
-          "rib / 2",
-          "lower_hole_from_bottom",
           0.0
         ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "rib",
+          "lower_hole_from_bottom",
+          "thickness / 2"
+        ],
         "targets": [
           "WallHook"
         ],
         "diameter": "hole_diameter",
+        "depth": "rib",
         "direction": [
+          -1.0,
           0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
           0.0,
-          1.0
+          "lower_hole_from_bottom",
+          "thickness / 2"
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": "hole_diameter",
+        "depth": "rib",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
         ],
         "type": "countersink",
         "cs_diameter": "hole_diameter + (hole_chamfer * 2)",

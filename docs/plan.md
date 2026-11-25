@@ -4,6 +4,38 @@ This file contains unfinished work only.
 
 ## Now
 
+### #98 — add Wall Hook Basic model
+
+Active on `feature/98-gusseted-fork-bracket`.
+
+Reconstruct the supplied tutorial wall hook as one parametric Basic component.
+
+Confirmed source dimensions:
+
+- 57 mm overall height;
+- 15 mm extrusion thickness;
+- 6 mm nominal walls / crossbar / diagonal reinforcement web;
+- 20 mm upper hook opening;
+- 25 mm tall-side opening depth;
+- 10 mm short-side rise and 16 mm short outer side;
+- two Ø4.2 mm through screw holes in the long spine;
+- upper hole centre 10 mm below the top;
+- lower hole centre 17 mm above the bottom;
+- 1 mm chamfer on both broad-face edges of each screw hole.
+
+The visible profile/window radii remain provisional R2 values inferred from the
+rendered reference until a sharper tutorial dimension is available. They are
+authored as native 2D circular arcs rather than post-extrusion fillets.
+
+Acceptance:
+
+1. the 2D profile matches the supplied dimensioned tutorial sketch;
+2. the diagonal outside edge remains 45° with a true 6 mm reinforcement web;
+3. the model extrudes to 15 mm and remains one physical body;
+4. both Ø4.2 holes are through and receive 1 mm chamfers on both faces;
+5. the model qualifies on the accepted Forge / SolidCraft baseline;
+6. Pages publishes it under Basic as **Wall Hook**.
+
 ### #18 / #19 / #20 — improved native HUB75 panel
 
 Active on `feature/18-hub75-improved-source`.

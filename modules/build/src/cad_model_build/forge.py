@@ -65,6 +65,30 @@ def tested_solidcraft_version(wheel: Path) -> str:
     return value
 
 
+def _drawing_sheet_variable(document: dict, drawing_variable: str) -> str:
+    """Return the replay-bound first-sheet variable for one declared drawing."""
+    for command in document.get("commands", []):
+        if not isinstance(command, dict) or command.get("command") != "drawing.create":
+            continue
+        bindings = command.get("bind", {})
+        if not isinstance(bindings, dict) or drawing_variable not in bindings:
+            continue
+        first_sheet = command.get("params", {}).get("first_sheet_name")
+        for variable, selector in bindings.items():
+            if (
+                isinstance(variable, str)
+                and variable.startswith("$")
+                and isinstance(selector, dict)
+                and selector.get("field") == "sheets"
+                and selector.get("where") == {"name": first_sheet}
+                and selector.get("select") == "id"
+            ):
+                return variable
+    raise RuntimeError(
+        f"drawing {drawing_variable!r} has no replay-bound first sheet"
+    )
+
+
 def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
     artifacts = document.get("artifacts", {})
     if artifacts is None:
@@ -96,6 +120,7 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
             or relative.parts[0] != "drawings"
         ):
             raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
+        sheet_variable = _drawing_sheet_variable(document, variable)
         path = (base / relative).as_posix()
         preview = (base / relative.with_suffix(".png")).as_posix()
         for artifact_path in (path, preview):
@@ -108,6 +133,7 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
             {
                 "name": name.strip(),
                 "drawing": variable,
+                "sheet": sheet_variable,
                 "path": path,
                 "preview": preview,
             }

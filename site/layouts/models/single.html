@@ -97,14 +97,17 @@
         {{ $drawingPath := index $drawing "path" }}
         {{ $drawingRaw := printf "%s%s" $rawBase $drawingPath }}
         {{ $drawingBlob := printf "%s%s" $blobBase $drawingPath }}
-        {{ $previewPath := index $drawing "preview" }}
-        {{ $previewRaw := printf "%s%s" $rawBase $previewPath }}
         <article class="cad-drawing">
           <h3 class="cad-section-subtitle">{{ index $drawing "name" }}</h3>
-          <a class="cad-drawing-preview-link" href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">
-            <img class="cad-drawing-preview" src="{{ $previewRaw }}" alt="{{ index $drawing "name" }} native SolidCraft technical drawing sheet preview" decoding="async">
-          </a>
-          <p class="cad-section-help">Preview rendered natively by SolidCraft from the same drawing sheet; the PDF remains the vector publication artifact.</p>
+          {{ with index $drawing "preview" }}
+            {{ $previewRaw := printf "%s%s" $rawBase . }}
+            <a class="cad-drawing-preview-link" href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">
+              <img class="cad-drawing-preview" src="{{ $previewRaw }}" alt="{{ index $drawing "name" }} native SolidCraft technical drawing sheet preview" decoding="async">
+            </a>
+            <p class="cad-section-help">Preview rendered natively by SolidCraft from the same drawing sheet; the PDF remains the vector publication artifact.</p>
+          {{ else }}
+            <iframe class="cad-drawing-frame" src="{{ $drawingRaw }}" title="{{ index $drawing "name" }} technical drawing PDF"></iframe>
+          {{ end }}
           <div class="cad-links">
             <a href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">Open PDF on GitHub ↗</a>
             <a href="{{ $drawingRaw }}" download>Download PDF</a>

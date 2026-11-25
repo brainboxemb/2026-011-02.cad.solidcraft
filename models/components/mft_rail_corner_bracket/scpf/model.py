@@ -56,6 +56,9 @@ class MFTRailCornerBracket:
 
     def build(self):
         rail_height = MountingRailM8.PROFILE_WIDTH
+        foot_thickness_value = float(self.foot_thickness.value)
+        bumper_radius_value = float(self.corner_bumper_radius.value)
+        bumper_segments_value = int(self.corner_bumper_segments.value)
 
         # Two vertical arms lie against the inner/back web of each rail.
         x_arm = Box(
@@ -114,7 +117,7 @@ class MFTRailCornerBracket:
         # so these strips cover the complete footprint beneath each profile.
         # Their top is exactly the rail-bottom plane at Z=-27.
         rail_depth = MountingRailM8.PROFILE_HEIGHT
-        foot_z = -rail_height - self.foot_thickness
+        foot_z = -rail_height - foot_thickness_value
 
         x_foot = Box(
             self.arm_length,
@@ -142,16 +145,16 @@ class MFTRailCornerBracket:
         # so it can protrude beyond the sharp metal corner without blocking
         # either C-channel opening. Radius 22 gives ~4 mm sacrificial plastic
         # beyond the 18 mm rail depth.
-        bumper_points = [(0, 0), (-self.corner_bumper_radius, 0)]
-        for i in range(1, self.corner_bumper_segments):
-            angle = pi + (pi / 2) * i / self.corner_bumper_segments
+        bumper_points = [(0, 0), (-bumper_radius_value, 0)]
+        for i in range(1, bumper_segments_value):
+            angle = pi + (pi / 2) * i / bumper_segments_value
             bumper_points.append(
                 (
-                    self.corner_bumper_radius * cos(angle),
-                    self.corner_bumper_radius * sin(angle),
+                    bumper_radius_value * cos(angle),
+                    bumper_radius_value * sin(angle),
                 )
             )
-        bumper_points.append((0, -self.corner_bumper_radius))
+        bumper_points.append((0, -bumper_radius_value))
 
         with Sketch(
             name="Rounded outside corner foot",

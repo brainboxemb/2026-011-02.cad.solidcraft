@@ -4,6 +4,33 @@ This file contains unfinished work only.
 
 ## Now
 
+### #109 — Benchdog Clamp WIP subassembly
+
+Active on `feature/109-benchdog-clamp-wip`.
+
+Establish a source-faithful WIP baseline from the supplied
+`doghole_clamp2.sc/json` before making new design changes.
+
+Current scope:
+
+- final visible T-slide with fixed centre hinge eye;
+- mirrored left/right hinge arms;
+- low Ø3 hinge pin;
+- source-derived 40 mm dummy rail profile;
+- straight Ø20 bench-dog reference;
+- native feature-83 final Z datum.
+
+Earlier hidden/replaced dog-expansion and compact-fork concepts remain reference
+history only.
+
+Acceptance for the first WIP baseline:
+
+1. publish under Sub Assemblies / MFT as `benchdog-clamp`;
+2. retain the source JSON and native-source hashes;
+3. reconstruct only the source's final visible bodies;
+4. qualify this model alone on the feature branch;
+5. keep the PR draft/open until visual parity is reviewed.
+
 ### #103 — SamplePlate native A4 drawing PDF
 
 Active on `issue/103-sample-plate-drawing-pdf-v2`.

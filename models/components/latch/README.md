@@ -1,10 +1,9 @@
 # Latch
 
-Work-in-progress reconstruction of the supplied native SolidCraft latch.
+Source-faithful reconstruction of the supplied native SolidCraft latch.
 
-The byte-identical native reference belongs at `reference/latch.sc`. It is
-the geometry/history source of truth while the SCPF reconstruction is
-incomplete.
+The byte-identical native reference at `reference/latch.sc` remains the
+geometry/history source of truth for the qualified SCPF reconstruction.
 
 The original 498,569-byte SolidCraft container is preserved byte-identical at
 `reference/latch.sc`. A readable `reference/latch.json` export is kept next
@@ -71,10 +70,10 @@ handle all use connected straight segments plus circular arcs. Those arcs are
 part of the intended native design and must not be replaced by faceted
 approximations.
 
-## Open design / Forge dependencies
+## Forge capability baseline
 
-This model intentionally waits for generic Forge capabilities instead of
-carrying product-specific workarounds.
+This model uses only released generic Forge capabilities and carries no
+product-specific Forge workaround.
 
 - [Forge #567](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/567)
   — connected mixed line/arc closed Sketch profiles — **closed**.

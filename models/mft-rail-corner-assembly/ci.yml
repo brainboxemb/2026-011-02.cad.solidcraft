@@ -6,6 +6,7 @@ process: true
 dependencies:
   - mounting-rail-m8
   - mft-rail-corner-bracket
+  - mft-rail-corner-insert
 
 snapshot:
   camera:

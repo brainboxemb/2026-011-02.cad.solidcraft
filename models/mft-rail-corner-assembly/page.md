@@ -19,16 +19,30 @@ The MFT underside screw position and all non-rail bracket dimensions remain
 provisional until the real worktop/hardware are measured.
 
 
-## Load-bearing foot and corner protection
+## Load-bearing foot and separate corner insert
 
 The prototype bracket now continues underneath both rails. Each 75 mm rail end
 rests on a 6 mm printed shoe. This gives the corner bracket a second function:
 it becomes a small height-adjusting/support foot rather than only a side clamp.
 
-The two under-rail shoes merge at the exposed outside corner into a 22 mm-radius
-rounded nose. The nose is deliberately kept below the rail-bottom plane. It can
-therefore protrude about 4 mm beyond the 18 mm rail depth and take impacts
-without closing either C-channel opening.
+The structural bracket still carries both rail ends on 6 mm printed support
+feet, but the supplied native source refines the outside corner in two ways.
 
-The first prototype keeps this bumper integral with the bracket. A replaceable
-insert remains an option after the physical corner has been tested.
+First, the bracket's own lower corner is an exact R18 quarter-round sector,
+rather than the earlier segmented R22 approximation.
+
+Second, the visible outside-corner filler is now a separate physical part:
+`MFT Rail Corner Insert`. The insert has its own R18 outer arc, a source-shaped
+inner relief and two integral PETG clip lips with sloped lead-ins. This makes
+the exposed corner protection independently printable and replaceable while
+the structural bracket remains unchanged in service.
+
+## Native assembly reference
+
+The supplied complete native model is preserved with this subassembly:
+
+- `reference/hoek_assembly.sc`;
+- `reference/hoek_assembly.json`.
+
+Those files describe the complete rail/bracket/insert corner and are kept here
+rather than duplicated under the individual component owners.

@@ -96,6 +96,13 @@ groups:
                         "root": "models/component-a",
                         "commands": commands,
                         "native": native,
+                        "drawings": [
+                            {
+                                "name": "Variant A",
+                                "drawing": "$drawing_1",
+                                "path": "models/variant-a/drawings/Variant-A.pdf",
+                            }
+                        ],
                         "snapshots": [{"name": "top.png", "path": snapshot}],
                     }
                 ],
@@ -113,9 +120,25 @@ groups:
             snapshot_path.write_bytes(b"x")
             command_path = build / commands
             command_path.write_text(
-                json.dumps({"commands": [{"command": "Part::Box"}]}),
+                json.dumps(
+                    {
+                        "commands": [{"command": "Part::Box"}],
+                        "artifacts": {
+                            "drawings": [
+                                {
+                                    "name": "Variant A",
+                                    "drawing": "$drawing_1",
+                                    "pdf": "drawings/Variant-A.pdf",
+                                }
+                            ]
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
+            drawing = build / "models/variant-a/drawings/Variant-A.pdf"
+            drawing.parent.mkdir(parents=True, exist_ok=True)
+            drawing.write_bytes(b"%PDF-1.7\n")
 
             for name in ("scpf-source.py", "model.yml", "ci.yml"):
                 (page / name).write_text("source", encoding="utf-8")
@@ -129,7 +152,9 @@ groups:
                 f"{raw}{native['png']} · "
                 f"{blob}{native['sc']} · "
                 f"{blob}{native['step']} · "
-                f"{blob}{native['stl']}",
+                f"{blob}{native['stl']} · "
+                f"{blob}models/variant-a/drawings/Variant-A.pdf · "
+                f"{raw}models/variant-a/drawings/Variant-A.pdf",
                 encoding="utf-8",
             )
 

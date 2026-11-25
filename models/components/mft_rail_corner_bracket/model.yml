@@ -15,9 +15,9 @@ description: >
   Upper and lower triangular gussets stiffen the corner. The upper gusset
   includes one provisional countersunk fixing hole into the underside of the
   MFT worktop.
-parameters: 75 mm arms; 5 mm walls/gussets; 6 mm under-rail feet; exact R18 lower corner; 4 × Ø8.5 rail holes; 1 × Ø5.5 / Ø10.5 countersunk MFT underside fixing
+parameters: 75 mm arms; 5 mm walls/gussets; 33 mm full-height walls to foot underside; 6 mm under-rail feet; exact R18 lower corner; 4 × Ø8.5 rail holes; 1 × Ø5.5 / Ø10.5 countersunk MFT underside fixing
 stages:
-  - Arms — two perpendicular 75 × 27 × 5 mm rail-back flanges
+  - Arms — two perpendicular 75 × 33 × 5 mm walls, continuous through the 6 mm foot
   - Rail fixing — two Ø8.5 holes per arm aligned to the 12.5 / 62.5 mm round rail perforations
   - Rail feet — two 6 mm-thick plastic shoes under the first 75 mm of both rails
   - Lower corner — exact native R18 quarter-round support-foot sector

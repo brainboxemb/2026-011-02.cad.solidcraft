@@ -3,24 +3,24 @@ section: subassemblies
 group: mft
 priority: 30
 title: MFT Rail Corner Assembly
-tagline: Two perpendicular Mounting Rail M8 profiles qualifying the printable corner bracket
+tagline: Two perpendicular Mounting Rail M8 profiles with structural bracket and replaceable PETG corner insert
 description: >
-  Standalone qualification assembly for issue #62. Two 150 mm MountingRailM8
-  pieces meet at 90 degrees with their C-openings facing outward. The dark
-  printable bracket sits in the inside corner and continues underneath both
-  rail ends as a 6 mm load-bearing foot. A low rounded plastic nose protects
-  the exposed outside corner below the channels. Its four Ø8.5 rail holes
-  align with the first and second round perforations on the two galvanized
-  profiles, while the top gusset exposes one provisional screw seat toward the
-  future MFT underside.
-parameters: 2 × 150 mm rails; one repeat unit per rail; 75 mm bracket arms; 6 mm under-rail feet; R22 outside bumper; rail holes at 12.5 / 62.5 mm
+  Native-source MFT rail corner subassembly. Two 150 mm MountingRailM8 pieces
+  meet at 90 degrees with their C-openings facing outward. The structural PETG
+  bracket fixes and supports both rail ends. A separate replaceable PETG corner
+  insert fills the exposed outside corner and clips into place with two
+  integral retaining lips. The bracket rail holes align with the first and
+  second round perforations, while the top gusset exposes the MFT underside
+  screw seat.
+parameters: 2 × 150 mm rails; 75 mm bracket arms; 6 mm under-rail feet; exact R18 bracket foot corner; separate PETG corner insert; rail holes at 12.5 / 62.5 mm
 stages:
   - X rail — 150 mm MountingRailM8, opening toward -Y
   - Y rail — 150 mm MountingRailM8, opening toward -X
   - Bracket — place the reusable MFT Rail Corner Bracket at the common inside corner
   - Alignment — use existing round perforations for both bracket fixing pairs
   - Rail support — rest both rail ends on the 6 mm printed feet
-  - Corner protection — R22 plastic nose projects outside the sharp rail corner below channel level
+  - Corner insert — place the separate PETG filler/protection part at the exposed outside corner
+  - Clip retention — use the two source-derived insert lips against the rail corner
   - Access — keep both C-openings and rail ends free for slide-in hardware
 extra_views:
   title: Corner fit review

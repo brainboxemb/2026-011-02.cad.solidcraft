@@ -1,5 +1,5 @@
 schema: 1
-branch: feature/126-wall-hook-improvements
+branch: fix/126-128-wall-hook-followup
 
 modules: []
 models: [wall-hook]

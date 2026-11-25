@@ -87,9 +87,9 @@ class LatchHook:
             ).at(self.hole_x, y, self.thickness)
 
         hook = hook.fold(
-            line=((self._fold_x, -half_neck), (self._fold_x, half_neck)),
+            line=((15.9, -7.5), (15.9, 7.5)),
             angle=self._fold_angle,
-            fixed=(self.hole_x, 0, 0),
+            fixed=(5.0, 0.0, 0.0),
             position="centerline",
         )
 

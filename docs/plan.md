@@ -4,39 +4,36 @@ This file contains unfinished work only.
 
 ## Now
 
-### #62 — MFT rail corner bracket and qualification subassembly
+### #76 — bracket STL and grouped category views
 
-Active on `feature/62-mft-rail-corner-subassembly`.
+Active on `feature/76-grouped-category-views-stl`.
 
-Continue the accepted corner-bracket WIP from PR #63 on the current catalog
-taxonomy and released CAD toolchain.
+Follow up the accepted MFT corner subassembly and catalog taxonomy with two
+presentation/output improvements:
 
-Ownership:
+- generate a durable STL for `mft-rail-corner-bracket`;
+- render `group:` metadata as real grouped sections on the individual
+  Components, Sub Assemblies and Assemblies pages.
 
-- reusable printable bracket: `models/components/mft_rail_corner_bracket`;
-- two-rail qualification model:
-  `models/subassemblies/mft_rail_corner_assembly`;
-- presentation: `section: subassemblies`, `group: mft`.
+Component ownership groups:
 
-Keep the already reviewed prototype intent:
-
-- two perpendicular 75 mm rail-fixing arms;
-- rail-hole datums at 12.5 and 62.5 mm;
-- 6 mm load-bearing plastic shoes below both rail ends;
-- integral rounded outside-corner bumper;
-- upper/lower triangular gussets;
-- provisional countersunk fixing into the MFT underside;
-- both rail C-openings and rail ends remain accessible.
+- Display: `corner-bracket`, `hub75-panel`;
+- MFT: `simple-mft`, `flex-bench-dog`, both `guide-rail` variants,
+  `mounting-rail-m8`, `mft-rail-corner-bracket`.
 
 Acceptance:
 
-1. bracket remains a reusable component and depends only on `mounting-rail-m8`;
-2. qualification model is a real MFT subassembly, not an `advanced` model;
-3. Pages places it under Sub Assemblies / MFT from generic metadata;
-4. Forge `v0.16.0` compiles both new owners;
-5. native SolidCraft 0.49.0 replay succeeds on runtime v0.3.6;
-6. generated top/outside/underside views retain the reviewed fit and bumper;
-7. obsolete PR #63 is closed as superseded after this branch is accepted.
+1. bracket `ci.yml` declares `stl` and the durable build publishes
+   `model.stl`;
+2. the bracket model page exposes STL view/download links from the build plan;
+3. category pages render group headings structurally from generic metadata;
+4. one shared Hugo partial owns grouped model rendering for catalog/category
+   pages;
+5. ungrouped models remain supported under `Other` when a section also has
+   groups;
+6. Pages verification requires structural group markup, so a card label alone
+   cannot satisfy the grouping contract;
+7. no Hugo branch contains model-specific names.
 
 ## Mandatory integration rule
 

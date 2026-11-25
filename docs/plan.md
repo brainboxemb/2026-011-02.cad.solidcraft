@@ -39,7 +39,7 @@ Acceptance:
 
 ### #90 — native MFT corner insert and subassembly update
 
-Active on `fix/90-mft-corner-v2-parity`.
+Active on `fix/90-corner-insert-notch-arc`.
 
 Process the newly supplied `hoek_assembly.sc` / `hoek_assembly.json` as the
 native source for the MFT rail corner subassembly.
@@ -60,6 +60,8 @@ Source-derived corrections:
 - remove the earlier R22 segmented approximation;
 - latest v2 insert uses the revised inner notch, enlarged 17.5 mm clip lips,
   two additional upright C-profile lugs and R0.8 lip-root fillets;
+- inner relief uses the opposite semicircle so the notch hollows toward the
+  outside corner rather than bulging toward the MFT.
 - preserve source assembly placements.
 
 Acceptance:

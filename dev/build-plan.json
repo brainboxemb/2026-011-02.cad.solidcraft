@@ -6,6 +6,69 @@
   "models": [
     {
       "artifacts": [],
+      "built_source_sha": "874f677f4dc25265d1d9b6fa835dbae998deb5ad",
+      "commands": "models/benchdog-clamp/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "benchdog-clamp",
+      "native": {
+        "png": "models/benchdog-clamp/model.png",
+        "sc": "models/benchdog-clamp/model.sc",
+        "step": "models/benchdog-clamp/model.step",
+        "stl": null
+      },
+      "owner": "benchdog-clamp",
+      "priority": 30,
+      "root": "models/subassemblies/benchdog_clamp",
+      "snapshot": {
+        "camera": {
+          "distance": 115,
+          "fov": 0,
+          "pitch": 0.48,
+          "target": [
+            6,
+            3,
+            9
+          ],
+          "yaw": -0.82
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 115,
+            "fov": 0,
+            "pitch": 1.48,
+            "target": [
+              6,
+              4,
+              7
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/benchdog-clamp/top.png"
+        },
+        {
+          "camera": {
+            "distance": 110,
+            "fov": 0,
+            "pitch": 0.05,
+            "target": [
+              6,
+              3,
+              9
+            ],
+            "yaw": -1.57
+          },
+          "name": "side.png",
+          "path": "models/benchdog-clamp/side.png"
+        }
+      ],
+      "source": "models/subassemblies/benchdog_clamp/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "888abd26bdc562556684d243a539180db048ebef",
       "commands": "models/bolted-flange/solidcraft.json",
       "dependencies": [],
@@ -1046,5 +1109,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "888abd26bdc562556684d243a539180db048ebef"
+  "source_sha": "874f677f4dc25265d1d9b6fa835dbae998deb5ad"
 }

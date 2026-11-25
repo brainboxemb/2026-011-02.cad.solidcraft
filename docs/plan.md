@@ -4,23 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #18 / #19 / #20 — HUB75 detailed follow-up
-
-Current dev baseline includes corrected `hub75_improved_v2` via PR #116.
-
-Accepted v2 source contract:
-
-- middle reinforcement pair: (+mount_x,+11) and (-mount_x,-11);
-- locator pins: (+75,+110) and (-75,-110);
-- power connector on corrected +X side;
-- two HUB75 data connector envelopes unchanged;
-- four white orientation marks unchanged;
-- outer envelope and mounting centres unchanged.
-
-Open tracking remains under #18 parent with #19/#20 child issues. Any further work
-must preserve this v2 asymmetric placement baseline and qualify both
-`hub75-panel` and `hub75-screen`.
-
 ### #84 — replace inferred hook geometry with native source
 
 Active on `fix/84-use-native-hook-source`.

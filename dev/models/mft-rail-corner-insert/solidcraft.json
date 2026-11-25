@@ -32,7 +32,7 @@
             0.0
           ],
           [
-            -1.6970562748477138,
+            -4.525483399593905,
             0.0
           ]
         ],
@@ -44,8 +44,24 @@
       "params": {
         "points": [
           [
-            -1.6970562748477138,
+            -4.525483399593905,
             0.0
+          ],
+          [
+            -3.1112698372208096,
+            -1.4142135623730951
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3.1112698372208096,
+            -1.4142135623730951
           ],
           [
             -10.182337649086284,
@@ -83,8 +99,24 @@
             -10.182337649086284
           ],
           [
+            -1.4142135623730951,
+            -3.1112698372208096
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.4142135623730951,
+            -3.1112698372208096
+          ],
+          [
             0.0,
-            -1.6970562748477138
+            -4.525483399593905
           ]
         ],
         "connect": true
@@ -96,7 +128,7 @@
         "points": [
           [
             0.0,
-            -1.6970562748477138
+            -4.525483399593905
           ],
           [
             0.0,
@@ -144,7 +176,7 @@
           "origin": [
             0.0,
             0.0,
-            -21.35
+            -22.25
           ],
           "x_dir": [
             1.0,
@@ -169,7 +201,7 @@
             -16.5
           ],
           [
-            2.7,
+            4.5,
             -16.5
           ]
         ],
@@ -181,12 +213,12 @@
       "params": {
         "points": [
           [
-            2.7,
+            4.5,
             -16.5
           ],
           [
-            3.5,
-            -15.7
+            5.5,
+            -15.5
           ]
         ],
         "connect": true
@@ -197,12 +229,12 @@
       "params": {
         "points": [
           [
-            3.5,
-            -15.7
+            5.5,
+            -15.5
           ],
           [
-            3.5,
-            -13.7
+            5.5,
+            -13.3
           ]
         ],
         "connect": true
@@ -213,12 +245,12 @@
       "params": {
         "points": [
           [
-            3.5,
-            -13.7
+            5.5,
+            -13.3
           ],
           [
             -1.0,
-            -13.7
+            -13.3
           ]
         ],
         "connect": true
@@ -230,7 +262,7 @@
         "points": [
           [
             -1.0,
-            -13.7
+            -13.3
           ],
           [
             -1.0,
@@ -247,7 +279,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 15.7,
+        "distance": 17.5,
         "direction": "positive",
         "operation": "join",
         "targets": [
@@ -262,7 +294,7 @@
           "origin": [
             0.0,
             0.0,
-            -21.35
+            -22.25
           ],
           "x_dir": [
             1.0,
@@ -283,12 +315,12 @@
       "params": {
         "points": [
           [
-            -13.7,
+            -13.3,
             -1.0
           ],
           [
-            -13.7,
-            3.5
+            -13.3,
+            5.5
           ]
         ],
         "connect": true
@@ -299,12 +331,12 @@
       "params": {
         "points": [
           [
-            -13.7,
-            3.5
+            -13.3,
+            5.5
           ],
           [
-            -15.7,
-            3.5
+            -15.5,
+            5.5
           ]
         ],
         "connect": true
@@ -315,28 +347,12 @@
       "params": {
         "points": [
           [
-            -15.7,
-            3.5
-          ],
-          [
-            -16.5,
-            2.7
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -16.5,
-            2.7
+            -15.5,
+            5.5
           ],
           [
             -16.5,
-            -1.0
+            4.5
           ]
         ],
         "connect": true
@@ -346,12 +362,28 @@
       "command": "sketch.line",
       "params": {
         "points": [
+          [
+            -16.5,
+            4.5
+          ],
           [
             -16.5,
             -1.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -16.5,
+            -1.0
           ],
           [
-            -13.7,
+            -13.3,
             -1.0
           ]
         ],
@@ -365,12 +397,267 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 15.7,
+        "distance": 17.5,
         "direction": "positive",
         "operation": "join",
         "targets": [
           "MFTRailCornerInsert"
         ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -19.5
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Opstaande nokken in C-profielen"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.5,
+            -16.0
+          ],
+          [
+            0.5,
+            -18.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.5,
+            -18.25
+          ],
+          [
+            3.3,
+            -18.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3.3,
+            -18.25
+          ],
+          [
+            4.5,
+            -16.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            4.5,
+            -16.5
+          ],
+          [
+            4.5,
+            -16.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            4.5,
+            -16.0
+          ],
+          [
+            0.5,
+            -16.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 12.0,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerInsert"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -19.5
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Opstaande nok X in C-profiel"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -16.0,
+            4.5
+          ],
+          [
+            -16.5,
+            4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -16.5,
+            4.5
+          ],
+          [
+            -18.25,
+            3.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -18.25,
+            3.3
+          ],
+          [
+            -18.25,
+            0.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -18.25,
+            0.5
+          ],
+          [
+            -16.0,
+            0.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -16.0,
+            0.5
+          ],
+          [
+            -16.0,
+            4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 12.0,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerInsert"
+        ]
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            -13.3,
+            -13.49999
+          ],
+          [
+            -13.3,
+            0.0,
+            -13.49999
+          ]
+        ],
+        "radius": 0.8,
+        "body": "MFTRailCornerInsert"
       }
     },
     {

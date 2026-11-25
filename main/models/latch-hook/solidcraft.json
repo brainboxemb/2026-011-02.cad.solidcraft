@@ -1,0 +1,249 @@
+{
+  "commands": [
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Haak 2 mm",
+        "thickness": 2.0,
+        "k_factor": 0.44,
+        "bend_radius": 2.1,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Uitslag haak"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            7.0
+          ],
+          [
+            0.0,
+            -7.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          5.0,
+          -7.0
+        ],
+        "start": [
+          0.0,
+          -7.0
+        ],
+        "end": [
+          7.209449193419511,
+          -11.485346615558026
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            7.209449193419511,
+            -11.485346615558026
+          ],
+          [
+            15.3,
+            -7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.3,
+            -7.5
+          ],
+          [
+            28.14928735268115,
+            -7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            28.14928735268115,
+            -7.5
+          ],
+          [
+            28.14928735268115,
+            7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            28.14928735268115,
+            7.5
+          ],
+          [
+            15.3,
+            7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.3,
+            7.5
+          ],
+          [
+            7.209449193419511,
+            11.485346615558026
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          5.0,
+          7.0
+        ],
+        "start": [
+          7.209449193419511,
+          11.485346615558026
+        ],
+        "end": [
+          0.0,
+          7.0
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "Uitslag haak",
+        "rule": "Haak 2 mm",
+        "body_name": "LatchHook"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          5.0,
+          -7.0,
+          2.0
+        ],
+        "targets": [
+          "LatchHook"
+        ],
+        "diameter": 4.3,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          5.0,
+          7.0,
+          2.0
+        ],
+        "targets": [
+          "LatchHook"
+        ],
+        "diameter": 4.3,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 138.7667505744678,
+        "position": "start",
+        "flip": false,
+        "body": "LatchHook",
+        "points": [
+          [
+            15.9,
+            -7.5,
+            0
+          ],
+          [
+            15.9,
+            7.5,
+            0
+          ]
+        ],
+        "fixed": [
+          5.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#B7BDC2"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchHook"
+        ],
+        "material": "Galvanized steel"
+      }
+    }
+  ]
+}

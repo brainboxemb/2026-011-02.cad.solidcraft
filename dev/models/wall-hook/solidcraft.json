@@ -77,6 +77,22 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "tool_access_diameter",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "lower_hole_from_bottom",
+        "expression": "17",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "face_chamfer",
         "expression": "1.5",
         "unit": "mm"
@@ -103,14 +119,6 @@
       "params": {
         "name": "upper_hole_from_top",
         "expression": "10",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "lower_hole_from_bottom",
-        "expression": "17",
         "unit": "mm"
       }
     },
@@ -601,6 +609,23 @@
       "params": {
         "distance": "thickness",
         "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "WallHook"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": "((rib + (opening_width)) + (rib)) - (rib)",
+        "diameter": "tool_access_diameter",
+        "base": [
+          "rib",
+          0,
+          "lower_hole_from_bottom"
+        ],
+        "axis": "X",
         "operation": "cut",
         "targets": [
           "WallHook"

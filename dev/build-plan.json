@@ -1144,8 +1144,10 @@
       "source": "models/basic/vent_plate/scpf/model.py"
     },
     {
-      "artifacts": [],
-      "built_source_sha": "910f8349b7250039f191a9eb10c2b03486868877",
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "e1304de331e2742864929618bcaf20662a594f1a",
       "commands": "models/wall-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1154,7 +1156,7 @@
         "png": "models/wall-hook/model.png",
         "sc": "models/wall-hook/model.sc",
         "step": "models/wall-hook/model.step",
-        "stl": null
+        "stl": "models/wall-hook/model.stl"
       },
       "owner": "wall-hook",
       "priority": 10,
@@ -1162,7 +1164,23 @@
       "snapshot": {
         "camera": null
       },
-      "snapshots": [],
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 80,
+            "fov": 0,
+            "pitch": 0.18,
+            "target": [
+              14,
+              0,
+              17
+            ],
+            "yaw": -1.05
+          },
+          "name": "access.png",
+          "path": "models/wall-hook/access.png"
+        }
+      ],
       "source": "models/basic/wall_hook/scpf/model.py"
     }
   ],
@@ -1172,5 +1190,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "910f8349b7250039f191a9eb10c2b03486868877"
+  "source_sha": "e1304de331e2742864929618bcaf20662a594f1a"
 }

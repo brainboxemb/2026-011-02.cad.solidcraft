@@ -1,5 +1,6 @@
 purpose: [example]
 section: components
+group: mft
 variants:
   guide-rail:
     priority: 40

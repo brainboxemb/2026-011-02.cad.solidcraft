@@ -49,7 +49,7 @@ if ($version -notmatch '^v\d+\.\d+\.\d+$') {
 }
 
 $remote = "https://github.com/$repository.git"
-$install = "git+$remote@$version#subdirectory=scpf"
+$install = "git+$remote@$version#subdirectory=cadlib"
 
 & python -m pip install --disable-pip-version-check --no-deps --upgrade --force-reinstall $install
 if ($LASTEXITCODE -ne 0) {

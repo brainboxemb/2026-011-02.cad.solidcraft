@@ -11,7 +11,7 @@ from .config import ForgePin
 
 
 def install_url(repository: str, version: str) -> str:
-    return f"git+https://github.com/{repository}.git@{version}#subdirectory=scpf"
+    return f"git+https://github.com/{repository}.git@{version}#subdirectory=cadlib"
 
 
 def build_wheel(pin: ForgePin, wheel_dir: Path) -> Path:

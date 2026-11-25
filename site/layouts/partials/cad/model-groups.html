@@ -1,0 +1,44 @@
+{{ $models := index . "models" }}
+{{ $showSection := index . "showSection" }}
+{{ $headingLevel := index . "headingLevel" }}
+{{ $catalog := hugo.Data.cad.catalog }}
+{{ $grouped := where $models "Params.cadGroup" "!=" nil }}
+
+{{ if gt (len $grouped) 0 }}
+  {{ range $groupDef := index $catalog "groups" }}
+    {{ $groupKey := index $groupDef "id" }}
+    {{ $groupModels := where $models "Params.cadGroup" $groupKey }}
+    {{ if gt (len $groupModels) 0 }}
+      <section class="cad-catalog-group" data-cad-group="{{ $groupKey }}">
+        {{ if eq $headingLevel 2 }}
+          <h2>{{ index $groupDef "title" }}</h2>
+        {{ else }}
+          <h3>{{ index $groupDef "title" }}</h3>
+        {{ end }}
+        <div class="cad-model-grid">
+          {{ range sort $groupModels "Params.model.priority" }}
+            {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  {{ end }}
+
+  {{ $ungrouped := where $models "Params.cadGroup" nil }}
+  {{ if gt (len $ungrouped) 0 }}
+    <section class="cad-catalog-group" data-cad-group="other">
+      {{ if eq $headingLevel 2 }}<h2>Other</h2>{{ else }}<h3>Other</h3>{{ end }}
+      <div class="cad-model-grid">
+        {{ range sort $ungrouped "Params.model.priority" }}
+          {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+{{ else }}
+  <div class="cad-model-grid">
+    {{ range sort $models "Params.model.priority" }}
+      {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
+    {{ end }}
+  </div>
+{{ end }}

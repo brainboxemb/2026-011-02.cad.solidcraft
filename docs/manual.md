@@ -4,7 +4,7 @@
 
 Root `ci.yml` defines permanent source branches, the generated build branch,
 Forge/SolidCraft versions and repository roots. Forge is selected by its
-released Git tag, for example `version: v0.15.0`. Local bootstrap and CI use
+released Git tag, for example `version: v0.16.0`. Local bootstrap and CI use
 that same release version.
 
 ## Local bootstrap
@@ -17,13 +17,13 @@ changes:
 ```
 
 The bootstrap reads `dependencies.forge.version` from root `ci.yml`,
-installs SCPF directly from that release tag and checks the installed package
+installs SCPF directly from that release tag's `cadlib/` package and checks the installed package
 version plus the SolidCraft version qualified by that Forge release.
 
 After bootstrap, models can be sent directly to an open SolidCraft GUI:
 
 ```powershell
-python -m scpf models/advanced/simple_mft_assembly/scpf/model.py --connect --new
+python -m scpf models/assemblies/simple_mft_assembly/scpf/model.py --connect --new
 ```
 
 No Forge SHA is part of the normal model-project workflow.

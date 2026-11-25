@@ -87,7 +87,8 @@ Use directory groups for ordering:
 
 - basic: priority 10;
 - components: priority 20;
-- advanced: priority 30.
+- subassemblies: priority 30;
+- assemblies: priority 40.
 
 Priority is ordering only. Do not encode dependencies through priority.
 

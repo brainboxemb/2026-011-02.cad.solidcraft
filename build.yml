@@ -1,14 +1,11 @@
 schema: 1
-branch: feature/catalog-subassemblies-assemblies
+branch: feature/76-grouped-category-views-stl
 
 modules:
-  - ci
   - pages
 models:
-  - hub75-screen
-  - simple-mft-assembly
-  - hub75-wood-frame
-  - hub75-display2
+  - mft-rail-corner-bracket
+  - mft-rail-corner-assembly
 tasks:
   - test
   - build

@@ -54,6 +54,10 @@ class SiteContractTests(unittest.TestCase):
     def test_catalog_layout_uses_configured_sections_groups_and_navigation(self):
         home = (SITE / "layouts/home.html").read_text(encoding="utf-8")
         catalog = (SITE / "layouts/models/list.html").read_text(encoding="utf-8")
+        category = (SITE / "layouts/models/single.html").read_text(encoding="utf-8")
+        groups = (SITE / "layouts/partials/cad/model-groups.html").read_text(
+            encoding="utf-8"
+        )
         card = (SITE / "layouts/partials/cad/model-card.html").read_text(
             encoding="utf-8"
         )
@@ -66,8 +70,12 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("ByLastmod.Reverse", home)
         self.assertIn("showUpdated", home)
         self.assertIn("hugo.Data.cad.catalog", catalog)
-        self.assertIn("Params.cadGroup", catalog)
-        self.assertIn("cad-catalog-group", catalog)
+        self.assertIn('partial "cad/model-groups.html"', catalog)
+        self.assertIn('partial "cad/model-groups.html"', category)
+        self.assertIn("hugo.Data.cad.catalog", groups)
+        self.assertIn("Params.cadGroup", groups)
+        self.assertIn("cad-catalog-group", groups)
+        self.assertIn("data-cad-group", groups)
         self.assertIn("hugo.Data.cad.catalog", card)
         self.assertIn("cadGroup", card)
 

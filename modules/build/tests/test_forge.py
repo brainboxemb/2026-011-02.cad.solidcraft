@@ -10,7 +10,7 @@ class ForgeBuildTests(unittest.TestCase):
     def test_install_url_contains_release_version(self):
         version = "v0.15.0"
         self.assertIn(
-            "@v0.15.0#subdirectory=scpf",
+            "@v0.15.0#subdirectory=cadlib",
             install_url("brainboxemb/lib.py.solidcraft.forge", version),
         )
 

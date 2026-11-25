@@ -437,6 +437,68 @@
     },
     {
       "artifacts": [],
+      "built_source_sha": "9887416c3f62c3ee588f0827632fd181904ac4f5",
+      "commands": "models/latch-hook/solidcraft.json",
+      "dependencies": [],
+      "id": "latch-hook",
+      "native": {
+        "png": "models/latch-hook/model.png",
+        "sc": "models/latch-hook/model.sc",
+        "step": "models/latch-hook/model.step",
+        "stl": null
+      },
+      "owner": "latch-hook",
+      "priority": 20,
+      "root": "models/components/latch_hook",
+      "snapshot": {
+        "camera": {
+          "distance": 70,
+          "fov": 0,
+          "pitch": 0.42,
+          "target": [
+            10,
+            0,
+            4
+          ],
+          "yaw": -0.72
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 65,
+            "fov": 0,
+            "pitch": 1.45,
+            "target": [
+              9,
+              0,
+              2
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/latch-hook/top.png"
+        },
+        {
+          "camera": {
+            "distance": 55,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              10,
+              0,
+              5
+            ],
+            "yaw": 1.5708
+          },
+          "name": "side.png",
+          "path": "models/latch-hook/side.png"
+        }
+      ],
+      "source": "models/components/latch_hook/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
       "commands": "models/mft-rail-corner-assembly/solidcraft.json",
       "dependencies": [
@@ -866,5 +928,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "44f8d3b20fc48c51c5f6b36a60ddddf33a4018ad"
+  "source_sha": "9887416c3f62c3ee588f0827632fd181904ac4f5"
 }

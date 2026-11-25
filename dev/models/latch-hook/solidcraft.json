@@ -1,0 +1,313 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_x",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "overall_width",
+        "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "neck_width",
+        "expression": "15",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_pitch",
+        "expression": "14",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "thickness",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bend_radius",
+        "expression": "2.1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "k_factor",
+        "expression": "0.4",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "4.3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Latch hook 2 mm",
+        "thickness": "thickness",
+        "k_factor": "k_factor",
+        "bend_radius": "bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Latch hook blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "hole_x",
+            "overall_width / 2"
+          ],
+          [
+            12.0,
+            "neck_width / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            12.0,
+            "neck_width / 2"
+          ],
+          [
+            25.1,
+            "neck_width / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.1,
+            "neck_width / 2"
+          ],
+          [
+            25.1,
+            "-(neck_width / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.1,
+            "-(neck_width / 2)"
+          ],
+          [
+            12.0,
+            "-(neck_width / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            12.0,
+            "-(neck_width / 2)"
+          ],
+          [
+            "hole_x",
+            "-(overall_width / 2)"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "hole_x",
+          "-(hole_pitch / 2)"
+        ],
+        "start": [
+          "hole_x",
+          "-(overall_width / 2)"
+        ],
+        "end": [
+          0.0,
+          "-(hole_pitch / 2)"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            "-(hole_pitch / 2)"
+          ],
+          [
+            0.0,
+            "hole_pitch / 2"
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "hole_x",
+          "hole_pitch / 2"
+        ],
+        "start": [
+          0.0,
+          "hole_pitch / 2"
+        ],
+        "end": [
+          "hole_x",
+          "overall_width / 2"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "Latch hook blank",
+        "rule": "Latch hook 2 mm",
+        "body_name": "LatchHook"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "hole_x",
+          "-(hole_pitch / 2)",
+          "thickness"
+        ],
+        "targets": [
+          "LatchHook"
+        ],
+        "diameter": "hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "hole_x",
+          "hole_pitch / 2",
+          "thickness"
+        ],
+        "targets": [
+          "LatchHook"
+        ],
+        "diameter": "hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 147.414,
+        "position": "centerline",
+        "flip": false,
+        "body": "LatchHook",
+        "points": [
+          [
+            15.9,
+            -7.5,
+            0
+          ],
+          [
+            15.9,
+            7.5,
+            0
+          ]
+        ],
+        "fixed": [
+          5.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#B7BDC2"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchHook"
+        ],
+        "material": "Galvanized steel"
+      }
+    }
+  ]
+}

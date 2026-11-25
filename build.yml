@@ -1,11 +1,8 @@
 schema: 1
-branch: feature/76-grouped-category-views-stl
+branch: fix/92-pages-repo-rename
 
 modules:
   - pages
-models:
-  - mft-rail-corner-bracket
-  - mft-rail-corner-assembly
+models: []
 tasks:
   - test
-  - build

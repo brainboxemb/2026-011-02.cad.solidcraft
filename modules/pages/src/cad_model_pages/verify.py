@@ -126,7 +126,13 @@ def _source_metadata_by_id(repo: Path) -> dict[str, tuple[Path, dict]]:
     return found
 
 
-def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
+def verify(
+    *,
+    repo: Path,
+    site: Path,
+    build_scope: Path,
+    source_repository: str | None = None,
+) -> None:
     repo = repo.resolve()
     site = site.resolve()
     build_scope = build_scope.resolve()
@@ -139,7 +145,7 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
     namespace = plan.get("namespace")
     if namespace not in {"main", "dev"}:
         raise PagesVerificationError("build plan has invalid namespace")
-    repository = _repository_name(repo)
+    repository = source_repository or _repository_name(repo)
     blob_base = f"https://github.com/{repository}/blob/build/{namespace}/"
     raw_base = f"https://raw.githubusercontent.com/{repository}/build/{namespace}/"
 
@@ -338,9 +344,15 @@ def main(argv=None) -> int:
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--site", type=Path, required=True)
     parser.add_argument("--build-scope", type=Path, required=True)
+    parser.add_argument("--source-repository")
     args = parser.parse_args(argv)
 
-    verify(repo=args.repo, site=args.site, build_scope=args.build_scope)
+    verify(
+        repo=args.repo,
+        site=args.site,
+        build_scope=args.build_scope,
+        source_repository=args.source_repository,
+    )
     print("Generated Pages link durable build artifacts without copying them")
     return 0
 

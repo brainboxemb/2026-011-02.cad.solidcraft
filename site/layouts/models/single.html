@@ -52,7 +52,7 @@
       <div class="cad-preview">
         {{ with index $native "png" }}
           {{ $url := printf "%s%s" $rawBase . }}
-          <a href="{{ printf "%s%s" $blobBase . }}" class="cad-preview-link" target="_blank" rel="noopener noreferrer"><img src="{{ $url }}" alt="{{ $.Title }} SolidCraft build"></a>
+          <a href="{{ printf "%s%s" $blobBase . }}" class="cad-preview-link" target="_blank" rel="noopener noreferrer"><img src="{{ $url }}" alt="{{ $.Title }} SolidCraft build" decoding="async"></a>
         {{ else }}
           <div class="cad-preview-empty">No durable model preview is available.</div>
         {{ end }}
@@ -119,7 +119,7 @@
               <p><a href="{{ $src }}" target="_blank" rel="noopener noreferrer">Open external reference ↗</a></p>
             {{ else if eq $kind "asset" }}
               {{ with $.Resources.Get $src }}
-                <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}"></a>
+                <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}" loading="lazy" decoding="async"></a>
               {{ else }}
                 <p class="cad-muted">This declared source asset is not present.</p>
               {{ end }}
@@ -128,7 +128,7 @@
               {{ if eq (len $matches) 1 }}
                 {{ $snapshot := index $matches 0 }}
                 {{ $snapshotPath := index $snapshot "path" }}
-                <a href="{{ printf "%s%s" $blobBase $snapshotPath }}" target="_blank" rel="noopener noreferrer"><img src="{{ printf "%s%s" $rawBase $snapshotPath }}" alt="{{ index $view "alt" }}"></a>
+                <a href="{{ printf "%s%s" $blobBase $snapshotPath }}" target="_blank" rel="noopener noreferrer"><img src="{{ printf "%s%s" $rawBase $snapshotPath }}" alt="{{ index $view "alt" }}" loading="lazy" decoding="async"></a>
               {{ else }}
                 <p class="cad-muted">This declared build view is not present in the accepted build plan.</p>
               {{ end }}

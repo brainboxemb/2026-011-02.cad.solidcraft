@@ -32,7 +32,7 @@ Until the physical MFT underside and intended hardware are measured:
 
 - bracket wall: 5 mm;
 - load-bearing under-rail foot: 6 mm;
-- rounded outside bumper radius: 22 mm;
+- lower outside support-foot radius: 18 mm (native source);
 - top/bottom triangular gusset leg: 55 mm;
 - rail clearance: Ø8.5 mm;
 - MFT underside screw: Ø5.5 mm;
@@ -45,15 +45,12 @@ The bracket also acts as a load-bearing foot. Two 6 mm-thick plastic shoes run
 under the first 75 mm of both rail profiles, so the metal rails genuinely rest
 on the printed bracket. This adds 6 mm of foot height below the rail system.
 
-At the outside corner those two shoes merge into a low quarter-round bumper:
-- 22 mm radius;
-- about 4 mm plastic overhang beyond the 18 mm rail depth;
-- only below the rail-bottom plane, so neither C-channel opening is blocked.
+At the outside corner the two structural shoes meet through the exact R18
+quarter-round sector from the supplied native `hoek_assembly` source.
 
-This first version makes the bumper integral with the bracket because that is
-the strongest and simplest printable geometry. If impact wear becomes relevant,
-the rounded nose can later be split into a replaceable insert without changing
-the rail/bracket datums.
+The visible outside-corner filler/protection is now a separate physical part:
+`MFT Rail Corner Insert`. That PETG part clips into the exposed rail corner
+and can be printed or replaced independently of the structural bracket.
 
 Both rail C-openings remain on the outside of the corner so slide-in hardware
 is not blocked.

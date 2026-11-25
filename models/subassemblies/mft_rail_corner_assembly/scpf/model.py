@@ -10,6 +10,9 @@ from scpf import Placement
 from models.components.mft_rail_corner_bracket.scpf.model import (
     MFTRailCornerBracket,
 )
+from models.components.mft_rail_corner_insert.scpf.model import (
+    MFTRailCornerInsert,
+)
 from models.components.mounting_rail_m8.scpf.model import MountingRailM8
 
 
@@ -52,8 +55,9 @@ class MFTRailCornerAssembly:
         )
 
         bracket = MFTRailCornerBracket()
+        corner_insert = MFTRailCornerInsert()
 
-        return x_rail + y_rail + bracket
+        return x_rail + y_rail + bracket + corner_insert
 
 
 MFTRailCornerAssembly()

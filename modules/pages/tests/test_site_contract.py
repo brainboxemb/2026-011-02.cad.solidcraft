@@ -99,6 +99,17 @@ class SiteContractTests(unittest.TestCase):
             encoding="utf-8"
         )
         self.assertIn('env["HUGO_PARAMS_BUILDSCOPE"] = build_namespace', build)
+        self.assertIn(
+            'env["HUGO_PARAMS_CADSOURCEREPOSITORY"] = source_repository',
+            build,
+        )
+        verify = (ROOT / "modules/pages/src/cad_model_pages/verify.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "source_repository or _repository_name(repo)",
+            verify,
+        )
 
     def test_pages_workflow_builds_main_and_dev_scopes(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
@@ -108,10 +119,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--destination generated-site", workflow)
         self.assertIn("--build-scope prepared-build/dev", workflow)
         self.assertIn("--destination generated-site/dev", workflow)
-        self.assertIn(
-            'https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/',
-            workflow,
-        )
+        self.assertIn("github.repository_owner", workflow)
+        self.assertIn("github.event.repository.name", workflow)
+        self.assertIn('--source-repository "${{ github.repository }}"', workflow)
+        self.assertNotIn("2026-011-02.cad.solidcraft.NEW", workflow)
         self.assertNotIn("simple-box", workflow)
         self.assertNotIn("simple-mft", workflow)
         self.assertIn("fetch-depth: 0", workflow)
@@ -146,6 +157,23 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("actions/upload-pages-artifact", workflow)
         self.assertNotIn("actions/deploy-pages", workflow)
         self.assertNotIn("github-pages", workflow)
+
+    def test_site_defaults_use_canonical_repository_name(self):
+        config = (SITE / "config/_default/hugo.toml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "brainboxemb/2026-011-02.cad.solidcraft",
+            config,
+        )
+        self.assertNotIn("2026-011-02.cad.solidcraft.NEW", config)
+
+    def test_catalog_card_images_are_lazy_and_async_decoded(self):
+        card = (SITE / "layouts/partials/cad/model-card.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('loading="lazy"', card)
+        self.assertIn('decoding="async"', card)
 
     def test_site_uses_accepted_hextra_version(self):
         go_mod = (SITE / "go.mod").read_text(encoding="utf-8")

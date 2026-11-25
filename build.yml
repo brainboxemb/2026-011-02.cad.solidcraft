@@ -1,8 +1,7 @@
 schema: 1
-branch: fix/92-pages-repo-rename
+branch: chore/109-reconcile-plan
 
-modules:
-  - pages
+modules: []
 models: []
 tasks:
   - test

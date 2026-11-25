@@ -43,6 +43,10 @@ def execute(*, repo: Path, namespace: str, selected_ids: tuple[str, ...]) -> Pat
             plan=plan,
             wheel=wheel,
         )
+        # Forge compilation can discover generated artifacts (for example
+        # native drawing PDFs). Persist the enriched plan before the runtime
+        # consumes and Pages later publishes it.
+        write_plan(output_root, plan)
         run_native_batch(
             repo=repo,
             output_root=output_root,

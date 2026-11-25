@@ -1,0 +1,2283 @@
+{
+  "format": "solidcraft/68",
+  "name": "doghole_clamp2",
+  "units": "mm",
+  "params": [
+    {
+      "name": "RailBinnenbreedte",
+      "expr": "12",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "RailOpening",
+      "expr": "7",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "RailLipOnderzijde",
+      "expr": "3.5",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "RailBovenzijde",
+      "expr": "6",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "RailSpeling",
+      "expr": "0.3",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "PenDiameter",
+      "expr": "3",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "DogholeDiameter",
+      "expr": "20",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "DogSpeling",
+      "expr": "0.15",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "ExpansieLengte",
+      "expr": "14",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "ScharnierHoogte",
+      "expr": "3.5 mm",
+      "unit": "mm",
+      "comment": "Hoogte van de penas boven het railvlak",
+      "model": false
+    },
+    {
+      "name": "ScharnierBuitenradius",
+      "expr": "3 mm",
+      "unit": "mm",
+      "comment": "Buitenradius van de scharnieroren en het middenoog",
+      "model": false
+    },
+    {
+      "name": "ScharnierAxialeSpeling",
+      "expr": "0.25 mm",
+      "unit": "mm",
+      "comment": "Vrije ruimte aan weerszijden van het middenoog",
+      "model": false
+    },
+    {
+      "name": "ProfielBinnenbreedte",
+      "expr": "12.55 mm",
+      "unit": "mm",
+      "comment": "Binnenbreedte volgens de doorsnedetekening",
+      "model": false
+    },
+    {
+      "name": "ProfielOpening",
+      "expr": "8.30 mm",
+      "unit": "mm",
+      "comment": "Breedte van de sleufopening volgens de doorsnedetekening",
+      "model": false
+    },
+    {
+      "name": "Profiellengte",
+      "expr": "40 mm",
+      "unit": "mm",
+      "comment": "Lengte van het losse proefstuk",
+      "model": false
+    },
+    {
+      "name": "ScharnierLinksverschuiving",
+      "expr": "3 mm",
+      "unit": "mm",
+      "comment": "Verplaatsing van de penas richting de korte zijde van het profiel",
+      "model": false
+    },
+    {
+      "name": "BenchdogRailspeling",
+      "expr": "0.5 mm",
+      "unit": "mm",
+      "comment": "Afstand tussen de benchdogkop en de buitenwand van de rail",
+      "model": false
+    },
+    {
+      "name": "BenchdogLangspositie",
+      "expr": "19.5 mm",
+      "unit": "mm",
+      "comment": "Plaats langs de rail vanaf het midden van het scharnier",
+      "model": false
+    }
+  ],
+  "features": [
+    {
+      "id": 1,
+      "name": "Voet railhouder",
+      "suppressed": false,
+      "body_names": [
+        "Railhouder"
+      ],
+      "param_names": [
+        "d1",
+        "d2",
+        "d3"
+      ],
+      "type": "box",
+      "corner": [
+        0.0,
+        -10.0,
+        "RailBovenzijde"
+      ],
+      "length": "14",
+      "width": "20",
+      "height": "3",
+      "operation": "new_body"
+    },
+    {
+      "id": 2,
+      "name": "Scharnieroor links",
+      "suppressed": false,
+      "param_names": [
+        "d4",
+        "d5",
+        "d6"
+      ],
+      "participants": [
+        "Railhouder"
+      ],
+      "type": "box",
+      "corner": [
+        -16.0,
+        -10.0,
+        "RailBovenzijde+3"
+      ],
+      "length": "18",
+      "width": "5",
+      "height": "10",
+      "operation": "join"
+    },
+    {
+      "id": 3,
+      "name": "Scharnieroor rechts",
+      "suppressed": false,
+      "param_names": [
+        "d7",
+        "d8",
+        "d9"
+      ],
+      "participants": [
+        "Railhouder"
+      ],
+      "type": "box",
+      "corner": [
+        -16.0,
+        5.0,
+        "RailBovenzijde+3"
+      ],
+      "length": "18",
+      "width": "5",
+      "height": "10",
+      "operation": "join"
+    },
+    {
+      "id": 4,
+      "name": "Klemarm",
+      "suppressed": false,
+      "body_names": [
+        "Klemarm"
+      ],
+      "param_names": [
+        "d10",
+        "d11",
+        "d12"
+      ],
+      "type": "box",
+      "corner": [
+        -48.0,
+        -10.0,
+        "RailBovenzijde+3"
+      ],
+      "length": "26",
+      "width": "20",
+      "height": "10",
+      "operation": "new_body"
+    },
+    {
+      "id": 5,
+      "name": "Scharnierlip",
+      "suppressed": false,
+      "param_names": [
+        "d13",
+        "d14",
+        "d15"
+      ],
+      "participants": [
+        "Klemarm"
+      ],
+      "type": "box",
+      "corner": [
+        -22.0,
+        -4.8,
+        "RailBovenzijde+3"
+      ],
+      "length": "18",
+      "width": "9.6",
+      "height": "10",
+      "operation": "join"
+    },
+    {
+      "id": 6,
+      "name": "Flens T-schuifstuk",
+      "suppressed": false,
+      "body_names": [
+        "T-schuifstuk"
+      ],
+      "param_names": [
+        "d16",
+        "d17",
+        "d18"
+      ],
+      "type": "box",
+      "corner": [
+        "7-RailBinnenbreedte/2+RailSpeling",
+        -9.0,
+        "RailLipOnderzijde-2.5"
+      ],
+      "length": "RailBinnenbreedte-2*RailSpeling",
+      "width": "18",
+      "height": "2",
+      "operation": "new_body"
+    },
+    {
+      "id": 7,
+      "name": "Hals T-schuifstuk",
+      "suppressed": false,
+      "param_names": [
+        "d19",
+        "d20",
+        "d21"
+      ],
+      "participants": [
+        "T-schuifstuk"
+      ],
+      "type": "box",
+      "corner": [
+        "7-RailOpening/2+RailSpeling",
+        -9.0,
+        "RailLipOnderzijde-0.5"
+      ],
+      "length": "RailOpening-2*RailSpeling",
+      "width": "18",
+      "height": "RailBovenzijde-RailLipOnderzijde",
+      "operation": "join"
+    },
+    {
+      "id": 8,
+      "name": "Scharnier Railhouder",
+      "suppressed": false,
+      "param_names": [
+        "d22",
+        "d23"
+      ],
+      "participants": [
+        "Railhouder"
+      ],
+      "type": "cylinder",
+      "base": [
+        -8.0,
+        -11.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "22",
+      "operation": "cut"
+    },
+    {
+      "id": 9,
+      "name": "Scharnier Klemarm",
+      "suppressed": false,
+      "param_names": [
+        "d24",
+        "d25"
+      ],
+      "participants": [
+        "Klemarm"
+      ],
+      "type": "cylinder",
+      "base": [
+        -8.0,
+        -11.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "22",
+      "operation": "cut"
+    },
+    {
+      "id": 10,
+      "name": "Vergrendeling Railhouder",
+      "suppressed": false,
+      "param_names": [
+        "d26",
+        "d27"
+      ],
+      "participants": [
+        "Railhouder"
+      ],
+      "type": "cylinder",
+      "base": [
+        -13.0,
+        -11.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "22",
+      "operation": "cut"
+    },
+    {
+      "id": 11,
+      "name": "Vergrendeling Klemarm",
+      "suppressed": false,
+      "param_names": [
+        "d28",
+        "d29"
+      ],
+      "participants": [
+        "Klemarm"
+      ],
+      "type": "cylinder",
+      "base": [
+        -13.0,
+        -11.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "22",
+      "operation": "cut"
+    },
+    {
+      "id": 12,
+      "name": "Vrijloopgat M4",
+      "suppressed": false,
+      "param_names": [
+        "d30",
+        "d31"
+      ],
+      "participants": [
+        "Railhouder"
+      ],
+      "type": "cylinder",
+      "base": [
+        7.0,
+        0.0,
+        "RailBovenzijde-1"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(4.5 mm) / 2",
+      "height": "5",
+      "operation": "cut"
+    },
+    {
+      "id": 13,
+      "name": "M4 draadboring vereenvoudigd",
+      "suppressed": false,
+      "param_names": [
+        "d32",
+        "d33"
+      ],
+      "participants": [
+        "T-schuifstuk"
+      ],
+      "type": "cylinder",
+      "base": [
+        7.0,
+        0.0,
+        "RailLipOnderzijde-3"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(4 mm) / 2",
+      "height": "RailBovenzijde-RailLipOnderzijde+3",
+      "operation": "cut"
+    },
+    {
+      "id": 14,
+      "name": "M6 draadboring vereenvoudigd",
+      "suppressed": false,
+      "param_names": [
+        "d34",
+        "d35"
+      ],
+      "participants": [
+        "Klemarm"
+      ],
+      "type": "cylinder",
+      "base": [
+        -39.0,
+        0.0,
+        "RailBovenzijde+2"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(6 mm) / 2",
+      "height": "12",
+      "operation": "cut"
+    },
+    {
+      "id": 15,
+      "name": "Gladde as Scharnierpen",
+      "suppressed": false,
+      "body_names": [
+        "Scharnierpen"
+      ],
+      "param_names": [
+        "d36",
+        "d37"
+      ],
+      "type": "cylinder",
+      "base": [
+        -8.0,
+        -10.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter) / 2",
+      "height": "22",
+      "operation": "new_body"
+    },
+    {
+      "id": 16,
+      "name": "Kop Scharnierpen",
+      "suppressed": false,
+      "param_names": [
+        "d38",
+        "d39"
+      ],
+      "participants": [
+        "Scharnierpen"
+      ],
+      "type": "cylinder",
+      "base": [
+        -8.0,
+        -12.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(5 mm) / 2",
+      "height": "2",
+      "operation": "join"
+    },
+    {
+      "id": 17,
+      "name": "Gladde as Borgpen",
+      "suppressed": false,
+      "body_names": [
+        "Borgpen"
+      ],
+      "param_names": [
+        "d40",
+        "d41"
+      ],
+      "type": "cylinder",
+      "base": [
+        -13.0,
+        -10.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter) / 2",
+      "height": "22",
+      "operation": "new_body"
+    },
+    {
+      "id": 18,
+      "name": "Kop Borgpen",
+      "suppressed": false,
+      "param_names": [
+        "d42",
+        "d43"
+      ],
+      "participants": [
+        "Borgpen"
+      ],
+      "type": "cylinder",
+      "base": [
+        -13.0,
+        -12.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(5 mm) / 2",
+      "height": "2",
+      "operation": "join"
+    },
+    {
+      "id": 19,
+      "name": "M4 trekbout",
+      "suppressed": false,
+      "body_names": [
+        "Railknop M4"
+      ],
+      "param_names": [
+        "d44",
+        "d45"
+      ],
+      "type": "cylinder",
+      "base": [
+        7.0,
+        0.0,
+        "RailBovenzijde-3.5"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(3.9 mm) / 2",
+      "height": "6.5",
+      "operation": "new_body"
+    },
+    {
+      "id": 20,
+      "name": "Kop railknop",
+      "suppressed": false,
+      "param_names": [
+        "d46",
+        "d47"
+      ],
+      "participants": [
+        "Railknop M4"
+      ],
+      "type": "cylinder",
+      "base": [
+        7.0,
+        0.0,
+        "RailBovenzijde+3"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(12 mm) / 2",
+      "height": "5",
+      "operation": "join"
+    },
+    {
+      "id": 21,
+      "name": "M6 spindel",
+      "suppressed": false,
+      "body_names": [
+        "Drukspindel M6"
+      ],
+      "param_names": [
+        "d48",
+        "d49"
+      ],
+      "type": "cylinder",
+      "base": [
+        -39.0,
+        0.0,
+        "RailBovenzijde-2"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(5.9 mm) / 2",
+      "height": "19",
+      "operation": "new_body"
+    },
+    {
+      "id": 22,
+      "name": "Kop drukspindel",
+      "suppressed": false,
+      "param_names": [
+        "d50",
+        "d51"
+      ],
+      "participants": [
+        "Drukspindel M6"
+      ],
+      "type": "cylinder",
+      "base": [
+        -39.0,
+        0.0,
+        "RailBovenzijde+17"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(16 mm) / 2",
+      "height": "5",
+      "operation": "join"
+    },
+    {
+      "id": 23,
+      "name": "Drukvoet Ø12",
+      "suppressed": false,
+      "body_names": [
+        "Drukvoet"
+      ],
+      "param_names": [
+        "d52",
+        "d53"
+      ],
+      "type": "cylinder",
+      "base": [
+        -39.0,
+        0.0,
+        "RailBovenzijde-6"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(12 mm) / 2",
+      "height": "4",
+      "operation": "new_body"
+    },
+    {
+      "id": 24,
+      "name": "Vervang eerste concept",
+      "suppressed": false,
+      "type": "remove",
+      "bodies": [
+        "Railhouder",
+        "Klemarm",
+        "T-schuifstuk",
+        "Scharnierpen",
+        "Borgpen",
+        "Railknop M4",
+        "Drukspindel M6",
+        "Drukvoet"
+      ]
+    },
+    {
+      "id": 25,
+      "name": "T-voet",
+      "suppressed": false,
+      "body_names": [
+        "Railbeugel"
+      ],
+      "param_names": [
+        "d54",
+        "d55",
+        "d56"
+      ],
+      "type": "box",
+      "corner": [
+        "7-RailBinnenbreedte/2+RailSpeling",
+        -8.0,
+        "RailLipOnderzijde-2.5"
+      ],
+      "length": "RailBinnenbreedte-2*RailSpeling",
+      "width": "16",
+      "height": "2",
+      "operation": "new_body"
+    },
+    {
+      "id": 26,
+      "name": "Hals T-voet",
+      "suppressed": false,
+      "param_names": [
+        "d57",
+        "d58",
+        "d59"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        "7-RailOpening/2+RailSpeling",
+        -8.0,
+        "RailLipOnderzijde-0.5"
+      ],
+      "length": "RailOpening-2*RailSpeling",
+      "width": "16",
+      "height": "RailBovenzijde-RailLipOnderzijde+1.5",
+      "operation": "join"
+    },
+    {
+      "id": 27,
+      "name": "Brug railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d60",
+        "d61",
+        "d62"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        0.0,
+        -8.0,
+        "RailBovenzijde+1"
+      ],
+      "length": "14",
+      "width": "16",
+      "height": "3",
+      "operation": "join"
+    },
+    {
+      "id": 28,
+      "name": "Vorkoor links",
+      "suppressed": false,
+      "param_names": [
+        "d63",
+        "d64",
+        "d65"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        -13.0,
+        -8.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "15",
+      "width": "3.8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 29,
+      "name": "Vorkoor rechts",
+      "suppressed": false,
+      "param_names": [
+        "d66",
+        "d67",
+        "d68"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        -13.0,
+        4.2,
+        "RailBovenzijde+4"
+      ],
+      "length": "15",
+      "width": "3.8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 30,
+      "name": "Dogarm",
+      "suppressed": false,
+      "body_names": [
+        "Dogarm"
+      ],
+      "param_names": [
+        "d69",
+        "d70",
+        "d71"
+      ],
+      "type": "box",
+      "corner": [
+        -38.0,
+        -10.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "24",
+      "width": "20",
+      "height": "8",
+      "operation": "new_body"
+    },
+    {
+      "id": 31,
+      "name": "Scharnierlip dogarm",
+      "suppressed": false,
+      "param_names": [
+        "d72",
+        "d73",
+        "d74"
+      ],
+      "participants": [
+        "Dogarm"
+      ],
+      "type": "box",
+      "corner": [
+        -14.0,
+        -4.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "12",
+      "width": "8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 32,
+      "name": "Aanslag werkblad",
+      "suppressed": false,
+      "body_names": [
+        "Dogkraag"
+      ],
+      "param_names": [
+        "d75",
+        "d76"
+      ],
+      "type": "cylinder",
+      "base": [-26.0, 0.0, 0.0],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(22 mm) / 2",
+      "height": "2",
+      "operation": "new_body"
+    },
+    {
+      "id": 33,
+      "name": "Afstandbus dogkraag",
+      "suppressed": false,
+      "param_names": [
+        "d77",
+        "d78"
+      ],
+      "participants": [
+        "Dogkraag"
+      ],
+      "type": "cylinder",
+      "base": [-26.0, 0.0, 2.0],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(14 mm) / 2",
+      "height": "RailBovenzijde+2",
+      "operation": "join"
+    },
+    {
+      "id": 34,
+      "name": "Elastomeerbus",
+      "suppressed": false,
+      "body_names": [
+        "Expansiebus"
+      ],
+      "param_names": [
+        "d79",
+        "d80"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(DogholeDiameter-2*DogSpeling) / 2",
+      "height": "ExpansieLengte",
+      "operation": "new_body"
+    },
+    {
+      "id": 35,
+      "name": "M5 trekplaat",
+      "suppressed": false,
+      "body_names": [
+        "Trekplaat"
+      ],
+      "param_names": [
+        "d81",
+        "d82"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-3"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(DogholeDiameter-2*DogSpeling-0.2) / 2",
+      "height": "3",
+      "operation": "new_body"
+    },
+    {
+      "id": 36,
+      "name": "Scharnierboring Railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d83",
+        "d84"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "cylinder",
+      "base": [
+        -6.0,
+        -12.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "24",
+      "operation": "cut"
+    },
+    {
+      "id": 37,
+      "name": "Scharnierboring Dogarm",
+      "suppressed": false,
+      "param_names": [
+        "d85",
+        "d86"
+      ],
+      "participants": [
+        "Dogarm"
+      ],
+      "type": "cylinder",
+      "base": [
+        -6.0,
+        -12.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "24",
+      "operation": "cut"
+    },
+    {
+      "id": 38,
+      "name": "Axiale boring Dogkraag",
+      "suppressed": false,
+      "param_names": [
+        "d87",
+        "d88"
+      ],
+      "participants": [
+        "Dogkraag"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-4"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(5.5 mm) / 2",
+      "height": "ExpansieLengte+RailBovenzijde+24",
+      "operation": "cut"
+    },
+    {
+      "id": 39,
+      "name": "Axiale boring Dogarm",
+      "suppressed": false,
+      "param_names": [
+        "d89",
+        "d90"
+      ],
+      "participants": [
+        "Dogarm"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-4"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(5.5 mm) / 2",
+      "height": "ExpansieLengte+RailBovenzijde+24",
+      "operation": "cut"
+    },
+    {
+      "id": 40,
+      "name": "Axiale boring Expansiebus",
+      "suppressed": false,
+      "param_names": [
+        "d91",
+        "d92"
+      ],
+      "participants": [
+        "Expansiebus"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-4"
+      ],
+      "axis": [0.0, 0.0, 1.0],      "radius": "(8 mm) / 2",
+      "height": "ExpansieLengte+RailBovenzijde+24",
+      "operation": "cut"
+    },
+    {
+      "id": 41,
+      "name": "Axiale boring Trekplaat",
+      "suppressed": false,
+      "param_names": [
+        "d93",
+        "d94"
+      ],
+      "participants": [
+        "Trekplaat"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-4"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(5 mm) / 2",
+      "height": "ExpansieLengte+RailBovenzijde+24",
+      "operation": "cut"
+    },
+    {
+      "id": 42,
+      "name": "M4 stelschroefboring",
+      "suppressed": false,
+      "param_names": [
+        "d95",
+        "d96"
+      ],
+      "participants": [
+        "Railbeugel"
+      ],
+      "type": "cylinder",
+      "base": [7.0, 0.0, -1.0],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(4 mm) / 2",
+      "height": "RailBovenzijde+6",
+      "operation": "cut"
+    },
+    {
+      "id": 43,
+      "name": "Gladde Ø3 as",
+      "suppressed": false,
+      "body_names": [
+        "Enkele scharnierpen"
+      ],
+      "param_names": [
+        "d97",
+        "d98"
+      ],
+      "type": "cylinder",
+      "base": [
+        -6.0,
+        -8.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter) / 2",
+      "height": "18",
+      "operation": "new_body"
+    },
+    {
+      "id": 44,
+      "name": "Kop scharnierpen",
+      "suppressed": false,
+      "param_names": [
+        "d99",
+        "d100"
+      ],
+      "participants": [
+        "Enkele scharnierpen"
+      ],
+      "type": "cylinder",
+      "base": [
+        -6.0,
+        -9.5,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(5 mm) / 2",
+      "height": "1.5",
+      "operation": "join"
+    },
+    {
+      "id": 45,
+      "name": "M5 trekstang",
+      "suppressed": false,
+      "body_names": [
+        "Dogknop M5"
+      ],
+      "param_names": [
+        "d101",
+        "d102"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "-ExpansieLengte-3"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(4.9 mm) / 2",
+      "height": "ExpansieLengte+RailBovenzijde+15",
+      "operation": "new_body"
+    },
+    {
+      "id": 46,
+      "name": "Bedienknop dog",
+      "suppressed": false,
+      "param_names": [
+        "d103",
+        "d104"
+      ],
+      "participants": [
+        "Dogknop M5"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "RailBovenzijde+12"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(19 mm) / 2",
+      "height": "6",
+      "operation": "join"
+    },
+    {
+      "id": 47,
+      "name": "M4 drukschroef op bodem railsleuf",
+      "suppressed": false,
+      "body_names": [
+        "Railstelschroef M4"
+      ],
+      "param_names": [
+        "d105",
+        "d106"
+      ],
+      "type": "cylinder",
+      "base": [7.0, 0.0, 0.7],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(3.9 mm) / 2",
+      "height": "RailBovenzijde+3.3",
+      "operation": "new_body"
+    },
+    {
+      "id": 48,
+      "name": "Vervang railbeugel en scharnier",
+      "suppressed": false,
+      "type": "remove",
+      "bodies": [
+        "Railbeugel",
+        "Dogarm",
+        "Enkele scharnierpen",
+        "Railstelschroef M4"
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Compacte T-voet",
+      "suppressed": false,
+      "body_names": [
+        "Compacte railbeugel"
+      ],
+      "param_names": [
+        "d107",
+        "d108",
+        "d109"
+      ],
+      "type": "box",
+      "corner": [
+        "2-RailBinnenbreedte/2+RailSpeling",
+        -8.0,
+        "RailLipOnderzijde-2.5"
+      ],
+      "length": "RailBinnenbreedte-2*RailSpeling",
+      "width": "16",
+      "height": "2",
+      "operation": "new_body"
+    },
+    {
+      "id": 50,
+      "name": "Hals compacte T-voet",
+      "suppressed": false,
+      "param_names": [
+        "d110",
+        "d111",
+        "d112"
+      ],
+      "participants": [
+        "Compacte railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        "2-RailOpening/2+RailSpeling",
+        -8.0,
+        "RailLipOnderzijde-0.5"
+      ],
+      "length": "RailOpening-2*RailSpeling",
+      "width": "16",
+      "height": "RailBovenzijde-RailLipOnderzijde+1.5",
+      "operation": "join"
+    },
+    {
+      "id": 51,
+      "name": "Brug compacte railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d113",
+        "d114",
+        "d115"
+      ],
+      "participants": [
+        "Compacte railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        -5.0,
+        -8.0,
+        "RailBovenzijde+1"
+      ],
+      "length": "14",
+      "width": "16",
+      "height": "3",
+      "operation": "join"
+    },
+    {
+      "id": 52,
+      "name": "Centrale lip railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d116",
+        "d117",
+        "d118"
+      ],
+      "participants": [
+        "Compacte railbeugel"
+      ],
+      "type": "box",
+      "corner": [
+        -13.0,
+        -4.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "9",
+      "width": "8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 53,
+      "name": "Hoofd dogarm",
+      "suppressed": false,
+      "body_names": [
+        "Dogarm met vork"
+      ],
+      "param_names": [
+        "d119",
+        "d120",
+        "d121"
+      ],
+      "type": "box",
+      "corner": [
+        -38.0,
+        -10.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "24",
+      "width": "20",
+      "height": "8",
+      "operation": "new_body"
+    },
+    {
+      "id": 54,
+      "name": "Dogvork links",
+      "suppressed": false,
+      "param_names": [
+        "d122",
+        "d123",
+        "d124"
+      ],
+      "participants": [
+        "Dogarm met vork"
+      ],
+      "type": "box",
+      "corner": [
+        -14.0,
+        -8.0,
+        "RailBovenzijde+4"
+      ],
+      "length": "7",
+      "width": "3.8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 55,
+      "name": "Dogvork rechts",
+      "suppressed": false,
+      "param_names": [
+        "d125",
+        "d126",
+        "d127"
+      ],
+      "participants": [
+        "Dogarm met vork"
+      ],
+      "type": "box",
+      "corner": [
+        -14.0,
+        4.2,
+        "RailBovenzijde+4"
+      ],
+      "length": "7",
+      "width": "3.8",
+      "height": "8",
+      "operation": "join"
+    },
+    {
+      "id": 56,
+      "name": "Penboring Compacte railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d128",
+        "d129"
+      ],
+      "participants": [
+        "Compacte railbeugel"
+      ],
+      "type": "cylinder",
+      "base": [
+        -10.0,
+        -10.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "20",
+      "operation": "cut"
+    },
+    {
+      "id": 57,
+      "name": "Penboring Dogarm met vork",
+      "suppressed": false,
+      "param_names": [
+        "d130",
+        "d131"
+      ],
+      "participants": [
+        "Dogarm met vork"
+      ],
+      "type": "cylinder",
+      "base": [
+        -10.0,
+        -10.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2) / 2",
+      "height": "20",
+      "operation": "cut"
+    },
+    {
+      "id": 58,
+      "name": "Vrijloop M5 dogarm",
+      "suppressed": false,
+      "param_names": [
+        "d132",
+        "d133"
+      ],
+      "participants": [
+        "Dogarm met vork"
+      ],
+      "type": "cylinder",
+      "base": [
+        -26.0,
+        0.0,
+        "RailBovenzijde+3"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(5.5 mm) / 2",
+      "height": "10",
+      "operation": "cut"
+    },
+    {
+      "id": 59,
+      "name": "M4 boring compacte railbeugel",
+      "suppressed": false,
+      "param_names": [
+        "d134",
+        "d135"
+      ],
+      "participants": [
+        "Compacte railbeugel"
+      ],
+      "type": "cylinder",
+      "base": [2.0, 0.0, -1.0],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(4 mm) / 2",
+      "height": "RailBovenzijde+6",
+      "operation": "cut"
+    },
+    {
+      "id": 60,
+      "name": "As van het vorkscharnier",
+      "suppressed": false,
+      "body_names": [
+        "Scharnierpen Ø3"
+      ],
+      "param_names": [
+        "d136",
+        "d137"
+      ],
+      "type": "cylinder",
+      "base": [
+        -10.0,
+        -8.0,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter) / 2",
+      "height": "18",
+      "operation": "new_body"
+    },
+    {
+      "id": 61,
+      "name": "Kop van het vorkscharnier",
+      "suppressed": false,
+      "param_names": [
+        "d138",
+        "d139"
+      ],
+      "participants": [
+        "Scharnierpen Ø3"
+      ],
+      "type": "cylinder",
+      "base": [
+        -10.0,
+        -9.5,
+        "RailBovenzijde+8"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(5 mm) / 2",
+      "height": "1.5",
+      "operation": "join"
+    },
+    {
+      "id": 62,
+      "name": "M4 drukschroef compacte T-voet",
+      "suppressed": false,
+      "body_names": [
+        "M4 railstelschroef"
+      ],
+      "param_names": [
+        "d140",
+        "d141"
+      ],
+      "type": "cylinder",
+      "base": [2.0, 0.0, 0.7],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(3.9 mm) / 2",
+      "height": "RailBovenzijde+3.3",
+      "operation": "new_body"
+    },
+    {
+      "id": 63,
+      "name": "T-voet lage scharnieropbouw",
+      "suppressed": false,
+      "body_names": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "param_names": [
+        "d142",
+        "d143",
+        "d144"
+      ],
+      "type": "box",
+      "corner": [
+        "2-RailBinnenbreedte/2+RailSpeling",
+        -8.0,
+        "RailBovenzijde-8.4 mm+RailSpeling"
+      ],
+      "length": "RailBinnenbreedte-2*RailSpeling",
+      "width": "16",
+      "height": "(RailBovenzijde-2 mm-RailSpeling)-(RailBovenzijde-8.4 mm+RailSpeling)",
+      "operation": "new_body"
+    },
+    {
+      "id": 64,
+      "name": "Hals van het T-schuifstuk",
+      "suppressed": false,
+      "param_names": [
+        "d145",
+        "d146",
+        "d147"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "box",
+      "corner": [
+        "2-RailOpening/2+RailSpeling",
+        -8.0,
+        "RailBovenzijde-2 mm-RailSpeling"
+      ],
+      "length": "RailOpening-2*RailSpeling",
+      "width": "16",
+      "height": "(RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling)-(RailBovenzijde-2 mm-RailSpeling)",
+      "operation": "join"
+    },
+    {
+      "id": 65,
+      "name": "Voet van het vaste middenoog",
+      "suppressed": false,
+      "param_names": [
+        "d148",
+        "d149",
+        "d150"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "box",
+      "corner": [
+        "-ScharnierLinksverschuiving",
+        "-4 mm+ScharnierAxialeSpeling",
+        "RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling"
+      ],
+      "length": "4",
+      "width": "8 mm-2*ScharnierAxialeSpeling",
+      "height": "(RailBovenzijde+ScharnierHoogte)-(RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling)",
+      "operation": "join"
+    },
+    {
+      "id": 66,
+      "name": "Rond vast middenoog",
+      "suppressed": false,
+      "param_names": [
+        "d151",
+        "d152"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        "-4 mm+ScharnierAxialeSpeling",
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "ScharnierBuitenradius",
+      "height": "8 mm-2*ScharnierAxialeSpeling",
+      "operation": "join"
+    },
+    {
+      "id": 67,
+      "name": "Voet scharnieroor rechts",
+      "suppressed": true,
+      "param_names": [
+        "d153",
+        "d154",
+        "d155"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "box",
+      "corner": [
+        0.0,
+        4.0,
+        "RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling"
+      ],
+      "length": "4",
+      "width": "4",
+      "height": "(RailBovenzijde+ScharnierHoogte)-(RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling)",
+      "operation": "join"
+    },
+    {
+      "id": 68,
+      "name": "Rond scharnieroor rechts",
+      "suppressed": true,
+      "param_names": [
+        "d156",
+        "d157"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "cylinder",
+      "base": [
+        2.0,
+        4.0,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "ScharnierBuitenradius",
+      "height": "4",
+      "operation": "join"
+    },
+    {
+      "id": 69,
+      "name": "Uitstekende linker scharnierarm",
+      "suppressed": false,
+      "body_names": [
+        "Scharnierarm links"
+      ],
+      "param_names": [
+        "d158",
+        "d159",
+        "d160"
+      ],
+      "type": "box",
+      "corner": [
+        "-9 mm-ScharnierLinksverschuiving",
+        -8.0,
+        "RailBovenzijde+ScharnierHoogte-1.5 mm"
+      ],
+      "length": "11",
+      "width": "4",
+      "height": "3",
+      "operation": "new_body"
+    },
+    {
+      "id": 70,
+      "name": "Rond oog van de linker scharnierarm",
+      "suppressed": false,
+      "param_names": [
+        "d161",
+        "d162"
+      ],
+      "participants": [
+        "Scharnierarm links"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        -8.0,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "ScharnierBuitenradius",
+      "height": "4",
+      "operation": "join"
+    },
+    {
+      "id": 71,
+      "name": "Penboring van het vaste middenoog",
+      "suppressed": false,
+      "param_names": [
+        "d163",
+        "d164"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        -10.0,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2 mm) / 2",
+      "height": "20",
+      "operation": "cut"
+    },
+    {
+      "id": 72,
+      "name": "Penboring van de linker scharnierarm",
+      "suppressed": false,
+      "param_names": [
+        "d165",
+        "d166"
+      ],
+      "participants": [
+        "Scharnierarm links"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        -10.0,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter+0.2 mm) / 2",
+      "height": "20",
+      "operation": "cut"
+    },
+    {
+      "id": 73,
+      "name": "Ø3 penas laag scharnier",
+      "suppressed": false,
+      "body_names": [
+        "Scharnierpen laag Ø3"
+      ],
+      "param_names": [
+        "d167",
+        "d168"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        -8.0,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(PenDiameter) / 2",
+      "height": "16.5",
+      "operation": "new_body"
+    },
+    {
+      "id": 74,
+      "name": "Kop van de lage scharnierpen",
+      "suppressed": false,
+      "param_names": [
+        "d169",
+        "d170"
+      ],
+      "participants": [
+        "Scharnierpen laag Ø3"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ScharnierLinksverschuiving",
+        -9.5,
+        "RailBovenzijde+ScharnierHoogte"
+      ],
+      "axis": [0.0, 1.0, 0.0],
+      "radius": "(5 mm) / 2",
+      "height": "1.5",
+      "operation": "join"
+    },
+    {
+      "id": 75,
+      "name": "Spiegeling voor de rechter scharnierarm",
+      "suppressed": false,
+      "body_names": [
+        "Scharnierarm rechts"
+      ],
+      "type": "mirror",
+      "features": [],
+      "plane": {
+        "type": "origin",
+        "name": "XZ"
+      },
+      "bodies": [
+        "Scharnierarm links"
+      ]
+    },
+    {
+      "id": 76,
+      "name": "Doorsnede van het railprofiel",
+      "suppressed": false,
+      "type": "sketch",
+      "plane": {
+        "type": "origin",
+        "name": "XZ"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-6.075, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielBinnenbreedte/2-1.8 mm",
+              "y": "-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-2.1500000000000004, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielOpening/2",
+              "y": "-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-2.1500000000000004, -4.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielOpening/2",
+              "y": "2 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-4.275, -4.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielBinnenbreedte/2",
+              "y": "2 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-4.275, 2.4000000000000004],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielBinnenbreedte/2",
+              "y": "8.4 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [8.275, 2.4000000000000004],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2",
+              "y": "8.4 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [8.275, -4.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2",
+              "y": "2 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [6.15, -4.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielOpening/2",
+              "y": "2 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [6.15, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielOpening/2",
+              "y": "-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [10.075000000000001, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2+1.8 mm",
+              "y": "-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [10.075000000000001, 0.7999999999999998],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2+1.8 mm",
+              "y": "6.8 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [17.1, 0.7999999999999998],
+            "fixed": true,
+            "exprs": {
+              "y": "6.8 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [17.1, 1.5999999999999996],
+            "fixed": true,
+            "exprs": {
+              "y": "7.6 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p14",
+            "pos": [29.0, 1.5999999999999996],
+            "fixed": true,
+            "exprs": {
+              "y": "7.6 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p15",
+            "pos": [29.0, 0.7999999999999998],
+            "fixed": true,
+            "exprs": {
+              "y": "6.8 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p16",
+            "pos": [39.5, 0.7999999999999998],
+            "fixed": true,
+            "exprs": {
+              "y": "6.8 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p17",
+            "pos": [39.5, 3.4000000000000004],
+            "fixed": true,
+            "exprs": {
+              "y": "9.4 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p18",
+            "pos": [10.075000000000001, 3.4000000000000004],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2+1.8 mm",
+              "y": "9.4 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p19",
+            "pos": [10.075000000000001, 4.4],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm+ProfielBinnenbreedte/2+1.8 mm",
+              "y": "10.4 mm-RailBovenzijde"
+            }
+          },
+          {
+            "id": "p20",
+            "pos": [-6.075, 4.4],
+            "fixed": true,
+            "exprs": {
+              "x": "2 mm-ProfielBinnenbreedte/2-1.8 mm",
+              "y": "10.4 mm-RailBovenzijde"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 5,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 8,            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "l9",
+            "type": "line",
+            "a": 9,
+            "b": 10,
+            "construction": false
+          },
+          {
+            "id": "l10",
+            "type": "line",
+            "a": 10,
+            "b": 11,
+            "construction": false
+          },
+          {
+            "id": "l11",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "l12",
+            "type": "line",
+            "a": 12,
+            "b": 13,
+            "construction": false
+          },
+          {
+            "id": "l13",
+            "type": "line",
+            "a": 13,
+            "b": 14,
+            "construction": false
+          },
+          {
+            "id": "l14",
+            "type": "line",
+            "a": 14,
+            "b": 15,
+            "construction": false
+          },
+          {
+            "id": "l15",
+            "type": "line",
+            "a": 15,
+            "b": 16,
+            "construction": false
+          },
+          {
+            "id": "l16",
+            "type": "line",
+            "a": 16,
+            "b": 17,
+            "construction": false
+          },
+          {
+            "id": "l17",
+            "type": "line",
+            "a": 17,
+            "b": 18,
+            "construction": false
+          },
+          {
+            "id": "l18",
+            "type": "line",
+            "a": 18,
+            "b": 19,
+            "construction": false
+          },
+          {
+            "id": "l19",
+            "type": "line",
+            "a": 19,
+            "b": 20,
+            "construction": false
+          },
+          {
+            "id": "l20",
+            "type": "line",
+            "a": 20,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 20,
+          "p": 20
+        }
+      }
+    },
+    {
+      "id": 77,
+      "name": "Extrusie railprofiel",
+      "suppressed": false,
+      "body_names": [
+        "Dummyrailprofiel"
+      ],
+      "param_names": [
+        "d171"
+      ],
+      "type": "extrude",
+      "sketch": 76,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "Profiellengte",
+        "convention": "total_distance",
+        "direction": "symmetric"
+      },
+      "operation": "new_body"
+    },
+    {
+      "id": 78,
+      "name": "Afrondingen bij de sleuflippen",
+      "suppressed": false,
+      "param_names": [
+        "d172"
+      ],
+      "edge_refs": [
+        {
+          "dir": [0.0, 1.0, 0.0],
+          "min": [-6.075000000000001, -12.0, -4.4],
+          "max": [39.5, 12.0, 6.0]
+        },
+        {
+          "dir": [0.0, 1.0, 0.0],
+          "min": [-6.075000000000001, -12.0, -4.4],
+          "max": [39.5, 12.0, 6.0]
+        }
+      ],
+      "edge_names": [
+        "F77:side:l1|F77:side:l20",
+        "F77:side:l10|F77:side:l9"
+      ],
+      "type": "fillet",
+      "edges": [
+        [-6.075, 0.0, 6.0],
+        [10.075, 0.0, 6.0]
+      ],
+      "radius": "1.6",
+      "body": "Dummyrailprofiel",
+      "turn": "auto"
+    },
+    {
+      "id": 79,
+      "name": "Afronding onderzijde railprofiel",
+      "suppressed": false,
+      "param_names": [
+        "d173"
+      ],
+      "edge_refs": [
+        {
+          "dir": [0.0, 1.0, 0.0],
+          "min": [-6.075000000000001, -12.0, -4.4],
+          "max": [39.5, 12.0, 6.0]
+        }
+      ],
+      "edge_names": [
+        "F77:side:l19|F77:side:l20"
+      ],
+      "type": "fillet",
+      "edges": [
+        [-6.075, 0.0, -4.4]
+      ],
+      "radius": "0.9",
+      "body": "Dummyrailprofiel",
+      "turn": "auto"
+    },
+    {
+      "id": 80,
+      "name": "Verdikking rechts van het vaste middenoog",
+      "suppressed": false,
+      "param_names": [
+        "d174",
+        "d175",
+        "d176"
+      ],
+      "participants": [
+        "T-schuifstuk met vast middenoog"
+      ],
+      "type": "box",
+      "corner": [
+        "3.75 mm-ScharnierLinksverschuiving",
+        "-4 mm+ScharnierAxialeSpeling",
+        "RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling"
+      ],
+      "length": "6.5 mm-(3.75 mm-ScharnierLinksverschuiving)",
+      "width": "8 mm-2*ScharnierAxialeSpeling",
+      "height": "(RailBovenzijde+ScharnierHoogte+2 mm)-(RailBovenzijde+ScharnierHoogte-ScharnierBuitenradius-RailSpeling)",
+      "operation": "join"
+    },
+    {
+      "id": 81,
+      "name": "Rechte benchdog Ø20",
+      "suppressed": false,
+      "body_names": [
+        "Benchdog Ø20"
+      ],
+      "param_names": [
+        "d177",
+        "d178"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ProfielBinnenbreedte/2-1.8 mm-BenchdogRailspeling-DogholeDiameter/2",
+        "BenchdogLangspositie",
+        "RailBovenzijde-10.4 mm"
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "DogholeDiameter/2",
+      "height": "27.5 mm",
+      "operation": "new_body"
+    },
+    {
+      "id": 82,
+      "name": "Kop en aanslag van de benchdog",
+      "suppressed": true,
+      "param_names": [
+        "d179",
+        "d180"
+      ],
+      "participants": [
+        "Benchdog Ø20"
+      ],
+      "type": "cylinder",
+      "base": [
+        "2 mm-ProfielBinnenbreedte/2-1.8 mm-BenchdogRailspeling-(DogholeDiameter+2 mm)/2",
+        "BenchdogLangspositie",
+        0.0
+      ],
+      "axis": [0.0, 0.0, 1.0],
+      "radius": "(DogholeDiameter+2 mm) / 2",
+      "height": "RailBovenzijde+1.5 mm",
+      "operation": "join"
+    },
+    {
+      "id": 83,
+      "name": "Onderkant dummyrail op Z = 0",
+      "suppressed": false,
+      "param_names": [
+        "d181",
+        "d182",
+        "d183"
+      ],
+      "type": "move",
+      "bodies": [
+        "T-schuifstuk met vast middenoog",
+        "Scharnierarm links",
+        "Scharnierpen laag Ø3",
+        "Scharnierarm rechts",
+        "Dummyrailprofiel",
+        "Benchdog Ø20"
+      ],
+      "translate": [
+        "0",
+        "0",
+        "10.4 mm-RailBovenzijde"
+      ]
+    }
+  ],
+  "next_id": 84,
+  "next_component_color_index": 0,
+  "visibility": {
+    "hidden_bodies": [
+      "Dogkraag",
+      "Expansiebus",
+      "Trekplaat",
+      "Dogknop M5",
+      "Compacte railbeugel",
+      "Dogarm met vork",
+      "Scharnierpen Ø3",
+      "M4 railstelschroef"
+    ],
+    "hidden_occurrences": [],
+    "hidden_origin": [],
+    "hidden_sketches": [],
+    "shown_sketches": []
+  }
+}

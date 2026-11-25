@@ -4,6 +4,23 @@ This file contains unfinished work only.
 
 ## Now
 
+### #18 / #19 / #20 — HUB75 detailed follow-up
+
+Current dev baseline includes corrected `hub75_improved_v2` via PR #116.
+
+Accepted v2 source contract:
+
+- middle reinforcement pair: (+mount_x,+11) and (-mount_x,-11);
+- locator pins: (+75,+110) and (-75,-110);
+- power connector on corrected +X side;
+- two HUB75 data connector envelopes unchanged;
+- four white orientation marks unchanged;
+- outer envelope and mounting centres unchanged.
+
+Open tracking remains under #18 parent with #19/#20 child issues. Any further work
+must preserve this v2 asymmetric placement baseline and qualify both
+`hub75-panel` and `hub75-screen`.
+
 ### #84 — replace inferred hook geometry with native source
 
 Active on `fix/84-use-native-hook-source`.
@@ -39,7 +56,7 @@ Acceptance:
 
 ### #90 — native MFT corner insert and subassembly update
 
-Active on `feature/90-mft-corner-insert`.
+Active on `fix/90-corner-insert-notch-arc`.
 
 Process the newly supplied `hoek_assembly.sc` / `hoek_assembly.json` as the
 native source for the MFT rail corner subassembly.
@@ -55,10 +72,13 @@ Ownership:
 
 Source-derived corrections:
 
-- bracket lower outside corner becomes the exact R18 quarter sector;
+- bracket walls extend continuously from Z=0 through the 6 mm foot to Z=-33;
+- bracket lower outside corner remains the exact R18 quarter sector;
 - remove the earlier R22 segmented approximation;
-- new insert uses the source R18 outer corner, inner rounded relief and two
-  clip lips with sloped lead-ins;
+- latest v2 insert uses the revised inner notch, enlarged 17.5 mm clip lips,
+  two additional upright C-profile lugs and R0.8 lip-root fillets;
+- inner relief uses the opposite semicircle so the notch hollows toward the
+  outside corner rather than bulging toward the MFT.
 - preserve source assembly placements.
 
 Acceptance:
@@ -111,7 +131,7 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 - work branch selection from matching `build.yml`;
 - incremental `dev` CI from the last successful integration baseline;
 - full `main` CI;
-- Forge v0.16.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
+- Forge v0.18.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
 - generated `build` branch with `dev/` and `main/` scopes;
 - Basic / Components / Sub Assemblies / Assemblies taxonomy;
 - metadata-driven Display / MFT grouping.

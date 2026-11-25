@@ -299,6 +299,45 @@ def verify(
                     f"{variant_id}: page does not link native {key}"
                 )
 
+        drawings = row.get("drawings", [])
+        if not isinstance(drawings, list):
+            raise PagesVerificationError(
+                f"{variant_id}: drawings must be a list"
+            )
+        for drawing in drawings:
+            if (
+                not isinstance(drawing, dict)
+                or not isinstance(drawing.get("name"), str)
+                or not drawing["name"]
+                or not isinstance(drawing.get("drawing"), str)
+                or not drawing["drawing"].startswith("$")
+                or not isinstance(drawing.get("path"), str)
+                or not drawing["path"].endswith(".pdf")
+            ):
+                raise PagesVerificationError(
+                    f"{variant_id}: invalid drawing artifact declaration"
+                )
+            artifact = drawing["path"]
+            pdf = build_scope / artifact
+            _require_file(pdf)
+            if pdf.read_bytes()[:5] != b"%PDF-":
+                raise PagesVerificationError(
+                    f"{variant_id}: drawing artifact is not a PDF: {artifact}"
+                )
+            if f"{blob_base}{artifact}" not in html:
+                raise PagesVerificationError(
+                    f"{variant_id}: page does not link drawing PDF"
+                )
+            if f"{raw_base}{artifact}" not in html:
+                raise PagesVerificationError(
+                    f"{variant_id}: page does not expose drawing PDF"
+                )
+            duplicate = page_root / "drawings" / Path(artifact).name
+            if duplicate.exists():
+                raise PagesVerificationError(
+                    f"{variant_id}: drawing PDF duplicated in Pages: {duplicate}"
+                )
+
         stl = native.get("stl")
         if stl:
             _require_file(build_scope / stl)

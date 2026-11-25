@@ -55,6 +55,7 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(row["commands"], "models/box/solidcraft.json")
             self.assertEqual(row["snapshot"]["camera"], {"yaw": -0.4})
             self.assertEqual(row["native"]["stl"], "models/box/model.stl")
+            self.assertEqual(row["drawings"], [])
             self.assertEqual(row["snapshots"][0]["path"], "models/box/top.png")
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)

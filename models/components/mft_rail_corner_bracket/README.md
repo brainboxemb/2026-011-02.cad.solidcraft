@@ -32,7 +32,7 @@ Until the physical MFT underside and intended hardware are measured:
 
 - bracket wall: 5 mm;
 - load-bearing under-rail foot: 6 mm;
-- rounded outside bumper radius: 22 mm;
+- lower outside support-foot radius: 18 mm (native source);
 - top/bottom triangular gusset leg: 55 mm;
 - rail clearance: Ø8.5 mm;
 - MFT underside screw: Ø5.5 mm;

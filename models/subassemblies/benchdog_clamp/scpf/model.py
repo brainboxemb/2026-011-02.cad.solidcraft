@@ -225,26 +225,26 @@ class BenchdogClampRailContext:
         # These are world (X, Z) points reconstructed from native Sketch 76.
         # Polygon2D(world=True) handles SolidCraft's native XZ sketch-Y sign.
         points = [
-            ("p1", (-half_inside + 0.2, self.rail_top)),
-            ("p2", (-half_opening + 2.0, self.rail_top)),
-            ("p3", (-half_opening + 2.0, self.rail_top - 2.0)),
-            ("p4", (-half_inside + 2.0, self.rail_top - 2.0)),
-            ("p5", (-half_inside + 2.0, self.rail_top - 8.4)),
-            ("p6", (2.0 + half_inside, self.rail_top - 8.4)),
-            ("p7", (2.0 + half_inside, self.rail_top - 2.0)),
-            ("p8", (2.0 + half_opening, self.rail_top - 2.0)),
-            ("p9", (2.0 + half_opening, self.rail_top)),
-            ("p10", (2.0 + half_inside + 1.8, self.rail_top)),
-            ("p11", (2.0 + half_inside + 1.8, self.rail_top - 6.8)),
-            ("p12", (17.1, self.rail_top - 6.8)),
-            ("p13", (17.1, self.rail_top - 7.6)),
-            ("p14", (29.0, self.rail_top - 7.6)),
-            ("p15", (29.0, self.rail_top - 6.8)),
-            ("p16", (39.5, self.rail_top - 6.8)),
-            ("p17", (39.5, self.rail_top - 9.4)),
-            ("p18", (2.0 + half_inside + 1.8, self.rail_top - 9.4)),
-            ("p19", (2.0 + half_inside + 1.8, self.rail_top - 10.4)),
-            ("p20", (-half_inside + 0.2, self.rail_top - 10.4)),
+            ("l1", (-half_inside + 0.2, self.rail_top)),
+            ("l2", (-half_opening + 2.0, self.rail_top)),
+            ("l3", (-half_opening + 2.0, self.rail_top - 2.0)),
+            ("l4", (-half_inside + 2.0, self.rail_top - 2.0)),
+            ("l5", (-half_inside + 2.0, self.rail_top - 8.4)),
+            ("l6", (2.0 + half_inside, self.rail_top - 8.4)),
+            ("l7", (2.0 + half_inside, self.rail_top - 2.0)),
+            ("l8", (2.0 + half_opening, self.rail_top - 2.0)),
+            ("l9", (2.0 + half_opening, self.rail_top)),
+            ("l10", (2.0 + half_inside + 1.8, self.rail_top)),
+            ("l11", (2.0 + half_inside + 1.8, self.rail_top - 6.8)),
+            ("l12", (17.1, self.rail_top - 6.8)),
+            ("l13", (17.1, self.rail_top - 7.6)),
+            ("l14", (29.0, self.rail_top - 7.6)),
+            ("l15", (29.0, self.rail_top - 6.8)),
+            ("l16", (39.5, self.rail_top - 6.8)),
+            ("l17", (39.5, self.rail_top - 9.4)),
+            ("l18", (2.0 + half_inside + 1.8, self.rail_top - 9.4)),
+            ("l19", (2.0 + half_inside + 1.8, self.rail_top - 10.4)),
+            ("l20", (-half_inside + 0.2, self.rail_top - 10.4)),
         ]
 
         with Sketch(name="Dummy rail profile", plane="XZ") as sketch:
@@ -253,14 +253,14 @@ class BenchdogClampRailContext:
         rail = sketch.extrude(self.profile_length, sym=True)
 
         # Native source features 78/79 round the extrusion-axis edges at
-        # profile vertices p1, p10 and p20.
+        # source curve junctions l1/l20, l10/l9 and l19/l20.
         rail = rail.fillet(
             self.SLOT_LIP_RADIUS,
-            edges=Edges.from_vertices("p1", "p10"),
+            edges=Edges.from_vertices("l1", "p10"),
         )
         rail = rail.fillet(
             self.LOWER_RADIUS,
-            edges=Edges.from_vertices("p20"),
+            edges=Edges.from_vertices("l20"),
         )
         return rail
 

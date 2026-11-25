@@ -23,7 +23,7 @@ snapshots:
   - name: side.png
     camera:
       target: [10, 0, 5]
-      yaw: 1.5708
+      yaw: 0
       pitch: 0
       distance: 55
       fov: 0

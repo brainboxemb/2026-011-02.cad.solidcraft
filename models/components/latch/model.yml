@@ -3,21 +3,20 @@ section: components
 group: display
 priority: 30
 title: Latch
-tagline: Native sheet-metal over-centre latch reconstruction from the preserved SolidCraft source
+tagline: Source-faithful native sheet-metal over-centre latch
 description: >
   Generic latch component reconstructed from the original native SolidCraft
   design. The authoritative source is preserved at reference/latch.sc. The
   mechanism combines a 2 mm mounting foot, 1.6 mm operating handle, 2 mm pull
-  bail, 0.7 mm locking spring/lip, hinge pins and revolved rivets. It remains
-  work in progress until the native sheet and revolve history is reproduced
-  without fused-solid approximations.
+  bail, 0.7 mm locking spring/lip, hinge pins and revolved rivets. The released
+  Forge sheet-metal and revolve primitives reproduce the native feature
+  history without fused-solid approximations.
 parameters: 73 mm overall; 43 × 16.5 × 2 mm mounting foot; Ø4.2 mounting holes; 16.5 mm handle; 23.5 mm pull bail; Ø3.8/Ø4 hinge and bail pins
 warning:
-  title: WIP — native reconstruction
+  title: Native source reference
   body: >
-    reference/latch.sc is the geometry/history source of truth. Do not replace
-    sheet-metal folds, sheet contour/flange features or revolved rivets with
-    approximate fused solids.
+    reference/latch.sc remains the geometry/history source of truth for this
+    qualified reconstruction.
 stages:
   - Reference — preserve byte-identical native SolidCraft latch.sc
   - Mounting foot — 2.0 mm sheet, R0.6, K0.40
@@ -28,7 +27,7 @@ stages:
 
 extra_views:
   title: Native latch review
-  note: These durable views expose the source-derived sheet folds, pivot geometry and locking spring.
+  note: These durable views verify the source-derived sheet folds, pivot geometry and locking spring against the native reference.
   verified_only: true
   items:
     - kind: build

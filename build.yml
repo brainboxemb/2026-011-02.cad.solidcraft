@@ -1,13 +1,11 @@
 schema: 1
-branch: feature/simple-mft-right-extension-guide-shift
+branch: feature/mft-rail-corner-bracket
 
 modules: []
 models:
-  - simple-mft
   - mounting-rail-m8
-  - guide-rail
-  - flex-bench-dog
-  - simple-mft-assembly
+  - mft-rail-corner-bracket
+  - mft-rail-corner-assembly
 tasks:
   - test
   - build

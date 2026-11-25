@@ -4,36 +4,38 @@ This file contains unfinished work only.
 
 ## Now
 
-### #76 — bracket STL and grouped category views
+### #79 — provisional 180-degree display hinge
 
-Active on `feature/76-grouped-category-views-stl`.
+Active on `feature/79-display-hinge`.
 
-Follow up the accepted MFT corner subassembly and catalog taxonomy with two
-presentation/output improvements:
+Create the first buildable hinge component for the wooden HUB75 display
+enclosure without changing Forge.
 
-- generate a durable STL for `mft-rail-corner-bracket`;
-- render `group:` metadata as real grouped sections on the individual
-  Components, Sub Assemblies and Assemblies pages.
+Direction:
 
-Component ownership groups:
-
-- Display: `corner-bracket`, `hub75-panel`;
-- MFT: `simple-mft`, `flex-bench-dog`, both `guide-rail` variants,
-  `mounting-rail-m8`, `mft-rail-corner-bracket`.
+- owner: `models/components/display_hinge`;
+- presentation: `Components / Display`;
+- conventional external 180-degree hinge first;
+- two printed PETG leaves with alternating knuckles;
+- removable 4 mm metal pin;
+- two provisional mounting holes per leaf;
+- 36 mm hinge length used only as scale reference from the existing hinge
+  concept survey;
+- concealed multi-link/spider geometry remains a later variant, not a fake
+  approximation in this component.
 
 Acceptance:
 
-1. bracket `ci.yml` declares `stl` and the durable build publishes
-   `model.stl`;
-2. the bracket model page exposes STL view/download links from the build plan;
-3. category pages render group headings structurally from generic metadata;
-4. one shared Hugo partial owns grouped model rendering for catalog/category
-   pages;
-5. ungrouped models remain supported under `Other` when a section also has
-   groups;
-6. Pages verification requires structural group markup, so a card label alone
-   cannot satisfy the grouping contract;
-7. no Hugo branch contains model-specific names.
+1. Forge v0.16.0 compiles the hinge with native Box/Cylinder CSG only;
+2. native SolidCraft 0.49.0 replay succeeds on runtime v0.3.6;
+3. the two leaves remain distinct around one shared pin with explicit axial
+   and radial clearances;
+4. Pages publishes the owner under Components / Display;
+5. top and barrel-end review views expose mounting holes, knuckle alternation
+   and pin clearance;
+6. dimensions and fastener choices remain marked provisional until physical
+   enclosure fit review;
+7. Forge itself is not modified as part of this work.
 
 ## Mandatory integration rule
 

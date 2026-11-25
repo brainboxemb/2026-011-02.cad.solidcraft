@@ -1,0 +1,42 @@
+purpose: [example]
+section: components
+group: display
+priority: 30
+title: Display Hinge — 180° prototype
+tagline: Provisional two-leaf PETG hinge with alternating knuckles and a removable 4 mm metal pin
+description: >
+  First buildable hinge component for the wooden HUB75 display enclosure.
+  Two printed leaves use five alternating native cylindrical knuckles around
+  one removable 4 mm metal pin. The default view is fully open at 180 degrees.
+  This deliberately establishes a conventional mounting and pivot interface
+  before attempting the more complex concealed multi-link/spider concepts.
+  Dimensions and clearances are provisional until tested against the physical
+  enclosure.
+parameters: 36 mm hinge length; 24 mm leaf reach; 4 mm leaf thickness; Ø10 barrel; Ø4 pin; 0.30 mm radial pin clearance; 0.40 mm axial knuckle clearance; 4 × Ø4.5 mounting holes
+warning:
+  title: PROVISIONAL — fit and fasteners not yet qualified
+  body: >
+    The 36 mm scale comes from the earlier hinge concept survey, not from a
+    measured production hinge. Leaf reach, mounting-hole layout, print
+    clearances and fasteners still need physical enclosure validation.
+stages:
+  - Leaf A — full mounting plate plus knuckles 1, 3 and 5
+  - Leaf B — opposing mounting plate plus knuckles 2 and 4
+  - Knuckle bridges — local overlap connects each owned barrel segment to its leaf
+  - Pin bore — continuous Ø4.6 clearance bore through all knuckles
+  - Mounting — two Ø4.5 through holes per leaf on an 18 mm pitch
+  - Pin — separate Ø4 × 38 mm steel reference pin
+  - Material — dark PETG leaves with a steel pin
+extra_views:
+  title: Pivot and mounting review
+  note: These views qualify the alternating knuckle stack and the provisional mounting-hole layout.
+  verified_only: true
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the fully open display hinge
+      caption: Top — two leaves and alternating knuckles
+    - kind: build
+      src: barrel-end.png
+      alt: End view along the hinge pin axis
+      caption: Barrel end — pin and radial clearance

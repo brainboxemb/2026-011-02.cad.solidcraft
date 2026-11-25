@@ -9,8 +9,7 @@ tutorial result.
 
 [Open the original/reference tutorial on YouTube](https://www.youtube.com/watch?v=u6nD9K8C_T0)
 
-The linked YouTube medium-preview image is the compact 320 px reference preview
-for this page.
+The thumbnail is stored locally as `youtube-u6nd9k8c_t0-w320.webp` using the shared YouTube-image naming convention; the image itself links to the original video.
 
 ## Lower mounting screw access
 

@@ -1,0 +1,28 @@
+purpose: [example]
+section: components
+priority: 35
+title: MFT Rail Corner Bracket
+tagline: Printable 90° bracket for two 27/18 Mounting Rail M8 profiles
+description: >
+  Prototype monolithic corner bracket for the Simple MFT support frame. Two
+  perpendicular 75 mm arms bolt through the existing round rail perforations at
+  12.5 mm and 62.5 mm from each rail end. Upper and lower triangular gussets
+  stiffen the corner while keeping both C-profile openings outside and
+  accessible. The upper gusset includes one provisional countersunk fixing hole
+  into the underside of the MFT worktop.
+parameters: provisional 75 mm arms; 5 mm walls/gussets; 4 × Ø8.5 rail holes; 1 × Ø5.5 / Ø10.5 countersunk MFT underside fixing
+stages:
+  - Arms — two perpendicular 75 × 27 × 5 mm rail-back flanges
+  - Rail fixing — two Ø8.5 holes per arm aligned to the 12.5 / 62.5 mm round rail perforations
+  - Top gusset — 55 mm triangular plate flush with the MFT underside at Z=0
+  - MFT fixing — one provisional Ø5.5 through / Ø10.5 countersunk screw seat
+  - Bottom gusset — matching triangular plate resisting corner racking
+  - Material — dark PETG prototype presentation
+extra_views:
+  title: Prototype corner review
+  note: Dimensions other than the existing rail-hole positions are provisional until physical measurement.
+  items:
+    - kind: build
+      src: underside.png
+      alt: Underside view of the MFT rail corner bracket
+      caption: Underside — lower gusset and rail fixing holes

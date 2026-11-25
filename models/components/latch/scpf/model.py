@@ -180,6 +180,7 @@ class LatchMountingFoot:
             contour.line_to((15.5, 3.8))
             contour.line_to((15.5, -3.8))
             contour.line_to((25.5, -3.8))
+            contour.line_to((27.0, -8.25))
             contour.close()
 
         foot = blank.sheet_metal(
@@ -238,6 +239,7 @@ class LatchMountingFoot:
             contour.line_to((26.5, -7.3))
             contour.line_to((26.5, -13.3))
             contour.line_to((14.5, -13.3))
+            contour.line_to((14.5, -7.3))
             contour.close()
 
         foot = foot - trim.extrude(14)
@@ -298,6 +300,7 @@ class LatchHandle:
             contour.line_to((26.3, 17.76902634326414))
             contour.line_to((57.0, 17.76902634326414))
             contour.line_to((73.0, 8.169026343264141))
+            contour.line_to((73.0, -8.169026343264141))
             contour.close()
 
         handle = blank.sheet_metal(

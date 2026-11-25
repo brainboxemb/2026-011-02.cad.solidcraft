@@ -1,7 +1,7 @@
 schema: 1
-branch: chore/109-reconcile-plan
+branch: feature/126-wall-hook-improvements
 
 modules: []
-models: []
+models: [wall-hook]
 tasks:
   - test

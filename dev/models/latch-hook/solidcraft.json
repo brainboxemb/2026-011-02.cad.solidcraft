@@ -27,14 +27,6 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "hole_pitch",
-        "expression": "14",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "thickness",
         "expression": "2",
         "unit": "mm"
@@ -65,6 +57,14 @@
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_pitch",
+        "expression": "14",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "sheet.manage_rules",
       "params": {
         "name": "Latch hook 2 mm",
@@ -82,15 +82,53 @@
       }
     },
     {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          5.0,
+          7.0
+        ],
+        "start": [
+          "hole_x",
+          "overall_width / 2"
+        ],
+        "end": [
+          9.548736462093864,
+          9.075812274368232
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          12.0,
+          10.194444444444445
+        ],
+        "start": [
+          9.548736462093864,
+          9.075812274368232
+        ],
+        "end": [
+          12.0,
+          7.5
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
       "command": "sketch.line",
       "params": {
         "points": [
           [
-            "hole_x",
-            "overall_width / 2"
+            12.0,
+            7.5
           ],
           [
-            12.0,
+            25.099654873300988,
             "neck_width / 2"
           ]
         ],
@@ -102,27 +140,11 @@
       "params": {
         "points": [
           [
-            12.0,
+            25.099654873300988,
             "neck_width / 2"
           ],
           [
-            25.1,
-            "neck_width / 2"
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            25.1,
-            "neck_width / 2"
-          ],
-          [
-            25.1,
+            25.099654873300988,
             "-(neck_width / 2)"
           ]
         ],
@@ -134,28 +156,12 @@
       "params": {
         "points": [
           [
-            25.1,
+            25.099654873300988,
             "-(neck_width / 2)"
           ],
           [
             12.0,
-            "-(neck_width / 2)"
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            12.0,
-            "-(neck_width / 2)"
-          ],
-          [
-            "hole_x",
-            "-(overall_width / 2)"
+            -7.5
           ]
         ],
         "connect": true
@@ -165,16 +171,54 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          "hole_x",
-          "-(hole_pitch / 2)"
+          12.0,
+          -10.194444444444445
         ],
         "start": [
-          "hole_x",
-          "-(overall_width / 2)"
+          12.0,
+          -7.5
+        ],
+        "end": [
+          9.548736462093864,
+          -9.075812274368232
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          5.0,
+          -7.0
+        ],
+        "start": [
+          9.548736462093864,
+          -9.075812274368232
+        ],
+        "end": [
+          5.0,
+          -12.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          5.0,
+          -7.0
+        ],
+        "start": [
+          5.0,
+          -12.0
         ],
         "end": [
           0.0,
-          "-(hole_pitch / 2)"
+          -7.0
         ],
         "clockwise": true,
         "connect": true
@@ -186,11 +230,11 @@
         "points": [
           [
             0.0,
-            "-(hole_pitch / 2)"
+            -7.0
           ],
           [
             0.0,
-            "hole_pitch / 2"
+            7.0
           ]
         ],
         "connect": true
@@ -200,12 +244,12 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          "hole_x",
-          "hole_pitch / 2"
+          5.0,
+          7.0
         ],
         "start": [
           0.0,
-          "hole_pitch / 2"
+          7.0
         ],
         "end": [
           "hole_x",
@@ -269,7 +313,7 @@
     {
       "command": "sheet.fold",
       "params": {
-        "angle": 147.414,
+        "angle": 147.4141894959211,
         "position": "centerline",
         "flip": false,
         "body": "LatchHook",

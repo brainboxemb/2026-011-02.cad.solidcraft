@@ -1,11 +1,12 @@
 schema: 1
-branch: chore/73-forge-v0.16-release
+branch: feature/62-mft-rail-corner-subassembly
 
 modules:
-  - ci
-  - build
+  - pages
 models:
-  - simple-mft-assembly
+  - mounting-rail-m8
+  - mft-rail-corner-bracket
+  - mft-rail-corner-assembly
 tasks:
   - test
   - build

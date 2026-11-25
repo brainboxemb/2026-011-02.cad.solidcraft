@@ -49,20 +49,30 @@ a durable native technical drawing:
 - retain explicit A3 support through
   `template="iso-a3-part"` for future complex models.
 
-### #102 — correct Wall Hook mounting-hole axis
+### #102 — Wall Hook XZ orientation and Forge 0.18 face chamfers
 
-Active on `fix/102-wall-hook-rear-holes`.
+Active on `fix/102-wall-hook-xz-forge-018`.
 
-Move the two confirmed Ø4.2 screw holes from the 15 mm side/profile faces to
-the 6 mm rear mounting spine. Preserve the existing vertical centres and 1 mm
-hole-edge chamfers.
+Adopt Forge v0.18.0 and rebuild Wall Hook on the correct world axes:
+
+- author the side profile in XZ;
+- extrude 15 mm symmetrically along Y;
+- treat the broad extrusion end faces as FRONT/BACK;
+- keep the 6 mm rear mounting spine along X;
+- drill both Ø4.2 screw holes along X at Y=0;
+- keep hole centres 10 mm from the top and 17 mm from the bottom;
+- keep 1.0 mm chamfers on both sides of each screw hole;
+- apply a native 1.5 mm chamfer to the complete FRONT/BACK face boundaries with
+  `Edges.from_faces(Faces.FRONT, Faces.BACK)`.
 
 Acceptance:
 
-1. both hole axes are perpendicular to the rear mounting wall;
-2. holes are centred across the 15 mm hook width;
-3. the cut depth is limited to the 6 mm rear spine and does not reach the diagonal web;
-4. Wall Hook qualifies and republishes on dev Pages.
+1. repository qualification uses released Forge v0.18.0;
+2. Wall Hook source/profile plane is XZ and extrusion axis is Y;
+3. both mounting holes pass only through the 6 mm rear spine and are centred at Y=0;
+4. FRONT/BACK boundary chamfer is authored semantically, without XYZ edge picks;
+5. screw-hole chamfers remain independently 1.0 mm;
+6. Wall Hook qualifies and republishes on dev Pages.
 
 ### #18 / #19 / #20 — improved native HUB75 panel
 

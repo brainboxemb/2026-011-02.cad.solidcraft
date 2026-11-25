@@ -54,6 +54,10 @@ class BuildPlanTests(unittest.TestCase):
                 namespace="dev",
             )
             row = plan["models"][0]
+            self.assertEqual(
+                plan["forge"]["commit"],
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            )
             self.assertEqual(row["id"], "box")
             self.assertEqual(row["owner"], "box")
             self.assertEqual(row["commands"], "models/box/solidcraft.json")

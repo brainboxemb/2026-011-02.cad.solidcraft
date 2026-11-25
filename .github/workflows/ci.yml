@@ -39,6 +39,20 @@ jobs:
           PYTHONPATH: modules/ci/src
         run: python -m cad_model_ci
 
+      - name: Upload #62 corner review renders
+        if: github.head_ref == 'feature/mft-rail-corner-bracket'
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue-62-corner-review
+          path: |
+            build/dev/models/mft-rail-corner-bracket/model.png
+            build/dev/models/mft-rail-corner-bracket/underside.png
+            build/dev/models/mft-rail-corner-assembly/model.png
+            build/dev/models/mft-rail-corner-assembly/top.png
+            build/dev/models/mft-rail-corner-assembly/outside.png
+          if-no-files-found: error
+          retention-days: 3
+
   build:
     name: build
     if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')

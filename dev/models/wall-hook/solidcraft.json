@@ -78,7 +78,7 @@
       "command": "parameters.add",
       "params": {
         "name": "tool_access_diameter",
-        "expression": "10",
+        "expression": "8",
         "unit": "mm"
       }
     },

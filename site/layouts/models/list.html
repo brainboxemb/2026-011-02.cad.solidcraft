@@ -16,42 +16,7 @@
     {{ if gt (len $models) 0 }}
       <section class="cad-section cad-catalog-section">
         <h2>{{ index $sectionDef "title" }}</h2>
-
-        {{ $grouped := where $models "Params.cadGroup" "!=" nil }}
-        {{ if gt (len $grouped) 0 }}
-          {{ range $groupDef := index $catalog "groups" }}
-            {{ $groupKey := index $groupDef "id" }}
-            {{ $groupModels := where $models "Params.cadGroup" $groupKey }}
-            {{ if gt (len $groupModels) 0 }}
-              <section class="cad-catalog-group">
-                <h3>{{ index $groupDef "title" }}</h3>
-                <div class="cad-model-grid">
-                  {{ range sort $groupModels "Params.model.priority" }}
-                    {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
-                  {{ end }}
-                </div>
-              </section>
-            {{ end }}
-          {{ end }}
-
-          {{ $ungrouped := where $models "Params.cadGroup" nil }}
-          {{ if gt (len $ungrouped) 0 }}
-            <section class="cad-catalog-group">
-              <h3>Other</h3>
-              <div class="cad-model-grid">
-                {{ range sort $ungrouped "Params.model.priority" }}
-                  {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
-                {{ end }}
-              </div>
-            </section>
-          {{ end }}
-        {{ else }}
-          <div class="cad-model-grid">
-            {{ range sort $models "Params.model.priority" }}
-              {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
-            {{ end }}
-          </div>
-        {{ end }}
+        {{ partial "cad/model-groups.html" (dict "models" $models "showSection" true "headingLevel" 3) }}
       </section>
     {{ end }}
   {{ end }}

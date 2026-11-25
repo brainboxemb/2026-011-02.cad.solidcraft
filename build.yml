@@ -1,10 +1,9 @@
 schema: 1
-branch: feature/62-mft-rail-corner-subassembly
+branch: feature/76-grouped-category-views-stl
 
 modules:
   - pages
 models:
-  - mounting-rail-m8
   - mft-rail-corner-bracket
   - mft-rail-corner-assembly
 tasks:

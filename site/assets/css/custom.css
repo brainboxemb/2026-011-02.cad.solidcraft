@@ -1136,6 +1136,7 @@ html:not(.dark) .hextra-search-trigger{font-size:.9rem}
 
 
 .cad-catalog-group{margin:1.1rem 0 1.8rem}
+.cad-catalog-group>h2,
 .cad-catalog-group>h3{
   margin:0 0 .65rem;
   color:var(--cad-muted);

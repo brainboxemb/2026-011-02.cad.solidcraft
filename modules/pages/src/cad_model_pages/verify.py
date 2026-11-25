@@ -216,8 +216,17 @@ def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
             )
 
         if group is not None:
+            group_html = category_html[category]
+            group_markers = (
+                f'data-cad-group="{group}"',
+                f"data-cad-group={group}",
+            )
+            if not any(marker in group_html for marker in group_markers):
+                raise PagesVerificationError(
+                    f"{category}: missing structural group {group!r}"
+                )
             group_title = group_by_id[group]["title"]
-            if group_title not in category_html[category]:
+            if group_title not in group_html:
                 raise PagesVerificationError(
                     f"{category}: missing group heading {group_title!r}"
                 )

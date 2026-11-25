@@ -6,6 +6,7 @@ watch:
   - .github/workflows/ci.yml
   - site/**
   - models/**/model.yml
+  - models/**/ci.yml
   - models/**/page.md
   - models/**/*.svg
   - models/**/*.png

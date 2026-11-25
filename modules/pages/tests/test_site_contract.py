@@ -55,6 +55,14 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("simple-box", page)
         self.assertNotIn("simple-mft", page)
 
+    def test_rich_text_links_are_visually_distinct(self):
+        css = (SITE / "assets/css/custom.css").read_text(encoding="utf-8")
+        self.assertIn(".cad-rich-text a {", css)
+        self.assertIn("text-decoration: underline;", css)
+        self.assertIn("text-underline-offset:", css)
+        self.assertIn(".cad-rich-text a:hover", css)
+        self.assertIn(".cad-rich-text a:focus-visible", css)
+
     def test_catalog_layout_uses_configured_sections_groups_and_navigation(self):
         home = (SITE / "layouts/home.html").read_text(encoding="utf-8")
         catalog = (SITE / "layouts/models/list.html").read_text(encoding="utf-8")

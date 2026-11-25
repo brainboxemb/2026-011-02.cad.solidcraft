@@ -60,7 +60,8 @@ jobs:
           --source-root .
           --build-scope prepared-build/$PAGES_SCOPE
           --destination generated-site
-          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
+          --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          --source-repository "${{ github.repository }}"
           --source-ref "${{ github.event.pull_request.head.sha }}"
 
   assemble:
@@ -116,7 +117,8 @@ jobs:
           --source-root source-main
           --build-scope prepared-build/main
           --destination generated-site
-          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/"
+          --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          --source-repository "${{ github.repository }}"
           --source-ref main
 
       - name: Build development site
@@ -127,7 +129,8 @@ jobs:
           --source-root source-dev
           --build-scope prepared-build/dev
           --destination generated-site/dev
-          --base-url "https://brainboxemb.github.io/2026-011-02.cad.solidcraft.NEW/dev/"
+          --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dev/"
+          --source-repository "${{ github.repository }}"
           --source-ref dev
 
       - name: Publish Pages branch

@@ -3,30 +3,44 @@
 ## Stable configuration
 
 Root `ci.yml` defines permanent source branches, the generated build branch,
-Forge/SolidCraft versions and repository roots. Forge is selected by its
-released Git tag, for example `version: v0.15.0`. Local bootstrap and CI use
-that same release version.
+Forge/SolidCraft pins and repository roots.
+
+The current pre-release Forge transition is deliberately pinned by exact
+revision:
+
+```yaml
+forge:
+  repository: brainboxemb/lib.py.solidcraft.forge
+  version: 0.16.0
+  commit: 021dc78a32d99d31f16a76efc9d036855114df0c
+```
+
+`version` is the expected SCPF package version; `commit` is the exact Git
+revision built by local bootstrap and CI. This is a temporary edge contract
+until the canonical Forge release is available.
 
 ## Local bootstrap
 
-Run the repository bootstrap after cloning or whenever the pinned Forge release
-changes:
+Run the repository bootstrap after cloning or whenever the pinned Forge
+revision changes:
 
 ```powershell
 .\bootstrap.ps1
 ```
 
-The bootstrap reads `dependencies.forge.version` from root `ci.yml`,
-installs SCPF directly from that release tag and checks the installed package
-version plus the SolidCraft version qualified by that Forge release.
+The bootstrap reads `dependencies.forge.version` and
+`dependencies.forge.commit` from root `ci.yml`, installs SCPF from exactly
+that commit's `cadlib/` package, and checks both the installed package version
+and the SolidCraft version qualified by that Forge revision.
 
 After bootstrap, models can be sent directly to an open SolidCraft GUI:
 
 ```powershell
-python -m scpf models/advanced/simple_mft_assembly/scpf/model.py --connect --new
+python -m scpf models/assemblies/simple_mft_assembly/scpf/model.py --connect --new
 ```
 
-No Forge SHA is part of the normal model-project workflow.
+After a canonical Forge release exists, this temporary SHA pin can return to
+the normal release-tag dependency contract.
 
 ## Branch integration
 
@@ -185,7 +199,7 @@ Generated artifacts remain below root `build/`.
 
 Root `ci.yml` pins the complete qualified CAD toolchain:
 
-- Forge repository and released version tag;
+- Forge repository, expected package version and exact source commit;
 - released SolidCraft runtime image and exact SolidCraft version.
 
 Model-local `ci.yml` owns build execution. A minimal processed model declares

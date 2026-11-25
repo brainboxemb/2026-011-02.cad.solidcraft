@@ -114,6 +114,7 @@ def resolve_plan(
         "forge": {
             "repository": project.forge.repository,
             "version": project.forge.version,
+            "commit": project.forge.commit,
         },
         "solidcraft": {
             "image": project.solidcraft.image,

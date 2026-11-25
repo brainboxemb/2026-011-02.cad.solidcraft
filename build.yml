@@ -1,14 +1,12 @@
 schema: 1
-branch: feature/catalog-subassemblies-assemblies
+branch: chore/71-forge-main-sha
 
 modules:
   - ci
-  - pages
+  - build
 models:
-  - hub75-screen
+  - mounting-rail-m8
   - simple-mft-assembly
-  - hub75-wood-frame
-  - hub75-display2
 tasks:
   - test
   - build

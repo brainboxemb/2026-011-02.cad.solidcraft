@@ -256,7 +256,7 @@ class BenchdogClampRailContext:
         # source curve junctions l1/l20, l10/l9 and l19/l20.
         rail = rail.fillet(
             self.SLOT_LIP_RADIUS,
-            edges=Edges.from_vertices("l1", "p10"),
+            edges=Edges.from_vertices("l1", "l10"),
         )
         rail = rail.fillet(
             self.LOWER_RADIUS,

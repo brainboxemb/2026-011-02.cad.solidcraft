@@ -1,13 +1,14 @@
 schema: 1
-branch: feature/simple-mft-right-extension-guide-shift
+branch: feature/catalog-subassemblies-assemblies
 
-modules: []
+modules:
+  - ci
+  - pages
 models:
-  - simple-mft
-  - mounting-rail-m8
-  - guide-rail
-  - flex-bench-dog
+  - hub75-screen
   - simple-mft-assembly
+  - hub75-wood-frame
+  - hub75-display2
 tasks:
   - test
   - build

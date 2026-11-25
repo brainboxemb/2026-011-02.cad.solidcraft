@@ -16,7 +16,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('source = "../prepared-build/main"', mounts)
         self.assertIn('target = "assets/build"', mounts)
 
-    def test_adapter_joins_model_ci_and_build_plan_without_model_names(self):
+    def test_adapter_joins_model_ci_build_plan_and_catalog_without_model_names(self):
         adapter = (SITE / "content/models/_content.gotmpl").read_text(
             encoding="utf-8"
         )
@@ -26,10 +26,11 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('index $ci "variants"', adapter)
         self.assertIn('where $rows "id" $slug', adapter)
         self.assertIn("hugo.Data.cad.model_history", adapter)
+        self.assertIn("hugo.Data.cad.catalog", adapter)
         self.assertIn('"dates" (dict "lastmod" $lastmod)', adapter)
-        self.assertIn('"basic" "Basic Models"', adapter)
-        self.assertIn('"components" "Components"', adapter)
-        self.assertIn('"advanced" "Advanced Models"', adapter)
+        self.assertIn('"cadGroup" $group', adapter)
+        self.assertIn('unknown catalog section', adapter)
+        self.assertIn('unknown catalog group', adapter)
         self.assertNotIn('dict "source" (printf "build/models/', adapter)
         self.assertNotIn('kind "build"', adapter)
         self.assertNotIn("simple-box", adapter)
@@ -50,7 +51,7 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn("simple-box", page)
         self.assertNotIn("simple-mft", page)
 
-    def test_catalog_layout_restores_recent_and_grouped_navigation(self):
+    def test_catalog_layout_uses_configured_sections_groups_and_navigation(self):
         home = (SITE / "layouts/home.html").read_text(encoding="utf-8")
         catalog = (SITE / "layouts/models/list.html").read_text(encoding="utf-8")
         card = (SITE / "layouts/partials/cad/model-card.html").read_text(
@@ -59,14 +60,30 @@ class SiteContractTests(unittest.TestCase):
         menu = (SITE / "config/_default/menus.en.toml").read_text(
             encoding="utf-8"
         )
+        taxonomy = (SITE / "data/cad/catalog.yml").read_text(encoding="utf-8")
 
         self.assertIn("Recently updated models", home)
         self.assertIn("ByLastmod.Reverse", home)
         self.assertIn("showUpdated", home)
-        for section in ("basic", "components", "advanced"):
-            self.assertIn(f'"{section}"', catalog)
-        for name in ("Models", "Basic", "Components", "Advanced"):
+        self.assertIn("hugo.Data.cad.catalog", catalog)
+        self.assertIn("Params.cadGroup", catalog)
+        self.assertIn("cad-catalog-group", catalog)
+        self.assertIn("hugo.Data.cad.catalog", card)
+        self.assertIn("cadGroup", card)
+
+        for section in ("basic", "components", "subassemblies", "assemblies"):
+            self.assertIn(f"id: {section}", taxonomy)
+        for group in ("display", "mft"):
+            self.assertIn(f"id: {group}", taxonomy)
+        for name in (
+            "Models",
+            "Basic",
+            "Components",
+            "Sub Assemblies",
+            "Assemblies",
+        ):
             self.assertIn(f'name = "{name}"', menu)
+        self.assertNotIn('name = "Advanced"', menu)
         self.assertIn("Updated {{ $page.Lastmod.Format", card)
 
     def test_pages_build_passes_durable_scope_to_hugo(self):

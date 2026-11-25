@@ -14,18 +14,23 @@ pageRef = "/models/components"
 weight = 30
 
 [[main]]
-name = "Advanced"
-pageRef = "/models/advanced"
+name = "Sub Assemblies"
+pageRef = "/models/subassemblies"
 weight = 40
 
 [[main]]
-name = "Search"
+name = "Assemblies"
+pageRef = "/models/assemblies"
 weight = 50
+
+[[main]]
+name = "Search"
+weight = 60
 [main.params]
 type = "search"
 
 [[main]]
 name = "Theme"
-weight = 60
+weight = 70
 [main.params]
 type = "theme-toggle"

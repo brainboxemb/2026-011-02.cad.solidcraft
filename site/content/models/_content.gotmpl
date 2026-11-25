@@ -1,7 +1,8 @@
 {{/*
 Generic model page adapter.
 
-- model.yml owns presentation metadata;
+- model.yml owns presentation metadata, including section/group taxonomy;
+- site/data/cad/catalog.yml owns taxonomy labels/order;
 - ci.yml owns build/source identity;
 - prepared-build/main is mounted read-only so Pages can inspect the accepted
   build-plan and command JSON during rendering;
@@ -26,17 +27,19 @@ Generic model page adapter.
 {{ end }}
 {{ $historyRoots := index $history "roots" }}
 
-{{ $categoryTitles := dict
-  "basic" "Basic Models"
-  "components" "Components"
-  "advanced" "Advanced Models"
-}}
+{{ $catalog := hugo.Data.cad.catalog }}
+{{ if not $catalog }}
+  {{ errorf "missing site data/cad/catalog.yml" }}
+{{ end }}
+{{ $sectionDefs := index $catalog "sections" }}
+{{ $groupDefs := index $catalog "groups" }}
 
-{{ range $section := slice "basic" "components" "advanced" }}
+{{ range $sectionDef := $sectionDefs }}
+  {{ $section := index $sectionDef "id" }}
   {{ $.AddPage (dict
     "kind" "page"
     "path" $section
-    "title" (index $categoryTitles $section)
+    "title" (index $sectionDef "page_title")
     "params" (dict "categoryIndex" true "cadSection" $section)
   ) }}
 {{ end }}
@@ -50,6 +53,20 @@ Generic model page adapter.
     {{ errorf "%s: missing ci.yml" $modelRoot }}
   {{ end }}
   {{ $ci := $ciResource | transform.Unmarshal }}
+
+  {{ $section := index $rootMeta "section" }}
+  {{ $sectionMatches := where $sectionDefs "id" $section }}
+  {{ if ne (len $sectionMatches) 1 }}
+    {{ errorf "%s: unknown catalog section %q" $modelRoot $section }}
+  {{ end }}
+
+  {{ $group := index $rootMeta "group" }}
+  {{ with $group }}
+    {{ $groupMatches := where $groupDefs "id" . }}
+    {{ if ne (len $groupMatches) 1 }}
+      {{ errorf "%s: unknown catalog group %q" $modelRoot . }}
+    {{ end }}
+  {{ end }}
 
   {{ $lastmodRaw := index $historyRoots $modelRoot }}
   {{ if not $lastmodRaw }}
@@ -92,7 +109,6 @@ Generic model page adapter.
       {{ errorf "%s: expected exactly one durable build row, found %d" $slug (len $matches) }}
     {{ end }}
     {{ $build := index $matches 0 }}
-    {{ $section := index $rootMeta "section" }}
 
     {{ $.AddPage (dict
       "content" (dict
@@ -106,6 +122,7 @@ Generic model page adapter.
       "params" (dict
         "model" $model
         "cadSection" $section
+        "cadGroup" $group
         "cadRoot" $modelRoot
         "cadSlug" $slug
         "sourcePath" $sourcePath

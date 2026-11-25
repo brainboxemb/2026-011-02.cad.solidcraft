@@ -24,16 +24,36 @@ class PagesVerifyTests(unittest.TestCase):
                 '[params]\ncadSourceRepository = "example/cad"\n',
                 encoding="utf-8",
             )
+            catalog = repo / "site/data/cad"
+            catalog.mkdir(parents=True)
+            (catalog / "catalog.yml").write_text(
+                """sections:
+  - id: basic
+    title: Basic
+  - id: components
+    title: Components
+  - id: subassemblies
+    title: Sub Assemblies
+  - id: assemblies
+    title: Assemblies
+groups:
+  - id: display
+    title: Display
+  - id: mft
+    title: MFT
+""",
+                encoding="utf-8",
+            )
 
             (site / "index.html").write_text(
                 "home · Recently updated models",
                 encoding="utf-8",
             )
             (site / "models/index.html").write_text(
-                "Basic Models · Components · Advanced Models",
+                "Basic · Components · Sub Assemblies · Assemblies",
                 encoding="utf-8",
             )
-            for category in ("basic", "components", "advanced"):
+            for category in ("basic", "components", "subassemblies", "assemblies"):
                 category_page = site / "models" / category
                 category_page.mkdir(parents=True)
                 link = (
@@ -49,6 +69,10 @@ class PagesVerifyTests(unittest.TestCase):
 
             (model / "model.yml").write_text(
                 "section: components\ntitle: Variant A\nparameters: 10 × 20 mm\n",
+                encoding="utf-8",
+            )
+            (model / "ci.yml").write_text(
+                "schema: 1\nid: variant-a\nbuilder: forge\nsource: scpf/model.py\n",
                 encoding="utf-8",
             )
 

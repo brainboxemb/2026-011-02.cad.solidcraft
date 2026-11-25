@@ -5,15 +5,56 @@
     <h1>{{ .Title }}</h1>
     <p>{{ .Description }}</p>
   </section>
-{{ range $key := slice "basic" "components" "advanced" }}
-  {{ $models := where site.RegularPages "Params.cadSection" $key }}
-  {{ $models = where $models "Params.categoryIndex" "!=" true }}
-  <section class="cad-section cad-catalog-section">
-    <h2>{{ (site.GetPage (printf "/models/%s" $key)).Title }}</h2>
-    <div class="cad-model-grid">
-      {{ range sort $models "Params.model.priority" }}{{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}{{ end }}
-    </div>
-  </section>
+
+{{ $catalog := hugo.Data.cad.catalog }}
+{{ $requestedSection := .Params.cadSection }}
+{{ range $sectionDef := index $catalog "sections" }}
+  {{ $key := index $sectionDef "id" }}
+  {{ if or (not $requestedSection) (eq $requestedSection $key) }}
+    {{ $models := where site.RegularPages "Params.cadSection" $key }}
+    {{ $models = where $models "Params.categoryIndex" "!=" true }}
+    {{ if gt (len $models) 0 }}
+      <section class="cad-section cad-catalog-section">
+        <h2>{{ index $sectionDef "title" }}</h2>
+
+        {{ $grouped := where $models "Params.cadGroup" "!=" nil }}
+        {{ if gt (len $grouped) 0 }}
+          {{ range $groupDef := index $catalog "groups" }}
+            {{ $groupKey := index $groupDef "id" }}
+            {{ $groupModels := where $models "Params.cadGroup" $groupKey }}
+            {{ if gt (len $groupModels) 0 }}
+              <section class="cad-catalog-group">
+                <h3>{{ index $groupDef "title" }}</h3>
+                <div class="cad-model-grid">
+                  {{ range sort $groupModels "Params.model.priority" }}
+                    {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
+                  {{ end }}
+                </div>
+              </section>
+            {{ end }}
+          {{ end }}
+
+          {{ $ungrouped := where $models "Params.cadGroup" nil }}
+          {{ if gt (len $ungrouped) 0 }}
+            <section class="cad-catalog-group">
+              <h3>Other</h3>
+              <div class="cad-model-grid">
+                {{ range sort $ungrouped "Params.model.priority" }}
+                  {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
+                {{ end }}
+              </div>
+            </section>
+          {{ end }}
+        {{ else }}
+          <div class="cad-model-grid">
+            {{ range sort $models "Params.model.priority" }}
+              {{ partial "cad/model-card.html" (dict "page" . "showSection" true) }}
+            {{ end }}
+          </div>
+        {{ end }}
+      </section>
+    {{ end }}
+  {{ end }}
 {{ end }}
 </main>
 {{ end }}

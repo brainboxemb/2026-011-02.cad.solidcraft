@@ -56,7 +56,7 @@ class BenchdogClampSlide:
     hinge_left_shift = 3.0
 
     def build(self):
-        foot_x = 2.0 - self.rail_inside_width / 2 + self.rail_clearance
+        foot_x = -self.rail_inside_width / 2 + self.rail_clearance + 2.0
         foot_z = self.rail_top - 8.4 + self.rail_clearance
         foot_height = (
             self.rail_top - 2.0 - self.rail_clearance
@@ -71,7 +71,7 @@ class BenchdogClampSlide:
             foot_z,
         )
 
-        neck_x = 2.0 - self.rail_opening / 2 + self.rail_clearance
+        neck_x = -self.rail_opening / 2 + self.rail_clearance + 2.0
         neck_z = self.rail_top - 2.0 - self.rail_clearance
         eye_base_z = (
             self.rail_top
@@ -88,8 +88,8 @@ class BenchdogClampSlide:
             neck_z,
         )
 
-        eye_x = 2.0 - self.hinge_left_shift
-        eye_width = 8.0 - 2 * self.hinge_axial_clearance
+        eye_x = -self.hinge_left_shift + 2.0
+        eye_width = -2 * self.hinge_axial_clearance + 8.0
         slide = slide + _box_from_corner(
             4.0,
             eye_width,
@@ -111,9 +111,9 @@ class BenchdogClampSlide:
         )
 
         # Late source feature 80 thickens the right side of the fixed eye.
-        thick_x = 3.75 - self.hinge_left_shift
+        thick_x = -self.hinge_left_shift + 3.75
         slide = slide + _box_from_corner(
-            6.5 - thick_x,
+            -thick_x + 6.5,
             eye_width,
             (
                 self.rail_top + self.hinge_height + 2.0
@@ -149,12 +149,12 @@ class BenchdogClampHingeArm:
     hinge_left_shift = 3.0
 
     def build(self):
-        eye_x = 2.0 - self.hinge_left_shift
+        eye_x = -self.hinge_left_shift + 2.0
         arm = _box_from_corner(
             11.0,
             4.0,
             3.0,
-            -9.0 - self.hinge_left_shift,
+            -self.hinge_left_shift - 9.0,
             -2.0,
             self.rail_top + self.hinge_height - 1.5,
         )
@@ -189,7 +189,7 @@ class BenchdogClampHingePin:
     hinge_left_shift = 3.0
 
     def build(self):
-        x = 2.0 - self.hinge_left_shift
+        x = -self.hinge_left_shift + 2.0
         z = self.rail_top + self.hinge_height
         pin = Cylinder(
             d=self.pin_diameter,
@@ -225,9 +225,9 @@ class BenchdogClampRailContext:
         # These are world (X, Z) points reconstructed from native Sketch 76.
         # Polygon2D(world=True) handles SolidCraft's native XZ sketch-Y sign.
         points = [
-            ("p1", (2.0 - half_inside - 1.8, self.rail_top)),
-            ("p2", (2.0 - half_opening, self.rail_top)),
-            ("p3", (2.0 - half_opening, self.rail_top - 2.0)),
+            ("p1", (-half_inside + 0.2, self.rail_top)),
+            ("p2", (-half_opening + 2.0, self.rail_top)),
+            ("p3", (-half_opening + 2.0, self.rail_top - 2.0)),
             ("p4", (2.0 - half_inside, self.rail_top - 2.0)),
             ("p5", (2.0 - half_inside, self.rail_top - 8.4)),
             ("p6", (2.0 + half_inside, self.rail_top - 8.4)),
@@ -244,7 +244,7 @@ class BenchdogClampRailContext:
             ("p17", (39.5, self.rail_top - 9.4)),
             ("p18", (2.0 + half_inside + 1.8, self.rail_top - 9.4)),
             ("p19", (2.0 + half_inside + 1.8, self.rail_top - 10.4)),
-            ("p20", (2.0 - half_inside - 1.8, self.rail_top - 10.4)),
+            ("p20", (-half_inside + 0.2, self.rail_top - 10.4)),
         ]
 
         with Sketch(name="Dummy rail profile", plane="XZ") as sketch:
@@ -322,7 +322,7 @@ class BenchdogClamp:
     def build(self):
         # Native source feature 83 moves all final visible bodies together so
         # the reference rail datum lands at its intended final Z position.
-        final_z_shift = 10.4 - self.rail_top
+        final_z_shift = -self.rail_top + 10.4
 
         slide = BenchdogClampSlide(
             rail_inside_width=self.rail_inside_width,

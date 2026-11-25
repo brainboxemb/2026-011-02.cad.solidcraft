@@ -1,0 +1,29 @@
+schema: 1
+id: display-hinge
+builder: forge
+source: scpf/model.py
+process: true
+
+snapshot:
+  camera:
+    target: [0, 0, -1]
+    yaw: -0.72
+    pitch: 0.42
+    distance: 105
+    fov: 0
+
+snapshots:
+  - name: top.png
+    camera:
+      target: [0, 0, -2]
+      yaw: 0
+      pitch: 1.35
+      distance: 100
+      fov: 0
+  - name: barrel-end.png
+    camera:
+      target: [0, 0, -1]
+      yaw: 1.57
+      pitch: 0
+      distance: 90
+      fov: 0

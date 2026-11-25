@@ -1,8 +1,10 @@
 schema: 1
-branch: docs/30-complete-latch
+branch: feature/84-latch-hook
 
 modules:
   - pages
-models: []
+models:
+  - latch-hook
 tasks:
   - test
+  - build

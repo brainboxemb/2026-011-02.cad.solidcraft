@@ -1,10 +1,12 @@
 schema: 1
-branch: fix/84-use-native-hook-source
+branch: feature/90-mft-corner-insert
 
 modules:
   - pages
 models:
-  - latch-hook
+  - mft-rail-corner-bracket
+  - mft-rail-corner-insert
+  - mft-rail-corner-assembly
 tasks:
   - test
   - build

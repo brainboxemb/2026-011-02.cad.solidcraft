@@ -1,11 +1,10 @@
 schema: 1
-branch: chore/71-forge-main-sha
+branch: chore/73-forge-v0.16-release
 
 modules:
   - ci
   - build
 models:
-  - mounting-rail-m8
   - simple-mft-assembly
 tasks:
   - test

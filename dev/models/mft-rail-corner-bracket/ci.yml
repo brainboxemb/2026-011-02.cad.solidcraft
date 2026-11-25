@@ -3,6 +3,8 @@ id: mft-rail-corner-bracket
 builder: forge
 source: scpf/model.py
 process: true
+artifacts:
+  - stl
 dependencies:
   - mounting-rail-m8
 

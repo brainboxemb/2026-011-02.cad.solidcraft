@@ -1,11 +1,10 @@
 schema: 1
-branch: feature/76-grouped-category-views-stl
+branch: feature/79-display-hinge
 
 modules:
   - pages
 models:
-  - mft-rail-corner-bracket
-  - mft-rail-corner-assembly
+  - display-hinge
 tasks:
   - test
   - build

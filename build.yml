@@ -1,5 +1,5 @@
 schema: 1
-branch: feature/84-latch-hook
+branch: fix/84-latch-hook-side-view
 
 modules:
   - pages

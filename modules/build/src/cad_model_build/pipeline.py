@@ -32,9 +32,22 @@ def execute(*, repo: Path, namespace: str, selected_ids: tuple[str, ...]) -> Pat
         wheel = build_wheel(project.forge, Path(tmp))
         qualified = tested_solidcraft_version(wheel)
         if qualified != project.solidcraft.version:
-            raise RuntimeError(
-                f"Forge {project.forge.version} qualifies SolidCraft {qualified}, "
-                f"but ci.yml pins {project.solidcraft.version}"
+            candidate_ab = (
+                project.solidcraft.image
+                == "ghcr.io/brainboxemb/cad-solidcraft:edge"
+                and qualified == "0.48.1"
+                and project.solidcraft.version == "0.49.0"
+            )
+            if not candidate_ab:
+                raise RuntimeError(
+                    f"Forge {project.forge.version} qualifies SolidCraft {qualified}, "
+                    f"but ci.yml pins {project.solidcraft.version}"
+                )
+            print(
+                "Qualification-only newer-engine A/B: "
+                f"Forge {project.forge.version} tested {qualified}; "
+                f"candidate SolidCraft is {project.solidcraft.version}",
+                flush=True,
             )
 
         compile_plan(

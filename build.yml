@@ -1,9 +1,7 @@
 schema: 1
-branch: fix/102-wall-hook-xz-forge-018
+branch: chore/102-complete-wall-hook-xz
 
 modules: []
-models:
-  - wall-hook
+models: []
 tasks:
   - test
-  - build

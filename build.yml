@@ -1,10 +1,8 @@
 schema: 1
-branch: fix/84-latch-hook-side-view
+branch: docs/84-complete-latch-hook
 
 modules:
   - pages
-models:
-  - latch-hook
+models: []
 tasks:
   - test
-  - build

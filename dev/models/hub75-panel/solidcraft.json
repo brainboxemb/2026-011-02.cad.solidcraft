@@ -1672,7 +1672,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth - 12.5 mm"
         ],
@@ -1687,7 +1687,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth"
         ],
@@ -1707,7 +1707,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "-(mount_x)",
+          "mount_x",
           11.0,
           "depth - 2.5 mm"
         ],
@@ -1729,7 +1729,7 @@
         "height": 12.5,
         "diameter": 14.0,
         "base": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth - 12.5 mm"
         ],
@@ -1744,7 +1744,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth"
         ],
@@ -1764,7 +1764,7 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "mount_x",
+          "-(mount_x)",
           -11.0,
           "depth - 2.5 mm"
         ],
@@ -1900,7 +1900,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          -75.0,
+          75.0,
           110.0,
           "depth"
         ],
@@ -1917,7 +1917,7 @@
         "height": 3.0,
         "diameter": 3.0,
         "base": [
-          75.0,
+          -75.0,
           -110.0,
           "depth"
         ],
@@ -2493,7 +2493,7 @@
       "params": {
         "occurrence": "$voedingsconnector",
         "translate": [
-          "width * -0.16875",
+          "width * 0.16875",
           "height * -0.1",
           "front_depth + 1 mm"
         ]

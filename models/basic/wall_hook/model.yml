@@ -9,7 +9,7 @@ description: >
   6 mm walls, 20 mm hook opening, triangular gusset window and two chamfered
   Ø4.2 mm mounting holes. Only the visible profile/window fillet radii remain
   explicitly inferred from the rendered reference.
-parameters: 57 mm high; 15 mm thick; 6 mm ribs; 20 mm fork opening; 2 × Ø4.2 mm holes; 1 mm hole chamfers
+parameters: 57 mm high; 15 mm thick; 6 mm ribs; 20 mm hook opening; 2 × Ø4.2 mm holes; 1 mm hole chamfers
 stages:
   - Draw the 57 mm outer hook and reinforcement profile
   - Extrude the profile to 15 mm

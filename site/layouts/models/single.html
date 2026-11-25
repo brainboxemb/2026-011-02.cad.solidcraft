@@ -145,7 +145,12 @@
               <p><a href="{{ $src }}" target="_blank" rel="noopener noreferrer">Open external reference ↗</a></p>
             {{ else if eq $kind "asset" }}
               {{ with $.Resources.Get $src }}
-                <a href="{{ .RelPermalink }}"><img src="{{ .RelPermalink }}" alt="{{ index $view "alt" }}" loading="lazy" decoding="async"></a>
+                {{ $asset := . }}
+                {{ with index $view "href" }}
+                  <a href="{{ . }}" target="_blank" rel="noopener noreferrer"><img src="{{ $asset.RelPermalink }}" alt="{{ index $view "alt" }}" loading="lazy" decoding="async"></a>
+                {{ else }}
+                  <a href="{{ $asset.RelPermalink }}"><img src="{{ $asset.RelPermalink }}" alt="{{ index $view "alt" }}" loading="lazy" decoding="async"></a>
+                {{ end }}
               {{ else }}
                 <p class="cad-muted">This declared source asset is not present.</p>
               {{ end }}

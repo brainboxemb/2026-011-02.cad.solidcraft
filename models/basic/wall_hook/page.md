@@ -5,7 +5,6 @@ design/reference source. Confirmed dimensions in the model remain distinguished
 from the small profile/window radii that were inferred from the rendered
 tutorial result.
 
-[![YouTube tutorial used as the Wall Hook design reference](youtube-u6nd9k8c_t0-w320.webp)](https://www.youtube.com/watch?v=u6nD9K8C_T0)
 
 [Open the original/reference tutorial on YouTube](https://www.youtube.com/watch?v=u6nD9K8C_T0)
 

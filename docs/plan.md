@@ -37,6 +37,41 @@ Acceptance:
 6. Pages continues to publish Latch Hook under Components / Display;
 7. no Forge changes are introduced.
 
+### #90 — native MFT corner insert and subassembly update
+
+Active on `feature/90-mft-corner-insert`.
+
+Process the newly supplied `hoek_assembly.sc` / `hoek_assembly.json` as the
+native source for the MFT rail corner subassembly.
+
+Ownership:
+
+- keep `mft-rail-corner-bracket` as the structural reusable component;
+- add `mft-rail-corner-insert` as a separate printable component;
+- integrate bracket + insert + two `mounting-rail-m8` occurrences in
+  `mft-rail-corner-assembly`;
+- preserve both supplied native files under the subassembly `reference/`
+  directory.
+
+Source-derived corrections:
+
+- bracket lower outside corner becomes the exact R18 quarter sector;
+- remove the earlier R22 segmented approximation;
+- new insert uses the source R18 outer corner, inner rounded relief and two
+  clip lips with sloped lead-ins;
+- preserve source assembly placements.
+
+Acceptance:
+
+1. bracket, insert and subassembly all replay on Forge v0.16.0 / SolidCraft
+   0.49.0 / runtime v0.3.6;
+2. insert is independently printable and publishes an STL;
+3. subassembly depends explicitly on rail + bracket + insert;
+4. generated views show the insert filling the exposed outer rail corner;
+5. both C-openings remain accessible;
+6. complete native source files live only with the subassembly owner.
+
+
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

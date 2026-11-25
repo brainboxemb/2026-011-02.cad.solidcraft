@@ -119,27 +119,37 @@ class MFTRailCornerBracket:
         rail_depth = MountingRailM8.PROFILE_HEIGHT
         foot_z = -rail_height - foot_thickness_value
 
-        x_foot = Box(
-            self.arm_length,
-            rail_depth,
-            self.foot_thickness,
-        ).at(
-            self.arm_length / 2,
-            -rail_depth / 2,
-            foot_z,
-            anchor=BOTTOM,
-        )
+        arm_length_value = float(self.arm_length.value)
 
-        y_foot = Box(
-            rail_depth,
-            self.arm_length,
-            self.foot_thickness,
-        ).at(
-            -rail_depth / 2,
-            self.arm_length / 2,
-            foot_z,
-            anchor=BOTTOM,
-        )
+        with Sketch(
+            name="X rail support foot",
+            plane="XY",
+            origin=(0, 0, foot_z),
+        ) as x_foot_sketch:
+            Polygon2D(
+                [
+                    (0, -rail_depth),
+                    (arm_length_value, -rail_depth),
+                    (arm_length_value, 0),
+                    (0, 0),
+                ]
+            )
+        x_foot = x_foot_sketch.extrude(self.foot_thickness)
+
+        with Sketch(
+            name="Y rail support foot",
+            plane="XY",
+            origin=(0, 0, foot_z),
+        ) as y_foot_sketch:
+            Polygon2D(
+                [
+                    (-rail_depth, 0),
+                    (0, 0),
+                    (0, arm_length_value),
+                    (-rail_depth, arm_length_value),
+                ]
+            )
+        y_foot = y_foot_sketch.extrude(self.foot_thickness)
 
         # Rounded outside-corner bumper. It lives only below the rail bottom,
         # so it can protrude beyond the sharp metal corner without blocking

@@ -84,7 +84,8 @@ class ItemTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             for group_name, priority, model_id in (
-                ("advanced", 30, "z-advanced"),
+                ("assemblies", 40, "z-assembly"),
+                ("subassemblies", 30, "m-subassembly"),
                 ("components", 20, "b-component"),
                 ("basic", 10, "a-basic"),
             ):
@@ -110,11 +111,11 @@ class ItemTests(unittest.TestCase):
 
             self.assertEqual(
                 [model.id for model in models],
-                ["a-basic", "b-component", "z-advanced"],
+                ["a-basic", "b-component", "m-subassembly", "z-assembly"],
             )
             self.assertEqual(
                 [model.priority for model in models],
-                [10, 20, 30],
+                [10, 20, 30, 40],
             )
 
     def test_multi_variant_root_is_one_ci_item(self):
@@ -147,7 +148,7 @@ variants:
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             component = repo / "models" / "components" / "panel"
-            assembly = repo / "models" / "advanced" / "screen"
+            assembly = repo / "models" / "assemblies" / "screen"
             for root in (component, assembly):
                 (root / "scpf").mkdir(parents=True)
                 (root / "scpf/model.py").write_text("object()\n", encoding="utf-8")

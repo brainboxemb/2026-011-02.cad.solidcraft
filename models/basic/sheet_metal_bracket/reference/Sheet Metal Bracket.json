@@ -1,0 +1,201 @@
+{
+  "format": "solidcraft/68",
+  "name": "Sheet Metal Bracket",
+  "units": "mm",
+  "params": [],
+  "features": [
+    {
+      "id": 1,
+      "name": "Base",
+      "suppressed": false,
+      "type": "sketch",
+      "plane": {
+        "type": "origin",
+        "name": "XY"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [0.0, 0.0],
+            "fixed": false
+          },
+          {
+            "id": "p2",
+            "pos": [120.0, 0.0],
+            "fixed": false
+          },
+          {
+            "id": "p3",
+            "pos": [120.0, 60.0],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [0.0, 60.0],
+            "fixed": false
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "horizontal",
+            "l": 0
+          },
+          {
+            "id": "k2",
+            "type": "horizontal",
+            "l": 2
+          },
+          {
+            "id": "k3",
+            "type": "vertical",
+            "l": 1
+          },
+          {
+            "id": "k4",
+            "type": "vertical",
+            "l": 3
+          },
+          {
+            "id": "k5",
+            "type": "coincident",
+            "p": 0,
+            "q": 1
+          }
+        ],
+        "counters": {
+          "k": 5,
+          "l": 4,
+          "p": 4
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "BaseFlange1",
+      "suppressed": false,
+      "body_names": [
+        "Body1"
+      ],
+      "type": "sheet_base",
+      "sketch": 1,
+      "profiles": {
+        "type": "all"
+      }
+    },
+    {
+      "id": 3,
+      "name": "EdgeFlange1",
+      "suppressed": false,
+      "param_names": [
+        "d1",
+        "d2"
+      ],
+      "edge_names": [
+        "F2:side:l1|F2:top",
+        "F2:side:l3|F2:top"
+      ],
+      "type": "sheet_flange",
+      "edges": [
+        [60.0, 0.0, 2.0],
+        [60.0, 60.0, 2.0]
+      ],
+      "height": "30",
+      "angle": "90 deg",
+      "position": "inside"
+    },
+    {
+      "id": 4,
+      "name": "EdgeFlange2",
+      "suppressed": false,
+      "param_names": [
+        "d3",
+        "d4"
+      ],
+      "edge_names": [
+        "F2:side:l2|F2:top"
+      ],
+      "type": "sheet_flange",
+      "edges": [
+        [120.0, 30.0, 2.0]
+      ],
+      "height": "20",
+      "angle": "60 deg",
+      "position": "inside"
+    },
+    {
+      "id": 5,
+      "name": "Hem1",
+      "suppressed": false,
+      "param_names": [
+        "d5"
+      ],
+      "edge_names": [
+        "F2:side:l4|F2:top"
+      ],
+      "type": "sheet_hem",
+      "edges": [
+        [0.0, 30.0, 2.0]
+      ],
+      "length": "8"
+    }
+  ],
+  "next_id": 6,
+  "reserved_body_names": [
+    "Body1"
+  ],
+  "next_component_color_index": 0,
+  "sheet": {
+    "rules": [
+      {
+        "name": "Steel 2mm",
+        "thickness": "2 mm",
+        "k_factor": "0.44",
+        "bend_radius": "Thickness",
+        "relief_width": "Thickness",
+        "relief_depth": "Thickness * 0.5",
+        "corner_relief": "Thickness * 4.0",
+        "corner_relief_shape": "notch",
+        "hem_gap": "0.01 mm",
+        "gap": "Thickness"
+      }
+    ],
+    "active": "Steel 2mm"
+  }
+}

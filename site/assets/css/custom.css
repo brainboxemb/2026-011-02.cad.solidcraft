@@ -1165,3 +1165,6 @@ html:not(.dark) .hextra-search-trigger{font-size:.9rem}
   max-height:900px;
   object-fit:contain;
 }
+
+.cad-drawing-frame{display:block;width:100%;height:min(78vh,900px);min-height:560px;border:1px solid var(--cad-line);border-radius:12px;background:#fff}
+@media(max-width:720px){.cad-drawing-frame{height:70vh;min-height:440px}}

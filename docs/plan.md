@@ -49,29 +49,22 @@ a durable native technical drawing:
 - retain explicit A3 support through
   `template="iso-a3-part"` for future complex models.
 
-### #18 / #19 / #20 — improved native HUB75 panel
+### #18 / #19 / #20 — HUB75 detailed follow-up
 
-Active on `fix/18-hub75-improved-v2-mirrors`.
+Current dev baseline includes corrected `hub75_improved_v2` via PR #116.
 
-Use the corrected supplied `hub75_improved_v2.sc` / `hub75_improved_v2.json`
-as the source of truth for the detailed panel. Preserve the accepted envelope,
-rear bays, mounting centres, data connectors and orientation marks, while
-applying the corrected asymmetric X-side placements from v2:
+Accepted v2 source contract:
 
 - middle reinforcement pair: (+mount_x,+11) and (-mount_x,-11);
 - locator pins: (+75,+110) and (-75,-110);
-- power connector mirrored to +X;
-- HUB75 data connector envelopes unchanged;
-- four white orientation marks unchanged.
+- power connector on corrected +X side;
+- two HUB75 data connector envelopes unchanged;
+- four white orientation marks unchanged;
+- outer envelope and mounting centres unchanged.
 
-Acceptance:
-
-1. `hub75-panel` and `hub75-screen` qualify on Forge v0.18.0;
-2. accepted outer envelope and mounting centres stay unchanged;
-3. v2 asymmetric rear-interface placements match the native source;
-4. `hub75_improved_v2.json` is retained under the component owner;
-5. native `.sc` provenance records the supplied file SHA-256 and size;
-6. front/rear Pages evidence republishes successfully.
+Open tracking remains under #18 parent with #19/#20 child issues. Any further work
+must preserve this v2 asymmetric placement baseline and qualify both
+`hub75-panel` and `hub75-screen`.
 
 ### #84 — replace inferred hook geometry with native source
 

@@ -1462,6 +1462,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
         "points": [
           [
             -28.123340357836604,
@@ -1474,10 +1478,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8",
         "fixed": [
           0.0,
           500.0,
@@ -1488,6 +1488,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
         "points": [
           [
             28.123340357836604,
@@ -1500,10 +1504,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8",
         "fixed": [
           0.0,
           500.0,
@@ -1514,6 +1514,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
         "points": [
           [
             -12.374446785945535,
@@ -1526,10 +1530,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8",
         "fixed": [
           0.0,
           500.0,
@@ -1540,6 +1540,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
         "points": [
           [
             12.374446785945535,
@@ -1552,10 +1556,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8",
         "fixed": [
           0.0,
           500.0,
@@ -1932,6 +1932,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
         "points": [
           [
             -28.123340357836604,
@@ -1944,10 +1948,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8_2",
         "fixed": [
           0.0,
           259.5,
@@ -1958,6 +1958,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
         "points": [
           [
             28.123340357836604,
@@ -1970,10 +1974,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8_2",
         "fixed": [
           0.0,
           259.5,
@@ -1984,6 +1984,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
         "points": [
           [
             -12.374446785945535,
@@ -1996,10 +2000,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8_2",
         "fixed": [
           0.0,
           259.5,
@@ -2010,6 +2010,10 @@
     {
       "command": "sheet.fold",
       "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
         "points": [
           [
             12.374446785945535,
@@ -2022,10 +2026,6 @@
             0.0
           ]
         ],
-        "angle": 90,
-        "position": "centerline",
-        "flip": false,
-        "body": "MountingRailM8_2",
         "fixed": [
           0.0,
           259.5,

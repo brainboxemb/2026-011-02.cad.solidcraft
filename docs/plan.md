@@ -31,23 +31,30 @@ Acceptance for the first WIP baseline:
 4. qualify this model alone on the feature branch;
 5. keep the PR draft/open until visual parity is reviewed.
 
-### #103 — SamplePlate native A4 drawing PDF
+### #103 — SamplePlate native A4 drawing PDF and visual sheet evidence
 
-Active on `issue/103-sample-plate-drawing-pdf-v2`.
+Active on `issue/103-sample-plate-drawing-preview-v3`.
 
-Adopt released Forge v0.17.0 and make SamplePlate the first catalog model with
-a durable native technical drawing:
+The PDF publication work from PR #108 is accepted on `dev`. Complete the
+remaining visual-evidence requirement against Forge v0.18.0 / SolidCraft
+0.49.0:
 
-- keep `SamplePlate` as a reusable `@component`;
-- add drawing intent only in the final root design;
-- use Forge's default ISO A4 part template;
-- project Forge drawing declarations into the CAD build plan;
-- export the native vector PDF through SolidCraft 0.49.0;
-- publish `models/sample-plate/drawings/SamplePlate.pdf` in the durable scope;
-- show the drawing generically on the model page without copying it to
+- keep `SamplePlate` as the existing reusable `@component`;
+- keep drawing intent only in the final root design;
+- retain Forge's default ISO A4 part template and explicit A3 support;
+- retain durable native vector
+  `models/sample-plate/drawings/SamplePlate.pdf`;
+- project the replay-bound native first-sheet id from Forge;
+- export that same SolidCraft sheet as
+  `models/sample-plate/drawings/SamplePlate.png` at 144 dpi;
+- validate both PDF and PNG signatures during the native build;
+- render the PNG sheet preview generically on the model page while PDF remains
+  the open/download publication artifact;
+- link both artifacts from the durable build scope and copy neither into
   `gh-pages`;
-- retain explicit A3 support through
-  `template="iso-a3-part"` for future complex models.
+- Pages remains compatible with the already-published pre-preview build scope
+  until this PR is merged and its new scope is published;
+- visually review the generated A4 sheet after CI, then close #103.
 
 ### #18 / #19 / #20 — HUB75 detailed follow-up
 

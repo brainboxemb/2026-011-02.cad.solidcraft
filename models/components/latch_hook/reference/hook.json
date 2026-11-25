@@ -1,0 +1,300 @@
+{
+  "format": "solidcraft/66",
+  "name": "hook",
+  "units": "mm",
+  "params": [
+    {
+      "name": "Buighoek",
+      "expr": "138.7667505744678 deg",
+      "unit": "deg",
+      "model": false
+    }
+  ],
+  "features": [
+    {
+      "id": 1,
+      "name": "Uitslag haak",
+      "suppressed": false,
+      "type": "sketch",
+      "plane": {
+        "type": "origin",
+        "name": "XY"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "l1.start",
+            "pos": [0.0, 7.0],
+            "fixed": false
+          },
+          {
+            "id": "l1.end",
+            "pos": [0.0, -7.0],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_onder.center",
+            "pos": [4.999999999999999, -6.9999999999999964],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_onder.start",
+            "pos": [0.0, -7.0],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_onder.end",
+            "pos": [7.209449193419511, -11.485346615558026],
+            "fixed": false
+          },
+          {
+            "id": "l2.start",
+            "pos": [7.2094491934195135, -11.48534661555803],
+            "fixed": false
+          },
+          {
+            "id": "l2.end",
+            "pos": [15.3, -7.5],
+            "fixed": false
+          },
+          {
+            "id": "l3.end",
+            "pos": [28.14928735268115, -7.5],
+            "fixed": false
+          },
+          {
+            "id": "l4.end",
+            "pos": [28.14928735268115, 7.5],
+            "fixed": false
+          },
+          {
+            "id": "l5.end",
+            "pos": [15.3, 7.5],
+            "fixed": false
+          },
+          {
+            "id": "l6.end",
+            "pos": [7.2094491934195135, 11.48534661555803],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_boven.center",
+            "pos": [5.0, 6.999999999999999],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_boven.start",
+            "pos": [7.2094491934195135, 11.48534661555803],
+            "fixed": false
+          },
+          {
+            "id": "Afronding_boven.end",
+            "pos": [-1.7763568394002505e-15, 7.0],
+            "fixed": false
+          },
+          {
+            "id": "Gat_onder.center",
+            "pos": [5.0, -7.0],
+            "fixed": false
+          },
+          {
+            "id": "Gat_boven.center",
+            "pos": [5.0, 7.0],
+            "fixed": false
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "Afronding_onder",
+            "type": "arc",
+            "c": 3,
+            "a": 4,
+            "b": 5,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 9,
+            "b": 10,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 10,
+            "b": 11,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "Afronding_boven",
+            "type": "arc",
+            "c": 12,
+            "a": 13,
+            "b": 14,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "Gat_onder",
+            "type": "circle",
+            "c": 15,
+            "r": 2.15,
+            "construction": false,
+            "fixed": true
+          },
+          {
+            "id": "Gat_boven",
+            "type": "circle",
+            "c": 16,
+            "r": 2.15,
+            "construction": false,
+            "fixed": true
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "coincident",
+            "p": 2,
+            "q": 4
+          },
+          {
+            "id": "k2",
+            "type": "coincident",
+            "p": 5,
+            "q": 6
+          },
+          {
+            "id": "k3",
+            "type": "coincident",
+            "p": 11,
+            "q": 13
+          },
+          {
+            "id": "k4",
+            "type": "coincident",
+            "p": 1,
+            "q": 14
+          },
+          {
+            "id": "k5",
+            "type": "coincident",
+            "p": 3,
+            "q": 15
+          },
+          {
+            "id": "k6",
+            "type": "coincident",
+            "p": 12,
+            "q": 16
+          }
+        ],
+        "counters": {
+          "k": 6,
+          "l": 6
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Vlakke plaat 2 mm",
+      "suppressed": false,
+      "body_names": [
+        "Haak"
+      ],
+      "type": "sheet_base",
+      "sketch": 1,
+      "profiles": {
+        "type": "curves",
+        "loops": [
+          [
+            "l1",
+            "Afronding_onder",
+            "l2",
+            "l3",
+            "l4",
+            "l5",
+            "l6",
+            "Afronding_boven"
+          ]
+        ]
+      },
+      "rule": "Haak 2 mm"
+    },
+    {
+      "id": 3,
+      "name": "Haak omvouwen",
+      "suppressed": false,
+      "param_names": [
+        "d1"
+      ],
+      "type": "sheet_fold",
+      "a": [15.9, -7.5, 2.0],
+      "b": [15.9, 7.5, 2.0],
+      "angle": "Buighoek",
+      "position": "start",
+      "stays": "left",
+      "body": "Haak"
+    }
+  ],
+  "next_id": 4,
+  "next_component_color_index": 0,
+  "sheet": {
+    "rules": [
+      {
+        "name": "Haak 2 mm",
+        "thickness": "2",
+        "k_factor": "0.44",
+        "bend_radius": "2.1",
+        "relief_width": "Thickness",
+        "relief_depth": "Thickness * 0.5",
+        "corner_relief": "Thickness * 4.0",
+        "corner_relief_shape": "notch",
+        "hem_gap": "0.01 mm",
+        "gap": "Thickness"
+      }
+    ],
+    "active": "Haak 2 mm"
+  }
+}

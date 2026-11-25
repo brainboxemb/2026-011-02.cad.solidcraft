@@ -801,6 +801,19 @@ html:not(.dark) .hextra-search-trigger{font-size:.9rem}
   letter-spacing: 0;
 }
 
+.cad-rich-text a {
+  color: var(--cad-accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: .16em;
+}
+
+.cad-rich-text a:hover,
+.cad-rich-text a:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
 .cad-rich-text p,
 .cad-rich-text li {
   margin-top: .45rem;

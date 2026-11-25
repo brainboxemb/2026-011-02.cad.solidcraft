@@ -4,87 +4,54 @@ This file contains unfinished work only.
 
 ## Now
 
-### #31 — adopt Forge v0.15.0 and restore HUB75 component replay
+### #62 — design MFT mounting-rail corner bracket
 
-The migrated repository must use the same accepted Forge baseline as the
-historical `dev-cad` source:
+Active on `feature/mft-rail-corner-bracket`.
 
-- Forge v0.15.0;
-- commit `efc88bfcaf452051d721347f2e5ca561decad654`;
-- SolidCraft 0.48.1 / runtime v0.3.5.
+Create a reusable printable 90° bracket for the current
+`MountingRailM8` profile and qualify it first in a standalone two-rail
+assembly before adding it to the full Simple MFT.
 
-This fixes Forge #753: component context is restored across headless replay
-phases so component-local joined Cylinder features remain attached to copied and
-rotated HUB75 occurrences.
+Current prototype contract:
 
-Acceptance rebuilds `hub75-panel` and `hub75-screen` and compares the
-resulting screen preview against the known-correct historical `dev-cad` image.
+- two perpendicular 75 mm vertical fixing arms;
+- each arm follows the existing rail round-hole datums at 12.5 and 62.5 mm;
+- Ø8.5 mm M8 clearance through the bracket arms;
+- upper and lower triangular gussets stiffen the corner;
+- one provisional countersunk screw seat fixes upward into the MFT underside;
+- C-openings and rail ends remain unobstructed for slide-in hardware;
+- non-rail dimensions remain provisional until physical measurement.
 
-### #39 — add generic M8 mounting rail component
+Acceptance:
 
-Active on `feature/mounting-rail-m8`.
-
-Model a 1000 mm galvanized light installation rail under
-`models/components/mounting_rail_m8`.
-
-Accepted source split:
-
-- product facts: 1000 mm, galvanized steel, 1.25 mm sheet, M8 application;
-- generic 27/18 reference: section and repeating perforation geometry;
-- explicit model assumptions: bend radius and K-factor.
-
-Use native sheet metal. Keep the component/model name generic; DRESSELHAUS and
-HORNBACH are provenance only.
-
-### #43 — make Mounting Rail M8 perforation one parametric repeat unit
-
-Active on `fix/mounting-rail-m8-repeat-unit`.
-
-Replace the three independent perforation feature patterns with the actual
-product design intent:
-
-- one attached four-profile repeat-unit Sketch;
-- one through-all unit cut;
-- one native rectangular pattern of that complete cut;
-- editable `repeat_count`, `feature_pitch` and individual profile dimensions.
-
-No Forge change is required.
-
-### #49 — add two 1 m support rails to Simple MFT assembly
-
-Active on `feature/simple-mft-support-rails`.
-
-Reuse two `MountingRailM8` occurrences below the Simple MFT worktop:
-
-- 1000 mm each;
-- left ends align with the 805 mm worktop left edge;
-- 195 mm right overhang;
-- openings face outward;
-- perforation direction remains equal left-to-right;
-- worktop underside rests on the rail upper edges.
-
-Keep the existing GuideRail on top.
+1. component and two-rail assembly compile on Forge v0.15.0;
+2. native SolidCraft 0.48.1 replay succeeds;
+3. bracket holes visibly/structurally align with both rails' first two round
+   perforations;
+4. bracket remains entirely on the inside of the corner;
+5. top face is flush with the future worktop underside plane;
+6. document the supplied reference images / Etsy listing as inspiration only,
+   not dimensional authority.
 
 ### #12 — migrate remaining historical CAD issues and open pull requests
 
 The full CAD catalog is accepted on stable `main`.
 
-Stable baseline:
+Current stable baseline:
 
-- source: `128f71fd0bdb85f92752b7e77ff3937157341332`;
+- main promotion: `6ef14a509b006a3c3657598f2b56824b6aa6d135`;
 - Forge v0.15.0;
 - SolidCraft 0.48.1 / runtime v0.3.5;
-- 16 real physical owners / 18 real build variants;
 - generated CAD artifacts owned only by the `build` branch.
 
-Active transferred model work is tracked in #13 through #22. Generic gallery
-and embedded-viewer work is routed to the template project (#84/#85 there).
+Continue transferring only relevant model-owned source/data from the historical
+repository. Generic CI/build/Pages behavior remains inherited from the template.
 
 Next:
 
 1. close or update historical issue copies with explicit pointers;
-2. assess the remaining historical open PRs listed in #12;
-3. port only relevant model-owned source/data onto the new contracts;
+2. assess remaining historical open PRs tracked by #12;
+3. port only relevant model-owned source/data;
 4. integrate every branch exclusively through local `/merge`.
 
 ## Mandatory integration rule

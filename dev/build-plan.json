@@ -212,7 +212,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "59b1b8c5085846f095b5b90d7244028193438d0a",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -246,7 +246,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "59b1b8c5085846f095b5b90d7244028193438d0a",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
       "id": "hub75-panel",
@@ -308,7 +308,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "59b1b8c5085846f095b5b90d7244028193438d0a",
       "commands": "models/hub75-screen/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -341,7 +341,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "59b1b8c5085846f095b5b90d7244028193438d0a",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -993,5 +993,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "d2cf3e7c802ff7a7b44c2921782c08988aba436f"
+  "source_sha": "59b1b8c5085846f095b5b90d7244028193438d0a"
 }

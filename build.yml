@@ -1,9 +1,9 @@
 schema: 1
-branch: feature/109-benchdog-clamp-wip
+branch: feature/111-sheet-metal-bracket
 
 modules: []
 models:
-  - benchdog-clamp
+  - sheet-metal-bracket
 tasks:
   - test
   - build

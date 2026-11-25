@@ -64,6 +64,7 @@ class ForgeBuildTests(unittest.TestCase):
                         "name": "Box drawing",
                         "drawing": "$drawing_1",
                         "path": "models/box/drawings/Box-drawing.pdf",
+                        "preview": "models/box/drawings/Box-drawing.png",
                     }
                 ],
             )

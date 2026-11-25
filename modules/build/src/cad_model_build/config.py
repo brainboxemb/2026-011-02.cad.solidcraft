@@ -315,11 +315,20 @@ def load_project(repo: Path) -> ProjectConfig:
 
     image = solidcraft.get("image")
     solidcraft_version = solidcraft.get("version")
+    # Qualification-only allowance on #64. Permanent branches still pin an
+    # immutable v-prefixed image; this branch may exercise the exact runtime
+    # owner :edge candidate before v0.3.6 exists.
+    candidate_edge = image == "ghcr.io/brainboxemb/cad-solidcraft:edge"
     if (
         not isinstance(image, str)
-        or not image.startswith("ghcr.io/brainboxemb/cad-solidcraft:v")
+        or (
+            not image.startswith("ghcr.io/brainboxemb/cad-solidcraft:v")
+            and not candidate_edge
+        )
     ):
-        raise BuildConfigError(f"released SolidCraft runtime image required: {path}")
+        raise BuildConfigError(
+            f"released SolidCraft runtime image or qualification edge required: {path}"
+        )
     if not isinstance(solidcraft_version, str) or not solidcraft_version:
         raise BuildConfigError(f"invalid SolidCraft version: {path}")
 

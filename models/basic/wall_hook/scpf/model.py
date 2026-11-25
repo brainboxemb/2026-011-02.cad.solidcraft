@@ -187,29 +187,34 @@ class WallHook:
 
         body = body - window.extrude(self.thickness)
 
-        hole_x = self.rib / 2.0
         countersink_d = self.hole_diameter + 2.0 * self.hole_chamfer
         hole_ys = (
             self.overall_height - self.upper_hole_from_top,
             self.lower_hole_from_bottom,
         )
+        hole_z = self.thickness / 2.0
 
+        # The screw axis is perpendicular to the rear mounting wall. The rear
+        # spine is 6 mm deep in X and 15 mm wide in Z, so each hole is centred
+        # across that 15 mm width and cut only through the 6 mm mounting spine.
         # A 90-degree countersink with +1 mm radial opening gives the requested
-        # 1 mm chamfer. Apply it from both 15 mm broad faces.
+        # 1 mm chamfer on both mounting-wall faces.
         for y in hole_ys:
             body = body + CountersinkHole(
                 d=self.hole_diameter,
                 countersink_d=countersink_d,
                 countersink_angle=90,
-                direction=(0, 0, -1),
-            ).at(hole_x, y, self.thickness)
+                depth=self.rib,
+                direction=(-1, 0, 0),
+            ).at(self.rib, y, hole_z)
 
             body = body + CountersinkHole(
                 d=self.hole_diameter,
                 countersink_d=countersink_d,
                 countersink_angle=90,
-                direction=(0, 0, 1),
-            ).at(hole_x, y, 0.0)
+                depth=self.rib,
+                direction=(1, 0, 0),
+            ).at(0.0, y, hole_z)
 
         return body
 

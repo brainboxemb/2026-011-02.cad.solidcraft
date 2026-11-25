@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/111-complete-sheet-metal-bracket
+branch: fix/102-wall-hook-xz-forge-018
 
 modules: []
-models: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

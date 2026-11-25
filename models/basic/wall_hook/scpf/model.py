@@ -1,8 +1,8 @@
 """Wall hook reconstructed from the supplied tutorial sketch.
 
-Confirmed source dimensions are public model parameters. The visible corner
-radii are not dimensioned in the supplied screenshots, so they remain isolated
-as explicit provisional parameters.
+Confirmed source dimensions are public model parameters. The side profile is
+authored in world XZ and extruded symmetrically in Y so the broad side faces
+are Forge/SolidCraft FRONT and BACK.
 """
 
 from math import sqrt
@@ -22,94 +22,87 @@ class WallHook:
     lower_hole_from_bottom = 17.0
     hole_chamfer = 1.0
 
+    face_chamfer = 1.5
+
     # Inferred from the rendered tutorial result; keep easy to revise.
     profile_fillet = 2.0
     window_fillet = 2.0
 
     def build(self):
-        crossbar_y = self.overall_height - self.opening_depth
+        crossbar_z = self.overall_height - self.opening_depth
         right_inner_x = self.rib + self.opening_width
         right_outer_x = right_inner_x + self.rib
-        right_top_y = crossbar_y + self.short_tip_rise
-        right_outer_bottom_y = right_top_y - self.short_outer_height
+        right_top_z = crossbar_z + self.short_tip_rise
+        right_outer_bottom_z = right_top_z - self.short_outer_height
 
         # The outside diagonal is exactly 45 degrees:
         # (6, 0) -> (32, 26). The inner diagonal keeps a true 6 mm normal web.
-        window_top_y = crossbar_y - self.rib
-        window_left_bottom_y = self.rib * sqrt(2.0)
-        window_right_top_x = window_top_y - (
+        window_top_z = crossbar_z - self.rib
+        window_left_bottom_z = self.rib * sqrt(2.0)
+        window_right_top_x = window_top_z - (
             -self.rib + self.rib * sqrt(2.0)
         )
 
-        # Build the visible R2 silhouette directly in 2D. This avoids a
-        # post-extrusion fillet feature while preserving true circular arcs.
+        # Build the visible R2 side silhouette directly in XZ with true arcs.
         r = self.profile_fillet
         r45_offset = r * (sqrt(2.0) - 1.0)
         r45_diag = r45_offset / sqrt(2.0)
 
         start = (r, 0.0)
-        with Sketch(name="Rounded bracket outline", plane="XY") as outline:
+        with Sketch(name="Rounded hook side profile", plane="XZ", origin=(0, 0, 0)) as outline:
             profile = outline.profile(start=start)
 
-            # Bottom-left -> lower 45-degree outside corner.
             profile.line_to((self.rib - r45_offset, 0.0))
             profile.arc_center_to(
-                (
-                    self.rib + r45_diag,
-                    r45_diag,
-                ),
+                (self.rib + r45_diag, r45_diag),
                 center=(self.rib - r45_offset, r),
                 clockwise=False,
             )
 
-            # Lower diagonal -> right vertical.
             profile.line_to(
                 (
                     right_outer_x - r45_diag,
-                    right_outer_bottom_y - r45_diag,
+                    right_outer_bottom_z - r45_diag,
                 )
             )
             profile.arc_center_to(
                 (
                     right_outer_x,
-                    right_outer_bottom_y + r45_offset,
+                    right_outer_bottom_z + r45_offset,
                 ),
                 center=(
                     right_outer_x - r,
-                    right_outer_bottom_y + r45_offset,
+                    right_outer_bottom_z + r45_offset,
                 ),
                 clockwise=False,
             )
 
-            # Outer top of the short hook tip.
-            profile.line_to((right_outer_x, right_top_y - r))
+            profile.line_to((right_outer_x, right_top_z - r))
             profile.arc_center_to(
-                (right_outer_x - r, right_top_y),
-                center=(right_outer_x - r, right_top_y - r),
+                (right_outer_x - r, right_top_z),
+                center=(right_outer_x - r, right_top_z - r),
                 clockwise=False,
             )
-            profile.line_to((right_inner_x + r, right_top_y))
+            profile.line_to((right_inner_x + r, right_top_z))
             profile.arc_center_to(
-                (right_inner_x, right_top_y - r),
-                center=(right_inner_x + r, right_top_y - r),
+                (right_inner_x, right_top_z - r),
+                center=(right_inner_x + r, right_top_z - r),
                 clockwise=False,
             )
 
-            # Concave bottom corners of the U opening.
-            profile.line_to((right_inner_x, crossbar_y + r))
+            profile.line_to((right_inner_x, crossbar_z + r))
             profile.arc_center_to(
-                (right_inner_x - r, crossbar_y),
-                center=(right_inner_x - r, crossbar_y + r),
+                (right_inner_x - r, crossbar_z),
+                center=(right_inner_x - r, crossbar_z + r),
                 clockwise=True,
             )
-            profile.line_to((self.rib + r, crossbar_y))
+            profile.line_to((self.rib + r, crossbar_z))
             profile.arc_center_to(
-                (self.rib, crossbar_y + r),
-                center=(self.rib + r, crossbar_y + r),
+                (self.rib, crossbar_z + r),
+                center=(self.rib + r, crossbar_z + r),
                 clockwise=True,
             )
 
-            # Tall hook arm top and outside spine.
             profile.line_to((self.rib, self.overall_height - r))
             profile.arc_center_to(
                 (self.rib - r, self.overall_height),
@@ -130,7 +123,7 @@ class WallHook:
             )
             profile.close()
 
-        body = outline.extrude(self.thickness)
+        body = outline.extrude(self.thickness, sym=True)
 
         # Rounded triangular relief. Its two acute corners are 45 degrees,
         # so their tangent distance is R / tan(22.5°) = R * (sqrt(2) + 1).
@@ -139,18 +132,17 @@ class WallHook:
         acute_diag = acute_tangent / sqrt(2.0)
 
         window_left = self.rib
-        window_bottom = window_left_bottom_y
-        window_top = window_top_y
+        window_bottom = window_left_bottom_z
+        window_top = window_top_z
         window_right = window_right_top_x
 
         window_start = (
             window_left + acute_diag,
             window_bottom + acute_diag,
         )
-        with Sketch(name="Rounded triangular gusset window", plane="XY") as window:
+        with Sketch(name="Rounded triangular gusset window", plane="XZ", origin=(0, 0, 0)) as window:
             relief = window.profile(start=window_start)
 
-            # Acute lower-left corner -> 90-degree top-left corner.
             relief.arc_center_to(
                 (
                     window_left,
@@ -169,7 +161,6 @@ class WallHook:
                 clockwise=True,
             )
 
-            # Top edge -> acute upper-right corner.
             relief.line_to((window_right - acute_tangent, window_top))
             relief.arc_center_to(
                 (
@@ -185,28 +176,32 @@ class WallHook:
             relief.line_to(window_start)
             relief.close()
 
-        body = body - window.extrude(self.thickness)
+        body = body - window.extrude(self.thickness, sym=True)
+
+        # Forge v0.18 resolves the complete native boundary of both broad XZ
+        # extrusion end faces. Apply this before the screw holes so their own
+        # 1.0 mm countersink/chamfer remains independent.
+        body = body.chamfer(
+            self.face_chamfer,
+            edges=Edges.from_faces(Faces.FRONT, Faces.BACK),
+        )
 
         countersink_d = self.hole_diameter + 2.0 * self.hole_chamfer
-        hole_ys = (
+        hole_zs = (
             self.overall_height - self.upper_hole_from_top,
             self.lower_hole_from_bottom,
         )
-        hole_z = self.thickness / 2.0
 
-        # The screw axis is perpendicular to the rear mounting wall. The rear
-        # spine is 6 mm deep in X and 15 mm wide in Z, so each hole is centred
-        # across that 15 mm width and cut only through the 6 mm mounting spine.
-        # A 90-degree countersink with +1 mm radial opening gives the requested
-        # 1 mm chamfer on both mounting-wall faces.
-        for y in hole_ys:
+        # Rear mounting spine is 6 mm thick along X. The 15 mm extrusion is
+        # centred on Y=0, so both screw-hole axes sit at Y=0 and run along X.
+        for z in hole_zs:
             body = body + CountersinkHole(
                 d=self.hole_diameter,
                 countersink_d=countersink_d,
                 countersink_angle=90,
                 depth=self.rib,
                 direction=(-1, 0, 0),
-            ).at(self.rib, y, hole_z)
+            ).at(self.rib, 0.0, z)
 
             body = body + CountersinkHole(
                 d=self.hole_diameter,
@@ -214,7 +209,7 @@ class WallHook:
                 countersink_angle=90,
                 depth=self.rib,
                 direction=(1, 0, 0),
-            ).at(0.0, y, hole_z)
+            ).at(0.0, 0.0, z)
 
         return body
 

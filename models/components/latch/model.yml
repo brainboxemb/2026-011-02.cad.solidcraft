@@ -12,11 +12,6 @@ description: >
   Forge sheet-metal and revolve primitives reproduce the native feature
   history without fused-solid approximations.
 parameters: 73 mm overall; 43 × 16.5 × 2 mm mounting foot; Ø4.2 mounting holes; 16.5 mm handle; 23.5 mm pull bail; Ø3.8/Ø4 hinge and bail pins
-warning:
-  title: Native source reference
-  body: >
-    reference/latch.sc remains the geometry/history source of truth for this
-    qualified reconstruction.
 stages:
   - Reference — preserve byte-identical native SolidCraft latch.sc
   - Mounting foot — 2.0 mm sheet, R0.6, K0.40

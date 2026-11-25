@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/98-gusseted-fork-bracket
+branch: chore/98-complete-wall-hook
 
 modules: []
-models:
-  - wall-hook
+models: []
 tasks:
   - test
-  - build

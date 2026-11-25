@@ -74,6 +74,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                     {
                         "name": "SamplePlate",
                         "drawing": "$drawing_1",
+                        "sheet": "$drawing_1_sheet",
                         "path": "models/sample-plate/drawings/SamplePlate.pdf",
                         "preview": "models/sample-plate/drawings/SamplePlate.png",
                     }
@@ -109,7 +110,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
             produced = _export_drawings(
                 document=document,
                 row=row,
-                variables={"$drawing_1": "D1"},
+                variables={"$drawing_1": "D1", "$drawing_1_sheet": "S1"},
                 saved=saved,
                 output_root=root,
                 work_dir=work,
@@ -139,6 +140,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                 ["pdf", "png"],
             )
             self.assertEqual(exports[1]["params"]["dpi"], 144)
+            self.assertEqual(exports[1]["params"]["sheet"], "S1")
 
     @patch("cad_model_build.runtime.subprocess.run")
     def test_drawing_export_rejects_non_pdf_output(self, run):
@@ -154,6 +156,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                     {
                         "name": "Part",
                         "drawing": "$drawing_1",
+                        "sheet": "$drawing_1_sheet",
                         "path": "models/part/drawings/Part.pdf",
                         "preview": "models/part/drawings/Part.png",
                     }
@@ -188,7 +191,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                 _export_drawings(
                     document=document,
                     row=row,
-                    variables={"$drawing_1": "D1"},
+                    variables={"$drawing_1": "D1", "$drawing_1_sheet": "S1"},
                     saved=saved,
                     output_root=root,
                     work_dir=work,
@@ -208,6 +211,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                     {
                         "name": "Part",
                         "drawing": "$drawing_1",
+                        "sheet": "$drawing_1_sheet",
                         "path": "models/part/drawings/Part.pdf",
                         "preview": "models/part/drawings/Part.png",
                     }
@@ -243,7 +247,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                 _export_drawings(
                     document=document,
                     row=row,
-                    variables={"$drawing_1": "D1"},
+                    variables={"$drawing_1": "D1", "$drawing_1_sheet": "S1"},
                     saved=saved,
                     output_root=root,
                     work_dir=work,

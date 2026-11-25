@@ -1,10 +1,10 @@
 schema: 1
-branch: fix/90-corner-insert-notch-arc
+branch: feature/18-hub75-improved-source
 
 modules: []
 models:
-  - mft-rail-corner-insert
-  - mft-rail-corner-assembly
+  - hub75-panel
+  - hub75-screen
 tasks:
   - test
   - build

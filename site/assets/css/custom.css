@@ -1133,3 +1133,14 @@ html:not(.dark) .hextra-search-trigger{font-size:.9rem}
   .cad-page-shell{width:min(1080px,calc(100% - 28px))!important}
   .cad-model-hero{padding:1.5rem 1.2rem}
 }
+
+
+.cad-catalog-group{margin:1.1rem 0 1.8rem}
+.cad-catalog-group>h3{
+  margin:0 0 .65rem;
+  color:var(--cad-muted);
+  font-size:1rem;
+  line-height:1.3;
+  font-weight:650;
+  letter-spacing:.01em;
+}

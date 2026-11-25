@@ -1,9 +1,8 @@
 schema: 1
-branch: fix/102-wall-hook-rear-holes
+branch: issue/103-sample-plate-drawing-pdf-v2
 
-modules: []
-models:
-  - wall-hook
+modules: all
+models: all
 tasks:
   - test
   - build

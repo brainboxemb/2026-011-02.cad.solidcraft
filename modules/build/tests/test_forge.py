@@ -37,13 +37,57 @@ class ForgeBuildTests(unittest.TestCase):
             def fake_run(command, **kwargs):
                 target = Path(command[-1])
                 target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_text("{}\n", encoding="utf-8")
+                target.write_text(
+                    """{
+  "commands": [{"command": "drawing.create"}],
+  "artifacts": {
+    "drawings": [
+      {
+        "name": "Box drawing",
+        "drawing": "$drawing_1",
+        "pdf": "drawings/Box-drawing.pdf"
+      }
+    ]
+  }
+}
+""",
+                    encoding="utf-8",
+                )
 
             run.side_effect = fake_run
             compile_plan(repo=root, output_root=output, plan=plan, wheel=wheel)
             self.assertTrue((output / "models/box/solidcraft.json").is_file())
+            self.assertEqual(
+                plan["models"][0]["drawings"],
+                [
+                    {
+                        "name": "Box drawing",
+                        "drawing": "$drawing_1",
+                        "path": "models/box/drawings/Box-drawing.pdf",
+                    }
+                ],
+            )
             self.assertEqual(run.call_count, 1)
 
+
+    def test_drawing_artifact_rejects_build_scope_escape(self):
+        from cad_model_build.forge import _drawing_artifacts
+
+        with self.assertRaisesRegex(RuntimeError, "invalid Forge drawing artifact"):
+            _drawing_artifacts(
+                {
+                    "artifacts": {
+                        "drawings": [
+                            {
+                                "name": "Bad",
+                                "drawing": "$drawing_1",
+                                "pdf": "../escape.pdf",
+                            }
+                        ]
+                    }
+                },
+                "models/box/solidcraft.json",
+            )
 
 if __name__ == "__main__":
     unittest.main()

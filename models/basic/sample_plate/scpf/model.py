@@ -1,3 +1,4 @@
+@component
 class SamplePlate:
     """Build the sample plate from object-level CAD intent."""
 
@@ -39,3 +40,11 @@ class SamplePlate:
             parent=Anchor.TOP,
         )
         return plate + bore
+
+
+def sample_plate():
+    """Final SamplePlate design with one native A4 technical drawing."""
+    return SamplePlate().with_drawing(name="SamplePlate")
+
+
+sample_plate()

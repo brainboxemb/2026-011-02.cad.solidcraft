@@ -267,6 +267,7 @@ model.py
   -> model.step
   -> model.png
   -> optional model.stl / extra PNG snapshots
+  -> optional native drawings/*.pdf declared by Forge
 ```
 
 Forge compilation and SolidCraft replay are separate visible phases. The
@@ -304,6 +305,14 @@ active. A full `main` build replaces the complete `main/` scope.
 Publication uses normal non-force pushes and checks that the source branch still
 points at the source SHA being published.
 
+Forge v0.17.0 drawing artifacts follow the same ownership boundary. Forge
+compiles drawing intent and declares safe relative PDF artifacts in
+`solidcraft.json`; the CAD build module projects those declarations into the
+build plan, then the pinned SolidCraft runtime exports the vector PDF from the
+saved native `.sc` design. Pages reads only the resulting durable build-plan
+rows and never runs drawing export itself. A4 is Forge's default part sheet;
+models may explicitly request `iso-a3-part` when a larger sheet is needed.
+
 ## Pages
 
 Stable Pages use Hugo 0.169.0 with Hextra v0.13.0.
@@ -325,13 +334,16 @@ its matching build plan before the combined generated site is published.
 
 `model.yml` owns presentation text. `ci.yml` owns source/variant identity.
 The generated `build/main` / `build/dev` scopes own JSON, SC, STEP, PNG,
-optional STL and model-owned snapshot images.
+optional STL, model-owned snapshot images and native drawing PDFs declared by
+Forge.
 
 Model pages link directly to those durable artifacts:
 
 - normal GitHub `blob/build/<scope>/...` URLs for inspection and downloads;
 - raw GitHub build URLs for inline preview images and SolidCraft Web input;
-- STL blob URLs open in GitHub's native 3D viewer.
+- STL blob URLs open in GitHub's native 3D viewer;
+- native drawing PDFs use the durable build branch for inline sheet preview,
+  GitHub inspection and direct download.
 
 Only source-owned presentation resources such as `page.md` and declared local
 reference assets are copied into the generated site.

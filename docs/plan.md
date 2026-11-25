@@ -4,6 +4,24 @@ This file contains unfinished work only.
 
 ## Now
 
+### #103 — SamplePlate native A4 drawing PDF
+
+Active on `issue/103-sample-plate-drawing-pdf-v2`.
+
+Adopt released Forge v0.17.0 and make SamplePlate the first catalog model with
+a durable native technical drawing:
+
+- keep `SamplePlate` as a reusable `@component`;
+- add drawing intent only in the final root design;
+- use Forge's default ISO A4 part template;
+- project Forge drawing declarations into the CAD build plan;
+- export the native vector PDF through SolidCraft 0.49.0;
+- publish `models/sample-plate/drawings/SamplePlate.pdf` in the durable scope;
+- show the drawing generically on the model page without copying it to
+  `gh-pages`;
+- retain explicit A3 support through
+  `template="iso-a3-part"` for future complex models.
+
 ### #102 — correct Wall Hook mounting-hole axis
 
 Active on `fix/102-wall-hook-rear-holes`.

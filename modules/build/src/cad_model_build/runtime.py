@@ -49,6 +49,100 @@ def _snapshot(saved: Path, target: Path, camera: dict | None) -> None:
         raise RuntimeError(f"SolidCraft produced no snapshot: {target}")
 
 
+def _export_drawings(
+    *,
+    document: dict,
+    row: dict,
+    variables: dict,
+    saved: Path,
+    output_root: Path,
+    work_dir: Path,
+) -> tuple[Path, ...]:
+    declarations = row.get("drawings", [])
+    if not isinstance(declarations, list):
+        raise RuntimeError(f"{row['id']}: drawings must be a list")
+
+    source = document.get("artifacts", {}).get("drawings", [])
+    if not isinstance(source, list):
+        raise RuntimeError(f"{row['id']}: Forge drawing artifacts must be a list")
+    by_variable = {
+        item.get("drawing"): item
+        for item in source
+        if isinstance(item, dict)
+    }
+
+    produced: list[Path] = []
+    seen: set[Path] = set()
+    for index, item in enumerate(declarations, start=1):
+        if not isinstance(item, dict) or set(item) != {"name", "drawing", "path"}:
+            raise RuntimeError(f"{row['id']}: invalid drawing declaration")
+        variable = item["drawing"]
+        declared = by_variable.get(variable)
+        if not isinstance(declared, dict):
+            raise RuntimeError(
+                f"{row['id']}: drawing {variable!r} is not declared by Forge"
+            )
+        if variable not in variables:
+            raise RuntimeError(
+                f"{row['id']}: drawing variable {variable!r} was not replay-bound"
+            )
+
+        target = (output_root / item["path"]).resolve()
+        root = output_root.resolve()
+        if root not in target.parents:
+            raise RuntimeError(f"{row['id']}: drawing path escapes build scope")
+        if target in seen:
+            raise RuntimeError(f"{row['id']}: duplicate drawing path {target}")
+        seen.add(target)
+        target.parent.mkdir(parents=True, exist_ok=True)
+
+        script = work_dir / f"drawing-export-{index}.json"
+        checkpoint = work_dir / f"drawing-export-{index}.sc"
+        script.write_text(
+            json.dumps(
+                {
+                    "commands": [
+                        {
+                            "command": "drawing.open",
+                            "params": {"drawing": variables[variable]},
+                        },
+                        {
+                            "command": "drawing.export",
+                            "params": {
+                                "format": "pdf",
+                                "path": str(target),
+                            },
+                        },
+                        {"command": "drawing.close", "params": {}},
+                    ]
+                },
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        subprocess.run(
+            [
+                "solidcraft-cli",
+                "run",
+                str(script),
+                "--in",
+                str(saved),
+                "--save",
+                str(checkpoint),
+                "--quiet",
+            ],
+            check=True,
+        )
+        if not target.is_file() or target.stat().st_size == 0:
+            raise RuntimeError(f"{row['id']}: SolidCraft produced no drawing PDF")
+        if target.read_bytes()[:5] != b"%PDF-":
+            raise RuntimeError(f"{row['id']}: drawing artifact is not a PDF")
+        produced.append(target)
+
+    return tuple(produced)
+
+
 def _build_one(output_root: Path, row: dict) -> None:
     from scpf.headless import run_document
 
@@ -62,11 +156,20 @@ def _build_one(output_root: Path, row: dict) -> None:
     saved.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix=f"scpf-{row['id']}-") as tmp:
-        run_document(
+        work_dir = Path(tmp)
+        replay = run_document(
             document,
             save=saved,
             export=step,
-            work_dir=Path(tmp),
+            work_dir=work_dir,
+        )
+        drawings = _export_drawings(
+            document=document,
+            row=row,
+            variables=replay.get("variables", {}),
+            saved=saved,
+            output_root=output_root,
+            work_dir=work_dir,
         )
 
     _snapshot(
@@ -101,7 +204,7 @@ def _build_one(output_root: Path, row: dict) -> None:
             extra.get("camera"),
         )
 
-    required = [saved, step, png]
+    required = [saved, step, png, *drawings]
     missing = [
         path for path in required
         if not path.is_file() or path.stat().st_size == 0

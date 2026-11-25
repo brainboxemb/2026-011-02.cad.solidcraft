@@ -19,6 +19,7 @@
 {{ $build := .Params.build }}
 {{ $native := index $build "native" }}
 {{ $commandsPath := index $build "commands" }}
+{{ $drawings := default (slice) (index $build "drawings") }}
 {{ $blobBase := printf "https://github.com/%s/blob/build/%s/" $repo $scope }}
 {{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" $repo $scope }}
 {{ $toolchain := .Params.toolchain }}
@@ -73,6 +74,10 @@
           <a href="{{ printf "%s%s" $rawBase . }}" download>Download STL</a>
         {{ end }}
         {{ with index $native "step" }}<a href="{{ printf "%s%s" $blobBase . }}" target="_blank" rel="noopener noreferrer">STEP ↗</a>{{ end }}
+        {{ range $drawing := $drawings }}
+          <a href="{{ printf "%s%s" $blobBase (index $drawing "path") }}" target="_blank" rel="noopener noreferrer">{{ index $drawing "name" }} PDF ↗</a>
+          <a href="{{ printf "%s%s" $rawBase (index $drawing "path") }}" download>Download {{ index $drawing "name" }} PDF</a>
+        {{ end }}
         <a href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/model.yml">model.yml</a>
         <a href="https://github.com/{{ $repo }}/blob/{{ $ref }}/{{ $root }}/ci.yml">ci.yml</a>
       </div>
@@ -82,6 +87,27 @@
       <ul class="cad-stages">{{ range index $m "stages" }}<li>{{ . }}</li>{{ end }}</ul>
     </aside>
   </div>
+
+  {{ if gt (len $drawings) 0 }}
+    <section class="cad-panel cad-drawings-panel">
+      <p class="cad-section-label">Technical drawing</p>
+      <h2 class="cad-section-title">Drawing sheet</h2>
+      <p class="cad-section-help">Native SolidCraft vector PDF from the accepted build scope. A4 is the Forge default; individual models may explicitly select A3.</p>
+      {{ range $drawing := $drawings }}
+        {{ $drawingPath := index $drawing "path" }}
+        {{ $drawingRaw := printf "%s%s" $rawBase $drawingPath }}
+        {{ $drawingBlob := printf "%s%s" $blobBase $drawingPath }}
+        <article class="cad-drawing">
+          <h3 class="cad-section-subtitle">{{ index $drawing "name" }}</h3>
+          <iframe class="cad-drawing-frame" src="{{ $drawingRaw }}" title="{{ index $drawing "name" }} technical drawing PDF"></iframe>
+          <div class="cad-links">
+            <a href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">Open PDF on GitHub ↗</a>
+            <a href="{{ $drawingRaw }}" download>Download PDF</a>
+          </div>
+        </article>
+      {{ end }}
+    </section>
+  {{ end }}
 
   {{ with index $native "sc" }}
     {{ $nativeURL := printf "%s%s" $rawBase . }}

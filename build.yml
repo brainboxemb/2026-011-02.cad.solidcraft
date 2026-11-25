@@ -3,5 +3,6 @@ branch: docs/30-complete-latch
 
 modules:
   - pages
+models: []
 tasks:
   - test

@@ -1,7 +1,11 @@
 schema: 1
-branch: chore/102-complete-wall-hook-xz
+branch: issue/103-sample-plate-drawing-preview
 
-modules: []
-models: []
+modules:
+  - build
+  - pages
+models:
+  - sample-plate
 tasks:
   - test
+  - build

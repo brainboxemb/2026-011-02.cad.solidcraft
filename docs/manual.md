@@ -181,26 +181,6 @@ among models that are otherwise ready.
 Generated artifacts remain below root `build/`.
 
 
-## Native technical drawings
-
-A Forge model may declare a final-design technical drawing with
-`with_drawing(...)`. The CAD project keeps that intent in the compiled command
-document and publishes two native SolidCraft outputs from the same drawing
-sheet:
-
-```text
-models/<id>/drawings/<name>.pdf   vector publication artifact
-models/<id>/drawings/<name>.png   visual sheet preview
-```
-
-The PDF and PNG are both exported by SolidCraft `drawing.export`; the project
-does not reconstruct the drawing with a PDF or image library. A4 is Forge's
-default part template and a model may explicitly select A3.
-
-Pages renders the PNG preview and links the PDF from the durable
-`build/<scope>` branch. Neither generated drawing artifact is copied into
-`gh-pages`.
-
 ## Model builds
 
 Root `ci.yml` pins the complete qualified CAD toolchain:

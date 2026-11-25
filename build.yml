@@ -1,10 +1,10 @@
 schema: 1
-branch: feature/79-display-hinge
+branch: fix/30-restore-latch-source
 
 modules:
   - pages
 models:
-  - display-hinge
+  - latch
 tasks:
   - test
   - build

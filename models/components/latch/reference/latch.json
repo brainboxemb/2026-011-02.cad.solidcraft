@@ -1,0 +1,1000 @@
+{
+  "format": "solidcraft/66",
+  "name": "latch",
+  "units": "mm",
+  "params": [
+    {
+      "name": "totale_lengte",
+      "expr": "73 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "voet_begin",
+      "expr": "15.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "voet_lengte",
+      "expr": "43 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "voet_breedte",
+      "expr": "16.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "voet_dikte",
+      "expr": "2 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "eerste_gat",
+      "expr": "23 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "gat_steek",
+      "expr": "14 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "gat_diameter",
+      "expr": "4.2 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "greep_breedte",
+      "expr": "16.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "hoogte",
+      "expr": "14.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "beugel_breedte",
+      "expr": "23.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "scharnier_x",
+      "expr": "45.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "scharnier_z",
+      "expr": "7.45 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "beugelpen_x",
+      "expr": "33.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "beugelpen_z",
+      "expr": "6 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "pen_diameter",
+      "expr": "4 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "speling",
+      "expr": "0.1 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "d8",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d9",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "voorscharnier_x",
+      "expr": "20.5 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "voorscharnier_z",
+      "expr": "7.3 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "as_diameter",
+      "expr": "3.8 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "d1",
+      "expr": "gat_diameter",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d2",
+      "expr": "gat_diameter",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d3",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d4",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d20",
+      "expr": "as_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d36",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d37",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d38",
+      "expr": "as_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d39",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d40",
+      "expr": "pen_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "d41",
+      "expr": "as_diameter+speling",
+      "unit": "mm",
+      "model": true
+    },
+    {
+      "name": "borglip_breedte",
+      "expr": "8.4 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "borglip_dikte",
+      "expr": "0.7 mm",
+      "unit": "mm",
+      "model": false
+    },
+    {
+      "name": "d23",
+      "expr": "3.2",
+      "unit": "mm",
+      "model": true
+    }
+  ],
+  "features": [
+    {
+      "id": 33,
+      "name": "Uitslag trekbeugel met verspringingen",
+      "suppressed": false,
+      "type": "sketch",
+      "plane": {
+        "type": "placed",
+        "origin": [
+          "-totale_lengte/2",
+          0.0,
+          0.0
+        ],
+        "x_dir": [0.0, 1.0, 0.0],
+        "y_dir": [0.0, 0.0, 1.0]
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-42.16287547531802, 2.2],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [42.16287547531802, 2.2],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [42.16287547531802, 6.85],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [42.16287547531802, 11.5],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [28.077433388230816, 11.5],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2 + (16.327433388230816 mm))"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [11.577433388230814, 7.1],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2 + (-0.1725666117691862 mm))"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-11.577433388230814, 7.1],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2 + (-0.1725666117691862 mm))"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-28.077433388230816, 11.5],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2 + (16.327433388230816 mm))"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [-42.16287547531802, 11.5],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-42.16287547531802, 6.85],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2 + (30.412875475318017 mm))"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-42.16287547531801, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-1*(beugel_breedte/2+beugelpen_x+(-3.087124524681987 mm))",
+              "y": "beugelpen_z"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [42.16287547531801, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "1*(beugel_breedte/2+beugelpen_x+(-3.087124524681987 mm))",
+              "y": "beugelpen_z"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 3,
+            "a": 2,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 4,
+            "b": 5,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 10,
+            "a": 9,
+            "b": 1,
+            "construction": false
+          },
+          {
+            "id": "c1",
+            "type": "circle",
+            "c": 11,
+            "r": 2.05,
+            "construction": false
+          },
+          {
+            "id": "c2",
+            "type": "circle",
+            "c": 12,
+            "r": 2.05,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "diameter",
+            "c": 8,
+            "value": 4.1,
+            "param": "d8"
+          },
+          {
+            "id": "k2",
+            "type": "diameter",
+            "c": 9,
+            "value": 4.1,
+            "param": "d9"
+          }
+        ],
+        "counters": {
+          "a": 2,
+          "c": 2,
+          "k": 2,
+          "l": 6,
+          "p": 12
+        }
+      }
+    },
+    {
+      "id": 34,
+      "name": "Trekbeugel met zettingen",
+      "suppressed": false,
+      "body_names": [
+        "Trekbeugel met verspringingen"
+      ],
+      "type": "sheet_base",
+      "sketch": 33,
+      "profiles": {
+        "type": "all"
+      },
+      "rule": "Trekbeugel 2 mm"
+    },
+    {
+      "id": 35,
+      "name": "Pengaten in trekbeugel met verspringingen",
+      "suppressed": false,
+      "param_names": [
+        "d10"
+      ],
+      "type": "extrude",
+      "sketch": 33,
+      "profiles": {
+        "type": "curves",
+        "loops": [
+          [
+            "c2"
+          ],
+          [
+            "c1"
+          ]
+        ]
+      },
+      "extent": {
+        "distance": "2",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "cut",
+      "targets": [
+        "Trekbeugel met verspringingen"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Fold7",
+      "suppressed": false,
+      "param_names": [
+        "d11"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, 37.35211495915475, 2.2],
+      "b": [-36.5, 37.35211495915475, 11.5],
+      "angle": "25",
+      "position": "start",
+      "flip": true,
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 37,
+      "name": "Fold8",
+      "suppressed": false,
+      "param_names": [
+        "d12"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, 34.37743338823081, 2.2],
+      "b": [-36.5, 34.37743338823081, 11.5],
+      "angle": "25",
+      "position": "start",
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 38,
+      "name": "Fold9",
+      "suppressed": false,
+      "param_names": [
+        "d13"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, 8.75, 2.2],
+      "b": [-36.5, 8.75, 7.1],
+      "angle": "90",
+      "position": "start",
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 39,
+      "name": "Fold10",
+      "suppressed": false,
+      "param_names": [
+        "d14"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, -37.35211495915475, 11.5],
+      "b": [-36.5, -37.35211495915475, 2.2],
+      "angle": "25",
+      "position": "start",
+      "flip": true,
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 40,
+      "name": "Fold11",
+      "suppressed": false,
+      "param_names": [
+        "d15"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, -34.37743338823081, 11.5],
+      "b": [-36.5, -34.37743338823081, 2.2],
+      "angle": "25",
+      "position": "start",
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 41,
+      "name": "Fold12",
+      "suppressed": false,
+      "param_names": [
+        "d16"
+      ],
+      "type": "sheet_fold",
+      "a": [-36.5, -8.75, 7.1],
+      "b": [-36.5, -8.75, 2.2],
+      "angle": "90",
+      "position": "start",
+      "fixed": [-36.5, 0.0, 4.0],
+      "stays": "left",
+      "body": "Trekbeugel met verspringingen"
+    },
+    {
+      "id": 44,
+      "name": "Uitslag montagevoet met voorscharnier",
+      "suppressed": false,
+      "type": "sketch",
+      "plane": {
+        "type": "placed",
+        "origin": [
+          "-totale_lengte/2",
+          0.0,
+          0.0
+        ],
+        "x_dir": [1.0, 0.0, 0.0],
+        "y_dir": [0.0, 1.0, 0.0]
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [27.0, -8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+11.5 mm",
+              "y": "-voet_breedte/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [40.0, -8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-5.5 mm)",
+              "y": "-1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [40.0, -10.449114857512855],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-5.5 mm)",
+              "y": "-1*(voet_breedte/2 + (2.199114857512855 mm))"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [41.75, -15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-3.75 mm)",
+              "y": "-1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [45.5, -15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (0 mm)",
+              "y": "-1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [49.25, -15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (3.75 mm)",
+              "y": "-1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [51.0, -10.449114857512855],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (5.5 mm)",
+              "y": "-1*(voet_breedte/2 + (2.199114857512855 mm))"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [51.0, -8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (5.5 mm)",
+              "y": "-1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [55.5, -8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte-3 mm",
+              "y": "-1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [55.5, -5.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte-3 mm",
+              "y": "-1*(voet_breedte/2 + (-3 mm))"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [58.5, -5.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte",
+              "y": "-1*(voet_breedte/2 + (-3 mm))"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [58.5, 5.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte",
+              "y": "1*(voet_breedte/2 + (-3 mm))"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [55.5, 5.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte-3 mm",
+              "y": "1*(voet_breedte/2 + (-3 mm))"
+            }
+          },
+          {
+            "id": "p14",
+            "pos": [55.5, 8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+voet_lengte-3 mm",
+              "y": "1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p15",
+            "pos": [51.0, 8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (5.5 mm)",
+              "y": "1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p16",
+            "pos": [51.0, 10.449114857512855],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (5.5 mm)",
+              "y": "1*(voet_breedte/2 + (2.199114857512855 mm))"
+            }
+          },
+          {
+            "id": "p17",
+            "pos": [49.25, 15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (3.75 mm)",
+              "y": "1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p18",
+            "pos": [45.5, 15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (0 mm)",
+              "y": "1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p19",
+            "pos": [41.75, 15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-3.75 mm)",
+              "y": "1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p20",
+            "pos": [40.0, 10.449114857512855],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-5.5 mm)",
+              "y": "1*(voet_breedte/2 + (2.199114857512855 mm))"
+            }
+          },
+          {
+            "id": "p21",
+            "pos": [40.0, 8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (-5.5 mm)",
+              "y": "1*(voet_breedte/2 + (0 mm))"
+            }
+          },
+          {
+            "id": "p22",
+            "pos": [27.0, 8.25],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+11.5 mm",
+              "y": "voet_breedte/2"
+            }
+          },
+          {
+            "id": "p23",
+            "pos": [25.5, 3.8],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+10 mm"
+            }
+          },
+          {
+            "id": "p24",
+            "pos": [15.5, 3.8],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin"
+            }
+          },
+          {
+            "id": "p25",
+            "pos": [15.5, -3.8],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin"
+            }
+          },
+          {
+            "id": "p26",
+            "pos": [25.5, -3.8],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+10 mm"
+            }
+          },
+          {
+            "id": "p27",
+            "pos": [38.5, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+eerste_gat"
+            }
+          },
+          {
+            "id": "p28",
+            "pos": [52.5, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "voet_begin+eerste_gat+gat_steek"
+            }
+          },
+          {
+            "id": "p29",
+            "pos": [45.5, -15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (0 mm)",
+              "y": "-1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          },
+          {
+            "id": "p30",
+            "pos": [45.5, 15.299114857512857],
+            "fixed": true,
+            "exprs": {
+              "x": "scharnier_x + (0 mm)",
+              "y": "1*(voet_breedte/2 + (7.049114857512857 mm))"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 5,
+            "a": 4,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 10,
+            "a": 9,
+            "b": 11,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "a3",
+            "type": "arc",
+            "c": 13,
+            "a": 12,
+            "b": 14,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 14,
+            "b": 15,
+            "construction": false
+          },
+          {
+            "id": "l9",
+            "type": "line",
+            "a": 15,
+            "b": 16,
+            "construction": false
+          },
+          {
+            "id": "l10",
+            "type": "line",
+            "a": 16,
+            "b": 17,
+            "construction": false
+          },
+          {
+            "id": "a4",
+            "type": "arc",
+            "c": 18,
+            "a": 17,
+            "b": 19,
+            "construction": false
+          },
+          {
+            "id": "l11",
+            "type": "line",
+            "a": 19,
+            "b": 20,
+            "construction": false
+          },
+          {
+            "id": "l12",
+            "type": "line",
+            "a": 20,
+            "b": 21,
+            "construction": false
+          },
+          {
+            "id": "l13",
+            "type": "line",
+            "a": 21,
+            "b": 22,
+            "construction": false
+          },
+          {
+            "id": "l14",
+            "type": "line",
+            "a": 22,

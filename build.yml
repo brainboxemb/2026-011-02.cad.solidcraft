@@ -1,12 +1,8 @@
 schema: 1
 branch: issue/103-sample-plate-drawing-pdf-v2
 
-modules:
-  - build
-  - ci
-  - pages
-models:
-  - sample-plate
+modules: all
+models: all
 tasks:
   - test
   - build

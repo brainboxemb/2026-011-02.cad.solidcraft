@@ -1,4 +1,4 @@
-"""Measured detailed HUB75 panel from the supplied hub75_improved native source.
+"""Measured detailed HUB75 panel from the supplied hub75_improved_v2 native source.
 
 The reusable Hub75Panel component keeps the panel housing in its historical
 local frame: XY is the 159.7 x 319.71 mm panel plane and +Z runs from the
@@ -198,8 +198,8 @@ class Hub75Panel:
         reinforcement_positions = (
             (-self.mount_x, -self.mount_y + REINFORCEMENT_OFFSET),
             (self.mount_x, -self.mount_y + REINFORCEMENT_OFFSET),
-            (-self.mount_x, REINFORCEMENT_OFFSET),
-            (self.mount_x, -REINFORCEMENT_OFFSET),
+            (self.mount_x, REINFORCEMENT_OFFSET),
+            (-self.mount_x, -REINFORCEMENT_OFFSET),
             (-self.mount_x, self.mount_y - REINFORCEMENT_OFFSET),
             (self.mount_x, self.mount_y - REINFORCEMENT_OFFSET),
         )
@@ -230,8 +230,8 @@ class Hub75Panel:
 
         # Native features 38/39: two diagonal Ø3 x 3 mm locating pins.
         for x, y in (
-            (-LOCATOR_PIN_X, LOCATOR_PIN_Y),
-            (LOCATOR_PIN_X, -LOCATOR_PIN_Y),
+            (LOCATOR_PIN_X, LOCATOR_PIN_Y),
+            (-LOCATOR_PIN_X, -LOCATOR_PIN_Y),
         ):
             body = body + Cylinder(
                 d=LOCATOR_PIN_DIAMETER,
@@ -422,7 +422,7 @@ class Hub75PanelDetailed:
             ),
         )
 
-        power_x = self.width * (53.0 / 160.0 - 0.5)
+        power_x = self.width * (0.5 - 53.0 / 160.0)
         power_y = self.height * (128.0 / 320.0 - 0.5)
         power = Hub75PowerConnector(
             name="Voedingsconnector",

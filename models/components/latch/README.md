@@ -6,10 +6,10 @@ The byte-identical native reference belongs at `reference/latch.sc`. It is
 the geometry/history source of truth while the SCPF reconstruction is
 incomplete.
 
-During repository migration the original 498,569-byte Library file was
-recovered, but the current connector cannot materialize its raw binary bytes.
-Do not treat this branch as a complete latch PR until that exact reference file
-is committed.
+The original 498,569-byte SolidCraft container is preserved byte-identical at
+`reference/latch.sc`. A readable `reference/latch.json` export is kept next
+to it for review; the .sc container remains the geometry/history source of
+truth.
 
 ## Reference design
 
@@ -80,18 +80,19 @@ carrying product-specific workarounds.
   — connected mixed line/arc closed Sketch profiles — **closed**.
 - [Forge #568](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/568)
   — native sheet flange coverage — **closed**.
-- [Forge #843](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/843)
-  — native profile-driven `Sketch.revolve()` required by the latch rivets — **in qualification**.
-- [Forge #349](https://github.com/brainboxemb/lib.py.solidcraft.forge/issues/349)
-  — parent coverage issue for remaining SolidCraft create features — **open**.
+- Forge #843 — native profile-driven `Sketch.revolve()` — **released in
+  Forge v0.16.0**.
+- Forge #349 remains the parent coverage tracker, but no currently missing
+  primitive blocks this latch reconstruction.
 
-The connected mixed line/arc profiles and required sheet-metal primitives are
-now available generically in Forge. The remaining implementation must consume
-the released Revolve capability from #843 and must not approximate the native
-revolved history with fused solids.
+Forge v0.16.0 now provides the mixed line/arc profiles, sheet base/fold/flange/
+contour operations and native profile-driven revolve used by this model. The
+SCPF implementation therefore follows the preserved source history directly
+instead of substituting fused-solid approximations.
 
-The exact `latch.sc` reference is still required before reconstructing the
-source-specific blank contours, fold locations and rivet profiles. Those
-details will not be guessed from screenshots or envelope dimensions.
+The owner is decomposed into separate physical components (mounting foot,
+handle, pull bail, locking lip, pins and rivets). The original cross-body
+locking-rivet cut is represented as matching cuts in the two owning physical
+parts; geometry and location remain source-derived.
 
 See the repository-wide `docs/plan.md` for execution order.

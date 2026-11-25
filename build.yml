@@ -1,7 +1,9 @@
 schema: 1
-branch: fix/126-128-wall-hook-followup
+branch: fix/128-wall-hook-thumbnail-view
 
-modules: []
-models: [wall-hook]
+modules:
+  - pages
+models:
+  - wall-hook
 tasks:
   - test

@@ -1,0 +1,197 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "width",
+        "expression": "120",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "depth",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "thickness",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bend_radius",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "k_factor",
+        "expression": "0.44",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "long_flange_height",
+        "expression": "30",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "long_flange_angle",
+        "expression": "90",
+        "unit": "deg"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "end_flange_height",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "end_flange_angle",
+        "expression": "60",
+        "unit": "deg"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hem_length",
+        "expression": "8",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Steel 2mm",
+        "thickness": "thickness",
+        "k_factor": "k_factor",
+        "bend_radius": "bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Base"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            "width",
+            0.0
+          ],
+          [
+            "width",
+            "depth"
+          ],
+          [
+            0.0,
+            "depth"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "v1",
+          "v2",
+          "v3",
+          "v4"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "Base",
+        "rule": "Steel 2mm",
+        "body_name": "SheetMetalBracket"
+      }
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "edge",
+        "edges": [
+          [
+            60.0,
+            0.0,
+            2.0
+          ],
+          [
+            60.0,
+            60.0,
+            2.0
+          ]
+        ],
+        "height": "long_flange_height",
+        "angle": "long_flange_angle",
+        "body": "SheetMetalBracket",
+        "position": "inside"
+      }
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "edge",
+        "edges": [
+          [
+            120.0,
+            30.0,
+            2.0
+          ]
+        ],
+        "height": "end_flange_height",
+        "angle": "end_flange_angle",
+        "body": "SheetMetalBracket",
+        "position": "inside"
+      }
+    },
+    {
+      "command": "sheet.hem",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            30.0,
+            2.0
+          ]
+        ],
+        "length": "hem_length",
+        "body": "SheetMetalBracket"
+      }
+    }
+  ]
+}

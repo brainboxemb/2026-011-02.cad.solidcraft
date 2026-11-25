@@ -4,6 +4,24 @@ This file contains unfinished work only.
 
 ## Now
 
+### #18 / #19 / #20 — improved native HUB75 panel
+
+Active on `feature/18-hub75-improved-source`.
+
+Use the supplied `hub75_improved.sc` / `hub75_improved.json` for the
+remaining detailed panel work: connected rounded/stepped rear bays, tapered
+side-wall trimming, two HUB75 data connector envelopes, the approximate power
+connector and four white orientation markings. Preserve the existing local
+XY/Z reusable-component frame; the native `Paneel rechtop` move is
+presentation-only.
+
+Acceptance:
+
+1. `hub75-panel` and `hub75-screen` qualify on the accepted baseline;
+2. accepted outer envelope and mounting centres stay unchanged;
+3. connector envelopes are separate occurrences in the standalone detailed model;
+4. the native JSON reference is retained under the component owner.
+
 ### #84 — replace inferred hook geometry with native source
 
 Active on `fix/84-use-native-hook-source`.

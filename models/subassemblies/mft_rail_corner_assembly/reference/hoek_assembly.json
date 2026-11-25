@@ -1,0 +1,1987 @@
+{
+  "components": [
+    {
+      "id": 1,
+      "identification_color_index": 0,
+      "name": "MountingRailM8",
+      "parent": 0
+    },
+    {
+      "id": 19,
+      "identification_color_index": 1,
+      "name": "MFTRailCornerBracket",
+      "parent": 0
+    }
+  ],
+  "features": [
+    {
+      "component": 1,
+      "id": 3,
+      "name": "d1_MountingRailM8__Flat rail blank",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, 0.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [],
+        "counters": {
+          "p": 2
+        },
+        "curves": [
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "id": "a",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 1,
+            "construction": false,
+            "id": "b",
+            "type": "line"
+          },
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "c",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "id": "d",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "exprs": {
+              "y": "rail_length"
+            },
+            "fixed": true,
+            "id": "p1",
+            "pos": [32.99778714378214, 150.0]
+          },
+          {
+            "exprs": {
+              "y": "rail_length"
+            },
+            "fixed": true,
+            "id": "p2",
+            "pos": [-32.99778714378214, 150.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.start",
+            "pos": [-32.99778714378214, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.end",
+            "pos": [32.99778714378214, 0.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "body_names": [
+        "MountingRailM8"
+      ],
+      "component": 1,
+      "id": 4,
+      "name": "BaseFlange1",
+      "profiles": {
+        "type": "all"
+      },
+      "rule": "Mounting Rail M8 Rule",
+      "sketch": 3,
+      "suppressed": false,
+      "type": "sheet_base"
+    },
+    {
+      "component": 1,
+      "id": 5,
+      "name": "d1_MountingRailM8__Repeat round A",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, 1.25],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [],
+        "counters": {
+          "c": 1
+        },
+        "curves": [
+          {
+            "c": 1,
+            "construction": false,
+            "id": "c1",
+            "r": 6.25,
+            "type": "circle"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "c1.center",
+            "pos": [0.0, 12.5]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 1,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "negative",
+        "distance": "2.5"
+      },
+      "id": 6,
+      "name": "Repeat round A",
+      "operation": "cut",
+      "param_names": [
+        "d1"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 5,
+      "suppressed": false,
+      "targets": [
+        "MountingRailM8"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 1,
+      "id": 7,
+      "name": "d1_MountingRailM8__Repeat horizontal slot",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, 1.25],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "a": 0,
+            "b": 1,
+            "id": "k1",
+            "type": "tangent"
+          },
+          {
+            "a": 2,
+            "b": 1,
+            "id": "k2",
+            "type": "tangent"
+          },
+          {
+            "a": 0,
+            "b": 3,
+            "id": "k3",
+            "type": "tangent"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "id": "k4",
+            "type": "tangent"
+          },
+          {
+            "a": 3,
+            "b": 1,
+            "id": "k5",
+            "type": "equal"
+          },
+          {
+            "id": "k6",
+            "l": 4,
+            "p": 7,
+            "type": "midpoint"
+          }
+        ],
+        "counters": {
+          "a": 2,
+          "k": 6,
+          "l": 3,
+          "p": 5
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "l1",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "c": 5,
+            "construction": false,
+            "id": "a1",
+            "type": "arc"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "id": "l2",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 1,
+            "c": 6,
+            "construction": false,
+            "id": "a2",
+            "type": "arc"
+          },
+          {
+            "a": 6,
+            "b": 5,
+            "construction": true,
+            "id": "l3",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "p1",
+            "pos": [3.2, 35.7]
+          },
+          {
+            "fixed": false,
+            "id": "p2",
+            "pos": [3.2, 39.3]
+          },
+          {
+            "fixed": false,
+            "id": "p3",
+            "pos": [-3.2, 39.3]
+          },
+          {
+            "fixed": false,
+            "id": "p4",
+            "pos": [-3.2, 35.7]
+          },
+          {
+            "fixed": false,
+            "id": "a1.center",
+            "pos": [0.0, 39.3]
+          },
+          {
+            "fixed": false,
+            "id": "a2.center",
+            "pos": [0.0, 35.7]
+          },
+          {
+            "fixed": false,
+            "id": "p5",
+            "pos": [0.0, 37.5]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 1,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "negative",
+        "distance": "2.5"
+      },
+      "id": 8,
+      "name": "Repeat horizontal slot",
+      "operation": "cut",
+      "param_names": [
+        "d2"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 7,
+      "suppressed": false,
+      "targets": [
+        "MountingRailM8"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 1,
+      "id": 9,
+      "name": "d1_MountingRailM8__Repeat round B",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, 1.25],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [],
+        "counters": {
+          "c": 1
+        },
+        "curves": [
+          {
+            "c": 1,
+            "construction": false,
+            "id": "c1",
+            "r": 6.25,
+            "type": "circle"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "c1.center",
+            "pos": [0.0, 62.5]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 1,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "negative",
+        "distance": "2.5"
+      },
+      "id": 10,
+      "name": "Repeat round B",
+      "operation": "cut",
+      "param_names": [
+        "d3"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 9,
+      "suppressed": false,
+      "targets": [
+        "MountingRailM8"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 1,
+      "id": 11,
+      "name": "d1_MountingRailM8__Repeat vertical slot",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, 1.25],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "a": 0,
+            "b": 1,
+            "id": "k1",
+            "type": "tangent"
+          },
+          {
+            "a": 2,
+            "b": 1,
+            "id": "k2",
+            "type": "tangent"
+          },
+          {
+            "a": 0,
+            "b": 3,
+            "id": "k3",
+            "type": "tangent"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "id": "k4",
+            "type": "tangent"
+          },
+          {
+            "a": 3,
+            "b": 1,
+            "id": "k5",
+            "type": "equal"
+          },
+          {
+            "id": "k6",
+            "l": 4,
+            "p": 7,
+            "type": "midpoint"
+          }
+        ],
+        "counters": {
+          "a": 2,
+          "k": 6,
+          "l": 3,
+          "p": 5
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "l1",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "c": 5,
+            "construction": false,
+            "id": "a1",
+            "type": "arc"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "id": "l2",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 1,
+            "c": 6,
+            "construction": false,
+            "id": "a2",
+            "type": "arc"
+          },
+          {
+            "a": 6,
+            "b": 5,
+            "construction": true,
+            "id": "l3",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "p1",
+            "pos": [-3.3, 83.3]
+          },
+          {
+            "fixed": false,
+            "id": "p2",
+            "pos": [3.3, 83.3]
+          },
+          {
+            "fixed": false,
+            "id": "p3",
+            "pos": [3.3, 91.7]
+          },
+          {
+            "fixed": false,
+            "id": "p4",
+            "pos": [-3.3, 91.7]
+          },
+          {
+            "fixed": false,
+            "id": "a1.center",
+            "pos": [3.3, 87.5]
+          },
+          {
+            "fixed": false,
+            "id": "a2.center",
+            "pos": [-3.3, 87.5]
+          },
+          {
+            "fixed": false,
+            "id": "p5",
+            "pos": [0.0, 87.5]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 1,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "negative",
+        "distance": "2.5"
+      },
+      "id": 12,
+      "name": "Repeat vertical slot",
+      "operation": "cut",
+      "param_names": [
+        "d4"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 11,
+      "suppressed": false,
+      "targets": [
+        "MountingRailM8"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 1,
+      "features": [6, 8, 10, 12],
+      "id": 13,
+      "name": "RectangularPattern1",
+      "param_names": [
+        "d5",
+        "d6"
+      ],
+      "pattern": {
+        "count1": "rail_repeat_count",
+        "dir1": [0.0, 1.0, 0.0],
+        "spacing1": "rail_repeat_pitch",
+        "type": "rectangular"
+      },
+      "suppressed": false,
+      "type": "pattern"
+    },
+    {
+      "a": [-28.123340357836604, 0.0, 0.0],
+      "angle": "90",
+      "b": [-28.123340357836604, 150.0, 0.0],
+      "body": "MountingRailM8",
+      "component": 1,
+      "id": 14,
+      "name": "Fold1",
+      "param_names": [
+        "d7"
+      ],
+      "position": "centerline",
+      "stays": "right",
+      "suppressed": false,
+      "type": "sheet_fold"
+    },
+    {
+      "a": [28.123340357836604, 0.0, 0.0],
+      "angle": "90",
+      "b": [28.123340357836604, 150.0, 0.0],
+      "body": "MountingRailM8",
+      "component": 1,
+      "id": 15,
+      "name": "Fold2",
+      "param_names": [
+        "d8"
+      ],
+      "position": "centerline",
+      "stays": "left",
+      "suppressed": false,
+      "type": "sheet_fold"
+    },
+    {
+      "a": [-12.374446785945535, 0.0, 0.0],
+      "angle": "90",
+      "b": [-12.374446785945535, 150.0, 0.0],
+      "body": "MountingRailM8",
+      "component": 1,
+      "id": 16,
+      "name": "Fold3",
+      "param_names": [
+        "d9"
+      ],
+      "position": "centerline",
+      "stays": "right",
+      "suppressed": false,
+      "type": "sheet_fold"
+    },
+    {
+      "a": [12.374446785945535, 0.0, 0.0],
+      "angle": "90",
+      "b": [12.374446785945535, 150.0, 0.0],
+      "body": "MountingRailM8",
+      "component": 1,
+      "id": 17,
+      "name": "Fold4",
+      "param_names": [
+        "d10"
+      ],
+      "position": "centerline",
+      "stays": "left",
+      "suppressed": false,
+      "type": "sheet_fold"
+    },
+    {
+      "body_names": [
+        "MFTRailCornerBracket"
+      ],
+      "component": 19,
+      "corner": [
+        0.0,
+        0.0,
+        "-27 mm - d2_MFTRailCornerBracket_foot_thickness"
+      ],
+      "height": "27 mm + d2_MFTRailCornerBracket_foot_thickness",
+      "id": 21,
+      "length": "d2_MFTRailCornerBracket_arm_length",
+      "name": "Box1",
+      "operation": "new_body",
+      "param_names": [
+        "d11",
+        "d12",
+        "d13"
+      ],
+      "suppressed": false,
+      "type": "box",
+      "width": "d2_MFTRailCornerBracket_wall_thickness"
+    },
+    {
+      "component": 19,
+      "corner": [
+        0.0,
+        0.0,
+        "-27 mm - d2_MFTRailCornerBracket_foot_thickness"
+      ],
+      "height": "27 mm + d2_MFTRailCornerBracket_foot_thickness",
+      "id": 22,
+      "length": "d2_MFTRailCornerBracket_wall_thickness",
+      "name": "Box2",
+      "operation": "join",
+      "param_names": [
+        "d14",
+        "d15",
+        "d16"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "suppressed": false,
+      "type": "box",
+      "width": "d2_MFTRailCornerBracket_arm_length"
+    },
+    {
+      "component": 19,
+      "id": 23,
+      "name": "d2_MFTRailCornerBracket__Top MFT gusset",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, -5.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k1",
+            "p": 0,
+            "q": 3,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "k": 1,
+          "p": 2
+        },
+        "curves": [
+          {
+            "a": 3,
+            "b": 1,
+            "construction": false,
+            "id": "a",
+            "type": "line"
+          },
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "b",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "id": "c",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "exprs": {
+              "x": "d2_MFTRailCornerBracket_top_gusset_leg"
+            },
+            "fixed": true,
+            "id": "p1",
+            "pos": [55.0, 0.0]
+          },
+          {
+            "exprs": {
+              "y": "d2_MFTRailCornerBracket_top_gusset_leg"
+            },
+            "fixed": true,
+            "id": "p2",
+            "pos": [0.0, 55.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.start",
+            "pos": [0.0, 0.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 19,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "d2_MFTRailCornerBracket_top_gusset_thickness"
+      },
+      "id": 24,
+      "name": "Extrude1",
+      "operation": "join",
+      "param_names": [
+        "d17"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 23,
+      "suppressed": false,
+      "targets": [
+        "MFTRailCornerBracket"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 19,
+      "id": 25,
+      "name": "d2_MFTRailCornerBracket__Bottom corner gusset",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, -27.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k1",
+            "p": 0,
+            "q": 3,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "k": 1,
+          "p": 2
+        },
+        "curves": [
+          {
+            "a": 3,
+            "b": 1,
+            "construction": false,
+            "id": "a",
+            "type": "line"
+          },
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "b",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "id": "c",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "exprs": {
+              "x": "d2_MFTRailCornerBracket_bottom_gusset_leg"
+            },
+            "fixed": true,
+            "id": "p1",
+            "pos": [55.0, 0.0]
+          },
+          {
+            "exprs": {
+              "y": "d2_MFTRailCornerBracket_bottom_gusset_leg"
+            },
+            "fixed": true,
+            "id": "p2",
+            "pos": [0.0, 55.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.start",
+            "pos": [0.0, 0.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 19,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "d2_MFTRailCornerBracket_bottom_gusset_thickness"
+      },
+      "id": 26,
+      "name": "Extrude2",
+      "operation": "join",
+      "param_names": [
+        "d18"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 25,
+      "suppressed": false,
+      "targets": [
+        "MFTRailCornerBracket"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 19,
+      "id": 27,
+      "name": "d2_MFTRailCornerBracket__X rail support foot",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, -33.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k1",
+            "p": 0,
+            "q": 4,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "k": 1
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "a",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "id": "b",
+            "type": "line"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "id": "c",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 1,
+            "construction": false,
+            "id": "d",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.start",
+            "pos": [0.0, -18.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.end",
+            "pos": [75.0, -18.0]
+          },
+          {
+            "fixed": false,
+            "id": "b.end",
+            "pos": [75.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "c.end",
+            "pos": [0.0, 0.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 19,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "d2_MFTRailCornerBracket_foot_thickness"
+      },
+      "id": 28,
+      "name": "Extrude3",
+      "operation": "join",
+      "param_names": [
+        "d19"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 27,
+      "suppressed": false,
+      "targets": [
+        "MFTRailCornerBracket"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 19,
+      "id": 29,
+      "name": "d2_MFTRailCornerBracket__Y rail support foot",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, -33.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k1",
+            "p": 0,
+            "q": 2,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "k": 1
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "id": "a",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "id": "b",
+            "type": "line"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "id": "c",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 1,
+            "construction": false,
+            "id": "d",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.start",
+            "pos": [-18.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a.end",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "b.end",
+            "pos": [0.0, 75.0]
+          },
+          {
+            "fixed": false,
+            "id": "c.end",
+            "pos": [-18.0, 75.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 19,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "d2_MFTRailCornerBracket_foot_thickness"
+      },
+      "id": 30,
+      "name": "Extrude4",
+      "operation": "join",
+      "param_names": [
+        "d20"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 29,
+      "suppressed": false,
+      "targets": [
+        "MFTRailCornerBracket"
+      ],
+      "type": "extrude"
+    },
+    {
+      "component": 19,
+      "id": 31,
+      "name": "d2_MFTRailCornerBracket__Rounded outside corner foot",
+      "plane": {
+        "plane": {
+          "origin": [0.0, 0.0, -33.0],
+          "x_dir": [1.0, 0.0, 0.0],
+          "y_dir": [0.0, 1.0, 0.0]
+        },
+        "type": "custom"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k2",
+            "p": 0,
+            "q": 2,
+            "type": "coincident"
+          },
+          {
+            "id": "k3",
+            "p": 0,
+            "q": 4,
+            "type": "coincident"
+          },
+          {
+            "id": "k4",
+            "p": 1,
+            "q": 5,
+            "type": "coincident"
+          },
+          {
+            "id": "k5",
+            "p": 3,
+            "q": 6,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "a": 1,
+          "k": 5,
+          "l": 2
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "fixed": true,
+            "id": "l1",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "fixed": true,
+            "id": "l2",
+            "type": "line"
+          },
+          {
+            "a": 5,
+            "b": 6,
+            "c": 4,
+            "construction": false,
+            "fixed": true,
+            "id": "a1",
+            "reversed": true,
+            "type": "arc"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l1.start",
+            "pos": [-18.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l1.end",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l2.end",
+            "pos": [0.0, -18.0]
+          },
+          {
+            "fixed": false,
+            "id": "a1.center",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a1.start",
+            "pos": [-18.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a1.end",
+            "pos": [8.471120539840575e-16, -18.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "component": 19,
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "d2_MFTRailCornerBracket_foot_thickness"
+      },
+      "id": 32,
+      "name": "Extrude5",
+      "operation": "join",
+      "param_names": [
+        "d21"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 31,
+      "suppressed": false,
+      "targets": [
+        "MFTRailCornerBracket"
+      ],
+      "type": "extrude"
+    },
+    {
+      "at": [
+        "d2_MFTRailCornerBracket_rail_hole_first",
+        "d2_MFTRailCornerBracket_wall_thickness",
+        -13.5
+      ],
+      "component": 19,
+      "depth": "d2_MFTRailCornerBracket_wall_thickness",
+      "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+      "direction": [0.0, -1.0, 0.0],
+      "face_names": [
+        "F21:+y"
+      ],
+      "hole": {
+        "type": "simple"
+      },
+      "id": 33,
+      "name": "Hole1",
+      "param_names": [
+        "d22",
+        "d23"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "position": [12.5, 5.0, -13.5],
+      "suppressed": false,
+      "type": "hole"
+    },
+    {
+      "at": [
+        "d2_MFTRailCornerBracket_rail_hole_second",
+        "d2_MFTRailCornerBracket_wall_thickness",
+        -13.5
+      ],
+      "component": 19,
+      "depth": "d2_MFTRailCornerBracket_wall_thickness",
+      "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+      "direction": [0.0, -1.0, 0.0],
+      "face_names": [
+        "F21:+y"
+      ],
+      "hole": {
+        "type": "simple"
+      },
+      "id": 34,
+      "name": "Hole2",
+      "param_names": [
+        "d24",
+        "d25"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "position": [62.5, 5.0, -13.5],
+      "suppressed": false,
+      "type": "hole"
+    },
+    {
+      "at": [
+        "d2_MFTRailCornerBracket_wall_thickness",
+        "d2_MFTRailCornerBracket_rail_hole_first",
+        -13.5
+      ],
+      "component": 19,
+      "depth": "d2_MFTRailCornerBracket_wall_thickness",
+      "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+      "direction": [-1.0, 0.0, 0.0],
+      "face_names": [
+        "F22:+x"
+      ],
+      "hole": {
+        "type": "simple"
+      },
+      "id": 35,
+      "name": "Hole3",
+      "param_names": [
+        "d26",
+        "d27"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "position": [5.0, 12.5, -13.5],
+      "suppressed": false,
+      "type": "hole"
+    },
+    {
+      "at": [
+        "d2_MFTRailCornerBracket_wall_thickness",
+        "d2_MFTRailCornerBracket_rail_hole_second",
+        -13.5
+      ],
+      "component": 19,
+      "depth": "d2_MFTRailCornerBracket_wall_thickness",
+      "diameter": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+      "direction": [-1.0, 0.0, 0.0],
+      "face_names": [
+        "F22:+x"
+      ],
+      "hole": {
+        "type": "simple"
+      },
+      "id": 36,
+      "name": "Hole4",
+      "param_names": [
+        "d28",
+        "d29"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "position": [5.0, 62.5, -13.5],
+      "suppressed": false,
+      "type": "hole"
+    },
+    {
+      "at": [
+        "d2_MFTRailCornerBracket_mft_screw_x",
+        "d2_MFTRailCornerBracket_mft_screw_y",
+        "-(d2_MFTRailCornerBracket_top_gusset_thickness)"
+      ],
+      "component": 19,
+      "depth": "d2_MFTRailCornerBracket_top_gusset_thickness",
+      "diameter": "d2_MFTRailCornerBracket_mft_screw_diameter",
+      "direction": [0.0, 0.0, 1.0],
+      "face_names": [
+        "F24:start"
+      ],
+      "hole": {
+        "cs_angle": "90",
+        "cs_diameter": "d2_MFTRailCornerBracket_mft_screw_head_diameter",
+        "type": "countersink"
+      },
+      "id": 37,
+      "name": "Hole5",
+      "param_names": [
+        "d30",
+        "d31",
+        "d32",
+        "d33"
+      ],
+      "participants": [
+        "MFTRailCornerBracket"
+      ],
+      "position": [20.0, 20.0, -5.0],
+      "suppressed": false,
+      "type": "hole"
+    },
+    {
+      "id": 38,
+      "name": "Omtrek PETG-hoekkap",
+      "param_names": [
+        "d34"
+      ],
+      "plane": {
+        "base": {
+          "name": "XY",
+          "type": "origin"
+        },
+        "distance": "-26.8",
+        "type": "offset"
+      },
+      "sketch": {
+        "constraints": [
+          {
+            "id": "k4",
+            "p": 3,
+            "q": 5,
+            "type": "coincident"
+          },
+          {
+            "id": "k5",
+            "p": 6,
+            "q": 7,
+            "type": "coincident"
+          },
+          {
+            "id": "k6",
+            "p": 0,
+            "q": 10,
+            "type": "coincident"
+          },
+          {
+            "id": "k7",
+            "p": 1,
+            "q": 11,
+            "type": "coincident"
+          },
+          {
+            "id": "k8",
+            "p": 9,
+            "q": 12,
+            "type": "coincident"
+          }
+        ],
+        "counters": {
+          "a": 3,
+          "k": 8,
+          "l": 4
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "fixed": true,
+            "id": "l5",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "fixed": true,
+            "id": "l6",
+            "type": "line"
+          },
+          {
+            "a": 5,
+            "b": 6,
+            "c": 4,
+            "construction": false,
+            "fixed": true,
+            "id": "a2",
+            "type": "arc"
+          },
+          {
+            "a": 7,
+            "b": 8,
+            "construction": false,
+            "fixed": true,
+            "id": "l7",
+            "type": "line"
+          },
+          {
+            "a": 8,
+            "b": 9,
+            "construction": false,
+            "fixed": true,
+            "id": "l8",
+            "type": "line"
+          },
+          {
+            "a": 11,
+            "b": 12,
+            "c": 10,
+            "construction": false,
+            "fixed": true,
+            "id": "a3",
+            "reversed": true,
+            "type": "arc"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l5.start",
+            "pos": [-18.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l5.end",
+            "pos": [-1.6970562748477138, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l6.end",
+            "pos": [-10.182337649086284, -8.485281374238571]
+          },
+          {
+            "fixed": false,
+            "id": "a2.center",
+            "pos": [-9.33380951166243, -9.33380951166243]
+          },
+          {
+            "fixed": false,
+            "id": "a2.start",
+            "pos": [-10.182337649086284, -8.485281374238571]
+          },
+          {
+            "fixed": false,
+            "id": "a2.end",
+            "pos": [-8.485281374238571, -10.182337649086284]
+          },
+          {
+            "fixed": false,
+            "id": "l7.start",
+            "pos": [-8.485281374238571, -10.182337649086284]
+          },
+          {
+            "fixed": false,
+            "id": "l7.end",
+            "pos": [0.0, -1.6970562748477138]
+          },
+          {
+            "fixed": false,
+            "id": "l8.end",
+            "pos": [0.0, -18.0]
+          },
+          {
+            "fixed": false,
+            "id": "a3.center",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "a3.start",
+            "pos": [-17.999999999999996, 3.388448215936228e-15]
+          },
+          {
+            "fixed": false,
+            "id": "a3.end",
+            "pos": [3.3884482159362284e-15, -17.999999999999996]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "body_names": [
+        "PETG-hoekinzetstuk"
+      ],
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "26.6"
+      },
+      "id": 39,
+      "name": "Afgeronde PETG-hoekkap met inkeping",
+      "operation": "new_body",
+      "param_names": [
+        "d35"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 38,
+      "suppressed": false,
+      "type": "extrude"
+    },
+    {
+      "id": 40,
+      "name": "Profielen van de twee PETG-klemlippen",
+      "param_names": [
+        "d36"
+      ],
+      "plane": {
+        "base": {
+          "name": "XY",
+          "type": "origin"
+        },
+        "distance": "-21.35",
+        "type": "offset"
+      },
+      "sketch": {
+        "constraints": [],
+        "counters": {
+          "l": 10
+        },
+        "curves": [
+          {
+            "a": 1,
+            "b": 2,
+            "construction": false,
+            "fixed": true,
+            "id": "l11",
+            "type": "line"
+          },
+          {
+            "a": 2,
+            "b": 3,
+            "construction": false,
+            "fixed": true,
+            "id": "l12",
+            "type": "line"
+          },
+          {
+            "a": 3,
+            "b": 4,
+            "construction": false,
+            "fixed": true,
+            "id": "l13",
+            "type": "line"
+          },
+          {
+            "a": 4,
+            "b": 5,
+            "construction": false,
+            "fixed": true,
+            "id": "l14",
+            "type": "line"
+          },
+          {
+            "a": 5,
+            "b": 1,
+            "construction": false,
+            "fixed": true,
+            "id": "l15",
+            "type": "line"
+          },
+          {
+            "a": 6,
+            "b": 7,
+            "construction": false,
+            "fixed": true,
+            "id": "l16",
+            "type": "line"
+          },
+          {
+            "a": 7,
+            "b": 8,
+            "construction": false,
+            "fixed": true,
+            "id": "l17",
+            "type": "line"
+          },
+          {
+            "a": 8,
+            "b": 9,
+            "construction": false,
+            "fixed": true,
+            "id": "l18",
+            "type": "line"
+          },
+          {
+            "a": 9,
+            "b": 10,
+            "construction": false,
+            "fixed": true,
+            "id": "l19",
+            "type": "line"
+          },
+          {
+            "a": 10,
+            "b": 6,
+            "construction": false,
+            "fixed": true,
+            "id": "l20",
+            "type": "line"
+          }
+        ],
+        "points": [
+          {
+            "fixed": true,
+            "id": "origin",
+            "pos": [0.0, 0.0]
+          },
+          {
+            "fixed": false,
+            "id": "l11.start",
+            "pos": [-1.0, -16.5]
+          },
+          {
+            "fixed": false,
+            "id": "l11.end",
+            "pos": [2.7, -16.5]
+          },
+          {
+            "fixed": false,
+            "id": "l12.end",
+            "pos": [3.5, -15.7]
+          },
+          {
+            "fixed": false,
+            "id": "l13.end",
+            "pos": [3.5, -13.7]
+          },
+          {
+            "fixed": false,
+            "id": "l14.end",
+            "pos": [-1.0, -13.7]
+          },
+          {
+            "fixed": false,
+            "id": "l16.start",
+            "pos": [-13.7, -1.0]
+          },
+          {
+            "fixed": false,
+            "id": "l16.end",
+            "pos": [-13.7, 3.5]
+          },
+          {
+            "fixed": false,
+            "id": "l17.end",
+            "pos": [-15.7, 3.5]
+          },
+          {
+            "fixed": false,
+            "id": "l18.end",
+            "pos": [-16.5, 2.7]
+          },
+          {
+            "fixed": false,
+            "id": "l19.end",
+            "pos": [-16.5, -1.0]
+          }
+        ]
+      },
+      "suppressed": false,
+      "type": "sketch"
+    },
+    {
+      "extent": {
+        "convention": "total_distance",
+        "direction": "positive",
+        "distance": "15.7"
+      },
+      "id": 41,
+      "name": "Klemlippen met schuine invoer",
+      "operation": "join",
+      "param_names": [
+        "d37"
+      ],
+      "profiles": {
+        "type": "all"
+      },
+      "sketch": 40,
+      "suppressed": false,
+      "targets": [
+        "PETG-hoekinzetstuk"
+      ],
+      "type": "extrude"
+    }
+  ],
+  "format": "solidcraft/67",
+  "materials": {
+    "MFTRailCornerBracket": "PETG prototype",
+    "MountingRailM8": "Galvanized steel"
+  },
+  "name": "hoek_assembly",
+  "next_component_color_index": 2,
+  "next_id": 42,
+  "occurrences": [
+    {
+      "component": 1,
+      "grounded": true,
+      "id": 2,
+      "name": "MountingRailM8:1",
+      "parent": 0,
+      "transform": [
+        [2.220446049250313e-16, -1.1102230246251565e-16, -1.0, 0.0],
+        [1.0, 2.220446049250313e-16, 1.1102230246251565e-16, 0.0],
+        [1.1102230246251565e-16, -1.0, 2.220446049250313e-16, 0.0],
+        [0.0, 0.0, -13.5, 1.0]
+      ]
+    },
+    {
+      "component": 1,
+      "grounded": false,
+      "id": 18,
+      "name": "MountingRailM8:2",
+      "parent": 0,
+      "transform": [
+        [6.123233995736766e-17, 0.0, 1.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [-1.0, 0.0, 6.123233995736766e-17, 0.0],
+        [0.0, 0.0, -13.5, 1.0]
+      ]
+    },
+    {
+      "component": 19,
+      "grounded": false,
+      "id": 20,
+      "name": "MFTRailCornerBracket:1",
+      "parent": 0,
+      "transform": [
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ]
+    }
+  ],
+  "params": [
+    {
+      "expr": "150",
+      "model": false,
+      "name": "rail_length",
+      "unit": "mm"
+    },
+    {
+      "expr": "1",
+      "model": false,
+      "name": "rail_repeat_count",
+      "unit": ""
+    },
+    {
+      "expr": "100",
+      "model": false,
+      "name": "rail_repeat_pitch",
+      "unit": "mm"
+    },
+    {
+      "expr": "75",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_arm_length",
+      "unit": "mm"
+    },
+    {
+      "expr": "5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_wall_thickness",
+      "unit": "mm"
+    },
+    {
+      "expr": "5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_top_gusset_thickness",
+      "unit": "mm"
+    },
+    {
+      "expr": "55",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_top_gusset_leg",
+      "unit": "mm"
+    },
+    {
+      "expr": "55",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_bottom_gusset_leg",
+      "unit": "mm"
+    },
+    {
+      "expr": "5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_bottom_gusset_thickness",
+      "unit": "mm"
+    },
+    {
+      "expr": "6",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_foot_thickness",
+      "unit": "mm"
+    },
+    {
+      "expr": "8.5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_rail_bolt_diameter",
+      "unit": "mm"
+    },
+    {
+      "expr": "12.5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_rail_hole_first",
+      "unit": "mm"
+    },
+    {
+      "expr": "62.5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_rail_hole_second",
+      "unit": "mm"
+    },
+    {
+      "expr": "5.5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_mft_screw_diameter",
+      "unit": "mm"
+    },
+    {
+      "expr": "10.5",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_mft_screw_head_diameter",
+      "unit": "mm"
+    },
+    {
+      "expr": "20",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_mft_screw_x",
+      "unit": "mm"
+    },
+    {
+      "expr": "20",
+      "model": false,
+      "name": "d2_MFTRailCornerBracket_mft_screw_y",
+      "unit": "mm"
+    }
+  ],
+  "sheet": {
+    "active": "Mounting Rail M8 Rule",
+    "rules": [
+      {
+        "bend_radius": "1.25",
+        "corner_relief": "Thickness * 4.0",
+        "corner_relief_shape": "notch",
+        "gap": "Thickness",
+        "hem_gap": "0.01 mm",
+        "k_factor": "0.4",
+        "name": "Mounting Rail M8 Rule",
+        "relief_depth": "Thickness * 0.5",
+        "relief_width": "Thickness",
+        "thickness": "1.25"
+      }
+    ]
+  },
+  "units": "mm",
+  "user_materials": [
+    {
+      "appearance": {
+        "color": [158, 166, 170],
+        "name": "Galvanized steel",
+        "opacity": 1.0
+      },
+      "density": 7.85,
+      "name": "Galvanized steel"
+    },
+    {
+      "appearance": {
+        "color": [48, 52, 59],
+        "name": "PETG prototype",
+        "opacity": 1.0
+      },
+      "density": 1.27,
+      "name": "PETG prototype"
+    }
+  ]
+}

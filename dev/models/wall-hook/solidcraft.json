@@ -1,4 +1,6 @@
 {
+  "format": "scpf-replay",
+  "version": 2,
   "commands": [
     {
       "command": "parameters.add",
@@ -75,6 +77,14 @@
     {
       "command": "parameters.add",
       "params": {
+        "name": "face_chamfer",
+        "expression": "1.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
         "name": "hole_diameter",
         "expression": "4.2",
         "unit": "mm"
@@ -107,8 +117,24 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "Rounded bracket outline"
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "Rounded hook side profile"
       }
     },
     {
@@ -434,14 +460,30 @@
       "command": "solid.extrude",
       "params": {
         "distance": "thickness",
-        "direction": "positive",
+        "direction": "symmetric",
         "body_name": "WallHook"
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
         "name": "Rounded triangular gusset window"
       }
     },
@@ -558,7 +600,7 @@
       "command": "solid.extrude",
       "params": {
         "distance": "thickness",
-        "direction": "positive",
+        "direction": "symmetric",
         "operation": "cut",
         "targets": [
           "WallHook"
@@ -566,12 +608,85 @@
       }
     },
     {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_face_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              -1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_edges_1": {
+          "field": "edges",
+          "boundary_of": "$topology_face_1",
+          "body": "WallHook"
+        }
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_face_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$topology_edges_2": {
+          "field": "edges",
+          "boundary_of": "$topology_face_2",
+          "body": "WallHook",
+          "prepend": "$topology_edges_1"
+        }
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": "$topology_edges_2",
+        "distance": "face_chamfer",
+        "body": "WallHook"
+      }
+    },
+    {
       "command": "solid.hole",
       "params": {
         "position": [
           "rib",
-          "overall_height - (upper_hole_from_top)",
-          "thickness / 2"
+          0.0,
+          "overall_height - (upper_hole_from_top)"
         ],
         "targets": [
           "WallHook"
@@ -593,8 +708,8 @@
       "params": {
         "position": [
           0.0,
-          "overall_height - (upper_hole_from_top)",
-          "thickness / 2"
+          0.0,
+          "overall_height - (upper_hole_from_top)"
         ],
         "targets": [
           "WallHook"
@@ -616,8 +731,8 @@
       "params": {
         "position": [
           "rib",
-          "lower_hole_from_bottom",
-          "thickness / 2"
+          0.0,
+          "lower_hole_from_bottom"
         ],
         "targets": [
           "WallHook"
@@ -639,8 +754,8 @@
       "params": {
         "position": [
           0.0,
-          "lower_hole_from_bottom",
-          "thickness / 2"
+          0.0,
+          "lower_hole_from_bottom"
         ],
         "targets": [
           "WallHook"

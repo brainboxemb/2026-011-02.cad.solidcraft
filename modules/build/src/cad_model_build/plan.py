@@ -95,6 +95,7 @@ def resolve_plan(
                         if "stl" in model.artifacts
                         else None,
                     },
+                    "drawings": [],
                     "snapshots": [
                         {
                             "name": item.name,

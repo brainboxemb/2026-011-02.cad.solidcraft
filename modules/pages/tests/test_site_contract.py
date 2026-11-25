@@ -48,6 +48,10 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("raw.githubusercontent.com", page)
         self.assertIn("blob/build/%s/", page)
         self.assertIn("View STL on GitHub", page)
+        self.assertIn("cad-drawings-panel", page)
+        self.assertIn("Drawing sheet", page)
+        self.assertIn("Download PDF", page)
+        self.assertIn('index $build "drawings"', page)
         self.assertNotIn("simple-box", page)
         self.assertNotIn("simple-mft", page)
 

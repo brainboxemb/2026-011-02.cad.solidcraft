@@ -3,5 +3,8 @@ branch: fix/30-restore-latch-source
 
 modules:
   - pages
+models:
+  - latch
 tasks:
   - test
+  - build

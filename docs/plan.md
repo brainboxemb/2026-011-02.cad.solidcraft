@@ -4,30 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #111 — SolidCraft default Sheet Metal Bracket
-
-Active on `feature/111-sheet-metal-bracket`.
-
-Add the supplied SolidCraft default as a Basic native sheet-metal qualification
-model. Preserve the original feature order and fixed native edge picks.
-
-Scope:
-
-- 120 × 60 mm XY blank;
-- Steel 2mm rule: 2 mm, K0.44, R2;
-- two 30 mm / 90° inside flanges;
-- one 20 mm / 60° inside flange;
-- one 8 mm hem with rule-owned gap;
-- retained SolidCraft JSON/native source.
-
-Acceptance:
-
-1. use native Forge sheet-metal features rather than solid approximations;
-2. match source dimensions, angles, edge picks and feature order;
-3. keep the hem gap inherited from the active rule;
-4. qualify only `sheet-metal-bracket` on the feature branch;
-5. publish under Basic as **Sheet Metal Bracket**.
-
 ### #109 — Benchdog Clamp WIP subassembly
 
 Active on `feature/109-benchdog-clamp-wip`.

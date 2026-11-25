@@ -41,7 +41,7 @@ class MFTRailCornerBracket:
     # plastic shoe instead of hanging beside the bracket.
     foot_thickness = 6.0
     # Exact native quarter-round support-foot corner from hoek_assembly.sc.
-    corner_foot_radius = 18.0
+    _corner_foot_radius = 18.0
 
     rail_bolt_diameter = 8.5
     rail_hole_first = 12.5

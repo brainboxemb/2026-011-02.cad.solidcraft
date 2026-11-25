@@ -1,11 +1,7 @@
 schema: 1
-branch: issue/103-sample-plate-drawing-preview-v3
+branch: chore/18-hub75-v2-baseline-cleanup
 
-modules:
-  - build
-  - pages
-models:
-  - sample-plate
+modules: []
+models: []
 tasks:
   - test
-  - build

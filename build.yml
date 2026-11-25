@@ -1,7 +1,10 @@
 schema: 1
-branch: chore/102-complete-wall-hook-xz
+branch: fix/18-hub75-improved-v2-mirrors
 
 modules: []
-models: []
+models:
+  - hub75-panel
+  - hub75-screen
 tasks:
   - test
+  - build

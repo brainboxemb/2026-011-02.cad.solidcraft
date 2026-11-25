@@ -375,7 +375,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "a6d5c0bf9ad333052224fd43be1c381dff56ac88",
+      "built_source_sha": "44f8d3b20fc48c51c5f6b36a60ddddf33a4018ad",
       "commands": "models/latch/solidcraft.json",
       "dependencies": [],
       "id": "latch",
@@ -866,5 +866,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "a6d5c0bf9ad333052224fd43be1c381dff56ac88"
+  "source_sha": "44f8d3b20fc48c51c5f6b36a60ddddf33a4018ad"
 }

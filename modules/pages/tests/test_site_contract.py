@@ -103,6 +103,13 @@ class SiteContractTests(unittest.TestCase):
             'env["HUGO_PARAMS_CADSOURCEREPOSITORY"] = source_repository',
             build,
         )
+        verify = (ROOT / "modules/pages/src/cad_model_pages/verify.py").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            "source_repository or _repository_name(repo)",
+            verify,
+        )
 
     def test_pages_workflow_builds_main_and_dev_scopes(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(

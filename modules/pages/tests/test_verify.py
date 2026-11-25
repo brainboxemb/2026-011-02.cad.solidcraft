@@ -101,7 +101,6 @@ groups:
                                 "name": "Variant A",
                                 "drawing": "$drawing_1",
                                 "path": "models/variant-a/drawings/Variant-A.pdf",
-                                "preview": "models/variant-a/drawings/Variant-A.png",
                             }
                         ],
                         "snapshots": [{"name": "top.png", "path": snapshot}],
@@ -140,10 +139,6 @@ groups:
             drawing = build / "models/variant-a/drawings/Variant-A.pdf"
             drawing.parent.mkdir(parents=True, exist_ok=True)
             drawing.write_bytes(b"%PDF-1.7\n")
-            drawing_preview = (
-                build / "models/variant-a/drawings/Variant-A.png"
-            )
-            drawing_preview.write_bytes(b"\x89PNG\r\n\x1a\npreview")
 
             for name in ("scpf-source.py", "model.yml", "ci.yml"):
                 (page / name).write_text("source", encoding="utf-8")
@@ -159,8 +154,7 @@ groups:
                 f"{blob}{native['step']} · "
                 f"{blob}{native['stl']} · "
                 f"{blob}models/variant-a/drawings/Variant-A.pdf · "
-                f"{raw}models/variant-a/drawings/Variant-A.pdf · "
-                f"{raw}models/variant-a/drawings/Variant-A.png",
+                f"{raw}models/variant-a/drawings/Variant-A.pdf",
                 encoding="utf-8",
             )
 

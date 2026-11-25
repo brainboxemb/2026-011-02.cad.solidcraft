@@ -4,36 +4,39 @@ This file contains unfinished work only.
 
 ## Now
 
-### #67 — split CAD catalog into subassemblies / assemblies with groups
+### #62 — MFT rail corner bracket and qualification subassembly
 
-Active on `feature/catalog-subassemblies-assemblies`.
+Active on `feature/62-mft-rail-corner-subassembly`.
 
-Replace the ambiguous `advanced` model level with the repository/site taxonomy:
+Continue the accepted corner-bracket WIP from PR #63 on the current catalog
+taxonomy and released CAD toolchain.
 
-- `basic`;
-- `components`;
-- `subassemblies`;
-- `assemblies`.
+Ownership:
 
-Add optional `group` metadata, initially `display` and `mft`, and keep the
-Hugo catalog generic through `site/data/cad/catalog.yml`.
+- reusable printable bracket: `models/components/mft_rail_corner_bracket`;
+- two-rail qualification model:
+  `models/subassemblies/mft_rail_corner_assembly`;
+- presentation: `section: subassemblies`, `group: mft`.
 
-Current migration:
+Keep the already reviewed prototype intent:
 
-- `hub75_screen` -> `subassemblies / display`;
-- `simple_mft_assembly` -> `assemblies / mft`;
-- `hub75_wood_frame` -> `assemblies / display`;
-- `hub75-display2` -> `assemblies / display`.
+- two perpendicular 75 mm rail-fixing arms;
+- rail-hole datums at 12.5 and 62.5 mm;
+- 6 mm load-bearing plastic shoes below both rail ends;
+- integral rounded outside-corner bumper;
+- upper/lower triangular gussets;
+- provisional countersunk fixing into the MFT underside;
+- both rail C-openings and rail ends remain accessible.
 
 Acceptance:
 
-1. no `models/advanced` source remains;
-2. CI discovery priorities are 10/20/30/40 for basic/components/subassemblies/assemblies;
-3. Pages navigation exposes the four sections;
-4. grouped catalog sections render Display/MFT from metadata, not hardcoded model logic;
-5. moved CAD models still build natively;
-6. Pages PR verification passes for the dev scope;
-7. corner-bracket WIP PR #63 remains separate and is updated onto this baseline only after promotion.
+1. bracket remains a reusable component and depends only on `mounting-rail-m8`;
+2. qualification model is a real MFT subassembly, not an `advanced` model;
+3. Pages places it under Sub Assemblies / MFT from generic metadata;
+4. Forge `v0.16.0` compiles both new owners;
+5. native SolidCraft 0.49.0 replay succeeds on runtime v0.3.6;
+6. generated top/outside/underside views retain the reviewed fit and bumper;
+7. obsolete PR #63 is closed as superseded after this branch is accepted.
 
 ## Mandatory integration rule
 
@@ -60,7 +63,7 @@ If merge-policy fails, repair it rather than bypassing it.
 - local merge-policy owns all source-branch integration and dispatches target CI;
 - standalone cleanup removes merged temporary branches;
 - direct Forge -> JSON -> one SolidCraft replay batch;
-- Forge v0.15.0 / SolidCraft 0.48.1 baseline;
+- Forge v0.16.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
 - generated `build` branch with `dev/` and `main/` scopes;
 - compact model `ci.yml` with optional primary snapshot camera;
 - physical model owners may expand into multiple build variants;

@@ -15,7 +15,8 @@ class RunnerTests(unittest.TestCase):
             development_branch="dev",
             forge=ForgeDependency(
                 "brainboxemb/lib.py.solidcraft.forge",
-                "v0.14.0",
+                "0.14.0",
+                "a" * 40,
             ),
             modules_root=Path("modules"),
             models_root=Path("models"),

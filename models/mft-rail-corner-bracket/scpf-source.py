@@ -55,26 +55,31 @@ class MFTRailCornerBracket:
     def build(self):
         rail_height = MountingRailM8.PROFILE_WIDTH
         foot_thickness_value = float(self.foot_thickness.value)
-        # Two vertical arms lie against the inner/back web of each rail.
+        arm_height = rail_height + self.foot_thickness
+
+        # Native hoek_assembly_v2 Box1/Box2: both vertical bracket walls run
+        # continuously from the MFT underside (Z=0) through the 6 mm support
+        # foot to Z=-33. The previous SCPF version stopped at Z=-27 and merely
+        # sat on top of the foot, which did not match the native source.
         x_arm = Box(
             self.arm_length,
             self.wall_thickness,
-            rail_height,
+            arm_height,
         ).at(
             self.arm_length / 2,
             0,
-            -rail_height,
+            -arm_height,
             anchor=FRONT + BOTTOM,
         )
 
         y_arm = Box(
             self.wall_thickness,
             self.arm_length,
-            rail_height,
+            arm_height,
         ).at(
             0,
             self.arm_length / 2,
-            -rail_height,
+            -arm_height,
             anchor=LEFT + BOTTOM,
         )
 

@@ -3,27 +3,26 @@ section: components
 group: display
 priority: 20
 title: Hub75Panel
-tagline: One measured reusable P5 HUB75 panel component
+tagline: Measured P5 HUB75 panel with native-source rear contours and connectors
 description: >
-  Shared panel component from the existing OpenSCAD reference: a
-  159.70 × 319.71 × 14.50 mm envelope with four rear pockets, six rear-side
-  Ø3 bores in Ø8.5 mounting tubes, separate rear reinforcement features, two
-  locator pins and a grey housing material. Standalone uses the component's
-  own local XY/Z axes; screen assemblies rotate the exact same class into
-  world XZ.
-parameters: 159.70 × 319.71 × 14.50 mm body; six Ø3 bores in Ø8.5 tubes; two Ø3 × 3 mm locator pins
+  Shared 159.70 × 319.71 × 14.50 mm P5 HUB75 panel from the supplied
+  hub75_improved_v2 native source. The reusable housing keeps its established
+  local XY/Z contract for screen assemblies, while the standalone detailed
+  model adds the refined rounded/stepped rear bays, side-wall trimming,
+  two HUB75 data connector envelopes, the approximate power connector and
+  four white orientation markings as separate source-derived occurrences.
+parameters: 159.70 × 319.71 × 14.50 mm body; R5 nominal rear-bay corners; 30 mm nominal central bay narrowing; six Ø3 bores in Ø8.5 tubes; two 27.90 × 9.50 × 10.64 mm data connector envelopes
 stages:
-  - Run the shared Hub75Panel component directly
-  - Sketch and extrude the physical front envelope
-  - Cut four rear electronics bays from the rear plane
-  - Restore six Ø8.5 rear mounting tubes and their shallow circular reliefs
-  - Add six separate reinforcement features beside the mounting tubes
-  - Add two diagonal Ø3 × 3 mm locator pins
-  - Cut the six Ø3 mounting bores through the proud tube faces
-  - Assign grey housing material
+  - Build the straight front envelope and continuous 1.25 mm rear taper
+  - Cut four connected rounded and centrally narrowed rear electronics bays
+  - Restore six Ø8.5 mounting tubes, shallow reliefs and six reinforcement bosses
+  - Add the two Ø3 × 3 mm locator pins and reopen all six Ø3 mounting bores
+  - Trim rear additions to the true long sloping side-wall envelope
+  - Add two HUB75 data connector envelopes and the approximate power connector
+  - Add four 0.10 mm white source orientation markings
 extra_views:
-  title: Front and rear of the same local component
-  note: Both are SolidCraft screenshots of the same single-component design.
+  title: Front and rear of the same detailed panel
+  note: Both are SolidCraft screenshots of the same native-source detailed design.
   verified_only: true
   items:
     - kind: build
@@ -32,5 +31,5 @@ extra_views:
       caption: Front — LED mask
     - kind: build
       src: rear.png
-      alt: SolidCraft Rear — pockets and mounting bores
-      caption: Rear — pockets and mounting bores
+      alt: SolidCraft Rear — refined bays, mounting interfaces and connectors
+      caption: Rear — refined panel interfaces

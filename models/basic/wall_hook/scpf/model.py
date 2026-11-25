@@ -49,7 +49,7 @@ class WallHook:
         r45_diag = r45_offset / sqrt(2.0)
 
         start = (r, 0.0)
-        with Sketch(name="Rounded hook side profile", plane="XZ") as outline:
+        with Sketch(name="Rounded hook side profile", plane="XZ", origin=(0, 0, 0)) as outline:
             profile = outline.profile(start=start)
 
             profile.line_to((self.rib - r45_offset, 0.0))
@@ -140,7 +140,7 @@ class WallHook:
             window_left + acute_diag,
             window_bottom + acute_diag,
         )
-        with Sketch(name="Rounded triangular gusset window", plane="XZ") as window:
+        with Sketch(name="Rounded triangular gusset window", plane="XZ", origin=(0, 0, 0)) as window:
             relief = window.profile(start=window_start)
 
             relief.arc_center_to(

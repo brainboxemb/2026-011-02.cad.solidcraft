@@ -1,0 +1,25 @@
+sections:
+  - id: basic
+    title: Basic
+    page_title: Basic Models
+    order: 10
+  - id: components
+    title: Components
+    page_title: Components
+    order: 20
+  - id: subassemblies
+    title: Sub Assemblies
+    page_title: Sub Assemblies
+    order: 30
+  - id: assemblies
+    title: Assemblies
+    page_title: Assemblies
+    order: 40
+
+groups:
+  - id: display
+    title: Display
+    order: 10
+  - id: mft
+    title: MFT
+    order: 20

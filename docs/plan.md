@@ -72,6 +72,30 @@ Acceptance:
 6. complete native source files live only with the subassembly owner.
 
 
+### #92 — fix stale Pages repository identity after rename
+
+Active on `fix/92-pages-repo-rename`.
+
+The live site still renders build/image URLs through the pre-rename
+`2026-011-02.cad.solidcraft.NEW` repository name.
+
+Fix:
+
+- canonicalize the Hugo default repository/base URL;
+- derive Pages base URLs from the current GitHub repository owner/name;
+- pass `github.repository` explicitly into the Pages builder;
+- verify rendered artifact URLs against that explicit repository identity;
+- lazy-load catalog card images and async-decode image content.
+
+Acceptance:
+
+1. stable and dev Pages output contain no `.solidcraft.NEW` URLs;
+2. raw/blob artifact links use `brainboxemb/2026-011-02.cad.solidcraft`;
+3. Pages PR verification and publish are green;
+4. the live homepage no longer redirects every model image through the old
+   repository name.
+
+
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

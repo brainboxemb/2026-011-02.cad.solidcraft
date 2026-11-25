@@ -499,11 +499,12 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "f10b65efeed7aa864a7875be04d82dbf854d4b22",
       "commands": "models/mft-rail-corner-assembly/solidcraft.json",
       "dependencies": [
         "mounting-rail-m8",
-        "mft-rail-corner-bracket"
+        "mft-rail-corner-bracket",
+        "mft-rail-corner-insert"
       ],
       "id": "mft-rail-corner-assembly",
       "native": {
@@ -566,7 +567,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8d71224d69f183ebb7eadf8caa701af51d595fb6",
+      "built_source_sha": "f10b65efeed7aa864a7875be04d82dbf854d4b22",
       "commands": "models/mft-rail-corner-bracket/solidcraft.json",
       "dependencies": [
         "mounting-rail-m8"
@@ -612,6 +613,70 @@
         }
       ],
       "source": "models/components/mft_rail_corner_bracket/scpf/model.py"
+    },
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "f10b65efeed7aa864a7875be04d82dbf854d4b22",
+      "commands": "models/mft-rail-corner-insert/solidcraft.json",
+      "dependencies": [],
+      "id": "mft-rail-corner-insert",
+      "native": {
+        "png": "models/mft-rail-corner-insert/model.png",
+        "sc": "models/mft-rail-corner-insert/model.sc",
+        "step": "models/mft-rail-corner-insert/model.step",
+        "stl": "models/mft-rail-corner-insert/model.stl"
+      },
+      "owner": "mft-rail-corner-insert",
+      "priority": 20,
+      "root": "models/components/mft_rail_corner_insert",
+      "snapshot": {
+        "camera": {
+          "distance": 90,
+          "fov": 0,
+          "pitch": 0.4,
+          "target": [
+            -9,
+            -9,
+            -13.5
+          ],
+          "yaw": -0.78
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 85,
+            "fov": 0,
+            "pitch": 1.48,
+            "target": [
+              -9,
+              -9,
+              -13.5
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/mft-rail-corner-insert/top.png"
+        },
+        {
+          "camera": {
+            "distance": 90,
+            "fov": 0,
+            "pitch": -0.5,
+            "target": [
+              -9,
+              -9,
+              -17
+            ],
+            "yaw": -0.78
+          },
+          "name": "underside.png",
+          "path": "models/mft-rail-corner-insert/underside.png"
+        }
+      ],
+      "source": "models/components/mft_rail_corner_insert/scpf/model.py"
     },
     {
       "artifacts": [],
@@ -928,5 +993,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "4ed6dff460a8061876d3bd125e047d60d67266fa"
+  "source_sha": "f10b65efeed7aa864a7875be04d82dbf854d4b22"
 }

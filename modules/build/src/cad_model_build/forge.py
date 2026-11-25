@@ -97,14 +97,19 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
         ):
             raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
         path = (base / relative).as_posix()
-        if path in seen:
-            raise RuntimeError(f"duplicate Forge drawing artifact: {path}")
-        seen.add(path)
+        preview = (base / relative.with_suffix(".png")).as_posix()
+        for artifact_path in (path, preview):
+            if artifact_path in seen:
+                raise RuntimeError(
+                    f"duplicate Forge drawing artifact: {artifact_path}"
+                )
+            seen.add(artifact_path)
         projected.append(
             {
                 "name": name.strip(),
                 "drawing": variable,
                 "path": path,
+                "preview": preview,
             }
         )
     return projected

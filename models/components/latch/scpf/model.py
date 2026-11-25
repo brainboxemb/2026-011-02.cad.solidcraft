@@ -13,7 +13,6 @@ World axes follow the native latch document:
 from scpf import (
     Anchor,
     Axis,
-    Box,
     Cylinder,
     Hole,
     Placement,
@@ -338,13 +337,14 @@ class LatchHandle:
 
         # Native rectangular locking-lip opening (feature 75/76).  In this
         # local mirrored sheet it remains symmetric about Y=0.
-        opening = Box(
-            3.8,
-            9.0,
-            2.0,
-            anchor=Anchor.BOTTOM,
-        ).at(58.45, 0, 0, anchor=Anchor.BOTTOM)
-        handle = handle - opening
+        with Sketch(name="Locking lip opening", plane="XY") as opening:
+            contour = opening.profile(start=(56.55, -4.5))
+            contour.line_to((60.35, -4.5))
+            contour.line_to((60.35, 4.5))
+            contour.line_to((56.55, 4.5))
+            contour.line_to((56.55, -4.5))
+            contour.close()
+        handle = handle - opening.extrude(2.0)
 
         return _steel(handle)
 

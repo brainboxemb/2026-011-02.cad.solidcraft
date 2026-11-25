@@ -4,88 +4,36 @@ This file contains unfinished work only.
 
 ## Now
 
-### #31 — adopt Forge v0.15.0 and restore HUB75 component replay
+### #67 — split CAD catalog into subassemblies / assemblies with groups
 
-The migrated repository must use the same accepted Forge baseline as the
-historical `dev-cad` source:
+Active on `feature/catalog-subassemblies-assemblies`.
 
-- Forge v0.15.0;
-- commit `efc88bfcaf452051d721347f2e5ca561decad654`;
-- SolidCraft 0.48.1 / runtime v0.3.5.
+Replace the ambiguous `advanced` model level with the repository/site taxonomy:
 
-This fixes Forge #753: component context is restored across headless replay
-phases so component-local joined Cylinder features remain attached to copied and
-rotated HUB75 occurrences.
+- `basic`;
+- `components`;
+- `subassemblies`;
+- `assemblies`.
 
-Acceptance rebuilds `hub75-panel` and `hub75-screen` and compares the
-resulting screen preview against the known-correct historical `dev-cad` image.
+Add optional `group` metadata, initially `display` and `mft`, and keep the
+Hugo catalog generic through `site/data/cad/catalog.yml`.
 
-### #39 — add generic M8 mounting rail component
+Current migration:
 
-Active on `feature/mounting-rail-m8`.
+- `hub75_screen` -> `subassemblies / display`;
+- `simple_mft_assembly` -> `assemblies / mft`;
+- `hub75_wood_frame` -> `assemblies / display`;
+- `hub75-display2` -> `assemblies / display`.
 
-Model a 1000 mm galvanized light installation rail under
-`models/components/mounting_rail_m8`.
+Acceptance:
 
-Accepted source split:
-
-- product facts: 1000 mm, galvanized steel, 1.25 mm sheet, M8 application;
-- generic 27/18 reference: section and repeating perforation geometry;
-- explicit model assumptions: bend radius and K-factor.
-
-Use native sheet metal. Keep the component/model name generic; DRESSELHAUS and
-HORNBACH are provenance only.
-
-### #43 — make Mounting Rail M8 perforation one parametric repeat unit
-
-Active on `fix/mounting-rail-m8-repeat-unit`.
-
-Replace the three independent perforation feature patterns with the actual
-product design intent:
-
-- one attached four-profile repeat-unit Sketch;
-- one through-all unit cut;
-- one native rectangular pattern of that complete cut;
-- editable `repeat_count`, `feature_pitch` and individual profile dimensions.
-
-No Forge change is required.
-
-### #49 — add two 1 m support rails to Simple MFT assembly
-
-Active on `feature/simple-mft-support-rails`.
-
-Reuse two `MountingRailM8` occurrences below the Simple MFT worktop:
-
-- 1000 mm each;
-- left ends align with the 805 mm worktop left edge;
-- 195 mm right overhang;
-- openings face outward;
-- perforation direction remains equal left-to-right;
-- worktop underside rests on the rail upper edges.
-
-Keep the existing GuideRail on top.
-
-### #12 — migrate remaining historical CAD issues and open pull requests
-
-The full CAD catalog is accepted on stable `main`.
-
-Stable baseline:
-
-- source: `128f71fd0bdb85f92752b7e77ff3937157341332`;
-- Forge v0.15.0;
-- SolidCraft 0.48.1 / runtime v0.3.5;
-- 16 real physical owners / 18 real build variants;
-- generated CAD artifacts owned only by the `build` branch.
-
-Active transferred model work is tracked in #13 through #22. Generic gallery
-and embedded-viewer work is routed to the template project (#84/#85 there).
-
-Next:
-
-1. close or update historical issue copies with explicit pointers;
-2. assess the remaining historical open PRs listed in #12;
-3. port only relevant model-owned source/data onto the new contracts;
-4. integrate every branch exclusively through local `/merge`.
+1. no `models/advanced` source remains;
+2. CI discovery priorities are 10/20/30/40 for basic/components/subassemblies/assemblies;
+3. Pages navigation exposes the four sections;
+4. grouped catalog sections render Display/MFT from metadata, not hardcoded model logic;
+5. moved CAD models still build natively;
+6. Pages PR verification passes for the dev scope;
+7. corner-bracket WIP PR #63 remains separate and is updated onto this baseline only after promotion.
 
 ## Mandatory integration rule
 

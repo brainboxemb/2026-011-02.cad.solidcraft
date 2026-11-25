@@ -6,9 +6,28 @@
 {{ $native := index $build "native" }}
 {{ $pngPath := index $native "png" }}
 {{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" site.Params.cadSourceRepository site.Params.buildScope }}
+
+{{ $catalog := hugo.Data.cad.catalog }}
+{{ $sectionLabel := $page.Params.cadSection }}
+{{ range $sectionDef := index $catalog "sections" }}
+  {{ if eq (index $sectionDef "id") $page.Params.cadSection }}
+    {{ $sectionLabel = index $sectionDef "title" }}
+  {{ end }}
+{{ end }}
+{{ $taxonomyLabel := $sectionLabel }}
+{{ with $page.Params.cadGroup }}
+  {{ $groupLabel := . }}
+  {{ range $groupDef := index $catalog "groups" }}
+    {{ if eq (index $groupDef "id") $page.Params.cadGroup }}
+      {{ $groupLabel = index $groupDef "title" }}
+    {{ end }}
+  {{ end }}
+  {{ $taxonomyLabel = printf "%s · %s" $sectionLabel $groupLabel }}
+{{ end }}
+
 <a class="cad-model-card{{ if $showSection }} cad-model-card-has-section{{ end }}{{ if $showUpdated }} cad-model-card-has-updated{{ end }}" href="{{ $page.RelPermalink }}">
   <span class="cad-card-picture">{{ with $pngPath }}<img src="{{ printf "%s%s" $rawBase . }}" alt="">{{ end }}</span>
-  {{ if $showSection }}<span class="cad-card-section">{{ $page.Params.cadSection }}</span>{{ end }}
+  {{ if $showSection }}<span class="cad-card-section">{{ $taxonomyLabel }}</span>{{ end }}
   <strong class="cad-card-title">{{ $page.Title }}</strong>
   {{ if $showUpdated }}<small class="cad-card-updated">Updated {{ $page.Lastmod.Format "2 Jan 2006" }}</small>{{ end }}
   <span class="cad-card-tagline">{{ index $m "tagline" }}</span>

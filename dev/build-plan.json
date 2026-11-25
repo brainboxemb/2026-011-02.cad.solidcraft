@@ -437,7 +437,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "c2089f6460f86618e8d51d429d615ed11652db30",
+      "built_source_sha": "4ed6dff460a8061876d3bd125e047d60d67266fa",
       "commands": "models/latch-hook/solidcraft.json",
       "dependencies": [],
       "id": "latch-hook",
@@ -928,5 +928,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "c2089f6460f86618e8d51d429d615ed11652db30"
+  "source_sha": "4ed6dff460a8061876d3bd125e047d60d67266fa"
 }

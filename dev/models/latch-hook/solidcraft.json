@@ -1,76 +1,12 @@
 {
   "commands": [
     {
-      "command": "parameters.add",
-      "params": {
-        "name": "hole_x",
-        "expression": "5",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "overall_width",
-        "expression": "24",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "neck_width",
-        "expression": "15",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "thickness",
-        "expression": "2",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "bend_radius",
-        "expression": "2.1",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "k_factor",
-        "expression": "0.4",
-        "unit": ""
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "hole_diameter",
-        "expression": "4.3",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "hole_pitch",
-        "expression": "14",
-        "unit": "mm"
-      }
-    },
-    {
       "command": "sheet.manage_rules",
       "params": {
-        "name": "Latch hook 2 mm",
-        "thickness": "thickness",
-        "k_factor": "k_factor",
-        "bend_radius": "bend_radius",
+        "name": "Haak 2 mm",
+        "thickness": 2.0,
+        "k_factor": 0.44,
+        "bend_radius": 2.1,
         "active": true
       }
     },
@@ -78,25 +14,22 @@
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Latch hook blank"
+        "name": "Uitslag haak"
       }
     },
     {
-      "command": "sketch.arc.center_point",
+      "command": "sketch.line",
       "params": {
-        "center": [
-          5.0,
-          7.0
+        "points": [
+          [
+            0.0,
+            7.0
+          ],
+          [
+            0.0,
+            -7.0
+          ]
         ],
-        "start": [
-          "hole_x",
-          "overall_width / 2"
-        ],
-        "end": [
-          9.548736462093864,
-          9.075812274368232
-        ],
-        "clockwise": true,
         "connect": true
       }
     },
@@ -104,16 +37,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          12.0,
-          10.194444444444445
+          5.0,
+          -7.0
         ],
         "start": [
-          9.548736462093864,
-          9.075812274368232
+          0.0,
+          -7.0
         ],
         "end": [
-          12.0,
-          7.5
+          7.209449193419511,
+          -11.485346615558026
         ],
         "clockwise": false,
         "connect": true
@@ -124,43 +57,11 @@
       "params": {
         "points": [
           [
-            12.0,
-            7.5
+            7.209449193419511,
+            -11.485346615558026
           ],
           [
-            25.099654873300988,
-            "neck_width / 2"
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            25.099654873300988,
-            "neck_width / 2"
-          ],
-          [
-            25.099654873300988,
-            "-(neck_width / 2)"
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            25.099654873300988,
-            "-(neck_width / 2)"
-          ],
-          [
-            12.0,
+            15.3,
             -7.5
           ]
         ],
@@ -168,59 +69,18 @@
       }
     },
     {
-      "command": "sketch.arc.center_point",
+      "command": "sketch.line",
       "params": {
-        "center": [
-          12.0,
-          -10.194444444444445
+        "points": [
+          [
+            15.3,
+            -7.5
+          ],
+          [
+            28.14928735268115,
+            -7.5
+          ]
         ],
-        "start": [
-          12.0,
-          -7.5
-        ],
-        "end": [
-          9.548736462093864,
-          -9.075812274368232
-        ],
-        "clockwise": false,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          5.0,
-          -7.0
-        ],
-        "start": [
-          9.548736462093864,
-          -9.075812274368232
-        ],
-        "end": [
-          5.0,
-          -12.0
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          5.0,
-          -7.0
-        ],
-        "start": [
-          5.0,
-          -12.0
-        ],
-        "end": [
-          0.0,
-          -7.0
-        ],
-        "clockwise": true,
         "connect": true
       }
     },
@@ -229,12 +89,44 @@
       "params": {
         "points": [
           [
-            0.0,
-            -7.0
+            28.14928735268115,
+            -7.5
           ],
           [
-            0.0,
-            7.0
+            28.14928735268115,
+            7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            28.14928735268115,
+            7.5
+          ],
+          [
+            15.3,
+            7.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.3,
+            7.5
+          ],
+          [
+            7.209449193419511,
+            11.485346615558026
           ]
         ],
         "connect": true
@@ -248,14 +140,14 @@
           7.0
         ],
         "start": [
+          7.209449193419511,
+          11.485346615558026
+        ],
+        "end": [
           0.0,
           7.0
         ],
-        "end": [
-          "hole_x",
-          "overall_width / 2"
-        ],
-        "clockwise": true,
+        "clockwise": false,
         "connect": true
       }
     },
@@ -267,8 +159,8 @@
       "command": "sheet.flange",
       "params": {
         "type": "base",
-        "sketch": "Latch hook blank",
-        "rule": "Latch hook 2 mm",
+        "sketch": "Uitslag haak",
+        "rule": "Haak 2 mm",
         "body_name": "LatchHook"
       }
     },
@@ -276,14 +168,14 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "hole_x",
-          "-(hole_pitch / 2)",
-          "thickness"
+          5.0,
+          -7.0,
+          2.0
         ],
         "targets": [
           "LatchHook"
         ],
-        "diameter": "hole_diameter",
+        "diameter": 4.3,
         "direction": [
           0.0,
           0.0,
@@ -295,14 +187,14 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "hole_x",
-          "hole_pitch / 2",
-          "thickness"
+          5.0,
+          7.0,
+          2.0
         ],
         "targets": [
           "LatchHook"
         ],
-        "diameter": "hole_diameter",
+        "diameter": 4.3,
         "direction": [
           0.0,
           0.0,
@@ -313,8 +205,8 @@
     {
       "command": "sheet.fold",
       "params": {
-        "angle": 147.4141894959211,
-        "position": "centerline",
+        "angle": 138.7667505744678,
+        "position": "start",
         "flip": false,
         "body": "LatchHook",
         "points": [

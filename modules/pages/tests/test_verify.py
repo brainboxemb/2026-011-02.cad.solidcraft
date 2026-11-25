@@ -57,18 +57,20 @@ groups:
                 category_page = site / "models" / category
                 category_page.mkdir(parents=True)
                 link = (
+                    '<section class="cad-catalog-group" data-cad-group="mft">'
+                    '<h2>MFT</h2><div class="cad-model-grid">'
                     '<a href="/models/variant-a/">Variant A</a>'
+                    '</div></section>'
                     if category == "components"
-                    else ""
+                    else '<div class="cad-model-grid"></div>'
                 )
                 (category_page / "index.html").write_text(
-                    f'<main class="cad-category-page">'
-                    f'<div class="cad-model-grid">{link}</div></main>',
+                    f'<main class="cad-category-page">{link}</main>',
                     encoding="utf-8",
                 )
 
             (model / "model.yml").write_text(
-                "section: components\ntitle: Variant A\nparameters: 10 × 20 mm\n",
+                "section: components\ngroup: mft\ntitle: Variant A\nparameters: 10 × 20 mm\n",
                 encoding="utf-8",
             )
             (model / "ci.yml").write_text(
@@ -132,6 +134,19 @@ groups:
             )
 
             verify(repo=repo, site=site, build_scope=build)
+
+            component_index = site / "models" / "components" / "index.html"
+            grouped_html = component_index.read_text(encoding="utf-8")
+            component_index.write_text(
+                grouped_html.replace(' data-cad-group="mft"', ""),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                PagesVerificationError,
+                "missing structural group",
+            ):
+                verify(repo=repo, site=site, build_scope=build)
+            component_index.write_text(grouped_html, encoding="utf-8")
 
             (page / "model.stl").write_bytes(b"duplicate")
             with self.assertRaisesRegex(

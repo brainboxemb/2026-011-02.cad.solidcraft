@@ -12,6 +12,8 @@ positions: 12.5 mm and 62.5 mm from each rail end. Other dimensions are
 provisional until the physical MFT underside and desired fasteners are measured.
 """
 
+from math import cos, pi, sin
+
 from scpf import (
     BOTTOM,
     FRONT,
@@ -36,6 +38,12 @@ class MFTRailCornerBracket:
     top_gusset_thickness = 5.0
     bottom_gusset_leg = 55.0
     bottom_gusset_thickness = 5.0
+
+    # The bracket is also a load-bearing foot. Both rail ends sit on this
+    # plastic shoe instead of hanging beside the bracket.
+    foot_thickness = 6.0
+    corner_bumper_radius = 22.0
+    corner_bumper_segments = 8
 
     rail_bolt_diameter = 8.5
     rail_hole_first = 12.5
@@ -102,7 +110,66 @@ class MFTRailCornerBracket:
             )
         bottom_gusset = bottom_sketch.extrude(self.bottom_gusset_thickness)
 
-        bracket = x_arm + y_arm + top_gusset + bottom_gusset
+        # Support shoes below both rail ends. The rail profile is 18 mm deep,
+        # so these strips cover the complete footprint beneath each profile.
+        # Their top is exactly the rail-bottom plane at Z=-27.
+        rail_depth = MountingRailM8.PROFILE_HEIGHT
+        foot_z = -rail_height - self.foot_thickness
+
+        x_foot = Box(
+            self.arm_length,
+            rail_depth,
+            self.foot_thickness,
+        ).at(
+            self.arm_length / 2,
+            -rail_depth / 2,
+            foot_z,
+            anchor=BOTTOM,
+        )
+
+        y_foot = Box(
+            rail_depth,
+            self.arm_length,
+            self.foot_thickness,
+        ).at(
+            -rail_depth / 2,
+            self.arm_length / 2,
+            foot_z,
+            anchor=BOTTOM,
+        )
+
+        # Rounded outside-corner bumper. It lives only below the rail bottom,
+        # so it can protrude beyond the sharp metal corner without blocking
+        # either C-channel opening. Radius 22 gives ~4 mm sacrificial plastic
+        # beyond the 18 mm rail depth.
+        bumper_points = [(0, 0), (-self.corner_bumper_radius, 0)]
+        for i in range(1, self.corner_bumper_segments):
+            angle = pi + (pi / 2) * i / self.corner_bumper_segments
+            bumper_points.append(
+                (
+                    self.corner_bumper_radius * cos(angle),
+                    self.corner_bumper_radius * sin(angle),
+                )
+            )
+        bumper_points.append((0, -self.corner_bumper_radius))
+
+        with Sketch(
+            name="Rounded outside corner foot",
+            plane="XY",
+            origin=(0, 0, foot_z),
+        ) as bumper_sketch:
+            Polygon2D(bumper_points)
+        corner_bumper = bumper_sketch.extrude(self.foot_thickness)
+
+        bracket = (
+            x_arm
+            + y_arm
+            + top_gusset
+            + bottom_gusset
+            + x_foot
+            + y_foot
+            + corner_bumper
+        )
 
         # The rail's round perforations are centered on the 27 mm back web.
         rail_hole_z = -rail_height / 2

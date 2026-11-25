@@ -34,20 +34,20 @@ class LatchHook:
     hole_pitch = 14.0
     hole_x = 5.0
 
-    formed_projection = 20.0
-    hook_tip_x = 13.5
-    formed_height = 10.5
+    _formed_projection = 20.0
+    _hook_tip_x = 13.5
+    _formed_height = 10.5
 
     # Derived from the formed side profile.  With 2 mm material and R2.1,
     # the outside bend radius is 4.1 mm, so the bend centreline sits at
     # X = 20 - 4.1 = 15.9 mm.  Tangency from that outside-radius circle to
     # the dimensioned free tip (13.5, 10.5) yields 147.414°.
+    _neck_start_x = 12.0
     _fold_x = 15.9
     _fold_angle = 147.414
     _blank_end_x = 25.10
 
     def build(self):
-        lobe_radius = 5.0
         half_pitch = self.hole_pitch / 2
         half_neck = self.neck_width / 2
         top_y = self.overall_width / 2
@@ -55,10 +55,10 @@ class LatchHook:
 
         with Sketch(name="Latch hook blank", plane="XY") as blank:
             contour = blank.profile(start=(self.hole_x, top_y))
-            contour.line_to((self._fold_x, half_neck))
+            contour.line_to((self._neck_start_x, half_neck))
             contour.line_to((self._blank_end_x, half_neck))
             contour.line_to((self._blank_end_x, -half_neck))
-            contour.line_to((self._fold_x, -half_neck))
+            contour.line_to((self._neck_start_x, -half_neck))
             contour.line_to((self.hole_x, bottom_y))
             contour.arc_center_to(
                 (0.0, -half_pitch),

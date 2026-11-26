@@ -4,6 +4,10 @@ branch: feature/172-display-case-frame-groups
 modules:
   - pages
 models:
+  - corner-bracket
+  - hub75-panel
+  - latch
+  - latch-hook
   - hub75-display2
   - hub75-wood-frame
   - hub75-screen

@@ -328,38 +328,83 @@ class Hub75FrameCouplerMiddle:
 
 
 
-def _build_edge_like(*, profile_key, relief_key, screw_x):
-    """Shared Medium construction for one left/right corner member."""
-    depth = MEDIUM["base"] + MEDIUM["guide"]
-    body = _profile_solid(
-        name=f"{profile_key} source profile",
+def _edge_like_base(*, profile_key, screw_xs):
+    """Build only the 3 mm printable base side of an Edge/Corner coupler.
+
+    Historical production geometry owns the rear mounting plane as the split:
+    the base extends away from the panel, while guides/locators extend into the
+    panel.  Keeping those volumes separate avoids the former 9 mm solid stock.
+    """
+    base = _profile_solid(
+        name=f"{profile_key} base profile",
         loops=BASE_PROFILES[profile_key],
-        y=-MEDIUM["datum"] - MEDIUM["base"],
-        distance=depth,
+        y=-MEDIUM["datum"],
+        distance=-MEDIUM["base"],
     )
 
     support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
-    body = body + _axis_y_cylinder(
-        diameter=2.0 * support_r,
-        length=depth,
-        x=screw_x,
-        y=-MEDIUM["datum"] - MEDIUM["base"] + depth / 2.0,
-        z=-19.0,
+    for x in screw_xs:
+        base = base + _axis_y_cylinder(
+            diameter=2.0 * support_r,
+            length=MEDIUM["base"],
+            x=x,
+            y=-MEDIUM["datum"] - MEDIUM["base"] / 2.0,
+            z=-19.0,
+        )
+        base = _mounting_hole(
+            base,
+            x=x,
+            z=-8.0,
+            total_depth=MEDIUM["base"],
+        )
+    return _apply_reference_pattern(base, profile_key=profile_key)
+
+
+def _edge_like_guide(*, profile_key, relief_key, screw_xs, edge=False):
+    """Build only the 6 mm panel-side guide/support volume."""
+    guide = _profile_solid(
+        name=f"{profile_key} guide stock",
+        loops=BASE_PROFILES[profile_key],
+        y=-MEDIUM["datum"],
+        distance=MEDIUM["guide"],
     )
 
-    body = _cut_tapered_rail_relief(
-        body,
+    support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
+    for x in screw_xs:
+        guide = guide + _axis_y_cylinder(
+            diameter=2.0 * support_r,
+            length=MEDIUM["guide"],
+            x=x,
+            y=-MEDIUM["datum"] + MEDIUM["guide"] / 2.0,
+            z=-19.0,
+        )
+
+    guide = _cut_tapered_rail_relief(
+        guide,
         profile_key=relief_key,
     )
-    body = _guide_clearance(body, x=screw_x, z=-19.0)
-    body = _mounting_hole(
-        body,
-        x=screw_x,
-        z=-8.0,
-        total_depth=depth,
+    if edge:
+        guide = _cut_edge_guide_end_rounding(guide)
+
+    for x in screw_xs:
+        guide = _guide_clearance(guide, x=x, z=-19.0)
+    return guide
+
+
+def _build_edge_like(*, profile_key, relief_key, screw_x):
+    """Shared Medium construction for one left/right corner member."""
+    base = _edge_like_base(
+        profile_key=profile_key,
+        screw_xs=(screw_x,),
     )
+    guide = _edge_like_guide(
+        profile_key=profile_key,
+        relief_key=relief_key,
+        screw_xs=(screw_x,),
+    )
+    body = base + guide
     body = _locator_pad(body, x=screw_x, z=-19.0)
-    return _apply_reference_pattern(body, profile_key=profile_key)
+    return body
 
 
 @component
@@ -367,40 +412,26 @@ class Hub75FrameCouplerEdge:
     """Fixed Medium straight frame-edge coupler."""
 
     def build(self):
-        depth = MEDIUM["base"] + MEDIUM["guide"]
-        body = _profile_solid(
-            name="Edge source profile",
-            loops=BASE_PROFILES["edge"],
-            y=-MEDIUM["datum"] - MEDIUM["base"],
-            distance=depth,
-        )
-
-        support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
-        for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
-            body = body + _axis_y_cylinder(
-                diameter=2.0 * support_r,
-                length=depth,
-                x=x,
-                y=-MEDIUM["datum"] - MEDIUM["base"] + depth / 2.0,
-                z=-19.0,
-            )
-
-        body = _cut_tapered_rail_relief(
-            body,
+        screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
+        base = _edge_like_base(
             profile_key="edge",
+            screw_xs=screw_xs,
         )
-        body = _cut_edge_guide_end_rounding(body)
+        guide = _edge_like_guide(
+            profile_key="edge",
+            relief_key="edge",
+            screw_xs=screw_xs,
+            edge=True,
+        )
+        body = base + guide
 
-        for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
-            body = _guide_clearance(body, x=x, z=-19.0)
-            body = _mounting_hole(body, x=x, z=-8.0, total_depth=depth)
+        for x in screw_xs:
             body = _locator_pad(body, x=x, z=-19.0)
 
         body = _join_tapered_seam_guide(
             body,
             profile_key="edge",
         )
-        body = _apply_reference_pattern(body, profile_key="edge")
         return body.with_appearance(SOURCE_RED)
 
 

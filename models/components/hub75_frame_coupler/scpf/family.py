@@ -328,81 +328,83 @@ class Hub75FrameCouplerMiddle:
 
 
 
-def _edge_like_base(*, profile_key, screw_xs):
-    """Build only the 3 mm printable base side of an Edge/Corner coupler.
-
-    Historical production geometry owns the rear mounting plane as the split:
-    the base extends away from the panel, while guides/locators extend into the
-    panel.  Keeping those volumes separate avoids the former 9 mm solid stock.
-    """
-    base = _profile_solid(
+def _edge_like_stock(*, profile_key, screw_xs):
+    """Create raw 3 mm base + 6 mm guide/support volumes before any cuts."""
+    body = _profile_solid(
         name=f"{profile_key} base profile",
         loops=BASE_PROFILES[profile_key],
         y=-MEDIUM["datum"],
         distance=-MEDIUM["base"],
     )
-
-    support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
-    for x in screw_xs:
-        base = base + _axis_y_cylinder(
-            diameter=2.0 * support_r,
-            length=MEDIUM["base"],
-            x=x,
-            y=-MEDIUM["datum"] - MEDIUM["base"] / 2.0,
-            z=-19.0,
-        )
-        base = _mounting_hole(
-            base,
-            x=x,
-            z=-8.0,
-            total_depth=MEDIUM["base"],
-        )
-    return _apply_reference_pattern(base, profile_key=profile_key)
-
-
-def _edge_like_guide(*, profile_key, relief_key, screw_xs, edge=False):
-    """Build only the 6 mm panel-side guide/support volume."""
     guide = _profile_solid(
         name=f"{profile_key} guide stock",
         loops=BASE_PROFILES[profile_key],
         y=-MEDIUM["datum"],
         distance=MEDIUM["guide"],
     )
+    body = body + guide
 
     support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
     for x in screw_xs:
-        guide = guide + _axis_y_cylinder(
+        body = body + _axis_y_cylinder(
+            diameter=2.0 * support_r,
+            length=MEDIUM["base"],
+            x=x,
+            y=-MEDIUM["datum"] - MEDIUM["base"] / 2.0,
+            z=-19.0,
+        )
+        body = body + _axis_y_cylinder(
             diameter=2.0 * support_r,
             length=MEDIUM["guide"],
             x=x,
             y=-MEDIUM["datum"] + MEDIUM["guide"] / 2.0,
             z=-19.0,
         )
+    return body
 
-    guide = _cut_tapered_rail_relief(
-        guide,
+
+def _cut_edge_like_base(body, *, profile_key, screw_xs):
+    """Apply only base-side mounting/pattern cuts."""
+    for x in screw_xs:
+        body = _mounting_hole(
+            body,
+            x=x,
+            z=-8.0,
+            total_depth=MEDIUM["base"],
+        )
+    return _apply_reference_pattern(body, profile_key=profile_key)
+
+
+def _cut_edge_like_guide(body, *, relief_key, screw_xs, edge=False):
+    """Apply only panel-side guide/relief cuts."""
+    body = _cut_tapered_rail_relief(
+        body,
         profile_key=relief_key,
     )
     if edge:
-        guide = _cut_edge_guide_end_rounding(guide)
-
+        body = _cut_edge_guide_end_rounding(body)
     for x in screw_xs:
-        guide = _guide_clearance(guide, x=x, z=-19.0)
-    return guide
+        body = _guide_clearance(body, x=x, z=-19.0)
+    return body
 
 
 def _build_edge_like(*, profile_key, relief_key, screw_x):
     """Shared Medium construction for one left/right corner member."""
-    base = _edge_like_base(
+    screw_xs = (screw_x,)
+    body = _edge_like_stock(
         profile_key=profile_key,
-        screw_xs=(screw_x,),
+        screw_xs=screw_xs,
     )
-    guide = _edge_like_guide(
+    body = _cut_edge_like_base(
+        body,
         profile_key=profile_key,
+        screw_xs=screw_xs,
+    )
+    body = _cut_edge_like_guide(
+        body,
         relief_key=relief_key,
-        screw_xs=(screw_x,),
+        screw_xs=screw_xs,
     )
-    body = base + guide
     body = _locator_pad(body, x=screw_x, z=-19.0)
     return body
 
@@ -413,17 +415,21 @@ class Hub75FrameCouplerEdge:
 
     def build(self):
         screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
-        base = _edge_like_base(
+        body = _edge_like_stock(
             profile_key="edge",
             screw_xs=screw_xs,
         )
-        guide = _edge_like_guide(
+        body = _cut_edge_like_base(
+            body,
             profile_key="edge",
+            screw_xs=screw_xs,
+        )
+        body = _cut_edge_like_guide(
+            body,
             relief_key="edge",
             screw_xs=screw_xs,
             edge=True,
         )
-        body = base + guide
 
         for x in screw_xs:
             body = _locator_pad(body, x=x, z=-19.0)

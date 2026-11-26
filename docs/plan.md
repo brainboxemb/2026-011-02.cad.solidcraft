@@ -4,13 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #160 — reduce Wall Hook rear screw-hole chamfer to elephant-foot relief
-
-Keep the 1.0 mm screw-entry chamfer on the front/tool side of each Ø4.2
-mounting hole, but reduce the wall-contact side to a 0.3 mm edge break.
-
-Acceptance is owned by issue #160.
-
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

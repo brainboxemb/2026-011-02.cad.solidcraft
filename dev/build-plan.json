@@ -340,7 +340,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "ad50a9cdc1305c6def8c58685ef82b80de3767bb",
+      "built_source_sha": "b7254a66b98e20e9bff78bf11fe488305b9cabb2",
       "commands": "models/hub75-display-frame-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -424,7 +424,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "ad50a9cdc1305c6def8c58685ef82b80de3767bb",
+      "built_source_sha": "b7254a66b98e20e9bff78bf11fe488305b9cabb2",
       "commands": "models/hub75-display-frame-2panel-tube/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -2227,5 +2227,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "ad50a9cdc1305c6def8c58685ef82b80de3767bb"
+  "source_sha": "b7254a66b98e20e9bff78bf11fe488305b9cabb2"
 }

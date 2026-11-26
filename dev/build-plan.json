@@ -340,7 +340,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
       "commands": "models/hub75-display-frame-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -445,7 +445,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
       "commands": "models/hub75-frame-coupler-corner-left/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -526,7 +526,88 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
+      "commands": "models/hub75-frame-coupler-corner-left-tube/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-corner-left-tube",
+      "native": {
+        "png": "models/hub75-frame-coupler-corner-left-tube/model.png",
+        "sc": "models/hub75-frame-coupler-corner-left-tube/model.sc",
+        "step": "models/hub75-frame-coupler-corner-left-tube/model.step",
+        "stl": "models/hub75-frame-coupler-corner-left-tube/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-corner-left-tube/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 3.14
+          },
+          "name": "rear.png",
+          "path": "models/hub75-frame-coupler-corner-left-tube/rear.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": -1.57
+          },
+          "name": "side.png",
+          "path": "models/hub75-frame-coupler-corner-left-tube/side.png"
+        }
+      ],
+      "source": "models/components/hub75_frame_coupler/scpf/corner_left_tube.py"
+    },
+    {
+      "artifact_options": {},
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
       "commands": "models/hub75-frame-coupler-corner-right/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -607,7 +688,88 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
+      "commands": "models/hub75-frame-coupler-corner-right-tube/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-corner-right-tube",
+      "native": {
+        "png": "models/hub75-frame-coupler-corner-right-tube/model.png",
+        "sc": "models/hub75-frame-coupler-corner-right-tube/model.sc",
+        "step": "models/hub75-frame-coupler-corner-right-tube/model.step",
+        "stl": "models/hub75-frame-coupler-corner-right-tube/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-corner-right-tube/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 3.14
+          },
+          "name": "rear.png",
+          "path": "models/hub75-frame-coupler-corner-right-tube/rear.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": -1.57
+          },
+          "name": "side.png",
+          "path": "models/hub75-frame-coupler-corner-right-tube/side.png"
+        }
+      ],
+      "source": "models/components/hub75_frame_coupler/scpf/corner_right_tube.py"
+    },
+    {
+      "artifact_options": {},
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
       "commands": "models/hub75-frame-coupler-edge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -688,7 +850,88 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
+      "commands": "models/hub75-frame-coupler-edge-tube/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-edge-tube",
+      "native": {
+        "png": "models/hub75-frame-coupler-edge-tube/model.png",
+        "sc": "models/hub75-frame-coupler-edge-tube/model.sc",
+        "step": "models/hub75-frame-coupler-edge-tube/model.step",
+        "stl": "models/hub75-frame-coupler-edge-tube/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-edge-tube/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 3.14
+          },
+          "name": "rear.png",
+          "path": "models/hub75-frame-coupler-edge-tube/rear.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": -1.57
+          },
+          "name": "side.png",
+          "path": "models/hub75-frame-coupler-edge-tube/side.png"
+        }
+      ],
+      "source": "models/components/hub75_frame_coupler/scpf/edge_tube.py"
+    },
+    {
+      "artifact_options": {},
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee",
       "commands": "models/hub75-frame-coupler-middle/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1883,5 +2126,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e"
+  "source_sha": "8806de60c2d949a0dbd14a1248633f3ae89809ee"
 }

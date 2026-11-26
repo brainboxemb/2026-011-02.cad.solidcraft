@@ -1,8 +1,8 @@
 """Wall hook reconstructed from the supplied tutorial sketch.
 
 Confirmed source dimensions are public model parameters. The side profile is
-authored in world XZ and extruded symmetrically in Y so the broad side faces
-are Forge/SolidCraft FRONT and BACK.
+authored as sharp polygons in world XZ, extruded symmetrically in Y, then
+rounded with native SolidCraft fillet operations.
 """
 
 from math import sqrt
@@ -36,157 +36,75 @@ class WallHook:
         right_top_z = crossbar_z + self.short_tip_rise
         right_outer_bottom_z = right_top_z - self.short_outer_height
 
-        # The outside diagonal is exactly 45 degrees:
-        # (6, 0) -> (32, 26). The inner diagonal keeps a true 6 mm normal web.
+        # The outside reinforcement edge is exactly 45 degrees:
+        # (6, 0) -> (32, 26). Offset its inner edge by a true 6 mm normal web.
+        diagonal_offset = self.rib * sqrt(2.0)
         window_top_z = crossbar_z - self.rib
-        window_left_bottom_z = self.rib * sqrt(2.0)
-        window_right_top_x = window_top_z - (
-            -self.rib + self.rib * sqrt(2.0)
-        )
+        window_left_bottom_z = diagonal_offset
+        window_right_top_x = window_top_z - (diagonal_offset - self.rib)
 
-        # Build the visible R2 side silhouette directly in XZ with true arcs.
-        r = self.profile_fillet
-        r45_offset = r * (sqrt(2.0) - 1.0)
-        r45_diag = r45_offset / sqrt(2.0)
-
-        start = (r, 0.0)
-        with Sketch(name="Rounded hook side profile", plane="XZ", origin=(0, 0, 0)) as outline:
-            profile = outline.profile(start=start)
-
-            profile.line_to((self.rib - r45_offset, 0.0))
-            profile.arc_center_to(
-                (self.rib + r45_diag, r45_diag),
-                center=(self.rib - r45_offset, r),
-                clockwise=False,
+        # Start with the simple sharp-cornered side silhouette. The vertex ids
+        # become native sweep-edge selectors after the symmetric Y extrusion.
+        with Sketch(name="Sharp hook side profile", plane="XZ") as outline:
+            Polygon2D(
+                [
+                    ("back_lower", (0.0, 0.0)),
+                    ("diagonal_lower", (self.rib, 0.0)),
+                    ("diagonal_upper", (right_outer_x, right_outer_bottom_z)),
+                    ("outer_tip_upper", (right_outer_x, right_top_z)),
+                    ("inner_tip_upper", (right_inner_x, right_top_z)),
+                    ("inner_tip_lower", (right_inner_x, crossbar_z)),
+                    ("inner_back_corner", (self.rib, crossbar_z)),
+                    ("back_upper_inner", (self.rib, self.overall_height)),
+                    ("back_upper_outer", (0.0, self.overall_height)),
+                ],
+                plane="XZ",
+                world=True,
             )
-
-            profile.line_to(
-                (
-                    right_outer_x - r45_diag,
-                    right_outer_bottom_z - r45_diag,
-                )
-            )
-            profile.arc_center_to(
-                (
-                    right_outer_x,
-                    right_outer_bottom_z + r45_offset,
-                ),
-                center=(
-                    right_outer_x - r,
-                    right_outer_bottom_z + r45_offset,
-                ),
-                clockwise=False,
-            )
-
-            profile.line_to((right_outer_x, right_top_z - r))
-            profile.arc_center_to(
-                (right_outer_x - r, right_top_z),
-                center=(right_outer_x - r, right_top_z - r),
-                clockwise=False,
-            )
-            profile.line_to((right_inner_x + r, right_top_z))
-            profile.arc_center_to(
-                (right_inner_x, right_top_z - r),
-                center=(right_inner_x + r, right_top_z - r),
-                clockwise=False,
-            )
-
-            profile.line_to((right_inner_x, crossbar_z + r))
-            profile.arc_center_to(
-                (right_inner_x - r, crossbar_z),
-                center=(right_inner_x - r, crossbar_z + r),
-                clockwise=True,
-            )
-            profile.line_to((self.rib + r, crossbar_z))
-            profile.arc_center_to(
-                (self.rib, crossbar_z + r),
-                center=(self.rib + r, crossbar_z + r),
-                clockwise=True,
-            )
-
-            profile.line_to((self.rib, self.overall_height - r))
-            profile.arc_center_to(
-                (self.rib - r, self.overall_height),
-                center=(self.rib - r, self.overall_height - r),
-                clockwise=False,
-            )
-            profile.line_to((r, self.overall_height))
-            profile.arc_center_to(
-                (0.0, self.overall_height - r),
-                center=(r, self.overall_height - r),
-                clockwise=False,
-            )
-            profile.line_to((0.0, r))
-            profile.arc_center_to(
-                start,
-                center=(r, r),
-                clockwise=False,
-            )
-            profile.close()
 
         body = outline.extrude(self.thickness, sym=True)
-
-        # Rounded triangular relief. Its two acute corners are 45 degrees,
-        # so their tangent distance is R / tan(22.5°) = R * (sqrt(2) + 1).
-        wr = self.window_fillet
-        acute_tangent = wr * (sqrt(2.0) + 1.0)
-        acute_diag = acute_tangent / sqrt(2.0)
-
-        window_left = self.rib
-        window_bottom = window_left_bottom_z
-        window_top = window_top_z
-        window_right = window_right_top_x
-
-        window_start = (
-            window_left + acute_diag,
-            window_bottom + acute_diag,
+        body = body.fillet(
+            self.profile_fillet,
+            edges=Edges.from_vertices(
+                "back_lower",
+                "diagonal_lower",
+                "diagonal_upper",
+                "outer_tip_upper",
+                "inner_tip_upper",
+                "inner_tip_lower",
+                "inner_back_corner",
+                "back_upper_inner",
+                "back_upper_outer",
+            ),
         )
-        with Sketch(name="Rounded triangular gusset window", plane="XZ", origin=(0, 0, 0)) as window:
-            relief = window.profile(start=window_start)
 
-            relief.arc_center_to(
-                (
-                    window_left,
-                    window_bottom + acute_tangent,
-                ),
-                center=(
-                    window_left + wr,
-                    window_bottom + acute_tangent,
-                ),
-                clockwise=True,
-            )
-            relief.line_to((window_left, window_top - wr))
-            relief.arc_center_to(
-                (window_left + wr, window_top),
-                center=(window_left + wr, window_top - wr),
-                clockwise=True,
+        # Build the reinforcement opening the same way: first a plain triangle,
+        # then fillet the three cutter sweep edges before subtracting it.
+        with Sketch(name="Sharp triangular gusset window", plane="XZ") as window:
+            Polygon2D(
+                [
+                    ("window_lower", (self.rib, window_left_bottom_z)),
+                    ("window_front", (window_right_top_x, window_top_z)),
+                    ("window_upper", (self.rib, window_top_z)),
+                ],
+                plane="XZ",
+                world=True,
             )
 
-            relief.line_to((window_right - acute_tangent, window_top))
-            relief.arc_center_to(
-                (
-                    window_right - acute_diag,
-                    window_top - acute_diag,
-                ),
-                center=(
-                    window_right - acute_tangent,
-                    window_top - wr,
-                ),
-                clockwise=True,
-            )
-            relief.line_to(window_start)
-            relief.close()
-
-        body = body - window.extrude(self.thickness, sym=True)
+        window_cutter = window.extrude(self.thickness, sym=True)
+        window_cutter = window_cutter.fillet(
+            self.window_fillet,
+            edges=Edges.from_vertices(
+                "window_lower",
+                "window_front",
+                "window_upper",
+            ),
+        )
+        body = body - window_cutter
 
         # Keep the lower Ø4.2 mounting hole confined to the 6 mm rear spine,
         # but clear the diagonal reinforcement in front of it so a screwdriver
         # or bit can reach the screw head along the same world-X axis.
-        #
-        # The Ø8 access bore starts exactly at X=rib, so it removes no material
-        # from the mounting spine itself. With the 15 mm symmetric Y extrusion,
-        # material remains on both sides of the access port and the diagonal
-        # continues to act as a reinforcement.
         body = body - Cylinder(
             d=self.tool_access_diameter,
             h=right_outer_x - self.rib,
@@ -199,9 +117,8 @@ class WallHook:
             anchor=Anchor.LEFT,
         )
 
-        # Forge v0.18 resolves the complete native boundary of both broad XZ
-        # extrusion end faces. Apply this before the screw holes so their own
-        # 1.0 mm countersink/chamfer remains independent.
+        # Chamfer the complete native boundary of both broad XZ end faces before
+        # the mounting holes so their own countersink/chamfer remains independent.
         body = body.chamfer(
             self.face_chamfer,
             edges=Edges.from_faces(Faces.FRONT, Faces.BACK),

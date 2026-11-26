@@ -96,9 +96,9 @@ class WallHook:
         body = body.fillet(
             self.window_fillet,
             edges=[
-                (self.rib, 0.0, -window_left_bottom_z),
-                (window_right_top_x, 0.0, -window_top_z),
-                (self.rib, 0.0, -window_top_z),
+                (self.rib, 0.0, window_left_bottom_z),
+                (window_right_top_x, 0.0, window_top_z),
+                (self.rib, 0.0, window_top_z),
             ],
         )
 

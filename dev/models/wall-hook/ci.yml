@@ -13,3 +13,10 @@ snapshots:
       pitch: 0.18
       distance: 80
       fov: 0
+  - name: rear-holes.png
+    camera:
+      target: [0, 0, 28.5]
+      yaw: 1.57
+      pitch: 0
+      distance: 90
+      fov: 0

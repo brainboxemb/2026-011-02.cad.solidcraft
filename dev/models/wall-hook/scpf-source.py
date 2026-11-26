@@ -20,7 +20,8 @@ class WallHook:
     hole_diameter = 4.2
     upper_hole_from_top = 10.0
     lower_hole_from_bottom = 17.0
-    hole_chamfer = 1.0
+    front_hole_chamfer = 1.0
+    rear_hole_relief = 0.3
     tool_access_diameter = 8.0
 
     face_chamfer = 1.5
@@ -124,7 +125,10 @@ class WallHook:
             edges=Edges.from_faces(Faces.FRONT, Faces.BACK),
         )
 
-        countersink_d = self.hole_diameter + 2.0 * self.hole_chamfer
+        front_countersink_d = (
+            self.hole_diameter + 2.0 * self.front_hole_chamfer
+        )
+        rear_relief_d = self.hole_diameter + 2.0 * self.rear_hole_relief
         hole_zs = (
             self.overall_height - self.upper_hole_from_top,
             self.lower_hole_from_bottom,
@@ -132,10 +136,12 @@ class WallHook:
 
         # Rear mounting spine is 6 mm thick along X. The 15 mm extrusion is
         # centred on Y=0, so both screw-hole axes sit at Y=0 and run along X.
+        # The tool/front face at X=6 keeps the normal screw-entry countersink.
+        # The wall-contact face at X=0 only gets a tiny elephant-foot relief.
         for z in hole_zs:
             body = body + CountersinkHole(
                 d=self.hole_diameter,
-                countersink_d=countersink_d,
+                countersink_d=front_countersink_d,
                 countersink_angle=90,
                 depth=self.rib,
                 direction=(-1, 0, 0),
@@ -143,7 +149,7 @@ class WallHook:
 
             body = body + CountersinkHole(
                 d=self.hole_diameter,
-                countersink_d=countersink_d,
+                countersink_d=rear_relief_d,
                 countersink_angle=90,
                 depth=self.rib,
                 direction=(1, 0, 0),

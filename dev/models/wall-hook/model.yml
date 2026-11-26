@@ -6,8 +6,8 @@ tagline: Compact wall hook with a reinforced diagonal web
 description: >
   Parametric reconstruction of the supplied tutorial wall hook. The confirmed
   source dimensions define the 57 mm high XZ hook profile, 15 mm symmetric Y extrusion,
-  6 mm walls, 20 mm hook opening, triangular gusset window and two Ø4.2 mm mounting holes through the rear 6 mm mounting wall. A separate Ø8 mm coaxial tool-access bore clears only the diagonal reinforcement in front of the lower screw so the mounting wall remains intact. Forge v0.19 applies the native 1.5 mm FRONT/BACK boundary chamfer while the screw holes keep independent 1.0 mm chamfers. The finished body receives a display-only #FFD21A yellow appearance matching the tutorial result; physical material/BOM semantics remain unchanged. The outer silhouette and triangular relief are authored as sharp polygons first, then rounded with native R2 fillet operations. Only those visible fillet radii remain explicitly inferred from the rendered reference.
-parameters: 57 mm high; 15 mm wide; 6 mm ribs; 20 mm hook opening; 2 × Ø4.2 mm holes; Ø8 mm lower-screw tool access; 1 mm hole chamfers; 1.5 mm FRONT/BACK edge chamfer
+  6 mm walls, 20 mm hook opening, triangular gusset window and two Ø4.2 mm mounting holes through the rear 6 mm mounting wall. A separate Ø8 mm coaxial tool-access bore clears only the diagonal reinforcement in front of the lower screw so the mounting wall remains intact. Forge v0.19 applies the native 1.5 mm FRONT/BACK boundary chamfer while each screw hole keeps a 1.0 mm tool-side entry chamfer and only a 0.3 mm wall-side elephant-foot relief. The finished body receives a display-only #FFD21A yellow appearance matching the tutorial result; physical material/BOM semantics remain unchanged. The outer silhouette and triangular relief are authored as sharp polygons first, then rounded with native R2 fillet operations. Only those visible fillet radii remain explicitly inferred from the rendered reference.
+parameters: 57 mm high; 15 mm wide; 6 mm ribs; 20 mm hook opening; 2 × Ø4.2 mm holes; Ø8 mm lower-screw tool access; 1 mm front hole chamfers; 0.3 mm rear hole reliefs; 1.5 mm FRONT/BACK edge chamfer
 stages:
   - Draw the 57 mm outer hook as a sharp-cornered Polygon2D in XZ
   - Extrude the profile symmetrically to 15 mm along Y
@@ -17,7 +17,7 @@ stages:
   - Cut a separate Ø8 mm X-axis screwdriver access bore through only the diagonal reinforcement at the lower screw centre
   - Chamfer the complete FRONT/BACK face boundaries by 1.5 mm using native face selection
   - Add two Ø4.2 holes along X through the rear 6 mm mounting wall at Y=0, 10 mm from top and 17 mm from bottom
-  - Add 1 mm 90-degree chamfers at both mounting-wall faces of each screw hole
+  - Add a 1 mm 90-degree screw-entry chamfer at X=6 and a 0.3 mm 90-degree elephant-foot relief at the X=0 wall face
   - Apply #FFD21A as a display-only final-body appearance through Forge v0.19
 
 extra_views:
@@ -33,3 +33,7 @@ extra_views:
       src: access.png
       alt: Oblique view of the Wall Hook lower mounting screw access opening
       caption: Lower screw access — Ø8 mm tool path through the diagonal reinforcement
+    - kind: build
+      src: rear-holes.png
+      alt: Rear wall-contact view of the Wall Hook mounting holes
+      caption: Rear mounting face — only a 0.3 mm elephant-foot relief around each Ø4.2 hole

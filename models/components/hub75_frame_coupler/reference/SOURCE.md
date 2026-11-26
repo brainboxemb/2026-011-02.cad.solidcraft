@@ -141,3 +141,19 @@ historical source margin.
 The retained native SolidCraft feature profile represented the pre-clip rounded
 cross. Forge therefore applies this source window explicitly before mounting,
 guide and surface-detail operations.
+
+
+## Native XZ sketch frame
+
+The extracted `source_data.py` loops are already normalized to each reusable
+coupler's physical local `(X, Z)` frame.
+
+Forge therefore lowers those coordinates directly onto the native `XZ`
+sketch plane without an additional Z reflection. The source-derived profile,
+support cylinders, mounting cuts, locator pads and reference features must all
+share the same local Z convention.
+
+A short-lived correction attempt reflected only the sketch loops while leaving
+the primitive support/mounting features in ordinary world XYZ coordinates.
+That produced a visually plausible T profile but moved the profile to the
+opposite side of its circular support, mounting and reference features.

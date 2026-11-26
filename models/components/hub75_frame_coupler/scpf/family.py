@@ -25,7 +25,23 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
 SOURCE_RED = "#B80D0A"
 
 
+def _edge_mount_z():
+    """Physical local Z of the Edge/Corner mounting-bore axes."""
+    return -MEDIUM["edge_screw_in"]
+
+
+def _edge_support_z():
+    """Physical local Z of the bushing support / locator-pad axes."""
+    return _edge_mount_z() - MEDIUM["bushing_z"]
+
+
 def _add_loop(sketch, loop):
+    """Lower retained physical local (X, Z) directly onto the native XZ plane.
+
+    source_data.py is already normalized to the reusable component's physical
+    local frame.  Do not reflect Z here: support cylinders, mounting cuts,
+    locator pads and reference features all use the same local Z coordinates.
+    """
     contour = sketch.profile(start=tuple(loop["start"]))
     for segment in loop["segments"]:
         end = tuple(segment["end"])
@@ -351,14 +367,14 @@ def _edge_like_stock(*, profile_key, screw_xs):
             length=MEDIUM["base"],
             x=x,
             y=-MEDIUM["datum"] - MEDIUM["base"] / 2.0,
-            z=-19.0,
+            z=_edge_support_z(),
         )
         body = body + _axis_y_cylinder(
             diameter=2.0 * support_r,
             length=MEDIUM["guide"],
             x=x,
             y=-MEDIUM["datum"] + MEDIUM["guide"] / 2.0,
-            z=-19.0,
+            z=_edge_support_z(),
         )
     return body
 
@@ -369,7 +385,7 @@ def _cut_edge_like_base(body, *, profile_key, screw_xs):
         body = _mounting_hole(
             body,
             x=x,
-            z=-8.0,
+            z=_edge_mount_z(),
             total_depth=MEDIUM["base"],
         )
     return _apply_reference_pattern(body, profile_key=profile_key)
@@ -420,7 +436,7 @@ def _cut_edge_like_guide(body, *, relief_key, screw_xs, edge=False):
     if edge:
         body = _cut_edge_guide_end_rounding(body)
     for x in screw_xs:
-        body = _guide_clearance(body, x=x, z=-19.0)
+        body = _guide_clearance(body, x=x, z=_edge_support_z())
     return body
 
 
@@ -441,7 +457,7 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
         relief_key=relief_key,
         screw_xs=screw_xs,
     )
-    body = _locator_pad(body, x=screw_x, z=-19.0)
+    body = _locator_pad(body, x=screw_x, z=_edge_support_z())
     return body
 
 
@@ -469,7 +485,7 @@ class Hub75FrameCouplerEdge:
         )
 
         for x in screw_xs:
-            body = _locator_pad(body, x=x, z=-19.0)
+            body = _locator_pad(body, x=x, z=_edge_support_z())
 
         body = _join_tapered_seam_guide(
             body,

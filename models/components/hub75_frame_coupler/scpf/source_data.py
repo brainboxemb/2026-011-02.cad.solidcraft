@@ -15,6 +15,7 @@ MEDIUM = {
   "datum": 14.5,
   "row": 160,
   "screw_x": 8,
+  "edge_screw_in": 8,  # source edge_screw_in: mounting axis inset from edge
   "screw_d": 3.4,
   "bushing_z": 11,
   "bushing_r": 7,

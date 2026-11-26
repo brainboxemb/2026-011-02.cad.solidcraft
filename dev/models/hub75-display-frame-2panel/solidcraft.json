@@ -9934,10 +9934,78 @@
       }
     },
     {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3,
+        "diameter": 22.9,
+        "base": [
+          -8,
+          -17.5,
+          -19.0
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 6,
+        "diameter": 22.9,
+        "base": [
+          -8,
+          -14.5,
+          -19.0
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3,
+        "diameter": 22.9,
+        "base": [
+          8,
+          -17.5,
+          -19.0
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 6,
+        "diameter": 22.9,
+        "base": [
+          8,
+          -14.5,
+          -19.0
+        ],
+        "axis": "Y",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d3_Hub75FrameCouplerEdge__Edge T-profile boundary",
+        "name": "d3_Hub75FrameCouplerEdge__Edge outside-stem T clip",
         "offset": -18.5
       }
     },
@@ -9946,12 +10014,12 @@
       "params": {
         "points": [
           [
-            -41.0,
-            -1.855
+            -50.0,
+            3.855
           ],
           [
-            41.0,
-            -1.855
+            50.0,
+            3.855
           ]
         ],
         "connect": true
@@ -9962,12 +10030,12 @@
       "params": {
         "points": [
           [
-            41.0,
-            -1.855
+            50.0,
+            3.855
           ],
           [
-            41.0,
-            35.290000000000006
+            50.0,
+            120.0
           ]
         ],
         "connect": true
@@ -9978,12 +10046,12 @@
       "params": {
         "points": [
           [
-            41.0,
-            35.290000000000006
+            50.0,
+            120.0
           ],
           [
-            -41.0,
-            35.290000000000006
+            -50.0,
+            120.0
           ]
         ],
         "connect": true
@@ -9994,12 +10062,12 @@
       "params": {
         "points": [
           [
-            -41.0,
-            35.290000000000006
+            -50.0,
+            120.0
           ],
           [
-            -41.0,
-            -1.855
+            -50.0,
+            3.855
           ]
         ],
         "connect": true
@@ -10015,74 +10083,6 @@
         "distance": 11.0,
         "direction": "positive",
         "operation": "cut",
-        "targets": [
-          "Hub75FrameCouplerEdge"
-        ]
-      }
-    },
-    {
-      "command": "solid.cylinder",
-      "params": {
-        "height": 3,
-        "diameter": 22.9,
-        "base": [
-          -8,
-          -17.5,
-          -19.0
-        ],
-        "axis": "Y",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerEdge"
-        ]
-      }
-    },
-    {
-      "command": "solid.cylinder",
-      "params": {
-        "height": 6,
-        "diameter": 22.9,
-        "base": [
-          -8,
-          -14.5,
-          -19.0
-        ],
-        "axis": "Y",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerEdge"
-        ]
-      }
-    },
-    {
-      "command": "solid.cylinder",
-      "params": {
-        "height": 3,
-        "diameter": 22.9,
-        "base": [
-          8,
-          -17.5,
-          -19.0
-        ],
-        "axis": "Y",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerEdge"
-        ]
-      }
-    },
-    {
-      "command": "solid.cylinder",
-      "params": {
-        "height": 6,
-        "diameter": 22.9,
-        "base": [
-          8,
-          -14.5,
-          -19.0
-        ],
-        "axis": "Y",
-        "operation": "join",
         "targets": [
           "Hub75FrameCouplerEdge"
         ]

@@ -12,9 +12,8 @@ Source supplied by the project owner on 2026-11-25.
   - size: 73323 bytes
   - SHA-256: `49fe00844a8468065b0b9922bc8ce4c8f4be99ea37cf820fa54f0552a81006cd`
 
-The native `.sc` container remains the authoritative binary source. Its exact
-identity is recorded above and the original file must be retained with this
-owner before #125 is accepted.
+The native `.sc` container is retained here as the authoritative binary source.
+Its committed file matches the supplied 73323-byte source and recorded SHA-256.
 
 ## Native geometry
 

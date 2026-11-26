@@ -1,0 +1,179 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_length",
+        "expression": "40",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_width",
+        "expression": "30",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_thickness",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_knuckle_length",
+        "expression": "40",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_knuckle_diameter",
+        "expression": "8",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_knuckle_y",
+        "expression": "33",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_HingeLeaf_knuckle_z",
+        "expression": "4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "HingeLeaf",
+        "grounded": true
+      },
+      "bind": {
+        "$leafa": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d1_HingeLeaf_length",
+        "width": "d1_HingeLeaf_width",
+        "height": "d1_HingeLeaf_thickness",
+        "operation": "new",
+        "corner": [
+          "(d1_HingeLeaf_length / 2) + (-(d1_HingeLeaf_length / 2))",
+          "(d1_HingeLeaf_width / 2) + (-(d1_HingeLeaf_width / 2))",
+          0.0
+        ],
+        "body_name": "HingeLeaf"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": "d1_HingeLeaf_knuckle_length",
+        "diameter": "d1_HingeLeaf_knuckle_diameter",
+        "base": [
+          0.0,
+          "d1_HingeLeaf_knuckle_y",
+          "d1_HingeLeaf_knuckle_z"
+        ],
+        "axis": "X",
+        "operation": "join",
+        "targets": [
+          "HingeLeaf"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "HingeLeaf"
+      },
+      "bind": {
+        "$leafb": "occurrence"
+      }
+    },
+    {
+      "command": "joint.create",
+      "params": {
+        "type": "revolute",
+        "name": "Hinge",
+        "a": {
+          "point": [
+            0.0,
+            33.0,
+            4.0
+          ],
+          "z": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "occurrence": "$leafa"
+        },
+        "b": {
+          "point": [
+            0.0,
+            33.0,
+            4.0
+          ],
+          "z": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "x": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "occurrence": "$leafb"
+        },
+        "flip": true,
+        "values": [
+          60.0
+        ],
+        "limits": [
+          [
+            0.0,
+            180.0
+          ]
+        ]
+      }
+    },
+    {
+      "command": "browser.visibility",
+      "params": {
+        "folder": "joints",
+        "visible": false
+      }
+    }
+  ]
+}

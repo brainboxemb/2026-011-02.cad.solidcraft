@@ -265,6 +265,7 @@
       "command": "drawing.sheet.set",
       "params": {
         "sheet": "$drawing_1_sheet",
+        "orientation": "landscape",
         "documents": {
           "source": "$drawing_1_source",
           "component": "$component_1"
@@ -272,13 +273,29 @@
       }
     },
     {
+      "command": "drawing.inspect",
+      "params": {},
+      "bind": {
+        "$drawing_1_orientation": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "orientation"
+        }
+      }
+    },
+    {
       "command": "drawing.view.standard",
       "params": {
         "sheet": "$drawing_1_sheet",
-        "iso": true
+        "iso": true,
+        "gap_mm": 20.0
       },
       "bind": {
         "$drawing_1_front": "view",
+        "$drawing_1_top": "top",
+        "$drawing_1_right": "right",
         "$drawing_1_iso": "iso"
       }
     },
@@ -313,6 +330,10 @@
       }
     },
     {
+      "command": "drawing.inspect",
+      "params": {}
+    },
+    {
       "command": "drawing.close",
       "params": {}
     }
@@ -322,7 +343,20 @@
       {
         "name": "SamplePlate",
         "drawing": "$drawing_1",
-        "pdf": "drawings/SamplePlate.pdf"
+        "sheet": "$drawing_1_sheet",
+        "orientation": "$drawing_1_orientation",
+        "pdf": "drawings/SamplePlate.pdf",
+        "png": "drawings/SamplePlate.png",
+        "inspect": "drawings/SamplePlate.json",
+        "expected": {
+          "orientation": "landscape",
+          "view_count": 4,
+          "dimension_count": 0,
+          "note_count": 0,
+          "properties": {},
+          "title_block": {},
+          "view_styles": {}
+        }
       }
     ]
   }

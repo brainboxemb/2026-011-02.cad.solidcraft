@@ -1,10 +1,9 @@
 schema: 1
-branch: fix/181-native-xz-reflection
+branch: feature/190-wall-hook-drawing
 
 modules: []
 models:
-  - hub75-frame-coupler
-  - hub75-display-frame-2panel
+  - wall-hook
 tasks:
   - test
   - build

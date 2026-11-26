@@ -1,10 +1,7 @@
 schema: 1
-branch: fix/144-sync-template-drawing-artifacts
+branch: chore/146-reconcile-completed-plan
 
-modules:
-  - build
-models:
-  - sample-plate
+modules: []
+models: []
 tasks:
   - test
-  - build

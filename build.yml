@@ -1,10 +1,9 @@
 schema: 1
-branch: issue/207-parametric-hub75-tube-clamp
+branch: issue/210-parametric-hub75-tube-clamp
 
-modules:
-  - build
+modules: []
 models:
-  - hub75-tube-clamp-10mm
+  - hub75-tube-clamp
 tasks:
   - test
   - build

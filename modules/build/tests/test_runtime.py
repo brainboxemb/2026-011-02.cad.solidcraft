@@ -1,4 +1,5 @@
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -58,6 +59,72 @@ class SnapshotRuntimeTests(unittest.TestCase):
             command = run.call_args.args[0]
             self.assertIn("--camera", command)
 
+
+    @patch("cad_model_build.runtime.subprocess.run")
+    def test_exploded_snapshot_uses_isolated_saved_design_checkpoint(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved = root / "model.sc"
+            saved.write_bytes(b"assembled")
+            target = root / "exploded.png"
+
+            def fake_run(command, **kwargs):
+                if command[1] == "run":
+                    script = Path(command[2])
+                    payload = __import__("json").loads(script.read_text())
+                    self.assertEqual(
+                        payload,
+                        {
+                            "commands": [{
+                                "command": "explode.show",
+                                "params": {"view": "Assembly review"},
+                            }]
+                        },
+                    )
+                    checkpoint = Path(command[command.index("--save") + 1])
+                    checkpoint.write_bytes(b"exploded")
+                elif command[1] == "snapshot":
+                    source = Path(command[2])
+                    self.assertNotEqual(source, saved)
+                    self.assertEqual(source.read_bytes(), b"exploded")
+                    Path(command[command.index("--out") + 1]).write_bytes(b"png")
+                else:
+                    self.fail(f"unexpected SolidCraft command: {command}")
+
+            run.side_effect = fake_run
+            _snapshot(
+                saved,
+                target,
+                {"yaw": -0.4},
+                exploded_view="Assembly review",
+            )
+
+            self.assertEqual(run.call_count, 2)
+            self.assertEqual(saved.read_bytes(), b"assembled")
+            self.assertEqual(target.read_bytes(), b"png")
+
+    @patch("cad_model_build.runtime.subprocess.run")
+    def test_missing_exploded_view_fails_clearly(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved = root / "model.sc"
+            saved.write_bytes(b"assembled")
+            target = root / "exploded.png"
+            run.side_effect = subprocess.CalledProcessError(
+                1,
+                ["solidcraft-cli", "run"],
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "could not select exploded view 'Missing'",
+            ):
+                _snapshot(
+                    saved,
+                    target,
+                    None,
+                    exploded_view="Missing",
+                )
 
     @patch("cad_model_build.runtime.subprocess.run")
     def test_stl_export_uses_adapter_default_when_quality_is_unspecified(self, run):

@@ -33,7 +33,11 @@ def _camera_args(camera: dict | None) -> list[str]:
     return ["--camera", json.dumps(camera, separators=(",", ":"))]
 
 
-def _snapshot(saved: Path, target: Path, camera: dict | None) -> None:
+def _render_snapshot(
+    saved: Path,
+    target: Path,
+    camera: dict | None,
+) -> None:
     command = [
         "solidcraft-cli",
         "snapshot",
@@ -47,6 +51,64 @@ def _snapshot(saved: Path, target: Path, camera: dict | None) -> None:
     subprocess.run(command, check=True)
     if not target.is_file() or target.stat().st_size == 0:
         raise RuntimeError(f"SolidCraft produced no snapshot: {target}")
+
+
+def _snapshot(
+    saved: Path,
+    target: Path,
+    camera: dict | None,
+    exploded_view: str | None = None,
+) -> None:
+    if exploded_view is None:
+        _render_snapshot(saved, target, camera)
+        return
+
+    if not isinstance(exploded_view, str) or not exploded_view.strip():
+        raise RuntimeError("snapshot exploded view must be non-empty text")
+    exploded_view = exploded_view.strip()
+
+    # Presentation-only snapshots use a temporary saved-design checkpoint.
+    # The accepted model.sc remains assembled and is never mutated, so one
+    # exploded snapshot cannot leak presentation state into later outputs.
+    with tempfile.TemporaryDirectory(prefix="snapshot-presentation-") as tmp:
+        work = Path(tmp)
+        script = work / "show-exploded.json"
+        checkpoint = work / "model.sc"
+        script.write_text(
+            json.dumps(
+                {
+                    "commands": [{
+                        "command": "explode.show",
+                        "params": {"view": exploded_view},
+                    }]
+                },
+                indent=2,
+            ) + "\n",
+            encoding="utf-8",
+        )
+        try:
+            subprocess.run(
+                [
+                    "solidcraft-cli",
+                    "run",
+                    str(script),
+                    "--in",
+                    str(saved),
+                    "--save",
+                    str(checkpoint),
+                    "--quiet",
+                ],
+                check=True,
+            )
+        except subprocess.CalledProcessError as exc:
+            raise RuntimeError(
+                f"SolidCraft could not select exploded view {exploded_view!r}"
+            ) from exc
+        if not checkpoint.is_file() or checkpoint.stat().st_size == 0:
+            raise RuntimeError(
+                f"SolidCraft produced no exploded snapshot checkpoint: {checkpoint}"
+            )
+        _render_snapshot(checkpoint, target, camera)
 
 
 def _drawing_inspections(replay_results) -> dict[str, dict]:
@@ -311,6 +373,7 @@ def _build_one(output_root: Path, row: dict) -> None:
             saved,
             output_root / extra["path"],
             extra.get("camera"),
+            extra.get("exploded_view"),
         )
 
     required = [saved, step, png, *drawings]

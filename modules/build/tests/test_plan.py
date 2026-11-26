@@ -39,7 +39,13 @@ class BuildPlanTests(unittest.TestCase):
                 root=root,
                 variants=(ModelVariant("box", Path("scpf/model.py")),),
                 artifacts=("stl",),
-                snapshots=(SnapshotSpec("top.png", {"pitch": -1.55}),),
+                snapshots=(
+                    SnapshotSpec(
+                        "top.png",
+                        {"pitch": -1.55},
+                        exploded_view="Assembly review",
+                    ),
+                ),
                 snapshot_camera={"yaw": -0.4},
             )
             plan = resolve_plan(
@@ -58,6 +64,10 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(row["artifact_options"], {})
             self.assertEqual(row["drawings"], [])
             self.assertEqual(row["snapshots"][0]["path"], "models/box/top.png")
+            self.assertEqual(
+                row["snapshots"][0]["exploded_view"],
+                "Assembly review",
+            )
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
     def test_explicit_stl_quality_is_preserved_as_artifact_intent(self, _source_sha):

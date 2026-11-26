@@ -1,9 +1,9 @@
 schema: 1
-branch: issue/13-bolted-flange-circular-pattern
+branch: issue/14-flex-bench-dog-polygon-logo
 
 modules: []
 models:
-  - bolted-flange
+  - flex-bench-dog
 tasks:
   - test
   - build

@@ -3718,6 +3718,2869 @@
       }
     },
     {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 1",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3,
+            0.4
+          ],
+          [
+            -0.4,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            0.4
+          ],
+          [
+            -0.4,
+            3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            3
+          ],
+          [
+            0.4,
+            3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            3
+          ],
+          [
+            0.4,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            0.4
+          ],
+          [
+            3,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3,
+            0.4
+          ],
+          [
+            3,
+            -0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3,
+            -0.4
+          ],
+          [
+            0.4,
+            -0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            -0.4
+          ],
+          [
+            0.4,
+            -3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            -3
+          ],
+          [
+            -0.4,
+            -3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            -3
+          ],
+          [
+            -0.4,
+            -0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            -0.4
+          ],
+          [
+            -3,
+            -0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3,
+            -0.4
+          ],
+          [
+            -3,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 2",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -15.4,
+            1.1
+          ],
+          [
+            -14.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.6,
+            1.1
+          ],
+          [
+            -14.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.6,
+            -1.1
+          ],
+          [
+            -15.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -15.4,
+            -1.1
+          ],
+          [
+            -15.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 3",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -20.4,
+            2
+          ],
+          [
+            -19.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -19.6,
+            2
+          ],
+          [
+            -19.6,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -19.6,
+            -2
+          ],
+          [
+            -20.4,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -20.4,
+            -2
+          ],
+          [
+            -20.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 4",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -25.4,
+            1.1
+          ],
+          [
+            -24.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -24.6,
+            1.1
+          ],
+          [
+            -24.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -24.6,
+            -1.1
+          ],
+          [
+            -25.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -25.4,
+            -1.1
+          ],
+          [
+            -25.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 5",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -30.4,
+            2
+          ],
+          [
+            -29.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -29.6,
+            2
+          ],
+          [
+            -29.6,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -29.6,
+            -2
+          ],
+          [
+            -30.4,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -30.4,
+            -2
+          ],
+          [
+            -30.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 6",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -35.4,
+            1.1
+          ],
+          [
+            -34.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -34.6,
+            1.1
+          ],
+          [
+            -34.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -34.6,
+            -1.1
+          ],
+          [
+            -35.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -35.4,
+            -1.1
+          ],
+          [
+            -35.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 7",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.6,
+            1.1
+          ],
+          [
+            15.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.4,
+            1.1
+          ],
+          [
+            15.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.4,
+            -1.1
+          ],
+          [
+            14.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.6,
+            -1.1
+          ],
+          [
+            14.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 8",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            19.6,
+            2
+          ],
+          [
+            20.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            20.4,
+            2
+          ],
+          [
+            20.4,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            20.4,
+            -2
+          ],
+          [
+            19.6,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            19.6,
+            -2
+          ],
+          [
+            19.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 9",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            24.6,
+            1.1
+          ],
+          [
+            25.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.4,
+            1.1
+          ],
+          [
+            25.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.4,
+            -1.1
+          ],
+          [
+            24.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            24.6,
+            -1.1
+          ],
+          [
+            24.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 10",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            29.6,
+            2
+          ],
+          [
+            30.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            30.4,
+            2
+          ],
+          [
+            30.4,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            30.4,
+            -2
+          ],
+          [
+            29.6,
+            -2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            29.6,
+            -2
+          ],
+          [
+            29.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 11",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            34.6,
+            1.1
+          ],
+          [
+            35.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            35.4,
+            1.1
+          ],
+          [
+            35.4,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            35.4,
+            -1.1
+          ],
+          [
+            34.6,
+            -1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            34.6,
+            -1.1
+          ],
+          [
+            34.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 12",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            5.4
+          ],
+          [
+            1.1,
+            5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            5.4
+          ],
+          [
+            1.1,
+            4.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            4.6
+          ],
+          [
+            -1.1,
+            4.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            4.6
+          ],
+          [
+            -1.1,
+            5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 13",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            10.4
+          ],
+          [
+            2,
+            10.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            10.4
+          ],
+          [
+            2,
+            9.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            9.6
+          ],
+          [
+            -2,
+            9.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            9.6
+          ],
+          [
+            -2,
+            10.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 14",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            15.4
+          ],
+          [
+            1.1,
+            15.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            15.4
+          ],
+          [
+            1.1,
+            14.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            14.6
+          ],
+          [
+            -1.1,
+            14.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            14.6
+          ],
+          [
+            -1.1,
+            15.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 15",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            20.4
+          ],
+          [
+            2,
+            20.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            20.4
+          ],
+          [
+            2,
+            19.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            19.6
+          ],
+          [
+            -2,
+            19.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            19.6
+          ],
+          [
+            -2,
+            20.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 16",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            25.4
+          ],
+          [
+            1.1,
+            25.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            25.4
+          ],
+          [
+            1.1,
+            24.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            24.6
+          ],
+          [
+            -1.1,
+            24.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            24.6
+          ],
+          [
+            -1.1,
+            25.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 17",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            30.4
+          ],
+          [
+            2,
+            30.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            30.4
+          ],
+          [
+            2,
+            29.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            29.6
+          ],
+          [
+            -2,
+            29.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            29.6
+          ],
+          [
+            -2,
+            30.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 18",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            35.4
+          ],
+          [
+            1.1,
+            35.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            35.4
+          ],
+          [
+            1.1,
+            34.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            34.6
+          ],
+          [
+            -1.1,
+            34.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            34.6
+          ],
+          [
+            -1.1,
+            35.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 19",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -4.6
+          ],
+          [
+            1.1,
+            -4.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -4.6
+          ],
+          [
+            1.1,
+            -5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -5.4
+          ],
+          [
+            -1.1,
+            -5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -5.4
+          ],
+          [
+            -1.1,
+            -4.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 20",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -9.6
+          ],
+          [
+            2,
+            -9.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -9.6
+          ],
+          [
+            2,
+            -10.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -10.4
+          ],
+          [
+            -2,
+            -10.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -10.4
+          ],
+          [
+            -2,
+            -9.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 21",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -14.6
+          ],
+          [
+            1.1,
+            -14.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -14.6
+          ],
+          [
+            1.1,
+            -15.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -15.4
+          ],
+          [
+            -1.1,
+            -15.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -15.4
+          ],
+          [
+            -1.1,
+            -14.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 22",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -19.6
+          ],
+          [
+            2,
+            -19.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -19.6
+          ],
+          [
+            2,
+            -20.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -20.4
+          ],
+          [
+            -2,
+            -20.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -20.4
+          ],
+          [
+            -2,
+            -19.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 23",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -24.6
+          ],
+          [
+            1.1,
+            -24.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -24.6
+          ],
+          [
+            1.1,
+            -25.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -25.4
+          ],
+          [
+            -1.1,
+            -25.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -25.4
+          ],
+          [
+            -1.1,
+            -24.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 24",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -29.6
+          ],
+          [
+            2,
+            -29.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -29.6
+          ],
+          [
+            2,
+            -30.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2,
+            -30.4
+          ],
+          [
+            -2,
+            -30.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2,
+            -30.4
+          ],
+          [
+            -2,
+            -29.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle reference mark 25",
+        "offset": -17.55
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -34.6
+          ],
+          [
+            1.1,
+            -34.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -34.6
+          ],
+          [
+            1.1,
+            -35.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.1,
+            -35.4
+          ],
+          [
+            -1.1,
+            -35.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.1,
+            -35.4
+          ],
+          [
+            -1.1,
+            -34.6
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.45,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -20,
+          -17.55,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -20,
+          -16.0,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -20,
+          -17.55,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -20,
+          -16.0,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          20,
+          -17.55,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          20,
+          -16.0,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          20,
+          -17.55,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          20,
+          -16.0,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -30,
+          -17.55,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -30,
+          -16.0,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -30,
+          -17.55,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -30,
+          -16.0,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          30,
+          -17.55,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          30,
+          -16.0,
+          7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          30,
+          -17.55,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          30,
+          -16.0,
+          -7.5
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -7.5,
+          -17.55,
+          20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -7.5,
+          -16.0,
+          20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          7.5,
+          -17.55,
+          20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          7.5,
+          -16.0,
+          20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -7.5,
+          -17.55,
+          -20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -7.5,
+          -16.0,
+          -20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          7.5,
+          -17.55,
+          -20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          7.5,
+          -16.0,
+          -20
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -7.5,
+          -17.55,
+          30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -7.5,
+          -16.0,
+          30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          7.5,
+          -17.55,
+          30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          7.5,
+          -16.0,
+          30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          -7.5,
+          -17.55,
+          -30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          -7.5,
+          -16.0,
+          -30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.55,
+        "diameter": 3.0,
+        "base": [
+          7.5,
+          -17.55,
+          -30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 0.5,
+        "diameter": 3.0,
+        "top_diameter": 2.0,
+        "base": [
+          7.5,
+          -16.0,
+          -30
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
       "command": "appearance.assign",
       "params": {
         "bodies": [
@@ -4230,11 +7093,11 @@
         "points": [
           [
             -100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ],
           [
             100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -4246,7 +7109,7 @@
         "points": [
           [
             100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ],
           [
             100.0,
@@ -4384,7 +7247,7 @@
           ],
           [
             -100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -4419,11 +7282,11 @@
         "points": [
           [
             -100.0,
-            -1.069375
+            -1.0441666666666667
           ],
           [
             100.0,
-            -1.069375
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -4435,7 +7298,7 @@
         "points": [
           [
             100.0,
-            -1.069375
+            -1.0441666666666667
           ],
           [
             100.0,
@@ -4573,7 +7436,7 @@
           ],
           [
             -100.0,
-            -1.069375
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -4608,11 +7471,11 @@
         "points": [
           [
             -100.0,
-            -1.0189583333333334
+            -0.99375
           ],
           [
             100.0,
-            -1.0189583333333334
+            -0.99375
           ]
         ],
         "connect": true
@@ -4624,7 +7487,7 @@
         "points": [
           [
             100.0,
-            -1.0189583333333334
+            -0.99375
           ],
           [
             100.0,
@@ -4762,7 +7625,7 @@
           ],
           [
             -100.0,
-            -1.0189583333333334
+            -0.99375
           ]
         ],
         "connect": true
@@ -4797,11 +7660,11 @@
         "points": [
           [
             -100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ],
           [
             100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -4813,7 +7676,7 @@
         "points": [
           [
             100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ],
           [
             100.0,
@@ -4951,7 +7814,7 @@
           ],
           [
             -100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -4986,11 +7849,11 @@
         "points": [
           [
             -100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ],
           [
             100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -5002,7 +7865,7 @@
         "points": [
           [
             100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ],
           [
             100.0,
@@ -5140,7 +8003,7 @@
           ],
           [
             -100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -5175,11 +8038,11 @@
         "points": [
           [
             -100.0,
-            -0.8677083333333333
+            -0.8425
           ],
           [
             100.0,
-            -0.8677083333333333
+            -0.8425
           ]
         ],
         "connect": true
@@ -5191,7 +8054,7 @@
         "points": [
           [
             100.0,
-            -0.8677083333333333
+            -0.8425
           ],
           [
             100.0,
@@ -5329,7 +8192,7 @@
           ],
           [
             -100.0,
-            -0.8677083333333333
+            -0.8425
           ]
         ],
         "connect": true
@@ -5364,11 +8227,11 @@
         "points": [
           [
             -100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ],
           [
             100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -5380,7 +8243,7 @@
         "points": [
           [
             100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ],
           [
             100.0,
@@ -5518,7 +8381,7 @@
           ],
           [
             -100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -5553,11 +8416,11 @@
         "points": [
           [
             -100.0,
-            -0.766875
+            -0.7416666666666667
           ],
           [
             100.0,
-            -0.766875
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -5569,7 +8432,7 @@
         "points": [
           [
             100.0,
-            -0.766875
+            -0.7416666666666667
           ],
           [
             100.0,
@@ -5707,7 +8570,7 @@
           ],
           [
             -100.0,
-            -0.766875
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -5742,11 +8605,11 @@
         "points": [
           [
             -100.0,
-            -0.7164583333333334
+            -0.69125
           ],
           [
             100.0,
-            -0.7164583333333334
+            -0.69125
           ]
         ],
         "connect": true
@@ -5758,7 +8621,7 @@
         "points": [
           [
             100.0,
-            -0.7164583333333334
+            -0.69125
           ],
           [
             100.0,
@@ -5896,7 +8759,7 @@
           ],
           [
             -100.0,
-            -0.7164583333333334
+            -0.69125
           ]
         ],
         "connect": true
@@ -5931,11 +8794,11 @@
         "points": [
           [
             -100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ],
           [
             100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -5947,7 +8810,7 @@
         "points": [
           [
             100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ],
           [
             100.0,
@@ -6085,7 +8948,7 @@
           ],
           [
             -100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -6120,11 +8983,11 @@
         "points": [
           [
             -100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ],
           [
             100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -6136,7 +8999,7 @@
         "points": [
           [
             100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ],
           [
             100.0,
@@ -6274,7 +9137,7 @@
           ],
           [
             -100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -6309,11 +9172,11 @@
         "points": [
           [
             -100.0,
-            -0.5652083333333333
+            -0.54
           ],
           [
             100.0,
-            -0.5652083333333333
+            -0.54
           ]
         ],
         "connect": true
@@ -6325,7 +9188,7 @@
         "points": [
           [
             100.0,
-            -0.5652083333333333
+            -0.54
           ],
           [
             100.0,
@@ -6463,7 +9326,7 @@
           ],
           [
             -100.0,
-            -0.5652083333333333
+            -0.54
           ]
         ],
         "connect": true
@@ -10112,12 +12975,12 @@
       "params": {
         "points": [
           [
-            1.1247916666666666,
-            -1.1197916666666667
+            1.0995833333333334,
+            -1.0945833333333335
           ],
           [
             100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -10129,7 +12992,7 @@
         "points": [
           [
             100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ],
           [
             100.0,
@@ -10199,7 +13062,7 @@
             -100.0
           ],
           [
-            1.1247916666666666,
+            1.0995833333333334,
             -100.0
           ]
         ],
@@ -10211,12 +13074,12 @@
       "params": {
         "points": [
           [
-            1.1247916666666666,
+            1.0995833333333334,
             -100.0
           ],
           [
-            1.1247916666666666,
-            -1.1197916666666667
+            1.0995833333333334,
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -10250,12 +13113,12 @@
       "params": {
         "points": [
           [
-            1.0743749999999999,
-            -1.069375
+            1.0491666666666666,
+            -1.0441666666666667
           ],
           [
             100.0,
-            -1.069375
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -10267,7 +13130,7 @@
         "points": [
           [
             100.0,
-            -1.069375
+            -1.0441666666666667
           ],
           [
             100.0,
@@ -10337,7 +13200,7 @@
             -100.0
           ],
           [
-            1.0743749999999999,
+            1.0491666666666666,
             -100.0
           ]
         ],
@@ -10349,12 +13212,12 @@
       "params": {
         "points": [
           [
-            1.0743749999999999,
+            1.0491666666666666,
             -100.0
           ],
           [
-            1.0743749999999999,
-            -1.069375
+            1.0491666666666666,
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -10388,12 +13251,12 @@
       "params": {
         "points": [
           [
-            1.0239583333333333,
-            -1.0189583333333334
+            0.9987499999999999,
+            -0.99375
           ],
           [
             100.0,
-            -1.0189583333333334
+            -0.99375
           ]
         ],
         "connect": true
@@ -10405,7 +13268,7 @@
         "points": [
           [
             100.0,
-            -1.0189583333333334
+            -0.99375
           ],
           [
             100.0,
@@ -10475,7 +13338,7 @@
             -100.0
           ],
           [
-            1.0239583333333333,
+            0.9987499999999999,
             -100.0
           ]
         ],
@@ -10487,12 +13350,12 @@
       "params": {
         "points": [
           [
-            1.0239583333333333,
+            0.9987499999999999,
             -100.0
           ],
           [
-            1.0239583333333333,
-            -1.0189583333333334
+            0.9987499999999999,
+            -0.99375
           ]
         ],
         "connect": true
@@ -10526,12 +13389,12 @@
       "params": {
         "points": [
           [
-            0.9735416666666666,
-            -0.9685416666666666
+            0.9483333333333333,
+            -0.9433333333333334
           ],
           [
             100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -10543,7 +13406,7 @@
         "points": [
           [
             100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ],
           [
             100.0,
@@ -10613,7 +13476,7 @@
             -100.0
           ],
           [
-            0.9735416666666666,
+            0.9483333333333333,
             -100.0
           ]
         ],
@@ -10625,12 +13488,12 @@
       "params": {
         "points": [
           [
-            0.9735416666666666,
+            0.9483333333333333,
             -100.0
           ],
           [
-            0.9735416666666666,
-            -0.9685416666666666
+            0.9483333333333333,
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -10664,12 +13527,12 @@
       "params": {
         "points": [
           [
-            0.923125,
-            -0.9181250000000001
+            0.8979166666666667,
+            -0.8929166666666667
           ],
           [
             100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -10681,7 +13544,7 @@
         "points": [
           [
             100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ],
           [
             100.0,
@@ -10751,7 +13614,7 @@
             -100.0
           ],
           [
-            0.923125,
+            0.8979166666666667,
             -100.0
           ]
         ],
@@ -10763,12 +13626,12 @@
       "params": {
         "points": [
           [
-            0.923125,
+            0.8979166666666667,
             -100.0
           ],
           [
-            0.923125,
-            -0.9181250000000001
+            0.8979166666666667,
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -10802,12 +13665,12 @@
       "params": {
         "points": [
           [
-            0.8727083333333333,
-            -0.8677083333333333
+            0.8474999999999999,
+            -0.8425
           ],
           [
             100.0,
-            -0.8677083333333333
+            -0.8425
           ]
         ],
         "connect": true
@@ -10819,7 +13682,7 @@
         "points": [
           [
             100.0,
-            -0.8677083333333333
+            -0.8425
           ],
           [
             100.0,
@@ -10889,7 +13752,7 @@
             -100.0
           ],
           [
-            0.8727083333333333,
+            0.8474999999999999,
             -100.0
           ]
         ],
@@ -10901,12 +13764,12 @@
       "params": {
         "points": [
           [
-            0.8727083333333333,
+            0.8474999999999999,
             -100.0
           ],
           [
-            0.8727083333333333,
-            -0.8677083333333333
+            0.8474999999999999,
+            -0.8425
           ]
         ],
         "connect": true
@@ -10940,12 +13803,12 @@
       "params": {
         "points": [
           [
-            0.8222916666666666,
-            -0.8172916666666667
+            0.7970833333333334,
+            -0.7920833333333334
           ],
           [
             100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -10957,7 +13820,7 @@
         "points": [
           [
             100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ],
           [
             100.0,
@@ -11027,7 +13890,7 @@
             -100.0
           ],
           [
-            0.8222916666666666,
+            0.7970833333333334,
             -100.0
           ]
         ],
@@ -11039,12 +13902,12 @@
       "params": {
         "points": [
           [
-            0.8222916666666666,
+            0.7970833333333334,
             -100.0
           ],
           [
-            0.8222916666666666,
-            -0.8172916666666667
+            0.7970833333333334,
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -11078,12 +13941,12 @@
       "params": {
         "points": [
           [
-            0.771875,
-            -0.766875
+            0.7466666666666667,
+            -0.7416666666666667
           ],
           [
             100.0,
-            -0.766875
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -11095,7 +13958,7 @@
         "points": [
           [
             100.0,
-            -0.766875
+            -0.7416666666666667
           ],
           [
             100.0,
@@ -11165,7 +14028,7 @@
             -100.0
           ],
           [
-            0.771875,
+            0.7466666666666667,
             -100.0
           ]
         ],
@@ -11177,12 +14040,12 @@
       "params": {
         "points": [
           [
-            0.771875,
+            0.7466666666666667,
             -100.0
           ],
           [
-            0.771875,
-            -0.766875
+            0.7466666666666667,
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -11216,12 +14079,12 @@
       "params": {
         "points": [
           [
-            0.7214583333333333,
-            -0.7164583333333334
+            0.69625,
+            -0.69125
           ],
           [
             100.0,
-            -0.7164583333333334
+            -0.69125
           ]
         ],
         "connect": true
@@ -11233,7 +14096,7 @@
         "points": [
           [
             100.0,
-            -0.7164583333333334
+            -0.69125
           ],
           [
             100.0,
@@ -11303,7 +14166,7 @@
             -100.0
           ],
           [
-            0.7214583333333333,
+            0.69625,
             -100.0
           ]
         ],
@@ -11315,12 +14178,12 @@
       "params": {
         "points": [
           [
-            0.7214583333333333,
+            0.69625,
             -100.0
           ],
           [
-            0.7214583333333333,
-            -0.7164583333333334
+            0.69625,
+            -0.69125
           ]
         ],
         "connect": true
@@ -11354,12 +14217,12 @@
       "params": {
         "points": [
           [
-            0.6710416666666668,
-            -0.6660416666666666
+            0.6458333333333334,
+            -0.6408333333333334
           ],
           [
             100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -11371,7 +14234,7 @@
         "points": [
           [
             100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ],
           [
             100.0,
@@ -11441,7 +14304,7 @@
             -100.0
           ],
           [
-            0.6710416666666668,
+            0.6458333333333334,
             -100.0
           ]
         ],
@@ -11453,12 +14316,12 @@
       "params": {
         "points": [
           [
-            0.6710416666666668,
+            0.6458333333333334,
             -100.0
           ],
           [
-            0.6710416666666668,
-            -0.6660416666666666
+            0.6458333333333334,
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -11492,12 +14355,12 @@
       "params": {
         "points": [
           [
-            0.620625,
-            -0.6156250000000001
+            0.5954166666666667,
+            -0.5904166666666667
           ],
           [
             100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -11509,7 +14372,7 @@
         "points": [
           [
             100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ],
           [
             100.0,
@@ -11579,7 +14442,7 @@
             -100.0
           ],
           [
-            0.620625,
+            0.5954166666666667,
             -100.0
           ]
         ],
@@ -11591,12 +14454,12 @@
       "params": {
         "points": [
           [
-            0.620625,
+            0.5954166666666667,
             -100.0
           ],
           [
-            0.620625,
-            -0.6156250000000001
+            0.5954166666666667,
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -11630,12 +14493,12 @@
       "params": {
         "points": [
           [
-            0.5702083333333333,
-            -0.5652083333333333
+            0.545,
+            -0.54
           ],
           [
             100.0,
-            -0.5652083333333333
+            -0.54
           ]
         ],
         "connect": true
@@ -11647,7 +14510,7 @@
         "points": [
           [
             100.0,
-            -0.5652083333333333
+            -0.54
           ],
           [
             100.0,
@@ -11717,7 +14580,7 @@
             -100.0
           ],
           [
-            0.5702083333333333,
+            0.545,
             -100.0
           ]
         ],
@@ -11729,12 +14592,12 @@
       "params": {
         "points": [
           [
-            0.5702083333333333,
+            0.545,
             -100.0
           ],
           [
-            0.5702083333333333,
-            -0.5652083333333333
+            0.545,
+            -0.54
           ]
         ],
         "connect": true
@@ -14804,12 +17667,12 @@
       "params": {
         "points": [
           [
-            -1.1247916666666666,
-            -1.1197916666666667
+            -1.0995833333333334,
+            -1.0945833333333335
           ],
           [
             -100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -14821,7 +17684,7 @@
         "points": [
           [
             -100.0,
-            -1.1197916666666667
+            -1.0945833333333335
           ],
           [
             -100.0,
@@ -14891,7 +17754,7 @@
             -100.0
           ],
           [
-            -1.1247916666666666,
+            -1.0995833333333334,
             -100.0
           ]
         ],
@@ -14903,12 +17766,12 @@
       "params": {
         "points": [
           [
-            -1.1247916666666666,
+            -1.0995833333333334,
             -100.0
           ],
           [
-            -1.1247916666666666,
-            -1.1197916666666667
+            -1.0995833333333334,
+            -1.0945833333333335
           ]
         ],
         "connect": true
@@ -14942,12 +17805,12 @@
       "params": {
         "points": [
           [
-            -1.0743749999999999,
-            -1.069375
+            -1.0491666666666666,
+            -1.0441666666666667
           ],
           [
             -100.0,
-            -1.069375
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -14959,7 +17822,7 @@
         "points": [
           [
             -100.0,
-            -1.069375
+            -1.0441666666666667
           ],
           [
             -100.0,
@@ -15029,7 +17892,7 @@
             -100.0
           ],
           [
-            -1.0743749999999999,
+            -1.0491666666666666,
             -100.0
           ]
         ],
@@ -15041,12 +17904,12 @@
       "params": {
         "points": [
           [
-            -1.0743749999999999,
+            -1.0491666666666666,
             -100.0
           ],
           [
-            -1.0743749999999999,
-            -1.069375
+            -1.0491666666666666,
+            -1.0441666666666667
           ]
         ],
         "connect": true
@@ -15080,12 +17943,12 @@
       "params": {
         "points": [
           [
-            -1.0239583333333333,
-            -1.0189583333333334
+            -0.9987499999999999,
+            -0.99375
           ],
           [
             -100.0,
-            -1.0189583333333334
+            -0.99375
           ]
         ],
         "connect": true
@@ -15097,7 +17960,7 @@
         "points": [
           [
             -100.0,
-            -1.0189583333333334
+            -0.99375
           ],
           [
             -100.0,
@@ -15167,7 +18030,7 @@
             -100.0
           ],
           [
-            -1.0239583333333333,
+            -0.9987499999999999,
             -100.0
           ]
         ],
@@ -15179,12 +18042,12 @@
       "params": {
         "points": [
           [
-            -1.0239583333333333,
+            -0.9987499999999999,
             -100.0
           ],
           [
-            -1.0239583333333333,
-            -1.0189583333333334
+            -0.9987499999999999,
+            -0.99375
           ]
         ],
         "connect": true
@@ -15218,12 +18081,12 @@
       "params": {
         "points": [
           [
-            -0.9735416666666666,
-            -0.9685416666666666
+            -0.9483333333333333,
+            -0.9433333333333334
           ],
           [
             -100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -15235,7 +18098,7 @@
         "points": [
           [
             -100.0,
-            -0.9685416666666666
+            -0.9433333333333334
           ],
           [
             -100.0,
@@ -15305,7 +18168,7 @@
             -100.0
           ],
           [
-            -0.9735416666666666,
+            -0.9483333333333333,
             -100.0
           ]
         ],
@@ -15317,12 +18180,12 @@
       "params": {
         "points": [
           [
-            -0.9735416666666666,
+            -0.9483333333333333,
             -100.0
           ],
           [
-            -0.9735416666666666,
-            -0.9685416666666666
+            -0.9483333333333333,
+            -0.9433333333333334
           ]
         ],
         "connect": true
@@ -15356,12 +18219,12 @@
       "params": {
         "points": [
           [
-            -0.923125,
-            -0.9181250000000001
+            -0.8979166666666667,
+            -0.8929166666666667
           ],
           [
             -100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -15373,7 +18236,7 @@
         "points": [
           [
             -100.0,
-            -0.9181250000000001
+            -0.8929166666666667
           ],
           [
             -100.0,
@@ -15443,7 +18306,7 @@
             -100.0
           ],
           [
-            -0.923125,
+            -0.8979166666666667,
             -100.0
           ]
         ],
@@ -15455,12 +18318,12 @@
       "params": {
         "points": [
           [
-            -0.923125,
+            -0.8979166666666667,
             -100.0
           ],
           [
-            -0.923125,
-            -0.9181250000000001
+            -0.8979166666666667,
+            -0.8929166666666667
           ]
         ],
         "connect": true
@@ -15494,12 +18357,12 @@
       "params": {
         "points": [
           [
-            -0.8727083333333333,
-            -0.8677083333333333
+            -0.8474999999999999,
+            -0.8425
           ],
           [
             -100.0,
-            -0.8677083333333333
+            -0.8425
           ]
         ],
         "connect": true
@@ -15511,7 +18374,7 @@
         "points": [
           [
             -100.0,
-            -0.8677083333333333
+            -0.8425
           ],
           [
             -100.0,
@@ -15581,7 +18444,7 @@
             -100.0
           ],
           [
-            -0.8727083333333333,
+            -0.8474999999999999,
             -100.0
           ]
         ],
@@ -15593,12 +18456,12 @@
       "params": {
         "points": [
           [
-            -0.8727083333333333,
+            -0.8474999999999999,
             -100.0
           ],
           [
-            -0.8727083333333333,
-            -0.8677083333333333
+            -0.8474999999999999,
+            -0.8425
           ]
         ],
         "connect": true
@@ -15632,12 +18495,12 @@
       "params": {
         "points": [
           [
-            -0.8222916666666666,
-            -0.8172916666666667
+            -0.7970833333333334,
+            -0.7920833333333334
           ],
           [
             -100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -15649,7 +18512,7 @@
         "points": [
           [
             -100.0,
-            -0.8172916666666667
+            -0.7920833333333334
           ],
           [
             -100.0,
@@ -15719,7 +18582,7 @@
             -100.0
           ],
           [
-            -0.8222916666666666,
+            -0.7970833333333334,
             -100.0
           ]
         ],
@@ -15731,12 +18594,12 @@
       "params": {
         "points": [
           [
-            -0.8222916666666666,
+            -0.7970833333333334,
             -100.0
           ],
           [
-            -0.8222916666666666,
-            -0.8172916666666667
+            -0.7970833333333334,
+            -0.7920833333333334
           ]
         ],
         "connect": true
@@ -15770,12 +18633,12 @@
       "params": {
         "points": [
           [
-            -0.771875,
-            -0.766875
+            -0.7466666666666667,
+            -0.7416666666666667
           ],
           [
             -100.0,
-            -0.766875
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -15787,7 +18650,7 @@
         "points": [
           [
             -100.0,
-            -0.766875
+            -0.7416666666666667
           ],
           [
             -100.0,
@@ -15857,7 +18720,7 @@
             -100.0
           ],
           [
-            -0.771875,
+            -0.7466666666666667,
             -100.0
           ]
         ],
@@ -15869,12 +18732,12 @@
       "params": {
         "points": [
           [
-            -0.771875,
+            -0.7466666666666667,
             -100.0
           ],
           [
-            -0.771875,
-            -0.766875
+            -0.7466666666666667,
+            -0.7416666666666667
           ]
         ],
         "connect": true
@@ -15908,12 +18771,12 @@
       "params": {
         "points": [
           [
-            -0.7214583333333333,
-            -0.7164583333333334
+            -0.69625,
+            -0.69125
           ],
           [
             -100.0,
-            -0.7164583333333334
+            -0.69125
           ]
         ],
         "connect": true
@@ -15925,7 +18788,7 @@
         "points": [
           [
             -100.0,
-            -0.7164583333333334
+            -0.69125
           ],
           [
             -100.0,
@@ -15995,7 +18858,7 @@
             -100.0
           ],
           [
-            -0.7214583333333333,
+            -0.69625,
             -100.0
           ]
         ],
@@ -16007,12 +18870,12 @@
       "params": {
         "points": [
           [
-            -0.7214583333333333,
+            -0.69625,
             -100.0
           ],
           [
-            -0.7214583333333333,
-            -0.7164583333333334
+            -0.69625,
+            -0.69125
           ]
         ],
         "connect": true
@@ -16046,12 +18909,12 @@
       "params": {
         "points": [
           [
-            -0.6710416666666668,
-            -0.6660416666666666
+            -0.6458333333333334,
+            -0.6408333333333334
           ],
           [
             -100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -16063,7 +18926,7 @@
         "points": [
           [
             -100.0,
-            -0.6660416666666666
+            -0.6408333333333334
           ],
           [
             -100.0,
@@ -16133,7 +18996,7 @@
             -100.0
           ],
           [
-            -0.6710416666666668,
+            -0.6458333333333334,
             -100.0
           ]
         ],
@@ -16145,12 +19008,12 @@
       "params": {
         "points": [
           [
-            -0.6710416666666668,
+            -0.6458333333333334,
             -100.0
           ],
           [
-            -0.6710416666666668,
-            -0.6660416666666666
+            -0.6458333333333334,
+            -0.6408333333333334
           ]
         ],
         "connect": true
@@ -16184,12 +19047,12 @@
       "params": {
         "points": [
           [
-            -0.620625,
-            -0.6156250000000001
+            -0.5954166666666667,
+            -0.5904166666666667
           ],
           [
             -100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -16201,7 +19064,7 @@
         "points": [
           [
             -100.0,
-            -0.6156250000000001
+            -0.5904166666666667
           ],
           [
             -100.0,
@@ -16271,7 +19134,7 @@
             -100.0
           ],
           [
-            -0.620625,
+            -0.5954166666666667,
             -100.0
           ]
         ],
@@ -16283,12 +19146,12 @@
       "params": {
         "points": [
           [
-            -0.620625,
+            -0.5954166666666667,
             -100.0
           ],
           [
-            -0.620625,
-            -0.6156250000000001
+            -0.5954166666666667,
+            -0.5904166666666667
           ]
         ],
         "connect": true
@@ -16322,12 +19185,12 @@
       "params": {
         "points": [
           [
-            -0.5702083333333333,
-            -0.5652083333333333
+            -0.545,
+            -0.54
           ],
           [
             -100.0,
-            -0.5652083333333333
+            -0.54
           ]
         ],
         "connect": true
@@ -16339,7 +19202,7 @@
         "points": [
           [
             -100.0,
-            -0.5652083333333333
+            -0.54
           ],
           [
             -100.0,
@@ -16409,7 +19272,7 @@
             -100.0
           ],
           [
-            -0.5702083333333333,
+            -0.545,
             -100.0
           ]
         ],
@@ -16421,12 +19284,12 @@
       "params": {
         "points": [
           [
-            -0.5702083333333333,
+            -0.545,
             -100.0
           ],
           [
-            -0.5702083333333333,
-            -0.5652083333333333
+            -0.545,
+            -0.54
           ]
         ],
         "connect": true

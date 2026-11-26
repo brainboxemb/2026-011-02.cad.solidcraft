@@ -1,7 +1,11 @@
 schema: 1
 id: hub75-tube-clamp
 builder: forge
-source: scpf/model.py
+variants:
+  - id: hub75-tube-clamp
+    source: scpf/model.py
+  - id: hub75-tube-clamp-male
+    source: scpf/male.py
 process: true
 artifacts: [stl]
 

@@ -1,19 +1,20 @@
-"""Reusable parameterized HUB75 tube clamp with native Free/Installed fit."""
+"""Female-slot HUB75 tube-clamp variant with native Free/Installed fit."""
 
 from math import cos, radians, sin, tan
 
 from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Sketch, component
 
+from models.components.hub75_tube_clamp.scpf.common import (
+    CLAMP_WALL,
+    CLAMP_WIDTH,
+    DOVE_ANGLE,
+    DOVE_DEPTH,
+    DOVE_RUN,
+    _open_clamp_ring,
+)
 
-# Fixed source dimensions shared by all tube sizes.
-CLAMP_WALL = 2.0
-CLAMP_WIDTH = 12.0
-CLAMP_OPEN = 90.0
 
-DOVE_RUN = 16.0
-DOVE_DEPTH = 2.05
-DOVE_ANGLE = 45.0
-
+# Female-slot source dimensions.
 SLOT_DEPTH = 1.75
 SLOT_LAND = 0.5
 SLOT_MOUTH = 5.8
@@ -29,49 +30,6 @@ SLOT_ENTRY_EXTENSION = 0.2
 
 # Parent feature 199, applied after the linked clamp is inserted.
 SLOT_ENTRY_CHAMFER = 0.14
-
-
-def _open_clamp_ring(*, clamp_r, clamp_r_out):
-    """Feature 1: Open klemring met afgeronde lippen."""
-    half_open = radians(CLAMP_OPEN / 2.0)
-    radial_mid = (clamp_r + clamp_r_out) / 2.0
-
-    outer_x = clamp_r_out * cos(half_open)
-    outer_y = clamp_r_out * sin(half_open)
-    inner_x = clamp_r * cos(half_open)
-    inner_y = clamp_r * sin(half_open)
-    lip_center_x = radial_mid * cos(half_open)
-    lip_center_y = radial_mid * sin(half_open)
-
-    with Sketch(
-        name="Open klemring met afgeronde lippen",
-        plane="XY",
-        offset=-CLAMP_WIDTH / 2.0,
-    ) as sketch:
-        profile = sketch.profile(start=(outer_x, outer_y))
-        profile.arc_center_to(
-            (outer_x, -outer_y),
-            center=(0.0, 0.0),
-            clockwise=False,
-        )
-        profile.arc_center_to(
-            (inner_x, -inner_y),
-            center=(lip_center_x, -lip_center_y),
-            clockwise=False,
-        )
-        profile.arc_center_to(
-            (inner_x, inner_y),
-            center=(0.0, 0.0),
-            clockwise=True,
-        )
-        profile.arc_center_to(
-            (outer_x, outer_y),
-            center=(lip_center_x, lip_center_y),
-            clockwise=False,
-        )
-        profile.close()
-
-    return sketch
 
 
 def _rounded_slide_back(*, slot_back, web_front):

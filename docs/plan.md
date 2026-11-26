@@ -4,22 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #166 — add two-panel HUB75 screen subassembly
-
-Add a separate 320 × 320 mm nominal two-panel HUB75 screen next to the existing
-five-panel `hub75-screen`.
-
-Contract:
-
-- reuse the detailed `Hub75Panel` component;
-- use 160 mm X pitch;
-- place panel centres at X=-80 and X=+80 mm, Z=160 mm;
-- left panel uses the normal upright placement;
-- right panel uses the existing alternating reversed orientation;
-- keep the existing five-panel subassembly unchanged.
-
-Acceptance is owned by issue #166.
-
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

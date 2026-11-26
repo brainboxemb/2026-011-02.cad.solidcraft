@@ -1,5 +1,5 @@
 schema: 1
-branch: chore/205-sync-stl-quality
+branch: issue/207-parametric-hub75-tube-clamp
 
 modules:
   - build

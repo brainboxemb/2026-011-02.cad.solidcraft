@@ -109,7 +109,7 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "hole_chamfer",
+        "name": "front_hole_chamfer",
         "expression": "1",
         "unit": "mm"
       }
@@ -119,6 +119,14 @@
       "params": {
         "name": "upper_hole_from_top",
         "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rear_hole_relief",
+        "expression": "0.3",
         "unit": "mm"
       }
     },
@@ -430,7 +438,7 @@
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_diameter": "hole_diameter + (front_hole_chamfer * 2)",
         "cs_angle": 90
       }
     },
@@ -453,7 +461,7 @@
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_diameter": "hole_diameter + (rear_hole_relief * 2)",
         "cs_angle": 90
       }
     },
@@ -476,7 +484,7 @@
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_diameter": "hole_diameter + (front_hole_chamfer * 2)",
         "cs_angle": 90
       }
     },
@@ -499,7 +507,7 @@
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
+        "cs_diameter": "hole_diameter + (rear_hole_relief * 2)",
         "cs_angle": 90
       }
     },

@@ -1195,7 +1195,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "b857847689e590af7ead20afa29042585a94cb16",
+      "built_source_sha": "9541ba34821e4076bcc5a9e15413b3988d8bc715",
       "commands": "models/wall-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1227,6 +1227,21 @@
           },
           "name": "access.png",
           "path": "models/wall-hook/access.png"
+        },
+        {
+          "camera": {
+            "distance": 90,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              0,
+              28.5
+            ],
+            "yaw": 1.57
+          },
+          "name": "rear-holes.png",
+          "path": "models/wall-hook/rear-holes.png"
         }
       ],
       "source": "models/basic/wall_hook/scpf/model.py"
@@ -1238,5 +1253,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "d4d63d3e45b52a7a2b454f17a789250eacda2d1a"
+  "source_sha": "9541ba34821e4076bcc5a9e15413b3988d8bc715"
 }

@@ -128,9 +128,13 @@ class Hub75DisplayFrame2PanelTube:
                 z=TUBE_TOP_Z,
             ),
         )
-        tube_bottom = Hub75FrameTube10mm(
+        # Reuse the already-authored tube component explicitly. A second
+        # constructor call with the same published length is de-duplicated by
+        # Forge, but v0.22.0 does not retain that second call's placement.
+        # An occurrence copy preserves one physical tube definition and emits
+        # the required independent bottom placement.
+        tube_bottom = tube_top.copy(
             name="TubeBottom",
-            length=TUBE_LENGTH,
             placement=Placement(
                 y=TUBE_AXIS_Y,
                 z=TUBE_BOTTOM_Z,

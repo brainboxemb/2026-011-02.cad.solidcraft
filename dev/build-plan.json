@@ -71,7 +71,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "215731be73303c89fc9810161db9df149477098a",
       "commands": "models/bolted-flange/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -2227,5 +2227,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "b53cdd228485647b53ee591a9c74164242c5940e"
+  "source_sha": "215731be73303c89fc9810161db9df149477098a"
 }

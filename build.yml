@@ -1,9 +1,9 @@
 schema: 1
-branch: chore/195-sync-static-drawing-previews
+branch: feature/194-wall-hook-drawing-review
 
-modules:
-  - build
-  - pages
-models: []
+modules: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

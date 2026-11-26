@@ -165,31 +165,25 @@ def wall_hook_drawing():
     hook = WallHook()
     return hook.with_drawing(
         name="Wall Hook Drawing",
-        scale="2.5:1",
-        gap_mm=12,
+        scale="1:1",
+        gap_mm=16,
         views={
-            "front": DrawingView(at=(55, 130)),
-            "top": DrawingView(at=(55, 35)),
-            "right": DrawingView(at=(132, 137), scale="2:1"),
+            "front": DrawingView(at=(52, 138)),
+            "top": DrawingView(at=(52, 76)),
+            "right": DrawingView(at=(108, 138)),
             "iso": DrawingView(
-                at=(220, 150),
-                scale="1.5:1",
+                at=(220, 142),
+                scale="2:1",
                 visual_style="shaded",
             ),
         },
         properties={
-            "project": "SolidCraft CAD model catalog",
             "part_number": "wall-hook",
-            "revision": "A",
-            "author": "brainboxemb",
-            "organization": "brainboxemb",
             "description": "Wall Hook technical drawing",
         },
         title_block={
             "title": "Wall Hook",
             "identification_number": "wall-hook",
-            "document_status": "Development",
-            "department": "CAD",
         },
         revision=DrawingRevision(
             revision="A",
@@ -197,17 +191,17 @@ def wall_hook_drawing():
             designer="brainboxemb",
             checker="CI",
             date="2026-11-26",
+            hidden=True,
         ),
         notes=(
             DrawingNote(
                 "NOTES\n"
                 "1. ALL DIMENSIONS IN MM.\n"
-                "2. MOUNTING HOLE CENTRES: UPPER 10 FROM TOP; LOWER 17 FROM BOTTOM.\n"
-                "3. 2× Ø4.2 MOUNTING HOLES; LOWER TOOL ACCESS Ø8.\n"
-                "4. FRONT/BACK BOUNDARY CHAMFER 1.5.\n"
-                "5. HOLE ENTRY CHAMFER 1.0; WALL-SIDE RELIEF 0.3.",
-                at=(158, 78),
-                cap_mm=2.2,
+                "2. HOLE CENTRES: 10 FROM TOP; 17 FROM BOTTOM.\n"
+                "3. 2× Ø4.2 THRU; LOWER TOOL ACCESS Ø8.\n"
+                "4. CHAMFERS: BODY 1.5; ENTRY 1.0; WALL RELIEF 0.3.",
+                at=(14, 50),
+                cap_mm=1.6,
             ),
         ),
         dimensions=(

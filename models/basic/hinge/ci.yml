@@ -1,0 +1,22 @@
+schema: 1
+id: hinge
+builder: forge
+source: scpf/model.py
+process: true
+
+snapshot:
+  camera:
+    target: [20, 20, 10]
+    yaw: -0.75
+    pitch: 0.35
+    distance: 115
+    fov: 0
+
+snapshots:
+  - name: side.png
+    camera:
+      target: [20, 16, 4]
+      yaw: -1.57
+      pitch: 0.0
+      distance: 105
+      fov: 0

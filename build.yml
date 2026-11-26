@@ -1,16 +1,9 @@
 schema: 1
-branch: feature/172-display-case-frame-groups
+branch: feature/174-hub75-frame-coupler-medium
 
-modules:
-  - pages
+modules: []
 models:
-  - corner-bracket
-  - hub75-panel
-  - latch
-  - latch-hook
-  - hub75-display2
-  - hub75-wood-frame
-  - hub75-screen
-  - hub75-screen-2panel
+  - hub75-frame-coupler
 tasks:
   - test
+  - build

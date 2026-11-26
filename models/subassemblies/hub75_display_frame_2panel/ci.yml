@@ -1,0 +1,32 @@
+schema: 1
+id: hub75-display-frame-2panel
+builder: forge
+source: scpf/model.py
+process: true
+dependencies:
+  - hub75-panel
+  - hub75-frame-coupler
+
+snapshot:
+  camera:
+    target: [0, -8, 160]
+    yaw: -0.32
+    pitch: 0.22
+    distance: 520
+    fov: 0
+
+snapshots:
+  - name: rear.png
+    camera:
+      target: [0, -12, 160]
+      yaw: 2.88
+      pitch: 0.16
+      distance: 520
+      fov: 0
+  - name: front.png
+    camera:
+      target: [0, 0, 160]
+      yaw: 0
+      pitch: 0
+      distance: 500
+      fov: 0

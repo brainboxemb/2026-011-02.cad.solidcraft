@@ -1,11 +1,8 @@
 """Simple bolted flange built from SolidCraft primitives."""
 
-from math import cos, radians, sin
-
-
 class Flange:
-    BOLTS = 6
-    PCD = 70.0
+    bolts = 6
+    pcd = 70.0
 
     def build(self):
         flange = Cylinder(d=100, h=10, anchor=Anchor.BOTTOM)
@@ -22,18 +19,15 @@ class Flange:
         ).at(0, 0, 26)
         flange = flange + bore
 
-        radius = self.PCD / 2
-        for index in range(self.BOLTS):
-            angle = radians(index * 360 / self.BOLTS)
-            bolt_hole = Hole(
-                d=9,
-                depth=10,
-                direction=(0, 0, -1),
-            ).at(
-                radius * cos(angle),
-                radius * sin(angle),
-                10,
-            )
-            flange = flange + bolt_hole
+        bolt_hole = Hole(
+            d=9,
+            depth=10,
+            direction=(0, 0, -1),
+        ).at(self.pcd / 2, 0, 10)
+        flange = flange + bolt_hole
 
-        return flange
+        return flange.circular_pattern(
+            bolt_hole,
+            count=self.bolts,
+            axis=Axis.Z,
+        )

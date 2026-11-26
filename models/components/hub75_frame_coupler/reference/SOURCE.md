@@ -76,3 +76,27 @@ overlapping slices interpolated between the exact native foot and tip sections.
 Edge also applies the native guide-end rounding cut from features 137–138.
 
 These bounded lowering details preserve the same owner and public variant ids.
+
+
+## Edge / Corner base-guide split
+
+The historical OpenSCAD production design in
+`brainboxemb/2026-009-01.cad.HUB75-display-frame` is the geometry/design
+reference for the Edge and Corner construction.
+
+Its rear mounting plane separates two physical regions:
+
+- the **3 mm base plate** extends away from the panel;
+- the **6 mm guide walls/ridges** extend into the rear-panel geometry;
+- screw bores and mounting-tube pockets belong to the base;
+- reinforcement relief belongs to the guide region;
+- locator pads/pins extend from the mounting plane into the panel.
+
+The first Medium Forge port incorrectly extruded the complete Edge/Corner
+profile through `mid_base + mid_guide` as one 9 mm stock and then cut into it.
+That leaves profile material in the guide region where only fitted walls/ridges
+should exist and makes the circular reinforcement/mounting features appear on
+the wrong side of the part.
+
+The corrected Forge construction keeps base and guide volumes separate and
+joins them only after their own source-derived operations are complete.

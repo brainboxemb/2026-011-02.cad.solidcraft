@@ -16,6 +16,12 @@ variants:
     source: scpf/corner_left_tube.py
   - id: hub75-frame-coupler-corner-right-tube
     source: scpf/corner_right_tube.py
+  - id: hub75-frame-coupler-edge-tube-receiver
+    source: scpf/edge_tube_receiver.py
+  - id: hub75-frame-coupler-corner-left-tube-receiver
+    source: scpf/corner_left_tube_receiver.py
+  - id: hub75-frame-coupler-corner-right-tube-receiver
+    source: scpf/corner_right_tube_receiver.py
 process: true
 artifacts: [stl]
 

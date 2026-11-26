@@ -104,4 +104,43 @@ variants:
       - Cut the source tube clearance
       - Add the source slide rail
       - Add the asymmetric source rail-entry chamfer
+  hub75-frame-coupler-edge-tube-receiver:
+    title: HUB75 Frame Coupler — Edge Tube Receiver
+    tagline: Medium Edge coupler with two female receivers for male tube clamps
+    description: >
+      Alternate tube-ready Edge interface from the newly supplied SolidCraft
+      source. It keeps the common inward clearances and final rear support/base,
+      omits the suppressed protruding slide rails/chamfers, then joins two
+      receiver feet and cuts the dovetail grooves with 0.2 mm flank clearance.
+    parameters: Medium; receivers at ±20 mm; 0.2 mm dovetail fit; 15.55 mm support height; 18.7 mm groove depth
+    stages:
+      - Reuse the accepted Medium Edge coupler body
+      - Apply the shared inward clamp-foot and bow clearances
+      - Preserve the final R5 rear support, base plate and reference recut
+      - Add two 16 mm receiver supports
+      - Cut two source 12-point female dovetail profiles with 0.2 mm clearance
+  hub75-frame-coupler-corner-left-tube-receiver:
+    title: HUB75 Frame Coupler — Corner Left Tube Receiver
+    tagline: Medium left Corner coupler with one female receiver for a male tube clamp
+    description: >
+      Alternate left Corner tube interface using the common insertion and Ø10.5
+      tube clearances, followed by the final receiving dovetail geometry.
+    parameters: Medium; local receiver center +7 mm; Ø10.5 tube clearance; 0.2 mm dovetail fit
+    stages:
+      - Reuse the accepted Medium left Corner body
+      - Apply the shared insertion and tube clearances
+      - Add the 16 mm receiver support
+      - Cut the source female dovetail groove and closed stop
+  hub75-frame-coupler-corner-right-tube-receiver:
+    title: HUB75 Frame Coupler — Corner Right Tube Receiver
+    tagline: Medium right Corner coupler with one female receiver for a male tube clamp
+    description: >
+      Alternate right Corner tube interface using the mirrored common clearances
+      and the same final receiving dovetail geometry.
+    parameters: Medium; local receiver center -7 mm; Ø10.5 tube clearance; 0.2 mm dovetail fit
+    stages:
+      - Reuse the accepted Medium right Corner body
+      - Apply the shared insertion and tube clearances
+      - Add the 16 mm receiver support
+      - Cut the source female dovetail groove and closed stop
 

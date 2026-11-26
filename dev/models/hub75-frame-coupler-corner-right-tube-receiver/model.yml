@@ -1,0 +1,146 @@
+purpose: [example]
+section: components
+group: display-frame
+priority: 25
+variants:
+  hub75-frame-coupler-middle:
+    title: HUB75 Frame Coupler — Middle
+    tagline: Medium seam coupler shared by the two-panel display-frame family
+    description: >
+      Fixed Medium port of the native middle HUB75 frame coupler. The owner
+      shares its source data, dimensions and helpers with the edge and corner
+      variants so the future native configuration table can be added without
+      moving or renaming the physical CAD family.
+    parameters: Medium; 80 mm envelope; 4 mm wall; 3 mm base; 6 mm guide; Ø3.4 mounting bores
+    stages:
+      - Reuse the retained native SolidCraft Medium source data
+      - Build the rounded cross base and four guide regions
+      - Clear the two panel bushings
+      - Add two mounting bores and two locator pad/pin stacks
+      - Add the panel-seam guide
+      - Cut native reference tick marks and blind tapered reference holes
+  hub75-frame-coupler-edge:
+    title: HUB75 Frame Coupler — Edge
+    tagline: Medium straight edge coupler for a HUB75 display frame
+    description: >
+      Fixed Medium straight edge member from the shared HUB75 frame-coupler
+      family. The native Medium panel-pin pass-through stays suppressed.
+    parameters: Medium; 80 mm nominal size; 4 mm wall; 3 mm base; 6 mm guide; 2 × Ø3.4 mounting bores
+    stages:
+      - Extrude the source-derived Medium edge profile
+      - Add the two bushing support zones
+      - Cut the source two-section tapered rail clearance
+      - Add two mounting bores and locator pads
+      - Cut native reference tick marks and blind tapered reference holes
+      - Keep the Medium-only panel-pin pass-through suppressed
+  hub75-frame-coupler-corner-left:
+    title: HUB75 Frame Coupler — Corner Left
+    tagline: Medium left corner member from the shared HUB75 frame-coupler family
+    description: >
+      Fixed Medium left corner coupler, sharing all source dimensions and
+      helper operations with the edge/right-corner members.
+    parameters: Medium; 80 mm nominal size; 4 mm wall; 3 mm base; 6 mm guide; one Ø3.4 mounting bore
+    stages:
+      - Extrude the source-derived left-corner profile
+      - Add the source bushing support
+      - Cut the source two-section tapered rail clearance and bushing relief
+      - Add one mounting bore and locator pad
+      - Cut native reference tick marks and blind tapered reference holes
+  hub75-frame-coupler-corner-right:
+    title: HUB75 Frame Coupler — Corner Right
+    tagline: Medium right corner member from the shared HUB75 frame-coupler family
+    description: >
+      Fixed Medium right corner coupler. The native Medium configuration keeps
+      its panel-pin pass-through suppressed.
+    parameters: Medium; 80 mm nominal size; 4 mm wall; 3 mm base; 6 mm guide; one Ø3.4 mounting bore
+    stages:
+      - Extrude the source-derived right-corner profile
+      - Add the source bushing support
+      - Cut rail and bushing clearance
+      - Add one mounting bore and locator pad
+      - Keep the Medium-only panel-pin pass-through suppressed
+  hub75-frame-coupler-edge-tube:
+    title: HUB75 Frame Coupler — Edge Tube
+    tagline: Medium Edge coupler with two slide rails for loose Ø10 tube clamps
+    description: >
+      Tube-ready derivative of the accepted Medium Edge coupler. It retains the
+      base coupler geometry and adds only the final active inward clamp
+      clearance, two rails at 40 mm center spacing, clamp-bow clearance and
+      asymmetric rail-entry chamfers from the retained SolidCraft source.
+    parameters: Medium; two rails at ±20 mm; R5 rear support; 14.75 mm rail height; 0.18/0.65 mm entry chamfer
+    stages:
+      - Reuse the accepted Medium Edge coupler body
+      - Cut inward clearance for the two loose clamp feet
+      - Add two source slide rails at 40 mm center spacing
+      - Cut clamp-bow clearance at the inner side
+      - Add the asymmetric source rail-entry chamfers
+      - Join the final R5 rear support and continuous base around both clamps
+      - Re-cut the two selected reference marks into the new rear material
+  hub75-frame-coupler-corner-left-tube:
+    title: HUB75 Frame Coupler — Corner Left Tube
+    tagline: Medium left Corner coupler with one loose-clamp slide interface
+    description: >
+      Tube-ready derivative of the accepted Medium left Corner coupler. It adds
+      the source insertion recess, Ø10.5 tube clearance, one slide rail and its
+      asymmetric entry chamfer.
+    parameters: Medium; local rail center +7 mm; Ø10.5 tube clearance; 14.75 mm rail height
+    stages:
+      - Reuse the accepted Medium left Corner body
+      - Cut the loose-clamp insertion recess
+      - Cut the source tube clearance
+      - Add the source slide rail
+      - Add the asymmetric source rail-entry chamfer
+  hub75-frame-coupler-corner-right-tube:
+    title: HUB75 Frame Coupler — Corner Right Tube
+    tagline: Medium right Corner coupler with one loose-clamp slide interface
+    description: >
+      Tube-ready derivative of the accepted Medium right Corner coupler. It adds
+      the mirrored source insertion recess, Ø10.5 tube clearance, one slide rail
+      and its asymmetric entry chamfer.
+    parameters: Medium; local rail center -7 mm; Ø10.5 tube clearance; 14.75 mm rail height
+    stages:
+      - Reuse the accepted Medium right Corner body
+      - Cut the loose-clamp insertion recess
+      - Cut the source tube clearance
+      - Add the source slide rail
+      - Add the asymmetric source rail-entry chamfer
+  hub75-frame-coupler-edge-tube-receiver:
+    title: HUB75 Frame Coupler — Edge Tube Receiver
+    tagline: Medium Edge coupler with two female receivers for male tube clamps
+    description: >
+      Alternate tube-ready Edge interface from the newly supplied SolidCraft
+      source. It keeps the common inward clearances and final rear support/base,
+      omits the suppressed protruding slide rails/chamfers, then joins two
+      receiver feet and cuts the dovetail grooves with 0.2 mm flank clearance.
+    parameters: Medium; receivers at ±20 mm; 0.2 mm dovetail fit; 15.55 mm support height; 18.7 mm groove depth
+    stages:
+      - Reuse the accepted Medium Edge coupler body
+      - Apply the shared inward clamp-foot and bow clearances
+      - Preserve the final R5 rear support, base plate and reference recut
+      - Add two 16 mm receiver supports
+      - Cut two source 12-point female dovetail profiles with 0.2 mm clearance
+  hub75-frame-coupler-corner-left-tube-receiver:
+    title: HUB75 Frame Coupler — Corner Left Tube Receiver
+    tagline: Medium left Corner coupler with one female receiver for a male tube clamp
+    description: >
+      Alternate left Corner tube interface using the common insertion and Ø10.5
+      tube clearances, followed by the final receiving dovetail geometry.
+    parameters: Medium; local receiver center +7 mm; Ø10.5 tube clearance; 0.2 mm dovetail fit
+    stages:
+      - Reuse the accepted Medium left Corner body
+      - Apply the shared insertion and tube clearances
+      - Add the 16 mm receiver support
+      - Cut the source female dovetail groove and closed stop
+  hub75-frame-coupler-corner-right-tube-receiver:
+    title: HUB75 Frame Coupler — Corner Right Tube Receiver
+    tagline: Medium right Corner coupler with one female receiver for a male tube clamp
+    description: >
+      Alternate right Corner tube interface using the mirrored common clearances
+      and the same final receiving dovetail geometry.
+    parameters: Medium; local receiver center -7 mm; Ø10.5 tube clearance; 0.2 mm dovetail fit
+    stages:
+      - Reuse the accepted Medium right Corner body
+      - Apply the shared insertion and tube clearances
+      - Add the 16 mm receiver support
+      - Cut the source female dovetail groove and closed stop
+

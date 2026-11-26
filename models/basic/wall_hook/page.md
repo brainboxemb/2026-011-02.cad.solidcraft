@@ -5,11 +5,15 @@ spine. A separate Ø8 mm opening through the diagonal reinforcement gives a
 straight screwdriver/bit path to the lower screw while keeping the mounting
 wall intact.
 
-
 ## Technical drawing
 
-The Wall Hook publishes a native SolidCraft **A4 landscape** engineering sheet
-with enlarged 2.5:1 primary orthographic views. The sheet carries the principal manufacturing and mounting
-dimensions, an enlarged shaded isometric view and the native PDF drawing artifact. Hole
-centre positions are stated as a drawing note because the pinned SolidCraft
-drawing command set does not expose qualified centre-mark/centre-line authoring.
+The Wall Hook publishes a native SolidCraft **A4 landscape** engineering sheet.
+The orthographic manufacturing views use a true **1:1** scale; a larger **2:1**
+shaded isometric view provides the pictorial overview. The compact drawing note
+sits outside the native title block and records the mounting-hole locations,
+hole/tool-access sizes and chamfer/relief values.
+
+The durable build publishes a static PNG sheet preview, the vector PDF and the
+native drawing inspection JSON. The standard SolidCraft title-block geometry is
+kept native; a more compact reusable native title-block style is tracked
+upstream rather than emulated with model-specific page graphics.

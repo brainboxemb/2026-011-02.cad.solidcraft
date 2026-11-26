@@ -13,8 +13,8 @@ stages:
   - Build one reusable leaf from the 40 × 30 × 3 mm plate and Ø8 × 40 mm knuckle source geometry
   - Create grounded Leaf A and moving Leaf B as independent occurrences
   - Define the shared +X hinge-axis frame at component-local Y33 / Z4
-  - Connect Leaf B to Leaf A with native revolute joint Hinge using the native flipped orientation
+  - Connect Leaf B to Leaf A with native revolute joint Hinge using the source non-flipped mating orientation
   - Preserve the supplied 60° value and 0–180° limits
   - Verify native joint inspection and source-pose geometry before acceptance
 
-source_note: Native SolidCraft Hinge Assembly.sc/json source evidence is retained under reference/. Leaf B source pose uses the shared hinge-axis AnchorFrame, flipped revolute orientation and 60° value.
+source_note: Native SolidCraft Hinge Assembly.sc/json source evidence is retained under reference/. Leaf B source pose uses the shared hinge-axis AnchorFrame, the native non-flipped mating orientation and the 60° revolute value.

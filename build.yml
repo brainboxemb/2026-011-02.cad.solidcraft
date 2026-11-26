@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/141-reconcile-hinge-plan
+branch: feature/133-wall-hook-yellow
 
 modules: []
-models: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

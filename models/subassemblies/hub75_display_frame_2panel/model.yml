@@ -1,0 +1,35 @@
+purpose: [example]
+section: subassemblies
+group: display-frame
+priority: 32
+title: HUB75 2-Panel Display Frame
+tagline: Two HUB75 panels with seven shared Medium frame couplers
+description: >
+  Framed version of the existing two-panel HUB75 screen. It keeps the same
+  320 × 320 mm nominal two-panel grid and alternating right-panel orientation,
+  then adds the shared Medium coupler family around the panel seam and outer
+  frame: one middle coupler, two edge couplers and four corner couplers.
+  Coupler placement follows the supplied native SolidCraft source. Small/Large
+  configuration rows are deliberately deferred until Forge configuration-table
+  support is available.
+parameters: 320 × 320 mm nominal frame; 2 panels; Medium couplers; 1 middle + 2 edge + 4 corner occurrences
+stages:
+  - Reuse the same two panel occurrences as BasicHub75Screen2Panel
+  - Place one Middle coupler at X=0 / Z=160 mm
+  - Place Edge couplers at top Z=320 mm and bottom Z=0 mm
+  - Place left/right corner definitions at the two top corners
+  - Rotate their second occurrences 180° around Y for the bottom source pose
+  - Verify all seven Medium coupler occurrences against the retained native layout
+extra_views:
+  title: Display-frame review
+  note: Rear view exposes all seven Medium couplers; front view verifies the original panel grid remains unchanged.
+  verified_only: true
+  items:
+    - kind: build
+      src: rear.png
+      alt: Rear view of the two-panel HUB75 Display Frame with Medium couplers
+      caption: Rear — one middle, two edge and four corner couplers
+    - kind: build
+      src: front.png
+      alt: Front view of the two-panel HUB75 Display Frame
+      caption: Front — unchanged two-panel 320 × 320 mm display grid

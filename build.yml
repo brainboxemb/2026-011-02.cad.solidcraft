@@ -1,9 +1,9 @@
 schema: 1
-branch: feature/174-hub75-frame-coupler-medium
+branch: feature/176-hub75-display-frame-2panel
 
 modules: []
 models:
-  - hub75-frame-coupler
+  - hub75-display-frame-2panel
 tasks:
   - test
   - build

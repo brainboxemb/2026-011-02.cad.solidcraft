@@ -18,6 +18,8 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
     REFERENCE_MARK_LOOPS,
     REFERENCE_PATTERN,
     SEAM_PROFILES,
+    SEAM_TIP_PROFILES,
+    EDGE_GUIDE_END_CUTS,
 )
 
 SOURCE_RED = "#B80D0A"
@@ -193,6 +195,44 @@ def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
     return body
 
 
+
+def _join_tapered_seam_guide(body, *, profile_key, steps=16):
+    """Approximate the native seam-guide loft using exact foot/tip sections."""
+    starts = SEAM_PROFILES[profile_key]
+    ends = SEAM_TIP_PROFILES[profile_key]
+    if len(starts) != 1 or len(ends) != 1:
+        raise ValueError("seam guide expects one source loop per loft section")
+
+    depth = MEDIUM["key_h"] + 0.05
+    slice_depth = depth / steps
+    for index in range(steps):
+        # Use the far/end section of each slice. This under-approximates the
+        # true taper very slightly and avoids the broad-foot fins created by
+        # the former straight prism.
+        t = (index + 1.0) / steps
+        loop = _interpolate_loop(starts[0], ends[0], t)
+        part = _profile_solid(
+            name=f"{profile_key} seam guide slice {index + 1}",
+            loops=[loop],
+            y=-MEDIUM["datum"] - 0.05 + index * slice_depth,
+            distance=slice_depth + 0.01,
+        )
+        body = body + part
+    return body
+
+
+def _cut_edge_guide_end_rounding(body):
+    """Apply native Edge guide-end rounding cut from features 137–138."""
+    for index, loop in enumerate(EDGE_GUIDE_END_CUTS, start=1):
+        cut = _profile_solid(
+            name=f"Edge guide-end rounding {index}",
+            loops=[loop],
+            y=-MEDIUM["datum"],
+            distance=MEDIUM["guide"],
+        )
+        body = body - cut
+    return body
+
 def _apply_reference_pattern(body, *, profile_key):
     """Cut the native reference ticks and blind tapered reference-hole pattern."""
     y_rear = (
@@ -279,16 +319,10 @@ class Hub75FrameCouplerMiddle:
             z=-MEDIUM["bushing_z"],
         )
 
-        # Phase-1 Medium port: keep the source seam-guide footprint and use a
-        # straight 4 mm prism.  Forge #216 is configuration-only; exact native
-        # taper adoption can be refined independently without changing ids.
-        seam = _profile_solid(
-            name="Middle seam guide",
-            loops=SEAM_PROFILES["middle"],
-            y=-MEDIUM["datum"] - 0.05,
-            distance=MEDIUM["key_h"] + 0.05,
+        body = _join_tapered_seam_guide(
+            body,
+            profile_key="middle",
         )
-        body = body + seam
         body = _apply_reference_pattern(body, profile_key="middle")
         return body.with_appearance(SOURCE_RED)
 
@@ -355,19 +389,17 @@ class Hub75FrameCouplerEdge:
             body,
             profile_key="edge",
         )
+        body = _cut_edge_guide_end_rounding(body)
 
         for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
             body = _guide_clearance(body, x=x, z=-19.0)
             body = _mounting_hole(body, x=x, z=-8.0, total_depth=depth)
             body = _locator_pad(body, x=x, z=-19.0)
 
-        seam = _profile_solid(
-            name="Edge seam guide",
-            loops=SEAM_PROFILES["edge"],
-            y=-MEDIUM["datum"] - 0.05,
-            distance=MEDIUM["key_h"] + 0.05,
+        body = _join_tapered_seam_guide(
+            body,
+            profile_key="edge",
         )
-        body = body + seam
         body = _apply_reference_pattern(body, profile_key="edge")
         return body.with_appearance(SOURCE_RED)
 

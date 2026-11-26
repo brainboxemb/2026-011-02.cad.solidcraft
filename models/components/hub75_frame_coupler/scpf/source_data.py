@@ -6107,3 +6107,417 @@ REFERENCE_PATTERN = {
   "tip_h": 0.5,
   "rear_offset": 0.05,
 }
+
+# Exact native tip sections for the tapered seam-guide joins (features 80/140).
+SEAM_TIP_PROFILES = {
+  "middle": [
+    {
+      "start": [
+        -0.75,
+        39.26
+      ],
+      "segments": [
+        {
+          "kind": "arc",
+          "end": [
+            -0.01,
+            40
+          ],
+          "center": [
+            -0.01,
+            39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            0.01,
+            40
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            0.75,
+            39.26
+          ],
+          "center": [
+            0.01,
+            39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            0.75,
+            -39.26
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            0.01,
+            -40
+          ],
+          "center": [
+            0.01,
+            -39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            -0.01,
+            -40
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            -0.75,
+            -39.26
+          ],
+          "center": [
+            -0.01,
+            -39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            -0.75,
+            39.26
+          ]
+        }
+      ]
+    }
+  ],
+  "edge": [
+    {
+      "start": [
+        -0.75,
+        -0.74
+      ],
+      "segments": [
+        {
+          "kind": "arc",
+          "end": [
+            -0.01,
+            0
+          ],
+          "center": [
+            -0.01,
+            -0.74
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            0.01,
+            0
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            0.75,
+            -0.74
+          ],
+          "center": [
+            0.01,
+            -0.74
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            0.75,
+            -39.26
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            0.01,
+            -40
+          ],
+          "center": [
+            0.01,
+            -39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            -0.01,
+            -40
+          ]
+        },
+        {
+          "kind": "arc",
+          "end": [
+            -0.75,
+            -39.26
+          ],
+          "center": [
+            -0.01,
+            -39.26
+          ],
+          "clockwise": True
+        },
+        {
+          "kind": "line",
+          "end": [
+            -0.75,
+            -0.74
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+# Exact Edge guide-end rounding cut (features 137–138), normalized to Edge XZ.
+EDGE_GUIDE_END_CUTS = [
+  {
+    "start": [
+      -36.828427125,
+      -11.135257813
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          -39.656854249,
+          -11.135257813
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -37.771236166,
+          -13.801924479
+        ],
+        "center": [
+          -34,
+          -9.135257813
+        ],
+        "clockwise": False
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -36.828427125,
+          -11.135257813
+        ],
+        "center": [
+          -36.828427125,
+          -12.635257813
+        ],
+        "clockwise": True
+      }
+    ]
+  },
+  {
+    "start": [
+      36.828427125,
+      -11.135257813
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          39.656854249,
+          -11.135257813
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          37.771236166,
+          -13.801924479
+        ],
+        "center": [
+          34,
+          -9.135257813
+        ],
+        "clockwise": True
+      },
+      {
+        "kind": "arc",
+        "end": [
+          36.828427125,
+          -11.135257813
+        ],
+        "center": [
+          36.828427125,
+          -12.635257813
+        ],
+        "clockwise": False
+      }
+    ]
+  },
+  {
+    "start": [
+      -12.8765625,
+      -36.828427125
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          -12.8765625,
+          -39.656854249
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -15.543229167,
+          -37.771236166
+        ],
+        "center": [
+          -10.8765625,
+          -34
+        ],
+        "clockwise": True
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -12.8765625,
+          -36.828427125
+        ],
+        "center": [
+          -14.3765625,
+          -36.828427125
+        ],
+        "clockwise": False
+      }
+    ]
+  },
+  {
+    "start": [
+      12.8765625,
+      -36.828427125
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          12.8765625,
+          -39.656854249
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          15.543229167,
+          -37.771236166
+        ],
+        "center": [
+          10.8765625,
+          -34
+        ],
+        "clockwise": False
+      },
+      {
+        "kind": "arc",
+        "end": [
+          12.8765625,
+          -36.828427125
+        ],
+        "center": [
+          14.3765625,
+          -36.828427125
+        ],
+        "clockwise": True
+      }
+    ]
+  },
+  {
+    "start": [
+      -36.828427125,
+      -1.145
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          -39.656854249,
+          -1.145
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -37.771236166,
+          1.521666667
+        ],
+        "center": [
+          -34,
+          -3.145
+        ],
+        "clockwise": True
+      },
+      {
+        "kind": "arc",
+        "end": [
+          -36.828427125,
+          -1.145
+        ],
+        "center": [
+          -36.828427125,
+          0.355
+        ],
+        "clockwise": False
+      }
+    ]
+  },
+  {
+    "start": [
+      36.828427125,
+      -1.145
+    ],
+    "segments": [
+      {
+        "kind": "line",
+        "end": [
+          39.656854249,
+          -1.145
+        ]
+      },
+      {
+        "kind": "arc",
+        "end": [
+          37.771236166,
+          1.521666667
+        ],
+        "center": [
+          34,
+          -3.145
+        ],
+        "clockwise": False
+      },
+      {
+        "kind": "arc",
+        "end": [
+          36.828427125,
+          -1.145
+        ],
+        "center": [
+          36.828427125,
+          0.355
+        ],
+        "clockwise": True
+      }
+    ]
+  }
+]

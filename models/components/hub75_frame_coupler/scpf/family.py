@@ -89,6 +89,16 @@ def _profile_solid(*, name, loops, y, distance):
     return result
 
 
+def _multi_profile_solid(*, name, loops, y, distance):
+    """Extrude one SolidCraft XZ Sketch containing all retained closed loops."""
+    if not loops:
+        raise ValueError(f"{name}: source profile contains no closed loops")
+    with Sketch(name=name, plane="XZ", offset=y) as sketch:
+        for loop in loops:
+            _add_loop(sketch, loop)
+    return sketch.extrude(distance)
+
+
 def _axis_y_cylinder(*, diameter, length, x, y, z):
     return Cylinder(
         d=diameter,
@@ -695,7 +705,7 @@ def _add_edge_tube_interface(body):
     # Final source features 226–230: replace the earlier suppressed rear/base
     # experiments with the active R5 support, continuous base and the two
     # reference marks re-cut into the newly added rear material.
-    rear_support = _profile_solid(
+    rear_support = _multi_profile_solid(
         name="Symmetrische bulten met R5-overgangen",
         loops=TUBE_EDGE_REAR_SUPPORT_PROFILES,
         y=-17.5,
@@ -703,7 +713,7 @@ def _add_edge_tube_interface(body):
     )
     body = body + rear_support
 
-    base_plate = _profile_solid(
+    base_plate = _multi_profile_solid(
         name="Doorgetrokken basisplaat rondom de twee klemmen",
         loops=TUBE_EDGE_BASE_PLATE_PROFILES,
         y=-15.15,
@@ -715,7 +725,7 @@ def _add_edge_tube_interface(body):
         REFERENCE_MARK_LOOPS["edge"][index]
         for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
     ]
-    reference_cut = _profile_solid(
+    reference_cut = _multi_profile_solid(
         name="Referentiepatroon op symmetrische rug",
         loops=rear_marks,
         y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),

@@ -53,11 +53,23 @@ Do not emulate Small/Large with CAD-local Python branching.  The future change
 must add the native configuration layer while preserving this owner and the
 four public variant ids.
 
-## Phase-1 geometry note
+## Medium geometry mapping
 
 The source base/guide profiles are extracted from the retained native JSON.
-The native edge/corner rail clearance and seam guide use shallow lofts; released
-Forge v0.19 has no public solid-loft authoring API.  The initial Medium port uses
-source entrance profiles as prismatic clearances and straight seam-guide prisms.
-Those are bounded follow-up refinements within the same owner, not reasons to
-split the family.
+
+The late source reference pattern is also part of the Medium geometry:
+
+- features 145–152 cut the shallow reference tick marks;
+- features 153–164 cut Ø3 mm blind reference holes with tapered Ø2 mm bottoms;
+- effective off-body suppression placeholders in those source sketches are not
+  emitted as Forge cuts.
+
+The native Edge and Corner rail clearance is a two-section shallow loft.
+Released Forge v0.19 has no public solid-loft authoring API, so the CAD owner
+uses twelve overlapping slices interpolated between the exact source entrance
+and insertion-depth sections.  This preserves both native sections and removes
+the visible fin/lip artifact produced by the former one-profile prism.
+
+The seam guide remains a straight source-footprint prism until public Forge
+solid-loft authoring exists.  That bounded follow-up does not change owner or
+public variant ids.

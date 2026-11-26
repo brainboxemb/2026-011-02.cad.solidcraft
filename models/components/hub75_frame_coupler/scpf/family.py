@@ -6,13 +6,17 @@ keeps the active Medium row fixed; native Small/Medium/Large authoring will
 replace that fixed layer after Forge configuration support (#216).
 """
 
-from scpf import Anchor, Axis, Cylinder, Sketch, component
+from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
 
 from models.components.hub75_frame_coupler.scpf.source_data import (
     BASE_PROFILES,
     MEDIUM,
     MIDDLE_GUIDE_PROFILES,
     RAIL_RELIEF_PROFILES,
+    RAIL_RELIEF_END_PROFILES,
+    REFERENCE_HOLE_CENTERS,
+    REFERENCE_MARK_LOOPS,
+    REFERENCE_PATTERN,
     SEAM_PROFILES,
 )
 
@@ -129,6 +133,105 @@ def _guide_clearance(body, *, x, z):
     )
 
 
+def _interpolate_loop(start, end, t):
+    """Interpolate matching source loft sections in the normalized XZ frame."""
+    if len(start["segments"]) != len(end["segments"]):
+        raise ValueError("source loft sections have different segment counts")
+
+    def point(a, b):
+        return [
+            a[0] + (b[0] - a[0]) * t,
+            a[1] + (b[1] - a[1]) * t,
+        ]
+
+    segments = []
+    for a, b in zip(start["segments"], end["segments"]):
+        if a["kind"] != b["kind"]:
+            raise ValueError("source loft sections have different segment kinds")
+        row = {
+            "kind": a["kind"],
+            "end": point(a["end"], b["end"]),
+        }
+        if a["kind"] == "arc":
+            row["center"] = point(a["center"], b["center"])
+            row["clockwise"] = a["clockwise"]
+        segments.append(row)
+    return {
+        "start": point(start["start"], end["start"]),
+        "segments": segments,
+    }
+
+
+def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
+    """Approximate the native two-section cut loft without leaving phase-1 fins.
+
+    Forge v0.19 has no public solid-loft feature.  The source loft is shallow:
+    its two XZ sections are 6.05 mm apart and differ only slightly.  Twelve
+    overlapping source-interpolated slices retain both native sections and
+    remove the visible prismatic fin/lip artifact from the earlier baseline.
+    """
+    starts = RAIL_RELIEF_PROFILES[profile_key]
+    ends = RAIL_RELIEF_END_PROFILES[profile_key]
+    if len(starts) != 1 or len(ends) != 1:
+        raise ValueError("rail relief expects one source loop per loft section")
+
+    depth = MEDIUM["guide"] + 0.05
+    slice_depth = depth / steps
+    for index in range(steps):
+        t = (index + 0.5) / steps
+        loop = _interpolate_loop(starts[0], ends[0], t)
+        relief = _profile_solid(
+            name=f"{profile_key} rail relief slice {index + 1}",
+            loops=[loop],
+            y=-MEDIUM["datum"] + index * slice_depth,
+            distance=slice_depth + 0.01,
+        )
+        body = body - relief
+    return body
+
+
+def _apply_reference_pattern(body, *, profile_key):
+    """Cut the native reference ticks and blind tapered reference-hole pattern."""
+    y_rear = (
+        -MEDIUM["datum"]
+        - MEDIUM["base"]
+        - REFERENCE_PATTERN["rear_offset"]
+    )
+
+    for index, loop in enumerate(REFERENCE_MARK_LOOPS[profile_key], start=1):
+        mark = _profile_solid(
+            name=f"{profile_key} reference mark {index}",
+            loops=[loop],
+            y=y_rear,
+            distance=REFERENCE_PATTERN["mark_cut_depth"],
+        )
+        body = body - mark
+
+    straight = REFERENCE_PATTERN["straight_h"] + REFERENCE_PATTERN["rear_offset"]
+    tip = REFERENCE_PATTERN["tip_h"]
+    for x, z in REFERENCE_HOLE_CENTERS[profile_key]:
+        body = body - _axis_y_cylinder(
+            diameter=REFERENCE_PATTERN["hole_d"],
+            length=straight,
+            x=x,
+            y=y_rear + straight / 2.0,
+            z=z,
+        )
+        body = body - Cone(
+            d=REFERENCE_PATTERN["hole_d"],
+            top_d=REFERENCE_PATTERN["tip_d"],
+            h=tip,
+            axis=Axis.Y,
+            anchor=Anchor.CENTER,
+        ).at(
+            x,
+            y_rear + straight + tip / 2.0,
+            z,
+            anchor=Anchor.CENTER,
+        )
+    return body
+
+
 @component
 class Hub75FrameCouplerMiddle:
     """Fixed Medium source variant at the panel seam midpoint."""
@@ -205,17 +308,10 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
         z=-19.0,
     )
 
-    # The native source uses a shallow loft between two very similar rail
-    # clearance profiles. Released Forge v0.19 has no public solid-loft
-    # authoring yet, so this Medium baseline uses the source entrance profile
-    # as a prismatic guide-depth clearance.
-    relief = _profile_solid(
-        name=f"{profile_key} rail clearance",
-        loops=RAIL_RELIEF_PROFILES[relief_key],
-        y=-MEDIUM["datum"],
-        distance=MEDIUM["guide"] + 0.05,
+    body = _cut_tapered_rail_relief(
+        body,
+        profile_key=relief_key,
     )
-    body = body - relief
     body = _guide_clearance(body, x=screw_x, z=-19.0)
     body = _mounting_hole(
         body,
@@ -224,7 +320,7 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
         total_depth=depth,
     )
     body = _locator_pad(body, x=screw_x, z=-19.0)
-    return body
+    return _apply_reference_pattern(body, profile_key=profile_key)
 
 
 @component
@@ -250,13 +346,10 @@ class Hub75FrameCouplerEdge:
                 z=-19.0,
             )
 
-        relief = _profile_solid(
-            name="Edge rail clearance",
-            loops=RAIL_RELIEF_PROFILES["edge"],
-            y=-MEDIUM["datum"],
-            distance=MEDIUM["guide"] + 0.05,
+        body = _cut_tapered_rail_relief(
+            body,
+            profile_key="edge",
         )
-        body = body - relief
 
         for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
             body = _guide_clearance(body, x=x, z=-19.0)
@@ -269,7 +362,9 @@ class Hub75FrameCouplerEdge:
             y=-MEDIUM["datum"] - 0.05,
             distance=MEDIUM["key_h"] + 0.05,
         )
-        return (body + seam).with_appearance(SOURCE_RED)
+        body = body + seam
+        body = _apply_reference_pattern(body, profile_key="edge")
+        return body.with_appearance(SOURCE_RED)
 
 
 @component

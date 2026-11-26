@@ -232,7 +232,7 @@ class WallHook:
                 direction=(1, 0, 0),
             ).at(0.0, 0.0, z)
 
-        return body
+        return body.with_appearance("#FFD21A")
 
 
 WallHook()

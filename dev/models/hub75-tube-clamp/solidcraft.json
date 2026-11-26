@@ -1,5 +1,15 @@
 {
+  "format": "scpf-replay",
+  "version": 2,
   "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "clamp_bore",
+        "expression": "9.6",
+        "unit": "mm"
+      }
+    },
     {
       "command": "parameters.add",
       "params": {
@@ -17,10 +27,20 @@
       }
     },
     {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75TubeClamp",
+        "grounded": true
+      },
+      "bind": {
+        "$hub75tubeclamp": "occurrence"
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
         "plane": "XY",
-        "name": "Open klemring met afgeronde lippen",
+        "name": "d1_Hub75TubeClamp__Open klemring met afgeronde lippen",
         "offset": -6.0
       }
     },
@@ -32,12 +52,12 @@
           0.0
         ],
         "start": [
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107"
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "(clamp_bore / 2 + 2 mm) * 0.707107"
         ],
         "end": [
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
-          "-(((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107)"
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "-((clamp_bore / 2 + 2 mm) * 0.707107)"
         ],
         "clockwise": false,
         "connect": true
@@ -47,16 +67,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107",
-          "-(((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107)"
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107",
+          "-((((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107)"
         ],
         "start": [
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
-          "-(((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107)"
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "-((clamp_bore / 2 + 2 mm) * 0.707107)"
         ],
         "end": [
-          "((tube_d - (clamp_interference)) / 2) * 0.707107",
-          "-(((tube_d - (clamp_interference)) / 2) * 0.707107)"
+          "(clamp_bore / 2) * 0.707107",
+          "-((clamp_bore / 2) * 0.707107)"
         ],
         "clockwise": false,
         "connect": true
@@ -70,12 +90,12 @@
           0.0
         ],
         "start": [
-          "((tube_d - (clamp_interference)) / 2) * 0.707107",
-          "-(((tube_d - (clamp_interference)) / 2) * 0.707107)"
+          "(clamp_bore / 2) * 0.707107",
+          "-((clamp_bore / 2) * 0.707107)"
         ],
         "end": [
-          "((tube_d - (clamp_interference)) / 2) * 0.707107",
-          "((tube_d - (clamp_interference)) / 2) * 0.707107"
+          "(clamp_bore / 2) * 0.707107",
+          "(clamp_bore / 2) * 0.707107"
         ],
         "clockwise": true,
         "connect": true
@@ -85,16 +105,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107",
-          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107"
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107",
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107"
         ],
         "start": [
-          "((tube_d - (clamp_interference)) / 2) * 0.707107",
-          "((tube_d - (clamp_interference)) / 2) * 0.707107"
+          "(clamp_bore / 2) * 0.707107",
+          "(clamp_bore / 2) * 0.707107"
         ],
         "end": [
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
-          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107"
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "(clamp_bore / 2 + 2 mm) * 0.707107"
         ],
         "clockwise": false,
         "connect": true
@@ -116,7 +136,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Afgeronde rug voor de schuifgleuf",
+        "name": "d1_Hub75TubeClamp__Afgeronde rug voor de schuifgleuf",
         "offset": -8.0
       }
     },
@@ -279,7 +299,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Schuifgleuf met aanloop en printflanken",
+        "name": "d1_Hub75TubeClamp__Schuifgleuf met aanloop en printflanken",
         "offset": -8.05
       }
     },
@@ -601,6 +621,73 @@
         "distance": 0.14,
         "body": "Hub75TubeClamp"
       }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "config.configure",
+      "params": {
+        "params": [
+          "clamp_bore"
+        ]
+      }
+    },
+    {
+      "command": "config.row",
+      "params": {
+        "name": "Default",
+        "rename": "Free"
+      },
+      "bind": {
+        "$config_row_f411a1fb6275": {
+          "field": "rows",
+          "where": {
+            "name": "Free"
+          },
+          "select": "id"
+        }
+      }
+    },
+    {
+      "command": "config.row",
+      "params": {
+        "name": "Free",
+        "values": {
+          "param:clamp_bore": "tube_d-clamp_interference"
+        }
+      }
+    },
+    {
+      "command": "config.rule",
+      "params": {
+        "rule": {
+          "id": "installed",
+          "name": "Installed",
+          "enabled": false,
+          "condition": {
+            "type": "always"
+          },
+          "effect": {
+            "type": "drive_parameter",
+            "parameter": "clamp_bore",
+            "expression": "tube_d"
+          }
+        }
+      }
+    },
+    {
+      "command": "config.activate",
+      "params": {
+        "row": "$config_row_f411a1fb6275"
+      }
+    },
+    {
+      "command": "config.table",
+      "params": {}
     }
   ]
 }

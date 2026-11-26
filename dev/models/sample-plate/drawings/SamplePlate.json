@@ -2,7 +2,7 @@
   "font": "",
   "font_fallbacks": [],
   "font_note": null,
-  "id": "24y42ev6b1n7c",
+  "id": "9rn1ma2sbvrqs",
   "language": "en",
   "line_group": "0.5",
   "name": "SamplePlate",
@@ -22,14 +22,14 @@
     {
       "documents": {
         "component": 1,
-        "source": "cxpnvs23rktv6"
+        "source": "4f91a02b43m5t"
       },
       "dpi": 300.0,
       "excluded": {
         "count": false,
         "print": false
       },
-      "id": "cghtvt01wny08",
+      "id": "fpqq7mg6ary6f",
       "images": [],
       "line_group": null,
       "name": "Sheet 1",
@@ -726,7 +726,15 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "8202fpvqk58tv",
+          "id": "3sgr66rnkbf80",
+          "kind": "base",
+          "label": "Iso front right",
+          "notes": []
+        },
+        {
+          "balloons": [],
+          "dimensions": [],
+          "id": "9thb07papsyn9",
           "kind": "base",
           "label": "Front",
           "notes": []
@@ -734,37 +742,29 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "95ts9xpjk9b7k",
-          "kind": "projected",
-          "label": "Right of Front",
-          "notes": [],
-          "parent": "8202fpvqk58tv",
-          "side": "right"
-        },
-        {
-          "balloons": [],
-          "dimensions": [],
-          "id": "cxqbvz2w9fwv3",
+          "id": "56p2k5fsvcbrt",
           "kind": "projected",
           "label": "Above Front",
           "notes": [],
-          "parent": "8202fpvqk58tv",
+          "parent": "9thb07papsyn9",
           "side": "above"
         },
         {
           "balloons": [],
           "dimensions": [],
-          "id": "bqbbjmt0a2n0k",
-          "kind": "base",
-          "label": "Iso front right",
-          "notes": []
+          "id": "9662n5xy2axzx",
+          "kind": "projected",
+          "label": "Right of Front",
+          "notes": [],
+          "parent": "9thb07papsyn9",
+          "side": "right"
         }
       ]
     }
   ],
   "sources": [
     {
-      "id": "cxpnvs23rktv6"
+      "id": "4f91a02b43m5t"
     }
   ],
   "symbols": [],

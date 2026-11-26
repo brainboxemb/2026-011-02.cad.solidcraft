@@ -3558,7 +3558,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d2_Hub75FrameCouplerMiddle__Middle seam guide",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 1",
         "offset": -14.55
       }
     },
@@ -3566,16 +3566,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -0.15,
-          39
+          -0.14125,
+          39.01625
         ],
         "start": [
-          -1.15,
-          39
+          -1.125,
+          39.01625
         ],
         "end": [
-          -0.15,
-          40
+          -0.14125,
+          40.0
         ],
         "clockwise": true,
         "connect": true
@@ -3586,12 +3586,12 @@
       "params": {
         "points": [
           [
-            -0.15,
-            40
+            -0.14125,
+            40.0
           ],
           [
-            0.15,
-            40
+            0.14125,
+            40.0
           ]
         ],
         "connect": true
@@ -3601,16 +3601,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          0.15,
-          39
+          0.14125,
+          39.01625
         ],
         "start": [
-          0.15,
-          40
+          0.14125,
+          40.0
         ],
         "end": [
-          1.15,
-          39
+          1.125,
+          39.01625
         ],
         "clockwise": true,
         "connect": true
@@ -3621,12 +3621,12 @@
       "params": {
         "points": [
           [
-            1.15,
-            39
+            1.125,
+            39.01625
           ],
           [
-            1.15,
-            -39
+            1.125,
+            -39.01625
           ]
         ],
         "connect": true
@@ -3636,16 +3636,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          0.15,
-          -39
+          0.14125,
+          -39.01625
         ],
         "start": [
-          1.15,
-          -39
+          1.125,
+          -39.01625
         ],
         "end": [
-          0.15,
-          -40
+          0.14125,
+          -40.0
         ],
         "clockwise": true,
         "connect": true
@@ -3656,12 +3656,12 @@
       "params": {
         "points": [
           [
-            0.15,
-            -40
+            0.14125,
+            -40.0
           ],
           [
-            -0.15,
-            -40
+            -0.14125,
+            -40.0
           ]
         ],
         "connect": true
@@ -3671,16 +3671,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -0.15,
-          -39
+          -0.14125,
+          -39.01625
         ],
         "start": [
-          -0.15,
-          -40
+          -0.14125,
+          -40.0
         ],
         "end": [
-          -1.15,
-          -39
+          -1.125,
+          -39.01625
         ],
         "clockwise": true,
         "connect": true
@@ -3691,12 +3691,12 @@
       "params": {
         "points": [
           [
-            -1.15,
-            -39
+            -1.125,
+            -39.01625
           ],
           [
-            -1.15,
-            39
+            -1.125,
+            39.01625
           ]
         ],
         "connect": true
@@ -3709,7 +3709,2452 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.05,
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 2",
+        "offset": -14.296875
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.1325,
+          39.0325
+        ],
+        "start": [
+          -1.0999999999999999,
+          39.0325
+        ],
+        "end": [
+          -0.1325,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.1325,
+            40.0
+          ],
+          [
+            0.1325,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.1325,
+          39.0325
+        ],
+        "start": [
+          0.1325,
+          40.0
+        ],
+        "end": [
+          1.0999999999999999,
+          39.0325
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0999999999999999,
+            39.0325
+          ],
+          [
+            1.0999999999999999,
+            -39.0325
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.1325,
+          -39.0325
+        ],
+        "start": [
+          1.0999999999999999,
+          -39.0325
+        ],
+        "end": [
+          0.1325,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.1325,
+            -40.0
+          ],
+          [
+            -0.1325,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.1325,
+          -39.0325
+        ],
+        "start": [
+          -0.1325,
+          -40.0
+        ],
+        "end": [
+          -1.0999999999999999,
+          -39.0325
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0999999999999999,
+            -39.0325
+          ],
+          [
+            -1.0999999999999999,
+            39.0325
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 3",
+        "offset": -14.043750000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.12375,
+          39.04875
+        ],
+        "start": [
+          -1.075,
+          39.04875
+        ],
+        "end": [
+          -0.12375,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.12375,
+            40.0
+          ],
+          [
+            0.12375,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.12375,
+          39.04875
+        ],
+        "start": [
+          0.12375,
+          40.0
+        ],
+        "end": [
+          1.075,
+          39.04875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.075,
+            39.04875
+          ],
+          [
+            1.075,
+            -39.04875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.12375,
+          -39.04875
+        ],
+        "start": [
+          1.075,
+          -39.04875
+        ],
+        "end": [
+          0.12375,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.12375,
+            -40.0
+          ],
+          [
+            -0.12375,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.12375,
+          -39.04875
+        ],
+        "start": [
+          -0.12375,
+          -40.0
+        ],
+        "end": [
+          -1.075,
+          -39.04875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.075,
+            -39.04875
+          ],
+          [
+            -1.075,
+            39.04875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 4",
+        "offset": -13.790625
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.11499999999999999,
+          39.065
+        ],
+        "start": [
+          -1.0499999999999998,
+          39.065
+        ],
+        "end": [
+          -0.11499999999999999,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11499999999999999,
+            40.0
+          ],
+          [
+            0.11499999999999999,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.11499999999999999,
+          39.065
+        ],
+        "start": [
+          0.11499999999999999,
+          40.0
+        ],
+        "end": [
+          1.0499999999999998,
+          39.065
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0499999999999998,
+            39.065
+          ],
+          [
+            1.0499999999999998,
+            -39.065
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.11499999999999999,
+          -39.065
+        ],
+        "start": [
+          1.0499999999999998,
+          -39.065
+        ],
+        "end": [
+          0.11499999999999999,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.11499999999999999,
+            -40.0
+          ],
+          [
+            -0.11499999999999999,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.11499999999999999,
+          -39.065
+        ],
+        "start": [
+          -0.11499999999999999,
+          -40.0
+        ],
+        "end": [
+          -1.0499999999999998,
+          -39.065
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0499999999999998,
+            -39.065
+          ],
+          [
+            -1.0499999999999998,
+            39.065
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 5",
+        "offset": -13.537500000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.10625,
+          39.08125
+        ],
+        "start": [
+          -1.025,
+          39.08125
+        ],
+        "end": [
+          -0.10625,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.10625,
+            40.0
+          ],
+          [
+            0.10625,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.10625,
+          39.08125
+        ],
+        "start": [
+          0.10625,
+          40.0
+        ],
+        "end": [
+          1.025,
+          39.08125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.025,
+            39.08125
+          ],
+          [
+            1.025,
+            -39.08125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.10625,
+          -39.08125
+        ],
+        "start": [
+          1.025,
+          -39.08125
+        ],
+        "end": [
+          0.10625,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.10625,
+            -40.0
+          ],
+          [
+            -0.10625,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.10625,
+          -39.08125
+        ],
+        "start": [
+          -0.10625,
+          -40.0
+        ],
+        "end": [
+          -1.025,
+          -39.08125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.025,
+            -39.08125
+          ],
+          [
+            -1.025,
+            39.08125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 6",
+        "offset": -13.284375
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0975,
+          39.0975
+        ],
+        "start": [
+          -1.0,
+          39.0975
+        ],
+        "end": [
+          -0.0975,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.0975,
+            40.0
+          ],
+          [
+            0.0975,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0975,
+          39.0975
+        ],
+        "start": [
+          0.0975,
+          40.0
+        ],
+        "end": [
+          1.0,
+          39.0975
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0,
+            39.0975
+          ],
+          [
+            1.0,
+            -39.0975
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0975,
+          -39.0975
+        ],
+        "start": [
+          1.0,
+          -39.0975
+        ],
+        "end": [
+          0.0975,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0975,
+            -40.0
+          ],
+          [
+            -0.0975,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0975,
+          -39.0975
+        ],
+        "start": [
+          -0.0975,
+          -40.0
+        ],
+        "end": [
+          -1.0,
+          -39.0975
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0,
+            -39.0975
+          ],
+          [
+            -1.0,
+            39.0975
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 7",
+        "offset": -13.03125
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08875,
+          39.113749999999996
+        ],
+        "start": [
+          -0.975,
+          39.113749999999996
+        ],
+        "end": [
+          -0.08875,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.08875,
+            40.0
+          ],
+          [
+            0.08875,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08875,
+          39.113749999999996
+        ],
+        "start": [
+          0.08875,
+          40.0
+        ],
+        "end": [
+          0.975,
+          39.113749999999996
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.975,
+            39.113749999999996
+          ],
+          [
+            0.975,
+            -39.113749999999996
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08875,
+          -39.113749999999996
+        ],
+        "start": [
+          0.975,
+          -39.113749999999996
+        ],
+        "end": [
+          0.08875,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.08875,
+            -40.0
+          ],
+          [
+            -0.08875,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08875,
+          -39.113749999999996
+        ],
+        "start": [
+          -0.08875,
+          -40.0
+        ],
+        "end": [
+          -0.975,
+          -39.113749999999996
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.975,
+            -39.113749999999996
+          ],
+          [
+            -0.975,
+            39.113749999999996
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 8",
+        "offset": -12.778125000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08,
+          39.129999999999995
+        ],
+        "start": [
+          -0.95,
+          39.129999999999995
+        ],
+        "end": [
+          -0.08,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.08,
+            40.0
+          ],
+          [
+            0.08,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08,
+          39.129999999999995
+        ],
+        "start": [
+          0.08,
+          40.0
+        ],
+        "end": [
+          0.95,
+          39.129999999999995
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.95,
+            39.129999999999995
+          ],
+          [
+            0.95,
+            -39.129999999999995
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08,
+          -39.129999999999995
+        ],
+        "start": [
+          0.95,
+          -39.129999999999995
+        ],
+        "end": [
+          0.08,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.08,
+            -40.0
+          ],
+          [
+            -0.08,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08,
+          -39.129999999999995
+        ],
+        "start": [
+          -0.08,
+          -40.0
+        ],
+        "end": [
+          -0.95,
+          -39.129999999999995
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.95,
+            -39.129999999999995
+          ],
+          [
+            -0.95,
+            39.129999999999995
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 9",
+        "offset": -12.525
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.07125000000000001,
+          39.14625
+        ],
+        "start": [
+          -0.9249999999999999,
+          39.14625
+        ],
+        "end": [
+          -0.07125000000000001,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.07125000000000001,
+            40.0
+          ],
+          [
+            0.07125000000000001,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.07125000000000001,
+          39.14625
+        ],
+        "start": [
+          0.07125000000000001,
+          40.0
+        ],
+        "end": [
+          0.9249999999999999,
+          39.14625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.9249999999999999,
+            39.14625
+          ],
+          [
+            0.9249999999999999,
+            -39.14625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.07125000000000001,
+          -39.14625
+        ],
+        "start": [
+          0.9249999999999999,
+          -39.14625
+        ],
+        "end": [
+          0.07125000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.07125000000000001,
+            -40.0
+          ],
+          [
+            -0.07125000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.07125000000000001,
+          -39.14625
+        ],
+        "start": [
+          -0.07125000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.9249999999999999,
+          -39.14625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.9249999999999999,
+            -39.14625
+          ],
+          [
+            -0.9249999999999999,
+            39.14625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 10",
+        "offset": -12.271875000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0625,
+          39.1625
+        ],
+        "start": [
+          -0.8999999999999999,
+          39.1625
+        ],
+        "end": [
+          -0.0625,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.0625,
+            40.0
+          ],
+          [
+            0.0625,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0625,
+          39.1625
+        ],
+        "start": [
+          0.0625,
+          40.0
+        ],
+        "end": [
+          0.8999999999999999,
+          39.1625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.8999999999999999,
+            39.1625
+          ],
+          [
+            0.8999999999999999,
+            -39.1625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0625,
+          -39.1625
+        ],
+        "start": [
+          0.8999999999999999,
+          -39.1625
+        ],
+        "end": [
+          0.0625,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0625,
+            -40.0
+          ],
+          [
+            -0.0625,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0625,
+          -39.1625
+        ],
+        "start": [
+          -0.0625,
+          -40.0
+        ],
+        "end": [
+          -0.8999999999999999,
+          -39.1625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.8999999999999999,
+            -39.1625
+          ],
+          [
+            -0.8999999999999999,
+            39.1625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 11",
+        "offset": -12.01875
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.053750000000000006,
+          39.17875
+        ],
+        "start": [
+          -0.875,
+          39.17875
+        ],
+        "end": [
+          -0.053750000000000006,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.053750000000000006,
+            40.0
+          ],
+          [
+            0.053750000000000006,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.053750000000000006,
+          39.17875
+        ],
+        "start": [
+          0.053750000000000006,
+          40.0
+        ],
+        "end": [
+          0.875,
+          39.17875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.875,
+            39.17875
+          ],
+          [
+            0.875,
+            -39.17875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.053750000000000006,
+          -39.17875
+        ],
+        "start": [
+          0.875,
+          -39.17875
+        ],
+        "end": [
+          0.053750000000000006,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.053750000000000006,
+            -40.0
+          ],
+          [
+            -0.053750000000000006,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.053750000000000006,
+          -39.17875
+        ],
+        "start": [
+          -0.053750000000000006,
+          -40.0
+        ],
+        "end": [
+          -0.875,
+          -39.17875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.875,
+            -39.17875
+          ],
+          [
+            -0.875,
+            39.17875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 12",
+        "offset": -11.765625
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.04500000000000001,
+          39.195
+        ],
+        "start": [
+          -0.85,
+          39.195
+        ],
+        "end": [
+          -0.04500000000000001,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.04500000000000001,
+            40.0
+          ],
+          [
+            0.04500000000000001,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.04500000000000001,
+          39.195
+        ],
+        "start": [
+          0.04500000000000001,
+          40.0
+        ],
+        "end": [
+          0.85,
+          39.195
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.85,
+            39.195
+          ],
+          [
+            0.85,
+            -39.195
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.04500000000000001,
+          -39.195
+        ],
+        "start": [
+          0.85,
+          -39.195
+        ],
+        "end": [
+          0.04500000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.04500000000000001,
+            -40.0
+          ],
+          [
+            -0.04500000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.04500000000000001,
+          -39.195
+        ],
+        "start": [
+          -0.04500000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.85,
+          -39.195
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.85,
+            -39.195
+          ],
+          [
+            -0.85,
+            39.195
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 13",
+        "offset": -11.512500000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.036250000000000004,
+          39.21125
+        ],
+        "start": [
+          -0.825,
+          39.21125
+        ],
+        "end": [
+          -0.036250000000000004,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.036250000000000004,
+            40.0
+          ],
+          [
+            0.036250000000000004,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.036250000000000004,
+          39.21125
+        ],
+        "start": [
+          0.036250000000000004,
+          40.0
+        ],
+        "end": [
+          0.825,
+          39.21125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.825,
+            39.21125
+          ],
+          [
+            0.825,
+            -39.21125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.036250000000000004,
+          -39.21125
+        ],
+        "start": [
+          0.825,
+          -39.21125
+        ],
+        "end": [
+          0.036250000000000004,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.036250000000000004,
+            -40.0
+          ],
+          [
+            -0.036250000000000004,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.036250000000000004,
+          -39.21125
+        ],
+        "start": [
+          -0.036250000000000004,
+          -40.0
+        ],
+        "end": [
+          -0.825,
+          -39.21125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.825,
+            -39.21125
+          ],
+          [
+            -0.825,
+            39.21125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 14",
+        "offset": -11.259375
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.02750000000000001,
+          39.2275
+        ],
+        "start": [
+          -0.8,
+          39.2275
+        ],
+        "end": [
+          -0.02750000000000001,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.02750000000000001,
+            40.0
+          ],
+          [
+            0.02750000000000001,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.02750000000000001,
+          39.2275
+        ],
+        "start": [
+          0.02750000000000001,
+          40.0
+        ],
+        "end": [
+          0.8,
+          39.2275
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.8,
+            39.2275
+          ],
+          [
+            0.8,
+            -39.2275
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.02750000000000001,
+          -39.2275
+        ],
+        "start": [
+          0.8,
+          -39.2275
+        ],
+        "end": [
+          0.02750000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.02750000000000001,
+            -40.0
+          ],
+          [
+            -0.02750000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.02750000000000001,
+          -39.2275
+        ],
+        "start": [
+          -0.02750000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.8,
+          -39.2275
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.8,
+            -39.2275
+          ],
+          [
+            -0.8,
+            39.2275
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 15",
+        "offset": -11.006250000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.018750000000000017,
+          39.24375
+        ],
+        "start": [
+          -0.775,
+          39.24375
+        ],
+        "end": [
+          -0.018750000000000017,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.018750000000000017,
+            40.0
+          ],
+          [
+            0.018750000000000017,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.018750000000000017,
+          39.24375
+        ],
+        "start": [
+          0.018750000000000017,
+          40.0
+        ],
+        "end": [
+          0.775,
+          39.24375
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.775,
+            39.24375
+          ],
+          [
+            0.775,
+            -39.24375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.018750000000000017,
+          -39.24375
+        ],
+        "start": [
+          0.775,
+          -39.24375
+        ],
+        "end": [
+          0.018750000000000017,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.018750000000000017,
+            -40.0
+          ],
+          [
+            -0.018750000000000017,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.018750000000000017,
+          -39.24375
+        ],
+        "start": [
+          -0.018750000000000017,
+          -40.0
+        ],
+        "end": [
+          -0.775,
+          -39.24375
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.775,
+            -39.24375
+          ],
+          [
+            -0.775,
+            39.24375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerMiddle"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d2_Hub75FrameCouplerMiddle__middle seam guide slice 16",
+        "offset": -10.753125
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.010000000000000009,
+          39.26
+        ],
+        "start": [
+          -0.75,
+          39.26
+        ],
+        "end": [
+          -0.010000000000000009,
+          40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.010000000000000009,
+            40.0
+          ],
+          [
+            0.010000000000000009,
+            40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.010000000000000009,
+          39.26
+        ],
+        "start": [
+          0.010000000000000009,
+          40.0
+        ],
+        "end": [
+          0.75,
+          39.26
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.75,
+            39.26
+          ],
+          [
+            0.75,
+            -39.26
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.010000000000000009,
+          -39.26
+        ],
+        "start": [
+          0.75,
+          -39.26
+        ],
+        "end": [
+          0.010000000000000009,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.010000000000000009,
+            -40.0
+          ],
+          [
+            -0.010000000000000009,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.010000000000000009,
+          -39.26
+        ],
+        "start": [
+          -0.010000000000000009,
+          -40.0
+        ],
+        "end": [
+          -0.75,
+          -39.26
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.75,
+            -39.26
+          ],
+          [
+            -0.75,
+            39.26
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
         "direction": "positive",
         "operation": "join",
         "targets": [
@@ -9348,6 +11793,468 @@
       }
     },
     {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 1",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -36.828427125,
+            -11.135257813
+          ],
+          [
+            -39.656854249,
+            -11.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -34,
+          -9.135257813
+        ],
+        "start": [
+          -39.656854249,
+          -11.135257813
+        ],
+        "end": [
+          -37.771236166,
+          -13.801924479
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -36.828427125,
+          -12.635257813
+        ],
+        "start": [
+          -37.771236166,
+          -13.801924479
+        ],
+        "end": [
+          -36.828427125,
+          -11.135257813
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 2",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            36.828427125,
+            -11.135257813
+          ],
+          [
+            39.656854249,
+            -11.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          -9.135257813
+        ],
+        "start": [
+          39.656854249,
+          -11.135257813
+        ],
+        "end": [
+          37.771236166,
+          -13.801924479
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          36.828427125,
+          -12.635257813
+        ],
+        "start": [
+          37.771236166,
+          -13.801924479
+        ],
+        "end": [
+          36.828427125,
+          -11.135257813
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 3",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -12.8765625,
+            -36.828427125
+          ],
+          [
+            -12.8765625,
+            -39.656854249
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -10.8765625,
+          -34
+        ],
+        "start": [
+          -12.8765625,
+          -39.656854249
+        ],
+        "end": [
+          -15.543229167,
+          -37.771236166
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -14.3765625,
+          -36.828427125
+        ],
+        "start": [
+          -15.543229167,
+          -37.771236166
+        ],
+        "end": [
+          -12.8765625,
+          -36.828427125
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 4",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            12.8765625,
+            -36.828427125
+          ],
+          [
+            12.8765625,
+            -39.656854249
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          10.8765625,
+          -34
+        ],
+        "start": [
+          12.8765625,
+          -39.656854249
+        ],
+        "end": [
+          15.543229167,
+          -37.771236166
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          14.3765625,
+          -36.828427125
+        ],
+        "start": [
+          15.543229167,
+          -37.771236166
+        ],
+        "end": [
+          12.8765625,
+          -36.828427125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 5",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -36.828427125,
+            -1.145
+          ],
+          [
+            -39.656854249,
+            -1.145
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -34,
+          -3.145
+        ],
+        "start": [
+          -39.656854249,
+          -1.145
+        ],
+        "end": [
+          -37.771236166,
+          1.521666667
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -36.828427125,
+          0.355
+        ],
+        "start": [
+          -37.771236166,
+          1.521666667
+        ],
+        "end": [
+          -36.828427125,
+          -1.145
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge guide-end rounding 6",
+        "offset": -14.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            36.828427125,
+            -1.145
+          ],
+          [
+            39.656854249,
+            -1.145
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          -3.145
+        ],
+        "start": [
+          39.656854249,
+          -1.145
+        ],
+        "end": [
+          37.771236166,
+          1.521666667
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          36.828427125,
+          0.355
+        ],
+        "start": [
+          37.771236166,
+          1.521666667
+        ],
+        "end": [
+          36.828427125,
+          -1.145
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 6,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
       "command": "solid.cylinder",
       "params": {
         "height": 6.1,
@@ -9555,7 +12462,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d3_Hub75FrameCouplerEdge__Edge seam guide",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 1",
         "offset": -14.55
       }
     },
@@ -9563,16 +12470,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -0.15,
-          -1
+          -0.14125,
+          -0.98375
         ],
         "start": [
-          -1.15,
-          -1
+          -1.125,
+          -0.98375
         ],
         "end": [
-          -0.15,
-          0
+          -0.14125,
+          0.0
         ],
         "clockwise": true,
         "connect": true
@@ -9583,12 +12490,12 @@
       "params": {
         "points": [
           [
-            -0.15,
-            0
+            -0.14125,
+            0.0
           ],
           [
-            0.15,
-            0
+            0.14125,
+            0.0
           ]
         ],
         "connect": true
@@ -9598,16 +12505,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          0.15,
-          -1
+          0.14125,
+          -0.98375
         ],
         "start": [
-          0.15,
-          0
+          0.14125,
+          0.0
         ],
         "end": [
-          1.15,
-          -1
+          1.125,
+          -0.98375
         ],
         "clockwise": true,
         "connect": true
@@ -9618,12 +12525,12 @@
       "params": {
         "points": [
           [
-            1.15,
-            -1
+            1.125,
+            -0.98375
           ],
           [
-            1.15,
-            -39
+            1.125,
+            -39.01625
           ]
         ],
         "connect": true
@@ -9633,16 +12540,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          0.15,
-          -39
+          0.14125,
+          -39.01625
         ],
         "start": [
-          1.15,
-          -39
+          1.125,
+          -39.01625
         ],
         "end": [
-          0.15,
-          -40
+          0.14125,
+          -40.0
         ],
         "clockwise": true,
         "connect": true
@@ -9653,12 +12560,12 @@
       "params": {
         "points": [
           [
-            0.15,
-            -40
+            0.14125,
+            -40.0
           ],
           [
-            -0.15,
-            -40
+            -0.14125,
+            -40.0
           ]
         ],
         "connect": true
@@ -9668,16 +12575,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -0.15,
-          -39
+          -0.14125,
+          -39.01625
         ],
         "start": [
-          -0.15,
-          -40
+          -0.14125,
+          -40.0
         ],
         "end": [
-          -1.15,
-          -39
+          -1.125,
+          -39.01625
         ],
         "clockwise": true,
         "connect": true
@@ -9688,12 +12595,12 @@
       "params": {
         "points": [
           [
-            -1.15,
-            -39
+            -1.125,
+            -39.01625
           ],
           [
-            -1.15,
-            -1
+            -1.125,
+            -0.98375
           ]
         ],
         "connect": true
@@ -9706,7 +12613,2452 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.05,
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 2",
+        "offset": -14.296875
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.1325,
+          -0.9675
+        ],
+        "start": [
+          -1.0999999999999999,
+          -0.9675
+        ],
+        "end": [
+          -0.1325,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.1325,
+            0.0
+          ],
+          [
+            0.1325,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.1325,
+          -0.9675
+        ],
+        "start": [
+          0.1325,
+          0.0
+        ],
+        "end": [
+          1.0999999999999999,
+          -0.9675
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0999999999999999,
+            -0.9675
+          ],
+          [
+            1.0999999999999999,
+            -39.0325
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.1325,
+          -39.0325
+        ],
+        "start": [
+          1.0999999999999999,
+          -39.0325
+        ],
+        "end": [
+          0.1325,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.1325,
+            -40.0
+          ],
+          [
+            -0.1325,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.1325,
+          -39.0325
+        ],
+        "start": [
+          -0.1325,
+          -40.0
+        ],
+        "end": [
+          -1.0999999999999999,
+          -39.0325
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0999999999999999,
+            -39.0325
+          ],
+          [
+            -1.0999999999999999,
+            -0.9675
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 3",
+        "offset": -14.043750000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.12375,
+          -0.95125
+        ],
+        "start": [
+          -1.075,
+          -0.95125
+        ],
+        "end": [
+          -0.12375,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.12375,
+            0.0
+          ],
+          [
+            0.12375,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.12375,
+          -0.95125
+        ],
+        "start": [
+          0.12375,
+          0.0
+        ],
+        "end": [
+          1.075,
+          -0.95125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.075,
+            -0.95125
+          ],
+          [
+            1.075,
+            -39.04875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.12375,
+          -39.04875
+        ],
+        "start": [
+          1.075,
+          -39.04875
+        ],
+        "end": [
+          0.12375,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.12375,
+            -40.0
+          ],
+          [
+            -0.12375,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.12375,
+          -39.04875
+        ],
+        "start": [
+          -0.12375,
+          -40.0
+        ],
+        "end": [
+          -1.075,
+          -39.04875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.075,
+            -39.04875
+          ],
+          [
+            -1.075,
+            -0.95125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 4",
+        "offset": -13.790625
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.11499999999999999,
+          -0.935
+        ],
+        "start": [
+          -1.0499999999999998,
+          -0.935
+        ],
+        "end": [
+          -0.11499999999999999,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11499999999999999,
+            0.0
+          ],
+          [
+            0.11499999999999999,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.11499999999999999,
+          -0.935
+        ],
+        "start": [
+          0.11499999999999999,
+          0.0
+        ],
+        "end": [
+          1.0499999999999998,
+          -0.935
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0499999999999998,
+            -0.935
+          ],
+          [
+            1.0499999999999998,
+            -39.065
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.11499999999999999,
+          -39.065
+        ],
+        "start": [
+          1.0499999999999998,
+          -39.065
+        ],
+        "end": [
+          0.11499999999999999,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.11499999999999999,
+            -40.0
+          ],
+          [
+            -0.11499999999999999,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.11499999999999999,
+          -39.065
+        ],
+        "start": [
+          -0.11499999999999999,
+          -40.0
+        ],
+        "end": [
+          -1.0499999999999998,
+          -39.065
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0499999999999998,
+            -39.065
+          ],
+          [
+            -1.0499999999999998,
+            -0.935
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 5",
+        "offset": -13.537500000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.10625,
+          -0.91875
+        ],
+        "start": [
+          -1.025,
+          -0.91875
+        ],
+        "end": [
+          -0.10625,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.10625,
+            0.0
+          ],
+          [
+            0.10625,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.10625,
+          -0.91875
+        ],
+        "start": [
+          0.10625,
+          0.0
+        ],
+        "end": [
+          1.025,
+          -0.91875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.025,
+            -0.91875
+          ],
+          [
+            1.025,
+            -39.08125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.10625,
+          -39.08125
+        ],
+        "start": [
+          1.025,
+          -39.08125
+        ],
+        "end": [
+          0.10625,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.10625,
+            -40.0
+          ],
+          [
+            -0.10625,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.10625,
+          -39.08125
+        ],
+        "start": [
+          -0.10625,
+          -40.0
+        ],
+        "end": [
+          -1.025,
+          -39.08125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.025,
+            -39.08125
+          ],
+          [
+            -1.025,
+            -0.91875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 6",
+        "offset": -13.284375
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0975,
+          -0.9025
+        ],
+        "start": [
+          -1.0,
+          -0.9025
+        ],
+        "end": [
+          -0.0975,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.0975,
+            0.0
+          ],
+          [
+            0.0975,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0975,
+          -0.9025
+        ],
+        "start": [
+          0.0975,
+          0.0
+        ],
+        "end": [
+          1.0,
+          -0.9025
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.0,
+            -0.9025
+          ],
+          [
+            1.0,
+            -39.0975
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0975,
+          -39.0975
+        ],
+        "start": [
+          1.0,
+          -39.0975
+        ],
+        "end": [
+          0.0975,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0975,
+            -40.0
+          ],
+          [
+            -0.0975,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0975,
+          -39.0975
+        ],
+        "start": [
+          -0.0975,
+          -40.0
+        ],
+        "end": [
+          -1.0,
+          -39.0975
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -1.0,
+            -39.0975
+          ],
+          [
+            -1.0,
+            -0.9025
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 7",
+        "offset": -13.03125
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08875,
+          -0.88625
+        ],
+        "start": [
+          -0.975,
+          -0.88625
+        ],
+        "end": [
+          -0.08875,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.08875,
+            0.0
+          ],
+          [
+            0.08875,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08875,
+          -0.88625
+        ],
+        "start": [
+          0.08875,
+          0.0
+        ],
+        "end": [
+          0.975,
+          -0.88625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.975,
+            -0.88625
+          ],
+          [
+            0.975,
+            -39.113749999999996
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08875,
+          -39.113749999999996
+        ],
+        "start": [
+          0.975,
+          -39.113749999999996
+        ],
+        "end": [
+          0.08875,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.08875,
+            -40.0
+          ],
+          [
+            -0.08875,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08875,
+          -39.113749999999996
+        ],
+        "start": [
+          -0.08875,
+          -40.0
+        ],
+        "end": [
+          -0.975,
+          -39.113749999999996
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.975,
+            -39.113749999999996
+          ],
+          [
+            -0.975,
+            -0.88625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 8",
+        "offset": -12.778125000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08,
+          -0.87
+        ],
+        "start": [
+          -0.95,
+          -0.87
+        ],
+        "end": [
+          -0.08,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.08,
+            0.0
+          ],
+          [
+            0.08,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08,
+          -0.87
+        ],
+        "start": [
+          0.08,
+          0.0
+        ],
+        "end": [
+          0.95,
+          -0.87
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.95,
+            -0.87
+          ],
+          [
+            0.95,
+            -39.129999999999995
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.08,
+          -39.129999999999995
+        ],
+        "start": [
+          0.95,
+          -39.129999999999995
+        ],
+        "end": [
+          0.08,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.08,
+            -40.0
+          ],
+          [
+            -0.08,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.08,
+          -39.129999999999995
+        ],
+        "start": [
+          -0.08,
+          -40.0
+        ],
+        "end": [
+          -0.95,
+          -39.129999999999995
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.95,
+            -39.129999999999995
+          ],
+          [
+            -0.95,
+            -0.87
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 9",
+        "offset": -12.525
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.07125000000000001,
+          -0.85375
+        ],
+        "start": [
+          -0.9249999999999999,
+          -0.85375
+        ],
+        "end": [
+          -0.07125000000000001,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.07125000000000001,
+            0.0
+          ],
+          [
+            0.07125000000000001,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.07125000000000001,
+          -0.85375
+        ],
+        "start": [
+          0.07125000000000001,
+          0.0
+        ],
+        "end": [
+          0.9249999999999999,
+          -0.85375
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.9249999999999999,
+            -0.85375
+          ],
+          [
+            0.9249999999999999,
+            -39.14625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.07125000000000001,
+          -39.14625
+        ],
+        "start": [
+          0.9249999999999999,
+          -39.14625
+        ],
+        "end": [
+          0.07125000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.07125000000000001,
+            -40.0
+          ],
+          [
+            -0.07125000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.07125000000000001,
+          -39.14625
+        ],
+        "start": [
+          -0.07125000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.9249999999999999,
+          -39.14625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.9249999999999999,
+            -39.14625
+          ],
+          [
+            -0.9249999999999999,
+            -0.85375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 10",
+        "offset": -12.271875000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0625,
+          -0.8375
+        ],
+        "start": [
+          -0.8999999999999999,
+          -0.8375
+        ],
+        "end": [
+          -0.0625,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.0625,
+            0.0
+          ],
+          [
+            0.0625,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0625,
+          -0.8375
+        ],
+        "start": [
+          0.0625,
+          0.0
+        ],
+        "end": [
+          0.8999999999999999,
+          -0.8375
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.8999999999999999,
+            -0.8375
+          ],
+          [
+            0.8999999999999999,
+            -39.1625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0625,
+          -39.1625
+        ],
+        "start": [
+          0.8999999999999999,
+          -39.1625
+        ],
+        "end": [
+          0.0625,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0625,
+            -40.0
+          ],
+          [
+            -0.0625,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.0625,
+          -39.1625
+        ],
+        "start": [
+          -0.0625,
+          -40.0
+        ],
+        "end": [
+          -0.8999999999999999,
+          -39.1625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.8999999999999999,
+            -39.1625
+          ],
+          [
+            -0.8999999999999999,
+            -0.8375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 11",
+        "offset": -12.01875
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.053750000000000006,
+          -0.82125
+        ],
+        "start": [
+          -0.875,
+          -0.82125
+        ],
+        "end": [
+          -0.053750000000000006,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.053750000000000006,
+            0.0
+          ],
+          [
+            0.053750000000000006,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.053750000000000006,
+          -0.82125
+        ],
+        "start": [
+          0.053750000000000006,
+          0.0
+        ],
+        "end": [
+          0.875,
+          -0.82125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.875,
+            -0.82125
+          ],
+          [
+            0.875,
+            -39.17875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.053750000000000006,
+          -39.17875
+        ],
+        "start": [
+          0.875,
+          -39.17875
+        ],
+        "end": [
+          0.053750000000000006,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.053750000000000006,
+            -40.0
+          ],
+          [
+            -0.053750000000000006,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.053750000000000006,
+          -39.17875
+        ],
+        "start": [
+          -0.053750000000000006,
+          -40.0
+        ],
+        "end": [
+          -0.875,
+          -39.17875
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.875,
+            -39.17875
+          ],
+          [
+            -0.875,
+            -0.82125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 12",
+        "offset": -11.765625
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.04500000000000001,
+          -0.8049999999999999
+        ],
+        "start": [
+          -0.85,
+          -0.8049999999999999
+        ],
+        "end": [
+          -0.04500000000000001,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.04500000000000001,
+            0.0
+          ],
+          [
+            0.04500000000000001,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.04500000000000001,
+          -0.8049999999999999
+        ],
+        "start": [
+          0.04500000000000001,
+          0.0
+        ],
+        "end": [
+          0.85,
+          -0.8049999999999999
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.85,
+            -0.8049999999999999
+          ],
+          [
+            0.85,
+            -39.195
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.04500000000000001,
+          -39.195
+        ],
+        "start": [
+          0.85,
+          -39.195
+        ],
+        "end": [
+          0.04500000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.04500000000000001,
+            -40.0
+          ],
+          [
+            -0.04500000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.04500000000000001,
+          -39.195
+        ],
+        "start": [
+          -0.04500000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.85,
+          -39.195
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.85,
+            -39.195
+          ],
+          [
+            -0.85,
+            -0.8049999999999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 13",
+        "offset": -11.512500000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.036250000000000004,
+          -0.7887500000000001
+        ],
+        "start": [
+          -0.825,
+          -0.7887500000000001
+        ],
+        "end": [
+          -0.036250000000000004,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.036250000000000004,
+            0.0
+          ],
+          [
+            0.036250000000000004,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.036250000000000004,
+          -0.7887500000000001
+        ],
+        "start": [
+          0.036250000000000004,
+          0.0
+        ],
+        "end": [
+          0.825,
+          -0.7887500000000001
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.825,
+            -0.7887500000000001
+          ],
+          [
+            0.825,
+            -39.21125
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.036250000000000004,
+          -39.21125
+        ],
+        "start": [
+          0.825,
+          -39.21125
+        ],
+        "end": [
+          0.036250000000000004,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.036250000000000004,
+            -40.0
+          ],
+          [
+            -0.036250000000000004,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.036250000000000004,
+          -39.21125
+        ],
+        "start": [
+          -0.036250000000000004,
+          -40.0
+        ],
+        "end": [
+          -0.825,
+          -39.21125
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.825,
+            -39.21125
+          ],
+          [
+            -0.825,
+            -0.7887500000000001
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 14",
+        "offset": -11.259375
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.02750000000000001,
+          -0.7725
+        ],
+        "start": [
+          -0.8,
+          -0.7725
+        ],
+        "end": [
+          -0.02750000000000001,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.02750000000000001,
+            0.0
+          ],
+          [
+            0.02750000000000001,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.02750000000000001,
+          -0.7725
+        ],
+        "start": [
+          0.02750000000000001,
+          0.0
+        ],
+        "end": [
+          0.8,
+          -0.7725
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.8,
+            -0.7725
+          ],
+          [
+            0.8,
+            -39.2275
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.02750000000000001,
+          -39.2275
+        ],
+        "start": [
+          0.8,
+          -39.2275
+        ],
+        "end": [
+          0.02750000000000001,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.02750000000000001,
+            -40.0
+          ],
+          [
+            -0.02750000000000001,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.02750000000000001,
+          -39.2275
+        ],
+        "start": [
+          -0.02750000000000001,
+          -40.0
+        ],
+        "end": [
+          -0.8,
+          -39.2275
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.8,
+            -39.2275
+          ],
+          [
+            -0.8,
+            -0.7725
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 15",
+        "offset": -11.006250000000001
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.018750000000000017,
+          -0.75625
+        ],
+        "start": [
+          -0.775,
+          -0.75625
+        ],
+        "end": [
+          -0.018750000000000017,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.018750000000000017,
+            0.0
+          ],
+          [
+            0.018750000000000017,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.018750000000000017,
+          -0.75625
+        ],
+        "start": [
+          0.018750000000000017,
+          0.0
+        ],
+        "end": [
+          0.775,
+          -0.75625
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.775,
+            -0.75625
+          ],
+          [
+            0.775,
+            -39.24375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.018750000000000017,
+          -39.24375
+        ],
+        "start": [
+          0.775,
+          -39.24375
+        ],
+        "end": [
+          0.018750000000000017,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.018750000000000017,
+            -40.0
+          ],
+          [
+            -0.018750000000000017,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.018750000000000017,
+          -39.24375
+        ],
+        "start": [
+          -0.018750000000000017,
+          -40.0
+        ],
+        "end": [
+          -0.775,
+          -39.24375
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.775,
+            -39.24375
+          ],
+          [
+            -0.775,
+            -0.75625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__edge seam guide slice 16",
+        "offset": -10.753125
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.010000000000000009,
+          -0.74
+        ],
+        "start": [
+          -0.75,
+          -0.74
+        ],
+        "end": [
+          -0.010000000000000009,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.010000000000000009,
+            0.0
+          ],
+          [
+            0.010000000000000009,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.010000000000000009,
+          -0.74
+        ],
+        "start": [
+          0.010000000000000009,
+          0.0
+        ],
+        "end": [
+          0.75,
+          -0.74
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.75,
+            -0.74
+          ],
+          [
+            0.75,
+            -39.26
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.010000000000000009,
+          -39.26
+        ],
+        "start": [
+          0.75,
+          -39.26
+        ],
+        "end": [
+          0.010000000000000009,
+          -40.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.010000000000000009,
+            -40.0
+          ],
+          [
+            -0.010000000000000009,
+            -40.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -0.010000000000000009,
+          -39.26
+        ],
+        "start": [
+          -0.010000000000000009,
+          -40.0
+        ],
+        "end": [
+          -0.75,
+          -39.26
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.75,
+            -39.26
+          ],
+          [
+            -0.75,
+            -0.74
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 0.263125,
         "direction": "positive",
         "operation": "join",
         "targets": [

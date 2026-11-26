@@ -462,6 +462,56 @@
     },
     {
       "artifacts": [],
+      "built_source_sha": "c8bc85895805fd52d8e1d3b20e75aa1b85f2f403",
+      "commands": "models/hub75-screen-2panel/solidcraft.json",
+      "dependencies": [
+        "hub75-panel"
+      ],
+      "drawings": [],
+      "id": "hub75-screen-2panel",
+      "native": {
+        "png": "models/hub75-screen-2panel/model.png",
+        "sc": "models/hub75-screen-2panel/model.sc",
+        "step": "models/hub75-screen-2panel/model.step",
+        "stl": null
+      },
+      "owner": "hub75-screen-2panel",
+      "priority": 30,
+      "root": "models/subassemblies/hub75_screen_2panel",
+      "snapshot": {
+        "camera": {
+          "distance": 500,
+          "fov": 0,
+          "pitch": 0.2,
+          "target": [
+            0,
+            0,
+            160
+          ],
+          "yaw": -0.24
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 500,
+            "fov": 0,
+            "pitch": 0.2,
+            "target": [
+              0,
+              -8,
+              160
+            ],
+            "yaw": 2.9
+          },
+          "name": "rear.png",
+          "path": "models/hub75-screen-2panel/rear.png"
+        }
+      ],
+      "source": "models/subassemblies/hub75_screen_2panel/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
@@ -1253,5 +1303,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "9541ba34821e4076bcc5a9e15413b3988d8bc715"
+  "source_sha": "c8bc85895805fd52d8e1d3b20e75aa1b85f2f403"
 }

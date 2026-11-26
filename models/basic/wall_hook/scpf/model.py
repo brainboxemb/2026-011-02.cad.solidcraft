@@ -251,14 +251,6 @@ def wall_hook_drawing():
                 offset_mm=8,
                 decimals=0,
             ),
-            DrawingDimension.radial(
-                "right",
-                (6, 4, 17),
-                diameter=True,
-                override_text="Ø{value} TOOL ACCESS",
-                line_through_mm=(176, 96),
-                decimals=0,
-            ),
         ),
     )
 

@@ -1161,5 +1161,5 @@ html:not(.dark) .hextra-search-trigger{font-size:.9rem}
 
 
 .cad-drawing{margin-top:1rem}
-.cad-drawing-frame{display:block;width:100%;height:min(78vh,900px);min-height:560px;border:1px solid var(--cad-line);border-radius:12px;background:#fff}
-@media(max-width:720px){.cad-drawing-frame{height:70vh;min-height:440px}}
+.cad-drawing-preview-link{display:block;width:100%;border:1px solid var(--cad-line);border-radius:12px;background:#fff;overflow:hidden}
+.cad-drawing-preview{display:block;width:100%;height:auto;background:#fff}

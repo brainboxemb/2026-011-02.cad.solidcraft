@@ -37,10 +37,23 @@ def _add_loop(sketch, loop):
 
 
 def _profile_solid(*, name, loops, y, distance):
-    with Sketch(name=name, plane="XZ", offset=y) as sketch:
-        for loop in loops:
+    """Extrude one or more retained source loops.
+
+    Forge v0.19 requires one closed profile per standalone Sketch, while the
+    native SolidCraft source may store several disconnected profiles in one
+    sketch. Preserve that source shape by lowering each loop separately and
+    joining the resulting native extrusions.
+    """
+    result = None
+    for index, loop in enumerate(loops, start=1):
+        sketch_name = name if len(loops) == 1 else f"{name} {index}"
+        with Sketch(name=sketch_name, plane="XZ", offset=y) as sketch:
             _add_loop(sketch, loop)
-    return sketch.extrude(distance)
+        part = sketch.extrude(distance)
+        result = part if result is None else result + part
+    if result is None:
+        raise ValueError(f"{name}: source profile contains no closed loops")
+    return result
 
 
 def _axis_y_cylinder(*, diameter, length, x, y, z):

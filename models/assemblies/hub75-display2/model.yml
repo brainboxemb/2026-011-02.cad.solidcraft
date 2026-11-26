@@ -17,3 +17,12 @@ stages:
   - Move the display opening and all dependent geometry to Z=94 mm
   - Use full-depth side walls with 30 mm hand slots and an inset rear board
   - Keep five panels and eight CornerBrackets on the existing layout
+extra_views:
+  title: Assembly review
+  note: The exploded snapshot is a stored SolidCraft presentation view; the accepted model remains assembled and all normal occurrence placements are unchanged.
+  items:
+    - kind: build
+      src: exploded.png
+      alt: Exploded second-generation HUB75 display case showing glazing, panels and corner brackets separated from the enclosure
+      caption: Exploded — glazing/window forward, panels and brackets separated behind the fixed wooden enclosure
+

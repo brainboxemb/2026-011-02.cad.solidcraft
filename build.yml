@@ -1,8 +1,10 @@
 schema: 1
-branch: issue/225-exploded-snapshot-template-sync
+branch: issue/21-hub75-exploded-view
 
-modules:
-  - build
-models: []
+modules: []
+models:
+  - hub75-wood-frame
+  - hub75-display2
 tasks:
   - test
+  - build

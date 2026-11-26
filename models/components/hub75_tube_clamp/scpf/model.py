@@ -62,6 +62,18 @@ class Hub75TubeClamp10mm:
             FREE["dove_run"] - FREE["slot_stop"] + 0.05
         )
 
+        # The parent frame applies one active production amendment after linking
+        # this exact standalone source: a 0.14 mm insertion chamfer on the three
+        # open-end slot edges before the clamp is copied to Edge/Corner sites.
+        body = body.chamfer(
+            0.14,
+            edges=[
+                (-7.975, -8.0, 3.275),
+                (-7.1, -8.0, 0.0),
+                (-7.975, -8.0, -3.275),
+            ],
+        )
+
         return body
 
 

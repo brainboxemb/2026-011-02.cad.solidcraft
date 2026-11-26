@@ -35,23 +35,31 @@ def _edge_support_z():
     return _edge_mount_z() - MEDIUM["bushing_z"]
 
 
-def _add_loop(sketch, loop):
-    """Lower retained physical local (X, Z) directly onto the native XZ plane.
+def _native_xz_point(point):
+    """Convert physical local (X, Z) to SolidCraft native XZ sketch (U, V)."""
+    x, z = point
+    return (x, -z)
 
-    source_data.py is already normalized to the reusable component's physical
-    local frame.  Do not reflect Z here: support cylinders, mounting cuts,
-    locator pads and reference features all use the same local Z coordinates.
+
+def _add_loop(sketch, loop):
+    """Lower retained physical local coordinates through the native XZ frame.
+
+    source_data.py stores the production geometry in physical local (X, Z).
+    SolidCraft's native XZ plane uses sketch +V opposite physical +Z, so source
+    points are reflected exactly once at this boundary. Primitive cylinders and
+    pads remain authored directly in world XYZ.
     """
-    contour = sketch.profile(start=tuple(loop["start"]))
+    contour = sketch.profile(start=_native_xz_point(loop["start"]))
     for segment in loop["segments"]:
-        end = tuple(segment["end"])
+        end = _native_xz_point(segment["end"])
         if segment["kind"] == "line":
             contour.line_to(end)
         elif segment["kind"] == "arc":
             contour.arc_center_to(
                 end,
-                center=tuple(segment["center"]),
-                clockwise=segment["clockwise"],
+                center=_native_xz_point(segment["center"]),
+                # Reflection reverses 2D winding.
+                clockwise=not segment["clockwise"],
             )
         else:
             raise ValueError(f"unsupported source segment {segment['kind']!r}")

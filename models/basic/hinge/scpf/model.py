@@ -72,8 +72,8 @@ class Hinge:
     maximum_angle = 180.0
 
     def build(self):
-        leaf_a = HingeLeaf(name="Leaf A")
-        leaf_b = HingeLeaf(name="Leaf B").attach(
+        leaf_a = HingeLeaf(name="LeafA")
+        leaf_b = HingeLeaf(name="LeafB").attach(
             leaf_a,
             parent="hinge_axis",
             child="hinge_axis",

@@ -751,6 +751,69 @@
     },
     {
       "artifacts": [],
+      "built_source_sha": "1d47182a1bdf657ad798361fbb7d2475b73e37ee",
+      "commands": "models/hub75-frame-tube-10mm/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-tube-10mm",
+      "native": {
+        "png": "models/hub75-frame-tube-10mm/model.png",
+        "sc": "models/hub75-frame-tube-10mm/model.sc",
+        "step": "models/hub75-frame-tube-10mm/model.step",
+        "stl": null
+      },
+      "owner": "hub75-frame-tube-10mm",
+      "priority": 20,
+      "root": "models/components/hub75_frame_tube",
+      "snapshot": {
+        "camera": {
+          "distance": 410,
+          "fov": 0,
+          "pitch": 0.28,
+          "target": [
+            0,
+            0,
+            0
+          ],
+          "yaw": -0.65
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 42,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "yaw": 1.5708
+          },
+          "name": "end-profile.png",
+          "path": "models/hub75-frame-tube-10mm/end-profile.png"
+        },
+        {
+          "camera": {
+            "distance": 410,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              0,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "side.png",
+          "path": "models/hub75-frame-tube-10mm/side.png"
+        }
+      ],
+      "source": "models/components/hub75_frame_tube/scpf/model.py"
+    },
+    {
+      "artifacts": [],
       "built_source_sha": "df92896d31f4ee2de5bd260d36834192a2c97aa1",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
@@ -1703,5 +1766,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "df92896d31f4ee2de5bd260d36834192a2c97aa1"
+  "source_sha": "1d47182a1bdf657ad798361fbb7d2475b73e37ee"
 }

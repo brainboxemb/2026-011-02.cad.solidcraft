@@ -1,0 +1,90 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "length",
+        "expression": "360",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "YZ",
+        "name": "Tube outer profile"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0,
+          0
+        ],
+        "diameter": 10.0
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "length",
+        "direction": "symmetric",
+        "body_name": "Hub75FrameTube10mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "YZ",
+        "name": "Tube bore profile"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0,
+          0
+        ],
+        "diameter": 8.0
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "length + 2 mm",
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameTube10mm"
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Aluminium",
+        "density_g_cm3": 2.7,
+        "color": "#C4C8CB"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Hub75FrameTube10mm"
+        ],
+        "material": "Aluminium"
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+schema: 1
+id: hub75-tube-clamp
+builder: forge
+variants:
+  - id: hub75-tube-clamp
+    source: scpf/model.py
+  - id: hub75-tube-clamp-male
+    source: scpf/male.py
+process: true
+artifacts: [stl]
+
+snapshot:
+  camera:
+    target: [-3.5, 0, 0]
+    yaw: -0.75
+    pitch: 0.4
+    distance: 42
+    fov: 0
+
+snapshots:
+  - name: front.png
+    camera:
+      target: [-3.5, 0, 0]
+      yaw: 0
+      pitch: 0
+      distance: 38
+      fov: 0
+  - name: rear.png
+    camera:
+      target: [-3.5, 0, 0]
+      yaw: 3.14
+      pitch: 0
+      distance: 38
+      fov: 0
+  - name: side.png
+    camera:
+      target: [-3.5, 0, 0]
+      yaw: -1.57
+      pitch: 0
+      distance: 38
+      fov: 0

@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/146-reconcile-completed-plan
+branch: feature/150-wall-hook-polygon-fillets
 
 modules: []
-models: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

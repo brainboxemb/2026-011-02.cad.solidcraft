@@ -1,10 +1,8 @@
 schema: 1
-branch: feature/229-hub75-dovetail-receiver-frame
+branch: feature/233-owner-first-variant-pages
 
-modules: []
-models:
-  - hub75-frame-coupler
-  - hub75-display-frame-2panel
+modules:
+  - pages
+models: []
 tasks:
   - test
-  - build

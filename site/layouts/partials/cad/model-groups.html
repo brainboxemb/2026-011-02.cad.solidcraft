@@ -16,7 +16,7 @@
           <h3>{{ index $groupDef "title" }}</h3>
         {{ end }}
         <div class="cad-model-grid">
-          {{ range sort $groupModels "Params.model.priority" }}
+          {{ range sort $groupModels "Params.cadPriority" }}
             {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
           {{ end }}
         </div>
@@ -29,7 +29,7 @@
     <section class="cad-catalog-group" data-cad-group="other">
       {{ if eq $headingLevel 2 }}<h2>Other</h2>{{ else }}<h3>Other</h3>{{ end }}
       <div class="cad-model-grid">
-        {{ range sort $ungrouped "Params.model.priority" }}
+        {{ range sort $ungrouped "Params.cadPriority" }}
           {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
         {{ end }}
       </div>
@@ -37,7 +37,7 @@
   {{ end }}
 {{ else }}
   <div class="cad-model-grid">
-    {{ range sort $models "Params.model.priority" }}
+    {{ range sort $models "Params.cadPriority" }}
       {{ partial "cad/model-card.html" (dict "page" . "showSection" $showSection) }}
     {{ end }}
   </div>

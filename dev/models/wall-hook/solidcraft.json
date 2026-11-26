@@ -445,9 +445,7 @@
         },
         "title_block_overrides": {
           "title": "Wall Hook",
-          "identification_number": "wall-hook",
-          "document_status": "Development",
-          "department": "CAD"
+          "identification_number": "wall-hook"
         }
       }
     },
@@ -468,11 +466,7 @@
       "command": "drawing.properties.set",
       "params": {
         "values": {
-          "project": "SolidCraft CAD model catalog",
           "part_number": "wall-hook",
-          "revision": "A",
-          "author": "brainboxemb",
-          "organization": "brainboxemb",
           "description": "Wall Hook technical drawing"
         }
       }
@@ -486,7 +480,7 @@
           "designer": "brainboxemb",
           "checker": "CI",
           "date": "2026-11-26",
-          "hidden": false
+          "hidden": true
         }
       }
     },
@@ -495,8 +489,8 @@
       "params": {
         "sheet": "$drawing_1_sheet",
         "iso": true,
-        "gap_mm": 12.0,
-        "scale": "2.5:1"
+        "gap_mm": 16.0,
+        "scale": "1:1"
       },
       "bind": {
         "$drawing_1_front": "view",
@@ -542,8 +536,8 @@
         "set": {
           "place": {
             "at": [
-              55.0,
-              130.0
+              52.0,
+              138.0
             ]
           }
         }
@@ -556,8 +550,8 @@
         "set": {
           "place": {
             "at": [
-              55.0,
-              35.0
+              52.0,
+              76.0
             ]
           }
         }
@@ -570,12 +564,10 @@
         "set": {
           "place": {
             "at": [
-              132.0,
-              137.0
+              108.0,
+              138.0
             ]
-          },
-          "scale": "2:1",
-          "linked": false
+          }
         }
       }
     },
@@ -587,10 +579,10 @@
           "place": {
             "at": [
               220.0,
-              150.0
+              142.0
             ]
           },
-          "scale": "1.5:1",
+          "scale": "2:1",
           "visual_style": "shaded"
         }
       }
@@ -782,11 +774,11 @@
           "sheet": "$drawing_1_sheet"
         },
         "at": [
-          158.0,
-          78.0
+          14.0,
+          50.0
         ],
-        "content": "NOTES\n1. ALL DIMENSIONS IN MM.\n2. MOUNTING HOLE CENTRES: UPPER 10 FROM TOP; LOWER 17 FROM BOTTOM.\n3. 2\u00d7 \u00d84.2 MOUNTING HOLES; LOWER TOOL ACCESS \u00d88.\n4. FRONT/BACK BOUNDARY CHAMFER 1.5.\n5. HOLE ENTRY CHAMFER 1.0; WALL-SIDE RELIEF 0.3.",
-        "cap_mm": 2.2,
+        "content": "NOTES\n1. ALL DIMENSIONS IN MM.\n2. HOLE CENTRES: 10 FROM TOP; 17 FROM BOTTOM.\n3. 2\u00d7 \u00d84.2 THRU; LOWER TOOL ACCESS \u00d88.\n4. CHAMFERS: BODY 1.5; ENTRY 1.0; WALL RELIEF 0.3.",
+        "cap_mm": 1.6,
         "align": "left"
       },
       "bind": {
@@ -824,18 +816,12 @@
           "dimension_count": 5,
           "note_count": 1,
           "properties": {
-            "project": "SolidCraft CAD model catalog",
             "part_number": "wall-hook",
-            "revision": "A",
-            "author": "brainboxemb",
-            "organization": "brainboxemb",
             "description": "Wall Hook technical drawing"
           },
           "title_block": {
             "title": "Wall Hook",
-            "identification_number": "wall-hook",
-            "document_status": "Development",
-            "department": "CAD"
+            "identification_number": "wall-hook"
           },
           "view_styles": {
             "$drawing_1_iso": "shaded"
@@ -846,7 +832,7 @@
             "designer": "brainboxemb",
             "checker": "CI",
             "date": "2026-11-26",
-            "hidden": false
+            "hidden": true
           }
         }
       }

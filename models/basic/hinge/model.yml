@@ -1,0 +1,20 @@
+purpose: [example]
+section: basic
+priority: 60
+title: Hinge
+tagline: Reusable two-leaf hinge with a native bounded revolute joint
+description: >
+  Basic hinge reconstructed from the supplied native SolidCraft Hinge Assembly.
+  Two identical 40 × 30 × 3 mm leaves each carry a Ø8 × 40 mm knuckle along X.
+  Leaf A remains grounded while Leaf B is connected by a native revolute joint
+  named Hinge, starting at 60° with 0–180° limits.
+parameters: 40 × 30 × 3 mm leaves; Ø8 × 40 mm knuckles; 60° initial angle; 0–180° joint limits
+stages:
+  - Build one reusable leaf from the 40 × 30 × 3 mm plate and Ø8 × 40 mm knuckle source geometry
+  - Create grounded Leaf A and moving Leaf B as independent occurrences
+  - Define the shared +X hinge-axis frame at component-local Y33 / Z4
+  - Connect Leaf B to Leaf A with native revolute joint Hinge using the native flipped orientation
+  - Preserve the supplied 60° value and 0–180° limits
+  - Verify native joint inspection and source-pose geometry before acceptance
+
+source_note: Native SolidCraft source was supplied as Hinge Assembly.sc/json. JSON evidence is retained here; the binary .sc remains required before final acceptance. Leaf B source pose uses the shared hinge-axis AnchorFrame, flipped revolute orientation and 60° value.

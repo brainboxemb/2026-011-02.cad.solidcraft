@@ -1,8 +1,9 @@
 schema: 1
-branch: feature/176-hub75-display-frame-2panel
+branch: fix/174-coupler-patterns-geometry
 
 modules: []
 models:
+  - hub75-frame-coupler
   - hub75-display-frame-2panel
 tasks:
   - test

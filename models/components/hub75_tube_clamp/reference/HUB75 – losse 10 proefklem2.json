@@ -1,0 +1,3420 @@
+{
+  "format": "solidcraft/68",
+  "name": "HUB75 – losse 10 proefklem2",
+  "units": "mm",
+  "params": [
+    {
+      "name": "tube_d",
+      "expr": "10 mm",
+      "unit": "mm",
+      "comment": "Buitendiameter buis",
+      "model": false
+    },
+    {
+      "name": "clamp_interference",
+      "expr": "0.4 mm",
+      "unit": "mm",
+      "comment": "Verschil in diameter voor vrije klem",
+      "model": false
+    },
+    {
+      "name": "clamp_bore",
+      "expr": "tube_d-clamp_interference",
+      "unit": "mm",
+      "comment": "Binnendiameter in vrije of gemonteerde geometrie",
+      "model": false
+    },
+    {
+      "name": "clamp_wall",
+      "expr": "2 mm",
+      "unit": "mm",
+      "comment": "Radiale wanddikte",
+      "model": false
+    },
+    {
+      "name": "clamp_width",
+      "expr": "12 mm",
+      "unit": "mm",
+      "comment": "Breedte langs de buisas",
+      "model": false
+    },
+    {
+      "name": "clamp_open",
+      "expr": "90 deg",
+      "unit": "deg",
+      "comment": "Hoek tussen de radiale uiteinden",
+      "model": false
+    },
+    {
+      "name": "clamp_r",
+      "expr": "clamp_bore/2",
+      "unit": "mm",
+      "comment": "Binnenradius",
+      "model": false
+    },
+    {
+      "name": "clamp_R",
+      "expr": "clamp_r+clamp_wall",
+      "unit": "mm",
+      "comment": "Buitenradius",
+      "model": false
+    },
+    {
+      "name": "dove_run",
+      "expr": "16 mm",
+      "unit": "mm",
+      "comment": "Schuiflengte haaks op de buisas",
+      "model": false
+    },
+    {
+      "name": "dove_head",
+      "expr": "12 mm",
+      "unit": "mm",
+      "comment": "Breedte over de zwaluwstaartkop",
+      "model": false
+    },
+    {
+      "name": "dove_depth",
+      "expr": "2.05 mm",
+      "unit": "mm",
+      "comment": "Hoogte van de zwaluwstaart",
+      "model": false
+    },
+    {
+      "name": "dove_angle",
+      "expr": "45 deg",
+      "unit": "deg",
+      "comment": "Flankhoek bij vlakke printoriëntatie",
+      "model": false
+    },
+    {
+      "name": "dove_neck",
+      "expr": "dove_head-2*(dove_depth-dove_land_root-dove_land_head)*tan(dove_angle)",
+      "unit": "mm",
+      "comment": "Breedte van de zwaluwstaarthals",
+      "model": false
+    },
+    {
+      "name": "web_back",
+      "expr": "tube_d/2+3.5 mm",
+      "unit": "mm",
+      "comment": "Afstand van buisas tot railaanzet",
+      "model": false
+    },
+    {
+      "name": "web_front",
+      "expr": "tube_d/2+0.65 mm",
+      "unit": "mm",
+      "comment": "Begin van de overgang in de ring",
+      "model": false
+    },
+    {
+      "name": "web_half",
+      "expr": "3.5 mm",
+      "unit": "mm",
+      "comment": "Halve breedte van de overgang bij de ring",
+      "model": false
+    },
+    {
+      "name": "dove_datum",
+      "expr": "tube_d/2+clamp_wall-clamp_interference/2",
+      "unit": "mm",
+      "comment": "Vaste aanzet van laag profiel ten opzichte van buisas",
+      "model": false
+    },
+    {
+      "name": "dove_land_root",
+      "expr": "0.65 mm",
+      "unit": "mm",
+      "comment": "Recht stuk aan de hals vóór de schuine flank",
+      "model": false
+    },
+    {
+      "name": "dove_land_head",
+      "expr": "0.8 mm",
+      "unit": "mm",
+      "comment": "Recht stuk aan de kop na de schuine flank",
+      "model": false
+    },
+    {
+      "name": "dove_round",
+      "expr": "0.2 mm",
+      "unit": "mm",
+      "comment": "Radius van alle profielovergangen",
+      "model": false
+    },
+    {
+      "name": "slot_back",
+      "expr": "dove_datum+dove_depth",
+      "unit": "mm",
+      "comment": "Buitenvlak op montagezijde",
+      "model": false
+    },
+    {
+      "name": "slot_depth",
+      "expr": "1.75 mm",
+      "unit": "mm",
+      "comment": "Diepte van de schuifgleuf",
+      "model": false
+    },
+    {
+      "name": "slot_land",
+      "expr": "0.5 mm",
+      "unit": "mm",
+      "comment": "Rechte aanloop vóór en na de schuine flank",
+      "model": false
+    },
+    {
+      "name": "slot_mouth",
+      "expr": "5.8 mm",
+      "unit": "mm",
+      "comment": "Vrije opening van de gleuf",
+      "model": false
+    },
+    {
+      "name": "slot_floor",
+      "expr": "slot_mouth+2*(slot_depth-2*slot_land)*tan(dove_angle)",
+      "unit": "mm",
+      "comment": "Grootste breedte in de sleuf",
+      "model": false
+    },
+    {
+      "name": "slot_stop",
+      "expr": "1 mm",
+      "unit": "mm",
+      "comment": "Gesloten aanslag aan het einde",
+      "model": false
+    },
+    {
+      "name": "slot_round",
+      "expr": "0.15 mm",
+      "unit": "mm",
+      "comment": "Radius in de gleuf",
+      "model": false
+    },
+    {
+      "name": "slot_back_round",
+      "expr": "0.3 mm",
+      "unit": "mm",
+      "comment": "Buitenradius van de geïntegreerde rug",
+      "model": false
+    },
+    {
+      "name": "slot_roof_angle",
+      "expr": "48 deg",
+      "unit": "deg",
+      "comment": "Hoek van de bovenflank boven het printbed",
+      "model": false
+    },
+    {
+      "name": "rail_print_angle",
+      "expr": "48 deg",
+      "unit": "deg",
+      "comment": "Hoek boven het printbed van de onderste overgang naar de klem",
+      "model": false
+    },
+    {
+      "name": "dove_groove_flat",
+      "expr": "0.4 mm",
+      "unit": "mm",
+      "comment": "Breedte van het vlakje onder in beide zwaluwstaartgroeven",
+      "model": false
+    }
+  ],
+  "features": [
+    {
+      "id": 1,
+      "name": "Open klemring met afgeronde lippen",
+      "suppressed": false,
+      "param_names": [
+        "d1"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XY"
+        },
+        "distance": "-clamp_width/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [4.8083261120685235, 4.8083261120685235],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_R*cos(clamp_open/2)",
+              "y": "1*clamp_R*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [4.8083261120685235, -4.8083261120685235],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_R*cos(clamp_open/2)",
+              "y": "-1*clamp_R*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-6.8, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-clamp_R"
+            }
+          },
+          {
+            "id": "a1.center",
+            "pos": [0.0, 0.0],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [4.8083261120685235, -4.8083261120685235],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_R*cos(clamp_open/2)",
+              "y": "-1*clamp_R*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [3.394112549695428, -3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_r*cos(clamp_open/2)",
+              "y": "-1*clamp_r*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [4.8083261120685235, -3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "(clamp_r+clamp_R)/2*cos(clamp_open/2)+clamp_wall/2*sin(clamp_open/2)",
+              "y": "-1*((clamp_r+clamp_R)/2*sin(clamp_open/2)-clamp_wall/2*cos(clamp_open/2))"
+            }
+          },
+          {
+            "id": "a2.center",
+            "pos": [4.1012193308819755, -4.1012193308819755],
+            "fixed": false
+          },
+          {
+            "id": "p7",
+            "pos": [3.394112549695428, -3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_r*cos(clamp_open/2)",
+              "y": "-1*clamp_r*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [3.394112549695428, 3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_r*cos(clamp_open/2)",
+              "y": "1*clamp_r*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [-4.8, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-clamp_r"
+            }
+          },
+          {
+            "id": "a3.center",
+            "pos": [0.0, 0.0],
+            "fixed": false
+          },
+          {
+            "id": "p10",
+            "pos": [3.394112549695428, 3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_r*cos(clamp_open/2)",
+              "y": "1*clamp_r*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [4.8083261120685235, 4.8083261120685235],
+            "fixed": true,
+            "exprs": {
+              "x": "clamp_R*cos(clamp_open/2)",
+              "y": "1*clamp_R*sin(clamp_open/2)"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [4.8083261120685235, 3.394112549695428],
+            "fixed": true,
+            "exprs": {
+              "x": "(clamp_r+clamp_R)/2*cos(clamp_open/2)+clamp_wall/2*sin(clamp_open/2)",
+              "y": "1*((clamp_r+clamp_R)/2*sin(clamp_open/2)-clamp_wall/2*cos(clamp_open/2))"
+            }
+          },
+          {
+            "id": "a4.center",
+            "pos": [4.1012193308819755, 4.1012193308819755],
+            "fixed": false
+          }
+        ],
+        "curves": [
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 4,
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 8,
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "a3",
+            "type": "arc",
+            "c": 12,
+            "a": 10,
+            "b": 9,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "a4",
+            "type": "arc",
+            "c": 16,
+            "a": 13,
+            "b": 14,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "point_on_curve",
+            "p": 3,
+            "c": 0
+          },
+          {
+            "id": "k2",
+            "type": "coincident",
+            "p": 0,
+            "q": 4
+          },
+          {
+            "id": "k3",
+            "type": "point_on_curve",
+            "p": 7,
+            "c": 1
+          },
+          {
+            "id": "k4",
+            "type": "point_on_curve",
+            "p": 11,
+            "c": 2
+          },
+          {
+            "id": "k5",
+            "type": "coincident",
+            "p": 0,
+            "q": 12
+          },
+          {
+            "id": "k6",
+            "type": "point_on_curve",
+            "p": 15,
+            "c": 3
+          }
+        ],
+        "counters": {
+          "a": 4,
+          "k": 6,
+          "p": 12
+        }
+      }
+    },
+    {
+      "id": 2,
+      "name": "Elastische klemring",
+      "suppressed": false,
+      "body_names": [
+        "Ø10 proefklem"
+      ],
+      "param_names": [
+        "d2"
+      ],
+      "type": "extrude",
+      "sketch": 1,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "clamp_width",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "new_body"
+    },
+    {
+      "id": 3,
+      "name": "Tapse overgang naar klemring",
+      "suppressed": false,
+      "param_names": [
+        "d3"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XY"
+        },
+        "distance": "-clamp_width/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.5, -8.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back",
+              "y": "-dove_run/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-5.65, -3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "-web_half"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-5.65, 3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "web_half"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-8.5, 8.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back",
+              "y": "dove_run/2"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 4,
+          "p": 4
+        }
+      }
+    },
+    {
+      "id": 4,
+      "name": "Dragende overgang",
+      "suppressed": true,
+      "param_names": [
+        "d4"
+      ],
+      "type": "extrude",
+      "sketch": 3,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "clamp_width",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Zwaluwstaartprofiel",
+      "suppressed": false,
+      "param_names": [
+        "d5"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.5, -3.5000000000000004],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back",
+              "y": "-dove_neck/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-11.0, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back-dove_depth",
+              "y": "-dove_head/2"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-11.0, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back-dove_depth",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-8.5, 3.5000000000000004],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_back",
+              "y": "dove_neck/2"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 4,
+          "p": 4
+        }
+      }
+    },
+    {
+      "id": 6,
+      "name": "Schuifbare zwaluwstaart",
+      "suppressed": true,
+      "param_names": [
+        "d6"
+      ],
+      "type": "extrude",
+      "sketch": 5,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Laag zwaluwstaartprofiel met rechte aanlopen",
+      "suppressed": false,
+      "param_names": [
+        "d7"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-5.65, -5.2],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(0))*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))",
+              "y": "(-dove_neck/2)+(-(-1))*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-5.8500000000000005, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-1)*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))",
+              "y": "(-dove_neck/2)+(0)*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-5.70857864376269, -5.34142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(((-(0))+(-1)))*((dove_round/sqrt(1-(((-(0))*(-1)+(-(-1))*(0)))^2)-dove_round/sqrt(2+2*((-(0))*(-1)+(-(-1))*(0)))))",
+              "y": "(-dove_neck/2)+(((-(-1))+(0)))*((dove_round/sqrt(1-(((-(0))*(-1)+(-(-1))*(0)))^2)-dove_round/sqrt(2+2*((-(0))*(-1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "a1.center",
+            "pos": [-5.849999999999998, -5.200000000000003],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [-5.8500000000000005, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-1)*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))",
+              "y": "(-dove_neck/2)+(0)*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-7.367157287525381, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-(-1))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-dove_neck/2)+(-(0))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-7.367157287525381, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-(-1))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-dove_neck/2)+(-(0))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-7.50857864376269, -5.45857864376269],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-cos(dove_angle))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-dove_neck/2)+(-sin(dove_angle))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-7.443693973998399, -5.415224093497743],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(((-(-1))+(-cos(dove_angle))))*((dove_round/sqrt(1-(((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-dove_round/sqrt(2+2*((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-dove_neck/2)+(((-(0))+(-sin(dove_angle))))*((dove_round/sqrt(1-(((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-dove_round/sqrt(2+2*((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "a2.center",
+            "pos": [-7.36715728752538, -5.600000000000003],
+            "fixed": false
+          },
+          {
+            "id": "p9",
+            "pos": [-7.50857864376269, -5.45857864376269],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-cos(dove_angle))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-dove_neck/2)+(-sin(dove_angle))*(dove_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-7.991421356237309, -5.94142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-(-cos(dove_angle)))*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-dove_head/2)+(-(-sin(dove_angle)))*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-7.991421356237309, -5.94142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-(-cos(dove_angle)))*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-dove_head/2)+(-(-sin(dove_angle)))*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [-8.132842712474618, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-1)*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-dove_head/2)+(0)*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [-8.0563060260016, -5.984775906502257],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(((-(-cos(dove_angle)))+(-1)))*((dove_round/sqrt(1-(((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))^2)-dove_round/sqrt(2+2*((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-dove_head/2)+(((-(-sin(dove_angle)))+(0)))*((dove_round/sqrt(1-(((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))^2)-dove_round/sqrt(2+2*((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "a3.center",
+            "pos": [-8.13284271247462, -5.799999999999994],
+            "fixed": false
+          },
+          {
+            "id": "p14",
+            "pos": [-8.132842712474618, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-1)*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-dove_head/2)+(0)*(dove_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p15",
+            "pos": [-8.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(-(-1))*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))",
+              "y": "(-dove_head/2)+(-(0))*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p16",
+            "pos": [-8.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(-(-1))*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))",
+              "y": "(-dove_head/2)+(-(0))*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p17",
+            "pos": [-8.85, -5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(0)*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))",
+              "y": "(-dove_head/2)+(1)*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p18",
+            "pos": [-8.79142135623731, -5.94142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(((-(-1))+(0)))*((dove_round/sqrt(1-(((-(-1))*(0)+(-(0))*(1)))^2)-dove_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(1)))))",
+              "y": "(-dove_head/2)+(((-(0))+(1)))*((dove_round/sqrt(1-(((-(-1))*(0)+(-(0))*(1)))^2)-dove_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "a4.center",
+            "pos": [-8.65, -5.800000000000002],
+            "fixed": false
+          },
+          {
+            "id": "p19",
+            "pos": [-8.85, -5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(0)*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))",
+              "y": "(-dove_head/2)+(1)*(dove_round*sqrt((1+((-(-1))*(0)+(-(0))*(1)))/(1-((-(-1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p20",
+            "pos": [-8.85, 5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(-(0))*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))",
+              "y": "(dove_head/2)+(-(1))*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p21",
+            "pos": [-8.85, 5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(-(0))*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))",
+              "y": "(dove_head/2)+(-(1))*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p22",
+            "pos": [-8.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(1)*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))",
+              "y": "(dove_head/2)+(0)*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p23",
+            "pos": [-8.79142135623731, 5.94142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(((-(0))+(1)))*((dove_round/sqrt(1-(((-(0))*(1)+(-(1))*(0)))^2)-dove_round/sqrt(2+2*((-(0))*(1)+(-(1))*(0)))))",
+              "y": "(dove_head/2)+(((-(1))+(0)))*((dove_round/sqrt(1-(((-(0))*(1)+(-(1))*(0)))^2)-dove_round/sqrt(2+2*((-(0))*(1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "a5.center",
+            "pos": [-8.650000000000002, 5.8000000000000025],
+            "fixed": false
+          },
+          {
+            "id": "p24",
+            "pos": [-8.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth)+(1)*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))",
+              "y": "(dove_head/2)+(0)*(dove_round*sqrt((1+((-(0))*(1)+(-(1))*(0)))/(1-((-(0))*(1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p25",
+            "pos": [-8.132842712474618, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-(1))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(dove_head/2)+(-(0))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p26",
+            "pos": [-8.132842712474618, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(-(1))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(dove_head/2)+(-(0))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p27",
+            "pos": [-7.991421356237309, 5.94142135623731],
+            "fixed": true,            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(cos(dove_angle))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(dove_head/2)+(-sin(dove_angle))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p28",
+            "pos": [-8.0563060260016, 5.984775906502257],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(((-(1))+(cos(dove_angle))))*((dove_round/sqrt(1-(((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-dove_round/sqrt(2+2*((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(dove_head/2)+(((-(0))+(-sin(dove_angle))))*((dove_round/sqrt(1-(((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-dove_round/sqrt(2+2*((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "a6.center",
+            "pos": [-8.132842712474618, 5.800000000000002],
+            "fixed": false
+          },
+          {
+            "id": "p29",
+            "pos": [-7.991421356237309, 5.94142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_depth+dove_land_head)+(cos(dove_angle))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(dove_head/2)+(-sin(dove_angle))*(dove_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p30",
+            "pos": [-7.50857864376269, 5.45857864376269],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-(cos(dove_angle)))*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(dove_neck/2)+(-(-sin(dove_angle)))*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p31",
+            "pos": [-7.50857864376269, 5.45857864376269],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(-(cos(dove_angle)))*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(dove_neck/2)+(-(-sin(dove_angle)))*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p32",
+            "pos": [-7.367157287525381, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(1)*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(dove_neck/2)+(0)*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p33",
+            "pos": [-7.443693973998399, 5.415224093497743],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(((-(cos(dove_angle)))+(1)))*((dove_round/sqrt(1-(((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))^2)-dove_round/sqrt(2+2*((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(dove_neck/2)+(((-(-sin(dove_angle)))+(0)))*((dove_round/sqrt(1-(((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))^2)-dove_round/sqrt(2+2*((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "a7.center",
+            "pos": [-7.36715728752538, 5.600000000000002],
+            "fixed": false
+          },
+          {
+            "id": "p34",
+            "pos": [-7.367157287525381, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-dove_datum-dove_land_root)+(1)*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(dove_neck/2)+(0)*(dove_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p35",
+            "pos": [-5.8500000000000005, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(1))*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))",
+              "y": "(dove_neck/2)+(-(0))*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p36",
+            "pos": [-5.8500000000000005, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(1))*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))",
+              "y": "(dove_neck/2)+(-(0))*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p37",
+            "pos": [-5.65, 5.2],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(0)*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))",
+              "y": "(dove_neck/2)+(-1)*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p38",
+            "pos": [-5.70857864376269, 5.34142135623731],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(((-(1))+(0)))*((dove_round/sqrt(1-(((-(1))*(0)+(-(0))*(-1)))^2)-dove_round/sqrt(2+2*((-(1))*(0)+(-(0))*(-1)))))",
+              "y": "(dove_neck/2)+(((-(0))+(-1)))*((dove_round/sqrt(1-(((-(1))*(0)+(-(0))*(-1)))^2)-dove_round/sqrt(2+2*((-(1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "a8.center",
+            "pos": [-5.849999999999998, 5.200000000000003],
+            "fixed": false
+          },
+          {
+            "id": "p39",
+            "pos": [-5.65, 5.2],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(0)*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))",
+              "y": "(dove_neck/2)+(-1)*(dove_round*sqrt((1+((-(1))*(0)+(-(0))*(-1)))/(1-((-(1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p40",
+            "pos": [-5.65, -5.2],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(0))*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))",
+              "y": "(-dove_neck/2)+(-(-1))*(dove_round*sqrt((1+((-(0))*(-1)+(-(-1))*(0)))/(1-((-(0))*(-1)+(-(-1))*(0)))))"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 4,
+            "a": 2,
+            "b": 1,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 10,
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "a3",
+            "type": "arc",
+            "c": 16,
+            "a": 14,
+            "b": 13,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 17,
+            "b": 18,
+            "construction": false
+          },
+          {
+            "id": "a4",
+            "type": "arc",
+            "c": 22,
+            "a": 20,
+            "b": 19,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 23,
+            "b": 24,
+            "construction": false
+          },
+          {
+            "id": "a5",
+            "type": "arc",
+            "c": 28,
+            "a": 26,
+            "b": 25,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 29,
+            "b": 30,
+            "construction": false
+          },
+          {
+            "id": "a6",
+            "type": "arc",
+            "c": 34,
+            "a": 32,
+            "b": 31,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 35,
+            "b": 36,
+            "construction": false
+          },
+          {
+            "id": "a7",
+            "type": "arc",
+            "c": 40,
+            "a": 37,
+            "b": 38,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 41,
+            "b": 42,
+            "construction": false
+          },
+          {
+            "id": "a8",
+            "type": "arc",
+            "c": 46,
+            "a": 44,
+            "b": 43,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 47,
+            "b": 48,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "point_on_curve",
+            "p": 3,
+            "c": 0
+          },
+          {
+            "id": "k2",
+            "type": "point_on_curve",
+            "p": 9,
+            "c": 2
+          },
+          {
+            "id": "k3",
+            "type": "point_on_curve",
+            "p": 15,
+            "c": 4
+          },
+          {
+            "id": "k4",
+            "type": "point_on_curve",
+            "p": 21,
+            "c": 6
+          },
+          {
+            "id": "k5",
+            "type": "point_on_curve",
+            "p": 27,
+            "c": 8
+          },
+          {
+            "id": "k6",
+            "type": "point_on_curve",
+            "p": 33,
+            "c": 10
+          },
+          {
+            "id": "k7",
+            "type": "point_on_curve",
+            "p": 39,
+            "c": 12
+          },
+          {
+            "id": "k8",
+            "type": "point_on_curve",
+            "p": 45,
+            "c": 14
+          }
+        ],
+        "counters": {
+          "a": 8,
+          "k": 8,
+          "l": 8,
+          "p": 40
+        }
+      }
+    },
+    {
+      "id": 10,
+      "name": "Lage afgeronde zwaluwstaart direct op de ring",
+      "suppressed": true,
+      "param_names": [
+        "d8"
+      ],
+      "type": "extrude",
+      "sketch": 9,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Afgeronde insteekranden",
+      "suppressed": true,
+      "param_names": [
+        "d9"
+      ],
+      "edge_refs": [
+        {
+          "dir": [0.0, 0.0, 1.0],
+          "min": [-8.85, -8.000000000000002, -6.000000000000002],
+          "max": [5.101219330881977, 8.000000000000002, 6.000000000000001]
+        },
+        {
+          "dir": [0.0, 0.0, 1.0],
+          "min": [-8.85, -8.000000000000002, -6.000000000000002],
+          "max": [5.101219330881977, 8.000000000000002, 6.000000000000001]
+        }
+      ],
+      "edge_names": [
+        "F10:side:l4|F10:start",
+        "F10:side:l4|F10:top"
+      ],
+      "type": "fillet",
+      "edges": [
+        [-8.85, -8.0, 0.0],
+        [-8.85, 8.0, 0.0]
+      ],
+      "radius": "0.15 mm",
+      "body": "Ø10 proefklem",
+      "turn": "auto"
+    },
+    {
+      "id": 12,
+      "name": "Afgeronde rug voor de schuifgleuf",
+      "suppressed": false,
+      "param_names": [
+        "d10"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.85, -5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(-(0))*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-clamp_width/2)+(-(-1))*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-8.549999999999999, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(1)*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-clamp_width/2)+(0)*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-8.762132034355965, -5.912132034355964],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(((-(0))+(1)))*((slot_back_round/sqrt(1-(((-(0))*(1)+(-(-1))*(0)))^2)-slot_back_round/sqrt(2+2*((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-clamp_width/2)+(((-(-1))+(0)))*((slot_back_round/sqrt(1-(((-(0))*(1)+(-(-1))*(0)))^2)-slot_back_round/sqrt(2+2*((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "a1.center",
+            "pos": [-8.55, -5.7],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [-8.549999999999999, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(1)*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-clamp_width/2)+(0)*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-5.95, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(1))*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-clamp_width/2)+(-(0))*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-5.95, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(1))*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-clamp_width/2)+(-(0))*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-5.65, -5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(0)*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-clamp_width/2)+(1)*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-5.737867965644036, -5.912132034355964],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(((-(1))+(0)))*((slot_back_round/sqrt(1-(((-(1))*(0)+(-(0))*(1)))^2)-slot_back_round/sqrt(2+2*((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-clamp_width/2)+(((-(0))+(1)))*((slot_back_round/sqrt(1-(((-(1))*(0)+(-(0))*(1)))^2)-slot_back_round/sqrt(2+2*((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "a2.center",
+            "pos": [-5.950000000000001, -5.699999999999999],
+            "fixed": false
+          },
+          {
+            "id": "p9",
+            "pos": [-5.65, -5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(0)*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-clamp_width/2)+(1)*(slot_back_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-5.65, 5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(0))*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(clamp_width/2)+(-(1))*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-5.65, 5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-(0))*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(clamp_width/2)+(-(1))*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [-5.95, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-1)*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(clamp_width/2)+(0)*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [-5.737867965644036, 5.912132034355964],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(((-(0))+(-1)))*((slot_back_round/sqrt(1-(((-(0))*(-1)+(-(1))*(0)))^2)-slot_back_round/sqrt(2+2*((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(clamp_width/2)+(((-(1))+(0)))*((slot_back_round/sqrt(1-(((-(0))*(-1)+(-(1))*(0)))^2)-slot_back_round/sqrt(2+2*((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "a3.center",
+            "pos": [-5.950000000000001, 5.699999999999999],
+            "fixed": false
+          },
+          {
+            "id": "p14",
+            "pos": [-5.95, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-web_front)+(-1)*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(clamp_width/2)+(0)*(slot_back_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p15",
+            "pos": [-8.549999999999999, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(-(-1))*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(clamp_width/2)+(-(0))*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p16",
+            "pos": [-8.549999999999999, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(-(-1))*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(clamp_width/2)+(-(0))*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p17",
+            "pos": [-8.85, 5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(0)*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(clamp_width/2)+(-1)*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p18",
+            "pos": [-8.762132034355965, 5.912132034355964],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(((-(-1))+(0)))*((slot_back_round/sqrt(1-(((-(-1))*(0)+(-(0))*(-1)))^2)-slot_back_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(clamp_width/2)+(((-(0))+(-1)))*((slot_back_round/sqrt(1-(((-(-1))*(0)+(-(0))*(-1)))^2)-slot_back_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "a4.center",
+            "pos": [-8.549999999999999, 5.699999999999998],
+            "fixed": false
+          },
+          {
+            "id": "p19",
+            "pos": [-8.85, 5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(0)*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(clamp_width/2)+(-1)*(slot_back_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p20",
+            "pos": [-8.85, -5.7],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back)+(-(0))*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-clamp_width/2)+(-(-1))*(slot_back_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 4,
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 10,
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "a3",
+            "type": "arc",
+            "c": 16,
+            "a": 13,
+            "b": 14,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 17,
+            "b": 18,
+            "construction": false
+          },
+          {
+            "id": "a4",
+            "type": "arc",
+            "c": 22,
+            "a": 19,
+            "b": 20,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 23,
+            "b": 24,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "point_on_curve",
+            "p": 3,
+            "c": 0
+          },
+          {
+            "id": "k2",
+            "type": "point_on_curve",
+            "p": 9,
+            "c": 2
+          },
+          {
+            "id": "k3",
+            "type": "point_on_curve",
+            "p": 15,
+            "c": 4
+          },
+          {
+            "id": "k4",
+            "type": "point_on_curve",
+            "p": 21,
+            "c": 6
+          }
+        ],
+        "counters": {
+          "a": 4,
+          "k": 4,
+          "l": 4,
+          "p": 20
+        }
+      }
+    },
+    {
+      "id": 13,
+      "name": "Lage geïntegreerde rug",
+      "suppressed": true,
+      "param_names": [
+        "d11"
+      ],
+      "type": "extrude",
+      "sketch": 12,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Schuifgleuf met aanloop en printflanken",
+      "suppressed": false,
+      "param_names": [
+        "d12"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2-0.05 mm"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-9.049999999999999, -2.75],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(-(0))*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-slot_mouth/2)+(-(-1))*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-8.899999999999999, -2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(1)*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-slot_mouth/2)+(0)*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-9.00606601717798, -2.856066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(((-(0))+(1)))*((slot_round/sqrt(1-(((-(0))*(1)+(-(-1))*(0)))^2)-slot_round/sqrt(2+2*((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-slot_mouth/2)+(((-(-1))+(0)))*((slot_round/sqrt(1-(((-(0))*(1)+(-(-1))*(0)))^2)-slot_round/sqrt(2+2*((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "a1.center",
+            "pos": [-8.899999999999995, -2.749999999999998],
+            "fixed": false
+          },
+          {
+            "id": "p4",
+            "pos": [-8.899999999999999, -2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(1)*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-slot_mouth/2)+(0)*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-8.412132034355963, -2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-(1))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-slot_mouth/2)+(-(0))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-8.412132034355963, -2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-(1))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-slot_mouth/2)+(-(0))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-8.306066017177981, -2.943933982822018],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(cos(dove_angle))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-slot_mouth/2)+(-sin(dove_angle))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-8.3547295195012, -2.911418070123307],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(((-(1))+(cos(dove_angle))))*((slot_round/sqrt(1-(((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-slot_round/sqrt(2+2*((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-slot_mouth/2)+(((-(0))+(-sin(dove_angle))))*((slot_round/sqrt(1-(((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-slot_round/sqrt(2+2*((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "a2.center",
+            "pos": [-8.412132034355967, -3.050000000000005],
+            "fixed": false
+          },
+          {
+            "id": "p9",
+            "pos": [-8.306066017177981, -2.943933982822018],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(cos(dove_angle))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(-slot_mouth/2)+(-sin(dove_angle))*(slot_round*sqrt((1+((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(1))*(cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-7.643933982822017, -3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-(cos(dove_angle)))*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-slot_floor/2)+(-(-sin(dove_angle)))*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-7.643933982822017, -3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-(cos(dove_angle)))*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-slot_floor/2)+(-(-sin(dove_angle)))*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [-7.537867965644035, -3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(1)*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-slot_floor/2)+(0)*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [-7.595270480498799, -3.638581929876693],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(((-(cos(dove_angle)))+(1)))*((slot_round/sqrt(1-(((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))^2)-slot_round/sqrt(2+2*((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-slot_floor/2)+(((-(-sin(dove_angle)))+(0)))*((slot_round/sqrt(1-(((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))^2)-slot_round/sqrt(2+2*((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "a3.center",
+            "pos": [-7.537867965644035, -3.500000000000001],
+            "fixed": false
+          },
+          {
+            "id": "p14",
+            "pos": [-7.537867965644035, -3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(1)*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(-slot_floor/2)+(0)*(slot_round*sqrt((1+((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))/(1-((-(cos(dove_angle)))*(1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p15",
+            "pos": [-7.25, -3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-(1))*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-slot_floor/2)+(-(0))*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p16",
+            "pos": [-7.25, -3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-(1))*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-slot_floor/2)+(-(0))*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p17",
+            "pos": [-7.1, -3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(0)*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-slot_floor/2)+(1)*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p18",
+            "pos": [-7.143933982822017, -3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(((-(1))+(0)))*((slot_round/sqrt(1-(((-(1))*(0)+(-(0))*(1)))^2)-slot_round/sqrt(2+2*((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-slot_floor/2)+(((-(0))+(1)))*((slot_round/sqrt(1-(((-(1))*(0)+(-(0))*(1)))^2)-slot_round/sqrt(2+2*((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "a4.center",
+            "pos": [-7.249999999999998, -3.5000000000000013],
+            "fixed": false
+          },
+          {
+            "id": "p19",
+            "pos": [-7.1, -3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(0)*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))",
+              "y": "(-slot_floor/2)+(1)*(slot_round*sqrt((1+((-(1))*(0)+(-(0))*(1)))/(1-((-(1))*(0)+(-(0))*(1)))))"
+            }
+          },
+          {
+            "id": "p20",
+            "pos": [-7.1, 3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-(0))*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(slot_floor/2)+(-(1))*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p21",
+            "pos": [-7.1, 3.5],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-(0))*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(slot_floor/2)+(-(1))*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p22",
+            "pos": [-7.25, 3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-1)*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(slot_floor/2)+(0)*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p23",
+            "pos": [-7.143933982822017, 3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(((-(0))+(-1)))*((slot_round/sqrt(1-(((-(0))*(-1)+(-(1))*(0)))^2)-slot_round/sqrt(2+2*((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(slot_floor/2)+(((-(1))+(0)))*((slot_round/sqrt(1-(((-(0))*(-1)+(-(1))*(0)))^2)-slot_round/sqrt(2+2*((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "a5.center",
+            "pos": [-7.249999999999999, 3.5000000000000004],
+            "fixed": false
+          },
+          {
+            "id": "p24",
+            "pos": [-7.25, 3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth)+(-1)*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))",
+              "y": "(slot_floor/2)+(0)*(slot_round*sqrt((1+((-(0))*(-1)+(-(1))*(0)))/(1-((-(0))*(-1)+(-(1))*(0)))))"
+            }
+          },
+          {
+            "id": "p25",
+            "pos": [-7.537867965644035, 3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-(-1))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(slot_floor/2)+(-(0))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p26",
+            "pos": [-7.537867965644035, 3.65],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-(-1))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(slot_floor/2)+(-(0))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"            }
+          },
+          {
+            "id": "p27",
+            "pos": [-7.643933982822017, 3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-cos(dove_angle))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(slot_floor/2)+(-sin(dove_angle))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p28",
+            "pos": [-7.595270480498799, 3.638581929876693],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(((-(-1))+(-cos(dove_angle))))*((slot_round/sqrt(1-(((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-slot_round/sqrt(2+2*((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(slot_floor/2)+(((-(0))+(-sin(dove_angle))))*((slot_round/sqrt(1-(((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))^2)-slot_round/sqrt(2+2*((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "a6.center",
+            "pos": [-7.537867965644035, 3.5000000000000004],
+            "fixed": false
+          },
+          {
+            "id": "p29",
+            "pos": [-7.643933982822017, 3.606066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_depth-slot_land)+(-cos(dove_angle))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))",
+              "y": "(slot_floor/2)+(-sin(dove_angle))*(slot_round*sqrt((1+((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))/(1-((-(-1))*(-cos(dove_angle))+(-(0))*(-sin(dove_angle))))))"
+            }
+          },
+          {
+            "id": "p30",
+            "pos": [-8.306066017177981, 2.943933982822018],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-(-cos(dove_angle)))*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(slot_mouth/2)+(-(-sin(dove_angle)))*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p31",
+            "pos": [-8.306066017177981, 2.943933982822018],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-(-cos(dove_angle)))*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(slot_mouth/2)+(-(-sin(dove_angle)))*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p32",
+            "pos": [-8.412132034355963, 2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-1)*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(slot_mouth/2)+(0)*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p33",
+            "pos": [-8.3547295195012, 2.911418070123307],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(((-(-cos(dove_angle)))+(-1)))*((slot_round/sqrt(1-(((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))^2)-slot_round/sqrt(2+2*((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(slot_mouth/2)+(((-(-sin(dove_angle)))+(0)))*((slot_round/sqrt(1-(((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))^2)-slot_round/sqrt(2+2*((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "a7.center",
+            "pos": [-8.412132034355961, 3.049999999999993],
+            "fixed": false
+          },
+          {
+            "id": "p34",
+            "pos": [-8.412132034355963, 2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back+slot_land)+(-1)*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))",
+              "y": "(slot_mouth/2)+(0)*(slot_round*sqrt((1+((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))/(1-((-(-cos(dove_angle)))*(-1)+(-(-sin(dove_angle)))*(0)))))"
+            }
+          },
+          {
+            "id": "p35",
+            "pos": [-8.899999999999999, 2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(-(-1))*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(slot_mouth/2)+(-(0))*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p36",
+            "pos": [-8.899999999999999, 2.9],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(-(-1))*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(slot_mouth/2)+(-(0))*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p37",
+            "pos": [-9.049999999999999, 2.75],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(0)*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(slot_mouth/2)+(-1)*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p38",
+            "pos": [-9.00606601717798, 2.856066017177982],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(((-(-1))+(0)))*((slot_round/sqrt(1-(((-(-1))*(0)+(-(0))*(-1)))^2)-slot_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(slot_mouth/2)+(((-(0))+(-1)))*((slot_round/sqrt(1-(((-(-1))*(0)+(-(0))*(-1)))^2)-slot_round/sqrt(2+2*((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "a8.center",
+            "pos": [-8.899999999999997, 2.749999999999999],
+            "fixed": false
+          },
+          {
+            "id": "p39",
+            "pos": [-9.049999999999999, 2.75],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(0)*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))",
+              "y": "(slot_mouth/2)+(-1)*(slot_round*sqrt((1+((-(-1))*(0)+(-(0))*(-1)))/(1-((-(-1))*(0)+(-(0))*(-1)))))"
+            }
+          },
+          {
+            "id": "p40",
+            "pos": [-9.049999999999999, -2.75],
+            "fixed": true,
+            "exprs": {
+              "x": "(-slot_back-0.2 mm)+(-(0))*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))",
+              "y": "(-slot_mouth/2)+(-(-1))*(slot_round*sqrt((1+((-(0))*(1)+(-(-1))*(0)))/(1-((-(0))*(1)+(-(-1))*(0)))))"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "a1",
+            "type": "arc",
+            "c": 4,
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "a2",
+            "type": "arc",
+            "c": 10,
+            "a": 8,
+            "b": 7,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "a3",
+            "type": "arc",
+            "c": 16,
+            "a": 13,
+            "b": 14,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 17,
+            "b": 18,
+            "construction": false
+          },
+          {
+            "id": "a4",
+            "type": "arc",
+            "c": 22,
+            "a": 19,
+            "b": 20,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 23,
+            "b": 24,
+            "construction": false
+          },
+          {
+            "id": "a5",
+            "type": "arc",
+            "c": 28,
+            "a": 25,
+            "b": 26,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 29,
+            "b": 30,
+            "construction": false
+          },
+          {
+            "id": "a6",
+            "type": "arc",
+            "c": 34,
+            "a": 31,
+            "b": 32,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 35,
+            "b": 36,
+            "construction": false
+          },
+          {
+            "id": "a7",
+            "type": "arc",
+            "c": 40,
+            "a": 38,
+            "b": 37,
+            "construction": false,
+            "reversed": true
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 41,
+            "b": 42,
+            "construction": false
+          },
+          {
+            "id": "a8",
+            "type": "arc",
+            "c": 46,
+            "a": 43,
+            "b": 44,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 47,
+            "b": 48,
+            "construction": false
+          }
+        ],
+        "constraints": [
+          {
+            "id": "k1",
+            "type": "point_on_curve",
+            "p": 3,
+            "c": 0
+          },
+          {
+            "id": "k2",
+            "type": "point_on_curve",
+            "p": 9,
+            "c": 2
+          },
+          {
+            "id": "k3",
+            "type": "point_on_curve",
+            "p": 15,
+            "c": 4
+          },
+          {
+            "id": "k4",
+            "type": "point_on_curve",
+            "p": 21,
+            "c": 6
+          },
+          {
+            "id": "k5",
+            "type": "point_on_curve",
+            "p": 27,
+            "c": 8
+          },
+          {
+            "id": "k6",
+            "type": "point_on_curve",
+            "p": 33,
+            "c": 10
+          },
+          {
+            "id": "k7",
+            "type": "point_on_curve",
+            "p": 39,
+            "c": 12
+          },
+          {
+            "id": "k8",
+            "type": "point_on_curve",
+            "p": 45,
+            "c": 14
+          }
+        ],
+        "counters": {
+          "a": 8,
+          "k": 8,
+          "l": 8,
+          "p": 40
+        }
+      }
+    },
+    {
+      "id": 15,
+      "name": "Schuifgleuf met vaste eindaanslag",
+      "suppressed": true,
+      "param_names": [
+        "d13"
+      ],
+      "type": "extrude",
+      "sketch": 14,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run-slot_stop+0.05 mm",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "cut",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Printschuinte bovenkant schuifgleuf",
+      "suppressed": false,
+      "param_names": [
+        "d14"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2-0.05 mm"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-9.049999999999999, -2.6778774970341614],
+            "fixed": true,
+            "exprs": {
+              "x": "-slot_back-0.2 mm",
+              "y": "-slot_mouth/2+0.2 mm*tan(slot_roof_angle)"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-7.1, -4.843571900951088],
+            "fixed": true,
+            "exprs": {
+              "x": "-slot_back+slot_depth",
+              "y": "-slot_mouth/2-slot_depth*tan(slot_roof_angle)"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-7.1, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-slot_back+slot_depth",
+              "y": "0*slot_depth"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-9.049999999999999, 0.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-slot_back-0.2 mm",
+              "y": "0*slot_depth"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 4,
+          "p": 4
+        }
+      }
+    },
+    {
+      "id": 17,
+      "name": "Zelfdragende bovenflank van 48°",
+      "suppressed": true,
+      "param_names": [
+        "d15"
+      ],
+      "type": "extrude",
+      "sketch": 16,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run-slot_stop+0.05 mm",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "cut",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Uitstekend zwaluwstaartprofiel met buitenflanken",
+      "suppressed": false,
+      "param_names": [
+        "d16"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-8.049999999999999, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-7.45, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "dove_neck/2"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-5.65, 3.4008974733074533],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "dove_neck/2-(dove_datum+dove_land_root-web_front)*tan(rail_print_angle)"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-5.65, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "-dove_neck/2"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-7.45, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "-dove_neck/2"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-8.049999999999999, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "-dove_head/2"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-8.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "-dove_head/2"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [-8.85, -5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "-dove_head/2+dove_round"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-8.85, 5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "dove_head/2-dove_round"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 5,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "l9",
+            "type": "line",
+            "a": 9,
+            "b": 10,
+            "construction": false
+          },
+          {
+            "id": "l10",
+            "type": "line",
+            "a": 10,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 10,
+          "p": 10
+        }
+      }
+    },
+    {
+      "id": 19,
+      "name": "Uitstekende zwaluwstaart voor PETG",
+      "suppressed": true,
+      "param_names": [
+        "d17"
+      ],
+      "type": "extrude",
+      "sketch": 18,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Symmetrisch profiel met twee V-groeven",
+      "suppressed": false,
+      "param_names": [
+        "d18"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-8.049999999999999, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-7.45, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "dove_neck/2"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-6.8500000000000005, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+(dove_head-dove_neck)/(2*tan(dove_angle))",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-5.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-5.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-6.8500000000000005, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+(dove_head-dove_neck)/(2*tan(dove_angle))",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-7.45, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "-(dove_neck/2)"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [-8.049999999999999, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-8.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-8.85, -5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "-dove_head/2+dove_round"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [-8.85, 5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "dove_head/2-dove_round"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 5,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "l9",
+            "type": "line",
+            "a": 9,
+            "b": 10,
+            "construction": false
+          },
+          {
+            "id": "l10",
+            "type": "line",
+            "a": 10,
+            "b": 11,
+            "construction": false
+          },
+          {
+            "id": "l11",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "l12",
+            "type": "line",
+            "a": 12,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 12,
+          "p": 12
+        }
+      }
+    },
+    {
+      "id": 21,
+      "name": "Symmetrische uitstekende zwaluwstaart",
+      "suppressed": true,
+      "param_names": [
+        "d19"
+      ],
+      "type": "extrude",
+      "sketch": 20,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 22,
+      "name": "Symmetrische groeven met vlakke bodem",
+      "suppressed": false,
+      "param_names": [
+        "d20"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-8.65, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-8.049999999999999, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-7.45, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "dove_neck/2"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-7.05, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat",
+              "y": "dove_neck/2"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-6.8500000000000005, 6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+(dove_head-dove_neck)/(2*tan(dove_angle))",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-5.65, 6.0],            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "dove_head/2"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-5.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-web_front",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-6.8500000000000005, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+(dove_head-dove_neck)/(2*tan(dove_angle))",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p9",
+            "pos": [-7.05, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat",
+              "y": "-(dove_neck/2)"
+            }
+          },
+          {
+            "id": "p10",
+            "pos": [-7.45, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root",
+              "y": "-(dove_neck/2)"
+            }
+          },
+          {
+            "id": "p11",
+            "pos": [-8.049999999999999, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_land_head",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p12",
+            "pos": [-8.65, -6.0],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth+dove_round",
+              "y": "-(dove_head/2)"
+            }
+          },
+          {
+            "id": "p13",
+            "pos": [-8.85, -5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "-dove_head/2+dove_round"
+            }
+          },
+          {
+            "id": "p14",
+            "pos": [-8.85, 5.8],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_depth",
+              "y": "dove_head/2-dove_round"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 5,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 8,
+            "b": 9,
+            "construction": false
+          },
+          {
+            "id": "l9",
+            "type": "line",
+            "a": 9,
+            "b": 10,
+            "construction": false
+          },
+          {
+            "id": "l10",
+            "type": "line",
+            "a": 10,
+            "b": 11,
+            "construction": false
+          },
+          {
+            "id": "l11",
+            "type": "line",
+            "a": 11,
+            "b": 12,
+            "construction": false
+          },
+          {
+            "id": "l12",
+            "type": "line",
+            "a": 12,
+            "b": 13,
+            "construction": false
+          },
+          {
+            "id": "l13",
+            "type": "line",
+            "a": 13,
+            "b": 14,
+            "construction": false
+          },
+          {
+            "id": "l14",
+            "type": "line",
+            "a": 14,
+            "b": 1,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 14,
+          "p": 14
+        }
+      }
+    },
+    {
+      "id": 23,
+      "name": "Symmetrische zwaluwstaart met vlakke groefbodems",
+      "suppressed": false,
+      "param_names": [
+        "d21"
+      ],
+      "type": "extrude",
+      "sketch": 22,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "join",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Spiegelbeeldige correctie van de rugflanken",
+      "suppressed": false,
+      "param_names": [
+        "d22"
+      ],
+      "type": "sketch",
+      "plane": {
+        "type": "offset",
+        "base": {
+          "type": "origin",
+          "name": "XZ"
+        },
+        "distance": "-dove_run/2-0.1 mm"
+      },
+      "sketch": {
+        "points": [
+          {
+            "id": "origin",
+            "pos": [0.0, 0.0],
+            "fixed": true
+          },
+          {
+            "id": "p1",
+            "pos": [-7.25, -5.45],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat/2",
+              "y": "-dove_neck/2-0.05 mm"
+            }
+          },
+          {
+            "id": "p2",
+            "pos": [-7.05, -5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat",
+              "y": "-dove_neck/2"
+            }
+          },
+          {
+            "id": "p3",
+            "pos": [-6.35, -6.1],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat+((dove_head-dove_neck)/2+0.1 mm)/tan(dove_angle)",
+              "y": "-dove_head/2-0.1 mm"
+            }
+          },
+          {
+            "id": "p4",
+            "pos": [-7.25, -6.1],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat/2",
+              "y": "-dove_head/2-0.1 mm"
+            }
+          },
+          {
+            "id": "p5",
+            "pos": [-7.25, 5.45],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat/2",
+              "y": "-(-dove_neck/2-0.05 mm)"
+            }
+          },
+          {
+            "id": "p6",
+            "pos": [-7.05, 5.4],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat",
+              "y": "-(-dove_neck/2)"
+            }
+          },
+          {
+            "id": "p7",
+            "pos": [-6.35, 6.1],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat+((dove_head-dove_neck)/2+0.1 mm)/tan(dove_angle)",
+              "y": "-(-dove_head/2-0.1 mm)"
+            }
+          },
+          {
+            "id": "p8",
+            "pos": [-7.25, 6.1],
+            "fixed": true,
+            "exprs": {
+              "x": "-dove_datum-dove_land_root+dove_groove_flat/2",
+              "y": "-(-dove_head/2-0.1 mm)"
+            }
+          }
+        ],
+        "curves": [
+          {
+            "id": "l1",
+            "type": "line",
+            "a": 1,
+            "b": 2,
+            "construction": false
+          },
+          {
+            "id": "l2",
+            "type": "line",
+            "a": 2,
+            "b": 3,
+            "construction": false
+          },
+          {
+            "id": "l3",
+            "type": "line",
+            "a": 3,
+            "b": 4,
+            "construction": false
+          },
+          {
+            "id": "l4",
+            "type": "line",
+            "a": 4,
+            "b": 1,
+            "construction": false
+          },
+          {
+            "id": "l5",
+            "type": "line",
+            "a": 5,
+            "b": 6,
+            "construction": false
+          },
+          {
+            "id": "l6",
+            "type": "line",
+            "a": 6,
+            "b": 7,
+            "construction": false
+          },
+          {
+            "id": "l7",
+            "type": "line",
+            "a": 7,
+            "b": 8,
+            "construction": false
+          },
+          {
+            "id": "l8",
+            "type": "line",
+            "a": 8,
+            "b": 5,
+            "construction": false
+          }
+        ],
+        "constraints": [],
+        "counters": {
+          "l": 8,
+          "p": 8
+        }
+      }
+    },
+    {
+      "id": 25,
+      "name": "Rugflanken onder 45 graden",
+      "suppressed": false,
+      "param_names": [
+        "d23"
+      ],
+      "type": "extrude",
+      "sketch": 24,
+      "profiles": {
+        "type": "all"
+      },
+      "extent": {
+        "distance": "dove_run+0.2 mm",
+        "convention": "total_distance",
+        "direction": "positive"
+      },
+      "operation": "cut",
+      "targets": [
+        "Ø10 proefklem"
+      ]
+    }
+  ],
+  "next_id": 26,
+  "next_component_color_index": 0,
+  "configs": {
+    "columns": [
+      {
+        "param": "clamp_bore"
+      }
+    ],
+    "rows": [
+      {
+        "id": 7,
+        "name": "Vrij – printstand",
+        "cells": [
+          "tube_d-clamp_interference"
+        ]
+      },
+      {
+        "id": 8,
+        "name": "Gemonteerd – Ø10",
+        "cells": [
+          "tube_d"
+        ]
+      }
+    ],
+    "row_identities": {
+      "7": 14663552979972375670,
+      "8": 6610350959013671291
+    },
+    "active": "Vrij – printstand"
+  }
+}

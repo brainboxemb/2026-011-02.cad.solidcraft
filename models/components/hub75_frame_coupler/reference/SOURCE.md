@@ -104,10 +104,40 @@ joins them only after their own source-derived operations are complete.
 
 ## Edge T-profile boundary
 
-Native feature 89, `Edge T-profiel begrenzen`, is a box cut immediately after
-the complete Edge profile stock is created. It removes the broad upper half of
-that stock before the support cylinders and later guide features are applied.
+Native feature 89, `Edge T-profiel begrenzen`, removes the outside (+Z) stem
+of the pre-clip rounded plus.
 
-The Forge lowering uses an equivalent XZ rectangle extrusion because released
-Forge v0.19 does not lower a translated `Box` primitive. The cut dimensions
-and source order remain those of feature 89.
+Its absolute SolidCraft start is:
+
+`panel_h - edge_outer_z + 1 mm`
+
+so after normalization around the nominal panel-edge datum the local start is:
+
+`-edge_outer_z + 1 mm`
+
+For Medium, `edge_outer_z = -2.855 mm`, therefore the correct local cut starts
+at **+3.855 mm**. A previous Forge lowering incorrectly used
+`edge_outer_z + 1 mm = -1.855 mm`; that cut through the horizontal arm and
+visibly separated the reinforcement volumes from the T body.
+
+The historical TOP-edge clip below is the authoritative equivalent construction.
+
+
+## Edge T-profile clip
+
+The historical horizontal-edge production source first creates a rounded
+`+` profile and then intersects it with a top-edge window:
+
+```text
+retain complete horizontal arm
+retain only inward (-Z) vertical stem
+remove the outside (+Z) half of the stem
+```
+
+The window top is
+`hub75_horizontal_edge_coupler_outer_projection() + 1 mm`, matching the
+historical source margin.
+
+The retained native SolidCraft feature profile represented the pre-clip rounded
+cross. Forge therefore applies this source window explicitly before mounting,
+guide and surface-detail operations.

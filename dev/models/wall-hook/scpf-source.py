@@ -8,6 +8,7 @@ rounded with native SolidCraft fillet operations.
 from math import sqrt
 
 
+@component
 class WallHook:
     overall_height = 57.0
     thickness = 15.0
@@ -158,4 +159,100 @@ class WallHook:
         return body.with_appearance("#FFD21A")
 
 
-WallHook()
+
+def wall_hook_drawing():
+    """A4 landscape manufacturing/mounting sheet for the finished Wall Hook."""
+    hook = WallHook()
+    return hook.with_drawing(
+        name="Wall Hook Drawing",
+        scale="2:1",
+        gap_mm=12,
+        views={
+            "front": DrawingView(at=(55, 130)),
+            "top": DrawingView(at=(55, 48)),
+            "right": DrawingView(at=(142, 130)),
+            "iso": DrawingView(
+                at=(225, 132),
+                scale="1:1",
+                visual_style="shaded",
+            ),
+        },
+        properties={
+            "project": "SolidCraft CAD model catalog",
+            "part_number": "wall-hook",
+            "revision": "A",
+            "author": "brainboxemb",
+            "organization": "brainboxemb",
+            "description": "Wall Hook technical drawing",
+        },
+        title_block={
+            "title": "Wall Hook",
+            "identification_number": "wall-hook",
+            "document_status": "Development",
+            "department": "CAD",
+        },
+        revision=DrawingRevision(
+            revision="A",
+            description="Initial technical drawing",
+            designer="brainboxemb",
+            checker="CI",
+            date="2026-11-26",
+        ),
+        notes=(
+            DrawingNote(
+                "NOTES\n"
+                "1. ALL DIMENSIONS IN MM.\n"
+                "2. MOUNTING HOLE CENTRES: UPPER 10 FROM TOP; LOWER 17 FROM BOTTOM.\n"
+                "3. 2× Ø4.2 MOUNTING HOLES; LOWER TOOL ACCESS Ø8.\n"
+                "4. FRONT/BACK BOUNDARY CHAMFER 1.5.\n"
+                "5. HOLE ENTRY CHAMFER 1.0; WALL-SIDE RELIEF 0.3.",
+                at=(174, 58),
+                cap_mm=2.2,
+            ),
+        ),
+        dimensions=(
+            DrawingDimension.faces(
+                "front",
+                (3, 0, 0),
+                (3, 0, 57),
+                direction="vertical",
+                offset_mm=12,
+                decimals=0,
+            ),
+            DrawingDimension.faces(
+                "top",
+                (3, -7.5, 47),
+                (3, 7.5, 47),
+                direction="vertical",
+                offset_mm=10,
+                decimals=0,
+            ),
+            DrawingDimension.faces(
+                "front",
+                (0, 0, 40),
+                (6, 0, 40),
+                direction="horizontal",
+                offset_mm=8,
+                decimals=0,
+            ),
+            DrawingDimension.faces(
+                "front",
+                (6, 0, 37),
+                (26, 0, 37),
+                direction="horizontal",
+                offset_mm=8,
+                decimals=0,
+            ),
+            DrawingDimension.faces(
+                "front",
+                (16, 0, 32),
+                (3, 0, 57),
+                direction="vertical",
+                offset_mm=8,
+                decimals=0,
+            ),
+        ),
+    )
+
+
+wall_hook_drawing()

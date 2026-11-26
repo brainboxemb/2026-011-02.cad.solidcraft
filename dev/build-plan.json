@@ -113,7 +113,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/corner-bracket/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -330,7 +330,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -365,7 +365,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -428,7 +428,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-screen/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -462,7 +462,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "c8bc85895805fd52d8e1d3b20e75aa1b85f2f403",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-screen-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -512,7 +512,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -547,7 +547,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/latch/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -610,7 +610,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/latch-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1303,5 +1303,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "c8bc85895805fd52d8e1d3b20e75aa1b85f2f403"
+  "source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189"
 }

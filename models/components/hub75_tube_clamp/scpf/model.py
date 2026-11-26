@@ -1,27 +1,19 @@
-"""Reusable loose Ø10 tube clamp rebuilt from the native SolidCraft feature history."""
+"""Reusable parameterized HUB75 tube clamp in its Free/print state."""
 
 from math import cos, radians, sin, tan
 
 from scpf import Sketch, component
 
 
-# Native SolidCraft parameters used by the active Free/print-state features.
-TUBE_D = 10.0
-CLAMP_INTERFERENCE = 0.4
-CLAMP_BORE = TUBE_D - CLAMP_INTERFERENCE
+# Fixed source dimensions shared by all tube sizes.
 CLAMP_WALL = 2.0
 CLAMP_WIDTH = 12.0
 CLAMP_OPEN = 90.0
-CLAMP_R = CLAMP_BORE / 2.0
-CLAMP_R_OUT = CLAMP_R + CLAMP_WALL
 
 DOVE_RUN = 16.0
 DOVE_DEPTH = 2.05
 DOVE_ANGLE = 45.0
-DOVE_DATUM = TUBE_D / 2.0 + CLAMP_WALL - CLAMP_INTERFERENCE / 2.0
 
-WEB_FRONT = TUBE_D / 2.0 + 0.65
-SLOT_BACK = DOVE_DATUM + DOVE_DEPTH
 SLOT_DEPTH = 1.75
 SLOT_LAND = 0.5
 SLOT_MOUTH = 5.8
@@ -39,15 +31,15 @@ SLOT_ENTRY_EXTENSION = 0.2
 SLOT_ENTRY_CHAMFER = 0.14
 
 
-def _open_clamp_ring():
+def _open_clamp_ring(*, clamp_r, clamp_r_out):
     """Feature 1: Open klemring met afgeronde lippen."""
     half_open = radians(CLAMP_OPEN / 2.0)
-    radial_mid = (CLAMP_R + CLAMP_R_OUT) / 2.0
+    radial_mid = (clamp_r + clamp_r_out) / 2.0
 
-    outer_x = CLAMP_R_OUT * cos(half_open)
-    outer_y = CLAMP_R_OUT * sin(half_open)
-    inner_x = CLAMP_R * cos(half_open)
-    inner_y = CLAMP_R * sin(half_open)
+    outer_x = clamp_r_out * cos(half_open)
+    outer_y = clamp_r_out * sin(half_open)
+    inner_x = clamp_r * cos(half_open)
+    inner_y = clamp_r * sin(half_open)
     lip_center_x = radial_mid * cos(half_open)
     lip_center_y = radial_mid * sin(half_open)
 
@@ -82,10 +74,10 @@ def _open_clamp_ring():
     return sketch
 
 
-def _rounded_slide_back():
+def _rounded_slide_back(*, slot_back, web_front):
     """Feature 12: Afgeronde rug voor de schuifgleuf."""
-    left = -SLOT_BACK
-    right = -WEB_FRONT
+    left = -slot_back
+    right = -web_front
     bottom = -CLAMP_WIDTH / 2.0
     top = CLAMP_WIDTH / 2.0
     radius = SLOT_BACK_ROUND
@@ -127,7 +119,7 @@ def _rounded_slide_back():
     return sketch
 
 
-def _rounded_slide_slot():
+def _rounded_slide_slot(*, slot_back):
     """Feature 14: Schuifgleuf met aanloop en printflanken."""
     angle = radians(DOVE_ANGLE)
     radius = SLOT_ROUND
@@ -140,10 +132,10 @@ def _rounded_slide_slot():
     flank_dx = flank_tangent * cos(angle)
     flank_dz = flank_tangent * sin(angle)
 
-    outer_x = -SLOT_BACK - SLOT_ENTRY_EXTENSION
-    entry_x = -SLOT_BACK + SLOT_LAND
-    inner_x = -SLOT_BACK + SLOT_DEPTH - SLOT_LAND
-    open_x = -SLOT_BACK + SLOT_DEPTH
+    outer_x = -slot_back - SLOT_ENTRY_EXTENSION
+    entry_x = -slot_back + SLOT_LAND
+    inner_x = -slot_back + SLOT_DEPTH - SLOT_LAND
+    open_x = -slot_back + SLOT_DEPTH
     mouth = SLOT_MOUTH / 2.0
     floor = SLOT_FLOOR / 2.0
 
@@ -217,11 +209,11 @@ def _rounded_slide_slot():
     return sketch
 
 
-def _entry_chamfer_edges():
+def _entry_chamfer_edges(*, slot_back):
     """Native pick points for parent feature 199, derived from slot dimensions."""
-    entry_x = -SLOT_BACK + SLOT_LAND
-    inner_x = -SLOT_BACK + SLOT_DEPTH - SLOT_LAND
-    open_x = -SLOT_BACK + SLOT_DEPTH
+    entry_x = -slot_back + SLOT_LAND
+    inner_x = -slot_back + SLOT_DEPTH - SLOT_LAND
+    open_x = -slot_back + SLOT_DEPTH
     flank_mid_x = (entry_x + inner_x) / 2.0
     flank_mid_z = (SLOT_MOUTH / 2.0 + SLOT_FLOOR / 2.0) / 2.0
     entry_y = -DOVE_RUN / 2.0
@@ -233,32 +225,55 @@ def _entry_chamfer_edges():
     ]
 
 
-@component
-class Hub75TubeClamp10mm:
-    """Free/print-state loose clamp used by Edge and Corner tube interfaces."""
+@component(include=("tube_d", "clamp_interference"))
+class Hub75TubeClamp:
+    """Loose clamp; the physical component defaults to its Free/print state."""
+
+    tube_d = 10.0
+    clamp_interference = 0.4
 
     def build(self):
+        # Free is the intrinsic standalone/manufacturing state. Installed state
+        # is deliberately added later at the assembly/configuration layer.
+        clamp_bore = self.tube_d - self.clamp_interference
+        clamp_r = clamp_bore / 2.0
+        clamp_r_out = clamp_r + CLAMP_WALL
+
+        dove_datum = (
+            self.tube_d / 2.0
+            + CLAMP_WALL
+            - self.clamp_interference / 2.0
+        )
+        web_front = self.tube_d / 2.0 + 0.65
+        slot_back = dove_datum + DOVE_DEPTH
+
         # Features 1/2: open elastic clamp ring in the native XY frame.
-        ring_sketch = _open_clamp_ring()
+        ring_sketch = _open_clamp_ring(
+            clamp_r=clamp_r,
+            clamp_r_out=clamp_r_out,
+        )
         body = ring_sketch.extrude(CLAMP_WIDTH)
 
         # Features 12/13: low integrated rounded back for the slide slot.
-        back_sketch = _rounded_slide_back()
+        back_sketch = _rounded_slide_back(
+            slot_back=slot_back,
+            web_front=web_front,
+        )
         body = body + back_sketch.extrude(DOVE_RUN)
 
         # Features 14/15: rounded slide slot with a 1 mm closed end stop.
-        slot_sketch = _rounded_slide_slot()
+        slot_sketch = _rounded_slide_slot(slot_back=slot_back)
         body = body - slot_sketch.extrude(
             DOVE_RUN - SLOT_STOP + 0.05
         )
 
-        # Parent feature 199: Inloop in groef van Ø10 proefklem.
+        # Parent feature 199: Inloop in groef van de proefklem.
         body = body.chamfer(
             SLOT_ENTRY_CHAMFER,
-            edges=_entry_chamfer_edges(),
+            edges=_entry_chamfer_edges(slot_back=slot_back),
         )
 
         return body
 
 
-Hub75TubeClamp10mm()
+Hub75TubeClamp()

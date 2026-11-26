@@ -27,7 +27,6 @@ PANEL_CENTER_Z = 160.0
 FRAME_WIDTH = 320.0
 FRAME_HEIGHT = 320.0
 
-TUBE_LENGTH = 360.0
 TUBE_AXIS_Y = -6.0
 TUBE_TOP_Z = 330.0
 TUBE_BOTTOM_Z = -10.0
@@ -120,20 +119,17 @@ class Hub75DisplayFrame2PanelTube:
             ),
         )
 
+        # The reusable tube already owns the source 360 mm length as its
+        # public default. Do not redundantly override it here; each occurrence
+        # only owns its assembly placement.
         tube_top = Hub75FrameTube10mm(
             name="TubeTop",
-            length=TUBE_LENGTH,
             placement=Placement(
                 y=TUBE_AXIS_Y,
                 z=TUBE_TOP_Z,
             ),
         )
-        # Reuse the already-authored tube component explicitly. A second
-        # constructor call with the same published length is de-duplicated by
-        # Forge, but v0.22.0 does not retain that second call's placement.
-        # An occurrence copy preserves one physical tube definition and emits
-        # the required independent bottom placement.
-        tube_bottom = tube_top.copy(
+        tube_bottom = Hub75FrameTube10mm(
             name="TubeBottom",
             placement=Placement(
                 y=TUBE_AXIS_Y,

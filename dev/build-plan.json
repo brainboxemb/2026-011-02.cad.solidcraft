@@ -983,7 +983,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "d8daeb165c3016a60021476faa32f4b2226dc068",
+      "built_source_sha": "895787f2b29730acd0b87d57293461ea13d50b96",
       "commands": "models/hub75-tube-clamp/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1883,5 +1883,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "d8daeb165c3016a60021476faa32f4b2226dc068"
+  "source_sha": "895787f2b29730acd0b87d57293461ea13d50b96"
 }

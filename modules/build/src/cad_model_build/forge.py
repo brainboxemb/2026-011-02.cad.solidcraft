@@ -79,6 +79,7 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
     projected = []
     seen: set[str] = set()
     required = {"name", "drawing", "pdf"}
+    advanced = {"sheet", "png", "inspect"}
     for index, item in enumerate(drawings):
         if not isinstance(item, dict) or not required.issubset(item):
             raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
@@ -100,19 +101,72 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
             or relative.parts[0] != "drawings"
         ):
             raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
-        path = (base / relative).as_posix()
-        if path in seen:
-            raise RuntimeError(f"duplicate Forge drawing artifact: {path}")
-        seen.add(path)
-        projected.append(
-            {
-                "name": name.strip(),
-                "drawing": variable,
-                "path": path,
-            }
-        )
-    return projected
 
+        row = {
+            "name": name.strip(),
+            "drawing": variable,
+            "path": (base / relative).as_posix(),
+        }
+        artifact_paths = [row["path"]]
+
+        if any(key in item for key in advanced):
+            if not advanced.issubset(item):
+                raise RuntimeError(
+                    f"invalid Forge drawing artifact at index {index}"
+                )
+            sheet = item["sheet"]
+            png = item["png"]
+            inspect = item["inspect"]
+            if (
+                not isinstance(sheet, str)
+                or not sheet.startswith("$")
+                or not isinstance(png, str)
+                or not isinstance(inspect, str)
+            ):
+                raise RuntimeError(
+                    f"invalid Forge drawing artifact at index {index}"
+                )
+            preview = Path(png)
+            inspection = Path(inspect)
+            if (
+                preview.is_absolute()
+                or inspection.is_absolute()
+                or ".." in preview.parts
+                or ".." in inspection.parts
+                or preview.suffix.lower() != ".png"
+                or inspection.suffix.lower() != ".json"
+                or relative.with_suffix(".png") != preview
+                or relative.with_suffix(".json") != inspection
+                or not preview.parts
+                or preview.parts[0] != "drawings"
+                or not inspection.parts
+                or inspection.parts[0] != "drawings"
+            ):
+                raise RuntimeError(
+                    f"invalid Forge drawing artifact at index {index}"
+                )
+            row.update(
+                {
+                    "sheet": sheet,
+                    "preview": (base / preview).as_posix(),
+                    "inspect": (base / inspection).as_posix(),
+                }
+            )
+            artifact_paths.extend((row["preview"], row["inspect"]))
+            orientation = item.get("orientation")
+            if orientation is not None:
+                if not isinstance(orientation, str) or not orientation.startswith("$"):
+                    raise RuntimeError(
+                        f"invalid Forge drawing artifact at index {index}"
+                    )
+                row["orientation"] = orientation
+
+        for path in artifact_paths:
+            if path in seen:
+                raise RuntimeError(f"duplicate Forge drawing artifact: {path}")
+            seen.add(path)
+        projected.append(row)
+    return projected
 
 def compile_plan(*, repo: Path, output_root: Path, plan: dict, wheel: Path) -> None:
     env = dict(os.environ)

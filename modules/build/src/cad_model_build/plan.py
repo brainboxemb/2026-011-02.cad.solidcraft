@@ -101,10 +101,24 @@ def resolve_plan(
                             "name": item.name,
                             "path": f"{target}/{item.name}",
                             "camera": item.camera,
+                            **(
+                                {"exploded_view": item.exploded_view}
+                                if item.exploded_view is not None
+                                else {}
+                            ),
                         }
                         for item in model.snapshots
                     ],
                     "artifacts": list(model.artifacts),
+                    "artifact_options": (
+                        {
+                            "stl": {
+                                "quality": model.stl_quality,
+                            },
+                        }
+                        if model.stl_quality is not None
+                        else {}
+                    ),
                 }
             )
 

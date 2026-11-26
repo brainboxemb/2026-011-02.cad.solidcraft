@@ -160,6 +160,9 @@ def verify(
     section_by_id = {row["id"]: row for row in sections}
     group_by_id = {row["id"]: row for row in groups}
     source_by_id = _source_metadata_by_id(repo)
+    source_ids_by_path: dict[Path, list[str]] = {}
+    for source_id, (source_path, _metadata) in source_by_id.items():
+        source_ids_by_path.setdefault(source_path, []).append(source_id)
 
     _require_file(site / "index.html")
     _require_file(site / "models" / "index.html")
@@ -216,9 +219,26 @@ def verify(
             raise PagesVerificationError(
                 f"{model_path}: unsupported group {group!r}"
             )
-        if f"/models/{variant_id}/" not in category_html[category]:
+        owner_variant_ids = source_ids_by_path.get(model_path, [])
+        has_owner_page = len(owner_variant_ids) > 1
+        owner_href = None
+        owner_page_path = None
+        if has_owner_page:
+            try:
+                owner_rel = model_path.parent.relative_to(repo / "models")
+            except ValueError as exc:
+                raise PagesVerificationError(
+                    f"{model_path}: model owner is outside models/"
+                ) from exc
+            owner_href = f"/models/owners/{owner_rel.as_posix()}/"
+            owner_page_path = site / "models" / "owners" / owner_rel / "index.html"
+            expected_catalog_href = owner_href
+        else:
+            expected_catalog_href = f"/models/{variant_id}/"
+
+        if expected_catalog_href not in category_html[category]:
             raise PagesVerificationError(
-                f"{category}: missing model link for {variant_id}"
+                f"{category}: missing model-owner link for {variant_id}"
             )
 
         if group is not None:
@@ -249,6 +269,20 @@ def verify(
         page_path = page_root / "index.html"
         _require_file(page_path)
         html = page_path.read_text(encoding="utf-8")
+        if has_owner_page:
+            assert owner_href is not None
+            assert owner_page_path is not None
+            _require_file(owner_page_path)
+            owner_html = owner_page_path.read_text(encoding="utf-8")
+            if f"/models/{variant_id}/" not in owner_html:
+                raise PagesVerificationError(
+                    f"{owner_page_path}: missing variant link for {variant_id}"
+                )
+            if owner_href not in html:
+                raise PagesVerificationError(
+                    f"{page_path}: missing physical-owner back link"
+                )
+
         for expected in (
             title,
             parameters,
@@ -332,6 +366,37 @@ def verify(
                 raise PagesVerificationError(
                     f"{variant_id}: page does not expose drawing PDF"
                 )
+
+            preview = drawing.get("preview")
+            inspection = drawing.get("inspect")
+            if preview is not None or inspection is not None:
+                if (
+                    not isinstance(preview, str)
+                    or not preview.endswith(".png")
+                    or not isinstance(inspection, str)
+                    or not inspection.endswith(".json")
+                ):
+                    raise PagesVerificationError(
+                        f"{variant_id}: invalid drawing preview declaration"
+                    )
+                preview_file = build_scope / preview
+                inspect_file = build_scope / inspection
+                _require_file(preview_file)
+                _require_file(inspect_file)
+                if preview_file.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
+                    raise PagesVerificationError(
+                        f"{variant_id}: drawing preview is not a PNG"
+                    )
+                _load_json(inspect_file)
+                if f"{raw_base}{preview}" not in html:
+                    raise PagesVerificationError(
+                        f"{variant_id}: page does not expose drawing preview"
+                    )
+                if "cad-drawing-frame" in html:
+                    raise PagesVerificationError(
+                        f"{variant_id}: page still auto-loads drawing PDF"
+                    )
+
             duplicate = page_root / "drawings" / Path(artifact).name
             if duplicate.exists():
                 raise PagesVerificationError(

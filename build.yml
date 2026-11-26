@@ -1,7 +1,8 @@
 schema: 1
-branch: chore/162-reconcile-wall-hook-relief-plan
+branch: feature/233-owner-first-variant-pages
 
-modules: []
+modules:
+  - pages
 models: []
 tasks:
   - test

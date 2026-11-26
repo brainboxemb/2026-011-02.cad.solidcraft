@@ -78,12 +78,16 @@ def _drawing_artifacts(document: dict, commands_path: str) -> list[dict]:
     base = Path(commands_path).parent
     projected = []
     seen: set[str] = set()
+    required = {"name", "drawing", "pdf"}
     for index, item in enumerate(drawings):
-        if not isinstance(item, dict) or set(item) != {"name", "drawing", "pdf"}:
+        if not isinstance(item, dict) or not required.issubset(item):
             raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
         name = item["name"]
         variable = item["drawing"]
-        relative = Path(item["pdf"])
+        pdf = item["pdf"]
+        if not isinstance(pdf, str):
+            raise RuntimeError(f"invalid Forge drawing artifact at index {index}")
+        relative = Path(pdf)
         if (
             not isinstance(name, str)
             or not name.strip()

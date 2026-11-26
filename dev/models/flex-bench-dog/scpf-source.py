@@ -11,11 +11,37 @@ from scpf import (
     Anchor,
     Cone,
     Cylinder,
+    Polygon2D,
     Rectangle2D,
     Sketch,
-    SlotCenterToCenter2D,
     component,
 )
+
+
+def _logo_strip_points(p0, p1, width):
+    """Return one square-ended polygon strip around a logo centreline."""
+    x0, y0 = p0
+    x1, y1 = p1
+    dx = x1 - x0
+    dy = y1 - y0
+    length = (dx * dx + dy * dy) ** 0.5
+    half_width = width / 2.0
+
+    ux = dx / length
+    uy = dy / length
+    px = -uy * half_width
+    py = ux * half_width
+    ex = ux * half_width
+    ey = uy * half_width
+
+    # Extend both ends by half the line width. Neighbouring ribs overlap at
+    # cube vertices without combining intersecting loops in one Sketch.
+    return (
+        (x0 - ex + px, y0 - ey + py),
+        (x1 + ex + px, y1 + ey + py),
+        (x1 + ex - px, y1 + ey - py),
+        (x0 - ex - px, y0 - ey - py),
+    )
 
 
 @component
@@ -136,16 +162,10 @@ class FlexBenchDog:
             edges=[(self.hole_diameter / 2, 0, self.ABOVE_WORKTOP)],
         )
 
-        # Recess the BrainBox wireframe as nine independent rib cuts. PR #341
-        # put all nine overlapping closed Slot profiles in one Sketch, which
-        # created extra enclosed regions and visually removed a filled face.
-        # Keeping one Slot profile per Sketch preserves the same nine visible
-        # cube edges without allowing intersections to create face regions.
-        #
-        # TEMPORARY compatibility workaround — CAD #348 / Forge #747.
-        # The preferred final construction is one closed polygon strip per rib.
-        # Remove this one-Slot-per-Sketch workaround only after Forge #747
-        # reaches a released version consumed by this repository.
+        # Recess the accepted BrainBox wireframe as nine independent closed
+        # polygon strips. Each strip keeps the accepted centreline and 0.6 mm
+        # width, extends half a line width beyond each endpoint, and is cut
+        # independently so intersecting ribs cannot create filled face regions.
         for index, (p0, p1) in enumerate(self.LOGO_SEGMENTS, start=1):
             with Sketch(
                 name=f"Top logo rib {index}",
@@ -153,7 +173,10 @@ class FlexBenchDog:
                 plane="XY",
                 origin=(0, 0, self.ABOVE_WORKTOP),
             ) as rib:
-                SlotCenterToCenter2D(p0, p1, self.LOGO_LINE_WIDTH)
+                Polygon2D(
+                    _logo_strip_points(p0, p1, self.LOGO_LINE_WIDTH),
+                    plane="XY",
+                )
             dog = dog - rib.extrude(-self.LOGO_DEPTH)
 
         return dog

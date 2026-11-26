@@ -18,6 +18,7 @@ variants:
       - Clear the two panel bushings
       - Add two mounting bores and two locator pad/pin stacks
       - Add the panel-seam guide
+      - Cut native reference tick marks and blind tapered reference holes
   hub75-frame-coupler-edge:
     title: HUB75 Frame Coupler — Edge
     tagline: Medium straight edge coupler for a HUB75 display frame
@@ -28,8 +29,9 @@ variants:
     stages:
       - Extrude the source-derived Medium edge profile
       - Add the two bushing support zones
-      - Cut guide clearance and bushing relief
+      - Cut the source two-section tapered rail clearance
       - Add two mounting bores and locator pads
+      - Cut native reference tick marks and blind tapered reference holes
       - Keep the Medium-only panel-pin pass-through suppressed
   hub75-frame-coupler-corner-left:
     title: HUB75 Frame Coupler — Corner Left
@@ -41,8 +43,9 @@ variants:
     stages:
       - Extrude the source-derived left-corner profile
       - Add the source bushing support
-      - Cut rail and bushing clearance
+      - Cut the source two-section tapered rail clearance and bushing relief
       - Add one mounting bore and locator pad
+      - Cut native reference tick marks and blind tapered reference holes
   hub75-frame-coupler-corner-right:
     title: HUB75 Frame Coupler — Corner Right
     tagline: Medium right corner member from the shared HUB75 frame-coupler family

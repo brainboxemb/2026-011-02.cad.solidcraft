@@ -364,6 +364,142 @@
       "source": "models/assemblies/hub75-display2/scpf/model.py"
     },
     {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "d45530acfd4d6e0adc6f1bb30abf631605fb3949",
+      "commands": "models/hub75-frame-coupler-corner-left/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-corner-left",
+      "native": {
+        "png": "models/hub75-frame-coupler-corner-left/model.png",
+        "sc": "models/hub75-frame-coupler-corner-left/model.sc",
+        "step": "models/hub75-frame-coupler-corner-left/model.step",
+        "stl": "models/hub75-frame-coupler-corner-left/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [],
+      "source": "models/components/hub75_frame_coupler/scpf/corner_left.py"
+    },
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "d45530acfd4d6e0adc6f1bb30abf631605fb3949",
+      "commands": "models/hub75-frame-coupler-corner-right/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-corner-right",
+      "native": {
+        "png": "models/hub75-frame-coupler-corner-right/model.png",
+        "sc": "models/hub75-frame-coupler-corner-right/model.sc",
+        "step": "models/hub75-frame-coupler-corner-right/model.step",
+        "stl": "models/hub75-frame-coupler-corner-right/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [],
+      "source": "models/components/hub75_frame_coupler/scpf/corner_right.py"
+    },
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "d45530acfd4d6e0adc6f1bb30abf631605fb3949",
+      "commands": "models/hub75-frame-coupler-edge/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-edge",
+      "native": {
+        "png": "models/hub75-frame-coupler-edge/model.png",
+        "sc": "models/hub75-frame-coupler-edge/model.sc",
+        "step": "models/hub75-frame-coupler-edge/model.step",
+        "stl": "models/hub75-frame-coupler-edge/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [],
+      "source": "models/components/hub75_frame_coupler/scpf/edge.py"
+    },
+    {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "d45530acfd4d6e0adc6f1bb30abf631605fb3949",
+      "commands": "models/hub75-frame-coupler-middle/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-frame-coupler-middle",
+      "native": {
+        "png": "models/hub75-frame-coupler-middle/model.png",
+        "sc": "models/hub75-frame-coupler-middle/model.sc",
+        "step": "models/hub75-frame-coupler-middle/model.step",
+        "stl": "models/hub75-frame-coupler-middle/model.stl"
+      },
+      "owner": "hub75-frame-coupler",
+      "priority": 20,
+      "root": "models/components/hub75_frame_coupler",
+      "snapshot": {
+        "camera": {
+          "distance": 150,
+          "fov": 0,
+          "pitch": 0.35,
+          "target": [
+            0,
+            -13,
+            0
+          ],
+          "yaw": -0.62
+        }
+      },
+      "snapshots": [],
+      "source": "models/components/hub75_frame_coupler/scpf/middle.py"
+    },
+    {
       "artifacts": [],
       "built_source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189",
       "commands": "models/hub75-panel/solidcraft.json",
@@ -1303,5 +1439,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "9a66f74d8d5c0f8efaeecd0910c0aed8d91b7189"
+  "source_sha": "d45530acfd4d6e0adc6f1bb30abf631605fb3949"
 }

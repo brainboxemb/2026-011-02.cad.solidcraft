@@ -38,18 +38,25 @@ class ForgeBuildTests(unittest.TestCase):
                 }]
             }
         }
-        expected = [{
-            "name": "Part",
-            "drawing": "$drawing_1",
-            "path": "models/box/drawings/Part.pdf",
-        }]
         self.assertEqual(
             _drawing_artifacts(legacy, "models/box/solidcraft.json"),
-            expected,
+            [{
+                "name": "Part",
+                "drawing": "$drawing_1",
+                "path": "models/box/drawings/Part.pdf",
+            }],
         )
         self.assertEqual(
             _drawing_artifacts(additive, "models/box/solidcraft.json"),
-            expected,
+            [{
+                "name": "Part",
+                "drawing": "$drawing_1",
+                "path": "models/box/drawings/Part.pdf",
+                "sheet": "$drawing_1_sheet",
+                "orientation": "$drawing_1_orientation",
+                "preview": "models/box/drawings/Part.png",
+                "inspect": "models/box/drawings/Part.json",
+            }],
         )
 
     @patch("cad_model_build.forge.subprocess.run")

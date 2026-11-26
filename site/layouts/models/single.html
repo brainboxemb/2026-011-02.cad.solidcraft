@@ -92,20 +92,22 @@
     <section class="cad-panel cad-drawings-panel">
       <p class="cad-section-label">Technical drawing</p>
       <h2 class="cad-section-title">Drawing sheet</h2>
-      <p class="cad-section-help">Native SolidCraft vector PDF from the accepted build scope. A4 is the Forge default; individual models may explicitly select A3.</p>
+      <p class="cad-section-help">Native SolidCraft drawing evidence from the accepted build scope. The page loads only the static sheet preview; the vector PDF opens only when you ask for it.</p>
       {{ range $drawing := $drawings }}
         {{ $drawingPath := index $drawing "path" }}
         {{ $drawingRaw := printf "%s%s" $rawBase $drawingPath }}
         {{ $drawingBlob := printf "%s%s" $blobBase $drawingPath }}
+        {{ $previewPath := index $drawing "preview" }}
         <article class="cad-drawing">
           <h3 class="cad-section-subtitle">{{ index $drawing "name" }}</h3>
-          <iframe class="cad-drawing-frame" src="{{ $drawingRaw }}" title="{{ index $drawing "name" }} technical drawing PDF"></iframe>
-          <div class="cad-links">
-            <a href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">Open PDF on GitHub ↗</a>
-            <a href="{{ $drawingRaw }}" download>Download PDF</a>
-          </div>
-        </article>
-      {{ end }}
+          {{ with $previewPath }}
+            {{ $previewRaw := printf "%s%s" $rawBase . }}
+            <a class="cad-drawing-preview-link" href="{{ $previewRaw }}" target="_blank" rel="noopener noreferrer" aria-label="Open static native drawing sheet preview">
+              <img class="cad-drawing-preview" src="{{ $previewRaw }}" alt="{{ index $drawing "name" }} native SolidCraft drawing sheet preview" decoding="async">
+            </a>
+          {{ else }}
+            <div class="cad-preview-empty">Static drawing preview is unavailable for this drawing artifact.</div>
+          {{ end }}
     </section>
   {{ end }}
 

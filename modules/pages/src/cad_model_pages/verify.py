@@ -332,6 +332,37 @@ def verify(
                 raise PagesVerificationError(
                     f"{variant_id}: page does not expose drawing PDF"
                 )
+
+            preview = drawing.get("preview")
+            inspection = drawing.get("inspect")
+            if preview is not None or inspection is not None:
+                if (
+                    not isinstance(preview, str)
+                    or not preview.endswith(".png")
+                    or not isinstance(inspection, str)
+                    or not inspection.endswith(".json")
+                ):
+                    raise PagesVerificationError(
+                        f"{variant_id}: invalid drawing preview declaration"
+                    )
+                preview_file = build_scope / preview
+                inspect_file = build_scope / inspection
+                _require_file(preview_file)
+                _require_file(inspect_file)
+                if preview_file.read_bytes()[:8] != b"\x89PNG\r\n\x1a\n":
+                    raise PagesVerificationError(
+                        f"{variant_id}: drawing preview is not a PNG"
+                    )
+                _load_json(inspect_file)
+                if f"{raw_base}{preview}" not in html:
+                    raise PagesVerificationError(
+                        f"{variant_id}: page does not expose drawing preview"
+                    )
+                if "cad-drawing-frame" in html:
+                    raise PagesVerificationError(
+                        f"{variant_id}: page still auto-loads drawing PDF"
+                    )
+
             duplicate = page_root / "drawings" / Path(artifact).name
             if duplicate.exists():
                 raise PagesVerificationError(

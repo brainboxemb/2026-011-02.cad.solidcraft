@@ -74,7 +74,11 @@ class SnapshotRuntimeTests(unittest.TestCase):
                     {
                         "name": "SamplePlate",
                         "drawing": "$drawing_1",
+                        "sheet": "$drawing_1_sheet",
+                        "orientation": "$drawing_1_orientation",
                         "path": "models/sample-plate/drawings/SamplePlate.pdf",
+                        "preview": "models/sample-plate/drawings/SamplePlate.png",
+                        "inspect": "models/sample-plate/drawings/SamplePlate.json",
                     }
                 ],
             }
@@ -84,7 +88,12 @@ class SnapshotRuntimeTests(unittest.TestCase):
                         {
                             "name": "SamplePlate",
                             "drawing": "$drawing_1",
+                            "sheet": "$drawing_1_sheet",
+                            "orientation": "$drawing_1_orientation",
                             "pdf": "drawings/SamplePlate.pdf",
+                            "png": "drawings/SamplePlate.png",
+                            "inspect": "drawings/SamplePlate.json",
+                            "expected": {},
                         }
                     ]
                 }
@@ -93,26 +102,44 @@ class SnapshotRuntimeTests(unittest.TestCase):
             def fake_run(command, **kwargs):
                 script = Path(command[2])
                 payload = __import__("json").loads(script.read_text())
-                export = next(
+                for export in (
                     item for item in payload["commands"]
                     if item["command"] == "drawing.export"
-                )
-                Path(export["params"]["path"]).write_bytes(b"%PDF-1.7\n")
+                ):
+                    target = Path(export["params"]["path"])
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    if export["params"]["format"] == "pdf":
+                        target.write_bytes(b"%PDF-1.7\n")
+                    else:
+                        target.write_bytes(b"\x89PNG\r\n\x1a\npreview")
                 return None
 
             run.side_effect = fake_run
             produced = _export_drawings(
                 document=document,
                 row=row,
-                variables={"$drawing_1": "D1"},
+                variables={
+                    "$drawing_1": "D1",
+                    "$drawing_1_sheet": "S1",
+                    "$drawing_1_orientation": "landscape",
+                },
                 saved=saved,
                 output_root=root,
                 work_dir=work,
+                replay_results=[{
+                    "name": "SamplePlate",
+                    "sheets": [],
+                    "properties": {},
+                }],
             )
 
             self.assertEqual(
                 produced,
-                (root / "models/sample-plate/drawings/SamplePlate.pdf",),
+                (
+                    root / "models/sample-plate/drawings/SamplePlate.pdf",
+                    root / "models/sample-plate/drawings/SamplePlate.png",
+                    root / "models/sample-plate/drawings/SamplePlate.json",
+                ),
             )
             command = run.call_args.args[0]
             self.assertIn("--in", command)
@@ -122,10 +149,15 @@ class SnapshotRuntimeTests(unittest.TestCase):
                 script["commands"][0],
                 {"command": "drawing.open", "params": {"drawing": "D1"}},
             )
+            exports = [
+                item for item in script["commands"]
+                if item["command"] == "drawing.export"
+            ]
             self.assertEqual(
-                script["commands"][1]["params"]["format"],
-                "pdf",
+                [item["params"]["format"] for item in exports],
+                ["pdf", "png"],
             )
+            self.assertEqual(exports[1]["params"]["dpi"], 144)
 
     @patch("cad_model_build.runtime.subprocess.run")
     def test_drawing_export_rejects_non_pdf_output(self, run):
@@ -176,6 +208,7 @@ class SnapshotRuntimeTests(unittest.TestCase):
                     saved=saved,
                     output_root=root,
                     work_dir=work,
+                    replay_results=[],
                 )
 
 if __name__ == "__main__":

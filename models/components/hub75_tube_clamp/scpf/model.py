@@ -119,6 +119,7 @@ def _slide_back_sketch():
             center=(BACK_X_MIN + r, z - r),
             clockwise=False,
         )
+        profile.line_to((BACK_X_MIN, -z + r))
         profile.close()
 
     return sketch
@@ -203,6 +204,7 @@ def _slide_slot_sketch():
             center=(SLOT_ENTRY_X, SLOT_ENTRY_HALF_HEIGHT),
             clockwise=False,
         )
+        profile.line_to((SLOT_OUTER_X, -SLOT_ENTRY_HALF_HEIGHT))
         profile.close()
 
     return sketch

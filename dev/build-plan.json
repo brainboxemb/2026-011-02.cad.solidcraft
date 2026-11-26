@@ -960,6 +960,86 @@
       "source": "models/subassemblies/hub75_screen_2panel/scpf/model.py"
     },
     {
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "f0e2584b7253556476773c57c8cece85b4a5d3d5",
+      "commands": "models/hub75-tube-clamp-10mm/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "hub75-tube-clamp-10mm",
+      "native": {
+        "png": "models/hub75-tube-clamp-10mm/model.png",
+        "sc": "models/hub75-tube-clamp-10mm/model.sc",
+        "step": "models/hub75-tube-clamp-10mm/model.step",
+        "stl": "models/hub75-tube-clamp-10mm/model.stl"
+      },
+      "owner": "hub75-tube-clamp-10mm",
+      "priority": 20,
+      "root": "models/components/hub75_tube_clamp",
+      "snapshot": {
+        "camera": {
+          "distance": 42,
+          "fov": 0,
+          "pitch": 0.4,
+          "target": [
+            -3.5,
+            0,
+            0
+          ],
+          "yaw": -0.75
+        }
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 38,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              -3.5,
+              0,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-tube-clamp-10mm/front.png"
+        },
+        {
+          "camera": {
+            "distance": 38,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              -3.5,
+              0,
+              0
+            ],
+            "yaw": 3.14
+          },
+          "name": "rear.png",
+          "path": "models/hub75-tube-clamp-10mm/rear.png"
+        },
+        {
+          "camera": {
+            "distance": 38,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              -3.5,
+              0,
+              0
+            ],
+            "yaw": -1.57
+          },
+          "name": "side.png",
+          "path": "models/hub75-tube-clamp-10mm/side.png"
+        }
+      ],
+      "source": "models/components/hub75_tube_clamp/scpf/model.py"
+    },
+    {
       "artifacts": [],
       "built_source_sha": "df92896d31f4ee2de5bd260d36834192a2c97aa1",
       "commands": "models/hub75-wood-frame/solidcraft.json",
@@ -1766,5 +1846,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "1d47182a1bdf657ad798361fbb7d2475b73e37ee"
+  "source_sha": "f0e2584b7253556476773c57c8cece85b4a5d3d5"
 }

@@ -1,0 +1,590 @@
+{
+  "commands": [
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "Open clamp ring",
+        "offset": -6.0
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          4.8083261120685235,
+          4.8083261120685235
+        ],
+        "end": [
+          4.8083261120685235,
+          -4.8083261120685235
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          4.1012193308819755,
+          -4.1012193308819755
+        ],
+        "start": [
+          4.8083261120685235,
+          -4.8083261120685235
+        ],
+        "end": [
+          3.394112549695428,
+          -3.394112549695428
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          3.394112549695428,
+          -3.394112549695428
+        ],
+        "end": [
+          3.394112549695428,
+          3.394112549695428
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          4.1012193308819755,
+          4.1012193308819755
+        ],
+        "start": [
+          3.394112549695428,
+          3.394112549695428
+        ],
+        "end": [
+          4.8083261120685235,
+          4.8083261120685235
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 12.0,
+        "direction": "positive",
+        "body_name": "Hub75TubeClamp10mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Integrated slide back",
+        "offset": -8.0
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.55,
+          -5.7
+        ],
+        "start": [
+          -8.85,
+          -5.7
+        ],
+        "end": [
+          -8.55,
+          -6.0
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -8.55,
+            -6.0
+          ],
+          [
+            -5.95,
+            -6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -5.95,
+          -5.7
+        ],
+        "start": [
+          -5.95,
+          -6.0
+        ],
+        "end": [
+          -5.65,
+          -5.7
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -5.65,
+            -5.7
+          ],
+          [
+            -5.65,
+            5.7
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -5.95,
+          5.7
+        ],
+        "start": [
+          -5.65,
+          5.7
+        ],
+        "end": [
+          -5.95,
+          6.0
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -5.95,
+            6.0
+          ],
+          [
+            -8.55,
+            6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.55,
+          5.7
+        ],
+        "start": [
+          -8.55,
+          6.0
+        ],
+        "end": [
+          -8.85,
+          5.7
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -8.85,
+            5.7
+          ],
+          [
+            -8.85,
+            -5.7
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 16.0,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75TubeClamp10mm"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Slide slot",
+        "offset": -8.05
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.9,
+          -2.75
+        ],
+        "start": [
+          -9.05,
+          -2.75
+        ],
+        "end": [
+          -8.9,
+          -2.9
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -8.9,
+            -2.9
+          ],
+          [
+            -8.412132034355963,
+            -2.9
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.412132034355963,
+          -3.05
+        ],
+        "start": [
+          -8.412132034355963,
+          -2.9
+        ],
+        "end": [
+          -8.306066017177981,
+          -2.943933982822018
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -8.306066017177981,
+            -2.943933982822018
+          ],
+          [
+            -7.643933982822017,
+            -3.606066017177982
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -7.537867965644035,
+          -3.5
+        ],
+        "start": [
+          -7.643933982822017,
+          -3.606066017177982
+        ],
+        "end": [
+          -7.537867965644035,
+          -3.65
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -7.537867965644035,
+            -3.65
+          ],
+          [
+            -7.25,
+            -3.65
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -7.25,
+          -3.5
+        ],
+        "start": [
+          -7.25,
+          -3.65
+        ],
+        "end": [
+          -7.1,
+          -3.5
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -7.1,
+            -3.5
+          ],
+          [
+            -7.1,
+            3.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -7.25,
+          3.5
+        ],
+        "start": [
+          -7.1,
+          3.5
+        ],
+        "end": [
+          -7.25,
+          3.65
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -7.25,
+            3.65
+          ],
+          [
+            -7.537867965644035,
+            3.65
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -7.537867965644035,
+          3.5
+        ],
+        "start": [
+          -7.537867965644035,
+          3.65
+        ],
+        "end": [
+          -7.643933982822017,
+          3.606066017177982
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -7.643933982822017,
+            3.606066017177982
+          ],
+          [
+            -8.306066017177981,
+            2.943933982822018
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.412132034355963,
+          3.05
+        ],
+        "start": [
+          -8.306066017177981,
+          2.943933982822018
+        ],
+        "end": [
+          -8.412132034355963,
+          2.9
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -8.412132034355963,
+            2.9
+          ],
+          [
+            -8.9,
+            2.9
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -8.9,
+          2.75
+        ],
+        "start": [
+          -8.9,
+          2.9
+        ],
+        "end": [
+          -9.05,
+          2.75
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -9.05,
+            2.75
+          ],
+          [
+            -9.05,
+            -2.75
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 15.05,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75TubeClamp10mm"
+        ]
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -7.975,
+            -8.0,
+            3.275
+          ],
+          [
+            -7.1,
+            -8.0,
+            0.0
+          ],
+          [
+            -7.975,
+            -8.0,
+            -3.275
+          ]
+        ],
+        "distance": 0.14,
+        "body": "Hub75TubeClamp10mm"
+      }
+    }
+  ]
+}

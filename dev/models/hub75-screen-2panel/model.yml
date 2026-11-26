@@ -1,0 +1,19 @@
+purpose: [example]
+section: subassemblies
+group: display
+priority: 31
+title: BasicHub75Screen2Panel
+tagline: Two shared native HUB75 occurrences on a 320 × 320 mm nominal grid
+description: >
+  Two detailed HUB75 panels placed side by side on the same 160 mm nominal
+  pitch used by the five-panel screen. The panel centres are X=-80 and X=+80 mm
+  at Z=160 mm. The left panel uses the normal upright placement and the right
+  panel uses the existing alternating reversed orientation for the rear data
+  chain. The original five-panel BasicHub75Screen remains a separate model.
+parameters: Two 159.70 × 319.71 × 14.50 mm panels; 160 mm X pitch; nominal 320 × 320 mm screen
+stages:
+  - Reuse the detailed HUB75 component
+  - Place the left occurrence at X=-80 mm and Z=160 mm
+  - Place the right occurrence at X=+80 mm and Z=160 mm
+  - Apply the existing alternating reversed orientation to the right occurrence
+  - Verify exactly two saved native panel occurrences

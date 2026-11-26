@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/162-reconcile-wall-hook-relief-plan
+branch: feature/166-hub75-screen-2panel
 
 modules: []
-models: []
+models:
+  - hub75-screen-2panel
 tasks:
   - test
+  - build

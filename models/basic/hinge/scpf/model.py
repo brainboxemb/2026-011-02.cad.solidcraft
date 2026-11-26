@@ -67,9 +67,9 @@ class HingeLeaf:
 
 
 class Hinge:
-    initial_angle = 60.0
-    minimum_angle = 0.0
-    maximum_angle = 180.0
+    _initial_angle = 60.0
+    _minimum_angle = 0.0
+    _maximum_angle = 180.0
 
     def build(self):
         leaf_a = HingeLeaf(name="LeafA")
@@ -78,8 +78,8 @@ class Hinge:
             parent="hinge_axis",
             child="hinge_axis",
             kind="revolute",
-            value=self.initial_angle,
-            limits=(self.minimum_angle, self.maximum_angle),
+            value=self._initial_angle,
+            limits=(self._minimum_angle, self._maximum_angle),
             flip=True,
             name="Hinge",
         )

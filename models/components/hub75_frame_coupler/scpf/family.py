@@ -170,49 +170,46 @@ class Hub75FrameCouplerMiddle:
         return (body + seam).with_appearance(SOURCE_RED)
 
 
-class _EdgeLike:
-    profile_key = None
-    relief_key = None
-    screw_x = 0.0
 
-    def _build_edge_like(self):
-        depth = MEDIUM["base"] + MEDIUM["guide"]
-        body = _profile_solid(
-            name=f"{self.profile_key} source profile",
-            loops=BASE_PROFILES[self.profile_key],
-            y=-MEDIUM["datum"] - MEDIUM["base"],
-            distance=depth,
-        )
+def _build_edge_like(*, profile_key, relief_key, screw_x):
+    """Shared Medium construction for one left/right corner member."""
+    depth = MEDIUM["base"] + MEDIUM["guide"]
+    body = _profile_solid(
+        name=f"{profile_key} source profile",
+        loops=BASE_PROFILES[profile_key],
+        y=-MEDIUM["datum"] - MEDIUM["base"],
+        distance=depth,
+    )
 
-        support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
-        body = body + _axis_y_cylinder(
-            diameter=2.0 * support_r,
-            length=depth,
-            x=self.screw_x,
-            y=-MEDIUM["datum"] - MEDIUM["base"] + depth / 2.0,
-            z=-19.0,
-        )
+    support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
+    body = body + _axis_y_cylinder(
+        diameter=2.0 * support_r,
+        length=depth,
+        x=screw_x,
+        y=-MEDIUM["datum"] - MEDIUM["base"] + depth / 2.0,
+        z=-19.0,
+    )
 
-        # The native source uses a shallow loft between two very similar rail
-        # clearance profiles.  Released Forge has no public solid-loft authoring
-        # yet, so the initial Medium port uses the source entrance profile as a
-        # prismatic guide-depth clearance.
-        relief = _profile_solid(
-            name=f"{self.profile_key} rail clearance",
-            loops=RAIL_RELIEF_PROFILES[self.relief_key],
-            y=-MEDIUM["datum"],
-            distance=MEDIUM["guide"] + 0.05,
-        )
-        body = body - relief
-        body = _guide_clearance(body, x=self.screw_x, z=-19.0)
-        body = _mounting_hole(
-            body,
-            x=self.screw_x,
-            z=-8.0,
-            total_depth=depth,
-        )
-        body = _locator_pad(body, x=self.screw_x, z=-19.0)
-        return body
+    # The native source uses a shallow loft between two very similar rail
+    # clearance profiles. Released Forge v0.19 has no public solid-loft
+    # authoring yet, so this Medium baseline uses the source entrance profile
+    # as a prismatic guide-depth clearance.
+    relief = _profile_solid(
+        name=f"{profile_key} rail clearance",
+        loops=RAIL_RELIEF_PROFILES[relief_key],
+        y=-MEDIUM["datum"],
+        distance=MEDIUM["guide"] + 0.05,
+    )
+    body = body - relief
+    body = _guide_clearance(body, x=screw_x, z=-19.0)
+    body = _mounting_hole(
+        body,
+        x=screw_x,
+        z=-8.0,
+        total_depth=depth,
+    )
+    body = _locator_pad(body, x=screw_x, z=-19.0)
+    return body
 
 
 @component
@@ -264,25 +261,25 @@ class Hub75FrameCouplerEdge(_EdgeLike):
 
 
 @component
-class Hub75FrameCouplerCornerLeft(_EdgeLike):
+class Hub75FrameCouplerCornerLeft:
     """Fixed Medium left frame-corner coupler."""
 
-    profile_key = "corner_left"
-    relief_key = "corner_left"
-    screw_x = MEDIUM["screw_x"]
-
     def build(self):
-        return self._build_edge_like().with_appearance(SOURCE_RED)
+        return _build_edge_like(
+            profile_key="corner_left",
+            relief_key="corner_left",
+            screw_x=MEDIUM["screw_x"],
+        ).with_appearance(SOURCE_RED)
 
 
 @component
-class Hub75FrameCouplerCornerRight(_EdgeLike):
+class Hub75FrameCouplerCornerRight:
     """Fixed Medium right frame-corner coupler."""
-
-    profile_key = "corner_right"
-    relief_key = "corner_right"
-    screw_x = -MEDIUM["screw_x"]
 
     def build(self):
         # Native Medium suppresses the right-corner panel-pin pass-through.
-        return self._build_edge_like().with_appearance(SOURCE_RED)
+        return _build_edge_like(
+            profile_key="corner_right",
+            relief_key="corner_right",
+            screw_x=-MEDIUM["screw_x"],
+        ).with_appearance(SOURCE_RED)

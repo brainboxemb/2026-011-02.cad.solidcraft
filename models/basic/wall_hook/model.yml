@@ -4,7 +4,7 @@ priority: 55
 title: Wall Hook
 tagline: Compact wall hook with a reinforced diagonal web
 description: >
-  Parametric reconstruction of the supplied tutorial wall hook. The confirmed
+  Parametric reconstruction of the supplied tutorial wall hook with a native A4 landscape technical drawing. The confirmed
   source dimensions define the 57 mm high XZ hook profile, 15 mm symmetric Y extrusion,
   6 mm walls, 20 mm hook opening, triangular gusset window and two Ø4.2 mm mounting holes through the rear 6 mm mounting wall. A separate Ø8 mm coaxial tool-access bore clears only the diagonal reinforcement in front of the lower screw so the mounting wall remains intact. Forge v0.19 applies the native 1.5 mm FRONT/BACK boundary chamfer while each screw hole keeps a 1.0 mm tool-side entry chamfer and only a 0.3 mm wall-side elephant-foot relief. The finished body receives a display-only #FFD21A yellow appearance matching the tutorial result; physical material/BOM semantics remain unchanged. The outer silhouette and triangular relief are authored as sharp polygons first, then rounded with native R2 fillet operations. Only those visible fillet radii remain explicitly inferred from the rendered reference.
 parameters: 57 mm high; 15 mm wide; 6 mm ribs; 20 mm hook opening; 2 × Ø4.2 mm holes; Ø8 mm lower-screw tool access; 1 mm front hole chamfers; 0.3 mm rear hole reliefs; 1.5 mm FRONT/BACK edge chamfer

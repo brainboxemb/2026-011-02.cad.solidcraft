@@ -141,3 +141,28 @@ historical source margin.
 The retained native SolidCraft feature profile represented the pre-clip rounded
 cross. Forge therefore applies this source window explicitly before mounting,
 guide and surface-detail operations.
+
+
+## Native XZ sketch frame
+
+The retained SolidCraft source sketches use the native `XZ` origin plane.
+On that native plane, sketch coordinates are oriented as:
+
+- sketch U -> world +X;
+- sketch V -> world -Z;
+- positive extrusion -> world +Y.
+
+The extracted `source_data.py` loops are intentionally stored in ordinary
+physical local `(X, Z)` coordinates. Forge therefore lowers every source loop
+through one shared boundary conversion:
+
+```text
+physical (x, z) -> native XZ sketch (x, -z)
+```
+
+Arc winding is reversed at the same reflection boundary.
+
+This is essential for Edge/Corner source fidelity. Primitive cylinders and
+locator pads already use ordinary world XYZ coordinates, so omitting this
+single reflection places the source profile on the opposite Z side from its
+reinforcement/mounting features.

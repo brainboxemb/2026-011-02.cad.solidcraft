@@ -20,6 +20,9 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
     SEAM_PROFILES,
     SEAM_TIP_PROFILES,
     EDGE_GUIDE_END_CUTS,
+    TUBE_EDGE_BASE_PLATE_PROFILES,
+    TUBE_EDGE_REAR_REFERENCE_MARK_INDICES,
+    TUBE_EDGE_REAR_SUPPORT_PROFILES,
 )
 
 SOURCE_RED = "#B80D0A"
@@ -69,10 +72,10 @@ def _add_loop(sketch, loop):
 def _profile_solid(*, name, loops, y, distance):
     """Extrude one or more retained source loops.
 
-    Forge v0.19 requires one closed profile per standalone Sketch, while the
-    native SolidCraft source may store several disconnected profiles in one
-    sketch. Preserve that source shape by lowering each loop separately and
-    joining the resulting native extrusions.
+    Preserve the accepted extraction boundary by lowering each retained loop
+    separately and joining the resulting SolidCraft extrusions. Newer Forge
+    releases can author multiple profiles in one Sketch, but changing the
+    accepted base-family history is outside this tube-interface change.
     """
     result = None
     for index, loop in enumerate(loops, start=1):
@@ -84,6 +87,16 @@ def _profile_solid(*, name, loops, y, distance):
     if result is None:
         raise ValueError(f"{name}: source profile contains no closed loops")
     return result
+
+
+def _multi_profile_solid(*, name, loops, y, distance):
+    """Extrude one SolidCraft XZ Sketch containing all retained closed loops."""
+    if not loops:
+        raise ValueError(f"{name}: source profile contains no closed loops")
+    with Sketch(name=name, plane="XZ", offset=y) as sketch:
+        for loop in loops:
+            _add_loop(sketch, loop)
+    return sketch.extrude(distance)
 
 
 def _axis_y_cylinder(*, diameter, length, x, y, z):
@@ -469,37 +482,41 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
     return body
 
 
+def _build_edge_body():
+    """Shared accepted Medium Edge body before optional tube-interface features."""
+    screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
+    body = _edge_like_stock(
+        profile_key="edge",
+        screw_xs=screw_xs,
+    )
+    body = _clip_edge_to_top_t(body)
+    body = _cut_edge_like_base(
+        body,
+        profile_key="edge",
+        screw_xs=screw_xs,
+    )
+    body = _cut_edge_like_guide(
+        body,
+        relief_key="edge",
+        screw_xs=screw_xs,
+        edge=True,
+    )
+
+    for x in screw_xs:
+        body = _locator_pad(body, x=x, z=_edge_support_z())
+
+    return _join_tapered_seam_guide(
+        body,
+        profile_key="edge",
+    )
+
+
 @component
 class Hub75FrameCouplerEdge:
     """Fixed Medium straight frame-edge coupler."""
 
     def build(self):
-        screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
-        body = _edge_like_stock(
-            profile_key="edge",
-            screw_xs=screw_xs,
-        )
-        body = _clip_edge_to_top_t(body)
-        body = _cut_edge_like_base(
-            body,
-            profile_key="edge",
-            screw_xs=screw_xs,
-        )
-        body = _cut_edge_like_guide(
-            body,
-            relief_key="edge",
-            screw_xs=screw_xs,
-            edge=True,
-        )
-
-        for x in screw_xs:
-            body = _locator_pad(body, x=x, z=_edge_support_z())
-
-        body = _join_tapered_seam_guide(
-            body,
-            profile_key="edge",
-        )
-        return body.with_appearance(SOURCE_RED)
+        return _build_edge_body().with_appearance(SOURCE_RED)
 
 
 @component
@@ -525,3 +542,289 @@ class Hub75FrameCouplerCornerRight:
             relief_key="corner_right",
             screw_x=-MEDIUM["screw_x"],
         ).with_appearance(SOURCE_RED)
+
+# Final active tube-interface geometry from the retained SolidCraft assembly.
+#
+# The source authors these features on the top Edge/Corner occurrences at
+# world Z=320. This owner is normalized around that datum, so the authored
+# sketch offsets 321.8 / 322 / 323.55 become local Z=1.8 / 2 / 3.55.
+TUBE_AXIS_Y = -6.0
+TUBE_AXIS_Z = 10.0
+TUBE_CLEARANCE_DIAMETER = 10.5
+TUBE_CLEARANCE_LENGTH = 364.0
+
+EDGE_RAIL_CENTERS = (-20.0, 20.0)
+CORNER_LEFT_RAIL_CENTER = 7.0
+CORNER_RIGHT_RAIL_CENTER = -7.0
+
+RAIL_REAR_Y = -16.0
+RAIL_NECK_Y = -14.75
+RAIL_FLANK_Y = -13.75
+RAIL_FRONT_Y = -13.35
+RAIL_HALF_TOP = 2.45
+RAIL_HALF_FLANK = 3.3
+
+RAIL_PLANE_Z = 2.0
+RAIL_HEIGHT = 14.75
+RAIL_ENTRY_CHAMFER = 0.18
+RAIL_ENTRY_CHAMFER_SECONDARY = 0.65
+
+CLAMP_FOOT_CLEARANCE_Z = 1.8
+CLAMP_FOOT_CLEARANCE_DEPTH = 3.0
+CLAMP_FOOT_CLEARANCE_WIDTH = 12.5
+CLAMP_FOOT_CLEARANCE_Y_REAR = -15.05
+EDGE_CLAMP_FOOT_CLEARANCE_Y_FRONT = -11.4
+CORNER_CLAMP_FOOT_CLEARANCE_Y_FRONT = -8.4
+
+CLAMP_BOW_CLEARANCE_Z = 3.55
+CLAMP_BOW_CLEARANCE_DEPTH = 0.45
+CLAMP_BOW_CLEARANCE_WIDTH = 12.4
+CLAMP_BOW_CLEARANCE_Y_REAR = -9.1
+CLAMP_BOW_CLEARANCE_Y_FRONT = -8.4
+
+
+def _xy_loop(sketch, points):
+    """Add one fixed source XY loop to a native Sketch."""
+    contour = sketch.profile(start=points[0])
+    for point in points[1:]:
+        contour.line_to(point)
+    contour.line_to(points[0])
+    contour.close()
+
+
+def _xy_profile_solid(*, name, loops, z, distance):
+    """Extrude one or more disconnected active source profiles in one Sketch."""
+    with Sketch(name=name, plane="XY", offset=z) as sketch:
+        for points in loops:
+            _xy_loop(sketch, points)
+    return sketch.extrude(distance)
+
+
+def _rectangle_xy(*, center_x, width, y_rear, y_front):
+    half = width / 2.0
+    return [
+        (center_x - half, y_rear),
+        (center_x + half, y_rear),
+        (center_x + half, y_front),
+        (center_x - half, y_front),
+    ]
+
+
+def _rail_xy(center_x):
+    """One source Z-slide rail profile translated to its local X datum."""
+    return [
+        (center_x - RAIL_HALF_TOP, RAIL_REAR_Y),
+        (center_x + RAIL_HALF_TOP, RAIL_REAR_Y),
+        (center_x + RAIL_HALF_TOP, RAIL_NECK_Y),
+        (center_x + RAIL_HALF_FLANK, RAIL_FLANK_Y),
+        (center_x + RAIL_HALF_FLANK, RAIL_FRONT_Y),
+        (center_x - RAIL_HALF_FLANK, RAIL_FRONT_Y),
+        (center_x - RAIL_HALF_FLANK, RAIL_FLANK_Y),
+        (center_x - RAIL_HALF_TOP, RAIL_NECK_Y),
+    ]
+
+
+def _rail_entry_edges(*centers):
+    """Derive the five source chamfer picks per rail from its authored profile."""
+    picks = []
+    top_z = RAIL_PLANE_Z + RAIL_HEIGHT
+    for center_x in centers:
+        points = _rail_xy(center_x)
+        # Native source features #198/#217/#218 select the top edges created by
+        # profile segments l3..l7. Midpoints are stable authoring picks.
+        for index in range(2, 7):
+            a = points[index]
+            b = points[(index + 1) % len(points)]
+            picks.append(
+                (
+                    (a[0] + b[0]) / 2.0,
+                    (a[1] + b[1]) / 2.0,
+                    top_z,
+                )
+            )
+    return picks
+
+
+def _axis_x_cylinder(*, diameter, length, x, y, z):
+    return Cylinder(
+        d=diameter,
+        h=length,
+        axis=Axis.X,
+        anchor=Anchor.CENTER,
+    ).at(x, y, z, anchor=Anchor.CENTER)
+
+
+def _add_edge_tube_interface(body):
+    """Active source features #189, #191, #195 and #198."""
+    foot_clearance = _xy_profile_solid(
+        name="Vrijloop voor naar binnen geplaatste klemmen",
+        loops=[
+            _rectangle_xy(
+                center_x=center_x,
+                width=CLAMP_FOOT_CLEARANCE_WIDTH,
+                y_rear=CLAMP_FOOT_CLEARANCE_Y_REAR,
+                y_front=EDGE_CLAMP_FOOT_CLEARANCE_Y_FRONT,
+            )
+            for center_x in EDGE_RAIL_CENTERS
+        ],
+        z=CLAMP_FOOT_CLEARANCE_Z,
+        distance=CLAMP_FOOT_CLEARANCE_DEPTH,
+    )
+    body = body - foot_clearance
+
+    rails = _xy_profile_solid(
+        name="Z-schuifrails op 40 mm hartafstand",
+        loops=[_rail_xy(center_x) for center_x in EDGE_RAIL_CENTERS],
+        z=RAIL_PLANE_Z,
+        distance=RAIL_HEIGHT,
+    )
+    body = body + rails
+
+    bow_clearance = _xy_profile_solid(
+        name="Vrijloop voor klemboog aan de binnenzijde",
+        loops=[
+            _rectangle_xy(
+                center_x=center_x,
+                width=CLAMP_BOW_CLEARANCE_WIDTH,
+                y_rear=CLAMP_BOW_CLEARANCE_Y_REAR,
+                y_front=CLAMP_BOW_CLEARANCE_Y_FRONT,
+            )
+            for center_x in EDGE_RAIL_CENTERS
+        ],
+        z=CLAMP_BOW_CLEARANCE_Z,
+        distance=CLAMP_BOW_CLEARANCE_DEPTH,
+    )
+    body = body - bow_clearance
+
+    body = body.chamfer(
+        RAIL_ENTRY_CHAMFER,
+        distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
+        edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
+    )
+
+    # Final source features 226–230: replace the earlier suppressed rear/base
+    # experiments with the active R5 support, continuous base and the two
+    # reference marks re-cut into the newly added rear material.
+    rear_support = _multi_profile_solid(
+        name="Symmetrische bulten met R5-overgangen",
+        loops=TUBE_EDGE_REAR_SUPPORT_PROFILES,
+        y=-17.5,
+        distance=2.45,
+    )
+    body = body + rear_support
+
+    base_plate = _multi_profile_solid(
+        name="Doorgetrokken basisplaat rondom de twee klemmen",
+        loops=TUBE_EDGE_BASE_PLATE_PROFILES,
+        y=-15.15,
+        distance=3.9,
+    )
+    body = body + base_plate
+
+    rear_marks = [
+        REFERENCE_MARK_LOOPS["edge"][index]
+        for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
+    ]
+    reference_cut = _multi_profile_solid(
+        name="Referentiepatroon op symmetrische rug",
+        loops=rear_marks,
+        y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),
+        distance=REFERENCE_PATTERN["mark_cut_depth"],
+    )
+    return body - reference_cut
+
+
+def _add_corner_tube_interface(body, *, side):
+    """Active source features #213, #214, #216 and #217/#218."""
+    if side == "left":
+        rail_center = CORNER_LEFT_RAIL_CENTER
+        # Source cutter #214 starts at world X=-182 and runs +364 mm. Relative
+        # to the normalized left-corner origin X=-160 its center is +160.
+        tube_cutter_center_x = 160.0
+    elif side == "right":
+        rail_center = CORNER_RIGHT_RAIL_CENTER
+        # Relative to the normalized right-corner origin X=+160.
+        tube_cutter_center_x = -160.0
+    else:
+        raise ValueError(f"unsupported corner side {side!r}")
+
+    insertion_clearance = _xy_profile_solid(
+        name="Inschuifuitsparing voor hoekschuifklem",
+        loops=[
+            _rectangle_xy(
+                center_x=rail_center,
+                width=CLAMP_FOOT_CLEARANCE_WIDTH,
+                y_rear=CLAMP_FOOT_CLEARANCE_Y_REAR,
+                y_front=CORNER_CLAMP_FOOT_CLEARANCE_Y_FRONT,
+            )
+        ],
+        z=CLAMP_FOOT_CLEARANCE_Z,
+        distance=18.2,
+    )
+    body = body - insertion_clearance
+
+    tube_clearance = _axis_x_cylinder(
+        diameter=TUBE_CLEARANCE_DIAMETER,
+        length=TUBE_CLEARANCE_LENGTH,
+        x=tube_cutter_center_x,
+        y=TUBE_AXIS_Y,
+        z=TUBE_AXIS_Z,
+    )
+    body = body - tube_clearance
+
+    rail = _xy_profile_solid(
+        name="Zwaluwstaartrail voor hoekschuifklem",
+        loops=[_rail_xy(rail_center)],
+        z=RAIL_PLANE_Z,
+        distance=RAIL_HEIGHT,
+    )
+    body = body + rail
+
+    return body.chamfer(
+        RAIL_ENTRY_CHAMFER,
+        distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
+        edges=_rail_entry_edges(rail_center),
+    )
+
+
+@component
+class Hub75FrameCouplerEdgeTube:
+    """Medium Edge coupler with the final active two-clamp tube interface."""
+
+    def build(self):
+        return _add_edge_tube_interface(
+            _build_edge_body()
+        ).with_appearance(SOURCE_RED)
+
+
+@component
+class Hub75FrameCouplerCornerLeftTube:
+    """Medium left Corner coupler with the final active tube interface."""
+
+    def build(self):
+        body = _build_edge_like(
+            profile_key="corner_left",
+            relief_key="corner_left",
+            screw_x=MEDIUM["screw_x"],
+        )
+        return _add_corner_tube_interface(
+            body,
+            side="left",
+        ).with_appearance(SOURCE_RED)
+
+
+@component
+class Hub75FrameCouplerCornerRightTube:
+    """Medium right Corner coupler with the final active tube interface."""
+
+    def build(self):
+        body = _build_edge_like(
+            profile_key="corner_right",
+            relief_key="corner_right",
+            screw_x=-MEDIUM["screw_x"],
+        )
+        return _add_corner_tube_interface(
+            body,
+            side="right",
+        ).with_appearance(SOURCE_RED)
+

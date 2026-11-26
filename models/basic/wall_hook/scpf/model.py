@@ -235,18 +235,18 @@ def wall_hook_drawing():
                 offset_mm=8,
                 decimals=0,
             ),
-            DrawingDimension.linear(
+            DrawingDimension.faces(
                 "front",
-                (6, 0, 32),
-                (26, 0, 32),
+                (6, 0, 37),
+                (26, 0, 37),
                 direction="horizontal",
                 offset_mm=8,
                 decimals=0,
             ),
-            DrawingDimension.linear(
+            DrawingDimension.faces(
                 "front",
-                (6, 0, 32),
-                (6, 0, 57),
+                (16, 0, 32),
+                (3, 0, 57),
                 direction="vertical",
                 offset_mm=8,
                 decimals=0,

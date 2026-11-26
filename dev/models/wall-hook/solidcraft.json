@@ -796,6 +796,15 @@
         "cs_diameter": "hole_diameter + (hole_chamfer * 2)",
         "cs_angle": 90
       }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "WallHook"
+        ],
+        "color": "#FFD21A"
+      }
     }
   ]
 }

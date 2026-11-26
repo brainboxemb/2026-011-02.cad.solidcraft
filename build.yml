@@ -3,9 +3,7 @@ branch: feature/200-hub75-tube-couplers
 
 modules: []
 models:
-  - hub75-frame-coupler-edge-tube
-  - hub75-frame-coupler-corner-left-tube
-  - hub75-frame-coupler-corner-right-tube
+  - hub75-frame-coupler
 tasks:
   - test
   - build

@@ -1,0 +1,601 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "clamp_bore",
+        "expression": "9.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "tube_d",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "clamp_interference",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75TubeClampMale",
+        "grounded": true
+      },
+      "bind": {
+        "$hub75tubeclampmale": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d1_Hub75TubeClampMale__Open klemring met afgeronde lippen",
+        "offset": -6.0
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "(clamp_bore / 2 + 2 mm) * 0.707107"
+        ],
+        "end": [
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "-((clamp_bore / 2 + 2 mm) * 0.707107)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107",
+          "-((((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107)"
+        ],
+        "start": [
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "-((clamp_bore / 2 + 2 mm) * 0.707107)"
+        ],
+        "end": [
+          "(clamp_bore / 2) * 0.707107",
+          "-((clamp_bore / 2) * 0.707107)"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          "(clamp_bore / 2) * 0.707107",
+          "-((clamp_bore / 2) * 0.707107)"
+        ],
+        "end": [
+          "(clamp_bore / 2) * 0.707107",
+          "(clamp_bore / 2) * 0.707107"
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107",
+          "(((clamp_bore / 2) + (clamp_bore / 2 + 2 mm)) / 2) * 0.707107"
+        ],
+        "start": [
+          "(clamp_bore / 2) * 0.707107",
+          "(clamp_bore / 2) * 0.707107"
+        ],
+        "end": [
+          "(clamp_bore / 2 + 2 mm) * 0.707107",
+          "(clamp_bore / 2 + 2 mm) * 0.707107"
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 12.0,
+        "direction": "positive",
+        "body_name": "Hub75TubeClampMale"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75TubeClampMale__Symmetrische groeven met vlakke bodem",
+        "offset": -8.0
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.2 mm",
+            6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.8 mm",
+            6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.8 mm",
+            6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm",
+            5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm",
+            5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.6 mm",
+            6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.6 mm",
+            6.0
+          ],
+          [
+            "-(tube_d / 2 + 0.65 mm)",
+            6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(tube_d / 2 + 0.65 mm)",
+            6.0
+          ],
+          [
+            "-(tube_d / 2 + 0.65 mm)",
+            -6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "-(tube_d / 2 + 0.65 mm)",
+            -6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.6 mm",
+            -6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.6 mm",
+            -6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            -5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            -5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm",
+            -5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm",
+            -5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.8 mm",
+            -6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.8 mm",
+            -6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.2 mm",
+            -6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.2 mm",
+            -6.0
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm",
+            -5.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm",
+            -5.8
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm",
+            5.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm",
+            5.8
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 2.05 mm + 0.2 mm",
+            6.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 16.0,
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "Hub75TubeClampMale"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75TubeClampMale__Spiegelbeeldige correctie van de rugflanken",
+        "offset": -8.1
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            -5.45
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            -5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            -5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm + 0.7 mm",
+            -6.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm + 0.7 mm",
+            -6.1
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            -6.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            -6.1
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            -5.45
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            5.45
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            5.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm",
+            5.4
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm + 0.7 mm",
+            6.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.4 mm + 0.7 mm",
+            6.1
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            6.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            6.1
+          ],
+          [
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2))) - 0.65 mm + 0.2 mm",
+            5.45
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 16.2,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75TubeClampMale"
+        ]
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "config.configure",
+      "params": {
+        "params": [
+          "clamp_bore"
+        ]
+      }
+    },
+    {
+      "command": "config.row",
+      "params": {
+        "name": "Default",
+        "rename": "Free"
+      },
+      "bind": {
+        "$config_row_f411a1fb6275": {
+          "field": "rows",
+          "where": {
+            "name": "Free"
+          },
+          "select": "id"
+        }
+      }
+    },
+    {
+      "command": "config.row",
+      "params": {
+        "name": "Free",
+        "values": {
+          "param:clamp_bore": "tube_d-clamp_interference"
+        }
+      }
+    },
+    {
+      "command": "config.rule",
+      "params": {
+        "rule": {
+          "id": "installed",
+          "name": "Installed",
+          "enabled": false,
+          "condition": {
+            "type": "always"
+          },
+          "effect": {
+            "type": "drive_parameter",
+            "parameter": "clamp_bore",
+            "expression": "tube_d"
+          }
+        }
+      }
+    },
+    {
+      "command": "config.activate",
+      "params": {
+        "row": "$config_row_f411a1fb6275"
+      }
+    },
+    {
+      "command": "config.table",
+      "params": {}
+    }
+  ]
+}

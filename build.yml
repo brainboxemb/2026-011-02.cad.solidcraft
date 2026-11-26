@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/166-hub75-screen-2panel
+branch: chore/168-reconcile-hub75-2panel-plan
 
 modules: []
-models:
-  - hub75-screen-2panel
+models: []
 tasks:
   - test
-  - build

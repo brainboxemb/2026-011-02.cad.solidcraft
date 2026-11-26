@@ -9934,6 +9934,93 @@
       }
     },
     {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_Hub75FrameCouplerEdge__Edge T-profile boundary",
+        "offset": -18.5
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -41.0,
+            -1.855
+          ],
+          [
+            41.0,
+            -1.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            41.0,
+            -1.855
+          ],
+          [
+            41.0,
+            35.290000000000006
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            41.0,
+            35.290000000000006
+          ],
+          [
+            -41.0,
+            35.290000000000006
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -41.0,
+            35.290000000000006
+          ],
+          [
+            -41.0,
+            -1.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 11.0,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "Hub75FrameCouplerEdge"
+        ]
+      }
+    },
+    {
       "command": "solid.cylinder",
       "params": {
         "height": 3,

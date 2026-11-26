@@ -10,6 +10,7 @@ from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
 
 from models.components.hub75_frame_coupler.scpf.source_data import (
     BASE_PROFILES,
+    EDGE_GUIDE_END_CUT_PROFILES,
     MEDIUM,
     MIDDLE_GUIDE_PROFILES,
     RAIL_RELIEF_PROFILES,
@@ -355,6 +356,15 @@ class Hub75FrameCouplerEdge:
             body,
             profile_key="edge",
         )
+
+        for index, loop in enumerate(EDGE_GUIDE_END_CUT_PROFILES, start=1):
+            end_cut = _profile_solid(
+                name=f"Edge guide-end rounding cut {index}",
+                loops=[loop],
+                y=-MEDIUM["datum"],
+                distance=MEDIUM["guide"],
+            )
+            body = body - end_cut
 
         for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
             body = _guide_clearance(body, x=x, z=-19.0)

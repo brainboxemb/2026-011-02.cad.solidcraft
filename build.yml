@@ -1,9 +1,10 @@
 schema: 1
-branch: feature/133-wall-hook-yellow
+branch: fix/144-sync-template-drawing-artifacts
 
-modules: []
+modules:
+  - build
 models:
-  - wall-hook
+  - sample-plate
 tasks:
   - test
   - build

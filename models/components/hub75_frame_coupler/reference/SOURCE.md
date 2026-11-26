@@ -76,3 +76,14 @@ overlapping slices interpolated between the exact native foot and tip sections.
 Edge also applies the native guide-end rounding cut from features 137–138.
 
 These bounded lowering details preserve the same owner and public variant ids.
+
+
+## Edge T-profile boundary
+
+Native feature 89, `Edge T-profiel begrenzen`, is a box cut immediately after
+the Edge profile-stock extrusion. It removes the broad upper half of the
+cross-like stock before the support, rail-clearance, guide-end and seam-guide
+features are applied.
+
+This cut is required for source fidelity; without it Edge incorrectly appears
+as a full cross with a broad arm above the intended T body.

@@ -25,30 +25,23 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
 SOURCE_RED = "#B80D0A"
 
 
-def _native_xz_point(point):
-    """Lower physical local XZ coordinates to SolidCraft native XZ sketch UV.
-
-    SolidCraft's native XZ origin plane uses sketch +V toward world -Z.
-    source_data.py stores physical local (X, Z), so every source-derived sketch
-    point must reflect Z once at this boundary.  Keeping this conversion here
-    lets primitives continue to use ordinary world XYZ coordinates.
-    """
-    x, z = point
-    return (x, -z)
-
-
 def _add_loop(sketch, loop):
-    contour = sketch.profile(start=_native_xz_point(loop["start"]))
+    """Lower retained physical local (X, Z) directly onto the native XZ plane.
+
+    source_data.py is already normalized to the reusable component's physical
+    local frame.  Do not reflect Z here: support cylinders, mounting cuts,
+    locator pads and reference features all use the same local Z coordinates.
+    """
+    contour = sketch.profile(start=tuple(loop["start"]))
     for segment in loop["segments"]:
-        end = _native_xz_point(segment["end"])
+        end = tuple(segment["end"])
         if segment["kind"] == "line":
             contour.line_to(end)
         elif segment["kind"] == "arc":
             contour.arc_center_to(
                 end,
-                center=_native_xz_point(segment["center"]),
-                # A reflection reverses 2D winding.
-                clockwise=not segment["clockwise"],
+                center=tuple(segment["center"]),
+                clockwise=segment["clockwise"],
             )
         else:
             raise ValueError(f"unsupported source segment {segment['kind']!r}")

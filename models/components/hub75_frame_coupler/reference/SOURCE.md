@@ -70,6 +70,9 @@ uses twelve overlapping slices interpolated between the exact source entrance
 and insertion-depth sections.  This preserves both native sections and removes
 the visible fin/lip artifact produced by the former one-profile prism.
 
-The seam guide remains a straight source-footprint prism until public Forge
-solid-loft authoring exists.  That bounded follow-up does not change owner or
-public variant ids.
+The Middle and Edge seam guides are native two-section loft joins. Released
+Forge v0.19 has no public solid-loft authoring API, so both are represented by
+overlapping slices interpolated between the exact native foot and tip sections.
+Edge also applies the native guide-end rounding cut from features 137–138.
+
+These bounded lowering details preserve the same owner and public variant ids.

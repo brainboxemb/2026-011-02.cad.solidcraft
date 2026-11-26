@@ -1,9 +1,9 @@
 schema: 1
-branch: feature/200-hub75-tube-couplers
+branch: feature/201-hub75-tube-frame
 
 modules: []
 models:
-  - hub75-frame-coupler
+  - hub75-display-frame-2panel
 tasks:
   - test
   - build

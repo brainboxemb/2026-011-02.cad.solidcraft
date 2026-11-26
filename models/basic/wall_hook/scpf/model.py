@@ -229,8 +229,8 @@ def wall_hook_drawing():
             ),
             DrawingDimension.faces(
                 "front",
-                (0, 0, 50),
-                (6, 0, 50),
+                (0, 0, 40),
+                (6, 0, 40),
                 direction="horizontal",
                 offset_mm=8,
                 decimals=0,

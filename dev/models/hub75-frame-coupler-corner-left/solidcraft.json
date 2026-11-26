@@ -13,17 +13,17 @@
       "params": {
         "center": [
           3.15,
-          13.5
+          -13.5
         ],
         "start": [
           -2.85,
-          13.5
+          -13.5
         ],
         "end": [
           3.15,
-          19.5
+          -19.5
         ],
-        "clockwise": true,
+        "clockwise": false,
         "connect": true
       }
     },
@@ -33,11 +33,11 @@
         "points": [
           [
             3.15,
-            19.5
+            -19.5
           ],
           [
             10.8765625,
-            19.5
+            -19.5
           ]
         ],
         "connect": true
@@ -48,155 +48,15 @@
       "params": {
         "center": [
           10.8765625,
-          13.5
+          -13.5
         ],
         "start": [
           10.8765625,
-          19.5
+          -19.5
         ],
         "end": [
           16.8765625,
-          13.5
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            16.8765625,
-            13.5
-          ],
-          [
-            16.8765625,
-            12.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          26.8765625,
-          12.855
-        ],
-        "start": [
-          16.8765625,
-          12.855
-        ],
-        "end": [
-          26.8765625,
-          2.855
-        ],
-        "clockwise": false,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            26.8765625,
-            2.855
-          ],
-          [
-            34,
-            2.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          34,
-          -3.145
-        ],
-        "start": [
-          34,
-          2.855
-        ],
-        "end": [
-          40,
-          -3.145
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            40,
-            -3.145
-          ],
-          [
-            40,
-            -9.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          34,
-          -9.135257812
-        ],
-        "start": [
-          40,
-          -9.135257813
-        ],
-        "end": [
-          34,
-          -15.135257813
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            34,
-            -15.135257813
-          ],
-          [
-            26.8765625,
-            -15.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          26.8765625,
-          -25.135257813
-        ],
-        "start": [
-          26.8765625,
-          -15.135257813
-        ],
-        "end": [
-          16.8765625,
-          -25.135257813
+          -13.5
         ],
         "clockwise": false,
         "connect": true
@@ -208,11 +68,11 @@
         "points": [
           [
             16.8765625,
-            -25.135257813
+            -13.5
           ],
           [
             16.8765625,
-            -34
+            -12.855
           ]
         ],
         "connect": true
@@ -222,16 +82,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          10.8765625,
-          -34
+          26.8765625,
+          -12.855
         ],
         "start": [
           16.8765625,
-          -34
+          -12.855
         ],
         "end": [
-          10.8765625,
-          -40
+          26.8765625,
+          -2.855
         ],
         "clockwise": true,
         "connect": true
@@ -242,12 +102,152 @@
       "params": {
         "points": [
           [
+            26.8765625,
+            -2.855
+          ],
+          [
+            34,
+            -2.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          3.145
+        ],
+        "start": [
+          34,
+          -2.855
+        ],
+        "end": [
+          40,
+          3.145
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40,
+            3.145
+          ],
+          [
+            40,
+            9.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          9.135257812
+        ],
+        "start": [
+          40,
+          9.135257813
+        ],
+        "end": [
+          34,
+          15.135257813
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            34,
+            15.135257813
+          ],
+          [
+            26.8765625,
+            15.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          26.8765625,
+          25.135257813
+        ],
+        "start": [
+          26.8765625,
+          15.135257813
+        ],
+        "end": [
+          16.8765625,
+          25.135257813
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            16.8765625,
+            25.135257813
+          ],
+          [
+            16.8765625,
+            34
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          10.8765625,
+          34
+        ],
+        "start": [
+          16.8765625,
+          34
+        ],
+        "end": [
+          10.8765625,
+          40
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
             10.8765625,
-            -40
+            40
           ],
           [
             3.15,
-            -40
+            40
           ]
         ],
         "connect": true
@@ -258,155 +258,15 @@
       "params": {
         "center": [
           3.15,
-          -34
+          34
         ],
         "start": [
           3.15,
-          -40
+          40
         ],
         "end": [
           -2.85,
-          -34
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -2.85,
-            -34
-          ],
-          [
-            -2.85,
-            -25.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -12.85,
-          -25.135257813
-        ],
-        "start": [
-          -2.85,
-          -25.135257813
-        ],
-        "end": [
-          -12.85,
-          -15.135257813
-        ],
-        "clockwise": false,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -12.85,
-            -15.135257813
-          ],
-          [
-            -13.5,
-            -15.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -13.5,
-          -9.135257813
-        ],
-        "start": [
-          -13.5,
-          -15.135257813
-        ],
-        "end": [
-          -19.5,
-          -9.135257813
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -19.5,
-            -9.135257813
-          ],
-          [
-            -19.5,
-            -3.145
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -13.5,
-          -3.145
-        ],
-        "start": [
-          -19.5,
-          -3.145
-        ],
-        "end": [
-          -13.5,
-          2.855
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -13.5,
-            2.855
-          ],
-          [
-            -12.85,
-            2.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -12.85,
-          12.855
-        ],
-        "start": [
-          -12.85,
-          2.855
-        ],
-        "end": [
-          -2.85,
-          12.855
+          34
         ],
         "clockwise": false,
         "connect": true
@@ -418,11 +278,151 @@
         "points": [
           [
             -2.85,
-            12.855
+            34
           ],
           [
             -2.85,
-            13.5
+            25.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -12.85,
+          25.135257813
+        ],
+        "start": [
+          -2.85,
+          25.135257813
+        ],
+        "end": [
+          -12.85,
+          15.135257813
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -12.85,
+            15.135257813
+          ],
+          [
+            -13.5,
+            15.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -13.5,
+          9.135257813
+        ],
+        "start": [
+          -13.5,
+          15.135257813
+        ],
+        "end": [
+          -19.5,
+          9.135257813
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -19.5,
+            9.135257813
+          ],
+          [
+            -19.5,
+            3.145
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -13.5,
+          3.145
+        ],
+        "start": [
+          -19.5,
+          3.145
+        ],
+        "end": [
+          -13.5,
+          -2.855
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -13.5,
+            -2.855
+          ],
+          [
+            -12.85,
+            -2.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -12.85,
+          -12.855
+        ],
+        "start": [
+          -12.85,
+          -2.855
+        ],
+        "end": [
+          -2.85,
+          -12.855
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2.85,
+            -12.855
+          ],
+          [
+            -2.85,
+            -13.5
           ]
         ],
         "connect": true
@@ -453,17 +453,17 @@
       "params": {
         "center": [
           3.15,
-          13.5
+          -13.5
         ],
         "start": [
           -2.85,
-          13.5
+          -13.5
         ],
         "end": [
           3.15,
-          19.5
+          -19.5
         ],
-        "clockwise": true,
+        "clockwise": false,
         "connect": true
       }
     },
@@ -473,11 +473,11 @@
         "points": [
           [
             3.15,
-            19.5
+            -19.5
           ],
           [
             10.8765625,
-            19.5
+            -19.5
           ]
         ],
         "connect": true
@@ -488,155 +488,15 @@
       "params": {
         "center": [
           10.8765625,
-          13.5
+          -13.5
         ],
         "start": [
           10.8765625,
-          19.5
+          -19.5
         ],
         "end": [
           16.8765625,
-          13.5
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            16.8765625,
-            13.5
-          ],
-          [
-            16.8765625,
-            12.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          26.8765625,
-          12.855
-        ],
-        "start": [
-          16.8765625,
-          12.855
-        ],
-        "end": [
-          26.8765625,
-          2.855
-        ],
-        "clockwise": false,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            26.8765625,
-            2.855
-          ],
-          [
-            34,
-            2.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          34,
-          -3.145
-        ],
-        "start": [
-          34,
-          2.855
-        ],
-        "end": [
-          40,
-          -3.145
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            40,
-            -3.145
-          ],
-          [
-            40,
-            -9.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          34,
-          -9.135257812
-        ],
-        "start": [
-          40,
-          -9.135257813
-        ],
-        "end": [
-          34,
-          -15.135257813
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            34,
-            -15.135257813
-          ],
-          [
-            26.8765625,
-            -15.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          26.8765625,
-          -25.135257813
-        ],
-        "start": [
-          26.8765625,
-          -15.135257813
-        ],
-        "end": [
-          16.8765625,
-          -25.135257813
+          -13.5
         ],
         "clockwise": false,
         "connect": true
@@ -648,11 +508,11 @@
         "points": [
           [
             16.8765625,
-            -25.135257813
+            -13.5
           ],
           [
             16.8765625,
-            -34
+            -12.855
           ]
         ],
         "connect": true
@@ -662,16 +522,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          10.8765625,
-          -34
+          26.8765625,
+          -12.855
         ],
         "start": [
           16.8765625,
-          -34
+          -12.855
         ],
         "end": [
-          10.8765625,
-          -40
+          26.8765625,
+          -2.855
         ],
         "clockwise": true,
         "connect": true
@@ -682,12 +542,152 @@
       "params": {
         "points": [
           [
+            26.8765625,
+            -2.855
+          ],
+          [
+            34,
+            -2.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          3.145
+        ],
+        "start": [
+          34,
+          -2.855
+        ],
+        "end": [
+          40,
+          3.145
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40,
+            3.145
+          ],
+          [
+            40,
+            9.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          34,
+          9.135257812
+        ],
+        "start": [
+          40,
+          9.135257813
+        ],
+        "end": [
+          34,
+          15.135257813
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            34,
+            15.135257813
+          ],
+          [
+            26.8765625,
+            15.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          26.8765625,
+          25.135257813
+        ],
+        "start": [
+          26.8765625,
+          15.135257813
+        ],
+        "end": [
+          16.8765625,
+          25.135257813
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            16.8765625,
+            25.135257813
+          ],
+          [
+            16.8765625,
+            34
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          10.8765625,
+          34
+        ],
+        "start": [
+          16.8765625,
+          34
+        ],
+        "end": [
+          10.8765625,
+          40
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
             10.8765625,
-            -40
+            40
           ],
           [
             3.15,
-            -40
+            40
           ]
         ],
         "connect": true
@@ -698,155 +698,15 @@
       "params": {
         "center": [
           3.15,
-          -34
+          34
         ],
         "start": [
           3.15,
-          -40
+          40
         ],
         "end": [
           -2.85,
-          -34
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -2.85,
-            -34
-          ],
-          [
-            -2.85,
-            -25.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -12.85,
-          -25.135257813
-        ],
-        "start": [
-          -2.85,
-          -25.135257813
-        ],
-        "end": [
-          -12.85,
-          -15.135257813
-        ],
-        "clockwise": false,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -12.85,
-            -15.135257813
-          ],
-          [
-            -13.5,
-            -15.135257813
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -13.5,
-          -9.135257813
-        ],
-        "start": [
-          -13.5,
-          -15.135257813
-        ],
-        "end": [
-          -19.5,
-          -9.135257813
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -19.5,
-            -9.135257813
-          ],
-          [
-            -19.5,
-            -3.145
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -13.5,
-          -3.145
-        ],
-        "start": [
-          -19.5,
-          -3.145
-        ],
-        "end": [
-          -13.5,
-          2.855
-        ],
-        "clockwise": true,
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -13.5,
-            2.855
-          ],
-          [
-            -12.85,
-            2.855
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.arc.center_point",
-      "params": {
-        "center": [
-          -12.85,
-          12.855
-        ],
-        "start": [
-          -12.85,
-          2.855
-        ],
-        "end": [
-          -2.85,
-          12.855
+          34
         ],
         "clockwise": false,
         "connect": true
@@ -858,11 +718,151 @@
         "points": [
           [
             -2.85,
-            12.855
+            34
           ],
           [
             -2.85,
-            13.5
+            25.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -12.85,
+          25.135257813
+        ],
+        "start": [
+          -2.85,
+          25.135257813
+        ],
+        "end": [
+          -12.85,
+          15.135257813
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -12.85,
+            15.135257813
+          ],
+          [
+            -13.5,
+            15.135257813
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -13.5,
+          9.135257813
+        ],
+        "start": [
+          -13.5,
+          15.135257813
+        ],
+        "end": [
+          -19.5,
+          9.135257813
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -19.5,
+            9.135257813
+          ],
+          [
+            -19.5,
+            3.145
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -13.5,
+          3.145
+        ],
+        "start": [
+          -19.5,
+          3.145
+        ],
+        "end": [
+          -13.5,
+          -2.855
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -13.5,
+            -2.855
+          ],
+          [
+            -12.85,
+            -2.855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -12.85,
+          -12.855
+        ],
+        "start": [
+          -12.85,
+          -2.855
+        ],
+        "end": [
+          -2.85,
+          -12.855
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -2.85,
+            -12.855
+          ],
+          [
+            -2.85,
+            -13.5
           ]
         ],
         "connect": true
@@ -982,90 +982,10 @@
         "points": [
           [
             -3,
-            0.4
+            -0.4
           ],
           [
             -0.4,
-            0.4
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -0.4,
-            0.4
-          ],
-          [
-            -0.4,
-            3
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -0.4,
-            3
-          ],
-          [
-            0.4,
-            3
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            0.4,
-            3
-          ],
-          [
-            0.4,
-            0.4
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            0.4,
-            0.4
-          ],
-          [
-            3,
-            0.4
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            3,
-            0.4
-          ],
-          [
-            3,
             -0.4
           ]
         ],
@@ -1077,40 +997,8 @@
       "params": {
         "points": [
           [
-            3,
+            -0.4,
             -0.4
-          ],
-          [
-            0.4,
-            -0.4
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            0.4,
-            -0.4
-          ],
-          [
-            0.4,
-            -3
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            0.4,
-            -3
           ],
           [
             -0.4,
@@ -1129,7 +1017,23 @@
             -3
           ],
           [
-            -0.4,
+            0.4,
+            -3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            -3
+          ],
+          [
+            0.4,
             -0.4
           ]
         ],
@@ -1141,11 +1045,11 @@
       "params": {
         "points": [
           [
-            -0.4,
+            0.4,
             -0.4
           ],
           [
-            -3,
+            3,
             -0.4
           ]
         ],
@@ -1157,12 +1061,108 @@
       "params": {
         "points": [
           [
-            -3,
+            3,
             -0.4
+          ],
+          [
+            3,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3,
+            0.4
+          ],
+          [
+            0.4,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            0.4
+          ],
+          [
+            0.4,
+            3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4,
+            3
+          ],
+          [
+            -0.4,
+            3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            3
+          ],
+          [
+            -0.4,
+            0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.4,
+            0.4
           ],
           [
             -3,
             0.4
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3,
+            0.4
+          ],
+          [
+            -3,
+            -0.4
           ]
         ],
         "connect": true
@@ -1197,23 +1197,7 @@
         "points": [
           [
             -5.4,
-            1.1
-          ],
-          [
-            -4.6,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -4.6,
-            1.1
+            -1.1
           ],
           [
             -4.6,
@@ -1232,8 +1216,24 @@
             -1.1
           ],
           [
+            -4.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -4.6,
+            1.1
+          ],
+          [
             -5.4,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -1245,11 +1245,11 @@
         "points": [
           [
             -5.4,
-            -1.1
+            1.1
           ],
           [
             -5.4,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -1284,23 +1284,7 @@
         "points": [
           [
             -10.4,
-            2
-          ],
-          [
-            -9.6,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -9.6,
-            2
+            -2
           ],
           [
             -9.6,
@@ -1319,8 +1303,24 @@
             -2
           ],
           [
+            -9.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -9.6,
+            2
+          ],
+          [
             -10.4,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -1332,11 +1332,11 @@
         "points": [
           [
             -10.4,
-            -2
+            2
           ],
           [
             -10.4,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -1371,23 +1371,7 @@
         "points": [
           [
             -15.4,
-            1.1
-          ],
-          [
-            -14.6,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -14.6,
-            1.1
+            -1.1
           ],
           [
             -14.6,
@@ -1406,8 +1390,24 @@
             -1.1
           ],
           [
+            -14.6,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.6,
+            1.1
+          ],
+          [
             -15.4,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -1419,11 +1419,11 @@
         "points": [
           [
             -15.4,
-            -1.1
+            1.1
           ],
           [
             -15.4,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -1458,23 +1458,7 @@
         "points": [
           [
             -20.4,
-            2
-          ],
-          [
-            -19.6,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            -19.6,
-            2
+            -2
           ],
           [
             -19.6,
@@ -1493,8 +1477,24 @@
             -2
           ],
           [
+            -19.6,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -19.6,
+            2
+          ],
+          [
             -20.4,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -1506,11 +1506,11 @@
         "points": [
           [
             -20.4,
-            -2
+            2
           ],
           [
             -20.4,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -1545,23 +1545,7 @@
         "points": [
           [
             4.6,
-            1.1
-          ],
-          [
-            5.4,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            5.4,
-            1.1
+            -1.1
           ],
           [
             5.4,
@@ -1580,8 +1564,24 @@
             -1.1
           ],
           [
+            5.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            5.4,
+            1.1
+          ],
+          [
             4.6,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -1593,11 +1593,11 @@
         "points": [
           [
             4.6,
-            -1.1
+            1.1
           ],
           [
             4.6,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -1632,23 +1632,7 @@
         "points": [
           [
             9.6,
-            2
-          ],
-          [
-            10.4,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            10.4,
-            2
+            -2
           ],
           [
             10.4,
@@ -1667,8 +1651,24 @@
             -2
           ],
           [
+            10.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            10.4,
+            2
+          ],
+          [
             9.6,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -1680,11 +1680,11 @@
         "points": [
           [
             9.6,
-            -2
+            2
           ],
           [
             9.6,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -1719,23 +1719,7 @@
         "points": [
           [
             14.6,
-            1.1
-          ],
-          [
-            15.4,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            15.4,
-            1.1
+            -1.1
           ],
           [
             15.4,
@@ -1754,8 +1738,24 @@
             -1.1
           ],
           [
+            15.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.4,
+            1.1
+          ],
+          [
             14.6,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -1767,11 +1767,11 @@
         "points": [
           [
             14.6,
-            -1.1
+            1.1
           ],
           [
             14.6,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -1806,23 +1806,7 @@
         "points": [
           [
             19.6,
-            2
-          ],
-          [
-            20.4,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            20.4,
-            2
+            -2
           ],
           [
             20.4,
@@ -1841,8 +1825,24 @@
             -2
           ],
           [
+            20.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            20.4,
+            2
+          ],
+          [
             19.6,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -1854,11 +1854,11 @@
         "points": [
           [
             19.6,
-            -2
+            2
           ],
           [
             19.6,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -1893,23 +1893,7 @@
         "points": [
           [
             24.6,
-            1.1
-          ],
-          [
-            25.4,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            25.4,
-            1.1
+            -1.1
           ],
           [
             25.4,
@@ -1928,8 +1912,24 @@
             -1.1
           ],
           [
+            25.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.4,
+            1.1
+          ],
+          [
             24.6,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -1941,11 +1941,11 @@
         "points": [
           [
             24.6,
-            -1.1
+            1.1
           ],
           [
             24.6,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -1980,23 +1980,7 @@
         "points": [
           [
             29.6,
-            2
-          ],
-          [
-            30.4,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            30.4,
-            2
+            -2
           ],
           [
             30.4,
@@ -2015,8 +1999,24 @@
             -2
           ],
           [
+            30.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            30.4,
+            2
+          ],
+          [
             29.6,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -2028,11 +2028,11 @@
         "points": [
           [
             29.6,
-            -2
+            2
           ],
           [
             29.6,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -2067,23 +2067,7 @@
         "points": [
           [
             34.6,
-            1.1
-          ],
-          [
-            35.4,
-            1.1
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            35.4,
-            1.1
+            -1.1
           ],
           [
             35.4,
@@ -2102,8 +2086,24 @@
             -1.1
           ],
           [
+            35.4,
+            1.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            35.4,
+            1.1
+          ],
+          [
             34.6,
-            -1.1
+            1.1
           ]
         ],
         "connect": true
@@ -2115,11 +2115,11 @@
         "points": [
           [
             34.6,
-            -1.1
+            1.1
           ],
           [
             34.6,
-            1.1
+            -1.1
           ]
         ],
         "connect": true
@@ -2154,23 +2154,7 @@
         "points": [
           [
             39.6,
-            2
-          ],
-          [
-            40.4,
-            2
-          ]
-        ],
-        "connect": true
-      }
-    },
-    {
-      "command": "sketch.line",
-      "params": {
-        "points": [
-          [
-            40.4,
-            2
+            -2
           ],
           [
             40.4,
@@ -2189,8 +2173,24 @@
             -2
           ],
           [
+            40.4,
+            2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40.4,
+            2
+          ],
+          [
             39.6,
-            -2
+            2
           ]
         ],
         "connect": true
@@ -2202,11 +2202,11 @@
         "points": [
           [
             39.6,
-            -2
+            2
           ],
           [
             39.6,
-            2
+            -2
           ]
         ],
         "connect": true
@@ -2241,11 +2241,11 @@
         "points": [
           [
             -1.1,
-            5.4
+            -5.4
           ],
           [
             1.1,
-            5.4
+            -5.4
           ]
         ],
         "connect": true
@@ -2257,11 +2257,11 @@
         "points": [
           [
             1.1,
-            5.4
+            -5.4
           ],
           [
             1.1,
-            4.6
+            -4.6
           ]
         ],
         "connect": true
@@ -2273,11 +2273,11 @@
         "points": [
           [
             1.1,
-            4.6
+            -4.6
           ],
           [
             -1.1,
-            4.6
+            -4.6
           ]
         ],
         "connect": true
@@ -2289,11 +2289,11 @@
         "points": [
           [
             -1.1,
-            4.6
+            -4.6
           ],
           [
             -1.1,
-            5.4
+            -5.4
           ]
         ],
         "connect": true
@@ -2328,11 +2328,11 @@
         "points": [
           [
             -2,
-            10.4
+            -10.4
           ],
           [
             2,
-            10.4
+            -10.4
           ]
         ],
         "connect": true
@@ -2344,11 +2344,11 @@
         "points": [
           [
             2,
-            10.4
+            -10.4
           ],
           [
             2,
-            9.6
+            -9.6
           ]
         ],
         "connect": true
@@ -2360,11 +2360,11 @@
         "points": [
           [
             2,
-            9.6
+            -9.6
           ],
           [
             -2,
-            9.6
+            -9.6
           ]
         ],
         "connect": true
@@ -2376,11 +2376,11 @@
         "points": [
           [
             -2,
-            9.6
+            -9.6
           ],
           [
             -2,
-            10.4
+            -10.4
           ]
         ],
         "connect": true
@@ -2415,11 +2415,11 @@
         "points": [
           [
             -1.1,
-            15.4
+            -15.4
           ],
           [
             1.1,
-            15.4
+            -15.4
           ]
         ],
         "connect": true
@@ -2431,11 +2431,11 @@
         "points": [
           [
             1.1,
-            15.4
+            -15.4
           ],
           [
             1.1,
-            14.6
+            -14.6
           ]
         ],
         "connect": true
@@ -2447,11 +2447,11 @@
         "points": [
           [
             1.1,
-            14.6
+            -14.6
           ],
           [
             -1.1,
-            14.6
+            -14.6
           ]
         ],
         "connect": true
@@ -2463,11 +2463,11 @@
         "points": [
           [
             -1.1,
-            14.6
+            -14.6
           ],
           [
             -1.1,
-            15.4
+            -15.4
           ]
         ],
         "connect": true
@@ -2502,11 +2502,11 @@
         "points": [
           [
             -2,
-            20.4
+            -20.4
           ],
           [
             2,
-            20.4
+            -20.4
           ]
         ],
         "connect": true
@@ -2518,11 +2518,11 @@
         "points": [
           [
             2,
-            20.4
+            -20.4
           ],
           [
             2,
-            19.6
+            -19.6
           ]
         ],
         "connect": true
@@ -2534,11 +2534,11 @@
         "points": [
           [
             2,
-            19.6
+            -19.6
           ],
           [
             -2,
-            19.6
+            -19.6
           ]
         ],
         "connect": true
@@ -2550,11 +2550,11 @@
         "points": [
           [
             -2,
-            19.6
+            -19.6
           ],
           [
             -2,
-            20.4
+            -20.4
           ]
         ],
         "connect": true
@@ -2589,11 +2589,11 @@
         "points": [
           [
             -1.1,
-            -4.6
+            4.6
           ],
           [
             1.1,
-            -4.6
+            4.6
           ]
         ],
         "connect": true
@@ -2605,11 +2605,11 @@
         "points": [
           [
             1.1,
-            -4.6
+            4.6
           ],
           [
             1.1,
-            -5.4
+            5.4
           ]
         ],
         "connect": true
@@ -2621,11 +2621,11 @@
         "points": [
           [
             1.1,
-            -5.4
+            5.4
           ],
           [
             -1.1,
-            -5.4
+            5.4
           ]
         ],
         "connect": true
@@ -2637,11 +2637,11 @@
         "points": [
           [
             -1.1,
-            -5.4
+            5.4
           ],
           [
             -1.1,
-            -4.6
+            4.6
           ]
         ],
         "connect": true
@@ -2676,11 +2676,11 @@
         "points": [
           [
             -2,
-            -9.6
+            9.6
           ],
           [
             2,
-            -9.6
+            9.6
           ]
         ],
         "connect": true
@@ -2692,11 +2692,11 @@
         "points": [
           [
             2,
-            -9.6
+            9.6
           ],
           [
             2,
-            -10.4
+            10.4
           ]
         ],
         "connect": true
@@ -2708,11 +2708,11 @@
         "points": [
           [
             2,
-            -10.4
+            10.4
           ],
           [
             -2,
-            -10.4
+            10.4
           ]
         ],
         "connect": true
@@ -2724,11 +2724,11 @@
         "points": [
           [
             -2,
-            -10.4
+            10.4
           ],
           [
             -2,
-            -9.6
+            9.6
           ]
         ],
         "connect": true
@@ -2763,11 +2763,11 @@
         "points": [
           [
             -1.1,
-            -14.6
+            14.6
           ],
           [
             1.1,
-            -14.6
+            14.6
           ]
         ],
         "connect": true
@@ -2779,11 +2779,11 @@
         "points": [
           [
             1.1,
-            -14.6
+            14.6
           ],
           [
             1.1,
-            -15.4
+            15.4
           ]
         ],
         "connect": true
@@ -2795,11 +2795,11 @@
         "points": [
           [
             1.1,
-            -15.4
+            15.4
           ],
           [
             -1.1,
-            -15.4
+            15.4
           ]
         ],
         "connect": true
@@ -2811,11 +2811,11 @@
         "points": [
           [
             -1.1,
-            -15.4
+            15.4
           ],
           [
             -1.1,
-            -14.6
+            14.6
           ]
         ],
         "connect": true
@@ -2850,11 +2850,11 @@
         "points": [
           [
             -2,
-            -19.6
+            19.6
           ],
           [
             2,
-            -19.6
+            19.6
           ]
         ],
         "connect": true
@@ -2866,11 +2866,11 @@
         "points": [
           [
             2,
-            -19.6
+            19.6
           ],
           [
             2,
-            -20.4
+            20.4
           ]
         ],
         "connect": true
@@ -2882,11 +2882,11 @@
         "points": [
           [
             2,
-            -20.4
+            20.4
           ],
           [
             -2,
-            -20.4
+            20.4
           ]
         ],
         "connect": true
@@ -2898,11 +2898,11 @@
         "points": [
           [
             -2,
-            -20.4
+            20.4
           ],
           [
             -2,
-            -19.6
+            19.6
           ]
         ],
         "connect": true
@@ -2937,11 +2937,11 @@
         "points": [
           [
             -1.1,
-            -24.6
+            24.6
           ],
           [
             1.1,
-            -24.6
+            24.6
           ]
         ],
         "connect": true
@@ -2953,11 +2953,11 @@
         "points": [
           [
             1.1,
-            -24.6
+            24.6
           ],
           [
             1.1,
-            -25.4
+            25.4
           ]
         ],
         "connect": true
@@ -2969,11 +2969,11 @@
         "points": [
           [
             1.1,
-            -25.4
+            25.4
           ],
           [
             -1.1,
-            -25.4
+            25.4
           ]
         ],
         "connect": true
@@ -2985,11 +2985,11 @@
         "points": [
           [
             -1.1,
-            -25.4
+            25.4
           ],
           [
             -1.1,
-            -24.6
+            24.6
           ]
         ],
         "connect": true
@@ -3024,11 +3024,11 @@
         "points": [
           [
             -2,
-            -29.6
+            29.6
           ],
           [
             2,
-            -29.6
+            29.6
           ]
         ],
         "connect": true
@@ -3040,11 +3040,11 @@
         "points": [
           [
             2,
-            -29.6
+            29.6
           ],
           [
             2,
-            -30.4
+            30.4
           ]
         ],
         "connect": true
@@ -3056,11 +3056,11 @@
         "points": [
           [
             2,
-            -30.4
+            30.4
           ],
           [
             -2,
-            -30.4
+            30.4
           ]
         ],
         "connect": true
@@ -3072,11 +3072,11 @@
         "points": [
           [
             -2,
-            -30.4
+            30.4
           ],
           [
             -2,
-            -29.6
+            29.6
           ]
         ],
         "connect": true
@@ -3111,11 +3111,11 @@
         "points": [
           [
             -1.1,
-            -34.6
+            34.6
           ],
           [
             1.1,
-            -34.6
+            34.6
           ]
         ],
         "connect": true
@@ -3127,11 +3127,11 @@
         "points": [
           [
             1.1,
-            -34.6
+            34.6
           ],
           [
             1.1,
-            -35.4
+            35.4
           ]
         ],
         "connect": true
@@ -3143,11 +3143,11 @@
         "points": [
           [
             1.1,
-            -35.4
+            35.4
           ],
           [
             -1.1,
-            -35.4
+            35.4
           ]
         ],
         "connect": true
@@ -3159,11 +3159,11 @@
         "points": [
           [
             -1.1,
-            -35.4
+            35.4
           ],
           [
             -1.1,
-            -34.6
+            34.6
           ]
         ],
         "connect": true
@@ -3198,11 +3198,11 @@
         "points": [
           [
             -2,
-            -39.6
+            39.6
           ],
           [
             2,
-            -39.6
+            39.6
           ]
         ],
         "connect": true
@@ -3214,11 +3214,11 @@
         "points": [
           [
             2,
-            -39.6
+            39.6
           ],
           [
             2,
-            -40.4
+            40.4
           ]
         ],
         "connect": true
@@ -3230,11 +3230,11 @@
         "points": [
           [
             2,
-            -40.4
+            40.4
           ],
           [
             -2,
-            -40.4
+            40.4
           ]
         ],
         "connect": true
@@ -3246,11 +3246,11 @@
         "points": [
           [
             -2,
-            -40.4
+            40.4
           ],
           [
             -2,
-            -39.6
+            39.6
           ]
         ],
         "connect": true
@@ -3425,11 +3425,11 @@
         "points": [
           [
             1.0995833333333334,
-            -1.0945833333333335
+            1.0945833333333335
           ],
           [
             100.0,
-            -1.0945833333333335
+            1.0945833333333335
           ]
         ],
         "connect": true
@@ -3441,11 +3441,11 @@
         "points": [
           [
             100.0,
-            -1.0945833333333335
+            1.0945833333333335
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3457,11 +3457,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3472,17 +3472,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -3492,11 +3492,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3508,11 +3508,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             1.0995833333333334,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3524,11 +3524,11 @@
         "points": [
           [
             1.0995833333333334,
-            -100.0
+            100.0
           ],
           [
             1.0995833333333334,
-            -1.0945833333333335
+            1.0945833333333335
           ]
         ],
         "connect": true
@@ -3563,11 +3563,11 @@
         "points": [
           [
             1.0491666666666666,
-            -1.0441666666666667
+            1.0441666666666667
           ],
           [
             100.0,
-            -1.0441666666666667
+            1.0441666666666667
           ]
         ],
         "connect": true
@@ -3579,11 +3579,11 @@
         "points": [
           [
             100.0,
-            -1.0441666666666667
+            1.0441666666666667
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3595,11 +3595,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3610,17 +3610,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -3630,11 +3630,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3646,11 +3646,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             1.0491666666666666,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3662,11 +3662,11 @@
         "points": [
           [
             1.0491666666666666,
-            -100.0
+            100.0
           ],
           [
             1.0491666666666666,
-            -1.0441666666666667
+            1.0441666666666667
           ]
         ],
         "connect": true
@@ -3701,11 +3701,11 @@
         "points": [
           [
             0.9987499999999999,
-            -0.99375
+            0.99375
           ],
           [
             100.0,
-            -0.99375
+            0.99375
           ]
         ],
         "connect": true
@@ -3717,11 +3717,11 @@
         "points": [
           [
             100.0,
-            -0.99375
+            0.99375
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3733,11 +3733,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3748,17 +3748,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -3768,11 +3768,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3784,11 +3784,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.9987499999999999,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3800,11 +3800,11 @@
         "points": [
           [
             0.9987499999999999,
-            -100.0
+            100.0
           ],
           [
             0.9987499999999999,
-            -0.99375
+            0.99375
           ]
         ],
         "connect": true
@@ -3839,11 +3839,11 @@
         "points": [
           [
             0.9483333333333333,
-            -0.9433333333333334
+            0.9433333333333334
           ],
           [
             100.0,
-            -0.9433333333333334
+            0.9433333333333334
           ]
         ],
         "connect": true
@@ -3855,11 +3855,11 @@
         "points": [
           [
             100.0,
-            -0.9433333333333334
+            0.9433333333333334
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3871,11 +3871,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -3886,17 +3886,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -3906,11 +3906,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3922,11 +3922,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.9483333333333333,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -3938,11 +3938,11 @@
         "points": [
           [
             0.9483333333333333,
-            -100.0
+            100.0
           ],
           [
             0.9483333333333333,
-            -0.9433333333333334
+            0.9433333333333334
           ]
         ],
         "connect": true
@@ -3977,11 +3977,11 @@
         "points": [
           [
             0.8979166666666667,
-            -0.8929166666666667
+            0.8929166666666667
           ],
           [
             100.0,
-            -0.8929166666666667
+            0.8929166666666667
           ]
         ],
         "connect": true
@@ -3993,11 +3993,11 @@
         "points": [
           [
             100.0,
-            -0.8929166666666667
+            0.8929166666666667
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4009,11 +4009,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4024,17 +4024,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4044,11 +4044,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4060,11 +4060,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.8979166666666667,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4076,11 +4076,11 @@
         "points": [
           [
             0.8979166666666667,
-            -100.0
+            100.0
           ],
           [
             0.8979166666666667,
-            -0.8929166666666667
+            0.8929166666666667
           ]
         ],
         "connect": true
@@ -4115,11 +4115,11 @@
         "points": [
           [
             0.8474999999999999,
-            -0.8425
+            0.8425
           ],
           [
             100.0,
-            -0.8425
+            0.8425
           ]
         ],
         "connect": true
@@ -4131,11 +4131,11 @@
         "points": [
           [
             100.0,
-            -0.8425
+            0.8425
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4147,11 +4147,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4162,17 +4162,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4182,11 +4182,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4198,11 +4198,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.8474999999999999,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4214,11 +4214,11 @@
         "points": [
           [
             0.8474999999999999,
-            -100.0
+            100.0
           ],
           [
             0.8474999999999999,
-            -0.8425
+            0.8425
           ]
         ],
         "connect": true
@@ -4253,11 +4253,11 @@
         "points": [
           [
             0.7970833333333334,
-            -0.7920833333333334
+            0.7920833333333334
           ],
           [
             100.0,
-            -0.7920833333333334
+            0.7920833333333334
           ]
         ],
         "connect": true
@@ -4269,11 +4269,11 @@
         "points": [
           [
             100.0,
-            -0.7920833333333334
+            0.7920833333333334
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4285,11 +4285,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4300,17 +4300,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4320,11 +4320,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4336,11 +4336,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.7970833333333334,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4352,11 +4352,11 @@
         "points": [
           [
             0.7970833333333334,
-            -100.0
+            100.0
           ],
           [
             0.7970833333333334,
-            -0.7920833333333334
+            0.7920833333333334
           ]
         ],
         "connect": true
@@ -4391,11 +4391,11 @@
         "points": [
           [
             0.7466666666666667,
-            -0.7416666666666667
+            0.7416666666666667
           ],
           [
             100.0,
-            -0.7416666666666667
+            0.7416666666666667
           ]
         ],
         "connect": true
@@ -4407,11 +4407,11 @@
         "points": [
           [
             100.0,
-            -0.7416666666666667
+            0.7416666666666667
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4423,11 +4423,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4438,17 +4438,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4458,11 +4458,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4474,11 +4474,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.7466666666666667,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4490,11 +4490,11 @@
         "points": [
           [
             0.7466666666666667,
-            -100.0
+            100.0
           ],
           [
             0.7466666666666667,
-            -0.7416666666666667
+            0.7416666666666667
           ]
         ],
         "connect": true
@@ -4529,11 +4529,11 @@
         "points": [
           [
             0.69625,
-            -0.69125
+            0.69125
           ],
           [
             100.0,
-            -0.69125
+            0.69125
           ]
         ],
         "connect": true
@@ -4545,11 +4545,11 @@
         "points": [
           [
             100.0,
-            -0.69125
+            0.69125
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4561,11 +4561,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4576,17 +4576,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4596,11 +4596,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4612,11 +4612,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.69625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4628,11 +4628,11 @@
         "points": [
           [
             0.69625,
-            -100.0
+            100.0
           ],
           [
             0.69625,
-            -0.69125
+            0.69125
           ]
         ],
         "connect": true
@@ -4667,11 +4667,11 @@
         "points": [
           [
             0.6458333333333334,
-            -0.6408333333333334
+            0.6408333333333334
           ],
           [
             100.0,
-            -0.6408333333333334
+            0.6408333333333334
           ]
         ],
         "connect": true
@@ -4683,11 +4683,11 @@
         "points": [
           [
             100.0,
-            -0.6408333333333334
+            0.6408333333333334
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4699,11 +4699,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4714,17 +4714,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4734,11 +4734,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4750,11 +4750,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.6458333333333334,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4766,11 +4766,11 @@
         "points": [
           [
             0.6458333333333334,
-            -100.0
+            100.0
           ],
           [
             0.6458333333333334,
-            -0.6408333333333334
+            0.6408333333333334
           ]
         ],
         "connect": true
@@ -4805,11 +4805,11 @@
         "points": [
           [
             0.5954166666666667,
-            -0.5904166666666667
+            0.5904166666666667
           ],
           [
             100.0,
-            -0.5904166666666667
+            0.5904166666666667
           ]
         ],
         "connect": true
@@ -4821,11 +4821,11 @@
         "points": [
           [
             100.0,
-            -0.5904166666666667
+            0.5904166666666667
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4837,11 +4837,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4852,17 +4852,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -4872,11 +4872,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4888,11 +4888,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.5954166666666667,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -4904,11 +4904,11 @@
         "points": [
           [
             0.5954166666666667,
-            -100.0
+            100.0
           ],
           [
             0.5954166666666667,
-            -0.5904166666666667
+            0.5904166666666667
           ]
         ],
         "connect": true
@@ -4943,11 +4943,11 @@
         "points": [
           [
             0.545,
-            -0.54
+            0.54
           ],
           [
             100.0,
-            -0.54
+            0.54
           ]
         ],
         "connect": true
@@ -4959,11 +4959,11 @@
         "points": [
           [
             100.0,
-            -0.54
+            0.54
           ],
           [
             100.0,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4975,11 +4975,11 @@
         "points": [
           [
             100.0,
-            -11.135257813
+            11.135257813
           ],
           [
             17.6171875,
-            -11.135257813
+            11.135257813
           ]
         ],
         "connect": true
@@ -4990,17 +4990,17 @@
       "params": {
         "center": [
           17.6171875,
-          -15.875882812
+          15.875882812
         ],
         "start": [
           17.6171875,
-          -11.135257813
+          11.135257813
         ],
         "end": [
           12.8765625,
-          -15.875882812
+          15.875882812
         ],
-        "clockwise": false,
+        "clockwise": true,
         "connect": true
       }
     },
@@ -5010,11 +5010,11 @@
         "points": [
           [
             12.8765625,
-            -15.875882812
+            15.875882812
           ],
           [
             12.8765625,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -5026,11 +5026,11 @@
         "points": [
           [
             12.8765625,
-            -100.0
+            100.0
           ],
           [
             0.545,
-            -100.0
+            100.0
           ]
         ],
         "connect": true
@@ -5042,11 +5042,11 @@
         "points": [
           [
             0.545,
-            -100.0
+            100.0
           ],
           [
             0.545,
-            -0.54
+            0.54
           ]
         ],
         "connect": true

@@ -1,9 +1,9 @@
 schema: 1
-branch: feature/198-hub75-frame-tube
+branch: feature/199-hub75-tube-clamp
 
 modules: []
 models:
-  - hub75-frame-tube-10mm
+  - hub75-tube-clamp-10mm
 tasks:
   - test
   - build

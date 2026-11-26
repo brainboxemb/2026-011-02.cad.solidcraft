@@ -1,0 +1,33 @@
+purpose: [example]
+section: components
+group: display-frame
+priority: 28
+title: HUB75 Tube Clamp — Ø10
+tagline: Loose printable slide clamp shared by Edge and Corner tube interfaces
+description: >
+  Source-faithful Free/print-state reconstruction of the linked Ø10 tube clamp
+  used eight times by the tube-supported HUB75 frame. One physical owner is
+  reused by both Edge and Corner placements.
+parameters: Ø10 tube target; 9.6 mm Free bore; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
+stages:
+  - Rebuild the active open elastic clamp-ring profile from the linked native source
+  - Extrude the 12 mm ring width in the original local frame
+  - Add the active low integrated rounded slide back
+  - Cut the active rounded slide slot while preserving the 1 mm end stop
+  - Keep historical suppressed dovetail experiments out of the production body
+extra_views:
+  title: Clamp fit and slide review
+  note: Front/rear/side views make the open tube wrap, integrated slide back and closed slot stop inspectable.
+  items:
+    - kind: build
+      src: front.png
+      alt: Front view of the loose HUB75 Ø10 tube clamp
+      caption: Front — open elastic tube wrap and slide-back relationship
+    - kind: build
+      src: rear.png
+      alt: Rear view of the loose HUB75 Ø10 tube clamp
+      caption: Rear — integrated slide slot and closed stop
+    - kind: build
+      src: side.png
+      alt: Side view of the loose HUB75 Ø10 tube clamp
+      caption: Side — 12 mm ring width and 16 mm slide-run envelope

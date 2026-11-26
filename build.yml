@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/156-reconcile-wall-hook-hinge-plan
+branch: feature/160-wall-hook-rear-hole-relief
 
 modules: []
-models: []
+models:
+  - wall-hook
 tasks:
   - test
+  - build

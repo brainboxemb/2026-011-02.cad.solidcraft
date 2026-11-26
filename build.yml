@@ -1,9 +1,9 @@
 schema: 1
-branch: fix/219-hub75-tube-default-length
+branch: issue/194-wall-hook-all-views-1to1
 
 modules: []
 models:
-  - hub75-display-frame-2panel
+  - wall-hook
 tasks:
   - test
   - build

@@ -39,6 +39,23 @@ variants:
       - Place four Corner clamps at X=±153 mm
       - Apply the authored 120° top/bottom clamp orientations
       - Drive all eight clamp bores from one assembly-owned Installed Configuration Rule
+  hub75-display-frame-2panel-tube-dovetail:
+    title: HUB75 2-Panel Tube Frame — Dovetail Receiver
+    tagline: Two-panel tube frame with female receiver couplers and eight male clamps
+    description: >
+      Alternate tube-supported frame from the newly supplied total-model source.
+      It reuses the same panel, tube and clamp placement contract as the existing
+      tube frame, replaces only the coupler mechanical interface with female
+      receivers, and uses the new male-dovetail clamp variant.
+    parameters: 320 × 320 mm nominal frame; 2 × Ø10 × 1 mm tubes at Y=-6 mm; tube Z=330/-10 mm; 8 male clamps; 0.2 mm dovetail fit
+    stages:
+      - Reuse the common two-panel/two-tube structural layout
+      - Use receiver Edge and Corner coupler variants
+      - Place eight male-dovetail clamps at the existing source datums
+      - Keep the source 120° top/bottom clamp orientations
+      - Enable the independent Installed Configuration Rule for all clamps
+      - Share TubeBottom placement behavior with #217 rather than adding a local workaround
+
 extra_views:
   title: Display-frame review
   note: Rear/front/side views compare the common panel grid and expose the frame hardware; the tube variant additionally shows both aluminum tubes and all loose clamps.

@@ -1,9 +1,10 @@
 schema: 1
-branch: feature/228-hub75-tube-clamp-male
+branch: feature/229-hub75-dovetail-receiver-frame
 
 modules: []
 models:
-  - hub75-tube-clamp
+  - hub75-frame-coupler
+  - hub75-display-frame-2panel
 tasks:
   - test
   - build

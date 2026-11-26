@@ -145,24 +145,15 @@ guide and surface-detail operations.
 
 ## Native XZ sketch frame
 
-The retained SolidCraft source sketches use the native `XZ` origin plane.
-On that native plane, sketch coordinates are oriented as:
+The extracted `source_data.py` loops are already normalized to each reusable
+coupler's physical local `(X, Z)` frame.
 
-- sketch U -> world +X;
-- sketch V -> world -Z;
-- positive extrusion -> world +Y.
+Forge therefore lowers those coordinates directly onto the native `XZ`
+sketch plane without an additional Z reflection. The source-derived profile,
+support cylinders, mounting cuts, locator pads and reference features must all
+share the same local Z convention.
 
-The extracted `source_data.py` loops are intentionally stored in ordinary
-physical local `(X, Z)` coordinates. Forge therefore lowers every source loop
-through one shared boundary conversion:
-
-```text
-physical (x, z) -> native XZ sketch (x, -z)
-```
-
-Arc winding is reversed at the same reflection boundary.
-
-This is essential for Edge/Corner source fidelity. Primitive cylinders and
-locator pads already use ordinary world XYZ coordinates, so omitting this
-single reflection places the source profile on the opposite Z side from its
-reinforcement/mounting features.
+A short-lived correction attempt reflected only the sketch loops while leaving
+the primitive support/mounting features in ordinary world XYZ coordinates.
+That produced a visually plausible T profile but moved the profile to the
+opposite side of its circular support, mounting and reference features.

@@ -32,7 +32,7 @@ class Hub75FrameTube10mm:
         tube = tube - bore
 
         return tube.with_material(
-            "Aluminum",
+            "Aluminium",
             density_g_cm3=2.70,
             color="#C4C8CB",
         )

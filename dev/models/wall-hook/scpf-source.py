@@ -173,7 +173,7 @@ def wall_hook_drawing():
             "right": DrawingView(at=(108, 138)),
             "iso": DrawingView(
                 at=(220, 142),
-                scale="2:1",
+                scale="1:1",
                 visual_style="shaded",
             ),
         },

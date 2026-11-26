@@ -73,3 +73,27 @@ the visible fin/lip artifact produced by the former one-profile prism.
 The seam guide remains a straight source-footprint prism until public Forge
 solid-loft authoring exists.  That bounded follow-up does not change owner or
 public variant ids.
+
+
+## Historical OpenSCAD frame contract
+
+The migrated repository may use historical CAD only as geometry/design
+reference. For Edge/Corner orientation the authoritative historical design is
+`brainboxemb/2026-009-01.cad.HUB75-display-frame`.
+
+Its horizontal-edge contract states:
+
+- `X=0`: panel seam;
+- `Y=0`: rear mounting plane;
+- `Z=0`: nominal display edge;
+- top-edge panel interior is **negative Z**;
+- the base plate occupies the base side of the mounting plane;
+- guides and reinforcement locators extend into the panel on the opposite
+  depth side.
+
+The Corner design uses the same rule: top always maps inward to negative Z;
+left/right is supplied by the X-side orientation.
+
+Do not fix visual orientation by mirroring individual holes, support rings or
+paspads. The profile, guide shell, reinforcement features and surface pattern
+must share one frame contract.

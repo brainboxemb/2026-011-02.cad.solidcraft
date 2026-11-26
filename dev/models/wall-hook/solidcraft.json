@@ -3,138 +3,21 @@
   "version": 2,
   "commands": [
     {
-      "command": "parameters.add",
+      "command": "component.create",
       "params": {
-        "name": "thickness",
-        "expression": "15",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "rib",
-        "expression": "6",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "opening_width",
-        "expression": "20",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "overall_height",
-        "expression": "57",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "opening_depth",
-        "expression": "25",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "short_tip_rise",
-        "expression": "10",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "short_outer_height",
-        "expression": "16",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "profile_fillet",
-        "expression": "2",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "window_fillet",
-        "expression": "2",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "tool_access_diameter",
-        "expression": "8",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "lower_hole_from_bottom",
-        "expression": "17",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "face_chamfer",
-        "expression": "1.5",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "hole_diameter",
-        "expression": "4.2",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "front_hole_chamfer",
-        "expression": "1",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "upper_hole_from_top",
-        "expression": "10",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
-        "name": "rear_hole_relief",
-        "expression": "0.3",
-        "unit": "mm"
+        "name": "WallHook",
+        "grounded": true
+      },
+      "bind": {
+        "$wallhook": "occurrence",
+        "$component_1": "component"
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Sharp hook side profile"
+        "name": "d1_WallHook__Sharp hook side profile"
       }
     },
     {
@@ -146,36 +29,36 @@
             -0.0
           ],
           [
-            "rib",
+            6.0,
             -0.0
           ],
           [
-            "(rib + (opening_width)) + (rib)",
-            "-(((overall_height - (opening_depth)) + (short_tip_rise)) - (short_outer_height))"
+            32.0,
+            -26.0
           ],
           [
-            "(rib + (opening_width)) + (rib)",
-            "-((overall_height - (opening_depth)) + (short_tip_rise))"
+            32.0,
+            -42.0
           ],
           [
-            "rib + (opening_width)",
-            "-((overall_height - (opening_depth)) + (short_tip_rise))"
+            26.0,
+            -42.0
           ],
           [
-            "rib + (opening_width)",
-            "-(overall_height - (opening_depth))"
+            26.0,
+            -32.0
           ],
           [
-            "rib",
-            "-(overall_height - (opening_depth))"
+            6.0,
+            -32.0
           ],
           [
-            "rib",
-            "-(overall_height)"
+            6.0,
+            -57.0
           ],
           [
             0.0,
-            "-(overall_height)"
+            -57.0
           ]
         ],
         "closed": true,
@@ -199,7 +82,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "thickness",
+        "distance": 15.0,
         "direction": "symmetric",
         "body_name": "WallHook"
       }
@@ -254,7 +137,7 @@
             57.0
           ]
         ],
-        "radius": "profile_fillet",
+        "radius": 2.0,
         "body": "WallHook"
       }
     },
@@ -262,7 +145,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "Sharp triangular gusset window"
+        "name": "d1_WallHook__Sharp triangular gusset window"
       }
     },
     {
@@ -270,16 +153,16 @@
       "params": {
         "points": [
           [
-            "rib",
-            "-(rib * 1.41421)"
+            6.0,
+            -8.485281374238571
           ],
           [
-            "((overall_height - (opening_depth)) - (rib)) - ((rib * 1.41421) - (rib))",
-            "-((overall_height - (opening_depth)) - (rib))"
+            23.51471862576143,
+            -26.0
           ],
           [
-            "rib",
-            "-((overall_height - (opening_depth)) - (rib))"
+            6.0,
+            -26.0
           ]
         ],
         "closed": true,
@@ -297,7 +180,7 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "thickness",
+        "distance": 15.0,
         "direction": "symmetric",
         "operation": "cut",
         "targets": [
@@ -325,19 +208,19 @@
             26.0
           ]
         ],
-        "radius": "window_fillet",
+        "radius": 2.0,
         "body": "WallHook"
       }
     },
     {
       "command": "solid.cylinder",
       "params": {
-        "height": "((rib + (opening_width)) + (rib)) - (rib)",
-        "diameter": "tool_access_diameter",
+        "height": 26.0,
+        "diameter": 8.0,
         "base": [
-          "rib",
+          6.0,
           0,
-          "lower_hole_from_bottom"
+          17.0
         ],
         "axis": "X",
         "operation": "cut",
@@ -352,7 +235,7 @@
         "body": "WallHook"
       },
       "bind": {
-        "$topology_face_1": {
+        "$d1_WallHook_topology_face_1": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -371,9 +254,9 @@
         "body": "WallHook"
       },
       "bind": {
-        "$topology_edges_1": {
+        "$d1_WallHook_topology_edges_1": {
           "field": "edges",
-          "boundary_of": "$topology_face_1",
+          "boundary_of": "$d1_WallHook_topology_face_1",
           "body": "WallHook"
         }
       }
@@ -384,7 +267,7 @@
         "body": "WallHook"
       },
       "bind": {
-        "$topology_face_2": {
+        "$d1_WallHook_topology_face_2": {
           "field": "faces",
           "where": {
             "plane_normal": [
@@ -403,19 +286,19 @@
         "body": "WallHook"
       },
       "bind": {
-        "$topology_edges_2": {
+        "$d1_WallHook_topology_edges_2": {
           "field": "edges",
-          "boundary_of": "$topology_face_2",
+          "boundary_of": "$d1_WallHook_topology_face_2",
           "body": "WallHook",
-          "prepend": "$topology_edges_1"
+          "prepend": "$d1_WallHook_topology_edges_1"
         }
       }
     },
     {
       "command": "solid.chamfer",
       "params": {
-        "edges": "$topology_edges_2",
-        "distance": "face_chamfer",
+        "edges": "$d1_WallHook_topology_edges_2",
+        "distance": 1.5,
         "body": "WallHook"
       }
     },
@@ -423,22 +306,22 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "rib",
+          6.0,
           0.0,
-          "overall_height - (upper_hole_from_top)"
+          47.0
         ],
         "targets": [
           "WallHook"
         ],
-        "diameter": "hole_diameter",
-        "depth": "rib",
+        "diameter": 4.2,
+        "depth": 6.0,
         "direction": [
           -1.0,
           0.0,
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (front_hole_chamfer * 2)",
+        "cs_diameter": 6.2,
         "cs_angle": 90
       }
     },
@@ -448,20 +331,20 @@
         "position": [
           0.0,
           0.0,
-          "overall_height - (upper_hole_from_top)"
+          47.0
         ],
         "targets": [
           "WallHook"
         ],
-        "diameter": "hole_diameter",
-        "depth": "rib",
+        "diameter": 4.2,
+        "depth": 6.0,
         "direction": [
           1.0,
           0.0,
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (rear_hole_relief * 2)",
+        "cs_diameter": 4.8,
         "cs_angle": 90
       }
     },
@@ -469,22 +352,22 @@
       "command": "solid.hole",
       "params": {
         "position": [
-          "rib",
+          6.0,
           0.0,
-          "lower_hole_from_bottom"
+          17.0
         ],
         "targets": [
           "WallHook"
         ],
-        "diameter": "hole_diameter",
-        "depth": "rib",
+        "diameter": 4.2,
+        "depth": 6.0,
         "direction": [
           -1.0,
           0.0,
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (front_hole_chamfer * 2)",
+        "cs_diameter": 6.2,
         "cs_angle": 90
       }
     },
@@ -494,20 +377,20 @@
         "position": [
           0.0,
           0.0,
-          "lower_hole_from_bottom"
+          17.0
         ],
         "targets": [
           "WallHook"
         ],
-        "diameter": "hole_diameter",
-        "depth": "rib",
+        "diameter": 4.2,
+        "depth": 6.0,
         "direction": [
           1.0,
           0.0,
           0.0
         ],
         "type": "countersink",
-        "cs_diameter": "hole_diameter + (rear_hole_relief * 2)",
+        "cs_diameter": 4.8,
         "cs_angle": 90
       }
     },
@@ -519,6 +402,452 @@
         ],
         "color": "#FFD21A"
       }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "drawing.create",
+      "params": {
+        "name": "Wall Hook Drawing",
+        "template": "iso-a4-part",
+        "first_sheet_name": "Sheet 1"
+      },
+      "bind": {
+        "$drawing_1": "id",
+        "$drawing_1_source": {
+          "field": "sources",
+          "where": {
+            "path": null
+          },
+          "select": "id"
+        },
+        "$drawing_1_sheet": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "id"
+        }
+      }
+    },
+    {
+      "command": "drawing.sheet.set",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "orientation": "landscape",
+        "documents": {
+          "source": "$drawing_1_source",
+          "component": "$component_1"
+        },
+        "title_block_overrides": {
+          "title": "Wall Hook",
+          "identification_number": "wall-hook",
+          "document_status": "Development",
+          "department": "CAD"
+        }
+      }
+    },
+    {
+      "command": "drawing.inspect",
+      "params": {},
+      "bind": {
+        "$drawing_1_orientation": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "orientation"
+        }
+      }
+    },
+    {
+      "command": "drawing.properties.set",
+      "params": {
+        "values": {
+          "project": "SolidCraft CAD model catalog",
+          "part_number": "wall-hook",
+          "revision": "A",
+          "author": "brainboxemb",
+          "organization": "brainboxemb",
+          "description": "Wall Hook technical drawing"
+        }
+      }
+    },
+    {
+      "command": "drawing.revision.add",
+      "params": {
+        "set": {
+          "revision": "A",
+          "description": "Initial technical drawing",
+          "designer": "brainboxemb",
+          "checker": "CI",
+          "date": "2026-11-26",
+          "hidden": false
+        }
+      }
+    },
+    {
+      "command": "drawing.view.standard",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "iso": true,
+        "gap_mm": 12.0,
+        "scale": "2:1"
+      },
+      "bind": {
+        "$drawing_1_front": "view",
+        "$drawing_1_top": "top",
+        "$drawing_1_right": "right",
+        "$drawing_1_iso": "iso"
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_front",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$wallhook"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_iso",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$wallhook"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_front",
+        "set": {
+          "place": {
+            "at": [
+              55.0,
+              130.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_top",
+        "set": {
+          "place": {
+            "at": [
+              55.0,
+              48.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_right",
+        "set": {
+          "place": {
+            "at": [
+              142.0,
+              130.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_iso",
+        "set": {
+          "place": {
+            "at": [
+              225.0,
+              132.0
+            ]
+          },
+          "scale": "1:1",
+          "visual_style": "shaded"
+        }
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                3.0,
+                0.0,
+                0.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                0.0,
+                57.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 12.0
+      },
+      "bind": {
+        "$drawing_1_dimension_1": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_top",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                3.0,
+                -7.5,
+                47.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                7.5,
+                47.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 10.0
+      },
+      "bind": {
+        "$drawing_1_dimension_2": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                0.0,
+                0.0,
+                40.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                6.0,
+                0.0,
+                40.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "horizontal"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_3": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                6.0,
+                0.0,
+                37.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                26.0,
+                0.0,
+                37.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "horizontal"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_4": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                16.0,
+                0.0,
+                32.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                0.0,
+                57.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_5": "dimension"
+      }
+    },
+    {
+      "command": "drawing.note.add",
+      "params": {
+        "anchor": {
+          "sheet": "$drawing_1_sheet"
+        },
+        "at": [
+          174.0,
+          58.0
+        ],
+        "content": "NOTES\n1. ALL DIMENSIONS IN MM.\n2. MOUNTING HOLE CENTRES: UPPER 10 FROM TOP; LOWER 17 FROM BOTTOM.\n3. 2\u00d7 \u00d84.2 MOUNTING HOLES; LOWER TOOL ACCESS \u00d88.\n4. FRONT/BACK BOUNDARY CHAMFER 1.5.\n5. HOLE ENTRY CHAMFER 1.0; WALL-SIDE RELIEF 0.3.",
+        "cap_mm": 2.2,
+        "align": "left"
+      },
+      "bind": {
+        "$drawing_1_note_1": "note"
+      }
+    },
+    {
+      "command": "drawing.view.inspect",
+      "params": {
+        "view": "$drawing_1_iso"
+      }
+    },
+    {
+      "command": "drawing.inspect",
+      "params": {}
+    },
+    {
+      "command": "drawing.close",
+      "params": {}
     }
-  ]
+  ],
+  "artifacts": {
+    "drawings": [
+      {
+        "name": "Wall Hook Drawing",
+        "drawing": "$drawing_1",
+        "sheet": "$drawing_1_sheet",
+        "orientation": "$drawing_1_orientation",
+        "pdf": "drawings/Wall-Hook-Drawing.pdf",
+        "png": "drawings/Wall-Hook-Drawing.png",
+        "inspect": "drawings/Wall-Hook-Drawing.json",
+        "expected": {
+          "orientation": "landscape",
+          "view_count": 4,
+          "dimension_count": 5,
+          "note_count": 1,
+          "properties": {
+            "project": "SolidCraft CAD model catalog",
+            "part_number": "wall-hook",
+            "revision": "A",
+            "author": "brainboxemb",
+            "organization": "brainboxemb",
+            "description": "Wall Hook technical drawing"
+          },
+          "title_block": {
+            "title": "Wall Hook",
+            "identification_number": "wall-hook",
+            "document_status": "Development",
+            "department": "CAD"
+          },
+          "view_styles": {
+            "$drawing_1_iso": "shaded"
+          },
+          "revision": {
+            "revision": "A",
+            "description": "Initial technical drawing",
+            "designer": "brainboxemb",
+            "checker": "CI",
+            "date": "2026-11-26",
+            "hidden": false
+          }
+        }
+      }
+    ]
+  }
 }

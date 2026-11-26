@@ -34,7 +34,7 @@ class Hub75DisplayFrame2Panel:
     def build(self):
         # Same two-panel placement contract as BasicHub75Screen2Panel.
         left_panel = Hub75Panel(
-            name="Panel left",
+            name="PanelLeft",
             placement=Placement(
                 x=-PANEL_PITCH_X / 2.0,
                 z=PANEL_CENTER_Z,
@@ -42,7 +42,7 @@ class Hub75DisplayFrame2Panel:
             ),
         )
         right_panel = left_panel.copy(
-            name="Panel right",
+            name="PanelRight",
             placement=Placement(
                 x=PANEL_PITCH_X / 2.0,
                 z=PANEL_CENTER_Z,
@@ -54,23 +54,23 @@ class Hub75DisplayFrame2Panel:
         # coordinates.  The family normalizes those definitions, so the
         # source identity placements become these clean frame datums.
         middle = Hub75FrameCouplerMiddle(
-            name="Middle coupler",
+            name="MiddleCoupler",
             placement=Placement(z=PANEL_CENTER_Z),
         )
 
         edge_top = Hub75FrameCouplerEdge(
-            name="Edge coupler top",
+            name="EdgeCouplerTop",
             placement=Placement(z=FRAME_HEIGHT),
         )
         edge_bottom = edge_top.copy(
-            name="Edge coupler bottom",
+            name="EdgeCouplerBottom",
             placement=Placement(
                 rotation=((0, 1, 0), 180),
             ),
         )
 
         corner_left_top = Hub75FrameCouplerCornerLeft(
-            name="Corner coupler left top",
+            name="CornerCouplerLeftTop",
             placement=Placement(
                 x=-FRAME_WIDTH / 2.0,
                 z=FRAME_HEIGHT,
@@ -80,7 +80,7 @@ class Hub75DisplayFrame2Panel:
         # definition rotated 180° around Y.  After local-frame normalization
         # that places it at the physical bottom-right corner.
         corner_left_bottom = corner_left_top.copy(
-            name="Corner coupler left definition bottom",
+            name="CornerCouplerLeftBottom",
             placement=Placement(
                 x=FRAME_WIDTH / 2.0,
                 rotation=((0, 1, 0), 180),
@@ -88,7 +88,7 @@ class Hub75DisplayFrame2Panel:
         )
 
         corner_right_top = Hub75FrameCouplerCornerRight(
-            name="Corner coupler right top",
+            name="CornerCouplerRightTop",
             placement=Placement(
                 x=FRAME_WIDTH / 2.0,
                 z=FRAME_HEIGHT,
@@ -97,7 +97,7 @@ class Hub75DisplayFrame2Panel:
         # Symmetric source rule: the rotated right definition lands at the
         # physical bottom-left corner.
         corner_right_bottom = corner_right_top.copy(
-            name="Corner coupler right definition bottom",
+            name="CornerCouplerRightBottom",
             placement=Placement(
                 x=-FRAME_WIDTH / 2.0,
                 rotation=((0, 1, 0), 180),

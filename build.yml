@@ -1,8 +1,7 @@
 schema: 1
-branch: issue/136-forge-v0.19.0
+branch: chore/138-reconcile-v019-plan
 
 modules: []
-models:
-  - wall-hook
+models: []
 tasks:
   - test

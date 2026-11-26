@@ -1,7 +1,12 @@
 schema: 1
-branch: chore/168-reconcile-hub75-2panel-plan
+branch: feature/172-display-case-frame-groups
 
-modules: []
-models: []
+modules:
+  - pages
+models:
+  - hub75-display2
+  - hub75-wood-frame
+  - hub75-screen
+  - hub75-screen-2panel
 tasks:
   - test

@@ -328,34 +328,6 @@ class Hub75FrameCouplerMiddle:
 
 
 
-def _cut_edge_t_profile_boundary(body):
-    """Native feature 89: remove the broad upper half of Edge profile stock."""
-    depth = MEDIUM["base"] + MEDIUM["guide"]
-    edge_outer_z = MEDIUM["edge_end_rear"] - MEDIUM["wall"] - MEDIUM["fit"]
-    trim_height = MEDIUM["size"] / 2.0 + edge_outer_z
-
-    x0 = -MEDIUM["size"] / 2.0 - 1.0
-    x1 = MEDIUM["size"] / 2.0 + 1.0
-    z0 = edge_outer_z + 1.0
-    z1 = z0 + trim_height
-    trim_loop = {
-        "start": [x0, z0],
-        "segments": [
-            {"kind": "line", "end": [x1, z0]},
-            {"kind": "line", "end": [x1, z1]},
-            {"kind": "line", "end": [x0, z1]},
-            {"kind": "line", "end": [x0, z0]},
-        ],
-    }
-    trim = _profile_solid(
-        name="Edge T-profile boundary",
-        loops=[trim_loop],
-        y=-MEDIUM["datum"] - MEDIUM["base"] - 1.0,
-        distance=depth + 2.0,
-    )
-    return body - trim
-
-
 def _edge_like_stock(*, profile_key, screw_xs):
     """Create raw 3 mm base + 6 mm guide/support volumes before any cuts."""
     body = _profile_solid(
@@ -371,10 +343,6 @@ def _edge_like_stock(*, profile_key, screw_xs):
         distance=MEDIUM["guide"],
     )
     body = body + guide
-    if profile_key == "edge":
-        # Source order: feature 88 profile stock -> feature 89 T boundary ->
-        # support cylinders and remaining Edge detail.
-        body = _cut_edge_t_profile_boundary(body)
 
     support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
     for x in screw_xs:
@@ -408,7 +376,12 @@ def _cut_edge_like_base(body, *, profile_key, screw_xs):
 
 
 def _clip_edge_to_top_t(body):
-    """Apply the historical top-edge profile window to the rounded plus."""
+    """Apply the historical/native TOP-edge T window to the rounded plus.
+
+    Native feature 89 starts at absolute Z = panel_h - edge_outer_z + 1 mm.
+    After subtracting the nominal edge datum panel_h, the local cut starts at
+    -edge_outer_z + 1 mm (3.855 mm for Medium), not edge_outer_z + 1 mm.
+    """
     bar_top = (
         MEDIUM["wall"]
         + MEDIUM["fit"]

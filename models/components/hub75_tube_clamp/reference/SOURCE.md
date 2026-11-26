@@ -51,3 +51,17 @@ The parent frame also contains a later feature named `Installed` targeting all
 eight copied clamps. The native Free/Installed configuration should be adopted
 when the catalog moves to a Forge release exposing configuration tables; until
 then no consumer-side history branching is introduced here.
+
+## Parent-level production amendment
+
+The linked standalone file is exact, but the parent frame adds one active
+feature immediately after import:
+
+- feature 199, `Inloop in groef van Ø10 proefklem`;
+- equal-distance chamfer: **0.14 mm**;
+- three open-end slot edges at native edge-pick points:
+  `(-7.975,-8,3.275)`, `(-7.1,-8,0)`, `(-7.975,-8,-3.275)`.
+
+That amendment exists before the eight Edge/Corner copies are created, so the
+catalog owner includes it as part of the production clamp geometry rather than
+leaving it assembly-local.

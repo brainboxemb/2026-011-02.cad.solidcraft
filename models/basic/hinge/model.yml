@@ -17,4 +17,4 @@ stages:
   - Preserve the supplied 60° value and 0–180° limits
   - Verify native joint inspection and source-pose geometry before acceptance
 
-source_note: Native SolidCraft source was supplied as Hinge Assembly.sc/json. JSON evidence is retained here; the binary .sc remains required before final acceptance. Leaf B source pose uses the shared hinge-axis AnchorFrame, flipped revolute orientation and 60° value.
+source_note: Native SolidCraft Hinge Assembly.sc/json source evidence is retained under reference/. Leaf B source pose uses the shared hinge-axis AnchorFrame, flipped revolute orientation and 60° value.

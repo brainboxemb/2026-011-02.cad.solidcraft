@@ -282,7 +282,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "0bdaf583fb27874dcc1e56cf1292f5ccb5b6fb97",
+      "built_source_sha": "d4d63d3e45b52a7a2b454f17a789250eacda2d1a",
       "commands": "models/hinge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -298,13 +298,13 @@
       "root": "models/basic/hinge",
       "snapshot": {
         "camera": {
-          "distance": 115,
+          "distance": 125,
           "fov": 0,
           "pitch": 0.35,
           "target": [
-            20,
-            20,
-            10
+            0,
+            24,
+            -8
           ],
           "yaw": -0.75
         }
@@ -312,13 +312,13 @@
       "snapshots": [
         {
           "camera": {
-            "distance": 105,
+            "distance": 115,
             "fov": 0,
             "pitch": 0.0,
             "target": [
-              20,
-              16,
-              4
+              0,
+              24,
+              -8
             ],
             "yaw": -1.57
           },
@@ -1238,5 +1238,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "b857847689e590af7ead20afa29042585a94cb16"
+  "source_sha": "d4d63d3e45b52a7a2b454f17a789250eacda2d1a"
 }

@@ -49,10 +49,17 @@ The standalone SolidCraft source has two configuration rows:
 - `Gemonteerd – Ø10` / public label `Installed`:
   `clamp_bore = tube_d = 10 mm`.
 
-The catalog component is now parameterized independently of the Ø10 default:
-`tube_d` and `clamp_interference` are public model parameters and the loose
-component itself remains Free by default. Independent Free / Installed state is
-tracked separately in CAD issue #204 and is not emulated with Python branching.
+The catalog component is parameterized independently of the Ø10 default:
+`tube_d`, `clamp_interference` and `clamp_bore` remain native model
+parameters. The reusable component publishes all three values; the standalone
+catalog root stores the Free base expression
+`clamp_bore = tube_d-clamp_interference`, while an Assembly may provide one
+shared `clamp_bore` dependency to every clamp occurrence.
+
+Forge v0.23.0 authors the state as one independent native Configuration Rule:
+`Installed` drives `clamp_bore = tube_d`. The standalone catalog document
+keeps that rule disabled, so manufacturing output and STL remain Free by
+default. No Python geometry branch implements the state.
 
 ## Active production features
 
@@ -79,10 +86,15 @@ into the Edge/Corner positions.
 
 ## Parent installed fit
 
-The parent frame records Installed fit for the copied clamps. The reusable
-component itself nevertheless remains Free by default; an assembly is
-responsible for selecting Installed for its occurrences. The independent
-assembly state is tracked in #204.
+The parent tube-frame document owns one shared `tube_d`,
+`clamp_interference` and `clamp_bore` dependency for all eight reusable
+clamp occurrences. Its independent `Installed` rule is enabled by default;
+disabling the rule restores the active row's Free expression
+`tube_d-clamp_interference`.
+
+The frame remains physically Medium-only until #189 supplies real
+Small/Medium/Large coupler geometry. The Installed rule is orthogonal to that
+future row-axis expansion.
 
 ## Parent-level production amendment
 

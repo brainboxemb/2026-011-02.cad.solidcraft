@@ -1,8 +1,10 @@
 schema: 1
-branch: issue/225-exploded-snapshot-template-sync
+branch: feature/204-hub75-clamp-installed-state
 
-modules:
-  - build
-models: []
+modules: []
+models:
+  - hub75-tube-clamp
+  - hub75-display-frame-2panel
 tasks:
   - test
+  - build

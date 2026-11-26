@@ -6,7 +6,7 @@ keeps the active Medium row fixed; native Small/Medium/Large authoring will
 replace that fixed layer after Forge configuration support (#216).
 """
 
-from scpf import Anchor, Axis, Box, Cone, Cylinder, Sketch, component
+from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
 
 from models.components.hub75_frame_coupler.scpf.source_data import (
     BASE_PROFILES,
@@ -381,16 +381,24 @@ class Hub75FrameCouplerEdge:
         # like a full cross and left a broad arm sticking upward.
         edge_outer_z = MEDIUM["edge_end_rear"] - MEDIUM["wall"] - MEDIUM["fit"]
         trim_height = MEDIUM["size"] / 2.0 + edge_outer_z
-        trim = Box(
-            MEDIUM["size"] + 2.0,
-            depth + 2.0,
-            trim_height,
-            anchor=Anchor.CENTER,
-        ).at(
-            0.0,
-            -MEDIUM["datum"] - MEDIUM["base"] - 1.0 + (depth + 2.0) / 2.0,
-            edge_outer_z + 1.0 + trim_height / 2.0,
-            anchor=Anchor.CENTER,
+        trim_x0 = -MEDIUM["size"] / 2.0 - 1.0
+        trim_x1 = MEDIUM["size"] / 2.0 + 1.0
+        trim_z0 = edge_outer_z + 1.0
+        trim_z1 = trim_z0 + trim_height
+        trim_loop = {
+            "start": [trim_x0, trim_z0],
+            "segments": [
+                {"kind": "line", "end": [trim_x1, trim_z0]},
+                {"kind": "line", "end": [trim_x1, trim_z1]},
+                {"kind": "line", "end": [trim_x0, trim_z1]},
+                {"kind": "line", "end": [trim_x0, trim_z0]},
+            ],
+        }
+        trim = _profile_solid(
+            name="Edge T-profile boundary",
+            loops=[trim_loop],
+            y=-MEDIUM["datum"] - MEDIUM["base"] - 1.0,
+            distance=depth + 2.0,
         )
         body = body - trim
 

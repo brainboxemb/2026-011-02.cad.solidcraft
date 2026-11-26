@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/160-wall-hook-rear-hole-relief
+branch: chore/162-reconcile-wall-hook-relief-plan
 
 modules: []
-models:
-  - wall-hook
+models: []
 tasks:
   - test
-  - build

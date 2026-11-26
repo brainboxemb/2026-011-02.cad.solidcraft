@@ -78,8 +78,9 @@ class WallHook:
             ),
         )
 
-        # Build the reinforcement opening the same way: first a plain triangle,
-        # then fillet the three cutter sweep edges before subtracting it.
+        # Build the reinforcement opening as a plain triangle first. Subtract
+        # the sharp cutter, then fillet the three resulting inner sweep edges
+        # on the hook body itself.
         with Sketch(name="Sharp triangular gusset window", plane="XZ") as window:
             Polygon2D(
                 [
@@ -91,16 +92,15 @@ class WallHook:
                 world=True,
             )
 
-        window_cutter = window.extrude(self.thickness, sym=True)
-        window_cutter = window_cutter.fillet(
+        body = body - window.extrude(self.thickness, sym=True)
+        body = body.fillet(
             self.window_fillet,
-            edges=Edges.from_vertices(
-                "window_lower",
-                "window_front",
-                "window_upper",
-            ),
+            edges=[
+                (self.rib, 0.0, -window_left_bottom_z),
+                (window_right_top_x, 0.0, -window_top_z),
+                (self.rib, 0.0, -window_top_z),
+            ],
         )
-        body = body - window_cutter
 
         # Keep the lower Ø4.2 mounting hole confined to the 6 mm rear spine,
         # but clear the diagonal reinforcement in front of it so a screwdriver

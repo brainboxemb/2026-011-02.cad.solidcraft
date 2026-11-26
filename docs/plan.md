@@ -4,20 +4,6 @@ This file contains unfinished work only.
 
 ## Now
 
-### #133 — Wall Hook yellow display appearance
-
-Apply the released Forge v0.19.0 display-only appearance API to the existing
-Wall Hook.
-
-Contract:
-
-- use `Shape.with_appearance("#FFD21A")`;
-- change presentation only;
-- preserve geometry, mounting-hole behavior, STL and engineering semantics;
-- verify generated preview/snapshot reflects the yellow appearance.
-
-Acceptance is owned by issue #133.
-
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

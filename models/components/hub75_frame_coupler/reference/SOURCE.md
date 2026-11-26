@@ -45,13 +45,12 @@ These features are intentionally absent from the fixed Medium Forge port.
 
 ## Forge configuration follow-up
 
-Native SolidCraft configuration-table authoring is tracked in
-`brainboxemb/lib.py.solidcraft.forge#216`.
+Small/Medium/Large adoption remains CAD #189. Released Forge v0.23.0 can drive
+the numeric child parameters, but parent suppression of an authored feature
+inside a reusable child still requires Forge #380.
 
-Until that capability is released, this owner stays explicitly Medium-only.
-Do not emulate Small/Large with CAD-local Python branching.  The future change
-must add the native configuration layer while preserving this owner and the
-four public variant ids.
+Until that public contract is released, this owner stays explicitly
+Medium-only. Do not emulate Small/Large with CAD-local Python branching.
 
 ## Medium geometry mapping
 
@@ -205,3 +204,35 @@ The loose clamp remains a separate physical component. Free / Installed state
 belongs to the assembly/configuration layer and is not fused into these
 couplers.
 
+
+
+## Alternate female receiver tube interface
+
+New supplied total-model evidence:
+- JSON `hub75-screen-2panel-couplers-clamp(1).json`;
+  SHA-256 `876bd8032ee18318bb06955be2400f72554c4f6d2f33615bfb10258287080a53`;
+- SolidCraft container `hub75-screen-2panel-couplers-clamp(1).sc`;
+  SHA-256 `f91124cd49369d261e8ad1dc271e77ff60c5ec09341266e48b4a68a0e867fa92`.
+
+The connected repository write path cannot stream these large/binary source
+files byte-for-byte, so their exact supplied filenames and digests are retained
+here rather than committing a partial or reconstructed source file.
+
+The source keeps the common tube clearances/support history but suppresses the
+older protruding rail interface:
+- Edge rail #191 and entry chamfer #198 are suppressed;
+- Corner rail #216 and chamfers #217/#218 are suppressed.
+
+The final alternate interface is:
+- #234 `Voeten voor ontvangende zwaluwstaarten`, normalized local Z=1.2 mm;
+- #235 join depth 15.55 mm;
+- #236 `Zwaluwstaartprofielen met speling`, normalized local Z=1.8 mm;
+- #237 `Vrouwelijke zwaluwstaartgroeven met aanslag`, cut depth 18.7 mm.
+
+`dove_fit = 0.2 mm`. One shared 12-point receiver template reproduces all
+four source instances exactly. Edge centers are local X=±20 mm; Corner centers
+are local X=+7/-7 mm. The 16 mm receiver support template is shared as well.
+
+This is an alternate physical interface, not additive geometry: the existing
+public tube variants keep their protruding rails, while the new receiver
+variants replace those rails with female grooves for the male clamp.

@@ -582,6 +582,25 @@ CLAMP_BOW_CLEARANCE_WIDTH = 12.4
 CLAMP_BOW_CLEARANCE_Y_REAR = -9.1
 CLAMP_BOW_CLEARANCE_Y_FRONT = -8.4
 
+# Alternate female receiver interface from the newly supplied total-model source.
+DOVE_FIT = 0.2
+RECEIVER_SUPPORT_Z = 1.2
+RECEIVER_SUPPORT_HEIGHT = 15.55
+RECEIVER_SUPPORT_WIDTH = 16.0
+RECEIVER_SUPPORT_Y_REAR = TUBE_AXIS_Y - 11.0
+RECEIVER_SUPPORT_Y_FRONT = TUBE_AXIS_Y - 6.95
+
+RECEIVER_GROOVE_Z = 1.8
+RECEIVER_GROOVE_DEPTH = 18.7
+RECEIVER_HEAD_HALF = 6.0 + DOVE_FIT
+RECEIVER_NECK_HALF = 5.4 + DOVE_FIT
+RECEIVER_REAR_Y = TUBE_AXIS_Y - 9.1
+RECEIVER_REAR_LAND_Y = TUBE_AXIS_Y - 8.05
+RECEIVER_FLANK_REAR_Y = TUBE_AXIS_Y - 7.45
+RECEIVER_FLANK_FRONT_Y = TUBE_AXIS_Y - 7.05
+RECEIVER_FRONT_LAND_Y = TUBE_AXIS_Y - 6.45
+RECEIVER_FRONT_Y = TUBE_AXIS_Y + 6.0
+
 
 def _xy_loop(sketch, points):
     """Add one fixed source XY loop to a native Sketch."""
@@ -654,8 +673,8 @@ def _axis_x_cylinder(*, diameter, length, x, y, z):
     ).at(x, y, z, anchor=Anchor.CENTER)
 
 
-def _add_edge_tube_interface(body):
-    """Active source features #189, #191, #195 and #198."""
+def _cut_edge_tube_foot_clearance(body):
+    """Feature #189 shared by both Edge tube-interface families."""
     foot_clearance = _xy_profile_solid(
         name="Vrijloop voor naar binnen geplaatste klemmen",
         loops=[
@@ -670,16 +689,11 @@ def _add_edge_tube_interface(body):
         z=CLAMP_FOOT_CLEARANCE_Z,
         distance=CLAMP_FOOT_CLEARANCE_DEPTH,
     )
-    body = body - foot_clearance
+    return body - foot_clearance
 
-    rails = _xy_profile_solid(
-        name="Z-schuifrails op 40 mm hartafstand",
-        loops=[_rail_xy(center_x) for center_x in EDGE_RAIL_CENTERS],
-        z=RAIL_PLANE_Z,
-        distance=RAIL_HEIGHT,
-    )
-    body = body + rails
 
+def _cut_edge_tube_bow_clearance(body):
+    """Feature #195 shared by both Edge tube-interface families."""
     bow_clearance = _xy_profile_solid(
         name="Vrijloop voor klemboog aan de binnenzijde",
         loops=[
@@ -694,17 +708,11 @@ def _add_edge_tube_interface(body):
         z=CLAMP_BOW_CLEARANCE_Z,
         distance=CLAMP_BOW_CLEARANCE_DEPTH,
     )
-    body = body - bow_clearance
+    return body - bow_clearance
 
-    body = body.chamfer(
-        RAIL_ENTRY_CHAMFER,
-        distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
-        edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
-    )
 
-    # Final source features 226–230: replace the earlier suppressed rear/base
-    # experiments with the active R5 support, continuous base and the two
-    # reference marks re-cut into the newly added rear material.
+def _add_edge_tube_rear_support(body):
+    """Final active Edge rear support/base/reference chain #226-230."""
     rear_support = _multi_profile_solid(
         name="Symmetrische bulten met R5-overgangen",
         loops=TUBE_EDGE_REAR_SUPPORT_PROFILES,
@@ -734,16 +742,90 @@ def _add_edge_tube_interface(body):
     return body - reference_cut
 
 
-def _add_corner_tube_interface(body, *, side):
-    """Active source features #213, #214, #216 and #217/#218."""
+def _receiver_xy(center_x):
+    """Source feature #236 receiver profile translated to one clamp center."""
+    h = RECEIVER_HEAD_HALF
+    n = RECEIVER_NECK_HALF
+    return [
+        (center_x - h, RECEIVER_REAR_Y),
+        (center_x + h, RECEIVER_REAR_Y),
+        (center_x + h, RECEIVER_REAR_LAND_Y),
+        (center_x + n, RECEIVER_FLANK_REAR_Y),
+        (center_x + n, RECEIVER_FLANK_FRONT_Y),
+        (center_x + h, RECEIVER_FRONT_LAND_Y),
+        (center_x + h, RECEIVER_FRONT_Y),
+        (center_x - h, RECEIVER_FRONT_Y),
+        (center_x - h, RECEIVER_FRONT_LAND_Y),
+        (center_x - n, RECEIVER_FLANK_FRONT_Y),
+        (center_x - n, RECEIVER_FLANK_REAR_Y),
+        (center_x - h, RECEIVER_REAR_LAND_Y),
+    ]
+
+
+def _add_receiver_interface(body, *centers):
+    """Active source features #234-237 for one or more male-clamp receivers."""
+    support = _xy_profile_solid(
+        name="Voeten voor ontvangende zwaluwstaarten",
+        loops=[
+            _rectangle_xy(
+                center_x=center_x,
+                width=RECEIVER_SUPPORT_WIDTH,
+                y_rear=RECEIVER_SUPPORT_Y_REAR,
+                y_front=RECEIVER_SUPPORT_Y_FRONT,
+            )
+            for center_x in centers
+        ],
+        z=RECEIVER_SUPPORT_Z,
+        distance=RECEIVER_SUPPORT_HEIGHT,
+    )
+    body = body + support
+
+    grooves = _xy_profile_solid(
+        name="Zwaluwstaartprofielen met speling",
+        loops=[_receiver_xy(center_x) for center_x in centers],
+        z=RECEIVER_GROOVE_Z,
+        distance=RECEIVER_GROOVE_DEPTH,
+    )
+    return body - grooves
+
+
+def _add_edge_tube_interface(body):
+    """Existing active rail interface #189/#191/#195/#198 plus #226-230."""
+    body = _cut_edge_tube_foot_clearance(body)
+
+    rails = _xy_profile_solid(
+        name="Z-schuifrails op 40 mm hartafstand",
+        loops=[_rail_xy(center_x) for center_x in EDGE_RAIL_CENTERS],
+        z=RAIL_PLANE_Z,
+        distance=RAIL_HEIGHT,
+    )
+    body = body + rails
+
+    body = _cut_edge_tube_bow_clearance(body)
+
+    body = body.chamfer(
+        RAIL_ENTRY_CHAMFER,
+        distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
+        edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
+    )
+    return _add_edge_tube_rear_support(body)
+
+
+def _add_edge_tube_receiver_interface(body):
+    """Alternate source interface with female receivers instead of rails."""
+    body = _cut_edge_tube_foot_clearance(body)
+    body = _cut_edge_tube_bow_clearance(body)
+    body = _add_edge_tube_rear_support(body)
+    return _add_receiver_interface(body, *EDGE_RAIL_CENTERS)
+
+
+def _corner_tube_base(body, *, side):
+    """Shared Corner insertion/tube clearances before selecting an interface."""
     if side == "left":
-        rail_center = CORNER_LEFT_RAIL_CENTER
-        # Source cutter #214 starts at world X=-182 and runs +364 mm. Relative
-        # to the normalized left-corner origin X=-160 its center is +160.
+        interface_center = CORNER_LEFT_RAIL_CENTER
         tube_cutter_center_x = 160.0
     elif side == "right":
-        rail_center = CORNER_RIGHT_RAIL_CENTER
-        # Relative to the normalized right-corner origin X=+160.
+        interface_center = CORNER_RIGHT_RAIL_CENTER
         tube_cutter_center_x = -160.0
     else:
         raise ValueError(f"unsupported corner side {side!r}")
@@ -752,7 +834,7 @@ def _add_corner_tube_interface(body, *, side):
         name="Inschuifuitsparing voor hoekschuifklem",
         loops=[
             _rectangle_xy(
-                center_x=rail_center,
+                center_x=interface_center,
                 width=CLAMP_FOOT_CLEARANCE_WIDTH,
                 y_rear=CLAMP_FOOT_CLEARANCE_Y_REAR,
                 y_front=CORNER_CLAMP_FOOT_CLEARANCE_Y_FRONT,
@@ -770,7 +852,12 @@ def _add_corner_tube_interface(body, *, side):
         y=TUBE_AXIS_Y,
         z=TUBE_AXIS_Z,
     )
-    body = body - tube_clearance
+    return body - tube_clearance, interface_center
+
+
+def _add_corner_tube_interface(body, *, side):
+    """Existing active Corner rail interface #213/#214/#216/#217/#218."""
+    body, rail_center = _corner_tube_base(body, side=side)
 
     rail = _xy_profile_solid(
         name="Zwaluwstaartrail voor hoekschuifklem",
@@ -785,6 +872,12 @@ def _add_corner_tube_interface(body, *, side):
         distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
         edges=_rail_entry_edges(rail_center),
     )
+
+
+def _add_corner_tube_receiver_interface(body, *, side):
+    """Alternate Corner interface #234-237 using one female receiver."""
+    body, center = _corner_tube_base(body, side=side)
+    return _add_receiver_interface(body, center)
 
 
 @component
@@ -828,3 +921,45 @@ class Hub75FrameCouplerCornerRightTube:
             side="right",
         ).with_appearance(SOURCE_RED)
 
+
+
+@component
+class Hub75FrameCouplerEdgeTubeReceiver:
+    """Medium Edge tube coupler with two female dovetail receivers."""
+
+    def build(self):
+        return _add_edge_tube_receiver_interface(
+            _build_edge_body()
+        ).with_appearance(SOURCE_RED)
+
+
+@component
+class Hub75FrameCouplerCornerLeftTubeReceiver:
+    """Medium left Corner tube coupler with one female dovetail receiver."""
+
+    def build(self):
+        body = _build_edge_like(
+            profile_key="corner_left",
+            relief_key="corner_left",
+            screw_x=MEDIUM["screw_x"],
+        )
+        return _add_corner_tube_receiver_interface(
+            body,
+            side="left",
+        ).with_appearance(SOURCE_RED)
+
+
+@component
+class Hub75FrameCouplerCornerRightTubeReceiver:
+    """Medium right Corner tube coupler with one female dovetail receiver."""
+
+    def build(self):
+        body = _build_edge_like(
+            profile_key="corner_right",
+            relief_key="corner_right",
+            screw_x=-MEDIUM["screw_x"],
+        )
+        return _add_corner_tube_receiver_interface(
+            body,
+            side="right",
+        ).with_appearance(SOURCE_RED)

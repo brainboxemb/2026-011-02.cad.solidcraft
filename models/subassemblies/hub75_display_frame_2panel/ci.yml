@@ -6,6 +6,8 @@ variants:
     source: scpf/model.py
   - id: hub75-display-frame-2panel-tube
     source: scpf/tube_frame.py
+  - id: hub75-display-frame-2panel-tube-dovetail
+    source: scpf/tube_frame_dovetail.py
 process: true
 dependencies:
   - hub75-panel

@@ -1,36 +1,58 @@
 # Source reference
 
-Primary source:
+This directory retains the exact SolidCraft authoring reference for the HUB75
+tube clamp.
+
+## Retained files
 
 - `HUB75 – losse 10 proefklem.sc`
-- SHA-256: `75f5a9c68eda2beed218ec1d8cf0b4fcc92b2534f3b0f19c546581613d86fa97`
+  - canonical SolidCraft source container;
+  - SHA-256:
+    `75f5a9c68eda2beed218ec1d8cf0b4fcc92b2534f3b0f19c546581613d86fa97`.
+- `HUB75 – losse Ø10 proefklem.json`
+  - official SolidCraft JSON export of the authoring document;
+  - format: `solidcraft/68`;
+  - SHA-256:
+    `c0ce8e3086fea322648c824f699077fdddf2b06e6a965327f6e3b5efc053d911`.
 
-The supplied parent document
-`hub75-screen-2panel-couplers-clamp.sc` records that exact SHA-256 in its link
-metadata for the component path `HUB75 – losse 10 proefklem.sc`. Therefore the
-standalone upload is the exact linked clamp source used by the parent frame,
-not merely a similar trial revision.
+The supplied `.sc` upload was named
+`HUB75 – losse 10 proefklem2.sc`, but its SHA-256 is exactly the SHA recorded
+by the parent frame link metadata for `HUB75 – losse 10 proefklem.sc`.
+It is therefore stored here under that canonical linked source name.
 
-The source file rechecked for this refactor was supplied as
-`HUB75 – losse 10 proefklem2.sc`; its SHA-256 is the same
-`75f5a9c68eda2beed218ec1d8cf0b4fcc92b2534f3b0f19c546581613d86fa97`.
-It is therefore byte-for-byte the linked standalone source identified above.
+The JSON file is the official SolidCraft authoring export. It is not Forge
+compile/replay output and must not be confused with the generated catalog
+`solidcraft.json` command document.
+
+A SolidCraft `.sc` container also carries its own internal `document.json`
+and evaluated cache files. The retained export JSON is kept separately because
+it is directly readable/diffable while preserving the authored parameters,
+feature history and configuration rows; the `.sc` remains the authoritative
+source container.
 
 The parent document also carries an imported STEP representation for the linked
-component. That STEP payload is evidence of the linked result only; it is **not**
-the source used to reconstruct the Forge model. The Forge implementation follows
-the standalone SolidCraft feature history and native sketch coordinates.
+component. That STEP payload is evidence of the linked result only; it is not
+the source used to reconstruct the Forge model.
 
-## Active source state
+## Source parameters and physical state
+
+The source defines:
+
+- `tube_d = 10 mm`;
+- `clamp_interference = 0.4 mm`;
+- `clamp_bore = tube_d-clamp_interference` in the Free state.
 
 The standalone SolidCraft source has two configuration rows:
 
-- `Vrij – printstand` (active): `clamp_bore = tube_d-clamp_interference = 9.6 mm`;
-- `Gemonteerd – Ø10`: `clamp_bore = tube_d = 10 mm`.
+- `Vrij – printstand` / public label `Free` (active in the source):
+  `clamp_bore = tube_d-clamp_interference = 9.6 mm`;
+- `Gemonteerd – Ø10` / public label `Installed`:
+  `clamp_bore = tube_d = 10 mm`.
 
-The current catalog baseline uses Forge v0.19.0, before the public native
-configuration-table API. This owner therefore makes the active **Free/print
-state** authoritative and does not fake Installed as a second unrelated body.
+The catalog component is now parameterized independently of the Ø10 default:
+`tube_d` and `clamp_interference` are public model parameters and the loose
+component itself remains Free by default. Independent Free / Installed state is
+tracked separately in CAD issue #204 and is not emulated with Python branching.
 
 ## Active production features
 
@@ -48,19 +70,19 @@ and are intentionally not carried into the production geometry.
 
 The clamp keeps the standalone source frame:
 
-- ring profile on native XY;
+- ring profile on SolidCraft XY;
 - ring axis along local Z;
-- integrated slide back/slot authored from native XZ and running along local Y.
+- integrated slide back/slot authored from SolidCraft XZ and running along local Y.
 
-The frame subassembly is responsible for rotating/translating this reusable
-component into Edge/Corner positions.
+The frame subassembly owns rotation/translation of reusable clamp occurrences
+into the Edge/Corner positions.
 
 ## Parent installed fit
 
-The parent frame also contains a later feature named `Installed` targeting all
-eight copied clamps. The native Free/Installed configuration should be adopted
-when the catalog moves to a Forge release exposing configuration tables; until
-then no consumer-side history branching is introduced here.
+The parent frame records Installed fit for the copied clamps. The reusable
+component itself nevertheless remains Free by default; an assembly is
+responsible for selecting Installed for its occurrences. The independent
+assembly state is tracked in #204.
 
 ## Parent-level production amendment
 

@@ -22,13 +22,14 @@ variants:
       - Verify all seven Medium coupler occurrences against the retained source layout
   hub75-display-frame-2panel-tube:
     title: HUB75 2-Panel Tube Frame
-    tagline: Two-panel display frame with Ø10 tubes and eight loose slide clamps
+    tagline: Two-panel display frame with Ø10 tubes and eight Installed slide clamps
     description: >
       Tube-supported derivative of the accepted two-panel Display Frame. It
       retains the same panel grid and Middle coupler, uses the tube-ready Edge
       and Corner variants, and adds two 360 mm Ø10 × 1 mm aluminum tubes plus
       eight separate reusable tube-clamp occurrences at the source-derived
-      datums.
+      datums. One shared clamp-bore dependency is controlled by an independent
+      Installed Configuration Rule, enabled by default for the assembly.
     parameters: 320 × 320 mm nominal frame; 2 × Ø10 × 1 mm tubes at Y=-6 mm; tube Z=330/-10 mm; 8 loose clamps
     stages:
       - Reuse the accepted two-panel layout and Middle coupler
@@ -37,7 +38,7 @@ variants:
       - Place four Edge clamps at X=±20 mm
       - Place four Corner clamps at X=±153 mm
       - Apply the authored 120° top/bottom clamp orientations
-      - Keep clamps as separate Free-state components until independent Installed state is available
+      - Drive all eight clamp bores from one assembly-owned Installed Configuration Rule
 extra_views:
   title: Display-frame review
   note: Rear/front/side views compare the common panel grid and expose the frame hardware; the tube variant additionally shows both aluminum tubes and all loose clamps.

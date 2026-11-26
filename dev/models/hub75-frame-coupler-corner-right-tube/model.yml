@@ -2,6 +2,29 @@ purpose: [example]
 section: components
 group: display-frame
 priority: 25
+title: HUB75 Frame Coupler
+tagline: Shared frame-coupler family with standard and tube-clamp interfaces
+description: >
+  Reusable Medium HUB75 frame-coupler family. Standard seam/edge/corner members
+  share one owner with two tube-interface families: protruding rails for the
+  female-slot clamp and female receivers for the male-dovetail clamp.
+variant_groups:
+  - title: Standard
+    variants:
+      - hub75-frame-coupler-middle
+      - hub75-frame-coupler-edge
+      - hub75-frame-coupler-corner-left
+      - hub75-frame-coupler-corner-right
+  - title: Tube — Rail
+    variants:
+      - hub75-frame-coupler-edge-tube
+      - hub75-frame-coupler-corner-left-tube
+      - hub75-frame-coupler-corner-right-tube
+  - title: Tube — Receiver
+    variants:
+      - hub75-frame-coupler-edge-tube-receiver
+      - hub75-frame-coupler-corner-left-tube-receiver
+      - hub75-frame-coupler-corner-right-tube-receiver
 variants:
   hub75-frame-coupler-middle:
     title: HUB75 Frame Coupler — Middle

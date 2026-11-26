@@ -2,6 +2,22 @@ purpose: [example]
 section: subassemblies
 group: display-frame
 priority: 32
+title: HUB75 2-Panel Display Frame
+tagline: Two-panel display-frame family with standard and tube-supported variants
+description: >
+  Two-panel HUB75 display-frame family sharing the same 320 × 320 mm panel
+  layout. Choose the standard frame, the tube frame with protruding rail
+  couplers and female clamps, or the receiver frame with male dovetail clamps.
+variant_groups:
+  - title: Standard
+    variants:
+      - hub75-display-frame-2panel
+  - title: Tube — Rail
+    variants:
+      - hub75-display-frame-2panel-tube
+  - title: Tube — Receiver
+    variants:
+      - hub75-display-frame-2panel-tube-dovetail
 variants:
   hub75-display-frame-2panel:
     title: HUB75 2-Panel Display Frame

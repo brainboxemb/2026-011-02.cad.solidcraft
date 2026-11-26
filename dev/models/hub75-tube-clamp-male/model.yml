@@ -2,6 +2,12 @@ purpose: [example]
 section: components
 group: display-frame
 priority: 28
+title: HUB75 Tube Clamp
+tagline: Interchangeable tube-clamp interfaces for Ø10 display-frame tubes
+description: >
+  Reusable HUB75 tube-clamp family with a common elastic ring and native
+  Free/Installed fit state. Choose either the receiving female slot or the
+  protruding male dovetail interface.
 variants:
   hub75-tube-clamp:
     title: HUB75 Tube Clamp — Female Slot

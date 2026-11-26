@@ -140,13 +140,15 @@ class Hub75FrameCouplerMiddle:
             y=-MEDIUM["datum"],
             distance=-MEDIUM["base"],
         )
-        guides = _profile_solid(
-            name="Middle guide profiles",
-            loops=MIDDLE_GUIDE_PROFILES,
-            y=-MEDIUM["datum"] - 0.05,
-            distance=MEDIUM["guide"] + 0.05,
-        )
-        body = base + guides
+        body = base
+        for index, loop in enumerate(MIDDLE_GUIDE_PROFILES, start=1):
+            guide = _profile_solid(
+                name=f"Middle guide profile {index}",
+                loops=[loop],
+                y=-MEDIUM["datum"] - 0.05,
+                distance=MEDIUM["guide"] + 0.05,
+            )
+            body = body + guide
 
         for x, z in ((-MEDIUM["screw_x"], MEDIUM["bushing_z"]),
                      (MEDIUM["screw_x"], -MEDIUM["bushing_z"])):

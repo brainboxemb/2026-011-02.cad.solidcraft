@@ -6,7 +6,7 @@ keeps the active Medium row fixed; native Small/Medium/Large authoring will
 replace that fixed layer after Forge configuration support (#216).
 """
 
-from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
+from scpf import Anchor, Axis, Box, Cone, Cylinder, Sketch, component
 
 from models.components.hub75_frame_coupler.scpf.source_data import (
     BASE_PROFILES,
@@ -407,6 +407,36 @@ def _cut_edge_like_base(body, *, profile_key, screw_xs):
     return _apply_reference_pattern(body, profile_key=profile_key)
 
 
+def _clip_edge_to_top_t(body):
+    """Apply the historical top-edge profile window to the rounded plus.
+
+    Production OpenSCAD builds a rounded plus and intersects it with a window
+    that retains the full horizontal arm plus only the inward (-Z) stem.
+    The +1 mm margin is copied from that source window.
+    """
+    bar_top = (
+        MEDIUM["wall"]
+        + MEDIUM["fit"]
+        - MEDIUM["edge_end_rear"]
+    )
+    clip_z = bar_top + 1.0
+
+    # Cover the complete base+guide depth and everything above the source
+    # top-edge window. Only geometry with Z > clip_z is removed.
+    cutter = Box(
+        MEDIUM["size"] + 20.0,
+        MEDIUM["base"] + MEDIUM["guide"] + 4.0,
+        120.0,
+        anchor=Anchor.CENTER,
+    ).at(
+        0.0,
+        -MEDIUM["datum"] + (MEDIUM["guide"] - MEDIUM["base"]) / 2.0,
+        clip_z + 60.0,
+        anchor=Anchor.CENTER,
+    )
+    return body - cutter
+
+
 def _cut_edge_like_guide(body, *, relief_key, screw_xs, edge=False):
     """Apply only panel-side guide/relief cuts."""
     body = _cut_tapered_rail_relief(
@@ -451,6 +481,7 @@ class Hub75FrameCouplerEdge:
             profile_key="edge",
             screw_xs=screw_xs,
         )
+        body = _clip_edge_to_top_t(body)
         body = _cut_edge_like_base(
             body,
             profile_key="edge",

@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from cad_model_build.runtime import _export_drawings, _snapshot
+from cad_model_build.runtime import _export_drawings, _export_stl, _snapshot
 
 
 class SnapshotRuntimeTests(unittest.TestCase):
@@ -58,6 +58,49 @@ class SnapshotRuntimeTests(unittest.TestCase):
             command = run.call_args.args[0]
             self.assertIn("--camera", command)
 
+
+    @patch("cad_model_build.runtime.subprocess.run")
+    def test_stl_export_uses_adapter_default_when_quality_is_unspecified(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved = root / "model.sc"
+            saved.write_bytes(b"sc")
+            target = root / "model.stl"
+
+            def fake_run(command, **kwargs):
+                target.write_bytes(b"solid")
+
+            run.side_effect = fake_run
+            _export_stl(
+                saved=saved,
+                target=target,
+                artifact_options={},
+            )
+
+            command = run.call_args.args[0]
+            self.assertNotIn("--quality", command)
+
+    @patch("cad_model_build.runtime.subprocess.run")
+    def test_stl_export_maps_explicit_quality_to_solidcraft(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            saved = root / "model.sc"
+            saved.write_bytes(b"sc")
+            target = root / "model.stl"
+
+            def fake_run(command, **kwargs):
+                target.write_bytes(b"solid")
+
+            run.side_effect = fake_run
+            _export_stl(
+                saved=saved,
+                target=target,
+                artifact_options={"stl": {"quality": "fine"}},
+            )
+
+            command = run.call_args.args[0]
+            quality = command.index("--quality")
+            self.assertEqual(command[quality + 1], "fine")
 
     @patch("cad_model_build.runtime.subprocess.run")
     def test_drawing_export_uses_native_solidcraft_pdf(self, run):

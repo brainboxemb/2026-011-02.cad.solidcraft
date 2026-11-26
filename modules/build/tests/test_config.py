@@ -73,8 +73,56 @@ snapshots:
             self.assertEqual(models[0].variants[0].id, "box")
             self.assertEqual(models[0].variants[0].source, Path("scpf/model.py"))
             self.assertEqual(models[0].artifacts, ("stl",))
+            self.assertIsNone(models[0].stl_quality)
             self.assertEqual(models[0].snapshot_camera, {"yaw": -0.4})
             self.assertEqual(models[0].snapshots[0].name, "top.png")
+
+    def test_artifacts_can_define_explicit_stl_quality(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            write_project(repo)
+            model = repo / "models" / "box"
+            write_source(model, "scpf/model.py")
+            (model / "ci.yml").write_text(
+                """schema: 1
+id: box
+builder: forge
+source: scpf/model.py
+artifacts:
+  stl:
+    quality: fine
+""",
+                encoding="utf-8",
+            )
+
+            models = discover_models(repo, load_project(repo))
+
+            self.assertEqual(models[0].artifacts, ("stl",))
+            self.assertEqual(models[0].stl_quality, "fine")
+
+    def test_invalid_stl_quality_shape_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            write_project(repo)
+            model = repo / "models" / "box"
+            write_source(model, "scpf/model.py")
+            (model / "ci.yml").write_text(
+                """schema: 1
+id: box
+builder: forge
+source: scpf/model.py
+artifacts:
+  stl:
+    quality: ""
+""",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                BuildConfigError,
+                "artifacts.stl.quality",
+            ):
+                discover_models(repo, load_project(repo))
 
     def test_multi_variant_owner_expands_sources(self):
         with tempfile.TemporaryDirectory() as tmp:

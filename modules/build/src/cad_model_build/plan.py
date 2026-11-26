@@ -105,6 +105,15 @@ def resolve_plan(
                         for item in model.snapshots
                     ],
                     "artifacts": list(model.artifacts),
+                    "artifact_options": (
+                        {
+                            "stl": {
+                                "quality": model.stl_quality,
+                            },
+                        }
+                        if model.stl_quality is not None
+                        else {}
+                    ),
                 }
             )
 

@@ -20,6 +20,9 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
     SEAM_PROFILES,
     SEAM_TIP_PROFILES,
     EDGE_GUIDE_END_CUTS,
+    TUBE_EDGE_BASE_PLATE_PROFILES,
+    TUBE_EDGE_REAR_REFERENCE_MARK_INDICES,
+    TUBE_EDGE_REAR_SUPPORT_PROFILES,
 )
 
 SOURCE_RED = "#B80D0A"
@@ -69,10 +72,10 @@ def _add_loop(sketch, loop):
 def _profile_solid(*, name, loops, y, distance):
     """Extrude one or more retained source loops.
 
-    Forge v0.19 requires one closed profile per standalone Sketch, while the
-    native SolidCraft source may store several disconnected profiles in one
-    sketch. Preserve that source shape by lowering each loop separately and
-    joining the resulting native extrusions.
+    Preserve the accepted extraction boundary by lowering each retained loop
+    separately and joining the resulting SolidCraft extrusions. Newer Forge
+    releases can author multiple profiles in one Sketch, but changing the
+    accepted base-family history is outside this tube-interface change.
     """
     result = None
     for index, loop in enumerate(loops, start=1):
@@ -683,11 +686,42 @@ def _add_edge_tube_interface(body):
     )
     body = body - bow_clearance
 
-    return body.chamfer(
+    body = body.chamfer(
         RAIL_ENTRY_CHAMFER,
         distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
         edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
     )
+
+    # Final source features 226–230: replace the earlier suppressed rear/base
+    # experiments with the active R5 support, continuous base and the two
+    # reference marks re-cut into the newly added rear material.
+    rear_support = _profile_solid(
+        name="Symmetrische bulten met R5-overgangen",
+        loops=TUBE_EDGE_REAR_SUPPORT_PROFILES,
+        y=-17.5,
+        distance=2.45,
+    )
+    body = body + rear_support
+
+    base_plate = _profile_solid(
+        name="Doorgetrokken basisplaat rondom de twee klemmen",
+        loops=TUBE_EDGE_BASE_PLATE_PROFILES,
+        y=-15.15,
+        distance=3.9,
+    )
+    body = body + base_plate
+
+    rear_marks = [
+        REFERENCE_MARK_LOOPS["edge"][index]
+        for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
+    ]
+    reference_cut = _profile_solid(
+        name="Referentiepatroon op symmetrische rug",
+        loops=rear_marks,
+        y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),
+        distance=REFERENCE_PATTERN["mark_cut_depth"],
+    )
+    return body - reference_cut
 
 
 def _add_corner_tube_interface(body, *, side):

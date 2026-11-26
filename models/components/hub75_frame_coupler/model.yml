@@ -67,13 +67,15 @@ variants:
       base coupler geometry and adds only the final active inward clamp
       clearance, two rails at 40 mm center spacing, clamp-bow clearance and
       asymmetric rail-entry chamfers from the retained SolidCraft source.
-    parameters: Medium; two rails at ±20 mm; 14.75 mm rail height; 0.18/0.65 mm entry chamfer
+    parameters: Medium; two rails at ±20 mm; R5 rear support; 14.75 mm rail height; 0.18/0.65 mm entry chamfer
     stages:
       - Reuse the accepted Medium Edge coupler body
       - Cut inward clearance for the two loose clamp feet
       - Add two source slide rails at 40 mm center spacing
       - Cut clamp-bow clearance at the inner side
       - Add the asymmetric source rail-entry chamfers
+      - Join the final R5 rear support and continuous base around both clamps
+      - Re-cut the two selected reference marks into the new rear material
   hub75-frame-coupler-corner-left-tube:
     title: HUB75 Frame Coupler — Corner Left Tube
     tagline: Medium left Corner coupler with one loose-clamp slide interface

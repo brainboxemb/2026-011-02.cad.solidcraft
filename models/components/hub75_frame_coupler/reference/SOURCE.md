@@ -111,3 +111,23 @@ that stock before the support cylinders and later guide features are applied.
 The Forge lowering uses an equivalent XZ rectangle extrusion because released
 Forge v0.19 does not lower a translated `Box` primitive. The cut dimensions
 and source order remain those of feature 89.
+
+
+## Edge T-profile clip
+
+The historical horizontal-edge production source first creates a rounded
+`+` profile and then intersects it with a top-edge window:
+
+```text
+retain complete horizontal arm
+retain only inward (-Z) vertical stem
+remove the outside (+Z) half of the stem
+```
+
+The window top is
+`hub75_horizontal_edge_coupler_outer_projection() + 1 mm`, matching the
+historical source margin.
+
+The retained native SolidCraft feature profile represented the pre-clip rounded
+cross. Forge therefore applies this source window explicitly before mounting,
+guide and surface-detail operations.

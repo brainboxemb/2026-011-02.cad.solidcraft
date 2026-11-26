@@ -108,6 +108,12 @@
           {{ else }}
             <div class="cad-preview-empty">Static drawing preview is unavailable for this drawing artifact.</div>
           {{ end }}
+          <div class="cad-links">
+            <a href="{{ $drawingBlob }}" target="_blank" rel="noopener noreferrer">Open PDF on GitHub ↗</a>
+            <a href="{{ $drawingRaw }}" download>Download PDF</a>
+          </div>
+        </article>
+      {{ end }}
     </section>
   {{ end }}
 

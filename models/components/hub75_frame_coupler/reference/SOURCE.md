@@ -164,3 +164,37 @@ supports remained at the inward mounting positions, leaving two detached round
 features. Edge, Corner Left and Corner Right must all use this same conversion
 for source-derived loops; primitive supports, mounting cuts and locator pads
 remain in ordinary world XYZ.
+
+## Tube-ready Edge / Corner variants
+
+The retained assembly source later adds loose-clamp interfaces to the accepted
+Medium Edge and Corner components. The final active source state is deliberately
+narrower than several earlier experiments in the same timeline.
+
+The tube-ready Edge variant ports only:
+
+- feature 189, `Vrijloop voor naar binnen geplaatste klemmen`, 3 mm cut;
+- feature 191, `Z-schuifrails op 40 mm hartafstand`, 14.75 mm join;
+- feature 195, `Vrijloop voor klemboog aan de binnenzijde`, 0.45 mm cut;
+- feature 198, `Tapse invoer zwaluwstaartrails`, native asymmetric
+  0.18 / 0.65 mm chamfer.
+
+The tube-ready Corner variants port only:
+
+- feature 213, `Inschuifuitsparingen voor hoekschuifklemmen`, 18.2 mm cut;
+- feature 214, `Vrijloop Ø10 buis in de corner brackets`, Ø10.5 mm clearance;
+- feature 216, `Zwaluwstaartrails voor de hoekschuifklemmen`, 14.75 mm join;
+- features 217/218, native asymmetric 0.18 / 0.65 mm entry chamfers.
+
+The rail profile is the same authored eight-line profile in all three variants.
+Its center is X=±20 mm for Edge and local X=+7/-7 mm for left/right Corner.
+The source component placements normalize the source sketch planes from world
+Z=321.8 / 322 / 323.55 mm to local Z=1.8 / 2 / 3.55 mm.
+
+Suppressed source experiments 177, 179, 185, 187, 193, 197, 207, 208 and 211
+are not production geometry and are intentionally absent.
+
+The loose clamp remains a separate physical component. Free / Installed state
+belongs to the assembly/configuration layer and is not fused into these
+couplers.
+

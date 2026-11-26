@@ -1,12 +1,11 @@
 schema: 1
-branch: issue/213-forge-v0.22.0
+branch: feature/200-hub75-tube-couplers
 
 modules: []
 models:
-  - hub75-frame-coupler-edge
-  - hub75-frame-coupler-corner-left
-  - hub75-frame-coupler-corner-right
-  - hub75-tube-clamp
+  - hub75-frame-coupler-edge-tube
+  - hub75-frame-coupler-corner-left-tube
+  - hub75-frame-coupler-corner-right-tube
 tasks:
   - test
   - build

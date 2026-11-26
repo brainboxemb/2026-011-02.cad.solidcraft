@@ -4,6 +4,24 @@ This file contains unfinished work only.
 
 ## Now
 
+### #150 — simplify Wall Hook to sharp polygons plus native fillets
+
+Rework the existing Wall Hook construction without changing its confirmed
+dimensions or functional features.
+
+Contract:
+
+- author the outer XZ hook as a sharp-cornered `Polygon2D`;
+- extrude first, then round the named profile sweep edges with native
+  `fillet()`;
+- author the triangular reinforcement relief as a sharp polygon cutter;
+- fillet the cutter's named sweep edges before subtraction;
+- remove the hand-authored 2D arc-center/tangent construction;
+- preserve mounting holes, lower tool access, FRONT/BACK chamfer, STL and
+  #FFD21A display appearance.
+
+Acceptance is owned by issue #150.
+
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

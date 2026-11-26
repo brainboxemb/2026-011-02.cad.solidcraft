@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/125-basic-hinge
+branch: chore/141-reconcile-hinge-plan
 
 modules: []
-models:
-  - hinge
+models: []
 tasks:
   - test
-  - build

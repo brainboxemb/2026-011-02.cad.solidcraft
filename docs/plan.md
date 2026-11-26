@@ -4,30 +4,10 @@ This file contains unfinished work only.
 
 ## Now
 
-### #125 — add Basic Hinge from supplied native source
-
-Active on `feature/125-basic-hinge`.
-
-Forge v0.19.0 now provides the released native bounded revolute relationship
-required by this model.
-
-Source and behavior contract:
-
-- preserve supplied `Hinge Assembly.sc` and `Hinge Assembly.json`;
-- keep two independent reusable leaf occurrences;
-- each leaf is 40 × 30 × 3 mm with an Ø8 × 40 mm X-axis knuckle;
-- Leaf A is grounded;
-- native joint name is `Hinge`;
-- preserve 60° value and 0–180° limits;
-- qualify the model on the released Forge v0.19.0 baseline.
-
-Acceptance is owned by issue #125. Do not replace the native revolute
-relationship with fixed occurrence transforms.
-
 ### #133 — Wall Hook yellow display appearance
 
-After #125, apply the released Forge v0.19.0 display-only appearance API to the
-existing Wall Hook.
+Apply the released Forge v0.19.0 display-only appearance API to the existing
+Wall Hook.
 
 Contract:
 

@@ -165,15 +165,15 @@ def wall_hook_drawing():
     hook = WallHook()
     return hook.with_drawing(
         name="Wall Hook Drawing",
-        scale="2:1",
+        scale="2.5:1",
         gap_mm=12,
         views={
             "front": DrawingView(at=(55, 130)),
-            "top": DrawingView(at=(55, 48)),
-            "right": DrawingView(at=(142, 130)),
+            "top": DrawingView(at=(55, 35)),
+            "right": DrawingView(at=(132, 137), scale="2:1"),
             "iso": DrawingView(
-                at=(225, 132),
-                scale="1:1",
+                at=(220, 150),
+                scale="1.5:1",
                 visual_style="shaded",
             ),
         },
@@ -206,7 +206,7 @@ def wall_hook_drawing():
                 "3. 2× Ø4.2 MOUNTING HOLES; LOWER TOOL ACCESS Ø8.\n"
                 "4. FRONT/BACK BOUNDARY CHAMFER 1.5.\n"
                 "5. HOLE ENTRY CHAMFER 1.0; WALL-SIDE RELIEF 0.3.",
-                at=(174, 58),
+                at=(158, 78),
                 cap_mm=2.2,
             ),
         ),

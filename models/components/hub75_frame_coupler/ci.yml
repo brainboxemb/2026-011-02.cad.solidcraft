@@ -20,3 +20,19 @@ snapshot:
     pitch: 0.35
     distance: 150
     fov: 0
+
+snapshots:
+  - name: rear.png
+    camera:
+      target: [0, -13, 0]
+      yaw: 3.14
+      pitch: 0
+      distance: 145
+      fov: 0
+  - name: side.png
+    camera:
+      target: [0, -13, 0]
+      yaw: -1.57
+      pitch: 0
+      distance: 145
+      fov: 0

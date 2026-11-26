@@ -1,7 +1,8 @@
 schema: 1
-branch: feature/199-hub75-tube-clamp
+branch: chore/205-sync-stl-quality
 
-modules: []
+modules:
+  - build
 models:
   - hub75-tube-clamp-10mm
 tasks:

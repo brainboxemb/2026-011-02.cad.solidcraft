@@ -225,6 +225,40 @@ def _export_drawings(
 
     return tuple(produced)
 
+def _export_stl(
+    *,
+    saved: Path,
+    target: Path,
+    artifact_options: dict,
+) -> None:
+    """SolidCraft adapter for generic STL artifact intent."""
+    options = artifact_options.get("stl", {})
+    if not isinstance(options, dict) or set(options) - {"quality"}:
+        raise RuntimeError("invalid STL artifact options")
+
+    command = [
+        "solidcraft-cli",
+        "run",
+        "--in",
+        str(saved),
+        "--out",
+        str(target),
+    ]
+
+    # No generic quality means adapter-owned default behavior.  For the current
+    # SolidCraft adapter that is deliberately expressed by omitting --quality,
+    # leaving the pinned runtime to use its native default.
+    quality = options.get("quality")
+    if quality is not None:
+        if not isinstance(quality, str) or not quality:
+            raise RuntimeError("invalid STL quality")
+        command.extend(["--quality", quality])
+
+    subprocess.run(command, check=True)
+    if not target.is_file() or target.stat().st_size == 0:
+        raise RuntimeError(f"SolidCraft produced no STL: {target}")
+
+
 def _build_one(output_root: Path, row: dict) -> None:
     from scpf.headless import run_document
 
@@ -266,22 +300,11 @@ def _build_one(output_root: Path, row: dict) -> None:
 
     stl_value = native.get("stl")
     if stl_value:
-        stl = output_root / stl_value
-        subprocess.run(
-            [
-                "solidcraft-cli",
-                "run",
-                "--in",
-                str(saved),
-                "--out",
-                str(stl),
-                "--quality",
-                "fine",
-            ],
-            check=True,
+        _export_stl(
+            saved=saved,
+            target=output_root / stl_value,
+            artifact_options=row.get("artifact_options", {}),
         )
-        if not stl.is_file() or stl.stat().st_size == 0:
-            raise RuntimeError(f"SolidCraft produced no STL: {stl}")
 
     for extra in row.get("snapshots", []):
         _snapshot(

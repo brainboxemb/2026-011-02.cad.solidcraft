@@ -19,6 +19,7 @@ _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 _VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
 _PNG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.png$")
 _SUPPORTED_ARTIFACTS = frozenset({"stl"})
+_ARTIFACT_QUALITY = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _CAMERA_KEYS = frozenset({"target", "yaw", "pitch", "distance", "fov"})
 _DEFAULT_MODEL_PRIORITY = 1000
 
@@ -54,6 +55,7 @@ class ModelConfig:
     variants: tuple[ModelVariant, ...]
     artifacts: tuple[str, ...]
     snapshots: tuple[SnapshotSpec, ...]
+    stl_quality: str | None = None
     snapshot_camera: dict[str, object] | None = None
     priority: int = _DEFAULT_MODEL_PRIORITY
     dependencies: tuple[str, ...] = ()
@@ -154,6 +156,79 @@ def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
             )
         )
     return tuple(result)
+
+
+def _artifacts(
+    data: dict[str, Any],
+    path: Path,
+) -> tuple[tuple[str, ...], str | None]:
+    raw = data.get("artifacts", [])
+    if raw is None:
+        raw = []
+
+    # Backward-compatible shorthand:
+    #
+    #   artifacts: [stl]
+    #
+    # means "request STL with the adapter/runtime default quality".
+    if isinstance(raw, list):
+        if (
+            any(not isinstance(item, str) or not item for item in raw)
+            or len(set(raw)) != len(raw)
+        ):
+            raise BuildConfigError(
+                f"artifacts must be a unique string list or mapping: {path}"
+            )
+        unsupported = sorted(set(raw) - _SUPPORTED_ARTIFACTS)
+        if unsupported:
+            raise BuildConfigError(
+                f"unsupported artifact(s) {', '.join(unsupported)}: {path}"
+            )
+        return tuple(raw), None
+
+    # Extended, still tool-independent artifact intent:
+    #
+    #   artifacts:
+    #     stl:
+    #       quality: fine
+    #
+    # The SolidCraft adapter translates the generic quality hint to its native
+    # CLI option. Model presentation metadata remains unaware of that mapping.
+    if not isinstance(raw, dict):
+        raise BuildConfigError(
+            f"artifacts must be a unique string list or mapping: {path}"
+        )
+
+    unsupported = sorted(set(raw) - _SUPPORTED_ARTIFACTS)
+    if unsupported:
+        raise BuildConfigError(
+            f"unsupported artifact(s) {', '.join(unsupported)}: {path}"
+        )
+
+    stl_quality = None
+    if "stl" in raw:
+        options = raw["stl"]
+        if options is None:
+            options = {}
+        if (
+            not isinstance(options, dict)
+            or set(options) - {"quality"}
+        ):
+            raise BuildConfigError(
+                f"artifacts.stl may contain only quality: {path}"
+            )
+        quality = options.get("quality")
+        if quality is not None:
+            if (
+                not isinstance(quality, str)
+                or not _ARTIFACT_QUALITY.fullmatch(quality)
+            ):
+                raise BuildConfigError(
+                    f"artifacts.stl.quality must be a non-empty quality name: {path}"
+                )
+            stl_quality = quality
+
+    return tuple(raw), stl_quality
 
 
 def _dependencies(
@@ -413,28 +488,16 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[ModelConfig, ..
                 )
             variant_ids.add(variant.id)
 
-        artifacts = data.get("artifacts", [])
-        if artifacts is None:
-            artifacts = []
-        if (
-            not isinstance(artifacts, list)
-            or any(not isinstance(item, str) or not item for item in artifacts)
-            or len(set(artifacts)) != len(artifacts)
-        ):
-            raise BuildConfigError(f"artifacts must be a unique string list: {path}")
-        unsupported = sorted(set(artifacts) - _SUPPORTED_ARTIFACTS)
-        if unsupported:
-            raise BuildConfigError(
-                f"unsupported artifact(s) {', '.join(unsupported)}: {path}"
-            )
+        artifacts, stl_quality = _artifacts(data, path)
 
         result.append(
             ModelConfig(
                 id=owner_id,
                 root=model_root,
                 variants=variants,
-                artifacts=tuple(artifacts),
+                artifacts=artifacts,
                 snapshots=_snapshots(data, path),
+                stl_quality=stl_quality,
                 snapshot_camera=_primary_snapshot_camera(data, path),
                 priority=_resolved_priority(
                     model_root=model_root,

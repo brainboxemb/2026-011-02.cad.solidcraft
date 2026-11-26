@@ -55,8 +55,35 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(row["commands"], "models/box/solidcraft.json")
             self.assertEqual(row["snapshot"]["camera"], {"yaw": -0.4})
             self.assertEqual(row["native"]["stl"], "models/box/model.stl")
+            self.assertEqual(row["artifact_options"], {})
             self.assertEqual(row["drawings"], [])
             self.assertEqual(row["snapshots"][0]["path"], "models/box/top.png")
+
+    @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
+    def test_explicit_stl_quality_is_preserved_as_artifact_intent(self, _source_sha):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            root = repo / "models" / "box"
+            model = ModelConfig(
+                id="box",
+                root=root,
+                variants=(ModelVariant("box", Path("scpf/model.py")),),
+                artifacts=("stl",),
+                snapshots=(),
+                stl_quality="fine",
+            )
+            plan = resolve_plan(
+                repo=repo,
+                project=self.project(),
+                models=(model,),
+                selected_ids=("box",),
+                namespace="dev",
+            )
+
+            self.assertEqual(
+                plan["models"][0]["artifact_options"],
+                {"stl": {"quality": "fine"}},
+            )
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
     def test_selected_owner_expands_all_variants_deterministically(self, _source_sha):

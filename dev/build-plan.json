@@ -2159,7 +2159,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
+      "built_source_sha": "b53cdd228485647b53ee591a9c74164242c5940e",
       "commands": "models/wall-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [
@@ -2227,5 +2227,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "b7254a66b98e20e9bff78bf11fe488305b9cabb2"
+  "source_sha": "b53cdd228485647b53ee591a9c74164242c5940e"
 }

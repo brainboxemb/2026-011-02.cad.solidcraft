@@ -1,6 +1,22 @@
 {
   "commands": [
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "tube_d",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "clamp_interference",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
         "plane": "XY",
@@ -16,12 +32,12 @@
           0.0
         ],
         "start": [
-          4.8083261120685235,
-          4.808326112068523
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107"
         ],
         "end": [
-          4.8083261120685235,
-          -4.808326112068523
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
+          "-(((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107)"
         ],
         "clockwise": false,
         "connect": true
@@ -31,16 +47,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          4.1012193308819755,
-          -4.1012193308819755
+          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107",
+          "-(((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107)"
         ],
         "start": [
-          4.8083261120685235,
-          -4.808326112068523
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
+          "-(((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107)"
         ],
         "end": [
-          3.394112549695428,
-          -3.3941125496954276
+          "((tube_d - (clamp_interference)) / 2) * 0.707107",
+          "-(((tube_d - (clamp_interference)) / 2) * 0.707107)"
         ],
         "clockwise": false,
         "connect": true
@@ -54,12 +70,12 @@
           0.0
         ],
         "start": [
-          3.394112549695428,
-          -3.3941125496954276
+          "((tube_d - (clamp_interference)) / 2) * 0.707107",
+          "-(((tube_d - (clamp_interference)) / 2) * 0.707107)"
         ],
         "end": [
-          3.394112549695428,
-          3.3941125496954276
+          "((tube_d - (clamp_interference)) / 2) * 0.707107",
+          "((tube_d - (clamp_interference)) / 2) * 0.707107"
         ],
         "clockwise": true,
         "connect": true
@@ -69,16 +85,16 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          4.1012193308819755,
-          4.1012193308819755
+          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107",
+          "((((tube_d - (clamp_interference)) / 2) + ((tube_d - (clamp_interference)) / 2 + 2 mm)) / 2) * 0.707107"
         ],
         "start": [
-          3.394112549695428,
-          3.3941125496954276
+          "((tube_d - (clamp_interference)) / 2) * 0.707107",
+          "((tube_d - (clamp_interference)) / 2) * 0.707107"
         ],
         "end": [
-          4.8083261120685235,
-          4.808326112068523
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107",
+          "((tube_d - (clamp_interference)) / 2 + 2 mm) * 0.707107"
         ],
         "clockwise": false,
         "connect": true
@@ -93,7 +109,7 @@
       "params": {
         "distance": 12.0,
         "direction": "positive",
-        "body_name": "Hub75TubeClamp10mm"
+        "body_name": "Hub75TubeClamp"
       }
     },
     {
@@ -108,15 +124,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.549999999999999,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
           -5.7
         ],
         "start": [
-          -8.85,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)",
           -5.7
         ],
         "end": [
-          -8.549999999999999,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
           -6.0
         ],
         "clockwise": false,
@@ -128,11 +144,11 @@
       "params": {
         "points": [
           [
-            -8.549999999999999,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
             -6.0
           ],
           [
-            -5.95,
+            "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
             -6.0
           ]
         ],
@@ -143,15 +159,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -5.95,
+          "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
           -5.7
         ],
         "start": [
-          -5.95,
+          "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
           -6.0
         ],
         "end": [
-          -5.65,
+          "-(tube_d / 2 + 0.65 mm)",
           -5.7
         ],
         "clockwise": false,
@@ -163,11 +179,11 @@
       "params": {
         "points": [
           [
-            -5.65,
+            "-(tube_d / 2 + 0.65 mm)",
             -5.7
           ],
           [
-            -5.65,
+            "-(tube_d / 2 + 0.65 mm)",
             5.7
           ]
         ],
@@ -178,15 +194,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -5.95,
+          "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
           5.7
         ],
         "start": [
-          -5.65,
+          "-(tube_d / 2 + 0.65 mm)",
           5.7
         ],
         "end": [
-          -5.95,
+          "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
           6.0
         ],
         "clockwise": false,
@@ -198,11 +214,11 @@
       "params": {
         "points": [
           [
-            -5.95,
+            "(-(tube_d / 2 + 0.65 mm)) - 0.3 mm",
             6.0
           ],
           [
-            -8.549999999999999,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
             6.0
           ]
         ],
@@ -213,15 +229,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.549999999999999,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
           5.7
         ],
         "start": [
-          -8.549999999999999,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.3 mm",
           6.0
         ],
         "end": [
-          -8.85,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)",
           5.7
         ],
         "clockwise": false,
@@ -233,11 +249,11 @@
       "params": {
         "points": [
           [
-            -8.85,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)",
             5.7
           ],
           [
-            -8.85,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)",
             -5.7
           ]
         ],
@@ -255,7 +271,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75TubeClamp10mm"
+          "Hub75TubeClamp"
         ]
       }
     },
@@ -271,15 +287,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.899999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
           -2.75
         ],
         "start": [
-          -9.049999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm",
           -2.75
         ],
         "end": [
-          -8.899999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
           -2.9
         ],
         "clockwise": false,
@@ -291,11 +307,11 @@
       "params": {
         "points": [
           [
-            -8.899999999999999,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
             -2.9
           ],
           [
-            -8.412132034355963,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
             -2.9
           ]
         ],
@@ -306,15 +322,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.412132034355963,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
           -3.05
         ],
         "start": [
-          -8.412132034355963,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
           -2.9
         ],
         "end": [
-          -8.306066017177981,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm + 0.043934 mm",
           -2.943933982822018
         ],
         "clockwise": true,
@@ -326,11 +342,11 @@
       "params": {
         "points": [
           [
-            -8.306066017177981,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm + 0.043934 mm",
             -2.943933982822018
           ],
           [
-            -7.643933982822017,
+            "((-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm) - 0.043934 mm",
             -3.606066017177982
           ]
         ],
@@ -341,15 +357,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -7.537867965644035,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
           -3.5
         ],
         "start": [
-          -7.643933982822017,
+          "((-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm) - 0.043934 mm",
           -3.606066017177982
         ],
         "end": [
-          -7.537867965644035,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
           -3.65
         ],
         "clockwise": false,
@@ -361,11 +377,11 @@
       "params": {
         "points": [
           [
-            -7.537867965644035,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
             -3.65
           ],
           [
-            -7.25,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
             -3.65
           ]
         ],
@@ -376,15 +392,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -7.25,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
           -3.5
         ],
         "start": [
-          -7.25,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
           -3.65
         ],
         "end": [
-          -7.1,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm",
           -3.5
         ],
         "clockwise": false,
@@ -396,11 +412,11 @@
       "params": {
         "points": [
           [
-            -7.1,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm",
             -3.5
           ],
           [
-            -7.1,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm",
             3.5
           ]
         ],
@@ -411,15 +427,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -7.25,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
           3.5
         ],
         "start": [
-          -7.1,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm",
           3.5
         ],
         "end": [
-          -7.25,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
           3.65
         ],
         "clockwise": false,
@@ -431,11 +447,11 @@
       "params": {
         "points": [
           [
-            -7.25,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.15 mm",
             3.65
           ],
           [
-            -7.537867965644035,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
             3.65
           ]
         ],
@@ -446,15 +462,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -7.537867965644035,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
           3.5
         ],
         "start": [
-          -7.537867965644035,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm + 0.062132 mm",
           3.65
         ],
         "end": [
-          -7.643933982822017,
+          "((-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm) - 0.043934 mm",
           3.606066017177982
         ],
         "clockwise": false,
@@ -466,11 +482,11 @@
       "params": {
         "points": [
           [
-            -7.643933982822017,
+            "((-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 1.75 mm) - 0.5 mm) - 0.043934 mm",
             3.606066017177982
           ],
           [
-            -8.306066017177981,
+            "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm + 0.043934 mm",
             2.943933982822018
           ]
         ],
@@ -481,15 +497,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.412132034355963,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
           3.05
         ],
         "start": [
-          -8.306066017177981,
+          "-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm + 0.043934 mm",
           2.943933982822018
         ],
         "end": [
-          -8.412132034355963,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
           2.9
         ],
         "clockwise": true,
@@ -501,11 +517,11 @@
       "params": {
         "points": [
           [
-            -8.412132034355963,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm) + 0.5 mm) - 0.062132 mm",
             2.9
           ],
           [
-            -8.899999999999999,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
             2.9
           ]
         ],
@@ -516,15 +532,15 @@
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
-          -8.899999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
           2.75
         ],
         "start": [
-          -8.899999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm + 0.15 mm",
           2.9
         ],
         "end": [
-          -9.049999999999999,
+          "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm",
           2.75
         ],
         "clockwise": false,
@@ -536,11 +552,11 @@
       "params": {
         "points": [
           [
-            -9.049999999999999,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm",
             2.75
           ],
           [
-            -9.049999999999999,
+            "(-((tube_d / 2 + 2 mm) - (clamp_interference / 2) + 2.05 mm)) - 0.2 mm",
             -2.75
           ]
         ],
@@ -558,7 +574,7 @@
         "direction": "positive",
         "operation": "cut",
         "targets": [
-          "Hub75TubeClamp10mm"
+          "Hub75TubeClamp"
         ]
       }
     },
@@ -583,7 +599,7 @@
           ]
         ],
         "distance": 0.14,
-        "body": "Hub75TubeClamp10mm"
+        "body": "Hub75TubeClamp"
       }
     }
   ]

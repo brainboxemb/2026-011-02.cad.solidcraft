@@ -983,18 +983,18 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "c018b7ca79118d05db3f510d26f61b8bb5c6a66f",
-      "commands": "models/hub75-tube-clamp-10mm/solidcraft.json",
+      "built_source_sha": "d8daeb165c3016a60021476faa32f4b2226dc068",
+      "commands": "models/hub75-tube-clamp/solidcraft.json",
       "dependencies": [],
       "drawings": [],
-      "id": "hub75-tube-clamp-10mm",
+      "id": "hub75-tube-clamp",
       "native": {
-        "png": "models/hub75-tube-clamp-10mm/model.png",
-        "sc": "models/hub75-tube-clamp-10mm/model.sc",
-        "step": "models/hub75-tube-clamp-10mm/model.step",
-        "stl": "models/hub75-tube-clamp-10mm/model.stl"
+        "png": "models/hub75-tube-clamp/model.png",
+        "sc": "models/hub75-tube-clamp/model.sc",
+        "step": "models/hub75-tube-clamp/model.step",
+        "stl": "models/hub75-tube-clamp/model.stl"
       },
-      "owner": "hub75-tube-clamp-10mm",
+      "owner": "hub75-tube-clamp",
       "priority": 20,
       "root": "models/components/hub75_tube_clamp",
       "snapshot": {
@@ -1024,7 +1024,7 @@
             "yaw": 0
           },
           "name": "front.png",
-          "path": "models/hub75-tube-clamp-10mm/front.png"
+          "path": "models/hub75-tube-clamp/front.png"
         },
         {
           "camera": {
@@ -1039,7 +1039,7 @@
             "yaw": 3.14
           },
           "name": "rear.png",
-          "path": "models/hub75-tube-clamp-10mm/rear.png"
+          "path": "models/hub75-tube-clamp/rear.png"
         },
         {
           "camera": {
@@ -1054,7 +1054,7 @@
             "yaw": -1.57
           },
           "name": "side.png",
-          "path": "models/hub75-tube-clamp-10mm/side.png"
+          "path": "models/hub75-tube-clamp/side.png"
         }
       ],
       "source": "models/components/hub75_tube_clamp/scpf/model.py"
@@ -1883,5 +1883,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "c018b7ca79118d05db3f510d26f61b8bb5c6a66f"
+  "source_sha": "d8daeb165c3016a60021476faa32f4b2226dc068"
 }

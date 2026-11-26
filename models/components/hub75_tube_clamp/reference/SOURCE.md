@@ -11,6 +11,16 @@ metadata for the component path `HUB75 – losse 10 proefklem.sc`. Therefore the
 standalone upload is the exact linked clamp source used by the parent frame,
 not merely a similar trial revision.
 
+The source file rechecked for this refactor was supplied as
+`HUB75 – losse 10 proefklem2.sc`; its SHA-256 is the same
+`75f5a9c68eda2beed218ec1d8cf0b4fcc92b2534f3b0f19c546581613d86fa97`.
+It is therefore byte-for-byte the linked standalone source identified above.
+
+The parent document also carries an imported STEP representation for the linked
+component. That STEP payload is evidence of the linked result only; it is **not**
+the source used to reconstruct the Forge model. The Forge implementation follows
+the standalone SolidCraft feature history and native sketch coordinates.
+
 ## Active source state
 
 The standalone SolidCraft source has two configuration rows:

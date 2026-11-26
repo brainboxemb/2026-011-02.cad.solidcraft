@@ -1,11 +1,17 @@
 schema: 1
 id: hub75-display-frame-2panel
 builder: forge
-source: scpf/model.py
+variants:
+  - id: hub75-display-frame-2panel
+    source: scpf/model.py
+  - id: hub75-display-frame-2panel-tube
+    source: scpf/tube_frame.py
 process: true
 dependencies:
   - hub75-panel
   - hub75-frame-coupler
+  - hub75-frame-tube-10mm
+  - hub75-tube-clamp
 
 snapshot:
   camera:
@@ -29,4 +35,11 @@ snapshots:
       yaw: 0
       pitch: 0
       distance: 500
+      fov: 0
+  - name: side.png
+    camera:
+      target: [0, -8, 160]
+      yaw: -1.57
+      pitch: 0
+      distance: 520
       fov: 0

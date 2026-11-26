@@ -1,13 +1,13 @@
 {
   "forge": {
     "repository": "brainboxemb/lib.py.solidcraft.forge",
-    "version": "v0.19.0"
+    "version": "v0.22.0"
   },
   "models": [
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/benchdog-clamp/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -71,7 +71,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/bolted-flange/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -94,7 +94,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/bracket/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -117,7 +117,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/corner-bracket/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -181,7 +181,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/csg-cube/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -206,7 +206,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/flex-bench-dog/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -245,7 +245,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/guide-rail/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -268,7 +268,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/guide-rail-makita/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -291,7 +291,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hinge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -340,7 +340,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-display-frame-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -407,7 +407,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-display2/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -445,7 +445,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-frame-coupler-corner-left/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -526,7 +526,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-frame-coupler-corner-right/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -607,7 +607,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-frame-coupler-edge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -688,7 +688,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-frame-coupler-middle/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -767,7 +767,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-frame-tube-10mm/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -831,7 +831,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-panel/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -895,7 +895,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-screen/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -930,7 +930,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-screen-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel"
@@ -983,7 +983,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "895787f2b29730acd0b87d57293461ea13d50b96",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-tube-clamp/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1062,7 +1062,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/hub75-wood-frame/solidcraft.json",
       "dependencies": [
         "corner-bracket",
@@ -1098,7 +1098,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/latch/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1162,7 +1162,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/latch-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1226,7 +1226,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/mft-rail-corner-assembly/solidcraft.json",
       "dependencies": [
         "mounting-rail-m8",
@@ -1296,7 +1296,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/mft-rail-corner-bracket/solidcraft.json",
       "dependencies": [
         "mounting-rail-m8"
@@ -1349,7 +1349,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/mft-rail-corner-insert/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1413,7 +1413,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/mounting-rail-m8/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1492,7 +1492,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/plastic-enclosure/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1515,7 +1515,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/plastic-enclosure-pi/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1538,7 +1538,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/plate/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1561,7 +1561,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/sample-plate/solidcraft.json",
       "dependencies": [],
       "drawings": [
@@ -1594,7 +1594,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/sheet-metal-bracket/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1660,7 +1660,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/simple-box/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1699,7 +1699,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/simple-mft/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1722,7 +1722,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/simple-mft-assembly/solidcraft.json",
       "dependencies": [
         "simple-mft",
@@ -1790,7 +1790,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/vent-plate/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1815,7 +1815,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "78a8b18a01cf507072db3c5a4264c9b84038b029",
+      "built_source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e",
       "commands": "models/wall-hook/solidcraft.json",
       "dependencies": [],
       "drawings": [
@@ -1883,5 +1883,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "895787f2b29730acd0b87d57293461ea13d50b96"
+  "source_sha": "4ed18230c6484d9951b4f4802a65cee4c76c4d2e"
 }

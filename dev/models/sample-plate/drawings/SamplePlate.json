@@ -2,7 +2,7 @@
   "font": "",
   "font_fallbacks": [],
   "font_note": null,
-  "id": "c4pftjz4bnf3x",
+  "id": "572veretd2bte",
   "language": "en",
   "line_group": "0.5",
   "name": "SamplePlate",
@@ -22,14 +22,14 @@
     {
       "documents": {
         "component": 1,
-        "source": "3rc3xsv58bav0"
+        "source": "1n99d61x5z7e2"
       },
       "dpi": 300.0,
       "excluded": {
         "count": false,
         "print": false
       },
-      "id": "0hyw5f27sam3y",
+      "id": "ep6djdxp2fpeh",
       "images": [],
       "line_group": null,
       "name": "Sheet 1",
@@ -726,15 +726,7 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "ezjbx8fegpeyz",
-          "kind": "base",
-          "label": "Iso front right",
-          "notes": []
-        },
-        {
-          "balloons": [],
-          "dimensions": [],
-          "id": "fbeyv0rzmhger",
+          "id": "8rm2mt24gjxdy",
           "kind": "base",
           "label": "Front",
           "notes": []
@@ -742,29 +734,37 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "9dpn2ambeyrfa",
+          "id": "5f56tx0c349y5",
+          "kind": "projected",
+          "label": "Right of Front",
+          "notes": [],
+          "parent": "8rm2mt24gjxdy",
+          "side": "right"
+        },
+        {
+          "balloons": [],
+          "dimensions": [],
+          "id": "846xfvmsqbahb",
           "kind": "projected",
           "label": "Above Front",
           "notes": [],
-          "parent": "fbeyv0rzmhger",
+          "parent": "8rm2mt24gjxdy",
           "side": "above"
         },
         {
           "balloons": [],
           "dimensions": [],
-          "id": "brxwyt7vevwxg",
-          "kind": "projected",
-          "label": "Right of Front",
-          "notes": [],
-          "parent": "fbeyv0rzmhger",
-          "side": "right"
+          "id": "fh37r86vqkfc4",
+          "kind": "base",
+          "label": "Iso front right",
+          "notes": []
         }
       ]
     }
   ],
   "sources": [
     {
-      "id": "3rc3xsv58bav0"
+      "id": "1n99d61x5z7e2"
     }
   ],
   "symbols": [],

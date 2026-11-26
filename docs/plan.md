@@ -4,23 +4,30 @@ This file contains unfinished work only.
 
 ## Now
 
-### #150 — simplify Wall Hook to sharp polygons plus native fillets
+### #152 — correct Basic Hinge native leaf placement and source pose
 
-Rework the existing Wall Hook construction without changing its confirmed
-dimensions or functional features.
+Correct the Basic Hinge against the retained authoritative native source rather
+than tuning the preview visually.
 
-Contract:
+Source contract:
 
-- author the outer XZ hook as a sharp-cornered `Polygon2D`;
-- extrude first, then round the named profile sweep edges with native
-  `fillet()`;
-- author the triangular reinforcement relief as a sharp polygon cutter;
-- fillet the cutter's named sweep edges before subtraction;
-- remove the hand-authored 2D arc-center/tangent construction;
-- preserve mounting holes, lower tool access, FRONT/BACK chamfer, STL and
-  #FFD21A display appearance.
+- use `models/basic/hinge/reference/Hinge Assembly.sc` and
+  `Hinge Assembly.json`;
+- preserve two independent reusable leaf occurrences;
+- each leaf remains a 40 × 30 × 3 mm plate with an Ø8 × 40 mm X-axis knuckle;
+- Leaf A remains grounded;
+- native joint remains named `Hinge`;
+- joint remains revolute with a 60° source value and 0–180° limits.
 
-Acceptance is owned by issue #150.
+Required correction:
+
+- derive the exact Leaf B source pose from the retained native transform;
+- make the Forge-generated occurrence placement match that pose;
+- correct AnchorFrame / clocking / flip semantics rather than adding an
+  arbitrary fixed visual rotation;
+- keep both knuckle axes coincident and the relationship driveable.
+
+Acceptance is owned by issue #152.
 
 ## Mandatory integration rule
 

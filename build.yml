@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/150-wall-hook-polygon-fillets
+branch: chore/153-activate-hinge-plan
 
 modules: []
-models:
-  - wall-hook
+models: []
 tasks:
   - test
-  - build

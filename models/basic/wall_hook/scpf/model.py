@@ -162,7 +162,7 @@ class WallHook:
 
 def wall_hook_drawing():
     """A4 landscape manufacturing/mounting sheet for the finished Wall Hook."""
-    hook = WallHook(name="Wall Hook")
+    hook = WallHook()
     return hook.with_drawing(
         name="Wall Hook Drawing",
         scale="2:1",

@@ -2,35 +2,50 @@ purpose: [example]
 section: components
 group: display-frame
 priority: 28
-title: HUB75 Tube Clamp
-tagline: Parameterized loose printable slide clamp for HUB75 tube interfaces
-description: >
-  Source-faithful reusable tube clamp with native Free/Installed fit state.
-  Tube diameter, clamp interference and clamp bore remain editable dependencies;
-  Ø10 with 0.4 mm interference gives a 9.6 mm Free bore, while the independent
-  Installed rule drives the bore to the tube diameter.
-parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
-stages:
-  - Keep clamp bore as a native configured parameter with a Free base expression
-  - Rebuild the active open elastic clamp-ring profile from the linked native source
-  - Extrude the 12 mm ring width in the original local frame
-  - Add the active low integrated rounded slide back
-  - Cut the active rounded slide slot while preserving the 1 mm end stop
-  - Keep historical suppressed dovetail experiments out of the production body
-  - Author the independent Installed Configuration Rule disabled for standalone manufacturing
+variants:
+  hub75-tube-clamp:
+    title: HUB75 Tube Clamp — Female Slot
+    tagline: Parameterized printable tube clamp with receiving slide slot
+    description: >
+      Existing source-faithful receiving/female clamp interface. Tube diameter,
+      clamp interference and clamp bore remain editable dependencies; Ø10 with
+      0.4 mm interference gives a 9.6 mm Free bore and the independent Installed
+      rule drives the bore to the tube diameter.
+    parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
+    stages:
+      - Reuse the shared elastic clamp-ring geometry
+      - Add the active low integrated rounded slide back
+      - Cut the active rounded receiving slot while preserving the 1 mm end stop
+      - Preserve the parent 0.14 mm slot-entry chamfer
+      - Keep Installed disabled for standalone manufacturing
+  hub75-tube-clamp-male:
+    title: HUB75 Tube Clamp — Male Dovetail
+    tagline: Parameterized printable tube clamp with protruding male dovetail
+    description: >
+      Second physical interface variant from the newly supplied SolidCraft
+      source. It shares the elastic clamp ring and Free/Installed fit state with
+      the existing clamp, but uses only the final active male-dovetail history;
+      the older female slot and intermediate dovetail experiments remain absent.
+    parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm head; 10.8 mm neck; 16 mm dovetail run; 0.4 mm flat groove bottoms
+    stages:
+      - Reuse the shared elastic clamp-ring geometry
+      - Join the final 14-segment symmetric male dovetail profile
+      - Preserve the 0.4 mm flat groove bottoms
+      - Cut the mirrored final 45-degree flank corrections
+      - Keep Installed disabled for standalone manufacturing
 extra_views:
-  title: Clamp fit and slide review
-  note: Front/rear/side views make the open tube wrap, integrated slide back and closed slot stop inspectable.
+  title: Clamp fit and interface review
+  note: Front/rear/side views make the common elastic tube wrap and the selected female or male slide interface inspectable.
   items:
     - kind: build
       src: front.png
-      alt: Front view of the loose HUB75 tube clamp
-      caption: Front — open elastic tube wrap and slide-back relationship
+      alt: Front view of the HUB75 tube-clamp variant
+      caption: Front — common open elastic tube wrap and interface relationship
     - kind: build
       src: rear.png
-      alt: Rear view of the loose HUB75 tube clamp
-      caption: Rear — integrated slide slot and closed stop
+      alt: Rear view of the HUB75 tube-clamp variant
+      caption: Rear — selected receiving slot or protruding dovetail interface
     - kind: build
       src: side.png
-      alt: Side view of the loose HUB75 tube clamp
-      caption: Side — 12 mm ring width and 16 mm slide-run envelope
+      alt: Side view of the HUB75 tube-clamp variant
+      caption: Side — 12 mm ring width and 16 mm interface-run envelope

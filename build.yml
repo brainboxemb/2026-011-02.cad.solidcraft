@@ -1,10 +1,9 @@
 schema: 1
-branch: feature/204-hub75-clamp-installed-state
+branch: feature/228-hub75-tube-clamp-male
 
 modules: []
 models:
   - hub75-tube-clamp
-  - hub75-display-frame-2panel
 tasks:
   - test
   - build

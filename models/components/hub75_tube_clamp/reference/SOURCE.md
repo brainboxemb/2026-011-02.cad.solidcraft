@@ -5,6 +5,8 @@ tube clamp.
 
 ## Retained files
 
+### Female-slot source
+
 - `HUB75 – losse 10 proefklem.sc`
   - canonical SolidCraft source container;
   - SHA-256:
@@ -20,7 +22,20 @@ The supplied `.sc` upload was named
 by the parent frame link metadata for `HUB75 – losse 10 proefklem.sc`.
 It is therefore stored here under that canonical linked source name.
 
-The JSON file is the official SolidCraft authoring export. It is not Forge
+### Male-dovetail source
+
+- `HUB75 – losse 10 proefklem2.json`
+  - exact official SolidCraft JSON export supplied for the new male variant;
+  - format: `solidcraft/68`;
+  - SHA-256:
+    `57fecc0c0df73d76b77f42a4172d646488e32fed1877b2228717f9f8c3e3ae14`.
+- supplied SolidCraft container: `HUB75 – losse 10 proefklem2(1).sc`
+  - exact supplied container SHA-256:
+    `f6aae844a26502b84a60ddc8fd2d3e0ad78ce6dff5b0abaa60f6626d3479268f`;
+  - the binary container is recorded by exact filename and digest; the retained
+    JSON is the repository's directly diffable authoring reference.
+
+The JSON files are official SolidCraft authoring exports. They are not Forge
 compile/replay output and must not be confused with the generated catalog
 `solidcraft.json` command document.
 
@@ -63,15 +78,40 @@ default. No Python geometry branch implements the state.
 
 ## Active production features
 
-Only the active source features are reconstructed:
+The owner contains two physical interface variants sharing the same elastic
+ring and fit parameters.
+
+### Female slot
+
+The existing production variant reconstructs:
 
 1. `Open klemring met afgeronde lippen` + `Elastische klemring`;
 2. `Afgeronde rug voor de schuifgleuf` + `Lage geïntegreerde rug`;
 3. `Schuifgleuf met aanloop en printflanken` +
-   `Schuifgleuf met vaste eindaanslag`.
+   `Schuifgleuf met vaste eindaanslag`;
+4. the parent 0.14 mm slot-entry chamfer.
 
-Earlier transition/dovetail experiments in the source timeline are suppressed
-and are intentionally not carried into the production geometry.
+### Male dovetail
+
+The newly supplied source suppresses the female back/slot extrudes and the
+earlier male experiments. Its final active interface is:
+
+1. feature 22, `Symmetrische groeven met vlakke bodem`, one 14-segment XZ
+   profile at `-dove_run/2`;
+2. feature 23, `Symmetrische zwaluwstaart met vlakke groefbodems`, joined for
+   `dove_run = 16 mm`;
+3. feature 24, `Spiegelbeeldige correctie van de rugflanken`, two symmetric
+   correction loops at `-dove_run/2-0.1 mm`;
+4. feature 25, `Rugflanken onder 45 graden`, cut for
+   `dove_run+0.2 mm`.
+
+The source keeps `dove_head = 12 mm`, `dove_depth = 2.05 mm`,
+`dove_angle = 45 deg`, `dove_land_root = 0.65 mm`,
+`dove_land_head = 0.8 mm`, `dove_round = 0.2 mm` and
+`dove_groove_flat = 0.4 mm`. The resulting default neck is 10.8 mm.
+
+No hybrid body is authored: each public variant includes only its own active
+mechanical interface history.
 
 ## Local frame
 

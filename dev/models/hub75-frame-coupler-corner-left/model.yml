@@ -59,3 +59,49 @@ variants:
       - Cut rail and bushing clearance
       - Add one mounting bore and locator pad
       - Keep the Medium-only panel-pin pass-through suppressed
+  hub75-frame-coupler-edge-tube:
+    title: HUB75 Frame Coupler — Edge Tube
+    tagline: Medium Edge coupler with two slide rails for loose Ø10 tube clamps
+    description: >
+      Tube-ready derivative of the accepted Medium Edge coupler. It retains the
+      base coupler geometry and adds only the final active inward clamp
+      clearance, two rails at 40 mm center spacing, clamp-bow clearance and
+      asymmetric rail-entry chamfers from the retained SolidCraft source.
+    parameters: Medium; two rails at ±20 mm; R5 rear support; 14.75 mm rail height; 0.18/0.65 mm entry chamfer
+    stages:
+      - Reuse the accepted Medium Edge coupler body
+      - Cut inward clearance for the two loose clamp feet
+      - Add two source slide rails at 40 mm center spacing
+      - Cut clamp-bow clearance at the inner side
+      - Add the asymmetric source rail-entry chamfers
+      - Join the final R5 rear support and continuous base around both clamps
+      - Re-cut the two selected reference marks into the new rear material
+  hub75-frame-coupler-corner-left-tube:
+    title: HUB75 Frame Coupler — Corner Left Tube
+    tagline: Medium left Corner coupler with one loose-clamp slide interface
+    description: >
+      Tube-ready derivative of the accepted Medium left Corner coupler. It adds
+      the source insertion recess, Ø10.5 tube clearance, one slide rail and its
+      asymmetric entry chamfer.
+    parameters: Medium; local rail center +7 mm; Ø10.5 tube clearance; 14.75 mm rail height
+    stages:
+      - Reuse the accepted Medium left Corner body
+      - Cut the loose-clamp insertion recess
+      - Cut the source tube clearance
+      - Add the source slide rail
+      - Add the asymmetric source rail-entry chamfer
+  hub75-frame-coupler-corner-right-tube:
+    title: HUB75 Frame Coupler — Corner Right Tube
+    tagline: Medium right Corner coupler with one loose-clamp slide interface
+    description: >
+      Tube-ready derivative of the accepted Medium right Corner coupler. It adds
+      the mirrored source insertion recess, Ø10.5 tube clearance, one slide rail
+      and its asymmetric entry chamfer.
+    parameters: Medium; local rail center -7 mm; Ø10.5 tube clearance; 14.75 mm rail height
+    stages:
+      - Reuse the accepted Medium right Corner body
+      - Cut the loose-clamp insertion recess
+      - Cut the source tube clearance
+      - Add the source slide rail
+      - Add the asymmetric source rail-entry chamfer
+

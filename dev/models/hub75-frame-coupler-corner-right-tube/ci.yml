@@ -1,0 +1,51 @@
+schema: 1
+id: hub75-frame-coupler
+builder: forge
+variants:
+  - id: hub75-frame-coupler-middle
+    source: scpf/middle.py
+  - id: hub75-frame-coupler-edge
+    source: scpf/edge.py
+  - id: hub75-frame-coupler-corner-left
+    source: scpf/corner_left.py
+  - id: hub75-frame-coupler-corner-right
+    source: scpf/corner_right.py
+  - id: hub75-frame-coupler-edge-tube
+    source: scpf/edge_tube.py
+  - id: hub75-frame-coupler-corner-left-tube
+    source: scpf/corner_left_tube.py
+  - id: hub75-frame-coupler-corner-right-tube
+    source: scpf/corner_right_tube.py
+process: true
+artifacts: [stl]
+
+snapshot:
+  camera:
+    target: [0, -13, 0]
+    yaw: -0.62
+    pitch: 0.35
+    distance: 150
+    fov: 0
+
+snapshots:
+  - name: front.png
+    camera:
+      target: [0, -13, 0]
+      yaw: 0
+      pitch: 0
+      distance: 145
+      fov: 0
+  - name: rear.png
+    camera:
+      target: [0, -13, 0]
+      yaw: 3.14
+      pitch: 0
+      distance: 145
+      fov: 0
+  - name: side.png
+    camera:
+      target: [0, -13, 0]
+      yaw: -1.57
+      pitch: 0
+      distance: 145
+      fov: 0

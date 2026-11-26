@@ -100,3 +100,14 @@ the wrong side of the part.
 
 The corrected Forge construction keeps base and guide volumes separate and
 joins them only after their own source-derived operations are complete.
+
+
+## Edge T-profile boundary
+
+Native feature 89, `Edge T-profiel begrenzen`, is a box cut immediately after
+the complete Edge profile stock is created. It removes the broad upper half of
+that stock before the support cylinders and later guide features are applied.
+
+The Forge lowering uses an equivalent XZ rectangle extrusion because released
+Forge v0.19 does not lower a translated `Box` primitive. The cut dimensions
+and source order remain those of feature 89.

@@ -1,8 +1,11 @@
 schema: 1
-branch: issue/209-hub75-clamp-reference-files
+branch: issue/213-forge-v0.22.0
 
 modules: []
 models:
+  - hub75-frame-coupler-edge
+  - hub75-frame-coupler-corner-left
+  - hub75-frame-coupler-corner-right
   - hub75-tube-clamp
 tasks:
   - test

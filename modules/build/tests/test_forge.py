@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from cad_model_build.forge import compile_plan, install_url
+from cad_model_build.forge import _drawing_artifacts, compile_plan, install_url
 
 
 class ForgeBuildTests(unittest.TestCase):
@@ -12,6 +12,44 @@ class ForgeBuildTests(unittest.TestCase):
         self.assertIn(
             "@v0.15.0#subdirectory=cadlib",
             install_url("brainboxemb/lib.py.solidcraft.forge", version),
+        )
+
+    def test_drawing_artifact_accepts_legacy_and_additive_metadata(self):
+        legacy = {
+            "artifacts": {
+                "drawings": [{
+                    "name": "Part",
+                    "drawing": "$drawing_1",
+                    "pdf": "drawings/Part.pdf",
+                }]
+            }
+        }
+        additive = {
+            "artifacts": {
+                "drawings": [{
+                    "name": "Part",
+                    "drawing": "$drawing_1",
+                    "sheet": "$drawing_1_sheet",
+                    "orientation": "$drawing_1_orientation",
+                    "pdf": "drawings/Part.pdf",
+                    "png": "drawings/Part.png",
+                    "inspect": "drawings/Part.json",
+                    "expected": {"orientation": "landscape"},
+                }]
+            }
+        }
+        expected = [{
+            "name": "Part",
+            "drawing": "$drawing_1",
+            "path": "models/box/drawings/Part.pdf",
+        }]
+        self.assertEqual(
+            _drawing_artifacts(legacy, "models/box/solidcraft.json"),
+            expected,
+        )
+        self.assertEqual(
+            _drawing_artifacts(additive, "models/box/solidcraft.json"),
+            expected,
         )
 
     @patch("cad_model_build.forge.subprocess.run")

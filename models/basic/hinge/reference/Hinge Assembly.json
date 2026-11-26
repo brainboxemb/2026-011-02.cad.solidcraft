@@ -1,0 +1,172 @@
+{
+  "format": "solidcraft/68",
+  "name": "Hinge Assembly",
+  "units": "mm",
+  "params": [],
+  "features": [
+    {
+      "id": 3,
+      "name": "Box1",
+      "suppressed": false,
+      "body_names": [
+        "Body1"
+      ],
+      "param_names": [
+        "d1",
+        "d2",
+        "d3"
+      ],
+      "component": 1,
+      "type": "box",
+      "corner": [0.0, 0.0, 0.0],
+      "length": "40",
+      "width": "30",
+      "height": "3",
+      "operation": "new_body"
+    },
+    {
+      "id": 4,
+      "name": "Cylinder1",
+      "suppressed": false,
+      "body_names": [
+        "Body2"
+      ],
+      "param_names": [
+        "d4",
+        "d5"
+      ],
+      "component": 1,
+      "type": "cylinder",
+      "base": [0.0, 33.0, 4.0],
+      "axis": [1.0, 0.0, 0.0],
+      "radius": "4",
+      "height": "40",
+      "operation": "new_body"
+    },
+    {
+      "id": 7,
+      "name": "Box2",
+      "suppressed": false,
+      "body_names": [
+        "Body3"
+      ],
+      "param_names": [
+        "d6",
+        "d7",
+        "d8"
+      ],
+      "component": 5,
+      "type": "box",
+      "corner": [0.0, 0.0, 0.0],
+      "length": "40",
+      "width": "30",
+      "height": "3",
+      "operation": "new_body"
+    },
+    {
+      "id": 8,
+      "name": "Cylinder2",
+      "suppressed": false,
+      "body_names": [
+        "Body4"
+      ],
+      "param_names": [
+        "d9",
+        "d10"
+      ],
+      "component": 5,
+      "type": "cylinder",
+      "base": [0.0, 33.0, 4.0],
+      "axis": [1.0, 0.0, 0.0],
+      "radius": "4",
+      "height": "40",
+      "operation": "new_body"
+    }
+  ],
+  "next_id": 10,
+  "reserved_body_names": [
+    "Body1",
+    "Body2",
+    "Body3",
+    "Body4"
+  ],
+  "components": [
+    {
+      "id": 1,
+      "identification_color_index": 0,
+      "name": "Leaf A",
+      "parent": 0
+    },
+    {
+      "id": 5,
+      "identification_color_index": 1,
+      "name": "Leaf B",
+      "parent": 0
+    }
+  ],
+  "next_component_color_index": 2,
+  "occurrences": [
+    {
+      "id": 2,
+      "component": 1,
+      "parent": 0,
+      "name": "Leaf A:1",
+      "transform": [
+        [1.0, 0.0, 0.0, 0.0],
+        [0.0, 1.0, 0.0, 0.0],
+        [0.0, 0.0, 1.0, 0.0],
+        [0.0, 0.0, 0.0, 1.0]
+      ],
+      "grounded": true
+    },
+    {
+      "id": 6,
+      "component": 5,
+      "parent": 0,
+      "name": "Leaf B:1",
+      "transform": [
+        [-1.0, 0.0, 0.0, 0.0],
+        [0.0, -0.5000000000000001, 0.8660254037844386, 0.0],
+        [0.0, 0.8660254037844386, 0.5000000000000001, 0.0],
+        [0.0, 46.03589838486225, -26.578838324886473, 1.0]
+      ],
+      "grounded": false
+    }
+  ],
+  "assembly": {
+    "joints": [
+      {
+        "id": 9,
+        "name": "Hinge",
+        "kind": "revolute",
+        "a": {
+          "occurrence": 2,
+          "snap": {
+            "type": "circle_center",
+            "pick": [1.0, 37.0, 4.0],
+            "face": "F4:side",
+            "end": "F4:bottom",
+            "x": [0.0, 0.0, -1.0]
+          }
+        },
+        "b": {
+          "occurrence": 6,
+          "snap": {
+            "type": "circle_center",
+            "pick": [1.0, 37.0, 4.0],
+            "face": "F8:side",
+            "end": "F8:bottom",
+            "x": [0.0, 0.0, -1.0]
+          }
+        },
+        "values": [1.0471975511965976],
+        "limits": [
+          [0.0, 3.141592653589793]
+        ],
+        "offset": 0.0,
+        "offset_xy": [0.0, 0.0],
+        "angle": 0.0
+      }
+    ]
+  }
+}

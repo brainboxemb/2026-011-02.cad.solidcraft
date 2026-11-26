@@ -213,11 +213,8 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
 
 
 @component
-class Hub75FrameCouplerEdge(_EdgeLike):
+class Hub75FrameCouplerEdge:
     """Fixed Medium straight frame-edge coupler."""
-
-    profile_key = "edge"
-    relief_key = "edge"
 
     def build(self):
         depth = MEDIUM["base"] + MEDIUM["guide"]

@@ -1,6 +1,6 @@
 purpose: [example]
 section: subassemblies
-group: display
+group: display-frame
 priority: 30
 title: BasicHub75Screen
 tagline: Five shared native HUB75 occurrences with two 180° rotations

@@ -17,9 +17,12 @@ sections:
     order: 40
 
 groups:
-  - id: display
-    title: Display
+  - id: display-case
+    title: Display Case
     order: 10
+  - id: display-frame
+    title: Display Frame
+    order: 20
   - id: mft
     title: MFT
-    order: 20
+    order: 30

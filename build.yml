@@ -1,9 +1,9 @@
 schema: 1
-branch: issue/194-wall-hook-all-views-1to1
+branch: issue/13-bolted-flange-circular-pattern
 
 modules: []
 models:
-  - wall-hook
+  - bolted-flange
 tasks:
   - test
   - build

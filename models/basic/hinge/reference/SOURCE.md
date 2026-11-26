@@ -64,6 +64,24 @@ The SCPF `hinge_axis` AnchorFrame therefore uses:
 - local joint Z / rotation axis `(+1, 0, 0)`;
 - local joint X / clocking direction `(0, 0, -1)`.
 
-That frame, the native flipped joint orientation and the revolute value of
-60° form the intended source-pose contract; no extra fixed occurrence rotation
-should be added in CAD.
+The source transform also fixes the native mating orientation. Its 3 × 3
+rotation block is exactly:
+
+```text
+R_source = R_x(+60°) · diag(-1, -1, +1)
+```
+
+With the joint frame above, `diag(-1, -1, +1)` is a 180° rotation around
+the joint-frame X / clocking axis `(0, 0, -1)`. That is SolidCraft's normal
+(non-flipped) mating orientation. The public Forge `flip=True` option removes
+that 180° mating orientation; using it therefore produces a different Leaf B
+pose even though the revolute value is still 60°.
+
+The intended source-pose contract is therefore:
+
+- the shared `hinge_axis` AnchorFrame above;
+- native revolute `value=60`;
+- native `limits=(0, 180)`;
+- **no `flip=True` override**.
+
+No extra fixed occurrence rotation should be added in CAD.

@@ -1,7 +1,9 @@
 schema: 1
-branch: chore/153-activate-hinge-plan
+branch: feature/152-hinge-source-pose
 
 modules: []
-models: []
+models:
+  - hinge
 tasks:
   - test
+  - build

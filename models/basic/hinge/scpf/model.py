@@ -80,7 +80,6 @@ class Hinge:
             kind="revolute",
             value=self._initial_angle,
             limits=(self._minimum_angle, self._maximum_angle),
-            flip=True,
             name="Hinge",
         )
         return leaf_a + leaf_b

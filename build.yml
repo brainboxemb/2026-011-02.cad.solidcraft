@@ -1,9 +1,8 @@
 schema: 1
-branch: issue/14-flex-bench-dog-polygon-logo
+branch: issue/225-exploded-snapshot-template-sync
 
-modules: []
-models:
-  - flex-bench-dog
+modules:
+  - build
+models: []
 tasks:
   - test
-  - build

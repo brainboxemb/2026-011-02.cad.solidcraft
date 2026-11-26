@@ -76,6 +76,7 @@ snapshots:
             self.assertIsNone(models[0].stl_quality)
             self.assertEqual(models[0].snapshot_camera, {"yaw": -0.4})
             self.assertEqual(models[0].snapshots[0].name, "top.png")
+            self.assertIsNone(models[0].snapshots[0].exploded_view)
 
     def test_artifacts_can_define_explicit_stl_quality(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -341,6 +342,62 @@ variants:
             )
             models = discover_models(repo, load_project(repo))
             self.assertEqual(models[0].snapshots, ())
+
+
+    def test_snapshot_can_select_named_exploded_view(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            write_project(repo)
+            model = repo / "models" / "assembly"
+            write_source(model, "scpf/model.py")
+            (model / "ci.yml").write_text(
+                """schema: 1
+id: assembly
+builder: forge
+source: scpf/model.py
+snapshots:
+  - name: exploded.png
+    exploded_view: Assembly review
+    camera:
+      yaw: -0.5
+""",
+                encoding="utf-8",
+            )
+
+            models = discover_models(repo, load_project(repo))
+
+            self.assertEqual(
+                models[0].snapshots[0].exploded_view,
+                "Assembly review",
+            )
+            self.assertEqual(
+                models[0].snapshots[0].camera,
+                {"yaw": -0.5},
+            )
+
+    def test_blank_snapshot_exploded_view_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            write_project(repo)
+            model = repo / "models" / "assembly"
+            write_source(model, "scpf/model.py")
+            (model / "ci.yml").write_text(
+                """schema: 1
+id: assembly
+builder: forge
+source: scpf/model.py
+snapshots:
+  - name: exploded.png
+    exploded_view: "   "
+""",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                BuildConfigError,
+                "exploded_view must be non-empty text",
+            ):
+                discover_models(repo, load_project(repo))
 
     def test_process_false_model_is_not_discovered(self):
         with tempfile.TemporaryDirectory() as tmp:

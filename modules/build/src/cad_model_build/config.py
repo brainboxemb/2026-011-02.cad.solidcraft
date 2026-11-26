@@ -40,6 +40,7 @@ class SolidCraftPin:
 class SnapshotSpec:
     name: str
     camera: dict[str, object] | None = None
+    exploded_view: str | None = None
 
 
 @dataclass(frozen=True)
@@ -137,7 +138,10 @@ def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
     result: list[SnapshotSpec] = []
     names: set[str] = set()
     for index, item in enumerate(raw):
-        if not isinstance(item, dict) or set(item) - {"name", "camera"}:
+        if (
+            not isinstance(item, dict)
+            or set(item) - {"name", "camera", "exploded_view"}
+        ):
             raise BuildConfigError(f"snapshots[{index}] is invalid: {path}")
         name = item.get("name")
         if not isinstance(name, str) or not _PNG.fullmatch(name):
@@ -145,6 +149,13 @@ def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
         if name == "model.png" or name in names:
             raise BuildConfigError(f"duplicate/reserved snapshot name {name!r}: {path}")
         names.add(name)
+        exploded_view = item.get("exploded_view")
+        if exploded_view is not None:
+            if not isinstance(exploded_view, str) or not exploded_view.strip():
+                raise BuildConfigError(
+                    f"snapshots[{index}].exploded_view must be non-empty text: {path}"
+                )
+            exploded_view = exploded_view.strip()
         result.append(
             SnapshotSpec(
                 name=name,
@@ -153,6 +164,7 @@ def _snapshots(data: dict[str, Any], path: Path) -> tuple[SnapshotSpec, ...]:
                     f"snapshots[{index}].camera",
                     path,
                 ),
+                exploded_view=exploded_view,
             )
         )
     return tuple(result)

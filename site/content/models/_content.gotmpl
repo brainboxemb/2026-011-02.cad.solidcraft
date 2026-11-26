@@ -1,14 +1,17 @@
 {{/*
 Generic model page adapter.
 
-- model.yml owns presentation metadata, including section/group taxonomy;
+- model.yml owns presentation metadata, including section/group taxonomy and
+  optional physical-owner variant grouping;
 - site/data/cad/catalog.yml owns taxonomy labels/order;
 - ci.yml owns build/source identity;
 - prepared-build/main is mounted read-only so Pages can inspect the accepted
   build-plan and command JSON during rendering;
 - generated CAD artifacts remain owned by the build branch and are never copied
   into gh-pages;
-- model_history.json owns derived Git last-modified presentation data.
+- model_history.json owns derived Git last-modified presentation data;
+- physical owners with multiple build variants get one owner page while every
+  existing variant detail URL remains valid.
 */}}
 
 {{ $planResource := resources.Get "build/build-plan.json" }}
@@ -73,6 +76,7 @@ Generic model page adapter.
     {{ errorf "missing model history for %s" $modelRoot }}
   {{ end }}
   {{ $lastmod := time.AsTime $lastmodRaw }}
+  {{ $priority := default 1000 (index $rootMeta "priority") }}
 
   {{ $entries := slice }}
   {{ with $variants := index $ci "variants" }}
@@ -100,6 +104,90 @@ Generic model page adapter.
     ) }}
   {{ end }}
 
+  {{ $variantIds := slice }}
+  {{ range $entry := $entries }}
+    {{ $variantIds = $variantIds | append (index $entry "slug") }}
+  {{ end }}
+
+  {{ $hasOwnerPage := gt (len $entries) 1 }}
+  {{ $ownerPath := "" }}
+  {{ $ownerTitle := "" }}
+
+  {{ if $hasOwnerPage }}
+    {{ $ownerPath = printf "owners/%s" $modelRoot }}
+    {{ $firstEntry := index $entries 0 }}
+    {{ $firstModel := index $firstEntry "model" }}
+    {{ $firstSlug := index $firstEntry "slug" }}
+    {{ $firstMatches := where $rows "id" $firstSlug }}
+    {{ if ne (len $firstMatches) 1 }}
+      {{ errorf "%s: expected exactly one durable build row, found %d" $firstSlug (len $firstMatches) }}
+    {{ end }}
+    {{ $ownerBuild := index $firstMatches 0 }}
+    {{ $ownerTitle = default (index $firstModel "title") (index $rootMeta "title") }}
+    {{ $ownerTagline := default (index $firstModel "tagline") (index $rootMeta "tagline") }}
+    {{ $ownerDescription := default (index $firstModel "description") (index $rootMeta "description") }}
+    {{ $variantGroups := default (slice) (index $rootMeta "variant_groups") }}
+
+    {{ $groupSeen := slice }}
+    {{ range $variantGroup := $variantGroups }}
+      {{ $variantGroupTitle := index $variantGroup "title" }}
+      {{ $groupVariants := index $variantGroup "variants" }}
+      {{ if not $variantGroupTitle }}
+        {{ errorf "%s: variant group is missing title" $modelRoot }}
+      {{ end }}
+      {{ if not $groupVariants }}
+        {{ errorf "%s: variant group %s has no variants" $modelRoot $variantGroupTitle }}
+      {{ end }}
+      {{ range $groupVariant := $groupVariants }}
+        {{ if not (in $variantIds $groupVariant) }}
+          {{ errorf "%s: variant group %s references unknown variant %s" $modelRoot $variantGroupTitle $groupVariant }}
+        {{ end }}
+        {{ if in $groupSeen $groupVariant }}
+          {{ errorf "%s: variant %s appears in more than one variant group" $modelRoot $groupVariant }}
+        {{ end }}
+        {{ $groupSeen = $groupSeen | append $groupVariant }}
+      {{ end }}
+    {{ end }}
+
+    {{ $ownerModel := dict
+      "title" $ownerTitle
+      "tagline" $ownerTagline
+      "description" $ownerDescription
+      "parameters" (printf "%d variants" (len $entries))
+      "priority" $priority
+    }}
+
+    {{ $.AddPage (dict
+      "content" (dict
+        "mediaType" "text/markdown"
+        "value" $ownerDescription
+      )
+      "dates" (dict "lastmod" $lastmod)
+      "kind" "page"
+      "path" $ownerPath
+      "title" $ownerTitle
+      "params" (dict
+        "model" $ownerModel
+        "build" $ownerBuild
+        "cadOwnerIndex" true
+        "catalogEntry" true
+        "cadSection" $section
+        "cadGroup" $group
+        "cadRoot" $modelRoot
+        "cadPriority" $priority
+        "ownerVariantIds" $variantIds
+        "variantGroups" $variantGroups
+      )
+    ) }}
+
+    {{ with resources.Get (printf "cad-source/%s/page.md" $modelRoot) }}
+      {{ $.AddResource (dict
+        "content" (dict "mediaType" "text/markdown" "value" .Content)
+        "path" (printf "%s/page.md" $ownerPath)
+      ) }}
+    {{ end }}
+  {{ end }}
+
   {{ range $entry := $entries }}
     {{ $slug := index $entry "slug" }}
     {{ $sourcePath := index $entry "source" }}
@@ -125,6 +213,11 @@ Generic model page adapter.
         "cadGroup" $group
         "cadRoot" $modelRoot
         "cadSlug" $slug
+        "cadVariant" true
+        "cadPriority" $priority
+        "catalogEntry" (not $hasOwnerPage)
+        "cadOwnerPath" $ownerPath
+        "cadOwnerTitle" $ownerTitle
         "sourcePath" $sourcePath
         "build" $build
         "toolchain" (dict

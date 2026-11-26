@@ -6,6 +6,7 @@
 {{ $native := index $build "native" }}
 {{ $pngPath := index $native "png" }}
 {{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" site.Params.cadSourceRepository site.Params.buildScope }}
+{{ $isOwner := eq $page.Params.cadOwnerIndex true }}
 
 {{ $catalog := hugo.Data.cad.catalog }}
 {{ $sectionLabel := $page.Params.cadSection }}
@@ -31,6 +32,11 @@
   <strong class="cad-card-title">{{ $page.Title }}</strong>
   {{ if $showUpdated }}<small class="cad-card-updated">Updated {{ $page.Lastmod.Format "2 Jan 2006" }}</small>{{ end }}
   <span class="cad-card-tagline">{{ index $m "tagline" }}</span>
-  <small class="cad-card-parameters">{{ index $m "parameters" }}</small>
-  <b class="cad-card-state">built</b>
+  {{ if $isOwner }}
+    <small class="cad-card-parameters">{{ len $page.Params.ownerVariantIds }} variants</small>
+    <b class="cad-card-state">family</b>
+  {{ else }}
+    <small class="cad-card-parameters">{{ index $m "parameters" }}</small>
+    <b class="cad-card-state">built</b>
+  {{ end }}
 </a>

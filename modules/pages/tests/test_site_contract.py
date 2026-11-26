@@ -106,6 +106,60 @@ class SiteContractTests(unittest.TestCase):
         self.assertNotIn('name = "Advanced"', menu)
         self.assertIn("Updated {{ $page.Lastmod.Format", card)
 
+    def test_owner_first_variant_navigation_preserves_catalog_taxonomy(self):
+        adapter = (SITE / "content/models/_content.gotmpl").read_text(
+            encoding="utf-8"
+        )
+        catalog = (SITE / "layouts/models/list.html").read_text(
+            encoding="utf-8"
+        )
+        category = (SITE / "layouts/models/single.html").read_text(
+            encoding="utf-8"
+        )
+        home = (SITE / "layouts/home.html").read_text(encoding="utf-8")
+        groups = (SITE / "layouts/partials/cad/model-groups.html").read_text(
+            encoding="utf-8"
+        )
+        card = (SITE / "layouts/partials/cad/model-card.html").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn('"cadOwnerIndex" true', adapter)
+        self.assertIn('"catalogEntry" true', adapter)
+        self.assertIn('"catalogEntry" (not $hasOwnerPage)', adapter)
+        self.assertIn('"ownerVariantIds" $variantIds', adapter)
+        self.assertIn('index $rootMeta "variant_groups"', adapter)
+        self.assertIn('printf "owners/%s" $modelRoot', adapter)
+        self.assertIn('"cadOwnerPath" $ownerPath', adapter)
+        self.assertIn('"cadOwnerTitle" $ownerTitle', adapter)
+        self.assertIn('"cadVariant" true', adapter)
+        self.assertIn('"cadGroup" $group', adapter)
+
+        self.assertIn('"Params.catalogEntry" true', catalog)
+        self.assertIn('"Params.catalogEntry" true', home)
+        self.assertIn(".Params.cadOwnerIndex", category)
+        self.assertIn(".Params.ownerVariantIds", category)
+        self.assertIn(".Params.variantGroups", category)
+        self.assertIn(".Params.cadOwnerPath", category)
+        self.assertIn("Other variants", category)
+        self.assertIn("Physical owner", category)
+        self.assertIn('"Params.cadPriority"', groups)
+        self.assertIn("$page.Params.cadOwnerIndex", card)
+        self.assertIn("$page.Params.ownerVariantIds", card)
+
+        for shared in (adapter, catalog, category, home, groups, card):
+            self.assertNotIn("hub75", shared.lower())
+
+    def test_pages_verifier_understands_owner_first_variant_catalogs(self):
+        verify_source = (
+            ROOT / "modules/pages/src/cad_model_pages/verify.py"
+        ).read_text(encoding="utf-8")
+        self.assertIn("source_ids_by_path", verify_source)
+        self.assertIn('f"/models/owners/{owner_rel.as_posix()}/"', verify_source)
+        self.assertIn("expected_catalog_href = owner_href", verify_source)
+        self.assertIn("missing variant link for", verify_source)
+        self.assertIn("missing physical-owner back link", verify_source)
+
     def test_pages_build_passes_durable_scope_to_hugo(self):
         build = (ROOT / "modules/pages/src/cad_model_pages/build.py").read_text(
             encoding="utf-8"

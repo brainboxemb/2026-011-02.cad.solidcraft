@@ -12,7 +12,7 @@
   {{ $key := index $sectionDef "id" }}
   {{ if or (not $requestedSection) (eq $requestedSection $key) }}
     {{ $models := where site.RegularPages "Params.cadSection" $key }}
-    {{ $models = where $models "Params.categoryIndex" "!=" true }}
+    {{ $models = where $models "Params.catalogEntry" true }}
     {{ if gt (len $models) 0 }}
       <section class="cad-section cad-catalog-section">
         <h2>{{ index $sectionDef "title" }}</h2>

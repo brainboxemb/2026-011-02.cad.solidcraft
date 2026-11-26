@@ -1,15 +1,93 @@
 {{ define "main" }}
 {{ if .Params.categoryIndex }}
   {{ $models := where site.RegularPages "Params.cadSection" .Params.cadSection }}
-  {{ $models = where $models "Params.categoryIndex" "!=" true }}
+  {{ $models = where $models "Params.catalogEntry" true }}
   <main class="cad-page-shell cad-category-page">
     <section class="cad-model-hero cad-model-hero-small">
       <p class="cad-model-kicker">CAD category</p>
       <h1>{{ .Title }}</h1>
-      <p>{{ len $models }} model variants.</p>
+      <p>{{ len $models }} physical model owners.</p>
     </section>
     {{ partial "cad/model-groups.html" (dict "models" $models "showSection" true "headingLevel" 2) }}
   </main>
+{{ else if .Params.cadOwnerIndex }}
+{{ $m := .Params.model }}
+{{ $variants := where site.RegularPages "Params.cadRoot" .Params.cadRoot }}
+{{ $variants = where $variants "Params.cadVariant" true }}
+{{ $groups := default (slice) .Params.variantGroups }}
+{{ $grouped := slice }}
+{{ range $variantGroup := $groups }}
+  {{ range $variantID := index $variantGroup "variants" }}
+    {{ $grouped = $grouped | append $variantID }}
+  {{ end }}
+{{ end }}
+{{ $remaining := slice }}
+{{ range $variantID := .Params.ownerVariantIds }}
+  {{ if not (in $grouped $variantID) }}
+    {{ $remaining = $remaining | append $variantID }}
+  {{ end }}
+{{ end }}
+
+<main class="cad-page-shell cad-owner-page">
+  <section class="cad-model-hero">
+    <p class="cad-model-kicker">{{ upper .Params.cadSection }} / MODEL FAMILY</p>
+    <h1>{{ .Title }}</h1>
+    <p>{{ index $m "tagline" }}</p>
+  </section>
+
+  <div class="cad-model-statusbar">
+    <span class="cad-status">{{ len .Params.ownerVariantIds }} variants</span>
+    <span class="cad-status">Physical owner <code>{{ .Params.cadRoot }}</code></span>
+  </div>
+
+  <section class="cad-panel cad-owner-summary">
+    <p class="cad-section-label">Model family</p>
+    <h2 class="cad-section-title">Choose a variant</h2>
+    <p>{{ index $m "description" }}</p>
+  </section>
+
+  {{ range $variantGroup := $groups }}
+    <section class="cad-section cad-owner-group">
+      <div class="cad-section-heading">
+        <h2>{{ index $variantGroup "title" }}</h2>
+      </div>
+      <div class="cad-model-grid">
+        {{ range $variantID := index $variantGroup "variants" }}
+          {{ $matches := where $variants "Params.cadSlug" $variantID }}
+          {{ if ne (len $matches) 1 }}
+            {{ errorf "%s: owner page expected exactly one variant page for %s, found %d" $.Params.cadRoot $variantID (len $matches) }}
+          {{ end }}
+          {{ partial "cad/model-card.html" (dict "page" (index $matches 0)) }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ if gt (len $remaining) 0 }}
+    <section class="cad-section cad-owner-group">
+      <div class="cad-section-heading">
+        <h2>{{ if gt (len $groups) 0 }}Other variants{{ else }}Variants{{ end }}</h2>
+      </div>
+      <div class="cad-model-grid">
+        {{ range $variantID := $remaining }}
+          {{ $matches := where $variants "Params.cadSlug" $variantID }}
+          {{ if ne (len $matches) 1 }}
+            {{ errorf "%s: owner page expected exactly one variant page for %s, found %d" $.Params.cadRoot $variantID (len $matches) }}
+          {{ end }}
+          {{ partial "cad/model-card.html" (dict "page" (index $matches 0)) }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ with .Resources.Get "page.md" }}
+    <section class="cad-panel cad-background">
+      <p class="cad-section-label">Model context</p>
+      <h2 class="cad-section-title">Background</h2>
+      <div class="cad-rich-text">{{ $.RenderString .Content }}</div>
+    </section>
+  {{ end }}
+</main>
 {{ else }}
 {{ $m := .Params.model }}
 {{ $repo := site.Params.cadSourceRepository }}
@@ -41,6 +119,7 @@
   <div class="cad-model-statusbar">
     <span class="cad-status cad-status-built">Built in SolidCraft {{ index $solidcraft "version" }}</span>
     {{ if gt $commandCount 0 }}<span class="cad-status">{{ $commandCount }} commands</span>{{ end }}
+    {{ with .Params.cadOwnerPath }}<a class="cad-status cad-owner-link" href="{{ printf "models/%s/" . | relURL }}">{{ $.Params.cadOwnerTitle }} · all variants</a>{{ end }}
   </div>
 
   {{ with index $m "warning" }}

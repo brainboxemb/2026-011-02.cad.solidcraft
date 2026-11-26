@@ -1,9 +1,7 @@
 schema: 1
-branch: feature/152-hinge-source-pose
+branch: chore/156-reconcile-wall-hook-hinge-plan
 
 modules: []
-models:
-  - hinge
+models: []
 tasks:
   - test
-  - build

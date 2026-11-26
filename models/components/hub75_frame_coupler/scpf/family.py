@@ -178,7 +178,10 @@ def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
     depth = MEDIUM["guide"] + 0.05
     slice_depth = depth / steps
     for index in range(steps):
-        t = (index + 0.5) / steps
+        # Use the far section of each thin slice.  The native cut grows
+        # slightly toward insertion depth; using the midpoint left a hairline
+        # residual fin at the final face in Edge/Corner previews.
+        t = (index + 1.0) / steps
         loop = _interpolate_loop(starts[0], ends[0], t)
         relief = _profile_solid(
             name=f"{profile_key} rail relief slice {index + 1}",
@@ -285,7 +288,9 @@ class Hub75FrameCouplerMiddle:
             y=-MEDIUM["datum"] - 0.05,
             distance=MEDIUM["key_h"] + 0.05,
         )
-        return (body + seam).with_appearance(SOURCE_RED)
+        body = body + seam
+        body = _apply_reference_pattern(body, profile_key="middle")
+        return body.with_appearance(SOURCE_RED)
 
 
 

@@ -330,7 +330,7 @@
     },
     {
       "artifacts": [],
-      "built_source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980",
+      "built_source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c",
       "commands": "models/hub75-display-frame-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -433,7 +433,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980",
+      "built_source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c",
       "commands": "models/hub75-frame-coupler-corner-left/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -471,6 +471,21 @@
               -13,
               0
             ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-corner-left/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
             "yaw": 3.14
           },
           "name": "rear.png",
@@ -498,7 +513,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980",
+      "built_source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c",
       "commands": "models/hub75-frame-coupler-corner-right/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -536,6 +551,21 @@
               -13,
               0
             ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-corner-right/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
             "yaw": 3.14
           },
           "name": "rear.png",
@@ -563,7 +593,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980",
+      "built_source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c",
       "commands": "models/hub75-frame-coupler-edge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -601,6 +631,21 @@
               -13,
               0
             ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-edge/front.png"
+        },
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
             "yaw": 3.14
           },
           "name": "rear.png",
@@ -628,7 +673,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980",
+      "built_source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c",
       "commands": "models/hub75-frame-coupler-middle/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -656,6 +701,21 @@
         }
       },
       "snapshots": [
+        {
+          "camera": {
+            "distance": 145,
+            "fov": 0,
+            "pitch": 0,
+            "target": [
+              0,
+              -13,
+              0
+            ],
+            "yaw": 0
+          },
+          "name": "front.png",
+          "path": "models/hub75-frame-coupler-middle/front.png"
+        },
         {
           "camera": {
             "distance": 145,
@@ -1629,5 +1689,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "8569fbc605ad36d56e2a8a8ac9d047fbda08d980"
+  "source_sha": "2186453ef7ea92610b305b292c2dc91c70bc1f9c"
 }

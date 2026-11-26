@@ -4,12 +4,12 @@ This variant preserves the existing panel grid and Medium frame layout, swaps
 the outer Edge/Corner couplers to their tube-ready variants, and adds the
 source-derived Ø10 tubes plus eight loose reusable tube-clamp occurrences.
 
-The clamp component itself remains Free by default. Independent Installed state
-is added later through CAD issue #204 when the released Forge state capability
-is available; this structural assembly deliberately does not emulate it.
+The reusable clamp remains Free by default. This document owns one shared
+clamp-bore parameter and enables the independent native Installed rule for all
+eight clamp occurrences without adding a second configuration-row axis.
 """
 
-from scpf import Placement, assembly
+from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 from models.components.hub75_frame_coupler.scpf.family import (
@@ -37,9 +37,21 @@ TOP_CLAMP_ROTATION = ((1, 1, 1), 120)
 BOTTOM_CLAMP_ROTATION = ((-1, -1, 1), 120)
 
 
-def _clamp(*, name, x, z, rotation):
-    """Create one loose source-derived clamp occurrence."""
+def _clamp(
+    *,
+    name,
+    x,
+    z,
+    rotation,
+    tube_d,
+    clamp_interference,
+    clamp_bore,
+):
+    """Create one source-derived clamp occurrence with shared fit parameters."""
     return Hub75TubeClamp(
+        tube_d=tube_d,
+        clamp_interference=clamp_interference,
+        clamp_bore=clamp_bore,
         name=name,
         placement=Placement(
             x=x,
@@ -51,10 +63,22 @@ def _clamp(*, name, x, z, rotation):
 
 
 @assembly
-class Hub75DisplayFrame2PanelTube:
-    """Two panels, tube-ready frame hardware, two tubes and eight clamps."""
+class Hub75DisplayFrame2PanelTubeAssembly:
+    """Reusable structural frame with assembly-owned clamp-fit parameters."""
+
+    tube_d = 10.0
+    clamp_interference = 0.4
+    clamp_bore = 9.6
 
     def build(self):
+        def clamp(**kwargs):
+            return _clamp(
+                tube_d=self.tube_d,
+                clamp_interference=self.clamp_interference,
+                clamp_bore=self.clamp_bore,
+                **kwargs,
+            )
+
         # Same panel placement contract as the accepted non-tube frame.
         left_panel = Hub75Panel(
             name="PanelLeft",
@@ -138,49 +162,49 @@ class Hub75DisplayFrame2PanelTube:
         )
 
         clamps = [
-            _clamp(
+            clamp(
                 name="EdgeClampTopLeft",
                 x=EDGE_CLAMP_XS[0],
                 z=TUBE_TOP_Z,
                 rotation=TOP_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="EdgeClampTopRight",
                 x=EDGE_CLAMP_XS[1],
                 z=TUBE_TOP_Z,
                 rotation=TOP_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="EdgeClampBottomLeft",
                 x=EDGE_CLAMP_XS[0],
                 z=TUBE_BOTTOM_Z,
                 rotation=BOTTOM_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="EdgeClampBottomRight",
                 x=EDGE_CLAMP_XS[1],
                 z=TUBE_BOTTOM_Z,
                 rotation=BOTTOM_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="CornerClampTopLeft",
                 x=CORNER_CLAMP_XS[0],
                 z=TUBE_TOP_Z,
                 rotation=TOP_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="CornerClampTopRight",
                 x=CORNER_CLAMP_XS[1],
                 z=TUBE_TOP_Z,
                 rotation=TOP_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="CornerClampBottomLeft",
                 x=CORNER_CLAMP_XS[0],
                 z=TUBE_BOTTOM_Z,
                 rotation=BOTTOM_CLAMP_ROTATION,
             ),
-            _clamp(
+            clamp(
                 name="CornerClampBottomRight",
                 x=CORNER_CLAMP_XS[1],
                 z=TUBE_BOTTOM_Z,
@@ -204,6 +228,40 @@ class Hub75DisplayFrame2PanelTube:
         for clamp in clamps:
             result = result + clamp
         return result
+
+
+class Hub75DisplayFrame2PanelTube:
+    """Configured catalog document with Installed enabled independently."""
+
+    tube_d = 10.0
+    clamp_interference = 0.4
+    clamp_bore = 9.6
+
+    def build(self):
+        frame = Hub75DisplayFrame2PanelTubeAssembly(
+            tube_d=self.tube_d,
+            clamp_interference=self.clamp_interference,
+            clamp_bore=self.clamp_bore,
+        )
+        return Configure(
+            frame,
+            active="Medium",
+            columns=(Param(self.clamp_bore),),
+            rows={
+                # #189 owns real Small/Medium/Large coupler geometry. Keep the
+                # current physical Medium row honest until that work lands.
+                "Medium": ("tube_d-clamp_interference",),
+            },
+            rules=(
+                ConfigRule(
+                    "installed",
+                    "Installed",
+                    enabled=True,
+                    condition=Always(),
+                    effect=DriveParameter(self.clamp_bore, self.tube_d),
+                ),
+            ),
+        )
 
 
 Hub75DisplayFrame2PanelTube()

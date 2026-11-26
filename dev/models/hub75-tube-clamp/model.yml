@@ -5,18 +5,19 @@ priority: 28
 title: HUB75 Tube Clamp
 tagline: Parameterized loose printable slide clamp for HUB75 tube interfaces
 description: >
-  Source-faithful Free/print-state reconstruction of the reusable tube clamp
-  used by the tube-supported HUB75 frame. Tube diameter and clamp interference
-  are editable component parameters; Ø10 with 0.4 mm interference remains the
-  default and gives a 9.6 mm Free bore.
+  Source-faithful reusable tube clamp with native Free/Installed fit state.
+  Tube diameter, clamp interference and clamp bore remain editable dependencies;
+  Ø10 with 0.4 mm interference gives a 9.6 mm Free bore, while the independent
+  Installed rule drives the bore to the tube diameter.
 parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
 stages:
-  - Derive the Free clamp bore from tube diameter minus clamp interference
+  - Keep clamp bore as a native configured parameter with a Free base expression
   - Rebuild the active open elastic clamp-ring profile from the linked native source
   - Extrude the 12 mm ring width in the original local frame
   - Add the active low integrated rounded slide back
   - Cut the active rounded slide slot while preserving the 1 mm end stop
   - Keep historical suppressed dovetail experiments out of the production body
+  - Author the independent Installed Configuration Rule disabled for standalone manufacturing
 extra_views:
   title: Clamp fit and slide review
   note: Front/rear/side views make the open tube wrap, integrated slide back and closed slot stop inspectable.

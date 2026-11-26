@@ -1,8 +1,8 @@
-"""Reusable parameterized HUB75 tube clamp in its Free/print state."""
+"""Reusable parameterized HUB75 tube clamp with native Free/Installed fit."""
 
 from math import cos, radians, sin, tan
 
-from scpf import Sketch, component
+from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Sketch, component
 
 
 # Fixed source dimensions shared by all tube sizes.
@@ -225,18 +225,18 @@ def _entry_chamfer_edges(*, slot_back):
     ]
 
 
-@component(include=("tube_d", "clamp_interference"))
+@component(include=("tube_d", "clamp_interference", "clamp_bore"))
 class Hub75TubeClamp:
     """Loose clamp; the physical component defaults to its Free/print state."""
 
     tube_d = 10.0
     clamp_interference = 0.4
+    clamp_bore = 9.6
 
     def build(self):
-        # Free is the intrinsic standalone/manufacturing state. Installed state
-        # is deliberately added later at the assembly/configuration layer.
-        clamp_bore = self.tube_d - self.clamp_interference
-        clamp_r = clamp_bore / 2.0
+        # clamp_bore is a real native parameter. The document-level
+        # Configuration Rule may drive it to tube_d for Installed geometry.
+        clamp_r = self.clamp_bore / 2.0
         clamp_r_out = clamp_r + CLAMP_WALL
 
         dove_datum = (
@@ -276,4 +276,36 @@ class Hub75TubeClamp:
         return body
 
 
-Hub75TubeClamp()
+class Hub75TubeClampCatalog:
+    """Standalone manufacturing document; Free by default."""
+
+    tube_d = 10.0
+    clamp_interference = 0.4
+    clamp_bore = 9.6
+
+    def build(self):
+        clamp = Hub75TubeClamp(
+            tube_d=self.tube_d,
+            clamp_interference=self.clamp_interference,
+            clamp_bore=self.clamp_bore,
+        )
+        return Configure(
+            clamp,
+            active="Free",
+            columns=(Param(self.clamp_bore),),
+            rows={
+                "Free": ("tube_d-clamp_interference",),
+            },
+            rules=(
+                ConfigRule(
+                    "installed",
+                    "Installed",
+                    enabled=False,
+                    condition=Always(),
+                    effect=DriveParameter(self.clamp_bore, self.tube_d),
+                ),
+            ),
+        )
+
+
+Hub75TubeClampCatalog()

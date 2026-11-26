@@ -145,15 +145,22 @@ guide and surface-detail operations.
 
 ## Native XZ sketch frame
 
-The extracted `source_data.py` loops are already normalized to each reusable
-coupler's physical local `(X, Z)` frame.
+The extracted `source_data.py` loops are normalized to each reusable
+coupler's **physical local (X, Z)** frame. The historical production source
+uses negative Z as the inward direction for the top Edge and Corner variants.
 
-Forge therefore lowers those coordinates directly onto the native `XZ`
-sketch plane without an additional Z reflection. The source-derived profile,
-support cylinders, mounting cuts, locator pads and reference features must all
-share the same local Z convention.
+SolidCraft's native `XZ` sketch coordinates use the opposite sign for sketch
+V versus physical Z. Forge therefore applies one boundary conversion:
 
-A short-lived correction attempt reflected only the sketch loops while leaving
-the primitive support/mounting features in ordinary world XYZ coordinates.
-That produced a visually plausible T profile but moved the profile to the
-opposite side of its circular support, mounting and reference features.
+```text
+physical (x, z) -> native XZ sketch (x, -z)
+```
+
+Arc winding reverses at the same reflection boundary.
+
+Durable review after PR #187 proved why this conversion must not be omitted:
+the Edge T profile retained the outside stem while its world-XYZ bushing
+supports remained at the inward mounting positions, leaving two detached round
+features. Edge, Corner Left and Corner Right must all use this same conversion
+for source-derived loops; primitive supports, mounting cuts and locator pads
+remain in ordinary world XYZ.

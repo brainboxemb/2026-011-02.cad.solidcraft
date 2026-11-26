@@ -18,3 +18,12 @@ stages:
   - Attach the 9 mm back board and place the 4 mm window behind the strips
   - Create two length variants of one GlassStrip type and place four mitred pieces
   - Place eight shared CornerBracket occurrences, front and rear
+extra_views:
+  title: Assembly review
+  note: The exploded snapshot is a stored SolidCraft presentation view; the accepted model remains assembled and all normal occurrence placements are unchanged.
+  items:
+    - kind: build
+      src: exploded.png
+      alt: Exploded HUB75 wooden display case showing glazing, panels and corner brackets separated from the enclosure
+      caption: Exploded — glazing/window forward, panels and brackets separated behind the fixed wooden enclosure
+

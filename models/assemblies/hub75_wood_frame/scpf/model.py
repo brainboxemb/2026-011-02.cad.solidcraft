@@ -7,6 +7,12 @@ from assemblies.wood_frame import WoodFrame
 from parts.window import Window
 
 
+EXPLODE_GLAZING = (0.0, -90.0, 0.0)
+EXPLODE_WINDOW = (0.0, -55.0, 0.0)
+EXPLODE_PANELS = (0.0, 70.0, 0.0)
+EXPLODE_BRACKETS = (0.0, 130.0, 0.0)
+
+
 class Hub75DisplayCase:
     """Top-level adjustable design parameters and composition."""
 
@@ -102,4 +108,19 @@ class Hub75DisplayCase:
             front_y=self.glazing_wood_depth,
         )
 
-        return panels + frame + brackets + glazing + window
+        assembly = panels + frame + brackets + glazing + window
+
+        # Presentation state only: keep the wooden enclosure fixed and separate
+        # the already-authored glazing/window, panel and bracket occurrences
+        # along Y. Normal occurrence placements remain the assembled design.
+        exploded_moves = (
+            [(item, EXPLODE_GLAZING) for item in glazing.instances]
+            + [(window, EXPLODE_WINDOW)]
+            + [(item, EXPLODE_PANELS) for item in panels.instances]
+            + [(item, EXPLODE_BRACKETS) for item in brackets.instances]
+        )
+        assembly = assembly.with_exploded_view(
+            "Assembly review",
+            moves=exploded_moves,
+        )
+        return assembly.show_assembled()

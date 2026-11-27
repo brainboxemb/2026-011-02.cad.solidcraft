@@ -1,5 +1,5 @@
 schema: 1
-branch: issue/270-hub75-installed-feature
+branch: issue/272-revert-hub75-installed-cut
 
 modules: []
 models:

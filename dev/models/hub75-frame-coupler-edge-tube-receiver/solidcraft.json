@@ -10094,7 +10094,17 @@
         ]
       },
       "bind": {
+        "$d1_Hub75FrameCouplerEdgeTubeReceiver_feature_panel_pin_pass_through_name": "name",
         "$config_name_5": "name"
+      }
+    },
+    {
+      "command": "timeline.suppress",
+      "params": {
+        "features": [
+          "$d1_Hub75FrameCouplerEdgeTubeReceiver_feature_panel_pin_pass_through_name"
+        ],
+        "suppressed": true
       }
     },
     {

@@ -2,7 +2,7 @@
   "font": "",
   "font_fallbacks": [],
   "font_note": null,
-  "id": "3bj2ybmj8g4br",
+  "id": "d5pvmbq6d7csb",
   "language": "en",
   "line_group": "0.5",
   "name": "SamplePlate",
@@ -22,14 +22,14 @@
     {
       "documents": {
         "component": 1,
-        "source": "983955fqxge42"
+        "source": "4atg6pknyk85z"
       },
       "dpi": 300.0,
       "excluded": {
         "count": false,
         "print": false
       },
-      "id": "91xj2wk01gafw",
+      "id": "cwtftf06vykcf",
       "images": [],
       "line_group": null,
       "name": "Sheet 1",
@@ -321,7 +321,7 @@
                         "decimals": null,
                         "unit": null
                       },
-                      "key": "properties.finish",
+                      "key": "finish",
                       "source": "component"
                     }
                   }
@@ -726,7 +726,7 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "0ater2mtztant",
+          "id": "0kgnqzmdy715d",
           "kind": "base",
           "label": "Iso front right",
           "notes": []
@@ -734,7 +734,7 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "e6j9fkddtb6jw",
+          "id": "9mctpab5w3cdb",
           "kind": "base",
           "label": "Front",
           "notes": []
@@ -742,21 +742,21 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "0wj106dh4yraw",
+          "id": "8kk0a8r02m1a4",
           "kind": "projected",
           "label": "Above Front",
           "notes": [],
-          "parent": "e6j9fkddtb6jw",
+          "parent": "9mctpab5w3cdb",
           "side": "above"
         },
         {
           "balloons": [],
           "dimensions": [],
-          "id": "czbdrad3ysm2a",
+          "id": "c7kxb08y8hj6z",
           "kind": "projected",
           "label": "Right of Front",
           "notes": [],
-          "parent": "e6j9fkddtb6jw",
+          "parent": "9mctpab5w3cdb",
           "side": "right"
         }
       ]
@@ -764,7 +764,7 @@
   ],
   "sources": [
     {
-      "id": "983955fqxge42"
+      "id": "4atg6pknyk85z"
     }
   ],
   "symbols": [],

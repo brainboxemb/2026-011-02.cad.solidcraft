@@ -2,7 +2,7 @@
   "font": "",
   "font_fallbacks": [],
   "font_note": null,
-  "id": "9t2t79tpa5d7m",
+  "id": "4styzx1418njc",
   "language": "en",
   "line_group": "0.5",
   "name": "Wall Hook Drawing",
@@ -26,7 +26,7 @@
         "designer": "brainboxemb",
         "hidden": true,
         "revision": "A",
-        "row": "2pk1e8etry7x5"
+        "row": "6c2p4td46epzv"
       }
     ],
     "tags": []
@@ -35,19 +35,19 @@
     {
       "documents": {
         "component": 1,
-        "source": "16t17jw2r28d9"
+        "source": "dd5z26938z1ar"
       },
       "dpi": 300.0,
       "excluded": {
         "count": false,
         "print": false
       },
-      "id": "5vn544jc8d2y3",
+      "id": "5ea97mfvmttn6",
       "images": [],
       "line_group": null,
       "name": "Sheet 1",
       "notes": [
-        "ekrxpz51d1m5c"
+        "049wwmbq68zrs"
       ],
       "orientation": "landscape",
       "revision_tags": [],
@@ -336,7 +336,7 @@
                         "decimals": null,
                         "unit": null
                       },
-                      "key": "properties.finish",
+                      "key": "finish",
                       "source": "component"
                     }
                   }
@@ -744,13 +744,21 @@
       "views": [
         {
           "balloons": [],
+          "dimensions": [],
+          "id": "1rh23q5nq2hyk",
+          "kind": "base",
+          "label": "Iso front right",
+          "notes": []
+        },
+        {
+          "balloons": [],
           "dimensions": [
-            "70yxb10c9k90h",
-            "8d4c06817gegx",
-            "bjgd4nwxw2qj6",
-            "eqwphbdykfj6s"
+            "5stbm9eh5zrzp",
+            "7cf4y2a9dt5z1",
+            "7xzqxkz4dfqcr",
+            "ammzygdjkqbwb"
           ],
-          "id": "3pvq3fdezzca1",
+          "id": "a8tfkef9gp9mm",
           "kind": "base",
           "label": "Front",
           "notes": []
@@ -758,39 +766,31 @@
         {
           "balloons": [],
           "dimensions": [],
-          "id": "1r8f6509vd4sm",
+          "id": "8c2faycyagffa",
           "kind": "projected",
           "label": "Right of Front",
           "notes": [],
-          "parent": "3pvq3fdezzca1",
+          "parent": "a8tfkef9gp9mm",
           "side": "right"
         },
         {
           "balloons": [],
           "dimensions": [
-            "7h3bktwqx768g"
+            "92jq7t7svakcm"
           ],
-          "id": "ex2x6ecrm68w2",
+          "id": "e8fzxd0pc8qh5",
           "kind": "projected",
           "label": "Above Front",
           "notes": [],
-          "parent": "3pvq3fdezzca1",
+          "parent": "a8tfkef9gp9mm",
           "side": "above"
-        },
-        {
-          "balloons": [],
-          "dimensions": [],
-          "id": "bybpx6s2zp955",
-          "kind": "base",
-          "label": "Iso front right",
-          "notes": []
         }
       ]
     }
   ],
   "sources": [
     {
-      "id": "16t17jw2r28d9"
+      "id": "dd5z26938z1ar"
     }
   ],
   "symbols": [],

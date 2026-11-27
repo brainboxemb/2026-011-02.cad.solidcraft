@@ -775,7 +775,6 @@ class Hub75FrameCouplerCornerRight:
 class _ConfiguredCouplerRoot:
     """Shared root model for one configured reusable coupler occurrence."""
 
-    component_type = None
     suppress_panel_pin = False
 
     mid_size = 80.0

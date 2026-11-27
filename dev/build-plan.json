@@ -1402,7 +1402,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8cd1a978091431d0ef2ed621da5b4eb017b26f2f",
+      "built_source_sha": "9182c42b2eed6d9ba99b784107a8df376943ad19",
       "commands": "models/hub75-tube-clamp/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1483,7 +1483,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "8cd1a978091431d0ef2ed621da5b4eb017b26f2f",
+      "built_source_sha": "9182c42b2eed6d9ba99b784107a8df376943ad19",
       "commands": "models/hub75-tube-clamp-male/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -2383,5 +2383,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.8",
     "version": "0.50.0"
   },
-  "source_sha": "8cd1a978091431d0ef2ed621da5b4eb017b26f2f"
+  "source_sha": "9182c42b2eed6d9ba99b784107a8df376943ad19"
 }

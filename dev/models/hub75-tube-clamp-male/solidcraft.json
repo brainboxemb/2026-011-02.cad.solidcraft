@@ -531,6 +531,36 @@
       }
     },
     {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 14.0,
+        "diameter": "tube_d",
+        "base": [
+          0,
+          0,
+          -7.0
+        ],
+        "axis": "Z",
+        "operation": "cut",
+        "targets": [
+          "Hub75TubeClampMale"
+        ]
+      },
+      "bind": {
+        "$d1_Hub75TubeClampMale_feature_installed_name": "name",
+        "$config_name_1": "name"
+      }
+    },
+    {
+      "command": "timeline.suppress",
+      "params": {
+        "features": [
+          "$d1_Hub75TubeClampMale_feature_installed_name"
+        ],
+        "suppressed": true
+      }
+    },
+    {
       "command": "component.activate",
       "params": {
         "component": "root"
@@ -539,8 +569,8 @@
     {
       "command": "config.configure",
       "params": {
-        "params": [
-          "clamp_bore"
+        "features": [
+          "$config_name_1"
         ]
       }
     },
@@ -565,7 +595,7 @@
       "params": {
         "name": "Free",
         "values": {
-          "param:clamp_bore": "tube_d-clamp_interference"
+          "suppress:$config_name_1": "true"
         }
       }
     },
@@ -574,7 +604,7 @@
       "params": {
         "name": "Installed",
         "values": {
-          "param:clamp_bore": "tube_d"
+          "suppress:$config_name_1": "false"
         }
       },
       "bind": {

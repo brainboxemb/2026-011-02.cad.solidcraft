@@ -1,9 +1,12 @@
 schema: 1
-branch: issue/277-forge-qualification-ref
+branch: chore/279-forge-exp-qualification
 
-modules:
-  - ci
-  - build
-models: []
+modules: all
+models: all
 tasks:
   - test
+  - build
+
+qualification:
+  forge:
+    ref: 82224b01632506576df94376166ae4e6ecf11f86

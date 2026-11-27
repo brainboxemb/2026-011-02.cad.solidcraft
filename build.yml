@@ -1,7 +1,8 @@
 schema: 1
-branch: feature/239-disable-hub75-display-frame-2panel
+branch: feature/241-forge-v0.24-baseline
 
 modules: []
-models: []
+models: all
 tasks:
   - test
+  - build

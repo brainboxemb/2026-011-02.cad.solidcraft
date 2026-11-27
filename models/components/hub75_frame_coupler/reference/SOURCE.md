@@ -1,6 +1,6 @@
 # HUB75 frame-coupler source
 
-The retained reference file `hub75-screen-2panel-couplers.json` is the native
+The retained reference file `hub75-screen-2panel-couplers.json` is the
 SolidCraft design supplied for this family.
 
 Source SHA-256:
@@ -11,71 +11,78 @@ Source SHA-256:
 
 ## Physical components
 
-The native design contains four coupler definitions:
+The SolidCraft design contains four coupler definitions:
 
 - `Middle coupler`;
 - `Edge coupler`;
 - `Corner coupler links`;
 - `Corner coupler rechts`.
 
-The CAD catalog maps those to one physical owner with four public build
-variants.
+The CAD catalog maps those definitions to one physical owner with four standard
+public variants plus the downstream tube-interface variants retained under the
+same owner.
 
-## Active source configuration
+## Small / Medium / Large configuration
 
-The supplied native configuration table has rows `Small`, `Medium` and
-`Large`.  The active row is `Medium`.
+The supplied SolidCraft configuration table has rows `Small`, `Medium` and
+`Large`. The active/default row is `Medium`.
 
-Medium values used by this initial Forge port:
+| configuration | `mid_size` | `mid_wall` | `mid_base` | `mid_guide` |
+| --- | ---: | ---: | ---: | ---: |
+| Small | 60 mm | 2 mm | 2 mm | 4 mm |
+| Medium | 80 mm | 4 mm | 3 mm | 6 mm |
+| Large | 100 mm | 6 mm | 4 mm | 10 mm |
 
-| parameter | value |
-| --- | ---: |
-| `mid_size` | 80 mm |
-| `mid_wall` | 4 mm |
-| `mid_base` | 3 mm |
-| `mid_guide` | 6 mm |
-| `mid_fit` | 0.25 mm |
+Forge v0.24.0 is the released consumer baseline for this owner. The four table
+parameters are published reusable-child parameters and feed the retained
+SolidCraft expression graph, including its `min`, `max`, `sqrt`, `round`,
+`floor`, `abs` and `atan` dependencies. The configured rows therefore drive
+authored geometry rather than selecting precomputed Python variants.
 
-The native Medium row suppresses:
+The retained source relationships include the following row-dependent values:
 
-- feature 122, `Edge coupler doorvoer paneelpen`;
-- feature 136, `Corner coupler rechts doorvoer paneelpen`.
+| value | Small | Medium | Large |
+| --- | ---: | ---: | ---: |
+| `mid_g` | 0.95 | 1.5 | 1.5 |
+| `edge_support` | 9.45 | 11.45 | 13.45 |
+| `ref_lane_x` | 5 | 7.5 | 7.5 |
+| `ref_lane_z` | 7.5 | 7.5 | 10 |
+| `ref_mark_inset` | 5 | 7 | 9 |
 
-These features are intentionally absent from the fixed Medium Forge port.
+The Edge and Right Corner definitions each own one stepped 360-degree
+panel-pin pass-through:
+- Ø4.5 rear relief;
+- Ø3.7 core;
+- Ø4.5 front relief.
 
-## Forge configuration follow-up
+Forge authors that pass-through as one shifted-axis revolve and exports that
+exact child feature. Small and Medium suppress it; Large enables it. The Edge
+Tube, Corner Right Tube and corresponding receiver derivatives use the same
+configured base history before their tube-specific operations are added.
 
-Small/Medium/Large adoption remains CAD #189. Released Forge v0.23.0 can drive
-the numeric child parameters, but parent suppression of an authored feature
-inside a reusable child still requires Forge #380.
+## Source geometry mapping
 
-Until that public contract is released, this owner stays explicitly
-Medium-only. Do not emulate Small/Large with CAD-local Python branching.
+The base/guide profiles and parameter expressions are read from the retained
+SolidCraft JSON rather than from the old resolved Medium contour dump.
 
-## Medium geometry mapping
-
-The source base/guide profiles are extracted from the retained native JSON.
-
-The late source reference pattern is also part of the Medium geometry:
+The late source reference pattern is part of the same parameterized geometry:
 
 - features 145–152 cut the shallow reference tick marks;
 - features 153–164 cut Ø3 mm blind reference holes with tapered Ø2 mm bottoms;
 - effective off-body suppression placeholders in those source sketches are not
   emitted as Forge cuts.
 
-The native Edge and Corner rail clearance is a two-section shallow loft.
-Released Forge v0.19 has no public solid-loft authoring API, so the CAD owner
-uses twelve overlapping slices interpolated between the exact source entrance
-and insertion-depth sections.  This preserves both native sections and removes
-the visible fin/lip artifact produced by the former one-profile prism.
+The Edge and Corner rail clearance is a two-section shallow loft. Forge has no
+public solid-loft authoring API for this path, so the CAD owner uses twelve
+overlapping slices interpolated between the exact source entrance and
+insertion-depth sections. This preserves both source sections and removes the
+visible fin/lip artifact produced by the former one-profile prism.
 
-The Middle and Edge seam guides are native two-section loft joins. Released
-Forge v0.19 has no public solid-loft authoring API, so both are represented by
-overlapping slices interpolated between the exact native foot and tip sections.
-Edge also applies the native guide-end rounding cut from features 137–138.
+The Middle and Edge seam guides are two-section loft joins. They are represented
+by overlapping slices interpolated between the retained foot and tip sections.
+Edge also applies the SolidCraft guide-end rounding cut from features 137–138.
 
 These bounded lowering details preserve the same owner and public variant ids.
-
 
 ## Edge / Corner base-guide split
 
@@ -85,26 +92,27 @@ reference for the Edge and Corner construction.
 
 Its rear mounting plane separates two physical regions:
 
-- the **3 mm base plate** extends away from the panel;
-- the **6 mm guide walls/ridges** extend into the rear-panel geometry;
+- the **base plate** extends away from the panel;
+- the **guide walls/ridges** extend into the rear-panel geometry;
 - screw bores and mounting-tube pockets belong to the base;
 - reinforcement relief belongs to the guide region;
 - locator pads/pins extend from the mounting plane into the panel.
 
-The first Medium Forge port incorrectly extruded the complete Edge/Corner
-profile through `mid_base + mid_guide` as one 9 mm stock and then cut into it.
-That leaves profile material in the guide region where only fitted walls/ridges
-should exist and makes the circular reinforcement/mounting features appear on
-the wrong side of the part.
+The first Forge port incorrectly extruded the complete Edge/Corner profile
+through `mid_base + mid_guide` as one stock and then cut into it. That leaves
+profile material in the guide region where only fitted walls/ridges should
+exist and makes the circular reinforcement/mounting features appear on the
+wrong side of the part.
 
 The corrected Forge construction keeps base and guide volumes separate and
-joins them only after their own source-derived operations are complete.
-
+joins them only after their own source-derived operations are complete. Because
+`mid_base`, `mid_guide` and `mid_wall` are configuration parameters, this
+separation also remains associative when the saved SolidCraft row changes.
 
 ## Edge T-profile boundary
 
-Native feature 89, `Edge T-profiel begrenzen`, removes the outside (+Z) stem
-of the pre-clip rounded plus.
+SolidCraft feature 89, `Edge T-profiel begrenzen`, removes the outside (+Z)
+stem of the pre-clip rounded plus.
 
 Its absolute SolidCraft start is:
 
@@ -119,8 +127,9 @@ at **+3.855 mm**. A previous Forge lowering incorrectly used
 `edge_outer_z + 1 mm = -1.855 mm`; that cut through the horizontal arm and
 visibly separated the reinforcement volumes from the T body.
 
-The historical TOP-edge clip below is the authoritative equivalent construction.
-
+The historical TOP-edge clip below is the authoritative equivalent
+construction and now receives the configured `mid_size`, `mid_wall` and
+`mid_fit` dependencies.
 
 ## Edge T-profile clip
 
@@ -137,37 +146,36 @@ The window top is
 `hub75_horizontal_edge_coupler_outer_projection() + 1 mm`, matching the
 historical source margin.
 
-The retained native SolidCraft feature profile represented the pre-clip rounded
-cross. Forge therefore applies this source window explicitly before mounting,
-guide and surface-detail operations.
+The retained SolidCraft feature profile represented the pre-clip rounded cross.
+Forge therefore applies this source window explicitly before mounting, guide
+and surface-detail operations.
 
+## SolidCraft XZ sketch frame
 
-## Native XZ sketch frame
+The retained source loops are normalized to each reusable coupler's
+**physical local (X, Z)** frame. The historical production source uses negative
+Z as the inward direction for the top Edge and Corner variants.
 
-The extracted `source_data.py` loops are normalized to each reusable
-coupler's **physical local (X, Z)** frame. The historical production source
-uses negative Z as the inward direction for the top Edge and Corner variants.
-
-SolidCraft's native `XZ` sketch coordinates use the opposite sign for sketch
-V versus physical Z. Forge therefore applies one boundary conversion:
+SolidCraft `XZ` sketch coordinates use the opposite sign for sketch V versus
+physical Z. Forge therefore applies one boundary conversion:
 
 ```text
-physical (x, z) -> native XZ sketch (x, -z)
+physical (x, z) -> SolidCraft XZ sketch (x, -z)
 ```
 
 Arc winding reverses at the same reflection boundary.
 
-Durable review after PR #187 proved why this conversion must not be omitted:
-the Edge T profile retained the outside stem while its world-XYZ bushing
-supports remained at the inward mounting positions, leaving two detached round
-features. Edge, Corner Left and Corner Right must all use this same conversion
-for source-derived loops; primitive supports, mounting cuts and locator pads
-remain in ordinary world XYZ.
+Review after PR #187 proved why this conversion must not be omitted: the Edge T
+profile retained the outside stem while its world-XYZ bushing supports remained
+at the inward mounting positions, leaving two detached round features. Edge,
+Corner Left and Corner Right all use this same conversion for source-derived
+loops; primitive supports, mounting cuts and locator pads remain in ordinary
+world XYZ.
 
 ## Tube-ready Edge / Corner variants
 
-The retained assembly source later adds loose-clamp interfaces to the accepted
-Medium Edge and Corner components. The final active source state is deliberately
+The retained assembly source later adds loose-clamp interfaces to the shared
+Edge and Corner components. The final active source state is deliberately
 narrower than several earlier experiments in the same timeline.
 
 The tube-ready Edge variant ports the final active chain:
@@ -175,7 +183,7 @@ The tube-ready Edge variant ports the final active chain:
 - feature 189, `Vrijloop voor naar binnen geplaatste klemmen`, 3 mm cut;
 - feature 191, `Z-schuifrails op 40 mm hartafstand`, 14.75 mm join;
 - feature 195, `Vrijloop voor klemboog aan de binnenzijde`, 0.45 mm cut;
-- feature 198, `Tapse invoer zwaluwstaartrails`, native asymmetric
+- feature 198, `Tapse invoer zwaluwstaartrails`, asymmetric
   0.18 / 0.65 mm chamfer;
 - features 226/227, `Symmetrische bulten met R5-overgangen`, 2.45 mm join;
 - features 228/229, `Doorgetrokken basisplaat rondom de twee klemmen`,
@@ -188,12 +196,15 @@ The tube-ready Corner variants port only:
 - feature 213, `Inschuifuitsparingen voor hoekschuifklemmen`, 18.2 mm cut;
 - feature 214, `Vrijloop Ø10 buis in de corner brackets`, Ø10.5 mm clearance;
 - feature 216, `Zwaluwstaartrails voor de hoekschuifklemmen`, 14.75 mm join;
-- features 217/218, native asymmetric 0.18 / 0.65 mm entry chamfers.
+- features 217/218, asymmetric 0.18 / 0.65 mm entry chamfers.
 
 The rail profile is the same authored eight-line profile in all three variants.
 Its center is X=±20 mm for Edge and local X=+7/-7 mm for left/right Corner.
 The source component placements normalize the source sketch planes from world
 Z=321.8 / 322 / 323.55 mm to local Z=1.8 / 2 / 3.55 mm.
+
+These tube-interface operations stay downstream of the configured base. They do
+not contain a duplicated Medium copy of the base coupler history.
 
 Suppressed source experiments 177, 179, 185, 187, 193, 197, 207, 208 and 211
 are not production geometry and are intentionally absent. Features 226–230 are
@@ -203,8 +214,6 @@ therefore retained.
 The loose clamp remains a separate physical component. Free / Installed state
 belongs to the assembly/configuration layer and is not fused into these
 couplers.
-
-
 
 ## Alternate female receiver tube interface
 
@@ -234,5 +243,7 @@ four source instances exactly. Edge centers are local X=±20 mm; Corner centers
 are local X=+7/-7 mm. The 16 mm receiver support template is shared as well.
 
 This is an alternate physical interface, not additive geometry: the existing
-public tube variants keep their protruding rails, while the new receiver
-variants replace those rails with female grooves for the male clamp.
+public tube variants keep their protruding rails, while the receiver variants
+replace those rails with female grooves for the male clamp. Receiver variants
+use the same Small/Medium/Large configured base and suppression behavior as
+their corresponding rail variants.

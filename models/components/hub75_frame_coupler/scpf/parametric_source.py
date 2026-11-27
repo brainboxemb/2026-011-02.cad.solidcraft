@@ -21,6 +21,34 @@ def _expression(text, values):
     text = _UNIT_RE.sub("", text).replace("^", "**")
     node = ast.parse(text, mode="eval").body
 
+    def unitless_clamp_complement(item):
+        """Recognize the retained 1-min(1,max(0,floor(...))) gate exactly."""
+        if not (
+            isinstance(item, ast.BinOp)
+            and isinstance(item.op, ast.Sub)
+            and isinstance(item.left, ast.Constant)
+            and item.left.value == 1
+            and isinstance(item.right, ast.Call)
+            and isinstance(item.right.func, ast.Name)
+            and item.right.func.id == "min"
+            and len(item.right.args) == 2
+            and isinstance(item.right.args[0], ast.Constant)
+            and item.right.args[0].value == 1
+        ):
+            return False
+        maximum = item.right.args[1]
+        return (
+            isinstance(maximum, ast.Call)
+            and isinstance(maximum.func, ast.Name)
+            and maximum.func.id == "max"
+            and len(maximum.args) == 2
+            and isinstance(maximum.args[0], ast.Constant)
+            and maximum.args[0].value == 0
+            and isinstance(maximum.args[1], ast.Call)
+            and isinstance(maximum.args[1].func, ast.Name)
+            and maximum.args[1].func.id == "floor"
+        )
+
     def visit(item):
         if isinstance(item, ast.Constant):
             if isinstance(item.value, (int, float)) and not isinstance(item.value, bool):
@@ -39,8 +67,14 @@ def _expression(text, values):
                 return value
             raise ValueError(f"unsupported source unary operator {type(item.op).__name__}")
         if isinstance(item, ast.BinOp):
-            left = visit(item.left)
             right = visit(item.right)
+            if unitless_clamp_complement(item):
+                # Forge numeric +/- literals are length-valued by default.
+                # Build the source's dimensionless 1 from an existing native
+                # length dependency so SolidCraft keeps this clamp unitless.
+                one = values["mid_size"] / values["mid_size"]
+                return one - right
+            left = visit(item.left)
             if isinstance(item.op, ast.Add):
                 return left + right
             if isinstance(item.op, ast.Sub):

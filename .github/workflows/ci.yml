@@ -39,11 +39,31 @@ jobs:
           PYTHONPATH: modules/ci/src
         run: python -m cad_model_ci
 
-      - name: Verify #189 saved configuration switching
+      - name: "Verify #189 saved configuration switching"
         run: |
+          git fetch --no-tags --depth=1 origin build
+          baseline="$RUNNER_TEMP/hub75-medium-baseline"
+          mkdir -p "$baseline"
+          variants=(
+            hub75-frame-coupler-middle
+            hub75-frame-coupler-edge
+            hub75-frame-coupler-corner-left
+            hub75-frame-coupler-corner-right
+            hub75-frame-coupler-edge-tube
+            hub75-frame-coupler-corner-left-tube
+            hub75-frame-coupler-corner-right-tube
+            hub75-frame-coupler-edge-tube-receiver
+            hub75-frame-coupler-corner-left-tube-receiver
+            hub75-frame-coupler-corner-right-tube-receiver
+          )
+          for variant in "${variants[@]}"; do
+            git show FETCH_HEAD:"dev/models/$variant/model.png" > "$baseline/$variant.png"
+          done
+
           docker run --rm --pull=never \
             -e SOLIDCRAFT_GPU=cpu \
             -v "$PWD/build/dev:/output:ro" \
+            -v "$baseline:/baseline:ro" \
             -v "$PWD/.github/verify-189.py:/verify.py:ro" \
             ghcr.io/brainboxemb/cad-solidcraft:v0.3.6 \
             python /verify.py

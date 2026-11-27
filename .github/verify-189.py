@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import struct
 import subprocess
 import tempfile
+import zlib
 
 OUTPUT = Path("/output")
+BASELINE = Path("/baseline")
 PLAN = OUTPUT / "build-plan.json"
 
 EXPECTED_ROWS = {
@@ -59,6 +62,93 @@ SUPPRESS_VARIANTS = {
     "hub75-frame-coupler-edge-tube-receiver",
     "hub75-frame-coupler-corner-right-tube-receiver",
 }
+
+
+def png_pixels(path: Path):
+    """Return decoded 8-bit PNG pixels without depending on image libraries."""
+    data = path.read_bytes()
+    assert data[:8] == b"\\x89PNG\\r\\n\\x1a\\n", path
+    offset = 8
+    width = height = bit_depth = color_type = interlace = None
+    compressed = bytearray()
+
+    while offset < len(data):
+        length = struct.unpack(">I", data[offset:offset + 4])[0]
+        kind = data[offset + 4:offset + 8]
+        payload = data[offset + 8:offset + 8 + length]
+        offset += 12 + length
+        if kind == b"IHDR":
+            width, height, bit_depth, color_type, _, _, interlace = struct.unpack(
+                ">IIBBBBB", payload
+            )
+        elif kind == b"IDAT":
+            compressed.extend(payload)
+        elif kind == b"IEND":
+            break
+
+    assert bit_depth == 8, (path, bit_depth)
+    assert color_type in {0, 2, 4, 6}, (path, color_type)
+    assert interlace == 0, (path, interlace)
+    channels = {0: 1, 2: 3, 4: 2, 6: 4}[color_type]
+    stride = width * channels
+    raw = zlib.decompress(bytes(compressed))
+    assert len(raw) == height * (stride + 1), (path, len(raw), width, height)
+
+    rows = []
+    position = 0
+    previous = bytearray(stride)
+
+    def paeth(a, b, c):
+        p = a + b - c
+        pa = abs(p - a)
+        pb = abs(p - b)
+        pc = abs(p - c)
+        if pa <= pb and pa <= pc:
+            return a
+        if pb <= pc:
+            return b
+        return c
+
+    for _ in range(height):
+        filter_type = raw[position]
+        position += 1
+        encoded = raw[position:position + stride]
+        position += stride
+        row = bytearray(stride)
+        for index, value in enumerate(encoded):
+            left = row[index - channels] if index >= channels else 0
+            up = previous[index]
+            upper_left = previous[index - channels] if index >= channels else 0
+            if filter_type == 0:
+                decoded = value
+            elif filter_type == 1:
+                decoded = value + left
+            elif filter_type == 2:
+                decoded = value + up
+            elif filter_type == 3:
+                decoded = value + ((left + up) // 2)
+            elif filter_type == 4:
+                decoded = value + paeth(left, up, upper_left)
+            else:
+                raise AssertionError((path, "unsupported PNG filter", filter_type))
+            row[index] = decoded & 0xFF
+        rows.append(bytes(row))
+        previous = row
+
+    return width, height, channels, b"".join(rows)
+
+
+def verify_medium_snapshot(variant: str) -> None:
+    current = OUTPUT / "models" / variant / "model.png"
+    accepted = BASELINE / f"{variant}.png"
+    assert current.is_file(), current
+    assert accepted.is_file(), accepted
+    current_pixels = png_pixels(current)
+    accepted_pixels = png_pixels(accepted)
+    assert current_pixels == accepted_pixels, (
+        variant,
+        "Medium snapshot pixels differ from published build/dev baseline",
+    )
 
 
 def run(*args: str) -> None:
@@ -187,6 +277,7 @@ def verify_variant(row: dict, work: Path, table_command: Path, commands: dict[st
     assert model.is_file(), model
 
     print(f"\n=== {variant} ===", flush=True)
+    verify_medium_snapshot(variant)
     baseline_eval = evaluate(model, work / f"{variant}-medium-eval.json")
     baseline_table = inspect_table(
         model,
@@ -230,7 +321,7 @@ def verify_variant(row: dict, work: Path, table_command: Path, commands: dict[st
         variant,
         "Small and Large geometry are identical",
     )
-    print(f"PASS {variant}: saved Medium -> Small/Large switching is associative", flush=True)
+    print(f"PASS {variant}: Medium pixels match baseline; saved Small/Large switching is associative", flush=True)
 
 
 def main() -> None:

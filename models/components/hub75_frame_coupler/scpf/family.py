@@ -2,7 +2,7 @@
 
 The retained SolidCraft source owns the geometry relationships.  One reusable
 Forge component definition consumes the four size parameters; thin root models
-add the native Small/Medium/Large configuration table.
+add the SolidCraft Small/Medium/Large configuration table.
 """
 
 from dataclasses import dataclass
@@ -211,7 +211,7 @@ def _mounting_hole(body, *, p, x, z, total_depth):
 
 
 def _locator_pad(body, *, p, x, z):
-    """Source Medium pad + locating pin along the panel-depth Y axis."""
+    """Source pad + locating pin along the panel-depth Y axis."""
     datum = p["mid_datum"]
     pad_h = p["mid_pad_h"]
     pin_h = p["mid_pin_h"]
@@ -1046,7 +1046,7 @@ RECEIVER_FRONT_Y = TUBE_AXIS_Y + 6.0
 
 
 def _xy_loop(sketch, points):
-    """Add one fixed source XY loop to a native Sketch."""
+    """Add one fixed source XY loop to a Forge Sketch."""
     contour = sketch.profile(start=points[0])
     for point in points[1:]:
         contour.line_to(point)

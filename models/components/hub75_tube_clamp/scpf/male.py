@@ -2,7 +2,7 @@
 
 from math import radians, tan
 
-from scpf import Configure, Param, Sketch, component
+from scpf import Sketch, component
 
 from models.components.hub75_tube_clamp.scpf.common import (
     CLAMP_WALL,
@@ -157,15 +157,15 @@ class Hub75TubeClampMaleCatalog:
             clamp_interference=self.clamp_interference,
             clamp_bore=self.clamp_bore,
         )
-        return Configure(
-            clamp,
+        clamp.configure(
             active="Free",
-            columns=(Param(self.clamp_bore),),
+            columns=(self.clamp_bore,),
             rows={
                 "Free": ("tube_d-clamp_interference",),
                 "Installed": ("tube_d",),
             },
         )
+        return clamp
 
 
 Hub75TubeClampMaleCatalog()

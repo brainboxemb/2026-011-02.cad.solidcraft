@@ -816,20 +816,20 @@ class _ConfiguredCouplerRoot:
 
 
 class Hub75FrameCouplerMiddleModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerMiddle
+    component_type = staticmethod(Hub75FrameCouplerMiddle)
 
 
 class Hub75FrameCouplerEdgeModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerEdge
+    component_type = staticmethod(Hub75FrameCouplerEdge)
     suppress_panel_pin = True
 
 
 class Hub75FrameCouplerCornerLeftModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerLeft
+    component_type = staticmethod(Hub75FrameCouplerCornerLeft)
 
 
 class Hub75FrameCouplerCornerRightModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerRight
+    component_type = staticmethod(Hub75FrameCouplerCornerRight)
     suppress_panel_pin = True
 
 
@@ -1348,29 +1348,29 @@ class Hub75FrameCouplerCornerRightTubeReceiver:
         ).with_appearance(SOURCE_RED)
 
 class Hub75FrameCouplerEdgeTubeModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerEdgeTube
+    component_type = staticmethod(Hub75FrameCouplerEdgeTube)
     suppress_panel_pin = True
 
 
 class Hub75FrameCouplerCornerLeftTubeModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerLeftTube
+    component_type = staticmethod(Hub75FrameCouplerCornerLeftTube)
 
 
 class Hub75FrameCouplerCornerRightTubeModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerRightTube
+    component_type = staticmethod(Hub75FrameCouplerCornerRightTube)
     suppress_panel_pin = True
 
 
 class Hub75FrameCouplerEdgeTubeReceiverModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerEdgeTubeReceiver
+    component_type = staticmethod(Hub75FrameCouplerEdgeTubeReceiver)
     suppress_panel_pin = True
 
 
 class Hub75FrameCouplerCornerLeftTubeReceiverModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerLeftTubeReceiver
+    component_type = staticmethod(Hub75FrameCouplerCornerLeftTubeReceiver)
 
 
 class Hub75FrameCouplerCornerRightTubeReceiverModel(_ConfiguredCouplerRoot):
-    component_type = Hub75FrameCouplerCornerRightTubeReceiver
+    component_type = staticmethod(Hub75FrameCouplerCornerRightTubeReceiver)
     suppress_panel_pin = True
 

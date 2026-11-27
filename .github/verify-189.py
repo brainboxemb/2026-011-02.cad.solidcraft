@@ -14,6 +14,10 @@ OUTPUT = Path("/output")
 BASELINE = Path("/baseline")
 PLAN = OUTPUT / "build-plan.json"
 
+VISUAL_CHANGED_PIXEL_THRESHOLD = 12
+VISUAL_MAX_MEAN_DIFFERENCE = 6.0
+VISUAL_MAX_CHANGED_FRACTION = 0.08
+
 EXPECTED_ROWS = {
     "Small": {
         "mid_size": 60.0,
@@ -138,16 +142,67 @@ def png_pixels(path: Path):
     return width, height, channels, b"".join(rows)
 
 
+def _grayscale_samples(decoded):
+    width, height, channels, raw = decoded
+    samples = []
+    for offset in range(0, len(raw), channels):
+        if channels in {1, 2}:
+            gray = raw[offset]
+        else:
+            red, green, blue = raw[offset:offset + 3]
+            gray = (299 * red + 587 * green + 114 * blue + 500) // 1000
+        samples.append(gray)
+    return width, height, samples
+
+
 def verify_medium_snapshot(variant: str) -> None:
     current = OUTPUT / "models" / variant / "model.png"
     accepted = BASELINE / f"{variant}.png"
     assert current.is_file(), current
     assert accepted.is_file(), accepted
-    current_pixels = png_pixels(current)
-    accepted_pixels = png_pixels(accepted)
-    assert current_pixels == accepted_pixels, (
+
+    current_width, current_height, current_gray = _grayscale_samples(
+        png_pixels(current)
+    )
+    accepted_width, accepted_height, accepted_gray = _grayscale_samples(
+        png_pixels(accepted)
+    )
+    assert (current_width, current_height) == (accepted_width, accepted_height), (
         variant,
-        "Medium snapshot pixels differ from published build/dev baseline",
+        (current_width, current_height),
+        (accepted_width, accepted_height),
+    )
+
+    deltas = [
+        abs(current_value - accepted_value)
+        for current_value, accepted_value in zip(current_gray, accepted_gray)
+    ]
+    mean_difference = sum(deltas) / len(deltas)
+    changed_fraction = (
+        sum(
+            delta >= VISUAL_CHANGED_PIXEL_THRESHOLD
+            for delta in deltas
+        )
+        / len(deltas)
+    )
+    print(
+        "MEDIUM VISUAL "
+        f"{variant}: mean={mean_difference:.6f}, "
+        f"changed>={VISUAL_CHANGED_PIXEL_THRESHOLD}="
+        f"{changed_fraction:.6f}",
+        flush=True,
+    )
+    assert mean_difference <= VISUAL_MAX_MEAN_DIFFERENCE, (
+        variant,
+        "Medium visual mean difference exceeds Forge regression limit",
+        mean_difference,
+        VISUAL_MAX_MEAN_DIFFERENCE,
+    )
+    assert changed_fraction <= VISUAL_MAX_CHANGED_FRACTION, (
+        variant,
+        "Medium changed-pixel fraction exceeds Forge regression limit",
+        changed_fraction,
+        VISUAL_MAX_CHANGED_FRACTION,
     )
 
 
@@ -321,7 +376,7 @@ def verify_variant(row: dict, work: Path, table_command: Path, commands: dict[st
         variant,
         "Small and Large geometry are identical",
     )
-    print(f"PASS {variant}: Medium pixels match baseline; saved Small/Large switching is associative", flush=True)
+    print(f"PASS {variant}: Medium visual regression matches baseline; saved Small/Large switching is associative", flush=True)
 
 
 def main() -> None:

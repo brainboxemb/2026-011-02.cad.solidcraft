@@ -1,9 +1,11 @@
 schema: 1
-branch: issue/259-runtime-candidate-template-sync
+branch: chore/257-solidcraft-0.50-edge-qualification
 
-modules:
-  - ci
-  - build
-models: []
+modules: []
+models: all
 tasks:
-  - test
+  - build
+runtime:
+  solidcraft:
+    image: ghcr.io/brainboxemb/cad-solidcraft@sha256:08553cae12e4ef4ec22e726d0f171ff55b4d1cc10216dbf1aba2695756c72ee2
+    version: 0.50.0

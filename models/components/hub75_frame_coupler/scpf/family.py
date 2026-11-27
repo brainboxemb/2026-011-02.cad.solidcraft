@@ -332,6 +332,110 @@ def _join_tapered_seam_guide(body, *, p, profile_key, steps=16):
     return body
 
 
+def _replace_arc_through_with_centers(loops, centers, clockwise):
+    """Replace source three-point arcs while preserving source loop topology."""
+    converted = []
+    for loop_index, loop in enumerate(loops):
+        arc_index = 0
+        segments = []
+        for segment in loop["segments"]:
+            if segment["kind"] != "arc_through":
+                segments.append(segment)
+                continue
+            row = dict(segment)
+            row["kind"] = "arc"
+            row.pop("through", None)
+            row["center"] = centers[loop_index][arc_index]
+            row["clockwise"] = clockwise[loop_index][arc_index]
+            arc_index += 1
+            segments.append(row)
+        if arc_index != len(centers[loop_index]):
+            raise ValueError(
+                f"loop {loop_index}: expected {len(centers[loop_index])} arcs, "
+                f"found {arc_index}"
+            )
+        converted.append({"start": loop["start"], "segments": segments})
+    return converted
+
+
+def _middle_base_profiles(p):
+    inner_x = p["mid_ix"] + p["mid_wall"] + p["mid_inner_r"]
+    inner_z = p["mid_iz"] + p["mid_wall"] + p["mid_inner_r"]
+    centers = ((
+        (-p["mid_Ox"], p["mid_oe"]),
+        (p["mid_Ox"], p["mid_oe"]),
+        (inner_x, inner_z),
+        (p["mid_oe"], p["mid_Oz"]),
+        (p["mid_oe"], -p["mid_Oz"]),
+        (inner_x, -inner_z),
+        (p["mid_Ox"], -p["mid_oe"]),
+        (-p["mid_Ox"], -p["mid_oe"]),
+        (-inner_x, -inner_z),
+        (-p["mid_oe"], -p["mid_Oz"]),
+        (-p["mid_oe"], p["mid_Oz"]),
+        (-inner_x, inner_z),
+    ),)
+    clockwise = ((
+        True, True, False, True, True, False,
+        True, True, False, True, True, False,
+    ),)
+    return _replace_arc_through_with_centers(
+        _source_profile("middle", "base", p),
+        centers,
+        clockwise,
+    )
+
+
+def _middle_guide_profiles(p):
+    inner_x = p["mid_ix"] + p["mid_wall"] + p["mid_inner_r"]
+    inner_z = p["mid_iz"] + p["mid_wall"] + p["mid_inner_r"]
+    centers = (
+        (
+            (-p["mid_Cx"], -p["mid_Gz"]),
+            (-p["mid_oe"], -p["mid_Oz"]),
+            (-inner_x, -inner_z),
+            (-p["mid_Ox"], -p["mid_oe"]),
+            (-p["mid_Gx"], -p["mid_Cz"]),
+            (-p["mid_jx"], -p["mid_jz"]),
+        ),
+        (
+            (-p["mid_Cx"], p["mid_Gz"]),
+            (-p["mid_oe"], p["mid_Oz"]),
+            (-inner_x, inner_z),
+            (-p["mid_Ox"], p["mid_oe"]),
+            (-p["mid_Gx"], p["mid_Cz"]),
+            (-p["mid_jx"], p["mid_jz"]),
+        ),
+        (
+            (p["mid_Cx"], -p["mid_Gz"]),
+            (p["mid_oe"], -p["mid_Oz"]),
+            (inner_x, -inner_z),
+            (p["mid_Ox"], -p["mid_oe"]),
+            (p["mid_Gx"], -p["mid_Cz"]),
+            (p["mid_jx"], -p["mid_jz"]),
+        ),
+        (
+            (p["mid_Cx"], p["mid_Gz"]),
+            (p["mid_oe"], p["mid_Oz"]),
+            (inner_x, inner_z),
+            (p["mid_Ox"], p["mid_oe"]),
+            (p["mid_Gx"], p["mid_Cz"]),
+            (p["mid_jx"], p["mid_jz"]),
+        ),
+    )
+    clockwise = (
+        (False, False, True, False, False, False),
+        (True, True, False, True, True, True),
+        (True, True, False, True, True, True),
+        (False, False, True, False, False, False),
+    )
+    return _replace_arc_through_with_centers(
+        _source_profile("middle", "guide", p),
+        centers,
+        clockwise,
+    )
+
+
 def _edge_guide_end_profiles(p):
     """Return the retained six Edge end cuts with exact symbolic arc centers."""
     loops = _source_profile("edge", "guide_end", p)
@@ -487,12 +591,12 @@ class Hub75FrameCouplerMiddle:
         p = _parameters(self)
         base = _profile_solid(
             name="Middle base profile",
-            loops=_source_profile("middle", "base", p),
+            loops=_middle_base_profiles(p),
             y=-p["mid_datum"],
             distance=-p["mid_base"],
         )
         body = base
-        for index, loop in enumerate(_source_profile("middle", "guide", p), start=1):
+        for index, loop in enumerate(_middle_guide_profiles(p), start=1):
             guide = _profile_solid(
                 name=f"Middle guide profile {index}",
                 loops=[loop],

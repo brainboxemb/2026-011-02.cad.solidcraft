@@ -67,7 +67,7 @@ SUPPRESS_VARIANTS = {
 def png_pixels(path: Path):
     """Return decoded 8-bit PNG pixels without depending on image libraries."""
     data = path.read_bytes()
-    assert data[:8] == b"\\x89PNG\\r\\n\\x1a\\n", path
+    assert data[:8] == b"\x89PNG\r\n\x1a\n", path
     offset = 8
     width = height = bit_depth = color_type = interlace = None
     compressed = bytearray()

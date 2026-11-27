@@ -772,47 +772,65 @@ class Hub75FrameCouplerCornerRight:
         return body.with_appearance(SOURCE_RED)
 
 
-def configured_coupler(component_type, *, suppress_panel_pin=False):
-    """Instantiate one reusable coupler below a native three-row root table."""
+class _ConfiguredCouplerRoot:
+    """Shared root model for one configured reusable coupler occurrence."""
 
-    class ConfiguredCoupler:
-        mid_size = 80.0
-        mid_wall = 4.0
-        mid_base = 3.0
-        mid_guide = 6.0
+    component_type = None
+    suppress_panel_pin = False
 
-        def build(self):
-            child = component_type(
-                mid_size=self.mid_size,
-                mid_wall=self.mid_wall,
-                mid_base=self.mid_base,
-                mid_guide=self.mid_guide,
-            )
-            columns = [
-                Param(self.mid_size),
-                Param(self.mid_wall),
-                Param(self.mid_base),
-                Param(self.mid_guide),
-            ]
-            rows = {
-                "Small": ["60 mm", "2 mm", "2 mm", "4 mm"],
-                "Medium": ["80 mm", "4 mm", "3 mm", "6 mm"],
-                "Large": ["100 mm", "6 mm", "4 mm", "10 mm"],
-            }
-            if suppress_panel_pin:
-                columns.append(Suppress(child.feature(_PANEL_PIN_FEATURE)))
-                rows["Small"].append(True)
-                rows["Medium"].append(True)
-                rows["Large"].append(False)
+    mid_size = 80.0
+    mid_wall = 4.0
+    mid_base = 3.0
+    mid_guide = 6.0
 
-            return Configure(
-                child,
-                active="Medium",
-                columns=tuple(columns),
-                rows={name: tuple(values) for name, values in rows.items()},
-            )
+    def build(self):
+        child = self.component_type(
+            mid_size=self.mid_size,
+            mid_wall=self.mid_wall,
+            mid_base=self.mid_base,
+            mid_guide=self.mid_guide,
+        )
+        columns = [
+            Param(self.mid_size),
+            Param(self.mid_wall),
+            Param(self.mid_base),
+            Param(self.mid_guide),
+        ]
+        rows = {
+            "Small": ["60 mm", "2 mm", "2 mm", "4 mm"],
+            "Medium": ["80 mm", "4 mm", "3 mm", "6 mm"],
+            "Large": ["100 mm", "6 mm", "4 mm", "10 mm"],
+        }
+        if self.suppress_panel_pin:
+            columns.append(Suppress(child.feature(_PANEL_PIN_FEATURE)))
+            rows["Small"].append(True)
+            rows["Medium"].append(True)
+            rows["Large"].append(False)
 
-    return ConfiguredCoupler()
+        return Configure(
+            child,
+            active="Medium",
+            columns=tuple(columns),
+            rows={name: tuple(values) for name, values in rows.items()},
+        )
+
+
+class Hub75FrameCouplerMiddleModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerMiddle
+
+
+class Hub75FrameCouplerEdgeModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerEdge
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerLeft
+
+
+class Hub75FrameCouplerCornerRightModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerRight
+    suppress_panel_pin = True
 
 
 # Final active tube-interface geometry from the retained SolidCraft assembly.

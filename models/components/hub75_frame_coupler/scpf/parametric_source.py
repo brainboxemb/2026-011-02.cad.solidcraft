@@ -21,23 +21,19 @@ def _expression(text, values):
     text = _UNIT_RE.sub("", text).replace("^", "**")
     node = ast.parse(text, mode="eval").body
 
-    def unitless_clamp_complement(item):
-        """Recognize the retained 1-min(1,max(0,floor(...))) gate exactly."""
+    def unitless_clamp(item):
+        """Return the retained min(1,max(0,floor(...))) floor call, or None."""
         if not (
-            isinstance(item, ast.BinOp)
-            and isinstance(item.op, ast.Sub)
-            and isinstance(item.left, ast.Constant)
-            and item.left.value == 1
-            and isinstance(item.right, ast.Call)
-            and isinstance(item.right.func, ast.Name)
-            and item.right.func.id == "min"
-            and len(item.right.args) == 2
-            and isinstance(item.right.args[0], ast.Constant)
-            and item.right.args[0].value == 1
+            isinstance(item, ast.Call)
+            and isinstance(item.func, ast.Name)
+            and item.func.id == "min"
+            and len(item.args) == 2
+            and isinstance(item.args[0], ast.Constant)
+            and item.args[0].value == 1
         ):
-            return False
-        maximum = item.right.args[1]
-        return (
+            return None
+        maximum = item.args[1]
+        if not (
             isinstance(maximum, ast.Call)
             and isinstance(maximum.func, ast.Name)
             and maximum.func.id == "max"
@@ -47,6 +43,18 @@ def _expression(text, values):
             and isinstance(maximum.args[1], ast.Call)
             and isinstance(maximum.args[1].func, ast.Name)
             and maximum.args[1].func.id == "floor"
+            and len(maximum.args[1].args) == 1
+        ):
+            return None
+        return maximum.args[1].args[0]
+
+    def unitless_clamp_complement(item):
+        return (
+            isinstance(item, ast.BinOp)
+            and isinstance(item.op, ast.Sub)
+            and isinstance(item.left, ast.Constant)
+            and item.left.value == 1
+            and unitless_clamp(item.right) is not None
         )
 
     def visit(item):
@@ -87,6 +95,14 @@ def _expression(text, values):
                 return left ** right
             raise ValueError(f"unsupported source binary operator {type(item.op).__name__}")
         if isinstance(item, ast.Call) and isinstance(item.func, ast.Name):
+            clamp_value = unitless_clamp(item)
+            if clamp_value is not None:
+                one = values["mid_size"] / values["mid_size"]
+                zero = one - one
+                return cadmath.min(
+                    one,
+                    cadmath.max(zero, cadmath.floor(visit(clamp_value))),
+                )
             functions = {
                 "min": cadmath.min,
                 "max": cadmath.max,

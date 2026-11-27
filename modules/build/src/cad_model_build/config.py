@@ -16,7 +16,7 @@ class BuildConfigError(ValueError):
 
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
-_VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
+_FORGE_REF = re.compile(r"^(?:v\d+\.\d+\.\d+|[0-9a-f]{40})$")
 _PNG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.png$")
 _SUPPORTED_ARTIFACTS = frozenset({"stl"})
 _ARTIFACT_QUALITY = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")

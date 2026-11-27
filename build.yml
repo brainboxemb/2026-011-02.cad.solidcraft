@@ -1,8 +1,9 @@
 schema: 1
-branch: fix/243-pages-skip-disabled-models
+branch: issue/189-coupler-size-config
 
-modules:
-  - pages
-models: []
+modules: []
+models:
+  - hub75-frame-coupler
 tasks:
   - test
+  - build

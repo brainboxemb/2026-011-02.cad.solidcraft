@@ -32,9 +32,13 @@ def changed_selection(
             return full_selection(branch)
         selected_modules.add(module.id)
         if module.impact == "models":
-            selected_models.update(model.id for model in models)
+            selected_models.update(
+                model.id for model in models if model.process
+            )
 
     for model in models:
+        if not model.process:
+            continue
         if any(_matches(path, model.watch) for path in paths):
             selected_models.add(model.id)
 
@@ -59,7 +63,7 @@ def expand_model_dependents(
     while changed:
         changed = False
         for model in models:
-            if model.id in selected:
+            if model.id in selected or not model.process:
                 continue
             if any(dependency in selected for dependency in model.dependencies):
                 selected.add(model.id)

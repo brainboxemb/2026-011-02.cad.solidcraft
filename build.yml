@@ -1,11 +1,8 @@
 schema: 1
-branch: issue/251-forge-v025-config-api
+branch: issue/253-process-false-explicit-build
 
-modules: []
-models:
-  - hub75-frame-coupler
-  - hub75-tube-clamp
-  - hub75-display-frame-2panel
+modules:
+  - ci
+models: []
 tasks:
   - test
-  - build

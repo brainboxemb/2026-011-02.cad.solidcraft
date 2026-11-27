@@ -42,6 +42,23 @@ MODELS = (
         watch=("models/case/**",),
         dependencies=("screen",),
     ),
+    CadModel(
+        "parked",
+        Path("models/parked"),
+        "forge",
+        Path("scpf/model.py"),
+        watch=("models/parked/**",),
+        process=False,
+    ),
+    CadModel(
+        "parked-dependent",
+        Path("models/parked-dependent"),
+        "forge",
+        Path("scpf/model.py"),
+        watch=("models/parked-dependent/**",),
+        dependencies=("box",),
+        process=False,
+    ),
 )
 
 
@@ -58,6 +75,36 @@ class SelectionTests(unittest.TestCase):
 
 
     def test_selected_component_expands_to_transitive_dependents(self):
+        selection = BuildSelection(
+            branch="dev",
+            modules=(),
+            models=("box",),
+            tasks=("test", "build"),
+        )
+        result = expand_model_dependents(selection, MODELS)
+        self.assertEqual(result.models, ("box", "screen", "case"))
+
+    def test_changed_process_false_model_is_not_selected_automatically(self):
+        result = changed_selection(
+            branch="dev",
+            paths=("models/parked/model.yml",),
+            modules=MODULES,
+            models=MODELS,
+        )
+        self.assertEqual(result.modules, ())
+        self.assertEqual(result.models, ())
+
+    def test_model_impact_module_excludes_process_false_models(self):
+        result = changed_selection(
+            branch="dev",
+            paths=("modules/build/src/build.py",),
+            modules=MODULES,
+            models=MODELS,
+        )
+        self.assertEqual(result.modules, ("build",))
+        self.assertEqual(result.models, ("box", "case", "plate", "screen"))
+
+    def test_dependent_expansion_does_not_auto_add_process_false_models(self):
         selection = BuildSelection(
             branch="dev",
             modules=(),

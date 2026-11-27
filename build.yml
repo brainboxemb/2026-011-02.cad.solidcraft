@@ -1,8 +1,7 @@
 schema: 1
-branch: issue/255-process-false-template-sync
+branch: chore/257-solidcraft-0.50-edge-qualification
 
-modules:
-  - ci
-models: []
+modules: []
+models: all
 tasks:
   - test

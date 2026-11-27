@@ -18,9 +18,11 @@ dependencies:
   forge:
     repository: brainboxemb/lib.py.solidcraft.forge
     version: v0.25.0
+  # Qualification-only candidate from docker.cad.solidcraft#36.
+  # Never merge the mutable :edge pin; immutable adoption follows runtime v0.3.8.
   solidcraft:
-    image: ghcr.io/brainboxemb/cad-solidcraft:v0.3.6
-    version: 0.49.0
+    image: ghcr.io/brainboxemb/cad-solidcraft:edge
+    version: 0.50.0
 
 roots:
   modules: modules

@@ -8,7 +8,7 @@ variants:
     source: scpf/tube_frame.py
   - id: hub75-display-frame-2panel-tube-dovetail
     source: scpf/tube_frame_dovetail.py
-process: true
+process: false
 dependencies:
   - hub75-panel
   - hub75-frame-coupler

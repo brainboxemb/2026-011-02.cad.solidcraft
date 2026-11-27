@@ -5,3 +5,4 @@ modules: []
 models: all
 tasks:
   - test
+  - build

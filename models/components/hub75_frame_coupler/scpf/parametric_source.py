@@ -147,17 +147,34 @@ def source_profiles(feature_id, *, frame, values):
     start_index = None
     segments = []
 
-    for curve in curves:
+    for curve_index, curve in enumerate(curves):
         a = curve["a"]
         b = curve["b"]
         raw_a = _raw_point(feature, a, frame)
         raw_b = _raw_point(feature, b, frame)
 
         if current is None:
-            curve_start, curve_end = a, b
+            # Source arcs may store their endpoint pair opposite the ordered
+            # profile walk.  Orient the first curve by connectivity to the
+            # following curve instead of relying on curve.a/curve.b order.
+            next_curve = curves[curve_index + 1] if curve_index + 1 < len(curves) else None
+            if next_curve is not None:
+                next_a = _raw_point(feature, next_curve["a"], frame)
+                next_b = _raw_point(feature, next_curve["b"], frame)
+                if _same(raw_b, next_a) or _same(raw_b, next_b):
+                    curve_start, curve_end = a, b
+                    start_raw = raw_a
+                elif _same(raw_a, next_a) or _same(raw_a, next_b):
+                    curve_start, curve_end = b, a
+                    start_raw = raw_b
+                else:
+                    curve_start, curve_end = a, b
+                    start_raw = raw_a
+            else:
+                curve_start, curve_end = a, b
+                start_raw = raw_a
             start_index = curve_start
-            start_raw = raw_a
-            current = raw_a
+            current = start_raw
         elif _same(current, raw_a):
             curve_start, curve_end = a, b
         elif _same(current, raw_b):

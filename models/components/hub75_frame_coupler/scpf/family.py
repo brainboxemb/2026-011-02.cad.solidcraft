@@ -683,7 +683,8 @@ def _panel_pin_pass_through(p):
         plane="XY",
         offset=axis_z,
     ) as sketch:
-        contour = sketch.profile(start=(axis_x, rear))
+        start = (axis_x, rear)
+        contour = sketch.profile(start=start)
         contour.line_to((axis_x + relief_r, rear))
         contour.line_to((axis_x + relief_r, rear_step))
         contour.line_to((axis_x + core_r, rear_step))
@@ -691,6 +692,7 @@ def _panel_pin_pass_through(p):
         contour.line_to((axis_x + relief_r, front_step))
         contour.line_to((axis_x + relief_r, front))
         contour.line_to((axis_x, front))
+        contour.line_to(start)
         contour.close()
 
     feature = sketch.revolve(

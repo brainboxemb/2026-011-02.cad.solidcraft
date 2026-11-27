@@ -7,7 +7,9 @@ tagline: Shared frame-coupler family with standard and tube-clamp interfaces
 description: >
   Reusable Medium HUB75 frame-coupler family. Standard seam/edge/corner members
   share one owner with two tube-interface families: protruding rails for the
-  female-slot clamp and female receivers for the male-dovetail clamp.
+  female-slot clamp and female receivers for the male-dovetail clamp. Native
+  reference ticks and blind tapered reference holes remain independently
+  selectable creation options on every reusable coupler.
 variant_groups:
   - title: Standard
     variants:

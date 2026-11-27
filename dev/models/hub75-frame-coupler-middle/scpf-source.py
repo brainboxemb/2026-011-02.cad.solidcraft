@@ -1,3 +1,3 @@
-from models.components.hub75_frame_coupler.scpf.family import Hub75FrameCouplerMiddle
+from models.components.hub75_frame_coupler.scpf.family import Hub75FrameCouplerMiddleModel
 
-Hub75FrameCouplerMiddle()
+Hub75FrameCouplerMiddleModel()

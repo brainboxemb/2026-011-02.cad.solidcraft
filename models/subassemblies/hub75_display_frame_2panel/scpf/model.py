@@ -10,6 +10,8 @@ World axes:
     Z: vertical, up
 """
 
+from dataclasses import dataclass
+
 from scpf import Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
@@ -28,8 +30,12 @@ FRAME_HEIGHT = 320.0
 
 
 @assembly
+@dataclass
 class Hub75DisplayFrame2Panel:
     """Two HUB75 panels plus seven Medium coupler occurrences."""
+
+    coupler_reference_ticks: bool = False
+    coupler_reference_holes: bool = False
 
     def build(self):
         # Same two-panel placement contract as BasicHub75Screen2Panel.
@@ -54,11 +60,15 @@ class Hub75DisplayFrame2Panel:
         # coordinates.  The family normalizes those definitions, so the
         # source identity placements become these clean frame datums.
         middle = Hub75FrameCouplerMiddle(
+            reference_ticks=self.coupler_reference_ticks,
+            reference_holes=self.coupler_reference_holes,
             name="MiddleCoupler",
             placement=Placement(z=PANEL_CENTER_Z),
         )
 
         edge_top = Hub75FrameCouplerEdge(
+            reference_ticks=self.coupler_reference_ticks,
+            reference_holes=self.coupler_reference_holes,
             name="EdgeCouplerTop",
             placement=Placement(z=FRAME_HEIGHT),
         )
@@ -70,6 +80,8 @@ class Hub75DisplayFrame2Panel:
         )
 
         corner_left_top = Hub75FrameCouplerCornerLeft(
+            reference_ticks=self.coupler_reference_ticks,
+            reference_holes=self.coupler_reference_holes,
             name="CornerCouplerLeftTop",
             placement=Placement(
                 x=-FRAME_WIDTH / 2.0,
@@ -88,6 +100,8 @@ class Hub75DisplayFrame2Panel:
         )
 
         corner_right_top = Hub75FrameCouplerCornerRight(
+            reference_ticks=self.coupler_reference_ticks,
+            reference_holes=self.coupler_reference_holes,
             name="CornerCouplerRightTop",
             placement=Placement(
                 x=FRAME_WIDTH / 2.0,

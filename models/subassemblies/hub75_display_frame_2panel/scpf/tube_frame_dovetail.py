@@ -1,5 +1,7 @@
 """Two-panel HUB75 tube frame using male clamps and female coupler receivers."""
 
+from dataclasses import dataclass
+
 from scpf import Always, ConfigRule, Configure, DriveParameter, Param, assembly
 from models.components.hub75_frame_coupler.scpf.family import (
     Hub75FrameCouplerEdgeTubeReceiver,
@@ -11,10 +13,13 @@ from models.subassemblies.hub75_display_frame_2panel.scpf.tube_frame import _bui
 
 
 @assembly
+@dataclass
 class Hub75DisplayFrame2PanelTubeDovetailAssembly:
-    tube_d = 10.0
-    clamp_interference = 0.4
-    clamp_bore = 9.6
+    tube_d: float = 10.0
+    clamp_interference: float = 0.4
+    clamp_bore: float = 9.6
+    coupler_reference_ticks: bool = False
+    coupler_reference_holes: bool = False
 
     def build(self):
         return _build_tube_frame(
@@ -26,19 +31,26 @@ class Hub75DisplayFrame2PanelTubeDovetailAssembly:
             tube_d=self.tube_d,
             clamp_interference=self.clamp_interference,
             clamp_bore=self.clamp_bore,
+            coupler_reference_ticks=self.coupler_reference_ticks,
+            coupler_reference_holes=self.coupler_reference_holes,
         )
 
 
+@dataclass
 class Hub75DisplayFrame2PanelTubeDovetail:
-    tube_d = 10.0
-    clamp_interference = 0.4
-    clamp_bore = 9.6
+    tube_d: float = 10.0
+    clamp_interference: float = 0.4
+    clamp_bore: float = 9.6
+    coupler_reference_ticks: bool = False
+    coupler_reference_holes: bool = False
 
     def build(self):
         frame = Hub75DisplayFrame2PanelTubeDovetailAssembly(
             tube_d=self.tube_d,
             clamp_interference=self.clamp_interference,
             clamp_bore=self.clamp_bore,
+            coupler_reference_ticks=self.coupler_reference_ticks,
+            coupler_reference_holes=self.coupler_reference_holes,
         )
         return Configure(
             frame,

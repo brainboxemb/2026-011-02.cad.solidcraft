@@ -6,6 +6,8 @@ keeps the active Medium row fixed; native Small/Medium/Large authoring will
 replace that fixed layer after Forge configuration support (#216).
 """
 
+from dataclasses import dataclass
+
 from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
 
 from models.components.hub75_frame_coupler.scpf.source_data import (
@@ -270,14 +272,17 @@ def _cut_edge_guide_end_rounding(body):
         body = body - cut
     return body
 
-def _apply_reference_pattern(body, *, profile_key):
-    """Cut the native reference ticks and blind tapered reference-hole pattern."""
-    y_rear = (
+def _reference_pattern_y_rear():
+    return (
         -MEDIUM["datum"]
         - MEDIUM["base"]
         - REFERENCE_PATTERN["rear_offset"]
     )
 
+
+def _cut_reference_ticks(body, *, profile_key):
+    """Cut the optional native reference tick/stripe pattern."""
+    y_rear = _reference_pattern_y_rear()
     for index, loop in enumerate(REFERENCE_MARK_LOOPS[profile_key], start=1):
         mark = _profile_solid(
             name=f"{profile_key} reference mark {index}",
@@ -286,7 +291,12 @@ def _apply_reference_pattern(body, *, profile_key):
             distance=REFERENCE_PATTERN["mark_cut_depth"],
         )
         body = body - mark
+    return body
 
+
+def _cut_reference_holes(body, *, profile_key):
+    """Cut the optional blind tapered reference-hole pattern."""
+    y_rear = _reference_pattern_y_rear()
     straight = REFERENCE_PATTERN["straight_h"] + REFERENCE_PATTERN["rear_offset"]
     tip = REFERENCE_PATTERN["tip_h"]
     for x, z in REFERENCE_HOLE_CENTERS[profile_key]:
@@ -312,9 +322,28 @@ def _apply_reference_pattern(body, *, profile_key):
     return body
 
 
+def _apply_reference_pattern(
+    body,
+    *,
+    profile_key,
+    reference_ticks=True,
+    reference_holes=True,
+):
+    """Apply independently optional native reference features."""
+    if reference_ticks:
+        body = _cut_reference_ticks(body, profile_key=profile_key)
+    if reference_holes:
+        body = _cut_reference_holes(body, profile_key=profile_key)
+    return body
+
+
 @component
+@dataclass
 class Hub75FrameCouplerMiddle:
     """Fixed Medium source variant at the panel seam midpoint."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         base = _profile_solid(
@@ -360,7 +389,12 @@ class Hub75FrameCouplerMiddle:
             body,
             profile_key="middle",
         )
-        body = _apply_reference_pattern(body, profile_key="middle")
+        body = _apply_reference_pattern(
+            body,
+            profile_key="middle",
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
         return body.with_appearance(SOURCE_RED)
 
 
@@ -400,8 +434,15 @@ def _edge_like_stock(*, profile_key, screw_xs):
     return body
 
 
-def _cut_edge_like_base(body, *, profile_key, screw_xs):
-    """Apply only base-side mounting/pattern cuts."""
+def _cut_edge_like_base(
+    body,
+    *,
+    profile_key,
+    screw_xs,
+    reference_ticks=True,
+    reference_holes=True,
+):
+    """Apply mounting bores plus independently optional reference cuts."""
     for x in screw_xs:
         body = _mounting_hole(
             body,
@@ -409,7 +450,12 @@ def _cut_edge_like_base(body, *, profile_key, screw_xs):
             z=_edge_mount_z(),
             total_depth=MEDIUM["base"],
         )
-    return _apply_reference_pattern(body, profile_key=profile_key)
+    return _apply_reference_pattern(
+        body,
+        profile_key=profile_key,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
+    )
 
 
 def _clip_edge_to_top_t(body):
@@ -461,7 +507,14 @@ def _cut_edge_like_guide(body, *, relief_key, screw_xs, edge=False):
     return body
 
 
-def _build_edge_like(*, profile_key, relief_key, screw_x):
+def _build_edge_like(
+    *,
+    profile_key,
+    relief_key,
+    screw_x,
+    reference_ticks=True,
+    reference_holes=True,
+):
     """Shared Medium construction for one left/right corner member."""
     screw_xs = (screw_x,)
     body = _edge_like_stock(
@@ -472,6 +525,8 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
         body,
         profile_key=profile_key,
         screw_xs=screw_xs,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
     )
     body = _cut_edge_like_guide(
         body,
@@ -482,7 +537,7 @@ def _build_edge_like(*, profile_key, relief_key, screw_x):
     return body
 
 
-def _build_edge_body():
+def _build_edge_body(*, reference_ticks=True, reference_holes=True):
     """Shared accepted Medium Edge body before optional tube-interface features."""
     screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
     body = _edge_like_stock(
@@ -494,6 +549,8 @@ def _build_edge_body():
         body,
         profile_key="edge",
         screw_xs=screw_xs,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
     )
     body = _cut_edge_like_guide(
         body,
@@ -512,28 +569,45 @@ def _build_edge_body():
 
 
 @component
+@dataclass
 class Hub75FrameCouplerEdge:
     """Fixed Medium straight frame-edge coupler."""
 
+    reference_ticks: bool = True
+    reference_holes: bool = True
+
     def build(self):
-        return _build_edge_body().with_appearance(SOURCE_RED)
+        return _build_edge_body(
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        ).with_appearance(SOURCE_RED)
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerLeft:
     """Fixed Medium left frame-corner coupler."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         return _build_edge_like(
             profile_key="corner_left",
             relief_key="corner_left",
             screw_x=MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         ).with_appearance(SOURCE_RED)
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerRight:
     """Fixed Medium right frame-corner coupler."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         # Native Medium suppresses the right-corner panel-pin pass-through.
@@ -541,6 +615,8 @@ class Hub75FrameCouplerCornerRight:
             profile_key="corner_right",
             relief_key="corner_right",
             screw_x=-MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         ).with_appearance(SOURCE_RED)
 
 # Final active tube-interface geometry from the retained SolidCraft assembly.
@@ -711,7 +787,7 @@ def _cut_edge_tube_bow_clearance(body):
     return body - bow_clearance
 
 
-def _add_edge_tube_rear_support(body):
+def _add_edge_tube_rear_support(body, *, reference_ticks=True):
     """Final active Edge rear support/base/reference chain #226-230."""
     rear_support = _multi_profile_solid(
         name="Symmetrische bulten met R5-overgangen",
@@ -729,17 +805,19 @@ def _add_edge_tube_rear_support(body):
     )
     body = body + base_plate
 
-    rear_marks = [
-        REFERENCE_MARK_LOOPS["edge"][index]
-        for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
-    ]
-    reference_cut = _multi_profile_solid(
-        name="Referentiepatroon op symmetrische rug",
-        loops=rear_marks,
-        y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),
-        distance=REFERENCE_PATTERN["mark_cut_depth"],
-    )
-    return body - reference_cut
+    if reference_ticks:
+        rear_marks = [
+            REFERENCE_MARK_LOOPS["edge"][index]
+            for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
+        ]
+        reference_cut = _multi_profile_solid(
+            name="Referentiepatroon op symmetrische rug",
+            loops=rear_marks,
+            y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),
+            distance=REFERENCE_PATTERN["mark_cut_depth"],
+        )
+        body = body - reference_cut
+    return body
 
 
 def _receiver_xy(center_x):
@@ -789,7 +867,7 @@ def _add_receiver_interface(body, *centers):
     return body - grooves
 
 
-def _add_edge_tube_interface(body):
+def _add_edge_tube_interface(body, *, reference_ticks=True):
     """Existing active rail interface #189/#191/#195/#198 plus #226-230."""
     body = _cut_edge_tube_foot_clearance(body)
 
@@ -808,14 +886,20 @@ def _add_edge_tube_interface(body):
         distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
         edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
     )
-    return _add_edge_tube_rear_support(body)
+    return _add_edge_tube_rear_support(
+        body,
+        reference_ticks=reference_ticks,
+    )
 
 
-def _add_edge_tube_receiver_interface(body):
+def _add_edge_tube_receiver_interface(body, *, reference_ticks=True):
     """Alternate source interface with female receivers instead of rails."""
     body = _cut_edge_tube_foot_clearance(body)
     body = _cut_edge_tube_bow_clearance(body)
-    body = _add_edge_tube_rear_support(body)
+    body = _add_edge_tube_rear_support(
+        body,
+        reference_ticks=reference_ticks,
+    )
     return _add_receiver_interface(body, *EDGE_RAIL_CENTERS)
 
 
@@ -881,24 +965,38 @@ def _add_corner_tube_receiver_interface(body, *, side):
 
 
 @component
+@dataclass
 class Hub75FrameCouplerEdgeTube:
     """Medium Edge coupler with the final active two-clamp tube interface."""
 
+    reference_ticks: bool = True
+    reference_holes: bool = True
+
     def build(self):
         return _add_edge_tube_interface(
-            _build_edge_body()
+            _build_edge_body(
+                reference_ticks=self.reference_ticks,
+                reference_holes=self.reference_holes,
+            ),
+            reference_ticks=self.reference_ticks,
         ).with_appearance(SOURCE_RED)
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerLeftTube:
     """Medium left Corner coupler with the final active tube interface."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         body = _build_edge_like(
             profile_key="corner_left",
             relief_key="corner_left",
             screw_x=MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_interface(
             body,
@@ -907,14 +1005,20 @@ class Hub75FrameCouplerCornerLeftTube:
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerRightTube:
     """Medium right Corner coupler with the final active tube interface."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         body = _build_edge_like(
             profile_key="corner_right",
             relief_key="corner_right",
             screw_x=-MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_interface(
             body,
@@ -924,24 +1028,38 @@ class Hub75FrameCouplerCornerRightTube:
 
 
 @component
+@dataclass
 class Hub75FrameCouplerEdgeTubeReceiver:
     """Medium Edge tube coupler with two female dovetail receivers."""
 
+    reference_ticks: bool = True
+    reference_holes: bool = True
+
     def build(self):
         return _add_edge_tube_receiver_interface(
-            _build_edge_body()
+            _build_edge_body(
+                reference_ticks=self.reference_ticks,
+                reference_holes=self.reference_holes,
+            ),
+            reference_ticks=self.reference_ticks,
         ).with_appearance(SOURCE_RED)
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerLeftTubeReceiver:
     """Medium left Corner tube coupler with one female dovetail receiver."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         body = _build_edge_like(
             profile_key="corner_left",
             relief_key="corner_left",
             screw_x=MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_receiver_interface(
             body,
@@ -950,14 +1068,20 @@ class Hub75FrameCouplerCornerLeftTubeReceiver:
 
 
 @component
+@dataclass
 class Hub75FrameCouplerCornerRightTubeReceiver:
     """Medium right Corner tube coupler with one female dovetail receiver."""
+
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
         body = _build_edge_like(
             profile_key="corner_right",
             relief_key="corner_right",
             screw_x=-MEDIUM["screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_receiver_interface(
             body,

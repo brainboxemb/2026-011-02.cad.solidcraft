@@ -1,10 +1,7 @@
 schema: 1
-branch: feature/237-optional-coupler-reference-patterns
+branch: feature/239-disable-hub75-display-frame-2panel
 
 modules: []
-models:
-  - hub75-frame-coupler
-  - hub75-display-frame-2panel
+models: []
 tasks:
   - test
-  - build

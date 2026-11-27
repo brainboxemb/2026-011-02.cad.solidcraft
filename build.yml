@@ -1,8 +1,9 @@
 schema: 1
-branch: issue/255-process-false-template-sync
+branch: issue/259-runtime-candidate-template-sync
 
 modules:
   - ci
+  - build
 models: []
 tasks:
   - test

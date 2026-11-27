@@ -3,7 +3,12 @@ import os
 import unittest
 from unittest.mock import patch
 
-from cad_model_ci.config import BuildSelection, ForgeDependency, ProjectConfig
+from cad_model_ci.config import (
+    BuildSelection,
+    ForgeDependency,
+    ProjectConfig,
+    SolidCraftCandidate,
+)
 from cad_model_ci.items import CadModel, PythonModule
 from cad_model_ci.runner import build_models, execute, test_module
 
@@ -53,6 +58,33 @@ class RunnerTests(unittest.TestCase):
         self.assertIn(str(Path("modules/build/src").resolve()), env["PYTHONPATH"])
         self.assertIn("--model", command)
         self.assertIn("box", command)
+
+    @patch("cad_model_ci.runner._run")
+    def test_model_batch_forwards_digest_pinned_runtime_candidate(self, run):
+        model = CadModel(
+            id="box",
+            root=Path("models/box"),
+            builder="forge",
+            source=Path("scpf/model.py"),
+        )
+        candidate = SolidCraftCandidate(
+            "ghcr.io/brainboxemb/cad-solidcraft@sha256:" + "a" * 64,
+            "0.50.0",
+        )
+
+        build_models(
+            repo=Path("."),
+            build_module_root=Path("modules/build"),
+            namespace="dev",
+            models=(model,),
+            solidcraft_candidate=candidate,
+        )
+
+        command = run.call_args.args[0]
+        self.assertIn("--solidcraft-image", command)
+        self.assertIn(candidate.image, command)
+        self.assertIn("--solidcraft-version", command)
+        self.assertIn(candidate.version, command)
 
     @patch("cad_model_ci.runner.build_models")
     @patch("cad_model_ci.runner.test_module")

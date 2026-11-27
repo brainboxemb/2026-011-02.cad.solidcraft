@@ -17,6 +17,10 @@ class BuildConfigError(ValueError):
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 _VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
+_SOLIDCRAFT_VERSION = re.compile(r"^\d+\.\d+\.\d+$")
+_SOLIDCRAFT_CANDIDATE_IMAGE = re.compile(
+    r"^ghcr\.io/brainboxemb/cad-solidcraft@sha256:[0-9a-f]{64}$"
+)
 _PNG = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*\.png$")
 _SUPPORTED_ARTIFACTS = frozenset({"stl"})
 _ARTIFACT_QUALITY = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
@@ -34,6 +38,27 @@ class ForgePin:
 class SolidCraftPin:
     image: str
     version: str
+
+
+def candidate_solidcraft_pin(
+    image: str | None,
+    version: str | None,
+) -> SolidCraftPin | None:
+    """Validate one branch-local immutable SolidCraft runtime candidate."""
+    if image is None and version is None:
+        return None
+    if image is None or version is None:
+        raise BuildConfigError(
+            "candidate SolidCraft image and version must be supplied together"
+        )
+    if _SOLIDCRAFT_CANDIDATE_IMAGE.fullmatch(image) is None:
+        raise BuildConfigError(
+            "candidate SolidCraft image must be "
+            "ghcr.io/brainboxemb/cad-solidcraft@sha256:<64 lowercase hex>"
+        )
+    if _SOLIDCRAFT_VERSION.fullmatch(version) is None:
+        raise BuildConfigError("candidate SolidCraft version must be X.Y.Z")
+    return SolidCraftPin(image=image, version=version)
 
 
 @dataclass(frozen=True)

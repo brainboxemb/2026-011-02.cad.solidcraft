@@ -44,6 +44,7 @@ def build_models(
     build_module_root: Path,
     namespace: str,
     models: tuple[CadModel, ...],
+    solidcraft_candidate=None,
 ) -> None:
     if not models:
         return
@@ -57,6 +58,13 @@ def build_models(
         "--namespace",
         namespace,
     ]
+    if solidcraft_candidate is not None:
+        command.extend([
+            "--solidcraft-image",
+            solidcraft_candidate.image,
+            "--solidcraft-version",
+            solidcraft_candidate.version,
+        ])
     for model in models:
         command.extend(["--model", model.id])
 
@@ -82,4 +90,5 @@ def execute(
             build_module_root=repo / project.modules_root / "build",
             namespace=namespace,
             models=models,
+            solidcraft_candidate=selection.solidcraft_candidate,
         )

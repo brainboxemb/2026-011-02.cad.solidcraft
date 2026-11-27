@@ -5,6 +5,7 @@ import unittest
 from cad_model_build.config import (
     active_variant_ids,
     BuildConfigError,
+    candidate_solidcraft_pin,
     discover_models,
     load_project,
 )
@@ -41,6 +42,27 @@ def write_source(model: Path, relative: str) -> None:
 
 
 class BuildConfigTests(unittest.TestCase):
+    def test_digest_pinned_candidate_is_accepted_independently(self):
+        digest = "a" * 64
+        candidate = candidate_solidcraft_pin(
+            f"ghcr.io/brainboxemb/cad-solidcraft@sha256:{digest}",
+            "0.50.0",
+        )
+        self.assertEqual(candidate.version, "0.50.0")
+        self.assertTrue(candidate.image.endswith(digest))
+
+    def test_candidate_rejects_mutable_tag_and_incomplete_pair(self):
+        with self.assertRaisesRegex(BuildConfigError, "sha256"):
+            candidate_solidcraft_pin(
+                "ghcr.io/brainboxemb/cad-solidcraft:edge",
+                "0.50.0",
+            )
+        with self.assertRaisesRegex(BuildConfigError, "supplied together"):
+            candidate_solidcraft_pin(
+                "ghcr.io/brainboxemb/cad-solidcraft@sha256:" + "a" * 64,
+                None,
+            )
+
     def test_single_source_is_one_variant_with_owner_id(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

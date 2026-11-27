@@ -2,7 +2,7 @@ from pathlib import Path
 import unittest
 
 from cad_model_ci.items import CadModel, PythonModule
-from cad_model_ci.config import BuildSelection
+from cad_model_ci.config import BuildSelection, SolidCraftCandidate
 from cad_model_ci.selection import changed_selection, expand_model_dependents
 
 
@@ -82,6 +82,24 @@ class SelectionTests(unittest.TestCase):
             tasks=("test", "build"),
         )
         result = expand_model_dependents(selection, MODELS)
+        self.assertEqual(result.models, ("box", "screen", "case"))
+
+    def test_dependent_expansion_preserves_runtime_candidate(self):
+        candidate = SolidCraftCandidate(
+            "ghcr.io/brainboxemb/cad-solidcraft@sha256:" + "a" * 64,
+            "0.50.0",
+        )
+        selection = BuildSelection(
+            branch="issue/122-runtime",
+            modules=(),
+            models=("box",),
+            tasks=("test", "build"),
+            solidcraft_candidate=candidate,
+        )
+
+        result = expand_model_dependents(selection, MODELS)
+
+        self.assertIs(result.solidcraft_candidate, candidate)
         self.assertEqual(result.models, ("box", "screen", "case"))
 
     def test_changed_process_false_model_is_not_selected_automatically(self):

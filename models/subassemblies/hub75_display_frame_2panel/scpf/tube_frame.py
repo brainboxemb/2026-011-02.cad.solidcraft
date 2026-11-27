@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from scpf import Configure, Param, Placement, assembly
+from scpf import Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 from models.components.hub75_frame_coupler.scpf.family import (
@@ -185,14 +185,14 @@ class Hub75DisplayFrame2PanelTube:
             coupler_reference_ticks=self.coupler_reference_ticks,
             coupler_reference_holes=self.coupler_reference_holes,
         )
-        return Configure(
-            frame,
+        frame.configure(
             active="Medium",
-            columns=(Param(self.clamp_bore),),
+            columns=(self.clamp_bore,),
             # This mounted parent owns the effective clamp fit explicitly.
             # Reusable clamp components do not carry a global Installed rule.
             rows={"Medium": ("tube_d",)},
         )
+        return frame
 
 
 Hub75DisplayFrame2PanelTube()

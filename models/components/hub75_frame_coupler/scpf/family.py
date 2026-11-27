@@ -13,11 +13,8 @@ from scpf import (
     AxisLine,
     Cone,
     cadmath,
-    Configure,
     Cylinder,
-    Param,
     Sketch,
-    Suppress,
     component,
 )
 
@@ -944,10 +941,10 @@ class _ConfiguredCouplerRoot:
             mid_guide=self.mid_guide,
         )
         columns = [
-            Param(self.mid_size),
-            Param(self.mid_wall),
-            Param(self.mid_base),
-            Param(self.mid_guide),
+            self.mid_size,
+            self.mid_wall,
+            self.mid_base,
+            self.mid_guide,
         ]
         rows = {
             "Small": ["60 mm", "2 mm", "2 mm", "4 mm"],
@@ -955,17 +952,17 @@ class _ConfiguredCouplerRoot:
             "Large": ["100 mm", "6 mm", "4 mm", "10 mm"],
         }
         if self.suppress_panel_pin:
-            columns.append(Suppress(child.feature(_PANEL_PIN_FEATURE)))
+            columns.append(child.feature(_PANEL_PIN_FEATURE))
             rows["Small"].append(True)
             rows["Medium"].append(True)
             rows["Large"].append(False)
 
-        return Configure(
-            child,
+        child.configure(
             active="Medium",
             columns=tuple(columns),
             rows={name: tuple(values) for name, values in rows.items()},
         )
+        return child
 
 
 class Hub75FrameCouplerMiddleModel(_ConfiguredCouplerRoot):

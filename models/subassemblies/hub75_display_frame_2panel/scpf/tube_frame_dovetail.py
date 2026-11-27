@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from scpf import Configure, Param, assembly
+from scpf import assembly
 from models.components.hub75_frame_coupler.scpf.family import (
     Hub75FrameCouplerEdgeTubeReceiver,
     Hub75FrameCouplerCornerLeftTubeReceiver,
@@ -52,13 +52,13 @@ class Hub75DisplayFrame2PanelTubeDovetail:
             coupler_reference_ticks=self.coupler_reference_ticks,
             coupler_reference_holes=self.coupler_reference_holes,
         )
-        return Configure(
-            frame,
+        frame.configure(
             active="Medium",
-            columns=(Param(self.clamp_bore),),
+            columns=(self.clamp_bore,),
             # This mounted parent owns the effective clamp fit explicitly.
             rows={"Medium": ("tube_d",)},
         )
+        return frame
 
 
 Hub75DisplayFrame2PanelTubeDovetail()

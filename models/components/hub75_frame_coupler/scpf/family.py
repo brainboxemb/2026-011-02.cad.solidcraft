@@ -1347,3 +1347,30 @@ class Hub75FrameCouplerCornerRightTubeReceiver:
             side="right",
         ).with_appearance(SOURCE_RED)
 
+class Hub75FrameCouplerEdgeTubeModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerEdgeTube
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftTubeModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerLeftTube
+
+
+class Hub75FrameCouplerCornerRightTubeModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerRightTube
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerEdgeTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerEdgeTubeReceiver
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerLeftTubeReceiver
+
+
+class Hub75FrameCouplerCornerRightTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = Hub75FrameCouplerCornerRightTubeReceiver
+    suppress_panel_pin = True
+

@@ -213,6 +213,22 @@ class BuildPlanTests(unittest.TestCase):
             )
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
+    def test_qualification_ref_is_additive_forge_evidence(self, _source_sha):
+        with tempfile.TemporaryDirectory() as tmp:
+            ref = "e" * 40
+            plan = resolve_plan(
+                repo=Path(tmp),
+                project=self.project(),
+                models=(),
+                selected_ids=(),
+                namespace="dev",
+                forge_ref=ref,
+            )
+
+            self.assertEqual(plan["forge"]["version"], "v0.14.0")
+            self.assertEqual(plan["forge"]["qualification_ref"], ref)
+
+    @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
     def test_main_is_a_valid_output_namespace(self, _source_sha):
         with tempfile.TemporaryDirectory() as tmp:
             plan = resolve_plan(

@@ -3,7 +3,13 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from cad_model_build.forge import _drawing_artifacts, compile_plan, install_url
+from cad_model_build.config import ForgePin
+from cad_model_build.forge import (
+    _drawing_artifacts,
+    build_wheel,
+    compile_plan,
+    install_url,
+)
 
 
 class ForgeBuildTests(unittest.TestCase):
@@ -13,6 +19,34 @@ class ForgeBuildTests(unittest.TestCase):
             "@v0.15.0#subdirectory=cadlib",
             install_url("brainboxemb/lib.py.solidcraft.forge", version),
         )
+
+    @patch("cad_model_build.forge.subprocess.run")
+    def test_build_wheel_uses_exact_qualification_ref(self, run):
+        with tempfile.TemporaryDirectory() as tmp:
+            wheel_dir = Path(tmp)
+            ref = "f" * 40
+
+            def fake_run(command, **_kwargs):
+                self.assertIn(
+                    f"@{ref}#subdirectory=cadlib",
+                    command[-1],
+                )
+                (wheel_dir / "scpf-0.0.0-py3-none-any.whl").write_text(
+                    "",
+                    encoding="utf-8",
+                )
+
+            run.side_effect = fake_run
+            wheel = build_wheel(
+                ForgePin(
+                    "brainboxemb/lib.py.solidcraft.forge",
+                    "v0.15.0",
+                ),
+                wheel_dir,
+                qualification_ref=ref,
+            )
+
+            self.assertEqual(wheel.name, "scpf-0.0.0-py3-none-any.whl")
 
     def test_drawing_artifact_accepts_legacy_and_additive_metadata(self):
         legacy = {

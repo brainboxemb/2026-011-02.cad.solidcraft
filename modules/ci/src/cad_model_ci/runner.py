@@ -44,6 +44,7 @@ def build_models(
     build_module_root: Path,
     namespace: str,
     models: tuple[CadModel, ...],
+    forge_ref: str | None = None,
 ) -> None:
     if not models:
         return
@@ -57,6 +58,9 @@ def build_models(
         "--namespace",
         namespace,
     ]
+    if forge_ref is not None:
+        command.extend(["--forge-ref", forge_ref])
+
     for model in models:
         command.extend(["--model", model.id])
 
@@ -82,4 +86,5 @@ def execute(
             build_module_root=repo / project.modules_root / "build",
             namespace=namespace,
             models=models,
+            forge_ref=selection.forge_ref,
         )

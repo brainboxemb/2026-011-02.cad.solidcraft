@@ -19,6 +19,7 @@ class ConfigError(ValueError):
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 _VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
+_COMMIT_SHA = re.compile(r"^[0-9a-f]{40}$")
 
 
 @dataclass(frozen=True)
@@ -43,6 +44,7 @@ class BuildSelection:
     modules: tuple[str, ...] | None
     models: tuple[str, ...] | None
     tasks: tuple[str, ...]
+    forge_ref: str | None = None
 
 
 def full_selection(branch: str) -> BuildSelection:
@@ -146,11 +148,38 @@ def load_build(repo: Path, branch: str) -> BuildSelection | None:
     if unsupported:
         raise ConfigError(f"unsupported task(s): {', '.join(unsupported)}")
 
+    forge_ref = None
+    qualification = data.get("qualification")
+    if qualification is not None:
+        if not isinstance(qualification, dict) or set(qualification) != {"forge"}:
+            raise ConfigError(
+                f"qualification may contain only forge: {path}"
+            )
+        forge = qualification.get("forge")
+        if not isinstance(forge, dict) or set(forge) != {"ref"}:
+            raise ConfigError(
+                f"qualification.forge must contain only ref: {path}"
+            )
+        forge_ref = forge.get("ref")
+        if (
+            not isinstance(forge_ref, str)
+            or not _COMMIT_SHA.fullmatch(forge_ref)
+        ):
+            raise ConfigError(
+                f"qualification.forge.ref must be an exact 40-character "
+                f"lowercase commit SHA: {path}"
+            )
+        if "build" not in tasks:
+            raise ConfigError(
+                f"qualification.forge.ref requires the build task: {path}"
+            )
+
     return BuildSelection(
         branch=branch,
         modules=_ids(data.get("modules"), "modules", path),
         models=_ids(data.get("models"), "models", path),
         tasks=tuple(tasks),
+        forge_ref=forge_ref,
     )
 
 

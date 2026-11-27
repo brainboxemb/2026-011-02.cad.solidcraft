@@ -3,16 +3,34 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 import tempfile
 
-from .config import discover_models, load_project
+from .config import BuildConfigError, discover_models, load_project
 from .forge import build_wheel, compile_plan, tested_solidcraft_version
 from .native import run_native_batch
 from .plan import resolve_plan, write_plan
 
 
-def execute(*, repo: Path, namespace: str, selected_ids: tuple[str, ...]) -> Path:
+_COMMIT_SHA = re.compile(r"^[0-9a-f]{40}$")
+
+
+def execute(
+    *,
+    repo: Path,
+    namespace: str,
+    selected_ids: tuple[str, ...],
+    forge_ref: str | None = None,
+) -> Path:
     repo = repo.resolve()
+    if (
+        forge_ref is not None
+        and not _COMMIT_SHA.fullmatch(forge_ref)
+    ):
+        raise BuildConfigError(
+            "Forge qualification ref must be an exact 40-character "
+            "lowercase commit SHA"
+        )
     project = load_project(repo)
     models = discover_models(repo, project)
     plan = resolve_plan(
@@ -21,6 +39,7 @@ def execute(*, repo: Path, namespace: str, selected_ids: tuple[str, ...]) -> Pat
         models=models,
         selected_ids=selected_ids,
         namespace=namespace,
+        forge_ref=forge_ref,
     )
 
     output_root = repo / project.output_root / namespace
@@ -29,11 +48,16 @@ def execute(*, repo: Path, namespace: str, selected_ids: tuple[str, ...]) -> Pat
         return plan_path
 
     with tempfile.TemporaryDirectory(prefix="cad-model-forge-") as tmp:
-        wheel = build_wheel(project.forge, Path(tmp))
+        wheel = build_wheel(
+            project.forge,
+            Path(tmp),
+            qualification_ref=forge_ref,
+        )
         qualified = tested_solidcraft_version(wheel)
         if qualified != project.solidcraft.version:
             raise RuntimeError(
-                f"Forge {project.forge.version} qualifies SolidCraft {qualified}, "
+                f"Forge {forge_ref or project.forge.version} qualifies "
+                f"SolidCraft {qualified}, "
                 f"but ci.yml pins {project.solidcraft.version}"
             )
 

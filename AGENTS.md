@@ -109,30 +109,6 @@ module/model/task selection.
 If it does not match, ignore `build.yml` and run full. A stale build file is
 not a CI failure.
 
-### Runtime candidate qualification
-
-Permanent `ci.yml.dependencies.solidcraft` must always point at a released
-`cad-solidcraft:vX.Y.Z` runtime.
-
-A matching temporary work-branch `build.yml` may qualify selected models
-against one unreleased SolidCraft candidate, but only when the image is pinned
-by immutable OCI digest:
-
-```yaml
-runtime:
-  solidcraft:
-    image: ghcr.io/brainboxemb/cad-solidcraft@sha256:<64 lowercase hex>
-    version: 0.50.0
-```
-
-This override is verification-only. It is ignored on `dev` and `main`, is
-never published as permanent build output, and must not use mutable tags such
-as `:edge` or `:sha-...`.
-
-The released Forge wheel is still checked against the permanent SolidCraft
-baseline from root `ci.yml`; the candidate changes only the native replay
-runtime for the selected work-branch model builds.
-
 ### process-disabled model owners
 
 A model-local `ci.yml` may set `process: false` to park that physical owner.

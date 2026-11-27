@@ -2,15 +2,7 @@
 
 from math import radians, tan
 
-from scpf import (
-    Always,
-    ConfigRule,
-    Configure,
-    DriveParameter,
-    Param,
-    Sketch,
-    component,
-)
+from scpf import Configure, Param, Sketch, component
 
 from models.components.hub75_tube_clamp.scpf.common import (
     CLAMP_WALL,
@@ -171,16 +163,8 @@ class Hub75TubeClampMaleCatalog:
             columns=(Param(self.clamp_bore),),
             rows={
                 "Free": ("tube_d-clamp_interference",),
+                "Installed": ("tube_d",),
             },
-            rules=(
-                ConfigRule(
-                    "installed",
-                    "Installed",
-                    enabled=False,
-                    condition=Always(),
-                    effect=DriveParameter(self.clamp_bore, self.tube_d),
-                ),
-            ),
         )
 
 

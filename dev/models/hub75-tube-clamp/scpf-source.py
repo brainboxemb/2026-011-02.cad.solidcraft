@@ -2,7 +2,7 @@
 
 from math import cos, radians, sin, tan
 
-from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Sketch, component
+from scpf import Configure, Param, Sketch, component
 
 from models.components.hub75_tube_clamp.scpf.common import (
     CLAMP_WALL,
@@ -192,8 +192,8 @@ class Hub75TubeClamp:
     clamp_bore = 9.6
 
     def build(self):
-        # clamp_bore is a real native parameter. The document-level
-        # Configuration Rule may drive it to tube_d for Installed geometry.
+        # clamp_bore is a real native parameter. The owning document decides
+        # which expression/configuration drives it.
         clamp_r = self.clamp_bore / 2.0
         clamp_r_out = clamp_r + CLAMP_WALL
 
@@ -253,16 +253,8 @@ class Hub75TubeClampCatalog:
             columns=(Param(self.clamp_bore),),
             rows={
                 "Free": ("tube_d-clamp_interference",),
+                "Installed": ("tube_d",),
             },
-            rules=(
-                ConfigRule(
-                    "installed",
-                    "Installed",
-                    enabled=False,
-                    condition=Always(),
-                    effect=DriveParameter(self.clamp_bore, self.tube_d),
-                ),
-            ),
         )
 
 

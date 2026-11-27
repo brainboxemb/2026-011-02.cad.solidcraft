@@ -1,9 +1,7 @@
 schema: 1
-branch: issue/277-forge-qualification-ref
+branch: issue/281-hub75-installed-change
 
-modules:
-  - ci
-  - build
+modules: []
 models: []
 tasks:
   - test

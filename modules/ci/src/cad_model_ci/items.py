@@ -34,6 +34,7 @@ class CadModel:
     watch: tuple[str, ...] = ()
     priority: int = _DEFAULT_MODEL_PRIORITY
     dependencies: tuple[str, ...] = ()
+    process: bool = True
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -233,9 +234,6 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[CadModel, ...]:
         process = data.get("process", True)
         if type(process) is not bool:
             raise ConfigError(f"model process must be boolean: {path}")
-        if not process:
-            continue
-
         model_id = _id(data, path)
         if model_id in seen:
             raise ConfigError(f"duplicate model id {model_id!r}: {path}")
@@ -269,6 +267,7 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[CadModel, ...]:
                     model_id=model_id,
                     path=path,
                 ),
+                process=process,
             )
         )
 
@@ -278,7 +277,10 @@ def discover_models(repo: Path, project: ProjectConfig) -> tuple[CadModel, ...]:
 
 def select(items, selected_ids: tuple[str, ...] | None):
     if selected_ids is None:
-        return items
+        return tuple(
+            item for item in items
+            if getattr(item, "process", True)
+        )
     by_id = {item.id: item for item in items}
     missing = [item_id for item_id in selected_ids if item_id not in by_id]
     if missing:

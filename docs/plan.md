@@ -4,12 +4,7 @@ This file contains unfinished work only.
 
 ## Now
 
-### #250 — adopt Forge v0.26 / SolidCraft 0.50 configuration baseline
-
-Adopt released Forge v0.26.0 and immutable runtime v0.3.8 / SolidCraft 0.50.0.
-Keep HUB75 tube-clamp Free/Installed on direct Parameter configuration and
-migrate the real frame-coupler panel-pin history cut to scoped
-`feature(..., suppressed=True)` authoring.
+No active work selected.
 
 ## Mandatory integration rule
 

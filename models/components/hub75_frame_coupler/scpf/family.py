@@ -332,9 +332,57 @@ def _join_tapered_seam_guide(body, *, p, profile_key, steps=16):
     return body
 
 
+def _edge_guide_end_profiles(p):
+    """Return the retained six Edge end cuts with exact symbolic arc centers."""
+    loops = _source_profile("edge", "guide_end", p)
+
+    u = p["edge_end_u"]
+    run = p["edge_end_run"]
+    g = p["edge_end_g"]
+    outer_offset = p["edge_or"] - p["mid_wall"]
+    inner_level = p["edge_end_inner"] + p["mid_fit"]
+    ix = p["mid_ix"]
+    rear_level = p["mid_fit"] - p["edge_end_rear"]
+
+    centers = (
+        ((-u, -(inner_level - outer_offset)), (-(u + run), -(inner_level + g))),
+        ((u, -(inner_level - outer_offset)), ((u + run), -(inner_level + g))),
+        ((-(ix - outer_offset), -u), (-(ix + g), -(u + run))),
+        (((ix - outer_offset), -u), ((ix + g), -(u + run))),
+        ((-u, rear_level - outer_offset), (-(u + run), rear_level + g)),
+        ((u, rear_level - outer_offset), ((u + run), rear_level + g)),
+    )
+    clockwise = (
+        (False, True),
+        (True, False),
+        (True, False),
+        (False, True),
+        (True, False),
+        (False, True),
+    )
+
+    converted = []
+    for loop_index, loop in enumerate(loops):
+        arc_index = 0
+        segments = []
+        for segment in loop["segments"]:
+            if segment["kind"] != "arc_through":
+                segments.append(segment)
+                continue
+            row = dict(segment)
+            row["kind"] = "arc"
+            row.pop("through", None)
+            row["center"] = centers[loop_index][arc_index]
+            row["clockwise"] = clockwise[loop_index][arc_index]
+            arc_index += 1
+            segments.append(row)
+        converted.append({"start": loop["start"], "segments": segments})
+    return converted
+
+
 def _cut_edge_guide_end_rounding(body, *, p):
     """Apply native Edge guide-end rounding cut from features 137–138."""
-    for index, loop in enumerate(_source_profile("edge", "guide_end", p), start=1):
+    for index, loop in enumerate(_edge_guide_end_profiles(p), start=1):
         cut = _profile_solid(
             name=f"Edge guide-end rounding {index}",
             loops=[loop],

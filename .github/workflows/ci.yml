@@ -39,6 +39,15 @@ jobs:
           PYTHONPATH: modules/ci/src
         run: python -m cad_model_ci
 
+      - name: Verify #189 saved configuration switching
+        run: |
+          docker run --rm --pull=never \
+            -e SOLIDCRAFT_GPU=cpu \
+            -v "$PWD/build/dev:/output:ro" \
+            -v "$PWD/.github/verify-189.py:/verify.py:ro" \
+            ghcr.io/brainboxemb/cad-solidcraft:v0.3.6 \
+            python /verify.py
+
   build:
     name: build
     if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')

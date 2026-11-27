@@ -340,7 +340,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-display-frame-2panel/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -424,7 +424,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-display-frame-2panel-tube/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -508,7 +508,7 @@
     {
       "artifact_options": {},
       "artifacts": [],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-display-frame-2panel-tube-dovetail/solidcraft.json",
       "dependencies": [
         "hub75-panel",
@@ -630,7 +630,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-left/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -711,7 +711,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-left-tube/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -792,7 +792,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-left-tube-receiver/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -873,7 +873,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-right/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -954,7 +954,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-right-tube/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1035,7 +1035,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-corner-right-tube-receiver/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1116,7 +1116,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-edge/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1197,7 +1197,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-edge-tube/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1278,7 +1278,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-edge-tube-receiver/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -1359,7 +1359,7 @@
       "artifacts": [
         "stl"
       ],
-      "built_source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43",
+      "built_source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0",
       "commands": "models/hub75-frame-coupler-middle/solidcraft.json",
       "dependencies": [],
       "drawings": [],
@@ -2635,5 +2635,5 @@
     "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.6",
     "version": "0.49.0"
   },
-  "source_sha": "61d046bda79e39f03feeb4bd943b364e38a10c43"
+  "source_sha": "c07426e298e2d11cd73e087cf30fbbbadeabd7c0"
 }

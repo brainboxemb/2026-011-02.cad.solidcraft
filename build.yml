@@ -1,9 +1,7 @@
 schema: 1
-branch: fix/259-remove-runtime-candidate
+branch: issue/264-plan-reconcile
 
-modules:
-  - ci
-  - build
+modules: []
 models: []
 tasks:
   - test

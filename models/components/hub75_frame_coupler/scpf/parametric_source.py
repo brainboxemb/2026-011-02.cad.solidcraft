@@ -144,6 +144,7 @@ def source_profiles(feature_id, *, frame, values):
     loops = []
     current = None
     start_raw = None
+    start_index = None
     segments = []
 
     for curve in curves:
@@ -153,82 +154,50 @@ def source_profiles(feature_id, *, frame, values):
         raw_b = _raw_point(feature, b, frame)
 
         if current is None:
-            start_index, end_index = a, b
+            curve_start, curve_end = a, b
+            start_index = curve_start
             start_raw = raw_a
+            current = raw_a
         elif _same(current, raw_a):
-            start_index, end_index = a, b
+            curve_start, curve_end = a, b
         elif _same(current, raw_b):
-            start_index, end_index = b, a
+            curve_start, curve_end = b, a
         else:
             raise ValueError(
                 f"feature {feature_id}: disconnected curve {curve['id']!r}"
             )
 
-        if current is None:
-            current = _raw_point(feature, start_index, frame)
-
         if curve["type"] == "line":
             segment = {
                 "kind": "line",
-                "end": _point(feature, end_index, frame, values),
+                "end": _point(feature, curve_end, frame, values),
             }
         else:
             # SolidCraft stores the solved center at curve['c']; the preceding
             # authored point is the source three-point arc's through point and
             # retains its symbolic expressions.
-            through_index = curve["c"] - 1
             segment = {
                 "kind": "arc_through",
-                "end": _point(feature, end_index, frame, values),
-                "through": _point(feature, through_index, frame, values),
+                "end": _point(feature, curve_end, frame, values),
+                "through": _point(feature, curve["c"] - 1, frame, values),
             }
 
         segments.append(segment)
-        current = _raw_point(feature, end_index, frame)
+        current = _raw_point(feature, curve_end, frame)
 
         if _same(current, start_raw):
             loops.append({
-                "start": _point(feature, start_index if len(segments) == 1 else None, frame, values)
-                if len(segments) == 1
-                else None,
+                "start": _point(feature, start_index, frame, values),
                 "segments": segments,
             })
-            # Replace the placeholder start below from the first segment's
-            # actual curve start, retained separately for multi-segment loops.
-            loops[-1]["start"] = _point(
-                feature,
-                _loop_start_index(feature, curves, curve, segments, frame),
-                frame,
-                values,
-            )
             current = None
             start_raw = None
+            start_index = None
             segments = []
 
     if current is not None or segments:
         raise ValueError(f"feature {feature_id}: source profile did not close")
     return loops
-
-
-def _loop_start_index(feature, curves, terminal_curve, segments, frame):
-    """Recover a loop's first endpoint from the ordered source curve slice."""
-    terminal_position = curves.index(terminal_curve)
-    first_position = terminal_position - len(segments) + 1
-    first = curves[first_position]
-    a = first["a"]
-    b = first["b"]
-    if len(segments) == 1:
-        return a
-
-    second = curves[first_position + 1]
-    second_a = _raw_point(feature, second["a"], frame)
-    second_b = _raw_point(feature, second["b"], frame)
-    raw_a = _raw_point(feature, a, frame)
-    raw_b = _raw_point(feature, b, frame)
-    if _same(raw_a, second_a) or _same(raw_a, second_b):
-        return b
-    return a
-
 
 def source_circle_centers(feature_id, *, frame, values):
     """Return physical-local centers for all authored circles in a sketch."""

@@ -1,8 +1,8 @@
 schema: 1
-branch: feature/241-forge-v0.24-baseline
+branch: fix/243-pages-skip-disabled-models
 
-modules: []
-models: all
+modules:
+  - pages
+models: []
 tasks:
   - test
-  - build

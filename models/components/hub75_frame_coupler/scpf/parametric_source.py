@@ -22,7 +22,7 @@ def _expression(text, values):
     node = ast.parse(text, mode="eval").body
 
     def unitless_clamp(item):
-        """Return the retained min(1,max(0,floor(...))) floor call, or None."""
+        """Return X from the retained dimensionless min(1,max(0,X)) gate."""
         if not (
             isinstance(item, ast.Call)
             and isinstance(item.func, ast.Name)
@@ -40,13 +40,9 @@ def _expression(text, values):
             and len(maximum.args) == 2
             and isinstance(maximum.args[0], ast.Constant)
             and maximum.args[0].value == 0
-            and isinstance(maximum.args[1], ast.Call)
-            and isinstance(maximum.args[1].func, ast.Name)
-            and maximum.args[1].func.id == "floor"
-            and len(maximum.args[1].args) == 1
         ):
             return None
-        return maximum.args[1].args[0]
+        return maximum.args[1]
 
     def unitless_clamp_complement(item):
         return (
@@ -56,6 +52,68 @@ def _expression(text, values):
             and item.left.value == 1
             and unitless_clamp(item.right) is not None
         )
+
+    def visit_dimensionless(item):
+        """Evaluate a source subtree whose numeric literals are unitless."""
+        one = values["mid_size"] / values["mid_size"]
+        zero = one - one
+
+        if isinstance(item, ast.Constant):
+            if isinstance(item.value, (int, float)) and not isinstance(item.value, bool):
+                return zero + one * item.value
+            raise ValueError(f"unsupported source literal {item.value!r}")
+        if isinstance(item, ast.Name):
+            try:
+                return values[item.id]
+            except KeyError as exc:
+                raise ValueError(f"unknown source parameter {item.id!r}") from exc
+        if isinstance(item, ast.UnaryOp):
+            value = visit_dimensionless(item.operand)
+            if isinstance(item.op, ast.USub):
+                return -value
+            if isinstance(item.op, ast.UAdd):
+                return value
+            raise ValueError(
+                f"unsupported source unary operator {type(item.op).__name__}"
+            )
+        if isinstance(item, ast.BinOp):
+            if isinstance(item.op, ast.Div):
+                # Ratios such as (length expression)/(length expression) are
+                # dimensionless even though their individual operands are not.
+                return visit(item.left) / visit(item.right)
+            if isinstance(item.op, ast.Mult):
+                left_is_number = isinstance(item.left, ast.Constant)
+                right_is_number = isinstance(item.right, ast.Constant)
+                if left_is_number or right_is_number:
+                    return visit_dimensionless(item.left) * visit_dimensionless(item.right)
+                return visit(item.left) * visit(item.right)
+            left = visit_dimensionless(item.left)
+            right = visit_dimensionless(item.right)
+            if isinstance(item.op, ast.Add):
+                return left + right
+            if isinstance(item.op, ast.Sub):
+                return left - right
+            if isinstance(item.op, ast.Pow):
+                return left ** right
+            raise ValueError(
+                f"unsupported source binary operator {type(item.op).__name__}"
+            )
+        if isinstance(item, ast.Call) and isinstance(item.func, ast.Name):
+            functions = {
+                "min": cadmath.min,
+                "max": cadmath.max,
+                "round": cadmath.round,
+                "floor": cadmath.floor,
+                "abs": cadmath.abs,
+            }
+            try:
+                function = functions[item.func.id]
+            except KeyError as exc:
+                raise ValueError(
+                    f"unsupported dimensionless source function {item.func.id!r}"
+                ) from exc
+            return function(*(visit_dimensionless(arg) for arg in item.args))
+        return visit(item)
 
     def visit(item):
         if isinstance(item, ast.Constant):
@@ -101,7 +159,7 @@ def _expression(text, values):
                 zero = one - one
                 return cadmath.min(
                     one,
-                    cadmath.max(zero, cadmath.floor(visit(clamp_value))),
+                    cadmath.max(zero, visit_dimensionless(clamp_value)),
                 )
             functions = {
                 "min": cadmath.min,

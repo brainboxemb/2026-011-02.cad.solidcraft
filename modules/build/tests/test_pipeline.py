@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from cad_model_build.config import ForgePin, ProjectConfig, SolidCraftPin
+from cad_model_build.config import BuildConfigError, ForgePin, ProjectConfig, SolidCraftPin
 from cad_model_build.pipeline import execute
 
 
@@ -21,6 +21,19 @@ class PipelineTests(unittest.TestCase):
             models_root=Path("models"),
             output_root=Path("build"),
         )
+
+    def test_invalid_forge_qualification_ref_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(
+                BuildConfigError,
+                "exact 40-character lowercase commit SHA",
+            ):
+                execute(
+                    repo=Path(tmp),
+                    namespace="dev",
+                    selected_ids=(),
+                    forge_ref="exp",
+                )
 
     @patch("cad_model_build.pipeline.run_native_batch")
     @patch("cad_model_build.pipeline.compile_plan")
@@ -85,9 +98,23 @@ class PipelineTests(unittest.TestCase):
             wheel = repo / "scpf.whl"
             build_wheel.return_value = wheel
 
-            actual = execute(repo=repo, namespace="dev", selected_ids=("box",))
+            ref = "a" * 40
+            actual = execute(
+                repo=repo,
+                namespace="dev",
+                selected_ids=("box",),
+                forge_ref=ref,
+            )
 
             self.assertEqual(actual, expected)
+            self.assertEqual(
+                resolve_plan.call_args.kwargs["forge_ref"],
+                ref,
+            )
+            self.assertEqual(
+                build_wheel.call_args.kwargs["qualification_ref"],
+                ref,
+            )
             compile_plan.assert_called_once()
             run_native.assert_called_once()
 

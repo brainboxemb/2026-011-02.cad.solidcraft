@@ -19,11 +19,21 @@ class ConfigError(ValueError):
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _REPOSITORY = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 _VERSION = re.compile(r"^v\d+\.\d+\.\d+$")
+_SOLIDCRAFT_VERSION = re.compile(r"^\d+\.\d+\.\d+$")
+_SOLIDCRAFT_CANDIDATE_IMAGE = re.compile(
+    r"^ghcr\.io/brainboxemb/cad-solidcraft@sha256:[0-9a-f]{64}$"
+)
 
 
 @dataclass(frozen=True)
 class ForgeDependency:
     repository: str
+    version: str
+
+
+@dataclass(frozen=True)
+class SolidCraftCandidate:
+    image: str
     version: str
 
 
@@ -43,6 +53,7 @@ class BuildSelection:
     modules: tuple[str, ...] | None
     models: tuple[str, ...] | None
     tasks: tuple[str, ...]
+    solidcraft_candidate: SolidCraftCandidate | None = None
 
 
 def full_selection(branch: str) -> BuildSelection:
@@ -83,6 +94,45 @@ def _ids(value: object, field: str, path: Path) -> tuple[str, ...] | None:
     if not all(isinstance(item, str) and _ID.fullmatch(item) for item in value):
         raise ConfigError(f"{field} contains an invalid id: {path}")
     return tuple(value)
+
+
+def _solidcraft_candidate(
+    data: dict[str, Any],
+    path: Path,
+) -> SolidCraftCandidate | None:
+    runtime = data.get("runtime")
+    if runtime is None:
+        return None
+    if not isinstance(runtime, dict) or set(runtime) != {"solidcraft"}:
+        raise ConfigError(
+            f"runtime may contain only solidcraft on a work branch: {path}"
+        )
+    solidcraft = runtime["solidcraft"]
+    if (
+        not isinstance(solidcraft, dict)
+        or set(solidcraft) != {"image", "version"}
+    ):
+        raise ConfigError(
+            f"runtime.solidcraft must contain image and version: {path}"
+        )
+    image = solidcraft.get("image")
+    version = solidcraft.get("version")
+    if (
+        not isinstance(image, str)
+        or _SOLIDCRAFT_CANDIDATE_IMAGE.fullmatch(image) is None
+    ):
+        raise ConfigError(
+            "runtime.solidcraft.image must be the canonical cad-solidcraft "
+            f"image pinned by sha256 digest: {path}"
+        )
+    if (
+        not isinstance(version, str)
+        or _SOLIDCRAFT_VERSION.fullmatch(version) is None
+    ):
+        raise ConfigError(
+            f"runtime.solidcraft.version must be X.Y.Z: {path}"
+        )
+    return SolidCraftCandidate(image=image, version=version)
 
 
 def load_project(repo: Path) -> ProjectConfig:
@@ -151,6 +201,7 @@ def load_build(repo: Path, branch: str) -> BuildSelection | None:
         modules=_ids(data.get("modules"), "modules", path),
         models=_ids(data.get("models"), "models", path),
         tasks=tuple(tasks),
+        solidcraft_candidate=_solidcraft_candidate(data, path),
     )
 
 

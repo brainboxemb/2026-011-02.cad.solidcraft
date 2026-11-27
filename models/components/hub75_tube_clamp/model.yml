@@ -15,16 +15,14 @@ variants:
     description: >
       Existing source-faithful receiving/female clamp interface. Tube diameter,
       clamp interference and clamp bore remain editable dependencies; Ø10 with
-      0.4 mm interference gives a 9.6 mm Free bore. The standalone document
-      exposes Installed by enabling one normally suppressed bore-widening cut
-      to the tube diameter.
+      0.4 mm interference gives a 9.6 mm Free bore; the standalone document also
+      exposes an Installed row that sets the bore to the tube diameter.
     parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
     stages:
       - Reuse the shared elastic clamp-ring geometry
       - Add the active low integrated rounded slide back
       - Cut the active rounded receiving slot while preserving the 1 mm end stop
       - Preserve the parent 0.14 mm slot-entry chamfer
-      - Add one normally suppressed Installed bore-widening history cut
       - Keep Free as the active standalone manufacturing configuration
   hub75-tube-clamp-male:
     title: HUB75 Tube Clamp — Male Dovetail
@@ -40,7 +38,6 @@ variants:
       - Join the final 14-segment symmetric male dovetail profile
       - Preserve the 0.4 mm flat groove bottoms
       - Cut the mirrored final 45-degree flank corrections
-      - Add one normally suppressed Installed bore-widening history cut
       - Keep Free as the active standalone manufacturing configuration
 extra_views:
   title: Clamp fit and interface review

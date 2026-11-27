@@ -2,7 +2,7 @@
 
 from math import radians, tan
 
-from scpf import Cylinder, Sketch, component, feature
+from scpf import Sketch, component
 
 from models.components.hub75_tube_clamp.scpf.common import (
     CLAMP_WALL,
@@ -141,14 +141,6 @@ class Hub75TubeClampMale:
         correction = _male_flank_correction(dove_datum=dove_datum)
         body = body - correction.extrude(DOVE_RUN + 0.2)
 
-        # Installed state: one real history cut widens the Free bore to tube_d.
-        # It is hidden by default so the printable/manufacturing state stays Free.
-        with feature("installed", suppressed=True):
-            body = body - Cylinder(
-                d=self.tube_d,
-                h=CLAMP_WIDTH + 2.0,
-            )
-
         return body
 
 
@@ -167,10 +159,10 @@ class Hub75TubeClampMaleCatalog:
         )
         clamp.configure(
             active="Free",
-            columns=(clamp.feature("installed"),),
+            columns=(self.clamp_bore,),
             rows={
-                "Free": (True,),
-                "Installed": (False,),
+                "Free": ("tube_d-clamp_interference",),
+                "Installed": ("tube_d",),
             },
         )
         return clamp

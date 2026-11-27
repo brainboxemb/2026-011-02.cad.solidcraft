@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Placement, assembly
+from scpf import Configure, Param, Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 from models.components.hub75_frame_coupler.scpf.family import (
@@ -189,16 +189,9 @@ class Hub75DisplayFrame2PanelTube:
             frame,
             active="Medium",
             columns=(Param(self.clamp_bore),),
-            rows={"Medium": ("tube_d-clamp_interference",)},
-            rules=(
-                ConfigRule(
-                    "installed",
-                    "Installed",
-                    enabled=True,
-                    condition=Always(),
-                    effect=DriveParameter(self.clamp_bore, self.tube_d),
-                ),
-            ),
+            # This mounted parent owns the effective clamp fit explicitly.
+            # Reusable clamp components do not carry a global Installed rule.
+            rows={"Medium": ("tube_d",)},
         )
 
 

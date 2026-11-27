@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from scpf import Always, ConfigRule, Configure, DriveParameter, Param, assembly
+from scpf import Configure, Param, assembly
 from models.components.hub75_frame_coupler.scpf.family import (
     Hub75FrameCouplerEdgeTubeReceiver,
     Hub75FrameCouplerCornerLeftTubeReceiver,
@@ -56,16 +56,8 @@ class Hub75DisplayFrame2PanelTubeDovetail:
             frame,
             active="Medium",
             columns=(Param(self.clamp_bore),),
-            rows={"Medium": ("tube_d-clamp_interference",)},
-            rules=(
-                ConfigRule(
-                    "installed",
-                    "Installed",
-                    enabled=True,
-                    condition=Always(),
-                    effect=DriveParameter(self.clamp_bore, self.tube_d),
-                ),
-            ),
+            # This mounted parent owns the effective clamp fit explicitly.
+            rows={"Medium": ("tube_d",)},
         )
 
 

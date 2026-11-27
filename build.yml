@@ -1,9 +1,10 @@
 schema: 1
-branch: issue/189-coupler-size-config
+branch: issue/246-tube-clamp-config-ownership
 
 modules: []
 models:
-  - hub75-frame-coupler
+  - hub75-tube-clamp
+  - hub75-display-frame-2panel
 tasks:
   - test
   - build

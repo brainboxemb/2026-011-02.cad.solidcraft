@@ -4,6 +4,14 @@ This file contains unfinished work only.
 
 ## Now
 
+### #259 — adopt digest-pinned runtime candidate qualification
+
+Synchronize the accepted `template.cad.model-project#122` work-branch runtime
+candidate contract. Permanent SolidCraft pins remain release-only; temporary
+candidate replay is allowed only through an OCI digest in matching
+`build.yml`.
+
+
 ## Mandatory integration rule
 
 Every source-branch integration uses a PR conversation comment:

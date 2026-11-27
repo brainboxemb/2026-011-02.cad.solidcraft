@@ -80,6 +80,22 @@ tasks:
 If the branch field does not match the actual work branch, the file is ignored
 and CI falls back to full.
 
+A work branch may also qualify selected models against an unreleased
+SolidCraft runtime without weakening the permanent root pin. Use an immutable
+OCI digest, never `:edge`:
+
+```yaml
+runtime:
+  solidcraft:
+    image: ghcr.io/brainboxemb/cad-solidcraft@sha256:<64 lowercase hex>
+    version: 0.50.0
+```
+
+The override applies only when `build.yml.branch` matches the work branch.
+Forge compatibility is still checked against the released SolidCraft baseline
+in root `ci.yml`; the candidate is used only for native replay. Work-branch
+output remains verification-only.
+
 ### dev
 
 `build.yml` is ignored.

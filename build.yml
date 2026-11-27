@@ -1,9 +1,8 @@
 schema: 1
-branch: issue/266-main-governance-template-sync
+branch: issue/270-hub75-installed-feature
 
-modules:
-  - merge-policy
-  - branch-cleanup
-models: []
+modules: []
+models:
+  - hub75-tube-clamp
 tasks:
-  - test
+  - build

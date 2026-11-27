@@ -1,9 +1,3 @@
-from models.components.hub75_frame_coupler.scpf.family import (
-    Hub75FrameCouplerCornerLeftTubeReceiver,
-    configured_coupler,
-)
+from models.components.hub75_frame_coupler.scpf.family import Hub75FrameCouplerCornerLeftTubeReceiverModel
 
-configured_coupler(
-    Hub75FrameCouplerCornerLeftTubeReceiver,
-    suppress_panel_pin=False,
-)
+Hub75FrameCouplerCornerLeftTubeReceiverModel()

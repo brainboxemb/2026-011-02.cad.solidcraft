@@ -19,6 +19,9 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 - work branch selection from matching `build.yml`;
 - incremental `dev` CI from the last successful integration baseline;
 - full `main` CI;
+- `process: false` keeps a model owner discoverable and explicitly selectable
+  on a matching work branch while excluding it from automatic/full permanent-lane
+  model selection and automatic dependent expansion;
 - Forge v0.25.0 / SolidCraft 0.49.0 / runtime v0.3.6 baseline;
 - generated `build` branch with `dev/` and `main/` scopes;
 - Basic / Components / Sub Assemblies / Assemblies taxonomy;

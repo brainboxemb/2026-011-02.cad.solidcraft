@@ -13,16 +13,12 @@ def main(argv=None) -> int:
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--namespace", required=True)
     parser.add_argument("--model", action="append", default=[])
-    parser.add_argument("--solidcraft-image")
-    parser.add_argument("--solidcraft-version")
     args = parser.parse_args(argv)
 
     path = execute(
         repo=args.repo,
         namespace=args.namespace,
         selected_ids=tuple(args.model),
-        solidcraft_image=args.solidcraft_image,
-        solidcraft_version=args.solidcraft_version,
     )
     print(f"CAD build plan: {path}")
     return 0

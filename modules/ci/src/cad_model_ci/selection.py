@@ -75,5 +75,4 @@ def expand_model_dependents(
         modules=selection.modules,
         models=ordered,
         tasks=selection.tasks,
-        solidcraft_candidate=selection.solidcraft_candidate,
     )

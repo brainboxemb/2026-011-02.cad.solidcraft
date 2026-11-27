@@ -1,10 +1,9 @@
 schema: 1
-branch: issue/250-forge-0.26-hub75-config
+branch: fix/259-remove-runtime-candidate
 
-modules: []
-models:
-  - hub75-tube-clamp
-  - hub75-frame-coupler
+modules:
+  - ci
+  - build
+models: []
 tasks:
   - test
-  - build

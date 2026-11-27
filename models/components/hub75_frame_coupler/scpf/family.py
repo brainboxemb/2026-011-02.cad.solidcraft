@@ -16,6 +16,7 @@ from scpf import (
     Cylinder,
     Sketch,
     component,
+    feature,
 )
 
 from models.components.hub75_frame_coupler.scpf.parametric_source import (
@@ -815,8 +816,8 @@ def _build_edge_body(*, p, reference_ticks=True, reference_holes=True):
     )
 
 
-def _panel_pin_pass_through(p):
-    """One exact stepped shifted-axis revolve exported for parent suppression."""
+def _cut_panel_pin_pass_through(body, p):
+    """Author the exact stepped shifted-axis revolve as one named cut feature."""
     axis_x = -p["mid_screw_x"] + 3.0
     axis_z = _edge_mount_z(p) - 42.0
     relief_r = p["edge_pin_r"] + p["mid_screw_relief_r"]
@@ -844,10 +845,11 @@ def _panel_pin_pass_through(p):
         contour.line_to(start)
         contour.close()
 
-    feature = sketch.revolve(
-        axis=AxisLine(Axis.Y, origin=(axis_x, 0, axis_z)),
-    )
-    return feature.export_feature(_PANEL_PIN_FEATURE)
+    with feature(_PANEL_PIN_FEATURE, suppressed=True):
+        body = body - sketch.revolve(
+            axis=AxisLine(Axis.Y, origin=(axis_x, 0, axis_z)),
+        )
+    return body
 
 
 @component(include=_CONFIGURED_PARAMETERS)
@@ -869,7 +871,7 @@ class Hub75FrameCouplerEdge:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return body.with_appearance(SOURCE_RED)
 
 
@@ -919,7 +921,7 @@ class Hub75FrameCouplerCornerRight:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return body.with_appearance(SOURCE_RED)
 
 
@@ -1349,7 +1351,7 @@ class Hub75FrameCouplerEdgeTube:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_edge_tube_interface(
             body,
             p=p,
@@ -1407,7 +1409,7 @@ class Hub75FrameCouplerCornerRightTube:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_corner_tube_interface(
             body,
             side="right",
@@ -1433,7 +1435,7 @@ class Hub75FrameCouplerEdgeTubeReceiver:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_edge_tube_receiver_interface(
             body,
             p=p,
@@ -1491,7 +1493,7 @@ class Hub75FrameCouplerCornerRightTubeReceiver:
             reference_ticks=self.reference_ticks,
             reference_holes=self.reference_holes,
         )
-        body = body - _panel_pin_pass_through(p)
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_corner_tube_receiver_interface(
             body,
             side="right",

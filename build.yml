@@ -1,9 +1,10 @@
 schema: 1
-branch: issue/259-runtime-candidate-template-sync
+branch: issue/250-forge-0.26-hub75-config
 
-modules:
-  - ci
-  - build
-models: []
+modules: []
+models:
+  - hub75-tube-clamp
+  - hub75-frame-coupler
 tasks:
   - test
+  - build

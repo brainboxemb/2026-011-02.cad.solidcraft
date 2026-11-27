@@ -218,6 +218,22 @@ variants:
                 ["box"],
             )
 
+    def test_process_false_model_remains_in_dependency_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            model = repo / "models" / "parked"
+            (model / "scpf").mkdir(parents=True)
+            (model / "scpf/model.py").write_text("object()\n", encoding="utf-8")
+            (model / "ci.yml").write_text(
+                "schema: 1\nid: parked\nbuilder: forge\n"
+                "source: scpf/model.py\nprocess: false\n"
+                "dependencies: [missing]\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(Exception, "unknown model dependency"):
+                discover_models(repo, self.project())
+
     def test_selection_returns_only_requested_item(self):
         items = (
             type("Item", (), {"id": "one"})(),

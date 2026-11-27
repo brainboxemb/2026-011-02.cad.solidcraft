@@ -1,5 +1,5 @@
 schema: 1
-branch: issue/253-process-false-explicit-build
+branch: issue/255-process-false-template-sync
 
 modules:
   - ci

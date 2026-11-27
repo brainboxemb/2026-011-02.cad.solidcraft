@@ -17,7 +17,7 @@ generated:
 dependencies:
   forge:
     repository: brainboxemb/lib.py.solidcraft.forge
-    version: v0.26.0
+    version: 82224b01632506576df94376166ae4e6ecf11f86
   solidcraft:
     image: ghcr.io/brainboxemb/cad-solidcraft:v0.3.8
     version: 0.50.0

@@ -397,8 +397,8 @@ def load_project(repo: Path) -> ProjectConfig:
     version = forge.get("version")
     if not isinstance(repository, str) or not _REPOSITORY.fullmatch(repository):
         raise BuildConfigError(f"invalid Forge repository: {path}")
-    if not isinstance(version, str) or not _VERSION.fullmatch(version):
-        raise BuildConfigError(f"Forge version must be a v-prefixed release tag: {path}")
+    if not isinstance(version, str) or not _FORGE_REF.fullmatch(version):
+        raise BuildConfigError(f"Forge ref must be a v-prefixed release tag or exact commit SHA: {path}")
 
     image = solidcraft.get("image")
     solidcraft_version = solidcraft.get("version")

@@ -26,6 +26,22 @@ class ConfigTests(unittest.TestCase):
             self.assertEqual(config.modules_root, Path("modules"))
             self.assertEqual(config.output_root, Path("build"))
 
+    def test_project_accepts_exact_forge_commit_for_qualification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "ci.yml").write_text(
+                "schema: 1\n"
+                "branches: {stable: main, development: dev}\n"
+                "dependencies:\n"
+                "  forge:\n"
+                "    repository: brainboxemb/lib.py.solidcraft.forge\n"
+                "    version: 82224b01632506576df94376166ae4e6ecf11f86\n"
+                "roots: {modules: modules, models: models, output: build}\n",
+                encoding="utf-8",
+            )
+            config = load_project(repo)
+            self.assertEqual(config.forge.version, "82224b01632506576df94376166ae4e6ecf11f86")
+
     def test_matching_build_yml_is_used(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

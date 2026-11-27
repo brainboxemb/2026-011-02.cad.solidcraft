@@ -78,6 +78,21 @@ snapshots:
             self.assertEqual(models[0].snapshots[0].name, "top.png")
             self.assertIsNone(models[0].snapshots[0].exploded_view)
 
+    def test_project_accepts_exact_forge_commit_for_qualification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            write_project(repo)
+            path = repo / "ci.yml"
+            path.write_text(
+                path.read_text(encoding="utf-8").replace(
+                    "v0.14.0",
+                    "82224b01632506576df94376166ae4e6ecf11f86",
+                ),
+                encoding="utf-8",
+            )
+            project = load_project(repo)
+            self.assertEqual(project.forge.version, "82224b01632506576df94376166ae4e6ecf11f86")
+
     def test_artifacts_can_define_explicit_stl_quality(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)

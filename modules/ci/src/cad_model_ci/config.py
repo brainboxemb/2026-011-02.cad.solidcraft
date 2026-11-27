@@ -109,8 +109,8 @@ def load_project(repo: Path) -> ProjectConfig:
     version = forge.get("version")
     if not isinstance(repository, str) or not _REPOSITORY.fullmatch(repository):
         raise ConfigError(f"invalid Forge repository: {path}")
-    if not isinstance(version, str) or not _VERSION.fullmatch(version):
-        raise ConfigError(f"Forge version must be a v-prefixed release tag: {path}")
+    if not isinstance(version, str) or not _FORGE_REF.fullmatch(version):
+        raise ConfigError(f"Forge ref must be a v-prefixed release tag or exact commit SHA: {path}")
 
     return ProjectConfig(
         stable_branch=stable,

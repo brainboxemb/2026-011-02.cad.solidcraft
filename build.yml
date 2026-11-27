@@ -1,8 +1,8 @@
 schema: 1
-branch: issue/272-revert-hub75-installed-cut
+branch: issue/275-forge-exp-qualification
 
-modules: []
-models:
-  - hub75-tube-clamp
+modules: all
+models: all
 tasks:
+  - test
   - build

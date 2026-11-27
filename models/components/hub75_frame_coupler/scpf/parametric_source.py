@@ -131,10 +131,24 @@ def source_parameters(*, mid_size, mid_wall, mid_base, mid_guide):
         "mid_guide": mid_guide,
     }
     values = {}
+    zero_length = mid_size - mid_size
+    literal_length = re.compile(
+        r"^\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s+mm\s*$"
+    )
     for item in _SOURCE["params"]:
         name = item["name"]
         if name in overrides:
             values[name] = overrides[name]
+            continue
+
+        match = literal_length.fullmatch(item["expr"])
+        if item.get("unit") == "mm" and match is not None:
+            # A plain Python number is fine as a geometry argument, but once it
+            # participates in a native expression SolidCraft needs to know it
+            # is a length.  Anchor the fixed source value to a cancelling
+            # configured length dependency: its value stays constant in every
+            # row and it does not become an extra editable CAD parameter.
+            values[name] = zero_length + float(match.group(1))
         else:
             values[name] = _expression(item["expr"], values)
     return values

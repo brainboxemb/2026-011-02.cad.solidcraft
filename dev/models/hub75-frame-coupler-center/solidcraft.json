@@ -37,18 +37,18 @@
     {
       "command": "component.create",
       "params": {
-        "name": "Hub75FrameCouplerMiddle",
+        "name": "Hub75FrameCouplerCenter",
         "grounded": true
       },
       "bind": {
-        "$hub75framecouplermiddle": "occurrence"
+        "$hub75framecouplercenter": "occurrence"
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle base profile",
+        "name": "d1_Hub75FrameCouplerCenter__Center base profile",
         "offset": "-(mid_size - (mid_size) + 14.5 mm)"
       }
     },
@@ -481,14 +481,14 @@
       "params": {
         "distance": "mid_base",
         "direction": "negative",
-        "body_name": "Hub75FrameCouplerMiddle"
+        "body_name": "Hub75FrameCouplerCenter"
       }
     },
     {
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profiles",
+        "name": "d1_Hub75FrameCouplerCenter__Center guide profiles",
         "offset": "(-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm"
       }
     },
@@ -1215,7 +1215,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1232,7 +1232,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1249,7 +1249,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1266,7 +1266,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1283,7 +1283,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1300,7 +1300,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1317,7 +1317,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1334,7 +1334,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1351,7 +1351,7 @@
         "axis": "Y",
         "operation": "cut",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1368,7 +1368,7 @@
         "axis": "Y",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1385,7 +1385,7 @@
         "axis": "Y",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1402,7 +1402,7 @@
         "axis": "Y",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1419,7 +1419,7 @@
         "axis": "Y",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1427,7 +1427,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 1",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 1",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 0)"
       }
     },
@@ -1578,7 +1578,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1586,7 +1586,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 2",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 2",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 1)"
       }
     },
@@ -1737,7 +1737,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1745,7 +1745,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 3",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 3",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 2)"
       }
     },
@@ -1896,7 +1896,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -1904,7 +1904,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 4",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 4",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 3)"
       }
     },
@@ -2055,7 +2055,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -2063,7 +2063,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 5",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 5",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 4)"
       }
     },
@@ -2214,7 +2214,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -2222,7 +2222,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 6",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 6",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 5)"
       }
     },
@@ -2373,7 +2373,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -2381,7 +2381,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 7",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 7",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 6)"
       }
     },
@@ -2532,7 +2532,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -2540,7 +2540,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__middle seam guide slice 8",
+        "name": "d1_Hub75FrameCouplerCenter__center seam guide slice 8",
         "offset": "((-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm) + (((mid_size - (mid_size) + 4 mm + 0.05 mm) / 8) * 7)"
       }
     },
@@ -2691,7 +2691,7 @@
         "direction": "positive",
         "operation": "join",
         "targets": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ]
       }
     },
@@ -2699,7 +2699,7 @@
       "command": "appearance.assign",
       "params": {
         "bodies": [
-          "Hub75FrameCouplerMiddle"
+          "Hub75FrameCouplerCenter"
         ],
         "color": "#B80D0A"
       }

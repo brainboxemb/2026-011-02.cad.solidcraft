@@ -258,7 +258,7 @@ def source_parameters(*, mid_size, mid_wall, mid_base, mid_guide):
 
 
 def _frame_offsets(frame, values):
-    if frame == "middle":
+    if frame == "center":
         return 0.0, values["mid_row"]
     if frame == "edge":
         return 0.0, values["panel_h"]
@@ -276,13 +276,13 @@ def _point(feature, index, frame, values):
     y = _expression(exprs["y"], values) if "y" in exprs else point["pos"][1]
     x_offset, y_offset = _frame_offsets(frame, values)
     # Retained source sketches use SolidCraft XZ coordinates. Normalize to the
-    # physical local (X, Z) convention consumed by family.py.
+    # physical local (X, Z) convention consumed by the type-family modules.
     return (x + x_offset, -(y + y_offset))
 
 
 def _raw_point(feature, index, frame):
     point = feature["sketch"]["points"][index]["pos"]
-    if frame == "middle":
+    if frame == "center":
         return (point[0], -(point[1] + 160.0))
     if frame == "edge":
         return (point[0], -(point[1] + 320.0))

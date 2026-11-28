@@ -1,0 +1,2135 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "component.create",
+      "params": {
+        "name": "Hub75Panel",
+        "grounded": true
+      },
+      "bind": {
+        "$hub75panel_occurrence_1": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d1_Hub75Panel__Hub75Panel footprint"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -79.85,
+          -159.855
+        ],
+        "p1": [
+          79.85,
+          159.855
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 2.0,
+        "body_name": "Hub75Panel"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d1_Hub75Panel__Hub75Panel rear start",
+        "offset": 2.0
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -79.85,
+          -159.855
+        ],
+        "p1": [
+          79.85,
+          159.855
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d1_Hub75Panel__Hub75Panel rear perimeter",
+        "offset": 14.5
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -78.6,
+          -158.605
+        ],
+        "p1": [
+          78.6,
+          158.605
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.loft",
+      "params": {
+        "sections": [
+          {
+            "sketch": "d1_Hub75Panel__Hub75Panel rear start"
+          },
+          {
+            "sketch": "d1_Hub75Panel__Hub75Panel rear perimeter"
+          }
+        ],
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "Hub75Panel"
+      },
+      "bind": {
+        "$d1_Hub75Panel_face_point_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_Hub75Panel_face_index_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$d1_Hub75Panel_face_point_1",
+          "body": "Hub75Panel",
+          "index": "$d1_Hub75Panel_face_index_1"
+        },
+        "project_edges": false,
+        "name": "d1_Hub75Panel__Achtervakken met afgeronde hoeken en versmallingen"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            -149.11474218749998
+          ],
+          [
+            -17.969156249999997,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -149.11474218749998
+          ],
+          [
+            -14.971874999999999,
+            -152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -152.11202343749997
+          ],
+          [
+            14.971874999999999,
+            -152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -152.11202343749997
+          ],
+          [
+            17.969156249999997,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -149.11474218749998
+          ],
+          [
+            62.38281249999999,
+            -149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -144.1241171875
+        ],
+        "start": [
+          62.38281249999999,
+          -149.11474218749998
+        ],
+        "end": [
+          67.3734375,
+          -144.1241171875
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            -144.1241171875
+          ],
+          [
+            67.3734375,
+            -94.90906249999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -94.90906249999999
+        ],
+        "start": [
+          67.3734375,
+          -94.90906249999999
+        ],
+        "end": [
+          62.38281249999999,
+          -89.9184375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            -89.9184375
+          ],
+          [
+            17.969156249999997,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -89.9184375
+          ],
+          [
+            14.971874999999999,
+            -86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -86.92115625
+          ],
+          [
+            -14.971874999999999,
+            -86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -86.92115625
+          ],
+          [
+            -17.969156249999997,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -89.9184375
+          ],
+          [
+            -62.38281249999999,
+            -89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -94.90906249999999
+        ],
+        "start": [
+          -62.38281249999999,
+          -89.9184375
+        ],
+        "end": [
+          -67.3734375,
+          -94.90906249999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            -94.90906249999999
+          ],
+          [
+            -67.3734375,
+            -144.1241171875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -144.1241171875
+        ],
+        "start": [
+          -67.3734375,
+          -144.1241171875
+        ],
+        "end": [
+          -62.38281249999999,
+          -149.11474218749998
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            -69.9365625
+          ],
+          [
+            -17.969156249999997,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -69.9365625
+          ],
+          [
+            -14.971874999999999,
+            -72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -72.93384375
+          ],
+          [
+            14.971874999999999,
+            -72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -72.93384375
+          ],
+          [
+            17.969156249999997,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -69.9365625
+          ],
+          [
+            62.38281249999999,
+            -69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -64.9459375
+        ],
+        "start": [
+          62.38281249999999,
+          -69.9365625
+        ],
+        "end": [
+          67.3734375,
+          -64.9459375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            -64.9459375
+          ],
+          [
+            67.3734375,
+            -14.981562499999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          -14.981562499999999
+        ],
+        "start": [
+          67.3734375,
+          -14.981562499999999
+        ],
+        "end": [
+          62.38281249999999,
+          -9.9909375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            -9.9909375
+          ],
+          [
+            17.969156249999997,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            -9.9909375
+          ],
+          [
+            14.971874999999999,
+            -6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            -6.99365625
+          ],
+          [
+            -14.971874999999999,
+            -6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            -6.99365625
+          ],
+          [
+            -17.969156249999997,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            -9.9909375
+          ],
+          [
+            -62.38281249999999,
+            -9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -14.981562499999999
+        ],
+        "start": [
+          -62.38281249999999,
+          -9.9909375
+        ],
+        "end": [
+          -67.3734375,
+          -14.981562499999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            -14.981562499999999
+          ],
+          [
+            -67.3734375,
+            -64.9459375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          -64.9459375
+        ],
+        "start": [
+          -67.3734375,
+          -64.9459375
+        ],
+        "end": [
+          -62.38281249999999,
+          -69.9365625
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            9.9909375
+          ],
+          [
+            -17.969156249999997,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            9.9909375
+          ],
+          [
+            -14.971874999999999,
+            6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            6.99365625
+          ],
+          [
+            14.971874999999999,
+            6.99365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            6.99365625
+          ],
+          [
+            17.969156249999997,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            9.9909375
+          ],
+          [
+            62.38281249999999,
+            9.9909375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          14.981562499999999
+        ],
+        "start": [
+          62.38281249999999,
+          9.9909375
+        ],
+        "end": [
+          67.3734375,
+          14.981562499999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            14.981562499999999
+          ],
+          [
+            67.3734375,
+            64.9459375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          64.9459375
+        ],
+        "start": [
+          67.3734375,
+          64.9459375
+        ],
+        "end": [
+          62.38281249999999,
+          69.9365625
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            69.9365625
+          ],
+          [
+            17.969156249999997,
+            69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            69.9365625
+          ],
+          [
+            14.971874999999999,
+            72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            72.93384375
+          ],
+          [
+            -14.971874999999999,
+            72.93384375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            72.93384375
+          ],
+          [
+            -17.969156249999997,
+            69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            69.9365625
+          ],
+          [
+            -62.38281249999999,
+            69.9365625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          64.9459375
+        ],
+        "start": [
+          -62.38281249999999,
+          69.9365625
+        ],
+        "end": [
+          -67.3734375,
+          64.9459375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            64.9459375
+          ],
+          [
+            -67.3734375,
+            14.981562499999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          14.981562499999999
+        ],
+        "start": [
+          -67.3734375,
+          14.981562499999999
+        ],
+        "end": [
+          -62.38281249999999,
+          9.9909375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -62.38281249999999,
+            89.9184375
+          ],
+          [
+            -17.969156249999997,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            89.9184375
+          ],
+          [
+            -14.971874999999999,
+            86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            86.92115625
+          ],
+          [
+            14.971874999999999,
+            86.92115625
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            86.92115625
+          ],
+          [
+            17.969156249999997,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            89.9184375
+          ],
+          [
+            62.38281249999999,
+            89.9184375
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          94.90906249999999
+        ],
+        "start": [
+          62.38281249999999,
+          89.9184375
+        ],
+        "end": [
+          67.3734375,
+          94.90906249999999
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            67.3734375,
+            94.90906249999999
+          ],
+          [
+            67.3734375,
+            144.1241171875
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          62.38281249999999,
+          144.1241171875
+        ],
+        "start": [
+          67.3734375,
+          144.1241171875
+        ],
+        "end": [
+          62.38281249999999,
+          149.11474218749998
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            62.38281249999999,
+            149.11474218749998
+          ],
+          [
+            17.969156249999997,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            17.969156249999997,
+            149.11474218749998
+          ],
+          [
+            14.971874999999999,
+            152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.971874999999999,
+            152.11202343749997
+          ],
+          [
+            -14.971874999999999,
+            152.11202343749997
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -14.971874999999999,
+            152.11202343749997
+          ],
+          [
+            -17.969156249999997,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -17.969156249999997,
+            149.11474218749998
+          ],
+          [
+            -62.38281249999999,
+            149.11474218749998
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          144.1241171875
+        ],
+        "start": [
+          -62.38281249999999,
+          149.11474218749998
+        ],
+        "end": [
+          -67.3734375,
+          144.1241171875
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -67.3734375,
+            144.1241171875
+          ],
+          [
+            -67.3734375,
+            94.90906249999999
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -62.38281249999999,
+          94.90906249999999
+        ],
+        "start": [
+          -67.3734375,
+          94.90906249999999
+        ],
+        "end": [
+          -62.38281249999999,
+          89.9184375
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ],
+        "name": "Achtervakken met afgeronde hoeken en versmallingen",
+        "distance": 12.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -152.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          -72.0,
+          -152.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          -72.0,
+          0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          152.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          -72.0,
+          152.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          -152.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          72.0,
+          -152.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          72.0,
+          0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          152.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 0.8,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 13.0,
+        "diameter": 8.5,
+        "base": [
+          72.0,
+          152.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          -72.0,
+          -141.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -141.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -141.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          72.0,
+          -141.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          -141.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          -141.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          72.0,
+          11.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          11.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          11.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          -72.0,
+          -11.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -11.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -11.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          -72.0,
+          141.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          141.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          141.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 12.5,
+        "diameter": 14.0,
+        "base": [
+          72.0,
+          141.0,
+          2.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          141.0,
+          14.5
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 10.0,
+        "depth": 2.5,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          141.0,
+          12.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 2.5,
+        "depth": 10.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3.0,
+        "diameter": 3.0,
+        "base": [
+          75.0,
+          110.0,
+          14.5
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 3.0,
+        "diameter": 3.0,
+        "base": [
+          -75.0,
+          -110.0,
+          14.5
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          -152.0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -72.0,
+          152.0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          -152.0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          72.0,
+          152.0,
+          15.0
+        ],
+        "targets": [
+          "Hub75Panel"
+        ],
+        "diameter": 3.0,
+        "depth": 13.0,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim links"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -79.85,
+            -2.0
+          ],
+          [
+            -78.6,
+            -14.5
+          ],
+          [
+            -84.85,
+            -14.5
+          ],
+          [
+            -84.85,
+            -2.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 321.71,
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_Hub75Panel__Vlakke zijwand trim rechts"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            79.85,
+            -2.0
+          ],
+          [
+            78.6,
+            -14.5
+          ],
+          [
+            84.85,
+            -14.5
+          ],
+          [
+            84.85,
+            -2.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 321.71,
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "Hub75Panel"
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "HUB75 housing",
+        "density_g_cm3": 1.2,
+        "color": "#B8B8B8"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "Hub75Panel"
+        ],
+        "material": "HUB75 housing"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "Hub75Panel"
+      },
+      "bind": {
+        "$hub75panel_occurrence_2": "occurrence"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panel_occurrence_1",
+        "translate": [
+          -80.0,
+          0,
+          160.0
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "90 deg",
+        "move_grounded": true
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$hub75panel_occurrence_2",
+        "translate": [
+          80.0,
+          0,
+          160.0
+        ],
+        "axis": [
+          0.0,
+          1.0,
+          -1.0
+        ],
+        "angle": "180 deg"
+      }
+    }
+  ]
+}

@@ -1,0 +1,2732 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_thickness",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_bend_radius",
+        "expression": "0.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_k_factor",
+        "expression": "0.4",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_mounting_hole_diameter",
+        "expression": "4.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_hinge_hole_diameter",
+        "expression": "4.1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_LatchMountingFoot_locking_rivet_hole_diameter",
+        "expression": "3.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchMountingFoot",
+        "grounded": true
+      },
+      "bind": {
+        "$latchmountingfoot": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting foot 2 mm",
+        "thickness": "d1_LatchMountingFoot_thickness",
+        "k_factor": "d1_LatchMountingFoot_k_factor",
+        "bend_radius": "d1_LatchMountingFoot_bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d1_LatchMountingFoot__Mounting foot blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            27.0,
+            -8.25
+          ],
+          [
+            40.0,
+            -8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40.0,
+            -8.25
+          ],
+          [
+            40.0,
+            -10.449114857512855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40.0,
+            -10.449114857512855
+          ],
+          [
+            41.75,
+            -15.299114857512857
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          45.5,
+          -15.299114857512857
+        ],
+        "start": [
+          41.75,
+          -15.299114857512857
+        ],
+        "end": [
+          49.25,
+          -15.299114857512857
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            49.25,
+            -15.299114857512857
+          ],
+          [
+            51.0,
+            -10.449114857512855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            51.0,
+            -10.449114857512855
+          ],
+          [
+            51.0,
+            -8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            51.0,
+            -8.25
+          ],
+          [
+            55.5,
+            -8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          55.5,
+          -5.25
+        ],
+        "start": [
+          55.5,
+          -8.25
+        ],
+        "end": [
+          58.5,
+          -5.25
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            58.5,
+            -5.25
+          ],
+          [
+            58.5,
+            5.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          55.5,
+          5.25
+        ],
+        "start": [
+          58.5,
+          5.25
+        ],
+        "end": [
+          55.5,
+          8.25
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            55.5,
+            8.25
+          ],
+          [
+            51.0,
+            8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            51.0,
+            8.25
+          ],
+          [
+            51.0,
+            10.449114857512855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            51.0,
+            10.449114857512855
+          ],
+          [
+            49.25,
+            15.299114857512857
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          45.5,
+          15.299114857512857
+        ],
+        "start": [
+          49.25,
+          15.299114857512857
+        ],
+        "end": [
+          41.75,
+          15.299114857512857
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            41.75,
+            15.299114857512857
+          ],
+          [
+            40.0,
+            10.449114857512855
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40.0,
+            10.449114857512855
+          ],
+          [
+            40.0,
+            8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            40.0,
+            8.25
+          ],
+          [
+            27.0,
+            8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            27.0,
+            8.25
+          ],
+          [
+            25.5,
+            3.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.5,
+            3.8
+          ],
+          [
+            15.5,
+            3.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.5,
+            3.8
+          ],
+          [
+            15.5,
+            -3.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            15.5,
+            -3.8
+          ],
+          [
+            25.5,
+            -3.8
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.5,
+            -3.8
+          ],
+          [
+            27.0,
+            -8.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d1_LatchMountingFoot__Mounting foot blank",
+        "rule": "Mounting foot 2 mm",
+        "body_name": "LatchMountingFoot"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          38.5,
+          0,
+          "d1_LatchMountingFoot_thickness"
+        ],
+        "targets": [
+          "LatchMountingFoot"
+        ],
+        "diameter": "d1_LatchMountingFoot_mounting_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          52.5,
+          0,
+          "d1_LatchMountingFoot_thickness"
+        ],
+        "targets": [
+          "LatchMountingFoot"
+        ],
+        "diameter": "d1_LatchMountingFoot_mounting_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          45.5,
+          -15.299114857512857,
+          "d1_LatchMountingFoot_thickness"
+        ],
+        "targets": [
+          "LatchMountingFoot"
+        ],
+        "diameter": "d1_LatchMountingFoot_hinge_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          45.5,
+          15.299114857512857,
+          "d1_LatchMountingFoot_thickness"
+        ],
+        "targets": [
+          "LatchMountingFoot"
+        ],
+        "diameter": "d1_LatchMountingFoot_hinge_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchMountingFoot",
+        "points": [
+          [
+            40.0,
+            8.25,
+            0
+          ],
+          [
+            51.0,
+            8.25,
+            0
+          ]
+        ],
+        "fixed": [
+          29.5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchMountingFoot",
+        "points": [
+          [
+            51.0,
+            -8.25,
+            0
+          ],
+          [
+            40.0,
+            -8.25,
+            0
+          ]
+        ],
+        "fixed": [
+          29.5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "edge",
+        "edges": [
+          [
+            20.5,
+            3.8,
+            0.0
+          ],
+          [
+            20.5,
+            -3.8,
+            0.0
+          ]
+        ],
+        "height": 11.5,
+        "angle": 90,
+        "body": "LatchMountingFoot",
+        "position": "outside",
+        "flip": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_LatchMountingFoot__Front hinge tab trim",
+        "offset": -7.0
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.5,
+            -7.3
+          ],
+          [
+            17.0,
+            -7.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          20.5,
+          -7.3
+        ],
+        "start": [
+          17.0,
+          -7.3
+        ],
+        "end": [
+          24.0,
+          -7.3
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            24.0,
+            -7.3
+          ],
+          [
+            26.5,
+            -7.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            26.5,
+            -7.3
+          ],
+          [
+            26.5,
+            -13.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            26.5,
+            -13.3
+          ],
+          [
+            14.5,
+            -13.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            14.5,
+            -13.3
+          ],
+          [
+            14.5,
+            -7.3
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 14,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "LatchMountingFoot"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 14,
+        "diameter": 3.9,
+        "base": [
+          20.5,
+          -7.0,
+          7.3
+        ],
+        "axis": "Y",
+        "operation": "cut",
+        "targets": [
+          "LatchMountingFoot"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 2.9,
+        "diameter": "d1_LatchMountingFoot_locking_rivet_hole_diameter",
+        "base": [
+          45.5,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "cut",
+        "targets": [
+          "LatchMountingFoot"
+        ]
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 0.4,
+        "diameter": 4.0,
+        "base": [
+          45.5,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "cut",
+        "targets": [
+          "LatchMountingFoot"
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#B7BDC2"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchMountingFoot"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_LatchHandle_thickness",
+        "expression": "1.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_LatchHandle_bend_radius",
+        "expression": "0.9",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_LatchHandle_k_factor",
+        "expression": "0.4",
+        "unit": ""
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchHandle",
+        "grounded": false
+      },
+      "bind": {
+        "$latchhandle": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Operating handle 1.6 mm",
+        "thickness": "d2_LatchHandle_thickness",
+        "k_factor": "d2_LatchHandle_k_factor",
+        "bend_radius": "d2_LatchHandle_bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d2_LatchHandle__Operating handle blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            73.0,
+            -8.169026343264141
+          ],
+          [
+            57.0,
+            -17.76902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            57.0,
+            -17.76902634326414
+          ],
+          [
+            26.3,
+            -17.76902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            26.3,
+            -17.76902634326414
+          ],
+          [
+            20.5,
+            -16.46902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          20.5,
+          -12.869026343264142
+        ],
+        "start": [
+          20.5,
+          -16.46902634326414
+        ],
+        "end": [
+          20.5,
+          -9.26902634326414
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            20.5,
+            -9.26902634326414
+          ],
+          [
+            25.3,
+            -9.26902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.3,
+            -9.26902634326414
+          ],
+          [
+            25.3,
+            -5.75
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.3,
+            -5.75
+          ],
+          [
+            25.3,
+            5.75
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.3,
+            5.75
+          ],
+          [
+            25.3,
+            9.26902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            25.3,
+            9.26902634326414
+          ],
+          [
+            20.5,
+            9.26902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          20.5,
+          12.869026343264142
+        ],
+        "start": [
+          20.5,
+          9.26902634326414
+        ],
+        "end": [
+          20.5,
+          16.46902634326414
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            20.5,
+            16.46902634326414
+          ],
+          [
+            26.3,
+            17.76902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            26.3,
+            17.76902634326414
+          ],
+          [
+            57.0,
+            17.76902634326414
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            57.0,
+            17.76902634326414
+          ],
+          [
+            73.0,
+            8.169026343264141
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            73.0,
+            8.169026343264141
+          ],
+          [
+            73.0,
+            -8.169026343264141
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d2_LatchHandle__Operating handle blank",
+        "rule": "Operating handle 1.6 mm",
+        "body_name": "LatchHandle"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          33.5,
+          -14.169026343264141,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 4.1,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          45.5,
+          -12.71902634326414,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 4.1,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          20.5,
+          -12.869026343264142,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 3.9,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          33.5,
+          14.169026343264141,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 4.1,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          45.5,
+          12.71902634326414,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 4.1,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          20.5,
+          12.869026343264142,
+          "d2_LatchHandle_thickness"
+        ],
+        "targets": [
+          "LatchHandle"
+        ],
+        "diameter": 3.9,
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchHandle",
+        "points": [
+          [
+            25.3,
+            -5.75,
+            0
+          ],
+          [
+            73.0,
+            -5.75,
+            0
+          ]
+        ],
+        "fixed": [
+          36.5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchHandle",
+        "points": [
+          [
+            73.0,
+            5.75,
+            0
+          ],
+          [
+            25.3,
+            5.75,
+            0
+          ]
+        ],
+        "fixed": [
+          36.5,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d2_LatchHandle__Locking lip opening"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            56.55,
+            -4.5
+          ],
+          [
+            60.35,
+            -4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            60.35,
+            -4.5
+          ],
+          [
+            60.35,
+            4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            60.35,
+            4.5
+          ],
+          [
+            56.55,
+            4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            56.55,
+            4.5
+          ],
+          [
+            56.55,
+            -4.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 2.0,
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "LatchHandle"
+        ]
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchHandle"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d3_LatchPullBail_thickness",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d3_LatchPullBail_bend_radius",
+        "expression": "1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d3_LatchPullBail_k_factor",
+        "expression": "0.4",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d3_LatchPullBail_pin_hole_diameter",
+        "expression": "4.1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchPullBail",
+        "grounded": false
+      },
+      "bind": {
+        "$latchpullbail": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Pull bail 2 mm",
+        "thickness": "d3_LatchPullBail_thickness",
+        "k_factor": "d3_LatchPullBail_k_factor",
+        "bend_radius": "d3_LatchPullBail_bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d3_LatchPullBail__Pull bail blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -42.16287547531802,
+            2.2
+          ],
+          [
+            42.16287547531802,
+            2.2
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          42.16287547531802,
+          6.85
+        ],
+        "start": [
+          42.16287547531802,
+          2.2
+        ],
+        "end": [
+          42.16287547531802,
+          11.5
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            42.16287547531802,
+            11.5
+          ],
+          [
+            28.077433388230816,
+            11.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            28.077433388230816,
+            11.5
+          ],
+          [
+            11.577433388230814,
+            7.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            11.577433388230814,
+            7.1
+          ],
+          [
+            -11.577433388230814,
+            7.1
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -11.577433388230814,
+            7.1
+          ],
+          [
+            -28.077433388230816,
+            11.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -28.077433388230816,
+            11.5
+          ],
+          [
+            -42.16287547531802,
+            11.5
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          -42.16287547531802,
+          6.85
+        ],
+        "start": [
+          -42.16287547531802,
+          11.5
+        ],
+        "end": [
+          -42.16287547531802,
+          2.2
+        ],
+        "clockwise": false,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d3_LatchPullBail__Pull bail blank",
+        "rule": "Pull bail 2 mm",
+        "body_name": "LatchPullBail"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          -42.16287547531801,
+          6.0,
+          "d3_LatchPullBail_thickness"
+        ],
+        "targets": [
+          "LatchPullBail"
+        ],
+        "diameter": "d3_LatchPullBail_pin_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          42.16287547531801,
+          6.0,
+          "d3_LatchPullBail_thickness"
+        ],
+        "targets": [
+          "LatchPullBail"
+        ],
+        "diameter": "d3_LatchPullBail_pin_hole_diameter",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 25,
+        "position": "start",
+        "flip": true,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            37.35211495915475,
+            2.2,
+            0
+          ],
+          [
+            37.35211495915475,
+            11.5,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 25,
+        "position": "start",
+        "flip": false,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            34.37743338823081,
+            2.2,
+            0
+          ],
+          [
+            34.37743338823081,
+            11.5,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            8.75,
+            2.2,
+            0
+          ],
+          [
+            8.75,
+            7.1,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 25,
+        "position": "start",
+        "flip": true,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            -37.35211495915475,
+            11.5,
+            0
+          ],
+          [
+            -37.35211495915475,
+            2.2,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 25,
+        "position": "start",
+        "flip": false,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            -34.37743338823081,
+            11.5,
+            0
+          ],
+          [
+            -34.37743338823081,
+            2.2,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "start",
+        "flip": false,
+        "body": "LatchPullBail",
+        "points": [
+          [
+            -8.75,
+            7.1,
+            0
+          ],
+          [
+            -8.75,
+            2.2,
+            0
+          ]
+        ],
+        "fixed": [
+          0,
+          4.0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchPullBail"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchBailRivetLeft",
+        "grounded": false
+      },
+      "bind": {
+        "$latchbailrivetleft": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d4_LatchBailRivetLeft__Left bail rivet profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -6.25
+          ],
+          [
+            2.2,
+            -6.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.2,
+            -6.25
+          ],
+          [
+            2.45,
+            -6.45
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.45,
+            -6.45
+          ],
+          [
+            2.45,
+            -6.63
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.45,
+            -6.63
+          ],
+          [
+            2.0,
+            -6.63
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.0,
+            -6.63
+          ],
+          [
+            2.0,
+            -10.47
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.0,
+            -10.47
+          ],
+          [
+            2.6,
+            -10.47
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.6,
+            -10.47
+          ],
+          [
+            2.6,
+            -10.92
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.6,
+            -10.92
+          ],
+          [
+            2.25,
+            -11.12
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.25,
+            -11.12
+          ],
+          [
+            0.0,
+            -11.12
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -11.12
+          ],
+          [
+            0.0,
+            -6.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.revolve",
+      "params": {
+        "sketch": "d4_LatchBailRivetLeft__Left bail rivet profile",
+        "axis": "Y",
+        "angle": 360,
+        "body_name": "LatchBailRivetLeft"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchBailRivetLeft"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchBailRivetRight",
+        "grounded": false
+      },
+      "bind": {
+        "$latchbailrivetright": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XY",
+        "name": "d5_LatchBailRivetRight__Right bail rivet profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            6.25
+          ],
+          [
+            2.2,
+            6.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.2,
+            6.25
+          ],
+          [
+            2.45,
+            6.45
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.45,
+            6.45
+          ],
+          [
+            2.45,
+            6.63
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.45,
+            6.63
+          ],
+          [
+            2.0,
+            6.63
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.0,
+            6.63
+          ],
+          [
+            2.0,
+            10.47
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.0,
+            10.47
+          ],
+          [
+            2.6,
+            10.47
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.6,
+            10.47
+          ],
+          [
+            2.6,
+            10.92
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.6,
+            10.92
+          ],
+          [
+            2.25,
+            11.12
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.25,
+            11.12
+          ],
+          [
+            0.0,
+            11.12
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            11.12
+          ],
+          [
+            0.0,
+            6.25
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.revolve",
+      "params": {
+        "sketch": "d5_LatchBailRivetRight__Right bail rivet profile",
+        "axis": "Y",
+        "angle": 360,
+        "body_name": "LatchBailRivetRight"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchBailRivetRight"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d6_LatchHingePin_length",
+        "expression": "16.9",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d6_LatchHingePin_diameter",
+        "expression": "3.8",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchHingePin",
+        "grounded": false
+      },
+      "bind": {
+        "$latchhingepin": "occurrence"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": "d6_LatchHingePin_length",
+        "diameter": "d6_LatchHingePin_diameter",
+        "base": [
+          0,
+          "-(d6_LatchHingePin_length / 2)",
+          0
+        ],
+        "axis": "Y",
+        "operation": "new",
+        "body_name": "LatchHingePin"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchHingePin"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d7_LatchLockingLip_width",
+        "expression": "8.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d7_LatchLockingLip_thickness",
+        "expression": "0.7",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d7_LatchLockingLip_bend_radius",
+        "expression": "0.8",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d7_LatchLockingLip_k_factor",
+        "expression": "0.42",
+        "unit": ""
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchLockingLip",
+        "grounded": false
+      },
+      "bind": {
+        "$latchlockinglip": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Locking spring 0.7 mm",
+        "thickness": "d7_LatchLockingLip_thickness",
+        "k_factor": "d7_LatchLockingLip_k_factor",
+        "bend_radius": "d7_LatchLockingLip_bend_radius",
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d7_LatchLockingLip__Locking lip contour"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            43.0,
+            -2.0
+          ],
+          [
+            56.85,
+            -2.0
+          ]
+        ],
+        "ids": [
+          "l1"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$d7_LatchLockingLip_contour_curves_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.arc.tangent",
+      "params": {
+        "start": "l1.end",
+        "curve": "l1",
+        "end": [
+          58.35,
+          -3.5
+        ]
+      },
+      "bind": {
+        "$d7_LatchLockingLip_contour_curves_2": {
+          "field": "curves",
+          "prepend": "$d7_LatchLockingLip_contour_curves_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            58.35,
+            -3.5
+          ],
+          [
+            58.35,
+            -16.3
+          ]
+        ],
+        "ids": [
+          "l2"
+        ],
+        "connect": true
+      },
+      "bind": {
+        "$d7_LatchLockingLip_contour_curves_3": {
+          "field": "curves",
+          "prepend": "$d7_LatchLockingLip_contour_curves_2"
+        }
+      }
+    },
+    {
+      "command": "sketch.arc.tangent",
+      "params": {
+        "start": "l2.end",
+        "curve": "l2",
+        "end": [
+          56.41340572836789,
+          -14.61654428313933
+        ]
+      },
+      "bind": {
+        "$d7_LatchLockingLip_contour_curves_4": {
+          "field": "curves",
+          "prepend": "$d7_LatchLockingLip_contour_curves_3"
+        }
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "contour",
+        "sketch": "d7_LatchLockingLip__Locking lip contour",
+        "curves": "$d7_LatchLockingLip_contour_curves_4",
+        "distance": "d7_LatchLockingLip_width",
+        "rule": "Locking spring 0.7 mm",
+        "body_name": "LatchLockingLip"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 2.9,
+        "diameter": 3.2,
+        "base": [
+          45.5,
+          4.2,
+          0
+        ],
+        "axis": "Z",
+        "operation": "cut",
+        "targets": [
+          "LatchLockingLip"
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Spring steel",
+        "density_g_cm3": 7.85,
+        "color": "#9EA5AB"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchLockingLip"
+        ],
+        "material": "Spring steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "LatchLockingLipRivet",
+        "grounded": false
+      },
+      "bind": {
+        "$latchlockingliprivet": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d8_LatchLockingLipRivet__Locking lip rivet profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.95,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.95,
+            0.0
+          ],
+          [
+            1.95,
+            -0.37
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.95,
+            -0.37
+          ],
+          [
+            1.55,
+            -0.37
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.55,
+            -0.37
+          ],
+          [
+            1.55,
+            -2.72
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.55,
+            -2.72
+          ],
+          [
+            2.15,
+            -2.72
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.15,
+            -2.72
+          ],
+          [
+            2.15,
+            -3.04
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            2.15,
+            -3.04
+          ],
+          [
+            1.85,
+            -3.24
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            1.85,
+            -3.24
+          ],
+          [
+            0.0,
+            -3.24
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -3.24
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.revolve",
+      "params": {
+        "sketch": "d8_LatchLockingLipRivet__Locking lip rivet profile",
+        "axis": "Z",
+        "angle": 360,
+        "body_name": "LatchLockingLipRivet"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "LatchLockingLipRivet"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchmountingfoot",
+        "translate": [
+          -36.5,
+          0,
+          0
+        ],
+        "move_grounded": true
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchhandle",
+        "translate": [
+          -36.5,
+          0,
+          14.5
+        ],
+        "axis": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "angle": "180 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchpullbail",
+        "translate": [
+          -36.5,
+          0,
+          0
+        ],
+        "axis": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "angle": "120 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchbailrivetleft",
+        "translate": [
+          -3.0,
+          0,
+          6.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchbailrivetright",
+        "translate": [
+          -3.0,
+          0,
+          6.0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchhingepin",
+        "translate": [
+          -16.0,
+          0,
+          7.3
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchlockinglip",
+        "translate": [
+          -36.5,
+          -4.2,
+          0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$latchlockingliprivet",
+        "translate": [
+          9.0,
+          0,
+          0
+        ]
+      }
+    }
+  ]
+}

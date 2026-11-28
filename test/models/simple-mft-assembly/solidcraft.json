@@ -1,0 +1,2998 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_width",
+        "expression": "805",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_depth",
+        "expression": "555",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "worktop_thickness",
+        "expression": "18",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_hole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_hole_pitch",
+        "expression": "76",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d1_SimpleMFT_corner_chamfer",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "SimpleMFT",
+        "grounded": true
+      },
+      "bind": {
+        "$simplemft": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d1_SimpleMFT_width",
+        "width": "d1_SimpleMFT_depth",
+        "height": "worktop_thickness",
+        "corner": [
+          "-d1_SimpleMFT_width / 2",
+          "-d1_SimpleMFT_depth / 2",
+          0
+        ],
+        "body_name": "SimpleMFT"
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "SimpleMFT"
+      },
+      "bind": {
+        "$d1_SimpleMFT_face_point_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_SimpleMFT_face_index_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$d1_SimpleMFT_face_point_1",
+          "body": "SimpleMFT",
+          "index": "$d1_SimpleMFT_face_index_1"
+        },
+        "project_edges": false,
+        "name": "d1_SimpleMFT__Dog holes"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          "(d1_SimpleMFT_hole_pitch * -4)",
+          "(d1_SimpleMFT_hole_pitch * -3)"
+        ],
+        "diameter": "d1_SimpleMFT_hole_diameter"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_1_profile_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.pattern.rectangular",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_1_profile_1",
+        "count": 9,
+        "spacing": "d1_SimpleMFT_hole_pitch",
+        "dir": [
+          1.0,
+          0.0
+        ],
+        "count2": 7,
+        "spacing2": "d1_SimpleMFT_hole_pitch",
+        "dir2": [
+          0.0,
+          1.0
+        ]
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_1_operation_1": {
+          "field": "curves",
+          "prepend": "$d1_SimpleMFT_sketch_1_profile_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "SimpleMFT"
+        ],
+        "name": "Dog holes",
+        "through_all": true,
+        "direction": "negative",
+        "profiles": [
+          {
+            "point": [
+              -304.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -228.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -152.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              -76.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              0.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              76.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              152.0
+            ]
+          },
+          {
+            "point": [
+              -304.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -228.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -152.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              -76.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              0.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              76.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              152.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              228.0,
+              228.0
+            ]
+          },
+          {
+            "point": [
+              304.0,
+              228.0
+            ]
+          }
+        ],
+        "exact_regions": true
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "SimpleMFT"
+      },
+      "bind": {
+        "$d1_SimpleMFT_face_point_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "point"
+        },
+        "$d1_SimpleMFT_face_index_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              0,
+              1
+            ]
+          },
+          "max": "area",
+          "select": "index"
+        }
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "face": "$d1_SimpleMFT_face_point_2",
+          "body": "SimpleMFT",
+          "index": "$d1_SimpleMFT_face_index_2"
+        },
+        "project_edges": false,
+        "name": "d1_SimpleMFT__Clamp slots"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          76.0,
+          76.0
+        ],
+        "p1": [
+          132.5685424949238,
+          132.5685424949238
+        ],
+        "width": 24.0
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_profile_1": "curves"
+      }
+    },
+    {
+      "command": "sketch.pattern.rectangular",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_profile_1",
+        "count": 2,
+        "spacing": 134.96046148071045,
+        "dir": [
+          1.0,
+          1.0
+        ]
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_1": {
+          "field": "curves",
+          "prepend": "$d1_SimpleMFT_sketch_2_profile_1"
+        }
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_1",
+        "line": "y"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_2": "curves"
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_1",
+        "line": "x"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_3": "curves"
+      }
+    },
+    {
+      "command": "sketch.mirror",
+      "params": {
+        "entities": "$d1_SimpleMFT_sketch_2_operation_2",
+        "line": "x"
+      },
+      "bind": {
+        "$d1_SimpleMFT_sketch_2_operation_4": "curves"
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "SimpleMFT"
+        ],
+        "name": "Clamp slots",
+        "through_all": true,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            -402.5,
+            -277.5,
+            9.0
+          ],
+          [
+            402.5,
+            -277.5,
+            9.0
+          ],
+          [
+            402.5,
+            277.5,
+            9.0
+          ],
+          [
+            -402.5,
+            277.5,
+            9.0
+          ]
+        ],
+        "distance": "d1_SimpleMFT_corner_chamfer",
+        "body": "SimpleMFT"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "MDF",
+        "density_g_cm3": 0.7,
+        "color": "#C8A46A"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "SimpleMFT"
+        ],
+        "material": "MDF"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_SimpleMFTRightExtension_width",
+        "expression": "195",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d2_SimpleMFTRightExtension_depth",
+        "expression": "555",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "SimpleMFTRightExtension",
+        "grounded": false
+      },
+      "bind": {
+        "$simplemftrightextension": "occurrence"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "d2_SimpleMFTRightExtension_width",
+        "width": "d2_SimpleMFTRightExtension_depth",
+        "height": "worktop_thickness",
+        "corner": [
+          "-d2_SimpleMFTRightExtension_width / 2",
+          "-d2_SimpleMFTRightExtension_depth / 2",
+          0
+        ],
+        "body_name": "SimpleMFTRightExtension"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "SimpleMFTRightExtension"
+        ],
+        "material": "MDF"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "guide_rail_length",
+        "expression": "800",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "GuideRail",
+        "grounded": false
+      },
+      "bind": {
+        "$guiderail": "occurrence"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d3_GuideRail__Guide rail profile - festool"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -0.0
+          ],
+          [
+            16.052,
+            -0.0
+          ],
+          [
+            16.052,
+            -1.6
+          ],
+          [
+            48.207,
+            -1.6
+          ],
+          [
+            48.207,
+            -0.0
+          ],
+          [
+            51.969,
+            -0.0
+          ],
+          [
+            51.969,
+            -1.9
+          ],
+          [
+            50.063,
+            -1.9
+          ],
+          [
+            50.063,
+            -8.6
+          ],
+          [
+            62.303,
+            -8.6
+          ],
+          [
+            62.303,
+            -1.9
+          ],
+          [
+            60.397,
+            -1.9
+          ],
+          [
+            60.397,
+            -0.0
+          ],
+          [
+            64.159,
+            -0.0
+          ],
+          [
+            64.159,
+            -1.6
+          ],
+          [
+            85.228,
+            -1.6
+          ],
+          [
+            85.228,
+            -1.0
+          ],
+          [
+            87.084,
+            -1.0
+          ],
+          [
+            87.084,
+            -1.6
+          ],
+          [
+            165.941,
+            -1.6
+          ],
+          [
+            167.144,
+            -0.4
+          ],
+          [
+            167.144,
+            -2.05
+          ],
+          [
+            184.2,
+            -2.05
+          ],
+          [
+            184.2,
+            -3.9
+          ],
+          [
+            153.099,
+            -3.9
+          ],
+          [
+            153.099,
+            -3.1
+          ],
+          [
+            140.909,
+            -3.1
+          ],
+          [
+            140.909,
+            -3.9
+          ],
+          [
+            129.572,
+            -3.9
+          ],
+          [
+            129.572,
+            -3.65
+          ],
+          [
+            117.382,
+            -3.65
+          ],
+          [
+            117.382,
+            -3.9
+          ],
+          [
+            112.517,
+            -3.9
+          ],
+          [
+            112.517,
+            -3.65
+          ],
+          [
+            75.245,
+            -3.65
+          ],
+          [
+            75.245,
+            -3.9
+          ],
+          [
+            63.708,
+            -3.9
+          ],
+          [
+            63.708,
+            -5.9
+          ],
+          [
+            64.209,
+            -5.9
+          ],
+          [
+            64.209,
+            -10.5
+          ],
+          [
+            48.157,
+            -10.5
+          ],
+          [
+            48.157,
+            -5.9
+          ],
+          [
+            48.658,
+            -5.9
+          ],
+          [
+            48.658,
+            -3.9
+          ],
+          [
+            35.265,
+            -3.9
+          ],
+          [
+            35.265,
+            -3.1
+          ],
+          [
+            23.075,
+            -3.1
+          ],
+          [
+            23.075,
+            -3.9
+          ],
+          [
+            16.052,
+            -3.9
+          ],
+          [
+            16.052,
+            -10.5
+          ],
+          [
+            12.29,
+            -10.5
+          ],
+          [
+            12.29,
+            -8.6
+          ],
+          [
+            14.447,
+            -8.6
+          ],
+          [
+            14.447,
+            -1.9
+          ],
+          [
+            1.605,
+            -1.9
+          ],
+          [
+            1.605,
+            -8.6
+          ],
+          [
+            3.762,
+            -8.6
+          ],
+          [
+            3.762,
+            -10.5
+          ],
+          [
+            0.0,
+            -10.5
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "p000",
+          "p001",
+          "p002",
+          "p003",
+          "p004",
+          "p005",
+          "p006",
+          "p007",
+          "p008",
+          "p009",
+          "p010",
+          "p011",
+          "p012",
+          "p013",
+          "p014",
+          "p015",
+          "p016",
+          "p017",
+          "p018",
+          "p019",
+          "p020",
+          "p021",
+          "p022",
+          "p023",
+          "p024",
+          "p025",
+          "p026",
+          "p027",
+          "p028",
+          "p029",
+          "p030",
+          "p031",
+          "p032",
+          "p033",
+          "p034",
+          "p035",
+          "p036",
+          "p037",
+          "p038",
+          "p039",
+          "p040",
+          "p041",
+          "p042",
+          "p043",
+          "p044",
+          "p045",
+          "p046",
+          "p047",
+          "p048",
+          "p049",
+          "p050",
+          "p051",
+          "p052",
+          "p053",
+          "p054",
+          "p055",
+          "p056",
+          "p057",
+          "p058"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "guide_rail_length",
+        "direction": "symmetric",
+        "body_name": "GuideRail"
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Aluminium",
+        "density_g_cm3": 2.7,
+        "color": "#C4C8CB"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "GuideRail"
+        ],
+        "material": "Aluminium"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d4_MountingRailM8_length",
+        "expression": "1000",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d4_MountingRailM8_repeat_count",
+        "expression": "10",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d4_MountingRailM8_repeat_pitch",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "MountingRailM8",
+        "grounded": false
+      },
+      "bind": {
+        "$mountingrailm8_occurrence_1": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting Rail M8 Rule",
+        "thickness": 1.25,
+        "k_factor": 0.4,
+        "bend_radius": 1.25,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d4_MountingRailM8__Flat rail blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            "d4_MountingRailM8_length"
+          ],
+          [
+            -32.99778714378214,
+            "d4_MountingRailM8_length"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d4_MountingRailM8__Flat rail blank",
+        "rule": "Mounting Rail M8 Rule",
+        "body_name": "MountingRailM8"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d4_MountingRailM8__Repeat round A"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          12.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round A",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d4_MountingRailM8__Repeat horizontal slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          0.0,
+          35.7
+        ],
+        "p1": [
+          0.0,
+          39.3
+        ],
+        "width": 6.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat horizontal slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d4_MountingRailM8__Repeat round B"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          62.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round B",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d4_MountingRailM8__Repeat vertical slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          -3.3,
+          87.5
+        ],
+        "p1": [
+          3.3,
+          87.5
+        ],
+        "width": 8.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat vertical slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Repeat round A",
+          "Repeat horizontal slot",
+          "Repeat round B",
+          "Repeat vertical slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": "d4_MountingRailM8_repeat_count",
+        "spacing1": "d4_MountingRailM8_repeat_pitch",
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            -28.123340357836604,
+            1000.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          500.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            28.123340357836604,
+            1000.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          500.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            -12.374446785945535,
+            1000.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          500.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            12.374446785945535,
+            1000.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          500.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#9EA6AA"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MountingRailM8"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.copy",
+      "params": {
+        "component": "MountingRailM8"
+      },
+      "bind": {
+        "$mountingrailm8_occurrence_2": "occurrence"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d5_MountingRailM8_2_length",
+        "expression": "519",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d5_MountingRailM8_2_repeat_count",
+        "expression": "5",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "d5_MountingRailM8_2_repeat_pitch",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "MountingRailM8 2",
+        "grounded": false
+      },
+      "bind": {
+        "$mountingrailm8_2": "occurrence"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting Rail M8 Rule",
+        "thickness": 1.25,
+        "k_factor": 0.4,
+        "bend_radius": 1.25,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d5_MountingRailM8_2__Flat rail blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            "d5_MountingRailM8_2_length"
+          ],
+          [
+            -32.99778714378214,
+            "d5_MountingRailM8_2_length"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "d5_MountingRailM8_2__Flat rail blank",
+        "rule": "Mounting Rail M8 Rule",
+        "body_name": "MountingRailM8_2"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d5_MountingRailM8_2__Repeat round A"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          12.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8_2"
+        ],
+        "name": "Repeat round A",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d5_MountingRailM8_2__Repeat horizontal slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          0.0,
+          35.7
+        ],
+        "p1": [
+          0.0,
+          39.3
+        ],
+        "width": 6.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8_2"
+        ],
+        "name": "Repeat horizontal slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d5_MountingRailM8_2__Repeat round B"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          62.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8_2"
+        ],
+        "name": "Repeat round B",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d5_MountingRailM8_2__Repeat vertical slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          -3.3,
+          87.5
+        ],
+        "p1": [
+          3.3,
+          87.5
+        ],
+        "width": 8.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8_2"
+        ],
+        "name": "Repeat vertical slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Repeat round A",
+          "Repeat horizontal slot",
+          "Repeat round B",
+          "Repeat vertical slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": "d5_MountingRailM8_2_repeat_count",
+        "spacing1": "d5_MountingRailM8_2_repeat_pitch",
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
+        "points": [
+          [
+            -28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            -28.123340357836604,
+            519.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          259.5,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
+        "points": [
+          [
+            28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            28.123340357836604,
+            519.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          259.5,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
+        "points": [
+          [
+            -12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            -12.374446785945535,
+            519.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          259.5,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8_2",
+        "points": [
+          [
+            12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            12.374446785945535,
+            519.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          259.5,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MountingRailM8_2"
+        ],
+        "material": "Galvanized steel"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "component.create",
+      "params": {
+        "name": "FlexBenchDog",
+        "grounded": false
+      },
+      "bind": {
+        "$flexbenchdog": "occurrence"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.5,
+        "diameter": 22.0,
+        "base": [
+          0,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            11.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "distance": 1.0,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 18.5,
+        "diameter": 20.0,
+        "base": [
+          0,
+          0,
+          1.5
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 20.0,
+        "diameter": 20.2,
+        "top_diameter": 20.0,
+        "base": [
+          0,
+          0,
+          -20.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.1,
+            0.0,
+            -20.0
+          ]
+        ],
+        "distance": 1.0,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Flex slot X"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -11.1,
+          -0.75
+        ],
+        "p1": [
+          11.1,
+          0.75
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot X",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Flex slot Y"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          -0.75,
+          -11.1
+        ],
+        "p1": [
+          0.75,
+          11.1
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot Y",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.75,
+            0.75,
+            -12.0
+          ],
+          [
+            -0.75,
+            0.75,
+            -12.0
+          ],
+          [
+            -0.75,
+            -0.75,
+            -12.0
+          ],
+          [
+            0.75,
+            -0.75,
+            -12.0
+          ]
+        ],
+        "radius": 0.5,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.0,
+            0.0,
+            20.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 1"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11163126113028762,
+            4.409314624144388
+          ],
+          [
+            3.9093146241443884,
+            2.1116312611302877
+          ],
+          [
+            3.6116312611302877,
+            1.590685375855612
+          ],
+          [
+            -0.4093146241443879,
+            3.888368738869712
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 1",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 2"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3.8,
+            2.3
+          ],
+          [
+            3.8,
+            -2.3
+          ],
+          [
+            3.2,
+            -2.3
+          ],
+          [
+            3.2,
+            2.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 2",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 3"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3.9093146241443884,
+            -2.1116312611302877
+          ],
+          [
+            -0.11163126113028762,
+            -4.409314624144388
+          ],
+          [
+            -0.4093146241443879,
+            -3.888368738869712
+          ],
+          [
+            3.6116312611302877,
+            -1.590685375855612
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 3",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 4"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.11163126113028762,
+            -4.409314624144388
+          ],
+          [
+            -3.9093146241443884,
+            -2.1116312611302877
+          ],
+          [
+            -3.6116312611302877,
+            -1.590685375855612
+          ],
+          [
+            0.4093146241443879,
+            -3.888368738869712
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 4",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 5"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3.8,
+            -2.3
+          ],
+          [
+            -3.8,
+            2.3
+          ],
+          [
+            -3.2,
+            2.3
+          ],
+          [
+            -3.2,
+            -2.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 5",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 6"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3.9093146241443884,
+            2.1116312611302877
+          ],
+          [
+            0.11163126113028762,
+            4.409314624144388
+          ],
+          [
+            0.4093146241443879,
+            3.888368738869712
+          ],
+          [
+            -3.6116312611302877,
+            1.590685375855612
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 6",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 7"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.3,
+            -0.3
+          ],
+          [
+            -0.3,
+            4.3
+          ],
+          [
+            0.3,
+            4.3
+          ],
+          [
+            0.3,
+            -0.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 7",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 8"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11163126113028762,
+            0.4093146241443879
+          ],
+          [
+            3.9093146241443884,
+            -1.8883687388697126
+          ],
+          [
+            3.6116312611302877,
+            -2.409314624144388
+          ],
+          [
+            -0.4093146241443879,
+            -0.11163126113028762
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 8",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "d6_FlexBenchDog__Top logo rib 9"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4093146241443879,
+            -0.11163126113028762
+          ],
+          [
+            -3.6116312611302877,
+            -2.409314624144388
+          ],
+          [
+            -3.9093146241443884,
+            -1.8883687388697126
+          ],
+          [
+            0.11163126113028762,
+            0.4093146241443879
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 9",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$simplemftrightextension",
+        "translate": [
+          500.0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$guiderail",
+        "translate": [
+          321.9,
+          0,
+          "worktop_thickness"
+        ]
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$mountingrailm8_occurrence_1",
+        "translate": [
+          -384.5,
+          259.5,
+          -13.5
+        ],
+        "axis": [
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "angle": "120 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$mountingrailm8_occurrence_2",
+        "translate": [
+          -384.5,
+          -259.5,
+          -13.5
+        ],
+        "axis": [
+          1.0,
+          1.0,
+          -1.0
+        ],
+        "angle": "120 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$mountingrailm8_2",
+        "translate": [
+          -384.5,
+          -259.5,
+          -13.5
+        ],
+        "axis": [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        "angle": "90 deg"
+      }
+    },
+    {
+      "command": "occurrence.move",
+      "params": {
+        "occurrence": "$flexbenchdog",
+        "translate": [
+          304.0,
+          -228.0,
+          "worktop_thickness"
+        ]
+      }
+    }
+  ]
+}

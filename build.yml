@@ -1,5 +1,5 @@
 schema: 1
-branch: fix/315-restore-dev-coupler-efficiency
+branch: issue/317-coupler-family-modules
 
 modules: []
 models:

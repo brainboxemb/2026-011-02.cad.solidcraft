@@ -5,9 +5,9 @@ from dataclasses import dataclass
 from scpf import Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
-from models.components.hub75_frame_coupler.scpf.family import (
-    Hub75FrameCouplerMiddle,
-    Hub75FrameCouplerEdgeTube,
+from models.components.hub75_frame_coupler.scpf.center_family import Hub75FrameCouplerCenter
+from models.components.hub75_frame_coupler.scpf.edge_family import Hub75FrameCouplerEdgeTube
+from models.components.hub75_frame_coupler.scpf.corner_family import (
     Hub75FrameCouplerCornerLeftTube,
     Hub75FrameCouplerCornerRightTube,
 )
@@ -75,10 +75,10 @@ def _build_tube_frame(
             rotation=((0, 1, -1), 180),
         ),
     )
-    middle = Hub75FrameCouplerMiddle(
+    center = Hub75FrameCouplerCenter(
         reference_ticks=coupler_reference_ticks,
         reference_holes=coupler_reference_holes,
-        name="MiddleCoupler",
+        name="CenterCoupler",
         placement=Placement(z=PANEL_CENTER_Z),
     )
 
@@ -135,7 +135,7 @@ def _build_tube_frame(
     ]
 
     result = (
-        left_panel + right_panel + middle + edge_top + edge_bottom
+        left_panel + right_panel + center + edge_top + edge_bottom
         + corner_left_top + corner_left_bottom
         + corner_right_top + corner_right_bottom
         + tube_top + tube_bottom

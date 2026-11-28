@@ -5,8 +5,8 @@ priority: 28
 title: HUB75 Tube Clamp
 tagline: Interchangeable tube-clamp interfaces for Ø10 display-frame tubes
 description: >
-  Reusable HUB75 tube-clamp family with a common elastic ring and native
-  Free/Installed fit state. Choose either the receiving female slot or the
+  Reusable HUB75 tube-clamp family with a common elastic ring and document-owned
+  Free/Installed fit configurations. Choose either the receiving female slot or the
   protruding male dovetail interface.
 variants:
   hub75-tube-clamp:
@@ -15,15 +15,15 @@ variants:
     description: >
       Existing source-faithful receiving/female clamp interface. Tube diameter,
       clamp interference and clamp bore remain editable dependencies; Ø10 with
-      0.4 mm interference gives a 9.6 mm Free bore and the independent Installed
-      rule drives the bore to the tube diameter.
+      0.4 mm interference gives a 9.6 mm Free bore; the standalone document also
+      exposes an Installed row that sets the bore to the tube diameter.
     parameters: Ø10 tube default; 0.4 mm clamp interference; 9.6 mm Free bore default; 12 mm clamp width; 16 mm slide run; 1 mm closed slot stop
     stages:
       - Reuse the shared elastic clamp-ring geometry
       - Add the active low integrated rounded slide back
       - Cut the active rounded receiving slot while preserving the 1 mm end stop
       - Preserve the parent 0.14 mm slot-entry chamfer
-      - Keep Installed disabled for standalone manufacturing
+      - Keep Free as the active standalone manufacturing configuration
   hub75-tube-clamp-male:
     title: HUB75 Tube Clamp — Male Dovetail
     tagline: Parameterized printable tube clamp with protruding male dovetail
@@ -38,7 +38,7 @@ variants:
       - Join the final 14-segment symmetric male dovetail profile
       - Preserve the 0.4 mm flat groove bottoms
       - Cut the mirrored final 45-degree flank corrections
-      - Keep Installed disabled for standalone manufacturing
+      - Keep Free as the active standalone manufacturing configuration
 extra_views:
   title: Clamp fit and interface review
   note: Front/rear/side views make the common elastic tube wrap and the selected female or male slide interface inspectable.

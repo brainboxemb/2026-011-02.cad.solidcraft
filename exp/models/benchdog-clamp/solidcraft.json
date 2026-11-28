@@ -90,12 +90,12 @@
         "length": "rail_inside_width - (rail_clearance * 2)",
         "width": 16.0,
         "height": "((rail_top - 2 mm) - (rail_clearance)) - ((rail_top - 8.4 mm) + (rail_clearance))",
-        "operation": "new",
         "corner": [
           "((((-(rail_inside_width)) / 2) + (rail_clearance) + 2 mm) + ((rail_inside_width - (rail_clearance * 2)) / 2)) + (-((rail_inside_width - (rail_clearance * 2)) / 2))",
           -8.0,
           "(rail_top - 8.4 mm) + (rail_clearance)"
         ],
+        "operation": "new",
         "body_name": "BenchdogClampSlide"
       }
     },
@@ -105,12 +105,12 @@
         "length": "rail_opening - (rail_clearance * 2)",
         "width": 16.0,
         "height": "(((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)) - ((rail_top - 2 mm) - (rail_clearance))",
-        "operation": "join",
         "corner": [
           "((((-(rail_opening)) / 2) + (rail_clearance) + 2 mm) + ((rail_opening - (rail_clearance * 2)) / 2)) + (-((rail_opening - (rail_clearance * 2)) / 2))",
           -8.0,
           "(rail_top - 2 mm) - (rail_clearance)"
         ],
+        "operation": "join",
         "targets": [
           "BenchdogClampSlide"
         ]
@@ -122,12 +122,12 @@
         "length": 4.0,
         "width": "hinge_axial_clearance * -2 + 8 mm",
         "height": "(rail_top + (hinge_height)) - (((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance))",
-        "operation": "join",
         "corner": [
           "-(hinge_left_shift) + 2 mm + -2 mm",
           "((hinge_axial_clearance + -4 mm) + ((hinge_axial_clearance * -2 + 8 mm) / 2)) + (-((hinge_axial_clearance * -2 + 8 mm) / 2))",
           "((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)"
         ],
+        "operation": "join",
         "targets": [
           "BenchdogClampSlide"
         ]
@@ -156,12 +156,12 @@
         "length": "-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm",
         "width": "hinge_axial_clearance * -2 + 8 mm",
         "height": "(rail_top + (hinge_height) + 2 mm) - (((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance))",
-        "operation": "join",
         "corner": [
           "((-(hinge_left_shift) + 3.75 mm) + ((-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm) / 2)) + (-((-(-(hinge_left_shift) + 3.75 mm) + 6.5 mm) / 2))",
           "((hinge_axial_clearance + -4 mm) + ((hinge_axial_clearance * -2 + 8 mm) / 2)) + (-((hinge_axial_clearance * -2 + 8 mm) / 2))",
           "((rail_top + (hinge_height)) - (hinge_outer_radius)) - (rail_clearance)"
         ],
+        "operation": "join",
         "targets": [
           "BenchdogClampSlide"
         ]
@@ -206,12 +206,12 @@
         "length": 11.0,
         "width": 4.0,
         "height": 3.0,
-        "operation": "new",
         "corner": [
           "(-(hinge_left_shift)) - 9 mm + 5.5 mm + -5.5 mm",
           -2.0,
           "(rail_top + (hinge_height)) - 1.5 mm"
         ],
+        "operation": "new",
         "body_name": "BenchdogClampHingeArm"
       }
     },
@@ -315,14 +315,6 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "profile_length",
-        "expression": "40",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "profile_inside_width",
         "expression": "12.55",
         "unit": "mm"
@@ -333,6 +325,14 @@
       "params": {
         "name": "profile_opening",
         "expression": "8.3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "profile_length",
+        "expression": "40",
         "unit": "mm"
       }
     },
@@ -349,8 +349,8 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XZ",
-        "name": "d4_BenchdogClampRailContext__Dummy rail profile"
+        "name": "d4_BenchdogClampRailContext__Dummy rail profile",
+        "plane": "XZ"
       }
     },
     {
@@ -470,9 +470,9 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "profile_length",
         "direction": "symmetric",
-        "body_name": "BenchdogClampRailContext"
+        "body_name": "BenchdogClampRailContext",
+        "distance": "profile_length"
       }
     },
     {

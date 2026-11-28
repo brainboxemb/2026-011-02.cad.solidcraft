@@ -11,7 +11,24 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-No active work selected.
+### #285 — adopt permanent exp lane and rolling test output
+
+Adopt the stable `template.cad.model-project#133` contract in the real CAD
+catalog without a CAD-local fork:
+
+- add permanent source/output lane `exp`;
+- add one rolling generated `test` scope requested explicitly from matching
+  temporary `build.yml` with `output.scope: test`;
+- keep `test` as output only, never as a source branch;
+- publish Pages at `/exp/` and `/test/` beside stable `/` and `/dev/`;
+- retain exact Forge work-branch qualification and record its SHA in test
+  build evidence;
+- keep Forge v0.26.0 / SolidCraft 0.50.0 / runtime v0.3.8 as the released
+  baseline;
+- qualify the adoption with a bounded real model before permanent-lane setup.
+
+After the capability is accepted on CAD `dev`, initialize CAD `exp` through
+an explicit `dev -> exp` checkpoint and qualify its build/Pages output.
 
 ## Mandatory integration rule
 
@@ -42,5 +59,6 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 
 ## Next
 
-No next work selected. Select an open issue deliberately before implementation;
-do not infer work from stale branch-local plan text.
+After #285 is accepted and CAD `exp` is qualified, use the rolling `/test/`
+scope for the next exact Forge-exp catalog qualification so generated results
+can be reviewed visually before any Forge `exp -> dev` checkpoint.

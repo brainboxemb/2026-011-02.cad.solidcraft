@@ -14,14 +14,20 @@ its own directory, configuration and tests/verification.
 
 ## Start work
 
-Before changing anything:
+Before changing anything, read the canonical `docs/plan.md` from stable
+`main`, regardless of which development lane will be used.
 
-1. read `docs/plan.md`;
-2. create/switch to a short-lived branch from `dev`;
-3. update root `build.yml.branch` to the exact branch name;
-4. select only the modules/models this branch changes;
-5. select only the required tasks;
-6. keep generated output below `build/`.
+Then classify the change:
+
+- repository-governance only: if the complete change is limited to
+  `AGENTS.md`, `docs/plan.md` and/or `docs/handoff.md`, create a
+  short-lived `docs/*` branch from `main` and target `main` directly;
+- normal product/model/module work: create a short-lived branch from `dev`,
+  update root `build.yml.branch` to the exact branch name, select only the
+  modules/models and tasks this branch changes, and keep generated output below
+  `build/`.
+
+Do not treat a branch-local copy of `docs/plan.md` as a competing plan.
 
 ## Branch model
 
@@ -29,17 +35,23 @@ Permanent source branches are only `main` and `dev`.
 
 Required integration:
 
-- short-lived branch -> `dev`: squash;
+- normal short-lived branch -> `dev`: squash;
+- governance-only `docs/*` branch from `main` -> `main`: squash, only
+  when every changed path is one of `AGENTS.md`, `docs/plan.md`,
+  `docs/handoff.md`;
 - `dev` -> `main`: merge commit when promoting accepted development;
-- `main` -> `dev`: merge commit only when `main` contains actual content
-  that is not already present on `dev`, for example a stable-branch hotfix.
+- `main` -> `dev`: merge commit only when `main` contains actual product
+  content that is not already present on `dev`, for example a stable-branch
+  hotfix. Do not sync plan/handoff metadata to `dev` merely because it changed
+  on `main`.
 
 ### Mandatory merge execution rule
 
 This repository deliberately does **not** let an agent choose the merge method.
 
-For every source-branch integration above, an agent MUST post `/merge` on the
-pull request and let `.github/workflows/merge-policy.yml` perform the merge.
+For every source-branch integration above, including the governance-only
+`docs/* -> main` route, an agent MUST post `/merge` on the pull request and
+let `.github/workflows/merge-policy.yml` perform the merge.
 
 An agent MUST NOT:
 
@@ -57,8 +69,9 @@ commit back into `dev`.
 
 Temporary branches use only configured prefixes from root `ci.yml`.
 
-After a successful same-repository short-lived PR is merged into `dev`, its
-source branch is removed by `modules/branch-cleanup`.
+After a successful same-repository short-lived PR is merged into its allowed
+target (`dev` for normal work, or `main` for governance-only `docs/*`
+work), its source branch is removed by `modules/branch-cleanup`.
 
 `main` and `dev` are never cleanup candidates.
 

@@ -75,4 +75,6 @@ def expand_model_dependents(
         modules=selection.modules,
         models=ordered,
         tasks=selection.tasks,
+        forge_ref=selection.forge_ref,
+        output_scope=selection.output_scope,
     )

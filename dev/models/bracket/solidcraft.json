@@ -3,24 +3,24 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "width",
-        "expression": "60",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "thickness",
         "expression": "6",
         "unit": "mm"
       }
     },
     {
+      "command": "parameters.add",
+      "params": {
+        "name": "width",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
       "command": "sketch.create",
       "params": {
-        "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "plane": "XZ"
       }
     },
     {
@@ -70,9 +70,9 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "width",
         "direction": "negative",
-        "body_name": "Bracket"
+        "body_name": "Bracket",
+        "distance": "width"
       }
     },
     {

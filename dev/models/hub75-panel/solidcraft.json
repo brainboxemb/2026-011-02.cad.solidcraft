@@ -2191,12 +2191,12 @@
         "length": 27.9,
         "width": 9.5,
         "height": 10.64,
-        "operation": "new",
         "corner": [
           -13.95,
           -4.75,
           0
         ],
+        "operation": "new",
         "body_name": "Hub75DataConnector"
       }
     },
@@ -2206,12 +2206,12 @@
         "length": 21.762,
         "width": 5.89,
         "height": 0.8,
-        "operation": "cut",
         "corner": [
           -10.881,
           -2.945,
           10.24
         ],
+        "operation": "cut",
         "targets": [
           "Hub75DataConnector"
         ]

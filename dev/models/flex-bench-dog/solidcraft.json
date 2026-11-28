@@ -58,15 +58,15 @@
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "FlexBenchDog",
+        "distance": 1.0,
         "edges": [
           [
             11.0,
             0.0,
             0.0
           ]
-        ],
-        "distance": 1.0,
-        "body": "FlexBenchDog"
+        ]
       }
     },
     {
@@ -107,50 +107,35 @@
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "FlexBenchDog",
+        "distance": 1.0,
         "edges": [
           [
             10.1,
             0.0,
             -20.0
           ]
-        ],
-        "distance": 1.0,
-        "body": "FlexBenchDog"
+        ]
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            -20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Flex slot X"
+        "name": "Flex slot X",
+        "plane": "XY",
+        "offset": -20.0
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-((hole_diameter + (interference) + 2 mm) / 2))",
-          "(-(slot_width / 2))"
+          "-((hole_diameter + (interference) + 2 mm) / 2)",
+          "-(slot_width / 2)"
         ],
         "p1": [
-          "((hole_diameter + (interference) + 2 mm) / 2)",
-          "(slot_width / 2)"
+          "(hole_diameter + (interference) + 2 mm) / 2",
+          "slot_width / 2"
         ]
       }
     },
@@ -161,48 +146,33 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "positive",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Flex slot X",
-        "distance": 16.0,
-        "direction": "positive"
+        "distance": 16.0
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            -20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Flex slot Y"
+        "name": "Flex slot Y",
+        "plane": "XY",
+        "offset": -20.0
       }
     },
     {
       "command": "sketch.rectangle.two_point",
       "params": {
         "p0": [
-          "(-(slot_width / 2))",
-          "(-((hole_diameter + (interference) + 2 mm) / 2))"
+          "-(slot_width / 2)",
+          "-((hole_diameter + (interference) + 2 mm) / 2)"
         ],
         "p1": [
-          "(slot_width / 2)",
-          "((hole_diameter + (interference) + 2 mm) / 2)"
+          "slot_width / 2",
+          "(hole_diameter + (interference) + 2 mm) / 2"
         ]
       }
     },
@@ -213,13 +183,13 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "positive",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Flex slot Y",
-        "distance": 16.0,
-        "direction": "positive"
+        "distance": 16.0
       }
     },
     {
@@ -254,38 +224,23 @@
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "FlexBenchDog",
+        "distance": 0.6,
         "edges": [
           [
             10.0,
             0.0,
             20.0
           ]
-        ],
-        "distance": 0.6,
-        "body": "FlexBenchDog"
+        ]
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 1"
+        "name": "Top logo rib 1",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -325,36 +280,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 1",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 2"
+        "name": "Top logo rib 2",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -394,36 +334,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 2",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 3"
+        "name": "Top logo rib 3",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -463,36 +388,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 3",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 4"
+        "name": "Top logo rib 4",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -532,36 +442,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 4",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 5"
+        "name": "Top logo rib 5",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -601,36 +496,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 5",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 6"
+        "name": "Top logo rib 6",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -670,36 +550,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 6",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 7"
+        "name": "Top logo rib 7",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -739,36 +604,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 7",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 8"
+        "name": "Top logo rib 8",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -808,36 +658,21 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 8",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     },
     {
       "command": "sketch.create",
       "params": {
-        "plane": {
-          "origin": [
-            0.0,
-            0.0,
-            20.0
-          ],
-          "x_dir": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "y_dir": [
-            0.0,
-            1.0,
-            0.0
-          ]
-        },
-        "name": "Top logo rib 9"
+        "name": "Top logo rib 9",
+        "plane": "XY",
+        "offset": 20.0
       }
     },
     {
@@ -877,13 +712,13 @@
     {
       "command": "solid.extrude",
       "params": {
+        "direction": "negative",
         "operation": "cut",
         "targets": [
           "FlexBenchDog"
         ],
         "name": "Top logo rib 9",
-        "distance": 0.6,
-        "direction": "negative"
+        "distance": 0.6
       }
     }
   ]

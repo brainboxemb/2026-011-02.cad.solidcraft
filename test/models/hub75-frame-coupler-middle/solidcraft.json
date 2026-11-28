@@ -488,7 +488,7 @@
       "command": "sketch.create",
       "params": {
         "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profile 1",
+        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profiles",
         "offset": "(-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm"
       }
     },
@@ -668,29 +668,6 @@
           ]
         ],
         "connect": true
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "mid_guide + 0.05 mm",
-        "direction": "positive",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerMiddle"
-        ]
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profile 2",
-        "offset": "(-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm"
       }
     },
     {
@@ -872,29 +849,6 @@
       }
     },
     {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "mid_guide + 0.05 mm",
-        "direction": "positive",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerMiddle"
-        ]
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profile 3",
-        "offset": "(-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm"
-      }
-    },
-    {
       "command": "sketch.arc.center_point",
       "params": {
         "center": [
@@ -1070,29 +1024,6 @@
           ]
         ],
         "connect": true
-      }
-    },
-    {
-      "command": "sketch.finish",
-      "params": {}
-    },
-    {
-      "command": "solid.extrude",
-      "params": {
-        "distance": "mid_guide + 0.05 mm",
-        "direction": "positive",
-        "operation": "join",
-        "targets": [
-          "Hub75FrameCouplerMiddle"
-        ]
-      }
-    },
-    {
-      "command": "sketch.create",
-      "params": {
-        "plane": "XZ",
-        "name": "d1_Hub75FrameCouplerMiddle__Middle guide profile 4",
-        "offset": "(-(mid_size - (mid_size) + 14.5 mm)) - 0.05 mm"
       }
     },
     {

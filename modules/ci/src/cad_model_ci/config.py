@@ -36,6 +36,7 @@ class ProjectConfig:
     modules_root: Path
     models_root: Path
     output_root: Path
+    experimental_branch: str = "exp"
 
 
 @dataclass(frozen=True)
@@ -45,6 +46,7 @@ class BuildSelection:
     models: tuple[str, ...] | None
     tasks: tuple[str, ...]
     forge_ref: str | None = None
+    output_scope: str | None = None
 
 
 def full_selection(branch: str) -> BuildSelection:
@@ -101,7 +103,11 @@ def load_project(repo: Path) -> ProjectConfig:
 
     stable = branches.get("stable")
     development = branches.get("development")
-    if not isinstance(stable, str) or not isinstance(development, str):
+    experimental = branches.get("experimental")
+    if not all(
+        isinstance(value, str)
+        for value in (stable, development, experimental)
+    ):
         raise ConfigError(f"branch names must be strings: {path}")
 
     forge = dependencies.get("forge")
@@ -117,6 +123,7 @@ def load_project(repo: Path) -> ProjectConfig:
     return ProjectConfig(
         stable_branch=stable,
         development_branch=development,
+        experimental_branch=experimental,
         forge=ForgeDependency(repository, version),
         modules_root=_relative(roots.get("modules"), "roots.modules", path),
         models_root=_relative(roots.get("models"), "roots.models", path),
@@ -147,6 +154,17 @@ def load_build(repo: Path, branch: str) -> BuildSelection | None:
     unsupported = sorted(set(tasks) - {"test", "build"})
     if unsupported:
         raise ConfigError(f"unsupported task(s): {', '.join(unsupported)}")
+
+    output_scope = None
+    output = data.get("output")
+    if output is not None:
+        if not isinstance(output, dict) or set(output) != {"scope"}:
+            raise ConfigError(f"output may contain only scope: {path}")
+        output_scope = output.get("scope")
+        if output_scope != "test":
+            raise ConfigError(f"output.scope must be 'test': {path}")
+        if "build" not in tasks:
+            raise ConfigError(f"output.scope test requires the build task: {path}")
 
     forge_ref = None
     qualification = data.get("qualification")
@@ -180,6 +198,7 @@ def load_build(repo: Path, branch: str) -> BuildSelection | None:
         models=_ids(data.get("models"), "models", path),
         tasks=tuple(tasks),
         forge_ref=forge_ref,
+        output_scope=output_scope,
     )
 
 

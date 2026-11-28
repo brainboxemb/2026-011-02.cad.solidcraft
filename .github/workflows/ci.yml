@@ -2,9 +2,9 @@ name: CI
 
 on:
   pull_request:
-    branches: [dev, main]
+    branches: [dev, main, exp]
   push:
-    branches: [dev, main]
+    branches: [dev, main, exp]
   workflow_dispatch:
 
 concurrency:
@@ -19,11 +19,20 @@ jobs:
     permissions:
       contents: read
       actions: read
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+      test_output: ${{ steps.test-output.outputs.enabled }}
     steps:
       - name: Check out source
         uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+          persist-credentials: false
+
+      - name: Resolve exact source
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -39,9 +48,78 @@ jobs:
           PYTHONPATH: modules/ci/src
         run: python -m cad_model_ci
 
+      - name: Detect rolling test output
+        id: test-output
+        run: |
+          if [ -s build/test/build-plan.json ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload rolling test candidate
+        if: steps.test-output.outputs.enabled == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: cad-test-output-${{ github.run_id }}
+          path: build/test/
+          if-no-files-found: error
+
+  publish-test:
+    name: test-output
+    needs: verify
+    if: >-
+      github.event_name == 'pull_request' &&
+      needs.verify.result == 'success' &&
+      needs.verify.outputs.test_output == 'true' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: cad-test-output
+      cancel-in-progress: true
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.verify.outputs.source_sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install publication dependency
+        run: python -m pip install PyYAML==6.0.2
+
+      - name: Download rolling test candidate
+        uses: actions/download-artifact@v7
+        with:
+          name: cad-test-output-${{ github.run_id }}
+          path: build/test
+
+      - name: Publish rolling test scope
+        env:
+          PYTHONPATH: modules/build/src
+        run: >-
+          python -m cad_model_build.publish
+          --repo .
+          --namespace test
+          --source-ref "${{ github.event.pull_request.head.ref }}"
+          --source-sha "${{ needs.verify.outputs.source_sha }}"
+          --full
+
+      - name: Dispatch Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref "${{ github.event.pull_request.head.ref }}"
+
   build:
     name: build
-    if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')
+    if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main' || github.ref_name == 'exp')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -50,7 +128,12 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v7
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
+
+      - name: Resolve exact source
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -70,7 +153,7 @@ jobs:
         env:
           PYTHONPATH: modules/build/src
           SOURCE_REF: ${{ github.ref_name }}
-          SOURCE_SHA: ${{ github.sha }}
+          SOURCE_SHA: ${{ steps.source.outputs.sha }}
         run: |
           plan="build/$SOURCE_REF/build-plan.json"
           if [ ! -s "$plan" ]; then

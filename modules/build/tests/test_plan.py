@@ -229,6 +229,33 @@ class BuildPlanTests(unittest.TestCase):
             self.assertEqual(plan["forge"]["qualification_ref"], ref)
 
     @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
+    def test_exp_and_test_are_valid_output_namespaces(self, _source_sha):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            exp = resolve_plan(
+                repo=repo,
+                project=self.project(),
+                models=(),
+                selected_ids=(),
+                namespace="exp",
+                source_ref="exp",
+            )
+            test = resolve_plan(
+                repo=repo,
+                project=self.project(),
+                models=(),
+                selected_ids=(),
+                namespace="test",
+                source_ref="chore/review",
+            )
+
+            self.assertEqual(exp["namespace"], "exp")
+            self.assertEqual(exp["source_ref"], "exp")
+            self.assertEqual(test["namespace"], "test")
+            self.assertEqual(test["source_ref"], "chore/review")
+            self.assertEqual(test["source_sha"], "b" * 40)
+
+    @patch("cad_model_build.plan.source_sha", return_value="b" * 40)
     def test_main_is_a_valid_output_namespace(self, _source_sha):
         with tempfile.TemporaryDirectory() as tmp:
             plan = resolve_plan(

@@ -100,6 +100,19 @@ class MergePolicyTests(unittest.TestCase):
     def test_main_to_dev_is_merge_commit(self):
         self.assertEqual(merge_method(head="main", base="dev"), "merge")
 
+    def test_feature_to_exp_is_squash(self):
+        self.assertEqual(merge_method(head="issue/10-change", base="exp"), "squash")
+
+    def test_dev_to_exp_is_merge_commit(self):
+        self.assertEqual(merge_method(head="dev", base="exp"), "merge")
+
+    def test_exp_to_dev_is_merge_commit(self):
+        self.assertEqual(merge_method(head="exp", base="dev"), "merge")
+
+    def test_exp_to_main_is_rejected(self):
+        with self.assertRaises(MergePolicyError):
+            merge_method(head="exp", base="main")
+
     def test_feature_to_main_is_rejected(self):
         with self.assertRaises(MergePolicyError):
             merge_method(head="issue/10-change", base="main")

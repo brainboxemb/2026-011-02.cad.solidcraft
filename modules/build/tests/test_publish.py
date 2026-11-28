@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from cad_model_build.publish import _update_scope
+from cad_model_build.publish import _update_scope, _update_test_scope
 
 
 def write_plan(path: Path, namespace: str, source_sha: str, models: list[dict]) -> dict:
@@ -118,6 +118,81 @@ class PublishScopeTests(unittest.TestCase):
 
             self.assertFalse(stale.exists())
             self.assertTrue((worktree / "dev/models/current/model.sc").is_file())
+
+    def test_rolling_test_scope_overlays_candidate_on_dev_baseline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            worktree = root / "worktree"
+            candidate = root / "candidate"
+            worktree.mkdir()
+            candidate.mkdir()
+
+            for model_id, content in (
+                ("a", "old-a"),
+                ("b", "old-b"),
+                ("stale", "stale"),
+            ):
+                model_dir = worktree / "dev/models" / model_id
+                model_dir.mkdir(parents=True)
+                (model_dir / "model.sc").write_text(content, encoding="utf-8")
+
+            baseline_plan = write_plan(
+                worktree / "dev/build-plan.json",
+                "dev",
+                "1" * 40,
+                [
+                    {"id": "a", "built_source_sha": "1" * 40},
+                    {"id": "b", "built_source_sha": "1" * 40},
+                    {"id": "stale", "built_source_sha": "1" * 40},
+                ],
+            )
+            baseline_plan["source_ref"] = "dev"
+            (worktree / "dev/build-plan.json").write_text(
+                json.dumps(baseline_plan),
+                encoding="utf-8",
+            )
+
+            new_a = candidate / "models/a"
+            new_a.mkdir(parents=True)
+            (new_a / "model.sc").write_text("new-a", encoding="utf-8")
+            candidate_plan = write_plan(
+                candidate / "build-plan.json",
+                "test",
+                "2" * 40,
+                [{"id": "a", "built_source_sha": "2" * 40}],
+            )
+            candidate_plan["source_ref"] = "issue/review"
+            candidate_plan["forge"]["qualification_ref"] = "f" * 40
+
+            _update_test_scope(
+                worktree=worktree,
+                candidate_scope=candidate,
+                candidate_plan=candidate_plan,
+                active_ids={"a", "b"},
+                baseline_namespace="dev",
+            )
+
+            test_scope = worktree / "test"
+            self.assertEqual(
+                (test_scope / "models/a/model.sc").read_text(encoding="utf-8"),
+                "new-a",
+            )
+            self.assertEqual(
+                (test_scope / "models/b/model.sc").read_text(encoding="utf-8"),
+                "old-b",
+            )
+            self.assertFalse((test_scope / "models/stale").exists())
+
+            plan = json.loads(
+                (test_scope / "build-plan.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(plan["namespace"], "test")
+            self.assertEqual(plan["source_ref"], "issue/review")
+            self.assertEqual(plan["source_sha"], "2" * 40)
+            self.assertEqual(plan["forge"]["qualification_ref"], "f" * 40)
+            self.assertEqual([row["id"] for row in plan["models"]], ["a", "b"])
+            self.assertEqual(plan["models"][0]["built_source_sha"], "2" * 40)
+            self.assertEqual(plan["models"][1]["built_source_sha"], "1" * 40)
 
     def test_full_update_replaces_scope(self):
         with tempfile.TemporaryDirectory() as tmp:

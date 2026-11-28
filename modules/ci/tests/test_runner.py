@@ -53,6 +53,8 @@ class RunnerTests(unittest.TestCase):
         self.assertIn(str(Path("modules/build/src").resolve()), env["PYTHONPATH"])
         self.assertIn("--model", command)
         self.assertIn("box", command)
+        self.assertIn("--source-ref", command)
+        self.assertEqual(command[command.index("--source-ref") + 1], "dev")
 
     @patch("cad_model_ci.runner._run")
     def test_model_batch_passes_forge_qualification_ref(self, run):
@@ -108,6 +110,10 @@ class RunnerTests(unittest.TestCase):
         build_models_mock.assert_called_once()
         self.assertEqual(build_models_mock.call_args.kwargs["namespace"], "dev")
         self.assertEqual(build_models_mock.call_args.kwargs["models"], (model,))
+        self.assertEqual(
+            build_models_mock.call_args.kwargs["source_ref"],
+            "issue/36",
+        )
         self.assertEqual(
             build_models_mock.call_args.kwargs["forge_ref"],
             "d" * 40,

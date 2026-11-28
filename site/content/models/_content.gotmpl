@@ -229,6 +229,10 @@ Generic model page adapter.
         "sourcePath" $sourcePath
         "build" $build
         "toolchain" (dict
+          "source" (dict
+            "ref" (default (index $plan "namespace") (index $plan "source_ref"))
+            "sha" (index $plan "source_sha")
+          )
           "forge" (index $plan "forge")
           "solidcraft" (index $plan "solidcraft")
         )

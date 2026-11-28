@@ -64,12 +64,11 @@ def _add_loop(sketch, loop):
 
 
 def _profile_solid(*, name, loops, y, distance):
-    """Extrude one or more retained source loops.
+    """Extrude retained source loops separately and join their solids.
 
-    Preserve the accepted extraction boundary by lowering each retained loop
-    separately and joining the resulting SolidCraft extrusions. Newer Forge
-    releases can author multiple profiles in one Sketch, but changing the
-    accepted base-family history is outside this tube-interface change.
+    This preserves the accepted history shape for callers that require one
+    extrusion per retained loop. Use _multi_profile_solid when the accepted
+    authoring flow intentionally combines disconnected loops in one Sketch.
     """
     result = None
     for index, loop in enumerate(loops, start=1):
@@ -200,7 +199,7 @@ def _interpolate_loop(start, end, t):
 def _cut_tapered_rail_relief(body, *, p, profile_key, steps=12):
     """Approximate the native two-section cut loft without leaving phase-1 fins.
 
-    Forge v0.19 has no public solid-loft feature.  The source loft is shallow:
+    Released Forge v0.27 has no public solid-loft feature. The source loft is shallow:
     its two XZ sections are 6.05 mm apart and differ only slightly.  Twelve
     overlapping source-interpolated slices retain both native sections and
     remove the visible prismatic fin/lip artifact from the earlier baseline.

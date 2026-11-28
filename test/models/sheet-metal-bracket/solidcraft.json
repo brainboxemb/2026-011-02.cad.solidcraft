@@ -93,8 +93,8 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XY",
-        "name": "Base"
+        "name": "Base",
+        "plane": "XY"
       }
     },
     {
@@ -102,19 +102,19 @@
       "params": {
         "points": [
           [
-            0.0,
-            0.0
+            0,
+            0
           ],
           [
             "width",
-            0.0
+            0
           ],
           [
             "width",
             "depth"
           ],
           [
-            0.0,
+            0,
             "depth"
           ]
         ],

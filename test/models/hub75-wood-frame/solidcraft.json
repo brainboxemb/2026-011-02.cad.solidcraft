@@ -478,8 +478,8 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XZ",
-        "name": "d6_CornerBracket__Profile"
+        "name": "d6_CornerBracket__Profile",
+        "plane": "XZ"
       }
     },
     {
@@ -554,9 +554,9 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "bracket_width",
         "direction": "symmetric",
-        "body_name": "CornerBracket"
+        "body_name": "CornerBracket",
+        "distance": "bracket_width"
       }
     },
     {
@@ -576,6 +576,8 @@
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "CornerBracket",
+        "distance": 2.0,
         "edges": [
           [
             60.0,
@@ -647,14 +649,14 @@
             12.0,
             -60.0
           ]
-        ],
-        "distance": 2.0,
-        "body": "CornerBracket"
+        ]
       }
     },
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "CornerBracket",
+        "distance": 0.6,
         "edges": [
           [
             29.7,
@@ -666,9 +668,7 @@
             12.0,
             -0.0
           ]
-        ],
-        "distance": 0.6,
-        "body": "CornerBracket"
+        ]
       }
     },
     {
@@ -726,12 +726,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.82842712474619,
         "direction": "positive",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": 4.82842712474619
       }
     },
     {
@@ -789,12 +789,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.82842712474619,
         "direction": "negative",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": 4.82842712474619
       }
     },
     {
@@ -852,12 +852,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.82842712474619,
         "direction": "positive",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": 4.82842712474619
       }
     },
     {
@@ -915,12 +915,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": 4.82842712474619,
         "direction": "negative",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": 4.82842712474619
       }
     },
     {

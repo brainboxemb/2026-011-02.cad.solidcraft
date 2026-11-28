@@ -3,8 +3,8 @@
 from dataclasses import dataclass
 
 from scpf import assembly
-from models.components.hub75_frame_coupler.scpf.family import (
-    Hub75FrameCouplerEdgeTubeReceiver,
+from models.components.hub75_frame_coupler.scpf.edge_family import Hub75FrameCouplerEdgeTubeReceiver
+from models.components.hub75_frame_coupler.scpf.corner_family import (
     Hub75FrameCouplerCornerLeftTubeReceiver,
     Hub75FrameCouplerCornerRightTubeReceiver,
 )

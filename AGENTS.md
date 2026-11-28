@@ -4,157 +4,132 @@
 
 This repository owns the migrated SolidCraft CAD model catalog.
 
-It uses the accepted architecture from
-`brainboxemb/template.cad.model-project`. Do not reintroduce CI, build or Pages
-patterns from the historical repository when the template already owns that
-behavior.
+Generic CAD CI, build and Pages behavior is inherited from
+`brainboxemb/template.cad.model-project`. Do not re-invent generic template
+behavior in model code or repository-local exceptions.
 
 Models and Python capabilities use the same ownership pattern: each item has
 its own directory, configuration and tests/verification.
+
+## Canonical repository governance
+
+`docs/plan.md` is canonical on stable `main` and is the single source of
+truth for unfinished work. Agents working on any lane must read the current
+`main` copy; branch-local copies are not independent plans.
+
+`docs/handoff.md` is also maintained directly on `main` as handoff metadata.
+
+Governance-only changes may use a short-lived `docs/*` branch created from
+`main` and returned directly to `main` through the repository-local
+`/merge` policy. Such a PR may change only:
+
+- `AGENTS.md`;
+- `docs/plan.md`;
+- `docs/handoff.md`.
+
+Do not create a `main -> dev` sync merely to copy plan or handoff metadata.
 
 ## Start work
 
 Before changing anything:
 
-1. read `docs/plan.md`;
-2. create/switch to a short-lived branch from `dev`;
-3. update root `build.yml.branch` to the exact branch name;
-4. select only the modules/models this branch changes;
-5. select only the required tasks;
-6. keep generated output below `build/`.
+1. inspect current issues, pull requests and branches;
+2. read this file;
+3. read the current `main:docs/plan.md`;
+4. follow the current work order from that plan;
+5. create an issue before implementation when the logical change has none.
+
+Normal product/model/module work starts from `dev` on one short-lived branch.
+Set root `build.yml.branch` to that exact branch, select only the required
+modules/models/tasks, and keep generated output below `build/`.
 
 ## Branch model
 
-Permanent source branches are only `main` and `dev`.
+Permanent source branches are `main` and `dev`.
 
 Required integration:
 
-- short-lived branch -> `dev`: squash;
-- `dev` -> `main`: merge commit when promoting accepted development;
-- `main` -> `dev`: merge commit only when `main` contains actual content
-  that is not already present on `dev`, for example a stable-branch hotfix.
+- short-lived product branch -> `dev`: squash;
+- `dev` -> `main`: merge commit for an explicit stabilization checkpoint;
+- `main` -> `dev`: merge commit only for real stable-only product content;
+- governance-only `docs/* -> main`: squash under the restricted path contract.
+
+Do not routinely sync a `dev -> main` promotion merge commit back into
+`dev`.
 
 ### Mandatory merge execution rule
 
-This repository deliberately does **not** let an agent choose the merge method.
+Every source-branch integration above is executed by posting `/merge` on the
+pull request and letting `.github/workflows/merge-policy.yml` choose the merge
+method.
 
-For every source-branch integration above, an agent MUST post `/merge` on the
-pull request and let `.github/workflows/merge-policy.yml` perform the merge.
-
-An agent MUST NOT:
+Agents must never:
 
 - call GitHub's direct merge API;
 - enable or use auto-merge;
-- use a UI merge as a fallback;
+- use a UI merge as fallback;
 - manually choose squash, merge or rebase.
 
-If `/merge` fails, stop the integration and repair the merge-policy path.
-Never bypass the policy. This rule exists specifically to prevent an agent from
-selecting the wrong merge method.
+If `/merge` fails, repair the policy path instead of bypassing it.
 
-Do not create a `main` -> `dev` PR merely to copy the promotion merge
-commit back into `dev`.
+Temporary branches use only prefixes configured in root `ci.yml`. Successful
+same-repository temporary branches are cleaned by
+`modules/branch-cleanup`. `main` and `dev` are never cleanup candidates.
 
-Temporary branches use only configured prefixes from root `ci.yml`.
+The generated `build` and `gh-pages` branches are not source branches and
+are never cleanup candidates.
 
-After a successful same-repository short-lived PR is merged into `dev`, its
-source branch is removed by `modules/branch-cleanup`.
+## Change discipline
 
-`main` and `dev` are never cleanup candidates.
+Keep one logical change to one issue, branch and PR.
 
-The generated `build` branch is not a source branch. It stores generated
-technical output for the permanent source scopes and is never a cleanup
-candidate.
-
-The generated `gh-pages` branch is also not a source branch. Pages are built
-from `main + build/main` and `dev + build/dev`, assembled as one tree, and
-published there after successful build publication.
-
-## Migration discipline
-
-The historical repository
-`brainboxemb/2026-011-02.cad.solidcraft` is the source for model geometry and
-open design work while migration is incomplete.
-
-Migration widens only through the staged sequence recorded in #1:
-
-1. one real model;
-2. five real models;
-3. ten real models;
-4. remaining catalog.
-
-Use directory groups for ordering:
-
-- basic: priority 10;
-- components: priority 20;
-- subassemblies: priority 30;
-- assemblies: priority 40.
-
-Priority is ordering only. Do not encode dependencies through priority.
-
-Do not copy the historical CAD-specific `model.yml` schema. Presentation stays
-in canonical `model.yml`; source/build identity stays in model-local `ci.yml`.
-Add verification, SCPC or dependencies only through an explicit supported
-contract rather than repository-local exceptions.
+Model geometry or behavior changes must be described and reviewed before
+implementation when the issue/change process requires it. Do not patch Forge
+compiler/API behavior in a CAD model; Forge behavior belongs in
+`brainboxemb/lib.py.solidcraft.forge`.
 
 ## CI selection modes
 
-CI has three modes.
-
 ### Work branch / PR
 
-If `build.yml.branch` matches the actual branch, use its explicit
-module/model/task selection.
-
-If it does not match, ignore `build.yml` and run full. A stale build file is
-not a CI failure.
+A matching root `build.yml` controls explicit module/model/task selection.
+A stale branch field is ignored and falls back to full selection.
 
 ### process-disabled model owners
 
 A model-local `ci.yml` may set `process: false` to park that physical owner.
-
-The owner remains discoverable and dependency-validated. A matching work-branch
-`build.yml` may explicitly select it for focused work. Normal/full/incremental
-automatic selection on permanent lanes excludes it, and dependent expansion
-must not automatically re-add it.
+The owner remains discoverable and explicitly selectable on a matching work
+branch, but permanent automatic selection and dependent expansion do not add it.
 
 ### dev
 
-Ignore `build.yml`.
-
-Use the last successful dev **push/workflow_dispatch** CI SHA as baseline and
-the current dev SHA as target. Build/test the changed items in that Git range,
-plus item-declared impact.
-
-A cancelled dev run never advances the successful baseline. If two squash
-merges arrive quickly, the newer run therefore includes changes not completed
-by the cancelled run.
-
-If no safe successful baseline exists, run full.
+`build.yml` is ignored. CI selects changes since the last successful
+`dev` push/workflow_dispatch baseline, plus declared impact. If no safe
+baseline exists, run full.
 
 ### main
 
-Ignore `build.yml` and run full.
+`build.yml` is ignored and the complete repository runs.
 
 ## Build output
 
-Successful permanent-branch model builds publish to the generated branch
-configured by `ci.yml.generated.build_branch`.
+Successful permanent source builds publish generated CAD artifacts to the
+branch configured by `ci.yml.generated.build_branch`.
 
-The generated branch contains complete build scopes:
+Current durable scopes are:
 
 ```text
-dev/
+main/
   build-plan.json
   models/
-main/
+dev/
   build-plan.json
   models/
 ```
 
-PR/work-branch output is verification-only and is never published. Incremental
-`dev` publication replaces only rebuilt model directories and preserves other
-active model output. `main` is full and replaces its complete scope.
+PR/work-branch output is verification-only unless a separately accepted generic
+template capability changes that contract. Incremental `dev` publication
+preserves unselected active model output; `main` replaces its complete scope.
 
 ## Pages
 
@@ -163,62 +138,29 @@ Hugo/Hextra presentation lives below `site/`.
 The page data boundary is explicit:
 
 - `model.yml`: presentation metadata;
-- `ci.yml`: build/source identity and variants;
-- generated `build/main`: accepted model artifacts;
-- optional model-local `page.md`: additional background prose;
-- optional model metadata `extra_views`: additional reference/build views.
+- model-local `ci.yml`: build/source identity and variants;
+- generated build scopes: accepted CAD artifacts;
+- optional `page.md`: model-owned background prose;
+- optional `extra_views`: model-owned additional reference/build views.
 
-Shared layouts must not branch on model names. Model-specific content belongs in
-model-owned metadata/resources. Pages never runs Forge or SolidCraft.
+Shared layouts must not branch on model names. Pages never runs Forge or
+SolidCraft and never duplicates generated CAD artifacts into `gh-pages`.
 
-Pages runs separately from CAD CI. After successful permanent build
-publication, CI dispatches `pages.yml` and finishes without waiting. That
-workflow rebuilds both the stable root and `/dev/`, then publishes the
-complete tree to `ci.yml.generated.pages_branch` (`gh-pages`).
+Pages runs separately after successful permanent build publication. Stable
+`/` uses `main + build/main`; `/dev/` uses `dev + build/dev`.
 
-## Item impact
+## Model ownership
 
-Impact is declared by the item that owns it, not by a central model catalog.
+Every CAD model has one physical owner root below `models/`, discovered from
+model-local `ci.yml`. One physical owner may expand into multiple build
+variants.
 
-- `modules/ci`: `impact: full`;
-- `modules/build`: `impact: models`;
-- other modules default to self;
-- models default to self.
-
-An item may add extra watched paths, for example its thin workflow YAML.
-
-## Python modules
-
-Every Python capability is a standalone item:
-
-```text
-modules/<id>/
-  ci.yml
-  pyproject.toml
-  src/
-  tests/
-```
-
-Tests for a capability live under that module. Root-level Python tests are not
-allowed.
-
-## Models
-
-Every CAD model is a standalone item below `models/`.
-
-Do not create a central model catalog in Python.
-
-## Workflows
-
-Workflow YAML stays thin and bootstraps only its owning module.
-
-The CI workflow uses concurrency with cancellation so a newer run supersedes an
-older run for the same Git ref.
+Directory priority controls build order only. Physical dependencies must be
+declared explicitly rather than encoded through directory ordering.
 
 ## External ownership
 
-Forge compiler/API behavior remains owned by
-`lib.py.solidcraft.forge`.
-
-Normal repository CI/build/merge/cleanup behavior is inherited from the
-accepted template architecture and remains local to this repository.
+- Forge compiler/API behavior: `brainboxemb/lib.py.solidcraft.forge`;
+- generic CAD project CI/build/Pages behavior:
+  `brainboxemb/template.cad.model-project`;
+- model-owned geometry, presentation and verification: this repository.

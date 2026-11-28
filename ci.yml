@@ -3,6 +3,7 @@ schema: 1
 branches:
   stable: main
   development: dev
+  experimental: exp
   temporary_prefixes:
     - issue/
     - fix/

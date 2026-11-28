@@ -4,9 +4,9 @@ kind: python
 impact: self
 watch:
   - .github/workflows/ci.yml
+  - .github/workflows/pages.yml
   - site/**
   - models/**/model.yml
-  - models/**/ci.yml
   - models/**/page.md
   - models/**/*.svg
   - models/**/*.png

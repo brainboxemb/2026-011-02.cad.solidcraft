@@ -1,8 +1,9 @@
 schema: 1
-branch: chore/299-forge-027
+branch: fix/315-restore-dev-coupler-efficiency
 
-modules: all
-models: all
+modules: []
+models:
+  - hub75-frame-coupler
 tasks:
   - test
   - build

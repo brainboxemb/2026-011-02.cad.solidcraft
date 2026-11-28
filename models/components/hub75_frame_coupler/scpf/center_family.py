@@ -6,10 +6,8 @@ from scpf import component
 
 from models.components.hub75_frame_coupler.scpf.features import (
     _apply_reference_pattern,
-    _guide_clearance,
+    _axis_y_cylinder,
     _join_tapered_seam_guide,
-    _locator_pad,
-    _mounting_hole,
     _multi_profile_solid,
     _profile_solid,
     _replace_arc_through_with_centers,
@@ -117,54 +115,95 @@ class Hub75FrameCouplerCenter:
 
     def build(self):
         p = _parameters(self)
+        datum = p["mid_datum"]
+        base_depth = p["mid_base"]
+        guide_depth = p["mid_guide"]
+        screw_d = p["mid_screw_d"]
+
+        # Start with the accepted symmetric base contour and the four guide
+        # regions. A later change may author these from mirrored source geometry;
+        # this cleanup deliberately preserves the current history.
         base = _profile_solid(
             name="Center base profile",
             loops=_center_base_profiles(p),
-            y=-p["mid_datum"],
-            distance=-p["mid_base"],
+            y=-datum,
+            distance=-base_depth,
         )
         guide = _multi_profile_solid(
             name="Center guide profiles",
             loops=_center_guide_profiles(p),
-            y=-p["mid_datum"] - 0.05,
-            distance=p["mid_guide"] + 0.05,
+            y=-datum - 0.05,
+            distance=guide_depth + 0.05,
         )
         body = base + guide
 
+        # Open the guide around the two panel-bushing positions.
         for x, z in (
             (-p["mid_screw_x"], p["mid_bushing_z"]),
             (p["mid_screw_x"], -p["mid_bushing_z"]),
         ):
-            body = _guide_clearance(body, p=p, x=x, z=z)
-
-        for x in (-p["mid_screw_x"], p["mid_screw_x"]):
-            body = _mounting_hole(
-                body,
-                p=p,
+            body = body - _axis_y_cylinder(
+                diameter=2.0 * (p["mid_bushing_r"] + p["mid_bushing_gap"]),
+                length=guide_depth + 0.1,
                 x=x,
-                z=0.0,
-                total_depth=p["mid_base"],
+                y=-datum + guide_depth / 2.0,
+                z=z,
             )
 
-        body = _locator_pad(
-            body,
-            p=p,
-            x=-p["mid_screw_x"],
-            z=p["mid_bushing_z"],
-        )
-        body = _locator_pad(
-            body,
-            p=p,
-            x=p["mid_screw_x"],
-            z=-p["mid_bushing_z"],
-        )
+        # Drill the two mounting positions. Each position keeps the source
+        # bore, short rear relief and deeper tube clearance visible as one step.
+        for x in (-p["mid_screw_x"], p["mid_screw_x"]):
+            body = body - _axis_y_cylinder(
+                diameter=screw_d,
+                length=base_depth + 0.2,
+                x=x,
+                y=-datum - base_depth / 2.0,
+                z=0.0,
+            )
+            body = body - _axis_y_cylinder(
+                diameter=screw_d + 0.8,
+                length=0.2,
+                x=x,
+                y=-datum - base_depth + 0.1,
+                z=0.0,
+            )
+            body = body - _axis_y_cylinder(
+                diameter=2.0 * (p["mid_tube_r"] + p["mid_tube_gap"]),
+                length=p["mid_tube_depth"],
+                x=x,
+                y=-datum - p["mid_tube_depth"] / 2.0,
+                z=0.0,
+            )
 
+        # Build the two locator bosses on the diagonal bushing positions.
+        for x, z in (
+            (-p["mid_screw_x"], p["mid_bushing_z"]),
+            (p["mid_screw_x"], -p["mid_bushing_z"]),
+        ):
+            body = body + _axis_y_cylinder(
+                diameter=2.0 * p["mid_pad_r"],
+                length=p["mid_pad_h"],
+                x=x,
+                y=-datum + p["mid_pad_h"] / 2.0,
+                z=z,
+            )
+            body = body + _axis_y_cylinder(
+                diameter=2.0 * p["mid_pin_r"],
+                length=p["mid_pin_h"],
+                x=x,
+                y=-datum + p["mid_pad_h"] + p["mid_pin_h"] / 2.0,
+                z=z,
+            )
+
+        # Join the shallow tapered seam key after the structural features.
         body = _join_tapered_seam_guide(
             body,
             p=p,
             profile_key="center",
             steps=8,
         )
+
+        # Reference marks/holes are optional inspection aids, not base geometry.
         body = _apply_reference_pattern(
             body,
             p=p,

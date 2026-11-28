@@ -14,6 +14,7 @@ PROJECT = """schema: 1
 branches:
   stable: main
   development: dev
+  experimental: exp
 generated:
   build_branch: build
 dependencies:
@@ -67,6 +68,7 @@ snapshots:
             project = load_project(repo)
             models = discover_models(repo, project)
             self.assertEqual(project.build_branch, "build")
+            self.assertEqual(project.experimental_branch, "exp")
             self.assertEqual(project.forge.version, "v0.14.0")
             self.assertEqual(len(models), 1)
             self.assertEqual(models[0].id, "box")

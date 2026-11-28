@@ -72,13 +72,16 @@ output:
   scope: test
 ```
 
-The request requires the `build` task. A successful PR build writes the
-candidate as namespace `test`, then fully replaces the one durable
-`build/test` scope and rebuilds Pages at `/test/`.
+The request requires the `build` task. A successful PR build remains bounded
+to its selected models. Publication then creates a fresh complete
+`build/test` scope from the current durable `build/dev` catalog and overlays
+the selected candidate model outputs before rebuilding Pages at `/test/`.
 
 There is deliberately only one rolling test output. A later successful test
-publication replaces the earlier one. Nothing is retained under a PR-specific
-directory, so no PR-close cleanup process exists.
+publication replaces the earlier one. Unselected active model artifacts and
+their own `built_source_sha` evidence come from the durable dev baseline;
+candidate rows replace only the models rebuilt by the PR. Nothing is retained
+under a PR-specific directory, so no PR-close cleanup process exists.
 
 The test `build-plan.json` records the exact source branch and source SHA plus
 the normal released Forge baseline and, when used, the exact
@@ -418,9 +421,10 @@ test/
 ```
 
 Ordinary PR/work-branch builds are verification-only. A PR that explicitly
-requests `output.scope: test` publishes by fully replacing the rolling
-`test/` scope. Incremental `dev` and `exp` publication replace only selected
-model directories, preserve unselected active models, and remove model
+requests `output.scope: test` publishes a fresh rolling `test/` scope by
+copying the current durable `dev/` catalog and overlaying its selected
+candidate model outputs. Incremental `dev` and `exp` publication replace only
+selected model directories, preserve unselected active models, and remove model
 directories that are no longer active. A full `main` build replaces the
 complete `main/` scope.
 

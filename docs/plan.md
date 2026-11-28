@@ -11,12 +11,7 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-### #299 — adopt released Forge v0.27.0 baseline
-
-Change only the released Forge dependency pin from v0.26.0 to v0.27.0, then
-run the complete CAD catalog with all modules and all active model owners.
-Keep SolidCraft runtime v0.3.8 / SolidCraft 0.50.0 unchanged. Integrate only
-after full qualification and permanent dev build evidence are green.
+No active work selected.
 
 ## Mandatory integration rule
 
@@ -42,7 +37,7 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 - `process: false` keeps a model owner discoverable and explicitly selectable
   on a matching work branch while excluding it from automatic/full permanent-lane
   model selection and automatic dependent expansion;
-- Forge v0.26.0 / SolidCraft 0.50.0 / runtime v0.3.8 is the released baseline;
+- Forge v0.27.0 / SolidCraft 0.50.0 / runtime v0.3.8 is the released baseline;
 - generated `build` branch contains `main/`, `dev/`, `exp/` and one
   rolling `test/` scope;
 - matching temporary `build.yml` opts into review publication with
@@ -60,7 +55,19 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 
 ## Next
 
-After #299 is accepted, reconcile the released baseline in this main-owned plan.
-Do not carry the earlier Forge-exp qualification/rollback narrative forward as
-active work; v0.27.0 is now a published release.
+No work selected.
+
+#299 is complete on all permanent source lanes:
+
+- candidate PR #301 full-catalog CI 46147476277 rebuilt all 43 active model rows
+  against released Forge v0.27.0; rolling test Pages 46148079272 is green;
+- permanent `dev` merge `bd708b4270e3d82b6667e1ecfa24c1cc7e0ded28` has
+  qualification/build run 46148280169 green;
+- stable `dev -> main` PR #303 merged as
+  `43beb28ee1feb40270711260da8998487a1beaa2`; permanent main run
+  46149565386 and Pages run 46150094148 are green;
+- permanent `dev -> exp` PR #304 merged as
+  `c74f752b2b084c993259f78ecfec9231e3c959c5`; permanent exp run
+  46149594977 is green;
+- SolidCraft remains runtime v0.3.8 / engine 0.50.0.
 

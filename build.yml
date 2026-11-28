@@ -1,9 +1,9 @@
 schema: 1
-branch: issue/277-forge-qualification-ref
+branch: fix/286-coupler-pattern-defaults
 
-modules:
-  - ci
-  - build
-models: []
+modules: []
+models:
+  - hub75-frame-coupler
 tasks:
   - test
+  - build

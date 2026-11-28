@@ -30,13 +30,15 @@ Free ring sketch
     +-- female or male interface features
 ~~~
 
-The question for Forge is therefore deliberately small:
+The first question for Forge is deliberately smaller than a point-edit API:
 
-> Can the current Forge/SolidCraft API represent one atomic sketch point edit as
-> one named suppressible history step?
+> Can a normal Forge `Sketch` be used directly as a named suppressible
+> configuration target?
 
-If not, only that point-edit history capability should be added. A generic
-`radial_flex`, deformation solver or material model is out of scope.
+SolidCraft already supports Sketch suppression. Forge v0.27 does not currently
+expose Sketch as such a target. That gap must be resolved before inventing any
+new geometry operation. A generic `radial_flex`, deformation solver or material
+model is out of scope.
 
 ## Problem
 
@@ -212,67 +214,109 @@ The Free/Installed state no longer needs `clamp_bore` as a configuration column.
 
 ## Current API audit
 
-### What Forge v0.27.0 already provides
+### SolidCraft already supports Sketch suppression
 
-Feature identity and configuration are already sufficient:
+SolidCraft 0.50.0 represents a Sketch as a normal timeline feature. Its
+suppression/configuration commands accept feature names/ids, and existing
+SolidCraft examples explicitly suppress Sketch features.
+
+So the backend does **not** need a new deformation or point-edit feature merely
+to make a Sketch suppressible.
+
+### Forge v0.27.0 does not expose that capability
+
+This is the actual Forge gap.
+
+The released configuration design currently permits only:
+
+- a `Parameter` as a value column; or
+- an authored **Shape/feature handle** as a suppression column.
+
+The released `feature(name, suppressed=...)` contract is also deliberately
+restricted to one terminal Shape and says that helper Sketch/profile
+construction belongs outside the feature scope.
+
+Therefore this is currently valid Forge authoring:
 
 ~~~python
 with feature("installed", suppressed=True):
+    body = body - cutter
+
+model.configure(
+    columns=(installed_feature,),
     ...
-
-clamp.feature("installed")
-clamp.configure(...)
+)
 ~~~
 
-That part does not need redesign.
-
-### What SolidCraft 0.50.0 already provides
-
-SolidCraft already contains sketch point-edit commands:
-
-~~~text
-sketch.move_point
-sketch.move_points
-sketch.move
-~~~
-
-In particular, `sketch.move_points` accepts several point-to-target moves in
-one solve. This is the backend operation closest to the required clamp edit.
-
-### What Forge v0.27.0 is missing
-
-The current connected-profile API authors points and arcs but does not return
-stable public handles to the profile endpoints and arc centres for a later edit.
-
-Forge also has no public operation equivalent to:
+but the equivalent direct Sketch target is not part of the public v0.27 API:
 
 ~~~python
-ring.move_points({...})
+with Sketch(name="installed", plane="XY") as installed:
+    ...
+
+model.configure(
+    columns=(installed,),
+    ...
+)
 ~~~
 
-inside a normal named `feature(...)` scope.
+That is narrower than SolidCraft's own feature model and is the first capability
+gap this change should address.
 
-The likely Forge-side addition is therefore small:
+### What Forge should add
 
-1. expose stable semantic references to selected connected-profile points/arc centres;
-2. expose one atomic point-move edit over those references;
-3. lower it to the existing SolidCraft sketch point-edit command;
-4. prove that the edit can be one suppressible configuration target.
+The first proposal is intentionally small:
 
-The fourth item is the only unresolved backend question. SolidCraft documents
-`sketch.move_points` as an edit performed while editing a Sketch. That does not
-by itself prove that the edit is stored as a separate timeline feature that
-`config.configure(features=[...])` can suppress.
+> A Forge `Sketch` must be a first-class feature handle that can be used as a
+> suppression/configuration target.
 
-The next capability test is therefore exactly:
+Conceptually:
 
-> Can one atomic `sketch.move_points` edit be recorded/named as one timeline
-> feature and then suppressed by a configuration row?
+~~~python
+with Sketch(name="installed", plane="XY") as installed:
+    # installed-state geometry
 
-If yes, Forge only needs the thin point-reference/edit authoring surface.
+model.configure(
+    active="Free",
+    columns=(installed,),
+    rows={
+        "Free": (True,),
+        "Installed": (False,),
+    },
+)
+~~~
 
-If no, the missing SolidCraft capability is specifically **suppressible sketch
-geometry-edit history**. It is not generic flex/deformation.
+The exact clamp history must then be qualified against SolidCraft dependency
+behavior.
+
+The required probe is:
+
+1. create a named Sketch;
+2. create geometry that depends on that Sketch;
+3. configure the Sketch as suppressed/active;
+4. reopen the saved design and switch rows;
+5. verify whether the dependent feature follows the Sketch state correctly.
+
+If SolidCraft requires the dependent Extrude to be suppressed separately, Forge
+must not invent a deformation API. Instead the design must decide whether:
+
+- the Sketch plus its direct dependent operation should be exposed as one
+  logical suppressible feature; or
+- the clamp should use an explicitly grouped suppression target.
+
+That decision belongs to the Forge feature/configuration design.
+
+### What was already built
+
+The existing Forge configuration work is still useful:
+
+- native saved configuration tables;
+- stable Forge identity for Shape-producing history features;
+- suppression rows that survive save/reopen;
+- reusable-component feature references.
+
+What it did **not** yet generalize is suppression of every native timeline
+feature type. Sketch is the concrete missing case exposed by this clamp.
 
 ## Explicit non-solutions
 
@@ -293,13 +337,13 @@ meet the requested one-suppressed-step history and is not the design proposed he
 
 After this record is approved:
 
-1. create a focused Forge capability/probe for connected-profile point editing;
-2. prove whether the existing SolidCraft point-edit command can be a named
-   suppressible history feature;
-3. only if that proof fails, identify the smallest SolidCraft history change required;
-4. once released, use that operation in the shared HUB75 ring;
-5. keep the same point-move rule for female and male variants;
-6. replace the current parameter Free/Installed table with one suppression column;
+1. add/qualify Forge support for a normal `Sketch` as a suppression/configuration target;
+2. prove the saved SolidCraft behavior for a Sketch and its dependent geometry;
+3. only if the dependent operation does not follow the Sketch state, design the
+   smallest logical/grouped suppression contract needed by Forge;
+4. do not add a generic deformation API for this clamp;
+5. then implement the selected Free/Installed sketch history in the shared HUB75 clamp;
+6. replace the current parameter Free/Installed table with the resulting suppression target;
 7. keep Free active for the standalone model and STL.
 
 ## Verification
@@ -328,7 +372,7 @@ Approval means approval of:
 - implementing that step as movement of the existing ring's defining sketch
   points/arc centres;
 - the Ø10 / 2.0 mm wall / approximately 99° Installed target for the current defaults;
-- investigating only the minimal sketch-point-history capability needed to make
-  that step configurable.
+- treating Sketch suppression as the first missing Forge capability to resolve;
+- qualifying how dependent geometry follows that Sketch state.
 
-It does **not** approve a generic deformation API.
+It does **not** approve a generic deformation API or a new point-edit history API.

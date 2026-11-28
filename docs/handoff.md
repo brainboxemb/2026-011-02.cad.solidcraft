@@ -47,9 +47,12 @@ Start by:
 Durable working rules:
 
 - main is stable and owns the canonical repository plan/handoff state;
-- dev is the permanent development source branch;
-- normal short-lived source work integrates to dev through the repository-local
-  /merge policy; dev promotes to main through that same policy;
+- dev is the normal permanent development source branch and exp is the
+  permanent isolated-experiment source branch;
+- normal short-lived source work integrates to dev or exp through the
+  repository-local /merge policy; dev <-> exp uses explicit permanent-lane
+  checkpoints, accepted experimental work returns through dev, and dev promotes
+  to main through that same policy; exp never promotes directly to main;
 - governance-only changes limited to AGENTS.md, docs/plan.md and
   docs/handoff.md start from main on a docs/* branch and return directly to
   main through /merge;
@@ -58,6 +61,8 @@ Durable working rules:
 - model-owned source/data belongs here, while generic CI/build/Pages behavior
   belongs in brainboxemb/template.cad.model-project;
 - generated CAD artifacts belong to generated branches, not source branches;
+- generated build scopes are main/dev/exp plus one rolling test scope; test is
+  output-only, and Pages exposes /, /dev/, /exp/ and /test/ when present;
 - docs/plan.md and docs/handoff.md are main-owned governance state; do not
   create a main -> dev sync solely to copy plan/handoff metadata.
 

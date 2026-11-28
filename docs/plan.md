@@ -11,23 +11,7 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-### #294 — visually requalify Forge exp through rolling test output
-
-Re-run the complete real CAD catalog against the exact current Forge
-experimental checkpoint
-`72e01a8db8b522b97b9f33a63eb08f6ce4153a68`, using a matching temporary
-work branch with `qualification.forge.ref` and `output.scope: test`.
-
-The qualification must:
-- keep released CAD Forge baseline v0.26.0 unchanged;
-- build/test all internal modules and all active model owners;
-- publish one complete rolling `build/test` candidate;
-- retain exact candidate source branch/SHA and Forge qualification SHA;
-- publish Pages `/test/` for visual review;
-- remain evidence-only and unmerged.
-
-Do not merge Forge PR #641 merely because CI is green. The rolling `/test/`
-catalog is the visual consumer gate for that decision.
+No active work selected.
 
 ## Mandatory integration rule
 
@@ -71,6 +55,15 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 
 ## Next
 
-After #294 is green, review the published `/test/` catalog before deciding
-whether Forge PR #641 may integrate `exp -> dev`. Keep that Forge decision in
-the Forge repository; do not encode it as a CAD source change.
+CAD #294 is complete and its evidence-only PR #297 remains open/unmerged as
+the durable rolling `/test/` consumer record. The current Forge experimental
+checkpoint `72e01a8db8b522b97b9f33a63eb08f6ce4153a68` passed the complete
+43-model catalog and representative visual review.
+
+The Forge integration decision remains explicitly **unmade**. CAD qualification
+is evidence only: it does not authorize or imply an `exp -> dev` merge.
+
+Forge PR #641 was merged prematurely and is being corrected through Forge
+rollback PR #643. After that rollback, review this durable `/test/` evidence
+before selecting any new Forge integration checkpoint. Do not create a CAD
+source change merely to record that later Forge decision.

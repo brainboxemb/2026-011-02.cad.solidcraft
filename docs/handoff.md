@@ -34,8 +34,8 @@ Start by:
 
 1. inspecting the current issues, pull requests and branches;
 2. reading AGENTS.md;
-3. reading docs/plan.md;
-4. treating docs/plan.md as the source of truth for unfinished work;
+3. reading the current `main` version of docs/plan.md;
+4. treating `main:docs/plan.md` as the single source of truth for unfinished work;
 5. following the current work order from the plan rather than from old handoff
    text;
 6. creating an issue before implementation when the logical change has none;
@@ -46,16 +46,20 @@ Start by:
 
 Durable working rules:
 
-- main is stable and dev is the permanent development source branch;
-- short-lived source work integrates to dev through the repository-local
+- main is stable and owns the canonical repository plan/handoff state;
+- dev is the permanent development source branch;
+- normal short-lived source work integrates to dev through the repository-local
   /merge policy; dev promotes to main through that same policy;
+- governance-only changes limited to AGENTS.md, docs/plan.md and
+  docs/handoff.md start from main on a docs/* branch and return directly to
+  main through /merge;
 - never choose a merge method directly or bypass
   .github/workflows/merge-policy.yml;
 - model-owned source/data belongs here, while generic CI/build/Pages behavior
   belongs in brainboxemb/template.cad.model-project;
 - generated CAD artifacts belong to generated branches, not source branches;
-- docs/handoff.md is handoff metadata maintained directly on main; do not
-  create a main -> dev sync solely for a handoff-only change.
+- docs/plan.md and docs/handoff.md are main-owned governance state; do not
+  create a main -> dev sync solely to copy plan/handoff metadata.
 
 Shared document structures live in brainboxemb/meta.cad.solidcraft:
 templates/docs/plan.md and templates/docs/handoff.md.

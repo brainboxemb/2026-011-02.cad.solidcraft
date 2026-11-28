@@ -15,9 +15,9 @@ from dataclasses import dataclass
 from scpf import Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
-from models.components.hub75_frame_coupler.scpf.family import (
-    Hub75FrameCouplerMiddle,
-    Hub75FrameCouplerEdge,
+from models.components.hub75_frame_coupler.scpf.center_family import Hub75FrameCouplerCenter
+from models.components.hub75_frame_coupler.scpf.edge_family import Hub75FrameCouplerEdge
+from models.components.hub75_frame_coupler.scpf.corner_family import (
     Hub75FrameCouplerCornerLeft,
     Hub75FrameCouplerCornerRight,
 )
@@ -59,10 +59,10 @@ class Hub75DisplayFrame2Panel:
         # The native source stores the top coupler definitions in absolute XZ
         # coordinates.  The family normalizes those definitions, so the
         # source identity placements become these clean frame datums.
-        middle = Hub75FrameCouplerMiddle(
+        center = Hub75FrameCouplerCenter(
             reference_ticks=self.coupler_reference_ticks,
             reference_holes=self.coupler_reference_holes,
-            name="MiddleCoupler",
+            name="CenterCoupler",
             placement=Placement(z=PANEL_CENTER_Z),
         )
 
@@ -121,7 +121,7 @@ class Hub75DisplayFrame2Panel:
         return (
             left_panel
             + right_panel
-            + middle
+            + center
             + edge_top
             + edge_bottom
             + corner_left_top

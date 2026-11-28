@@ -15,7 +15,7 @@ description: >
 variant_groups:
   - title: Standard
     variants:
-      - hub75-frame-coupler-middle
+      - hub75-frame-coupler-center
       - hub75-frame-coupler-edge
       - hub75-frame-coupler-corner-left
       - hub75-frame-coupler-corner-right
@@ -30,11 +30,11 @@ variant_groups:
       - hub75-frame-coupler-corner-left-tube-receiver
       - hub75-frame-coupler-corner-right-tube-receiver
 variants:
-  hub75-frame-coupler-middle:
-    title: HUB75 Frame Coupler — Middle
+  hub75-frame-coupler-center:
+    title: HUB75 Frame Coupler — Center
     tagline: Configured seam coupler shared by the two-panel display-frame family
     description: >
-      Native Small/Medium/Large middle coupler. The four size-table parameters
+      Native Small/Medium/Large center coupler. The four size-table parameters
       drive the retained SolidCraft source relationships directly; Medium
       remains the active default row.
     parameters: Small / Medium / Large; Medium default; 80 mm default envelope; 4 mm wall; 3 mm base; 6 mm guide; Ø3.4 mounting bores

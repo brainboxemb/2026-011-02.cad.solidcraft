@@ -64,75 +64,7 @@ def _repository_name(repo: Path) -> str:
     return value
 
 
-def _catalog(repo: Path) -> tuple[list[dict], list[dict]]:
-    path = repo / "site/data/cad/catalog.yml"
-    catalog = _load_yaml(path)
-    sections = catalog.get("sections")
-    groups = catalog.get("groups")
-    if not isinstance(sections, list) or not sections:
-        raise PagesVerificationError(f"{path}: sections must be a non-empty list")
-    if not isinstance(groups, list):
-        raise PagesVerificationError(f"{path}: groups must be a list")
-
-    def validate(rows: list[dict], kind: str) -> None:
-        seen: set[str] = set()
-        for row in rows:
-            if not isinstance(row, dict):
-                raise PagesVerificationError(f"{path}: {kind} row must be a mapping")
-            key = row.get("id")
-            title = row.get("title")
-            if not isinstance(key, str) or not key:
-                raise PagesVerificationError(f"{path}: {kind} row requires id")
-            if key in seen:
-                raise PagesVerificationError(f"{path}: duplicate {kind} id {key!r}")
-            seen.add(key)
-            if not isinstance(title, str) or not title:
-                raise PagesVerificationError(f"{path}: {kind} {key!r} requires title")
-
-    validate(sections, "section")
-    validate(groups, "group")
-    return sections, groups
-
-
-def _source_metadata_by_id(repo: Path) -> dict[str, tuple[Path, dict]]:
-    """Resolve current source metadata by public model id, independent of path moves."""
-    found: dict[str, tuple[Path, dict]] = {}
-    for ci_path in sorted((repo / "models").rglob("ci.yml")):
-        ci = _load_yaml(ci_path)
-        if ci.get("kind") == "group":
-            continue
-        model_path = ci_path.with_name("model.yml")
-        if not model_path.is_file():
-            continue
-        root_metadata = _load_yaml(model_path)
-
-        variants = ci.get("variants")
-        if variants is not None:
-            if not isinstance(variants, list):
-                raise PagesVerificationError(f"{ci_path}: variants must be a list")
-            ids = [row.get("id") for row in variants if isinstance(row, dict)]
-        else:
-            ids = [ci.get("id")]
-
-        for variant_id in ids:
-            if not isinstance(variant_id, str) or not variant_id:
-                raise PagesVerificationError(f"{ci_path}: model id is missing")
-            if variant_id in found:
-                raise PagesVerificationError(
-                    f"duplicate source model id {variant_id!r}: "
-                    f"{found[variant_id][0]} and {model_path}"
-                )
-            found[variant_id] = (model_path, root_metadata)
-    return found
-
-
-def verify(
-    *,
-    repo: Path,
-    site: Path,
-    build_scope: Path,
-    source_repository: str | None = None,
-) -> None:
+def verify(*, repo: Path, site: Path, build_scope: Path) -> None:
     repo = repo.resolve()
     site = site.resolve()
     build_scope = build_scope.resolve()
@@ -143,9 +75,9 @@ def verify(
         raise PagesVerificationError("build plan contains no models")
 
     namespace = plan.get("namespace")
-    if namespace not in {"main", "dev"}:
+    if namespace not in {"main", "dev", "exp", "test"}:
         raise PagesVerificationError("build plan has invalid namespace")
-    repository = source_repository or _repository_name(repo)
+    repository = _repository_name(repo)
     blob_base = f"https://github.com/{repository}/blob/build/{namespace}/"
     raw_base = f"https://raw.githubusercontent.com/{repository}/build/{namespace}/"
 
@@ -156,23 +88,18 @@ def verify(
         raise PagesVerificationError("build plan lacks SolidCraft version")
     solidcraft_version = solidcraft["version"]
 
-    sections, groups = _catalog(repo)
-    section_by_id = {row["id"]: row for row in sections}
-    group_by_id = {row["id"]: row for row in groups}
-    source_by_id = _source_metadata_by_id(repo)
-    source_ids_by_path: dict[Path, list[str]] = {}
-    for source_id, (source_path, _metadata) in source_by_id.items():
-        source_ids_by_path.setdefault(source_path, []).append(source_id)
-
     _require_file(site / "index.html")
     _require_file(site / "models" / "index.html")
-    category_html: dict[str, str] = {}
-    for section in sections:
-        category = section["id"]
+    category_html = {}
+    for category in ("basic", "components", "advanced"):
         path = site / "models" / category / "index.html"
         _require_file(path)
         html = path.read_text(encoding="utf-8")
-        if "cad-model-grid" not in html or "cad-model-detail" in html:
+        if (
+            "cad-category-page" not in html
+            or "cad-model-grid" not in html
+            or "cad-model-detail" in html
+        ):
             raise PagesVerificationError(
                 f"{path}: expected a category grid, not a model detail"
             )
@@ -183,11 +110,10 @@ def verify(
         raise PagesVerificationError("home page lacks recently-updated catalog")
 
     catalog_html = (site / "models" / "index.html").read_text(encoding="utf-8")
-    for section in sections:
-        heading = section["title"]
+    for heading in ("Basic Models", "Components", "Advanced Models"):
         if heading not in catalog_html:
             raise PagesVerificationError(
-                f"model catalog lacks section heading {heading!r}"
+                f"model catalog lacks category heading {heading!r}"
             )
 
     seen: set[str] = set()
@@ -196,36 +122,36 @@ def verify(
             raise PagesVerificationError("build-plan model row must be an object")
 
         variant_id = row.get("id")
-        if not isinstance(variant_id, str) or not variant_id:
-            raise PagesVerificationError("build-plan row requires id")
+        model_root = row.get("root")
+        if (
+            not isinstance(variant_id, str)
+            or not variant_id
+            or not isinstance(model_root, str)
+            or not model_root
+        ):
+            raise PagesVerificationError("build-plan row requires id and root")
         if variant_id in seen:
             raise PagesVerificationError(f"duplicate build-plan model id: {variant_id}")
         seen.add(variant_id)
 
-        source = source_by_id.get(variant_id)
-        if source is None:
-            raise PagesVerificationError(
-                f"durable build model {variant_id!r} has no current source owner"
-            )
-        model_path, root_metadata = source
-
+        model_path = repo / model_root / "model.yml"
+        root_metadata = _load_yaml(model_path)
         category = root_metadata.get("section")
-        if category not in section_by_id or category not in category_html:
+        if category not in category_html:
             raise PagesVerificationError(
-                f"{model_path}: unsupported section {category!r}"
+                f"{model_path}: unsupported category {category!r}"
             )
-        group = root_metadata.get("group")
-        if group is not None and group not in group_by_id:
-            raise PagesVerificationError(
-                f"{model_path}: unsupported group {group!r}"
-            )
-        owner_variant_ids = source_ids_by_path.get(model_path, [])
+        owner_variant_ids = [
+            candidate.get("id")
+            for candidate in rows
+            if isinstance(candidate, dict) and candidate.get("root") == model_root
+        ]
         has_owner_page = len(owner_variant_ids) > 1
         owner_href = None
         owner_page_path = None
         if has_owner_page:
             try:
-                owner_rel = model_path.parent.relative_to(repo / "models")
+                owner_rel = Path(model_root).relative_to("models")
             except ValueError as exc:
                 raise PagesVerificationError(
                     f"{model_path}: model owner is outside models/"
@@ -240,22 +166,6 @@ def verify(
             raise PagesVerificationError(
                 f"{category}: missing model-owner link for {variant_id}"
             )
-
-        if group is not None:
-            group_html = category_html[category]
-            group_markers = (
-                f'data-cad-group="{group}"',
-                f"data-cad-group={group}",
-            )
-            if not any(marker in group_html for marker in group_markers):
-                raise PagesVerificationError(
-                    f"{category}: missing structural group {group!r}"
-                )
-            group_title = group_by_id[group]["title"]
-            if group_title not in group_html:
-                raise PagesVerificationError(
-                    f"{category}: missing group heading {group_title!r}"
-                )
 
         metadata = _metadata_for_variant(root_metadata, variant_id, model_path)
         title = metadata.get("title")
@@ -448,15 +358,9 @@ def main(argv=None) -> int:
     parser.add_argument("--repo", type=Path, default=Path.cwd())
     parser.add_argument("--site", type=Path, required=True)
     parser.add_argument("--build-scope", type=Path, required=True)
-    parser.add_argument("--source-repository")
     args = parser.parse_args(argv)
 
-    verify(
-        repo=args.repo,
-        site=args.site,
-        build_scope=args.build_scope,
-        source_repository=args.source_repository,
-    )
+    verify(repo=args.repo, site=args.site, build_scope=args.build_scope)
     print("Generated Pages link durable build artifacts without copying them")
     return 0
 

@@ -1,0 +1,3 @@
+from models.components.hub75_frame_coupler.scpf.center_family import Hub75FrameCouplerCenterModel
+
+Hub75FrameCouplerCenterModel()

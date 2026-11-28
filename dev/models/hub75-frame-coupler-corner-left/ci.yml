@@ -2,8 +2,8 @@ schema: 1
 id: hub75-frame-coupler
 builder: forge
 variants:
-  - id: hub75-frame-coupler-middle
-    source: scpf/middle.py
+  - id: hub75-frame-coupler-center
+    source: scpf/center.py
   - id: hub75-frame-coupler-edge
     source: scpf/edge.py
   - id: hub75-frame-coupler-corner-left

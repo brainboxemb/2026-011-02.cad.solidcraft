@@ -1,9 +1,17 @@
 schema: 1
-branch: fix/286-coupler-pattern-defaults
+branch: issue/285-exp-test-output
 
-modules: []
+modules:
+  - ci
+  - build
+  - pages
+  - merge-policy
+  - branch-cleanup
 models:
-  - hub75-frame-coupler
+  - simple-box
 tasks:
   - test
   - build
+
+output:
+  scope: test

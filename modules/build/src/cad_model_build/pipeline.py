@@ -20,6 +20,7 @@ def execute(
     repo: Path,
     namespace: str,
     selected_ids: tuple[str, ...],
+    source_ref: str | None = None,
     forge_ref: str | None = None,
 ) -> Path:
     repo = repo.resolve()
@@ -39,6 +40,7 @@ def execute(
         models=models,
         selected_ids=selected_ids,
         namespace=namespace,
+        source_ref=source_ref,
         forge_ref=forge_ref,
     )
 

@@ -11,12 +11,7 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-### #299 — adopt released Forge v0.27.0 baseline
-
-Change only the released Forge dependency pin from v0.26.0 to v0.27.0, then
-run the complete CAD catalog with all modules and all active model owners.
-Keep SolidCraft runtime v0.3.8 / SolidCraft 0.50.0 unchanged. Integrate only
-after full qualification and permanent dev build evidence are green.
+No active work selected.
 
 ## Mandatory integration rule
 
@@ -42,7 +37,7 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 - `process: false` keeps a model owner discoverable and explicitly selectable
   on a matching work branch while excluding it from automatic/full permanent-lane
   model selection and automatic dependent expansion;
-- Forge v0.26.0 / SolidCraft 0.50.0 / runtime v0.3.8 is the released baseline;
+- Forge v0.27.0 / SolidCraft 0.50.0 / runtime v0.3.8 is the released baseline;
 - generated `build` branch contains `main/`, `dev/`, `exp/` and one
   rolling `test/` scope;
 - matching temporary `build.yml` opts into review publication with
@@ -60,7 +55,17 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 
 ## Next
 
-After #299 is accepted, reconcile the released baseline in this main-owned plan.
-Do not carry the earlier Forge-exp qualification/rollback narrative forward as
-active work; v0.27.0 is now a published release.
+No next work selected. Forge v0.27.0 is formally adopted on all permanent CAD
+lanes:
+
+- PR #301 qualified the complete 43-model candidate and rolling `/test/`;
+- permanent `dev` run 46148280169 is green and published `build/dev`;
+- PR #303 promoted the same released baseline to stable `main`; permanent
+  stable run 46149565386 is green and published 43-model `build/main`;
+- PR #304 synchronized the baseline to permanent `exp`; permanent exp run
+  46149594977 is green and published 43-model `build/exp`;
+- all three scopes record released Forge v0.27.0 with SolidCraft runtime v0.3.8
+  / engine 0.50.0 unchanged.
+
+Select further CAD work deliberately from an open issue.
 

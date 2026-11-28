@@ -1,4 +1,4 @@
-"""Prepare one released Forge version and compile all planned models."""
+"""Prepare released Forge or one exact qualification commit and compile models."""
 
 from __future__ import annotations
 
@@ -15,8 +15,14 @@ def install_url(repository: str, version: str) -> str:
     return f"git+https://github.com/{repository}.git@{version}#subdirectory=cadlib"
 
 
-def build_wheel(pin: ForgePin, wheel_dir: Path) -> Path:
+def build_wheel(
+    pin: ForgePin,
+    wheel_dir: Path,
+    *,
+    qualification_ref: str | None = None,
+) -> Path:
     wheel_dir.mkdir(parents=True, exist_ok=True)
+    source_ref = qualification_ref or pin.version
     subprocess.run(
         [
             sys.executable,
@@ -27,7 +33,7 @@ def build_wheel(pin: ForgePin, wheel_dir: Path) -> Path:
             "--no-deps",
             "--wheel-dir",
             str(wheel_dir),
-            install_url(pin.repository, pin.version),
+            install_url(pin.repository, source_ref),
         ],
         check=True,
     )

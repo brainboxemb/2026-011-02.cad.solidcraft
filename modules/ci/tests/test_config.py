@@ -37,11 +37,77 @@ class ConfigTests(unittest.TestCase):
             self.assertEqual(selection.modules, ("ci",))
             self.assertEqual(selection.tasks, ("test",))
 
+    def test_matching_build_yml_can_pin_exact_forge_qualification_commit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            ref = "a" * 40
+            (repo / "build.yml").write_text(
+                "schema: 1\n"
+                "branch: chore/forge-candidate\n"
+                "modules: [build]\n"
+                "models: all\n"
+                "tasks: [build]\n"
+                "qualification:\n"
+                "  forge:\n"
+                f"    ref: {ref}\n",
+                encoding="utf-8",
+            )
+
+            selection = load_build(repo, "chore/forge-candidate")
+
+            self.assertEqual(selection.forge_ref, ref)
+
+    def test_forge_qualification_ref_must_be_exact_commit_sha(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "build.yml").write_text(
+                "schema: 1\n"
+                "branch: chore/forge-candidate\n"
+                "modules: [build]\n"
+                "models: all\n"
+                "tasks: [build]\n"
+                "qualification:\n"
+                "  forge:\n"
+                "    ref: exp\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                ValueError,
+                "exact 40-character lowercase commit SHA",
+            ):
+                load_build(repo, "chore/forge-candidate")
+
+    def test_forge_qualification_ref_requires_build_task(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "build.yml").write_text(
+                "schema: 1\n"
+                "branch: chore/forge-candidate\n"
+                "modules: [build]\n"
+                "models: []\n"
+                "tasks: [test]\n"
+                "qualification:\n"
+                "  forge:\n"
+                f"    ref: {'b' * 40}\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "requires the build task"):
+                load_build(repo, "chore/forge-candidate")
+
     def test_mismatched_build_yml_is_ignored(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             (repo / "build.yml").write_text(
-                "schema: 1\nbranch: issue/1-a\nmodules: [ci]\nmodels: []\ntasks: [test]\n",
+                "schema: 1\n"
+                "branch: issue/1-a\n"
+                "modules: [build]\n"
+                "models: all\n"
+                "tasks: [build]\n"
+                "qualification:\n"
+                "  forge:\n"
+                f"    ref: {'c' * 40}\n",
                 encoding="utf-8",
             )
             self.assertIsNone(load_build(repo, "dev"))

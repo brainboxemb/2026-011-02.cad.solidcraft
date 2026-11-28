@@ -58,6 +58,7 @@ def resolve_plan(
     models: tuple[ModelConfig, ...],
     selected_ids: tuple[str, ...],
     namespace: str,
+    forge_ref: str | None = None,
 ) -> dict:
     if namespace not in {project.development_branch, project.stable_branch}:
         raise BuildConfigError(
@@ -129,6 +130,11 @@ def resolve_plan(
         "forge": {
             "repository": project.forge.repository,
             "version": project.forge.version,
+            **(
+                {"qualification_ref": forge_ref}
+                if forge_ref is not None
+                else {}
+            ),
         },
         "solidcraft": {
             "image": project.solidcraft.image,

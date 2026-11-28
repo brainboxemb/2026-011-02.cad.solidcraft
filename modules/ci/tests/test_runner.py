@@ -54,6 +54,28 @@ class RunnerTests(unittest.TestCase):
         self.assertIn("--model", command)
         self.assertIn("box", command)
 
+    @patch("cad_model_ci.runner._run")
+    def test_model_batch_passes_forge_qualification_ref(self, run):
+        model = CadModel(
+            id="box",
+            root=Path("models/box"),
+            builder="forge",
+            source=Path("scpf/model.py"),
+        )
+        ref = "c" * 40
+
+        build_models(
+            repo=Path("."),
+            build_module_root=Path("modules/build"),
+            namespace="dev",
+            models=(model,),
+            forge_ref=ref,
+        )
+
+        command = run.call_args.args[0]
+        self.assertIn("--forge-ref", command)
+        self.assertEqual(command[command.index("--forge-ref") + 1], ref)
+
     @patch("cad_model_ci.runner.build_models")
     @patch("cad_model_ci.runner.test_module")
     def test_execute_tests_modules_and_builds_models_only(
@@ -76,6 +98,7 @@ class RunnerTests(unittest.TestCase):
                 ("ci",),
                 ("box",),
                 ("test", "build"),
+                forge_ref="d" * 40,
             ),
             namespace="dev",
             modules=(module,),
@@ -85,6 +108,10 @@ class RunnerTests(unittest.TestCase):
         build_models_mock.assert_called_once()
         self.assertEqual(build_models_mock.call_args.kwargs["namespace"], "dev")
         self.assertEqual(build_models_mock.call_args.kwargs["models"], (model,))
+        self.assertEqual(
+            build_models_mock.call_args.kwargs["forge_ref"],
+            "d" * 40,
+        )
 
 
 if __name__ == "__main__":

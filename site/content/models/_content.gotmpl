@@ -57,6 +57,14 @@ Generic model page adapter.
   {{ end }}
   {{ $ci := $ciResource | transform.Unmarshal }}
 
+  {{ $process := true }}
+  {{ if isset $ci "process" }}
+    {{ $process = index $ci "process" }}
+  {{ end }}
+  {{ if not $process }}
+    {{ continue }}
+  {{ end }}
+
   {{ $section := index $rootMeta "section" }}
   {{ $sectionMatches := where $sectionDefs "id" $section }}
   {{ if ne (len $sectionMatches) 1 }}

@@ -5,6 +5,7 @@ from cad_model_branch_cleanup.policy import (
     eligible_post_merge,
     eligible_sweep,
     is_temporary,
+    merge_targets,
 )
 
 
@@ -34,12 +35,42 @@ class PolicyTests(unittest.TestCase):
             )
         )
 
+    def test_docs_branch_may_be_cleaned_after_governance_merge_to_stable(self):
+        self.assertEqual(
+            merge_targets("docs/125-governance", CONFIG),
+            ("dev", "main"),
+        )
+        self.assertTrue(
+            eligible_post_merge(
+                head="docs/125-governance",
+                base="main",
+                same_repository=True,
+                merged=True,
+                config=CONFIG,
+            )
+        )
+
+    def test_issue_branch_cannot_be_cleaned_after_direct_main_merge(self):
+        self.assertEqual(
+            merge_targets("issue/11-work", CONFIG),
+            ("dev",),
+        )
+        self.assertFalse(
+            eligible_post_merge(
+                head="issue/11-work",
+                base="main",
+                same_repository=True,
+                merged=True,
+                config=CONFIG,
+            )
+        )
+
     def test_unmerged_or_open_work_is_not_sweep_eligible(self):
         self.assertFalse(
             eligible_sweep(
                 branch="issue/11-work",
                 has_open_pr=True,
-                has_merged_pr_to_development=True,
+                has_merged_pr_to_target=True,
                 config=CONFIG,
             )
         )
@@ -47,7 +78,7 @@ class PolicyTests(unittest.TestCase):
             eligible_sweep(
                 branch="issue/12-unmerged",
                 has_open_pr=False,
-                has_merged_pr_to_development=False,
+                has_merged_pr_to_target=False,
                 config=CONFIG,
             )
         )

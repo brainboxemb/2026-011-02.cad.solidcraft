@@ -196,7 +196,7 @@ variants:
             with self.assertRaisesRegex(Exception, "cyclic model dependency"):
                 discover_models(repo, self.project())
 
-    def test_process_false_model_is_not_selected_as_an_item(self):
+    def test_process_false_model_is_discovered_but_not_selected_by_default(self):
         with tempfile.TemporaryDirectory() as tmp:
             repo = Path(tmp)
             model = repo / "models" / "box"
@@ -207,7 +207,32 @@ variants:
                 "source: scpf/model.py\nprocess: false\n",
                 encoding="utf-8",
             )
-            self.assertEqual(discover_models(repo, self.project()), ())
+
+            models = discover_models(repo, self.project())
+
+            self.assertEqual(len(models), 1)
+            self.assertFalse(models[0].process)
+            self.assertEqual(select(models, None), ())
+            self.assertEqual(
+                [model.id for model in select(models, ("box",))],
+                ["box"],
+            )
+
+    def test_process_false_model_remains_in_dependency_validation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            model = repo / "models" / "parked"
+            (model / "scpf").mkdir(parents=True)
+            (model / "scpf/model.py").write_text("object()\n", encoding="utf-8")
+            (model / "ci.yml").write_text(
+                "schema: 1\nid: parked\nbuilder: forge\n"
+                "source: scpf/model.py\nprocess: false\n"
+                "dependencies: [missing]\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(Exception, "unknown model dependency"):
+                discover_models(repo, self.project())
 
     def test_selection_returns_only_requested_item(self):
         items = (

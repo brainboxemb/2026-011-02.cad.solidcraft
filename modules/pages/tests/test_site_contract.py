@@ -24,6 +24,14 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn('resources.Get (printf "cad-source/%s/ci.yml"', adapter)
         self.assertIn('resources.Get "build/build-plan.json"', adapter)
         self.assertIn('index $ci "variants"', adapter)
+        self.assertIn('if isset $ci "process"', adapter)
+        self.assertIn('$process = index $ci "process"', adapter)
+        self.assertIn('if not $process', adapter)
+        self.assertIn('{{ continue }}', adapter)
+        self.assertLess(
+            adapter.index('if isset $ci "process"'),
+            adapter.index('index $ci "variants"'),
+        )
         self.assertIn('where $rows "id" $slug', adapter)
         self.assertIn("hugo.Data.cad.model_history", adapter)
         self.assertIn("hugo.Data.cad.catalog", adapter)

@@ -1,8 +1,9 @@
 schema: 1
-branch: feature/233-owner-first-variant-pages
+branch: issue/277-forge-qualification-ref
 
 modules:
-  - pages
+  - ci
+  - build
 models: []
 tasks:
   - test

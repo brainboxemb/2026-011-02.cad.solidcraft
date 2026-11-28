@@ -1,25 +1,30 @@
-"""Medium-only HUB75 frame-coupler family.
+"""Configured HUB75 frame-coupler family.
 
-The physical owner is shared across middle, edge and corner variants.  Geometry
-data is extracted from the retained native SolidCraft source.  This first port
-keeps the active Medium row fixed; native Small/Medium/Large authoring will
-replace that fixed layer after Forge configuration support (#216).
+The retained SolidCraft source owns the geometry relationships.  One reusable
+Forge component definition consumes the four size parameters; thin root models
+add the SolidCraft Small/Medium/Large configuration table.
 """
 
-from scpf import Anchor, Axis, Cone, Cylinder, Sketch, component
+from dataclasses import dataclass
 
+from scpf import (
+    Anchor,
+    Axis,
+    AxisLine,
+    Cone,
+    cadmath,
+    Cylinder,
+    Sketch,
+    component,
+    feature,
+)
+
+from models.components.hub75_frame_coupler.scpf.parametric_source import (
+    source_circle_centers,
+    source_parameters,
+    source_profiles,
+)
 from models.components.hub75_frame_coupler.scpf.source_data import (
-    BASE_PROFILES,
-    MEDIUM,
-    MIDDLE_GUIDE_PROFILES,
-    RAIL_RELIEF_PROFILES,
-    RAIL_RELIEF_END_PROFILES,
-    REFERENCE_HOLE_CENTERS,
-    REFERENCE_MARK_LOOPS,
-    REFERENCE_PATTERN,
-    SEAM_PROFILES,
-    SEAM_TIP_PROFILES,
-    EDGE_GUIDE_END_CUTS,
     TUBE_EDGE_BASE_PLATE_PROFILES,
     TUBE_EDGE_REAR_REFERENCE_MARK_INDICES,
     TUBE_EDGE_REAR_SUPPORT_PROFILES,
@@ -27,15 +32,75 @@ from models.components.hub75_frame_coupler.scpf.source_data import (
 
 SOURCE_RED = "#B80D0A"
 
+_SOURCE_FEATURES = {
+    "middle": {
+        "base": 65,
+        "guide": 67,
+        "seam": 79,
+        "seam_tip": 80,
+        "marks": 145,
+        "holes": 153,
+    },
+    "edge": {
+        "base": 87,
+        "relief": 100,
+        "relief_end": 101,
+        "seam": 139,
+        "seam_tip": 140,
+        "guide_end": 137,
+        "marks": 147,
+        "holes": 156,
+    },
+    "corner_left": {
+        "base": 92,
+        "relief": 104,
+        "relief_end": 105,
+        "marks": 149,
+        "holes": 159,
+    },
+    "corner_right": {
+        "base": 96,
+        "relief": 108,
+        "relief_end": 109,
+        "marks": 151,
+        "holes": 162,
+    },
+}
 
-def _edge_mount_z():
+
+def _parameters(owner):
+    return source_parameters(
+        mid_size=owner.mid_size,
+        mid_wall=owner.mid_wall,
+        mid_base=owner.mid_base,
+        mid_guide=owner.mid_guide,
+    )
+
+
+def _source_profile(profile_key, role, p):
+    return source_profiles(
+        _SOURCE_FEATURES[profile_key][role],
+        frame=profile_key,
+        values=p,
+    )
+
+
+def _source_centers(profile_key, p):
+    return source_circle_centers(
+        _SOURCE_FEATURES[profile_key]["holes"],
+        frame=profile_key,
+        values=p,
+    )
+
+
+def _edge_mount_z(p):
     """Physical local Z of the Edge/Corner mounting-bore axes."""
-    return -MEDIUM["edge_screw_in"]
+    return -p["edge_screw_in"]
 
 
-def _edge_support_z():
+def _edge_support_z(p):
     """Physical local Z of the bushing support / locator-pad axes."""
-    return _edge_mount_z() - MEDIUM["bushing_z"]
+    return _edge_mount_z(p) - p["mid_bushing_z"]
 
 
 def _native_xz_point(point):
@@ -63,6 +128,11 @@ def _add_loop(sketch, loop):
                 center=_native_xz_point(segment["center"]),
                 # Reflection reverses 2D winding.
                 clockwise=not segment["clockwise"],
+            )
+        elif segment["kind"] == "arc_through":
+            contour.arc_through_to(
+                end,
+                through=_native_xz_point(segment["through"]),
             )
         else:
             raise ValueError(f"unsupported source segment {segment['kind']!r}")
@@ -108,11 +178,11 @@ def _axis_y_cylinder(*, diameter, length, x, y, z):
     ).at(x, y, z, anchor=Anchor.CENTER)
 
 
-def _mounting_hole(body, *, x, z, total_depth):
+def _mounting_hole(body, *, p, x, z, total_depth):
     """Source-derived Ø3.4 mount bore with rear relief and tube clearance."""
-    datum = MEDIUM["datum"]
-    base = MEDIUM["base"]
-    screw_d = MEDIUM["screw_d"]
+    datum = p["mid_datum"]
+    base = p["mid_base"]
+    screw_d = p["mid_screw_d"]
 
     body = body - _axis_y_cylinder(
         diameter=screw_d,
@@ -129,30 +199,30 @@ def _mounting_hole(body, *, x, z, total_depth):
         z=z,
     )
     body = body - _axis_y_cylinder(
-        diameter=2.0 * (MEDIUM["tube_r"] + MEDIUM["tube_gap"]),
-        length=MEDIUM["tube_depth"],
+        diameter=2.0 * (p["mid_tube_r"] + p["mid_tube_gap"]),
+        length=p["mid_tube_depth"],
         x=x,
-        y=-datum - MEDIUM["tube_depth"] / 2.0,
+        y=-datum - p["mid_tube_depth"] / 2.0,
         z=z,
     )
     return body
 
 
-def _locator_pad(body, *, x, z):
-    """Source Medium pad + locating pin along the panel-depth Y axis."""
-    datum = MEDIUM["datum"]
-    pad_h = MEDIUM["pad_h"]
-    pin_h = MEDIUM["pin_h"]
+def _locator_pad(body, *, p, x, z):
+    """Source pad + locating pin along the panel-depth Y axis."""
+    datum = p["mid_datum"]
+    pad_h = p["mid_pad_h"]
+    pin_h = p["mid_pin_h"]
 
     body = body + _axis_y_cylinder(
-        diameter=2.0 * MEDIUM["pad_r"],
+        diameter=2.0 * p["mid_pad_r"],
         length=pad_h,
         x=x,
         y=-datum + pad_h / 2.0,
         z=z,
     )
     body = body + _axis_y_cylinder(
-        diameter=2.0 * MEDIUM["pin_r"],
+        diameter=2.0 * p["mid_pin_r"],
         length=pin_h,
         x=x,
         y=-datum + pad_h + pin_h / 2.0,
@@ -161,13 +231,13 @@ def _locator_pad(body, *, x, z):
     return body
 
 
-def _guide_clearance(body, *, x, z):
-    guide = MEDIUM["guide"]
+def _guide_clearance(body, *, p, x, z):
+    guide = p["mid_guide"]
     return body - _axis_y_cylinder(
-        diameter=2.0 * (MEDIUM["bushing_r"] + MEDIUM["bushing_gap"]),
+        diameter=2.0 * (p["mid_bushing_r"] + p["mid_bushing_gap"]),
         length=guide + 0.1,
         x=x,
-        y=-MEDIUM["datum"] + guide / 2.0,
+        y=-p["mid_datum"] + guide / 2.0,
         z=z,
     )
 
@@ -194,6 +264,8 @@ def _interpolate_loop(start, end, t):
         if a["kind"] == "arc":
             row["center"] = point(a["center"], b["center"])
             row["clockwise"] = a["clockwise"]
+        elif a["kind"] == "arc_through":
+            row["through"] = point(a["through"], b["through"])
         segments.append(row)
     return {
         "start": point(start["start"], end["start"]),
@@ -201,7 +273,7 @@ def _interpolate_loop(start, end, t):
     }
 
 
-def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
+def _cut_tapered_rail_relief(body, *, p, profile_key, steps=12):
     """Approximate the native two-section cut loft without leaving phase-1 fins.
 
     Forge v0.19 has no public solid-loft feature.  The source loft is shallow:
@@ -209,12 +281,12 @@ def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
     overlapping source-interpolated slices retain both native sections and
     remove the visible prismatic fin/lip artifact from the earlier baseline.
     """
-    starts = RAIL_RELIEF_PROFILES[profile_key]
-    ends = RAIL_RELIEF_END_PROFILES[profile_key]
+    starts = _source_profile(profile_key, "relief", p)
+    ends = _source_profile(profile_key, "relief_end", p)
     if len(starts) != 1 or len(ends) != 1:
         raise ValueError("rail relief expects one source loop per loft section")
 
-    depth = MEDIUM["guide"] + 0.05
+    depth = p["mid_guide"] + 0.05
     slice_depth = depth / steps
     for index in range(steps):
         # Use the far section of each thin slice.  The native cut grows
@@ -225,7 +297,7 @@ def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
         relief = _profile_solid(
             name=f"{profile_key} rail relief slice {index + 1}",
             loops=[loop],
-            y=-MEDIUM["datum"] + index * slice_depth,
+            y=-p["mid_datum"] + index * slice_depth,
             distance=slice_depth + 0.01,
         )
         body = body - relief
@@ -233,14 +305,14 @@ def _cut_tapered_rail_relief(body, *, profile_key, steps=12):
 
 
 
-def _join_tapered_seam_guide(body, *, profile_key, steps=16):
+def _join_tapered_seam_guide(body, *, p, profile_key, steps=16):
     """Approximate the native seam-guide loft using exact foot/tip sections."""
-    starts = SEAM_PROFILES[profile_key]
-    ends = SEAM_TIP_PROFILES[profile_key]
+    starts = _source_profile(profile_key, "seam", p)
+    ends = _source_profile(profile_key, "seam_tip", p)
     if len(starts) != 1 or len(ends) != 1:
         raise ValueError("seam guide expects one source loop per loft section")
 
-    depth = MEDIUM["key_h"] + 0.05
+    depth = p["mid_key_h"] + 0.05
     slice_depth = depth / steps
     for index in range(steps):
         # Use the far/end section of each slice. This under-approximates the
@@ -251,55 +323,215 @@ def _join_tapered_seam_guide(body, *, profile_key, steps=16):
         part = _profile_solid(
             name=f"{profile_key} seam guide slice {index + 1}",
             loops=[loop],
-            y=-MEDIUM["datum"] - 0.05 + index * slice_depth,
+            y=-p["mid_datum"] - 0.05 + index * slice_depth,
             distance=slice_depth + 0.01,
         )
         body = body + part
     return body
 
 
-def _cut_edge_guide_end_rounding(body):
+def _replace_arc_through_with_centers(loops, centers, clockwise):
+    """Replace source three-point arcs while preserving source loop topology."""
+    converted = []
+    for loop_index, loop in enumerate(loops):
+        arc_index = 0
+        segments = []
+        for segment in loop["segments"]:
+            if segment["kind"] != "arc_through":
+                segments.append(segment)
+                continue
+            row = dict(segment)
+            row["kind"] = "arc"
+            row.pop("through", None)
+            row["center"] = centers[loop_index][arc_index]
+            row["clockwise"] = clockwise[loop_index][arc_index]
+            arc_index += 1
+            segments.append(row)
+        if arc_index != len(centers[loop_index]):
+            raise ValueError(
+                f"loop {loop_index}: expected {len(centers[loop_index])} arcs, "
+                f"found {arc_index}"
+            )
+        converted.append({"start": loop["start"], "segments": segments})
+    return converted
+
+
+def _middle_base_profiles(p):
+    inner_x = p["mid_ix"] + p["mid_wall"] + p["mid_inner_r"]
+    inner_z = p["mid_iz"] + p["mid_wall"] + p["mid_inner_r"]
+    centers = ((
+        (-p["mid_Ox"], p["mid_oe"]),
+        (p["mid_Ox"], p["mid_oe"]),
+        (inner_x, inner_z),
+        (p["mid_oe"], p["mid_Oz"]),
+        (p["mid_oe"], -p["mid_Oz"]),
+        (inner_x, -inner_z),
+        (p["mid_Ox"], -p["mid_oe"]),
+        (-p["mid_Ox"], -p["mid_oe"]),
+        (-inner_x, -inner_z),
+        (-p["mid_oe"], -p["mid_Oz"]),
+        (-p["mid_oe"], p["mid_Oz"]),
+        (-inner_x, inner_z),
+    ),)
+    clockwise = ((
+        True, True, False, True, True, False,
+        True, True, False, True, True, False,
+    ),)
+    return _replace_arc_through_with_centers(
+        _source_profile("middle", "base", p),
+        centers,
+        clockwise,
+    )
+
+
+def _middle_guide_profiles(p):
+    inner_x = p["mid_ix"] + p["mid_wall"] + p["mid_inner_r"]
+    inner_z = p["mid_iz"] + p["mid_wall"] + p["mid_inner_r"]
+    centers = (
+        (
+            (-p["mid_Cx"], -p["mid_Gz"]),
+            (-p["mid_oe"], -p["mid_Oz"]),
+            (-inner_x, -inner_z),
+            (-p["mid_Ox"], -p["mid_oe"]),
+            (-p["mid_Gx"], -p["mid_Cz"]),
+            (-p["mid_jx"], -p["mid_jz"]),
+        ),
+        (
+            (-p["mid_Cx"], p["mid_Gz"]),
+            (-p["mid_oe"], p["mid_Oz"]),
+            (-inner_x, inner_z),
+            (-p["mid_Ox"], p["mid_oe"]),
+            (-p["mid_Gx"], p["mid_Cz"]),
+            (-p["mid_jx"], p["mid_jz"]),
+        ),
+        (
+            (p["mid_Cx"], -p["mid_Gz"]),
+            (p["mid_oe"], -p["mid_Oz"]),
+            (inner_x, -inner_z),
+            (p["mid_Ox"], -p["mid_oe"]),
+            (p["mid_Gx"], -p["mid_Cz"]),
+            (p["mid_jx"], -p["mid_jz"]),
+        ),
+        (
+            (p["mid_Cx"], p["mid_Gz"]),
+            (p["mid_oe"], p["mid_Oz"]),
+            (inner_x, inner_z),
+            (p["mid_Ox"], p["mid_oe"]),
+            (p["mid_Gx"], p["mid_Cz"]),
+            (p["mid_jx"], p["mid_jz"]),
+        ),
+    )
+    clockwise = (
+        (False, False, True, False, False, False),
+        (True, True, False, True, True, True),
+        (True, True, False, True, True, True),
+        (False, False, True, False, False, False),
+    )
+    return _replace_arc_through_with_centers(
+        _source_profile("middle", "guide", p),
+        centers,
+        clockwise,
+    )
+
+
+def _edge_guide_end_profiles(p):
+    """Return the retained six Edge end cuts with exact symbolic arc centers."""
+    loops = _source_profile("edge", "guide_end", p)
+
+    u = p["edge_end_u"]
+    run = p["edge_end_run"]
+    g = p["edge_end_g"]
+    outer_offset = p["edge_or"] - p["mid_wall"]
+    inner_level = p["edge_end_inner"] + p["mid_fit"]
+    ix = p["mid_ix"]
+    rear_level = p["mid_fit"] - p["edge_end_rear"]
+
+    centers = (
+        ((-u, -(inner_level - outer_offset)), (-(u + run), -(inner_level + g))),
+        ((u, -(inner_level - outer_offset)), ((u + run), -(inner_level + g))),
+        ((-(ix - outer_offset), -u), (-(ix + g), -(u + run))),
+        (((ix - outer_offset), -u), ((ix + g), -(u + run))),
+        ((-u, rear_level - outer_offset), (-(u + run), rear_level + g)),
+        ((u, rear_level - outer_offset), ((u + run), rear_level + g)),
+    )
+    clockwise = (
+        (False, True),
+        (True, False),
+        (True, False),
+        (False, True),
+        (True, False),
+        (False, True),
+    )
+
+    converted = []
+    for loop_index, loop in enumerate(loops):
+        arc_index = 0
+        segments = []
+        for segment in loop["segments"]:
+            if segment["kind"] != "arc_through":
+                segments.append(segment)
+                continue
+            row = dict(segment)
+            row["kind"] = "arc"
+            row.pop("through", None)
+            row["center"] = centers[loop_index][arc_index]
+            row["clockwise"] = clockwise[loop_index][arc_index]
+            arc_index += 1
+            segments.append(row)
+        converted.append({"start": loop["start"], "segments": segments})
+    return converted
+
+
+def _cut_edge_guide_end_rounding(body, *, p):
     """Apply native Edge guide-end rounding cut from features 137–138."""
-    for index, loop in enumerate(EDGE_GUIDE_END_CUTS, start=1):
+    for index, loop in enumerate(_edge_guide_end_profiles(p), start=1):
         cut = _profile_solid(
             name=f"Edge guide-end rounding {index}",
             loops=[loop],
-            y=-MEDIUM["datum"],
-            distance=MEDIUM["guide"],
+            y=-p["mid_datum"],
+            distance=p["mid_guide"],
         )
         body = body - cut
     return body
 
-def _apply_reference_pattern(body, *, profile_key):
-    """Cut the native reference ticks and blind tapered reference-hole pattern."""
-    y_rear = (
-        -MEDIUM["datum"]
-        - MEDIUM["base"]
-        - REFERENCE_PATTERN["rear_offset"]
+def _reference_pattern_y_rear(p):
+    return (
+        -p["mid_datum"]
+        - p["mid_base"]
+        - 0.05
     )
 
-    for index, loop in enumerate(REFERENCE_MARK_LOOPS[profile_key], start=1):
+
+def _cut_reference_ticks(body, *, p, profile_key):
+    """Cut the optional native reference tick/stripe pattern."""
+    y_rear = _reference_pattern_y_rear(p)
+    for index, loop in enumerate(_source_profile(profile_key, "marks", p), start=1):
         mark = _profile_solid(
             name=f"{profile_key} reference mark {index}",
             loops=[loop],
             y=y_rear,
-            distance=REFERENCE_PATTERN["mark_cut_depth"],
+            distance=cadmath.min(p["ref_mark_depth"], p["mid_base"] - 0.2) + 0.05,
         )
         body = body - mark
+    return body
 
-    straight = REFERENCE_PATTERN["straight_h"] + REFERENCE_PATTERN["rear_offset"]
-    tip = REFERENCE_PATTERN["tip_h"]
-    for x, z in REFERENCE_HOLE_CENTERS[profile_key]:
+
+def _cut_reference_holes(body, *, p, profile_key):
+    """Cut the optional blind tapered reference-hole pattern."""
+    y_rear = _reference_pattern_y_rear(p)
+    straight = p["ref_straight_h"] + 0.05
+    tip = p["ref_tip_h"]
+    for x, z in _source_centers(profile_key, p):
         body = body - _axis_y_cylinder(
-            diameter=REFERENCE_PATTERN["hole_d"],
+            diameter=p["ref_d"],
             length=straight,
             x=x,
             y=y_rear + straight / 2.0,
             z=z,
         )
         body = body - Cone(
-            d=REFERENCE_PATTERN["hole_d"],
-            top_d=REFERENCE_PATTERN["tip_d"],
+            d=p["ref_d"],
+            top_d=p["ref_tip_d"],
             h=tip,
             axis=Axis.Y,
             anchor=Anchor.CENTER,
@@ -312,124 +544,178 @@ def _apply_reference_pattern(body, *, profile_key):
     return body
 
 
-@component
+def _apply_reference_pattern(
+    body,
+    *,
+    p,
+    profile_key,
+    reference_ticks=True,
+    reference_holes=True,
+):
+    """Apply independently optional native reference features."""
+    if reference_ticks:
+        body = _cut_reference_ticks(body, p=p, profile_key=profile_key)
+    if reference_holes:
+        body = _cut_reference_holes(body, p=p, profile_key=profile_key)
+    return body
+
+
+_CONFIGURED_PARAMETERS = ("mid_size", "mid_wall", "mid_base", "mid_guide")
+_PANEL_PIN_FEATURE = "panel_pin_pass_through"
+
+
+def _component_parameters():
+    return {
+        "mid_size": 80.0,
+        "mid_wall": 4.0,
+        "mid_base": 3.0,
+        "mid_guide": 6.0,
+    }
+
+
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerMiddle:
-    """Fixed Medium source variant at the panel seam midpoint."""
+    """Reusable frame-coupler component at the panel seam midpoint."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         base = _profile_solid(
             name="Middle base profile",
-            loops=BASE_PROFILES["middle"],
-            y=-MEDIUM["datum"],
-            distance=-MEDIUM["base"],
+            loops=_middle_base_profiles(p),
+            y=-p["mid_datum"],
+            distance=-p["mid_base"],
         )
         body = base
-        for index, loop in enumerate(MIDDLE_GUIDE_PROFILES, start=1):
+        for index, loop in enumerate(_middle_guide_profiles(p), start=1):
             guide = _profile_solid(
                 name=f"Middle guide profile {index}",
                 loops=[loop],
-                y=-MEDIUM["datum"] - 0.05,
-                distance=MEDIUM["guide"] + 0.05,
+                y=-p["mid_datum"] - 0.05,
+                distance=p["mid_guide"] + 0.05,
             )
             body = body + guide
 
-        for x, z in ((-MEDIUM["screw_x"], MEDIUM["bushing_z"]),
-                     (MEDIUM["screw_x"], -MEDIUM["bushing_z"])):
-            body = _guide_clearance(body, x=x, z=z)
+        for x, z in (
+            (-p["mid_screw_x"], p["mid_bushing_z"]),
+            (p["mid_screw_x"], -p["mid_bushing_z"]),
+        ):
+            body = _guide_clearance(body, p=p, x=x, z=z)
 
-        for x in (-MEDIUM["screw_x"], MEDIUM["screw_x"]):
+        for x in (-p["mid_screw_x"], p["mid_screw_x"]):
             body = _mounting_hole(
                 body,
+                p=p,
                 x=x,
                 z=0.0,
-                total_depth=MEDIUM["base"],
+                total_depth=p["mid_base"],
             )
 
         body = _locator_pad(
             body,
-            x=-MEDIUM["screw_x"],
-            z=MEDIUM["bushing_z"],
+            p=p,
+            x=-p["mid_screw_x"],
+            z=p["mid_bushing_z"],
         )
         body = _locator_pad(
             body,
-            x=MEDIUM["screw_x"],
-            z=-MEDIUM["bushing_z"],
+            p=p,
+            x=p["mid_screw_x"],
+            z=-p["mid_bushing_z"],
         )
 
         body = _join_tapered_seam_guide(
             body,
+            p=p,
             profile_key="middle",
         )
-        body = _apply_reference_pattern(body, profile_key="middle")
+        body = _apply_reference_pattern(
+            body,
+            p=p,
+            profile_key="middle",
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
         return body.with_appearance(SOURCE_RED)
 
 
-
-def _edge_like_stock(*, profile_key, screw_xs):
-    """Create raw 3 mm base + 6 mm guide/support volumes before any cuts."""
+def _edge_like_stock(*, p, profile_key, screw_xs):
+    """Create configured base + guide/support volumes before any cuts."""
+    profiles = _source_profile(profile_key, "base", p)
     body = _profile_solid(
         name=f"{profile_key} base profile",
-        loops=BASE_PROFILES[profile_key],
-        y=-MEDIUM["datum"],
-        distance=-MEDIUM["base"],
+        loops=profiles,
+        y=-p["mid_datum"],
+        distance=-p["mid_base"],
     )
     guide = _profile_solid(
         name=f"{profile_key} guide stock",
-        loops=BASE_PROFILES[profile_key],
-        y=-MEDIUM["datum"],
-        distance=MEDIUM["guide"],
+        loops=profiles,
+        y=-p["mid_datum"],
+        distance=p["mid_guide"],
     )
     body = body + guide
 
-    support_r = MEDIUM["bushing_r"] + MEDIUM["bushing_gap"] + MEDIUM["wall"]
+    support_r = p["mid_bushing_r"] + p["mid_bushing_gap"] + p["mid_wall"]
     for x in screw_xs:
         body = body + _axis_y_cylinder(
             diameter=2.0 * support_r,
-            length=MEDIUM["base"],
+            length=p["mid_base"],
             x=x,
-            y=-MEDIUM["datum"] - MEDIUM["base"] / 2.0,
-            z=_edge_support_z(),
+            y=-p["mid_datum"] - p["mid_base"] / 2.0,
+            z=_edge_support_z(p),
         )
         body = body + _axis_y_cylinder(
             diameter=2.0 * support_r,
-            length=MEDIUM["guide"],
+            length=p["mid_guide"],
             x=x,
-            y=-MEDIUM["datum"] + MEDIUM["guide"] / 2.0,
-            z=_edge_support_z(),
+            y=-p["mid_datum"] + p["mid_guide"] / 2.0,
+            z=_edge_support_z(p),
         )
     return body
 
 
-def _cut_edge_like_base(body, *, profile_key, screw_xs):
-    """Apply only base-side mounting/pattern cuts."""
+def _cut_edge_like_base(
+    body,
+    *,
+    p,
+    profile_key,
+    screw_xs,
+    reference_ticks=True,
+    reference_holes=True,
+):
+    """Apply mounting bores plus independently optional reference cuts."""
     for x in screw_xs:
         body = _mounting_hole(
             body,
+            p=p,
             x=x,
-            z=_edge_mount_z(),
-            total_depth=MEDIUM["base"],
+            z=_edge_mount_z(p),
+            total_depth=p["mid_base"],
         )
-    return _apply_reference_pattern(body, profile_key=profile_key)
-
-
-def _clip_edge_to_top_t(body):
-    """Apply the historical/native TOP-edge T window to the rounded plus.
-
-    Native feature 89 starts at absolute Z = panel_h - edge_outer_z + 1 mm.
-    After subtracting the nominal edge datum panel_h, the local cut starts at
-    -edge_outer_z + 1 mm (3.855 mm for Medium), not edge_outer_z + 1 mm.
-    """
-    bar_top = (
-        MEDIUM["wall"]
-        + MEDIUM["fit"]
-        - MEDIUM["edge_end_rear"]
+    return _apply_reference_pattern(
+        body,
+        p=p,
+        profile_key=profile_key,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
     )
+
+
+def _clip_edge_to_top_t(body, *, p):
+    """Apply the historical/native TOP-edge T window to the rounded plus."""
+    bar_top = p["mid_wall"] + p["mid_fit"] - p["edge_end_rear"]
     clip_z = bar_top + 1.0
 
-    # Forge v0.19 cannot lower a placed Box as a cutter. Express the exact
-    # same half-space window as an XZ sketch extruded across base+guide depth.
-    half_width = MEDIUM["size"] / 2.0 + 10.0
-    top = MEDIUM["size"] + 40.0
+    half_width = p["mid_size"] / 2.0 + 10.0
+    top = p["mid_size"] + 40.0
     loop = {
         "start": [-half_width, clip_z],
         "segments": [
@@ -442,106 +728,262 @@ def _clip_edge_to_top_t(body):
     cutter = _profile_solid(
         name="Edge outside-stem T clip",
         loops=[loop],
-        y=-MEDIUM["datum"] - MEDIUM["base"] - 1.0,
-        distance=MEDIUM["base"] + MEDIUM["guide"] + 2.0,
+        y=-p["mid_datum"] - p["mid_base"] - 1.0,
+        distance=p["mid_base"] + p["mid_guide"] + 2.0,
     )
     return body - cutter
 
 
-def _cut_edge_like_guide(body, *, relief_key, screw_xs, edge=False):
+def _cut_edge_like_guide(body, *, p, relief_key, screw_xs, edge=False):
     """Apply only panel-side guide/relief cuts."""
     body = _cut_tapered_rail_relief(
         body,
+        p=p,
         profile_key=relief_key,
     )
     if edge:
-        body = _cut_edge_guide_end_rounding(body)
+        body = _cut_edge_guide_end_rounding(body, p=p)
     for x in screw_xs:
-        body = _guide_clearance(body, x=x, z=_edge_support_z())
+        body = _guide_clearance(body, p=p, x=x, z=_edge_support_z(p))
     return body
 
 
-def _build_edge_like(*, profile_key, relief_key, screw_x):
-    """Shared Medium construction for one left/right corner member."""
+def _build_edge_like(
+    *,
+    p,
+    profile_key,
+    relief_key,
+    screw_x,
+    reference_ticks=True,
+    reference_holes=True,
+):
+    """Shared configured construction for one left/right corner member."""
     screw_xs = (screw_x,)
     body = _edge_like_stock(
+        p=p,
         profile_key=profile_key,
         screw_xs=screw_xs,
     )
     body = _cut_edge_like_base(
         body,
+        p=p,
         profile_key=profile_key,
         screw_xs=screw_xs,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
     )
     body = _cut_edge_like_guide(
         body,
+        p=p,
         relief_key=relief_key,
         screw_xs=screw_xs,
     )
-    body = _locator_pad(body, x=screw_x, z=_edge_support_z())
-    return body
+    return _locator_pad(body, p=p, x=screw_x, z=_edge_support_z(p))
 
 
-def _build_edge_body():
-    """Shared accepted Medium Edge body before optional tube-interface features."""
-    screw_xs = (-MEDIUM["screw_x"], MEDIUM["screw_x"])
+def _build_edge_body(*, p, reference_ticks=True, reference_holes=True):
+    """Shared configured Edge body before optional tube-interface features."""
+    screw_xs = (-p["mid_screw_x"], p["mid_screw_x"])
     body = _edge_like_stock(
+        p=p,
         profile_key="edge",
         screw_xs=screw_xs,
     )
-    body = _clip_edge_to_top_t(body)
+    body = _clip_edge_to_top_t(body, p=p)
     body = _cut_edge_like_base(
         body,
+        p=p,
         profile_key="edge",
         screw_xs=screw_xs,
+        reference_ticks=reference_ticks,
+        reference_holes=reference_holes,
     )
     body = _cut_edge_like_guide(
         body,
+        p=p,
         relief_key="edge",
         screw_xs=screw_xs,
         edge=True,
     )
 
     for x in screw_xs:
-        body = _locator_pad(body, x=x, z=_edge_support_z())
+        body = _locator_pad(body, p=p, x=x, z=_edge_support_z(p))
 
     return _join_tapered_seam_guide(
         body,
+        p=p,
         profile_key="edge",
     )
 
 
-@component
+def _cut_panel_pin_pass_through(body, p):
+    """Author the exact stepped shifted-axis revolve as one named cut feature."""
+    axis_x = -p["mid_screw_x"] + 3.0
+    axis_z = _edge_mount_z(p) - 42.0
+    relief_r = p["edge_pin_r"] + p["mid_screw_relief_r"]
+    core_r = p["edge_pin_r"]
+
+    rear = -p["mid_datum"] - p["mid_base"] - 0.1
+    rear_step = -p["mid_datum"] - p["mid_base"] + p["mid_screw_relief_d"]
+    front_step = -p["mid_datum"] - p["mid_screw_relief_d"]
+    front = -p["mid_datum"] + 0.025
+
+    with Sketch(
+        name="Panel-pin pass-through section",
+        plane="XY",
+        offset=axis_z,
+    ) as sketch:
+        start = (axis_x, rear)
+        contour = sketch.profile(start=start)
+        contour.line_to((axis_x + relief_r, rear))
+        contour.line_to((axis_x + relief_r, rear_step))
+        contour.line_to((axis_x + core_r, rear_step))
+        contour.line_to((axis_x + core_r, front_step))
+        contour.line_to((axis_x + relief_r, front_step))
+        contour.line_to((axis_x + relief_r, front))
+        contour.line_to((axis_x, front))
+        contour.line_to(start)
+        contour.close()
+
+    with feature(_PANEL_PIN_FEATURE, suppressed=True):
+        body = body - sketch.revolve(
+            axis=AxisLine(Axis.Y, origin=(axis_x, 0, axis_z)),
+        )
+    return body
+
+
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerEdge:
-    """Fixed Medium straight frame-edge coupler."""
+    """Reusable straight frame-edge coupler."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
-        return _build_edge_body().with_appearance(SOURCE_RED)
+        p = _parameters(self)
+        body = _build_edge_body(
+            p=p,
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
+        body = _cut_panel_pin_pass_through(body, p)
+        return body.with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerLeft:
-    """Fixed Medium left frame-corner coupler."""
+    """Reusable left frame-corner coupler."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         return _build_edge_like(
+            p=p,
             profile_key="corner_left",
             relief_key="corner_left",
-            screw_x=MEDIUM["screw_x"],
+            screw_x=p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         ).with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerRight:
-    """Fixed Medium right frame-corner coupler."""
+    """Reusable right frame-corner coupler."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
-        # Native Medium suppresses the right-corner panel-pin pass-through.
-        return _build_edge_like(
+        p = _parameters(self)
+        body = _build_edge_like(
+            p=p,
             profile_key="corner_right",
             relief_key="corner_right",
-            screw_x=-MEDIUM["screw_x"],
-        ).with_appearance(SOURCE_RED)
+            screw_x=-p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
+        body = _cut_panel_pin_pass_through(body, p)
+        return body.with_appearance(SOURCE_RED)
+
+
+class _ConfiguredCouplerRoot:
+    """Shared root model for one configured reusable coupler occurrence."""
+
+    suppress_panel_pin = False
+
+    mid_size = 80.0
+    mid_wall = 4.0
+    mid_base = 3.0
+    mid_guide = 6.0
+
+    def build(self):
+        child = self.component_type(
+            mid_size=self.mid_size,
+            mid_wall=self.mid_wall,
+            mid_base=self.mid_base,
+            mid_guide=self.mid_guide,
+        )
+        columns = [
+            self.mid_size,
+            self.mid_wall,
+            self.mid_base,
+            self.mid_guide,
+        ]
+        rows = {
+            "Small": ["60 mm", "2 mm", "2 mm", "4 mm"],
+            "Medium": ["80 mm", "4 mm", "3 mm", "6 mm"],
+            "Large": ["100 mm", "6 mm", "4 mm", "10 mm"],
+        }
+        if self.suppress_panel_pin:
+            columns.append(child.feature(_PANEL_PIN_FEATURE))
+            rows["Small"].append(True)
+            rows["Medium"].append(True)
+            rows["Large"].append(False)
+
+        child.configure(
+            active="Medium",
+            columns=tuple(columns),
+            rows={name: tuple(values) for name, values in rows.items()},
+        )
+        return child
+
+
+class Hub75FrameCouplerMiddleModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerMiddle)
+
+
+class Hub75FrameCouplerEdgeModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerEdge)
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerLeft)
+
+
+class Hub75FrameCouplerCornerRightModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerRight)
+    suppress_panel_pin = True
+
 
 # Final active tube-interface geometry from the retained SolidCraft assembly.
 #
@@ -603,7 +1045,7 @@ RECEIVER_FRONT_Y = TUBE_AXIS_Y + 6.0
 
 
 def _xy_loop(sketch, points):
-    """Add one fixed source XY loop to a native Sketch."""
+    """Add one fixed source XY loop to a Forge Sketch."""
     contour = sketch.profile(start=points[0])
     for point in points[1:]:
         contour.line_to(point)
@@ -711,7 +1153,7 @@ def _cut_edge_tube_bow_clearance(body):
     return body - bow_clearance
 
 
-def _add_edge_tube_rear_support(body):
+def _add_edge_tube_rear_support(body, *, p, reference_ticks=True):
     """Final active Edge rear support/base/reference chain #226-230."""
     rear_support = _multi_profile_solid(
         name="Symmetrische bulten met R5-overgangen",
@@ -729,17 +1171,19 @@ def _add_edge_tube_rear_support(body):
     )
     body = body + base_plate
 
-    rear_marks = [
-        REFERENCE_MARK_LOOPS["edge"][index]
-        for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
-    ]
-    reference_cut = _multi_profile_solid(
-        name="Referentiepatroon op symmetrische rug",
-        loops=rear_marks,
-        y=-(MEDIUM["datum"] + MEDIUM["base"] + REFERENCE_PATTERN["rear_offset"]),
-        distance=REFERENCE_PATTERN["mark_cut_depth"],
-    )
-    return body - reference_cut
+    if reference_ticks:
+        rear_marks = [
+            _source_profile("edge", "marks", p)[index]
+            for index in TUBE_EDGE_REAR_REFERENCE_MARK_INDICES
+        ]
+        reference_cut = _multi_profile_solid(
+            name="Referentiepatroon op symmetrische rug",
+            loops=rear_marks,
+            y=-(p["mid_datum"] + p["mid_base"] + 0.05),
+            distance=cadmath.min(p["ref_mark_depth"], p["mid_base"] - 0.2) + 0.05,
+        )
+        body = body - reference_cut
+    return body
 
 
 def _receiver_xy(center_x):
@@ -789,7 +1233,7 @@ def _add_receiver_interface(body, *centers):
     return body - grooves
 
 
-def _add_edge_tube_interface(body):
+def _add_edge_tube_interface(body, *, p, reference_ticks=True):
     """Existing active rail interface #189/#191/#195/#198 plus #226-230."""
     body = _cut_edge_tube_foot_clearance(body)
 
@@ -808,14 +1252,22 @@ def _add_edge_tube_interface(body):
         distance2=RAIL_ENTRY_CHAMFER_SECONDARY,
         edges=_rail_entry_edges(*EDGE_RAIL_CENTERS),
     )
-    return _add_edge_tube_rear_support(body)
+    return _add_edge_tube_rear_support(
+        body,
+        p=p,
+        reference_ticks=reference_ticks,
+    )
 
 
-def _add_edge_tube_receiver_interface(body):
+def _add_edge_tube_receiver_interface(body, *, p, reference_ticks=True):
     """Alternate source interface with female receivers instead of rails."""
     body = _cut_edge_tube_foot_clearance(body)
     body = _cut_edge_tube_bow_clearance(body)
-    body = _add_edge_tube_rear_support(body)
+    body = _add_edge_tube_rear_support(
+        body,
+        p=p,
+        reference_ticks=reference_ticks,
+    )
     return _add_receiver_interface(body, *EDGE_RAIL_CENTERS)
 
 
@@ -880,25 +1332,54 @@ def _add_corner_tube_receiver_interface(body, *, side):
     return _add_receiver_interface(body, center)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerEdgeTube:
-    """Medium Edge coupler with the final active two-clamp tube interface."""
+    """Configured Edge coupler with the final active two-clamp tube interface."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
+        body = _build_edge_body(
+            p=p,
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_edge_tube_interface(
-            _build_edge_body()
+            body,
+            p=p,
+            reference_ticks=self.reference_ticks,
         ).with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerLeftTube:
-    """Medium left Corner coupler with the final active tube interface."""
+    """Configured left Corner coupler with the final active tube interface."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         body = _build_edge_like(
+            p=p,
             profile_key="corner_left",
             relief_key="corner_left",
-            screw_x=MEDIUM["screw_x"],
+            screw_x=p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_interface(
             body,
@@ -906,42 +1387,83 @@ class Hub75FrameCouplerCornerLeftTube:
         ).with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerRightTube:
-    """Medium right Corner coupler with the final active tube interface."""
+    """Configured right Corner coupler with the final active tube interface."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         body = _build_edge_like(
+            p=p,
             profile_key="corner_right",
             relief_key="corner_right",
-            screw_x=-MEDIUM["screw_x"],
+            screw_x=-p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_corner_tube_interface(
             body,
             side="right",
         ).with_appearance(SOURCE_RED)
 
 
-
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerEdgeTubeReceiver:
-    """Medium Edge tube coupler with two female dovetail receivers."""
+    """Configured Edge tube coupler with two female dovetail receivers."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
+        body = _build_edge_body(
+            p=p,
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
+        )
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_edge_tube_receiver_interface(
-            _build_edge_body()
+            body,
+            p=p,
+            reference_ticks=self.reference_ticks,
         ).with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerLeftTubeReceiver:
-    """Medium left Corner tube coupler with one female dovetail receiver."""
+    """Configured left Corner tube coupler with one female dovetail receiver."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         body = _build_edge_like(
+            p=p,
             profile_key="corner_left",
             relief_key="corner_left",
-            screw_x=MEDIUM["screw_x"],
+            screw_x=p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
         return _add_corner_tube_receiver_interface(
             body,
@@ -949,17 +1471,58 @@ class Hub75FrameCouplerCornerLeftTubeReceiver:
         ).with_appearance(SOURCE_RED)
 
 
-@component
+@component(include=_CONFIGURED_PARAMETERS)
+@dataclass
 class Hub75FrameCouplerCornerRightTubeReceiver:
-    """Medium right Corner tube coupler with one female dovetail receiver."""
+    """Configured right Corner tube coupler with one female dovetail receiver."""
+
+    mid_size: float = 80.0
+    mid_wall: float = 4.0
+    mid_base: float = 3.0
+    mid_guide: float = 6.0
+    reference_ticks: bool = True
+    reference_holes: bool = True
 
     def build(self):
+        p = _parameters(self)
         body = _build_edge_like(
+            p=p,
             profile_key="corner_right",
             relief_key="corner_right",
-            screw_x=-MEDIUM["screw_x"],
+            screw_x=-p["mid_screw_x"],
+            reference_ticks=self.reference_ticks,
+            reference_holes=self.reference_holes,
         )
+        body = _cut_panel_pin_pass_through(body, p)
         return _add_corner_tube_receiver_interface(
             body,
             side="right",
         ).with_appearance(SOURCE_RED)
+
+class Hub75FrameCouplerEdgeTubeModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerEdgeTube)
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftTubeModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerLeftTube)
+
+
+class Hub75FrameCouplerCornerRightTubeModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerRightTube)
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerEdgeTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerEdgeTubeReceiver)
+    suppress_panel_pin = True
+
+
+class Hub75FrameCouplerCornerLeftTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerLeftTubeReceiver)
+
+
+class Hub75FrameCouplerCornerRightTubeReceiverModel(_ConfiguredCouplerRoot):
+    component_type = staticmethod(Hub75FrameCouplerCornerRightTubeReceiver)
+    suppress_panel_pin = True
+

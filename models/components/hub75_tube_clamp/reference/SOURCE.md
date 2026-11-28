@@ -71,10 +71,12 @@ catalog root stores the Free base expression
 `clamp_bore = tube_d-clamp_interference`, while an Assembly may provide one
 shared `clamp_bore` dependency to every clamp occurrence.
 
-Forge v0.23.0 authors the state as one independent native Configuration Rule:
-`Installed` drives `clamp_bore = tube_d`. The standalone catalog document
-keeps that rule disabled, so manufacturing output and STL remain Free by
-default. No Python geometry branch implements the state.
+The standalone catalog document mirrors the retained source with two ordinary
+native rows: `Free` stores `clamp_bore = tube_d-clamp_interference` and
+`Installed` stores `clamp_bore = tube_d`. `Free` remains active, so
+manufacturing output and STL use the print state. Configuration ownership stays
+with the document/model; the reusable component itself only publishes the
+parameters. No Python geometry branch implements the state.
 
 ## Active production features
 
@@ -124,17 +126,21 @@ The clamp keeps the standalone source frame:
 The frame subassembly owns rotation/translation of reusable clamp occurrences
 into the Edge/Corner positions.
 
-## Parent installed fit
+## Parent-owned fit configuration
 
 The parent tube-frame document owns one shared `tube_d`,
 `clamp_interference` and `clamp_bore` dependency for all eight reusable
-clamp occurrences. Its independent `Installed` rule is enabled by default;
-disabling the rule restores the active row's Free expression
-`tube_d-clamp_interference`.
+clamp occurrences. The parent configuration explicitly stores the effective
+fit expression instead of layering a global Installed rule over every row.
 
-The frame remains physically Medium-only until #189 supplies real
-Small/Medium/Large coupler geometry. The Installed rule is orthogonal to that
-future row-axis expansion.
+The currently retained mounted Medium row stores `clamp_bore = tube_d`.
+A parent row intended to represent the Free/print state would explicitly store
+`tube_d-clamp_interference`. The reusable clamp component does not own those
+parent rows.
+
+A future generic parent column that selects a named child configuration is
+tracked separately; Forge v0.24 / SolidCraft 0.49 do not expose that column
+today. The disabled two-panel frame is not re-enabled by this correction.
 
 ## Parent-level production amendment
 

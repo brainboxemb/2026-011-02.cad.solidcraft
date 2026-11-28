@@ -1,6 +1,8 @@
 """Shared two-panel HUB75 tube-frame layout and existing rail-interface variant."""
 
-from scpf import Always, ConfigRule, Configure, DriveParameter, Param, Placement, assembly
+from dataclasses import dataclass
+
+from scpf import Placement, assembly
 
 from models.components.hub75_panel.detailed.scpf.model import Hub75Panel
 from models.components.hub75_frame_coupler.scpf.family import (
@@ -45,6 +47,8 @@ def _build_tube_frame(
     tube_d,
     clamp_interference,
     clamp_bore,
+    coupler_reference_ticks,
+    coupler_reference_holes,
 ):
     def clamp(**kwargs):
         return _clamp(
@@ -72,11 +76,15 @@ def _build_tube_frame(
         ),
     )
     middle = Hub75FrameCouplerMiddle(
+        reference_ticks=coupler_reference_ticks,
+        reference_holes=coupler_reference_holes,
         name="MiddleCoupler",
         placement=Placement(z=PANEL_CENTER_Z),
     )
 
     edge_top = edge_component(
+        reference_ticks=coupler_reference_ticks,
+        reference_holes=coupler_reference_holes,
         name=f"EdgeCoupler{interface_label}Top",
         placement=Placement(z=FRAME_HEIGHT),
     )
@@ -86,6 +94,8 @@ def _build_tube_frame(
     )
 
     corner_left_top = corner_left_component(
+        reference_ticks=coupler_reference_ticks,
+        reference_holes=coupler_reference_holes,
         name=f"CornerCoupler{interface_label}LeftTop",
         placement=Placement(x=-FRAME_WIDTH / 2.0, z=FRAME_HEIGHT),
     )
@@ -94,6 +104,8 @@ def _build_tube_frame(
         placement=Placement(x=FRAME_WIDTH / 2.0, rotation=((0, 1, 0), 180)),
     )
     corner_right_top = corner_right_component(
+        reference_ticks=coupler_reference_ticks,
+        reference_holes=coupler_reference_holes,
         name=f"CornerCoupler{interface_label}RightTop",
         placement=Placement(x=FRAME_WIDTH / 2.0, z=FRAME_HEIGHT),
     )
@@ -134,10 +146,13 @@ def _build_tube_frame(
 
 
 @assembly
+@dataclass
 class Hub75DisplayFrame2PanelTubeAssembly:
-    tube_d = 10.0
-    clamp_interference = 0.4
-    clamp_bore = 9.6
+    tube_d: float = 10.0
+    clamp_interference: float = 0.4
+    clamp_bore: float = 9.6
+    coupler_reference_ticks: bool = False
+    coupler_reference_holes: bool = False
 
     def build(self):
         return _build_tube_frame(
@@ -149,35 +164,35 @@ class Hub75DisplayFrame2PanelTubeAssembly:
             tube_d=self.tube_d,
             clamp_interference=self.clamp_interference,
             clamp_bore=self.clamp_bore,
+            coupler_reference_ticks=self.coupler_reference_ticks,
+            coupler_reference_holes=self.coupler_reference_holes,
         )
 
 
+@dataclass
 class Hub75DisplayFrame2PanelTube:
-    tube_d = 10.0
-    clamp_interference = 0.4
-    clamp_bore = 9.6
+    tube_d: float = 10.0
+    clamp_interference: float = 0.4
+    clamp_bore: float = 9.6
+    coupler_reference_ticks: bool = False
+    coupler_reference_holes: bool = False
 
     def build(self):
         frame = Hub75DisplayFrame2PanelTubeAssembly(
             tube_d=self.tube_d,
             clamp_interference=self.clamp_interference,
             clamp_bore=self.clamp_bore,
+            coupler_reference_ticks=self.coupler_reference_ticks,
+            coupler_reference_holes=self.coupler_reference_holes,
         )
-        return Configure(
-            frame,
+        frame.configure(
             active="Medium",
-            columns=(Param(self.clamp_bore),),
-            rows={"Medium": ("tube_d-clamp_interference",)},
-            rules=(
-                ConfigRule(
-                    "installed",
-                    "Installed",
-                    enabled=True,
-                    condition=Always(),
-                    effect=DriveParameter(self.clamp_bore, self.tube_d),
-                ),
-            ),
+            columns=(self.clamp_bore,),
+            # This mounted parent owns the effective clamp fit explicitly.
+            # Reusable clamp components do not carry a global Installed rule.
+            rows={"Medium": ("tube_d",)},
         )
+        return frame
 
 
 Hub75DisplayFrame2PanelTube()

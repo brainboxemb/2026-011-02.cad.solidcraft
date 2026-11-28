@@ -109,6 +109,15 @@ module/model/task selection.
 If it does not match, ignore `build.yml` and run full. A stale build file is
 not a CI failure.
 
+### process-disabled model owners
+
+A model-local `ci.yml` may set `process: false` to park that physical owner.
+
+The owner remains discoverable and dependency-validated. A matching work-branch
+`build.yml` may explicitly select it for focused work. Normal/full/incremental
+automatic selection on permanent lanes excludes it, and dependent expansion
+must not automatically re-add it.
+
 ### dev
 
 Ignore `build.yml`.

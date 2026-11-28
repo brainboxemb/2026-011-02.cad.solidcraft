@@ -1,3 +1,3 @@
-from models.components.hub75_frame_coupler.scpf.family import Hub75FrameCouplerCornerRightTubeReceiver
+from models.components.hub75_frame_coupler.scpf.family import Hub75FrameCouplerCornerRightTubeReceiverModel
 
-Hub75FrameCouplerCornerRightTubeReceiver()
+Hub75FrameCouplerCornerRightTubeReceiverModel()

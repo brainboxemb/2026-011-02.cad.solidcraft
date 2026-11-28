@@ -1,17 +1,15 @@
 schema: 1
-branch: issue/285-exp-test-output
+branch: chore/294-forge-exp-visual-qualification
 
-modules:
-  - ci
-  - build
-  - pages
-  - merge-policy
-  - branch-cleanup
-models:
-  - simple-box
+modules: all
+models: all
 tasks:
   - test
   - build
+
+qualification:
+  forge:
+    ref: 72e01a8db8b522b97b9f33a63eb08f6ce4153a68
 
 output:
   scope: test

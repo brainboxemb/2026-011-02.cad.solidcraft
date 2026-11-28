@@ -1,31 +1,42 @@
-# 0041 — HUB75 tube-clamp Installed state as one suppressible deformation feature
+# 0041 — HUB75 tube-clamp Installed state as one suppressible geometry edit
 
 Status: Proposed  
 Issue: #281
 
 ## Decision to review
 
-The intended model is:
+The Installed state does **not** require a generic flex/deformation operation.
 
-- **Free** is the current printable preloaded clamp;
-- **Installed** is the same clamp opened around the target tube;
-- exactly one history feature is named installed;
-- installed is suppressed in Free and active in Installed;
-- that feature changes the ring by deformation, not by cutting material away;
-- the 2.0 mm ring wall and the neutral-axis material length are retained;
-- the rear/interface datum stays fixed while the two lips open symmetrically.
+The clamp profile is already defined by explicit sketch points and circular arcs.
+For Installed, the required geometry can be produced by moving the points that
+define that profile to new calculated positions.
 
-The released Forge v0.27.0 configuration API already supports the required
-suppression/configuration part.
+The intended history is:
 
-It does **not** currently expose a solid-history operation that can perform the
-required continuous ring deformation as one feature. SolidCraft 0.50.0 also has
-no native solid flex/deformation command with those semantics.
+1. author the normal Free clamp profile;
+2. define one geometry-edit step named `installed`;
+3. that step moves the relevant profile points/arc centres to their Installed coordinates;
+4. Free suppresses that step;
+5. Installed enables that step;
+6. the existing extrusion and female/male interface history use the resulting profile.
 
-Therefore this change cannot be implemented correctly as only a CAD-model edit
-against the current released API. If this design is approved, a small,
-consumer-driven deformation capability is required below the model. The
-configuration API itself does not need redesign.
+~~~text
+Free ring sketch
+    |
+    +-- Installed point move      [suppressed in Free]
+    |
+    +-- Extrude
+    |
+    +-- female or male interface features
+~~~
+
+The question for Forge is therefore deliberately small:
+
+> Can the current Forge/SolidCraft API represent one atomic sketch point edit as
+> one named suppressible history step?
+
+If not, only that point-edit history capability should be added. A generic
+`radial_flex`, deformation solver or material model is out of scope.
 
 ## Problem
 
@@ -33,9 +44,9 @@ The HUB75 tube clamp is a preloaded elastic part.
 
 For the default Ø10 mm tube with 0.4 mm diametral interference, the printable
 Free clamp has a 9.6 mm bore. When that same printed clamp is pushed over the
-Ø10 mm tube, the ring opens elastically.
+Ø10 mm tube, the opening becomes wider.
 
-The current catalog models the two states by changing clamp_bore:
+The current catalog models the states by changing `clamp_bore`:
 
 ~~~python
 clamp.configure(
@@ -48,67 +59,45 @@ clamp.configure(
 )
 ~~~
 
-That produces two nominal ring geometries. It does not represent one
-manufactured clamp being opened after it has been printed.
+That rebuilds the ring from different parameter values. It does not show
+Installed as one later CAD step that may be suppressed.
 
 The withdrawn #270 direction correctly tried to make Installed one named
-history feature, but the proposed operation was wrong:
+history feature, but the operation was wrong:
 
 ~~~python
 with feature("installed", suppressed=True):
     body = body - Cylinder(d=self.tube_d, ...)
 ~~~
 
-That enlarges the bore by deleting material and reduces the wall thickness. It
-represents machining, not elastic preload.
+That removes material and thins the clamp. It is not the geometry change we want.
 
-The history idea from #270 is retained; the bore-widening cut is not.
+## Existing ring geometry
 
-## Required history
-
-The clamp history must read conceptually as:
-
-~~~text
-Free ring
-    |
-    +-- Installed deformation     [suppressed in Free]
-    |
-    +-- female or male interface features
-~~~
-
-The deformation is intentionally placed immediately after the shared ring is
-created and before the female-slot or male-dovetail interface is added.
-
-That ordering matters:
-
-- the deformation operates only on the elastic ring;
-- the rear side of the ring is the fixed datum;
-- the later slide-interface geometry is authored from that fixed rear datum;
-- the female/male interface itself is therefore not stretched or scaled.
-
-The final document configuration is only:
+The shared ring in `common.py` is already authored from a small number of
+calculated points:
 
 ~~~python
-clamp.configure(
-    active="Free",
-    columns=(clamp.feature("installed"),),
-    rows={
-        "Free": (True,),
-        "Installed": (False,),
-    },
-)
+half_open = radians(CLAMP_OPEN / 2.0)
+radial_mid = (clamp_r + clamp_r_out) / 2.0
+
+outer_x = clamp_r_out * cos(half_open)
+outer_y = clamp_r_out * sin(half_open)
+inner_x = clamp_r * cos(half_open)
+inner_y = clamp_r * sin(half_open)
+lip_center_x = radial_mid * cos(half_open)
+lip_center_y = radial_mid * sin(half_open)
 ~~~
 
-where True means the feature is suppressed.
+Those values define the outer and inner arc endpoints and the two lip-arc centres.
+The two main ring arcs keep their centre at the sketch origin.
 
-No clamp_bore configuration column is required for the Free/Installed state
-after this change.
+Installed therefore does not need a new geometric primitive. It needs new
+coordinates for the same profile-defining references.
 
 ## Free geometry
 
-Free remains the manufacturing state and the authoritative STL geometry.
-
-For the current defaults:
+With the current defaults:
 
 ~~~text
 tube_d             = 10.0 mm
@@ -122,132 +111,88 @@ neutral radius     = 5.8 mm
 occupied sweep     = 270 deg
 ~~~
 
-The standalone document starts in Free and installed is suppressed.
-
-## Proposed Installed geometry
-
-Installed is a kinematic deformation approximation of the same elastic ring.
-It is not an FEA model.
-
-The geometric invariant is the neutral-axis arc length of the ring.
-
-For Free:
+Approximate Free coordinates:
 
 ~~~text
-r_free_neutral = 4.8 + 2.0 / 2
-               = 5.8 mm
-
-sweep_free     = 360 - 90
-               = 270 deg
+outer x = 4.808 mm    outer y = ±4.808 mm
+inner x = 3.394 mm    inner y = ±3.394 mm
+lip x   = 4.101 mm    lip y   = ±4.101 mm
 ~~~
 
-The neutral-axis material length is therefore:
+Free remains the active standalone state and the STL state.
 
-~~~text
-L = r_free_neutral * radians(sweep_free)
-~~~
+## Installed target geometry
 
-Installed must accommodate the Ø10 mm tube while retaining the 2.0 mm wall:
+Installed should accommodate the Ø10 mm tube without reducing the 2.0 mm wall.
+The selected simple approximation keeps the Free neutral-axis arc length.
+
+Therefore:
 
 ~~~text
 installed inner radius   = 5.0 mm
-installed neutral radius = 6.0 mm
 installed outer radius   = 7.0 mm
+installed neutral radius = 6.0 mm
+
+sweep_installed = 270 deg * 5.8 / 6.0 = 261 deg
+open_installed  = 360 deg - 261 deg   = 99 deg
 ~~~
 
-With the same neutral-axis material length:
+So `half_open` changes from 45° to 49.5° and the Installed coordinates are
+calculated with the same equations as Free:
 
 ~~~text
-sweep_installed
-    = sweep_free * r_free_neutral / r_installed_neutral
-    = 270 * 5.8 / 6.0
-    = 261 deg
-
-open_installed
-    = 360 - 261
-    = 99 deg
+outer x = 4.546 mm    outer y = ±5.323 mm
+inner x = 3.247 mm    inner y = ±3.802 mm
+lip x   = 3.897 mm    lip y   = ±4.562 mm
 ~~~
 
-So the intended visual/mechanical change is:
+The Installed step is therefore a deterministic move from the Free references
+to these Installed references. No material is cut away and no generic body
+deformation algorithm is needed.
 
-~~~text
-Free                         Installed
-inner Ø9.6                   inner Ø10.0
-wall 2.0                     wall 2.0
-opening 90 deg               opening 99 deg
-rear datum fixed             rear datum fixed
-neutral arc length L         same neutral arc length L
-~~~
+## Proposed clamp authoring
 
-The extra 9 degrees of opening is distributed symmetrically, approximately
-4.5 degrees per lip, around the fixed rear datum.
-
-This is the geometry the installed feature must produce for the current
-defaults.
-
-## Proposed clamp code
-
-The model should keep the current shared Free ring construction and insert the
-one Installed operation directly after its extrusion.
-
-Conceptually:
+The desired model is conceptually:
 
 ~~~python
-free_r = (self.tube_d - self.clamp_interference) / 2.0
-free_r_neutral = free_r + CLAMP_WALL / 2.0
-installed_r_neutral = self.tube_d / 2.0 + CLAMP_WALL / 2.0
-
-ring_sketch = _open_clamp_ring(
+ring = _open_clamp_ring(
     clamp_r=free_r,
     clamp_r_out=free_r + CLAMP_WALL,
     clamp_open=CLAMP_OPEN,
 )
-ring = ring_sketch.extrude(CLAMP_WIDTH)
+
+installed_points = _installed_ring_points(
+    tube_d=self.tube_d,
+    clamp_wall=CLAMP_WALL,
+    free_r=free_r,
+    free_open=CLAMP_OPEN,
+)
 
 with feature("installed", suppressed=True):
-    ring = ring.radial_flex(
-        axis=Axis.Z,
-        fixed_angle=180.0,
-        neutral_radius=free_r_neutral,
-        target_neutral_radius=installed_r_neutral,
-        preserve_neutral_length=True,
-    )
+    ring = ring.move_points(installed_points)
 
-body = ring
+body = ring.extrude(CLAMP_WIDTH)
 
-# Existing female or male interface history follows here.
+# Existing female or male interface history follows.
 ~~~
 
-radial_flex(...) above is the **proposed missing operation**, not an API that
-exists in Forge v0.27.0.
+The exact public spelling of `move_points(...)` is not fixed by this CAD change.
+It only makes the required operation explicit.
 
-Its required semantics are deliberately narrow:
+The operation must:
 
-- act on one continuous solid body;
-- bend/unbend the body around one axis;
-- keep one angular datum fixed;
-- change the neutral radius;
-- preserve neutral-axis length;
-- keep the cross-section, including the 2.0 mm wall and 12 mm width;
-- return one continuous solid;
-- author exactly one native history feature so the existing
-  feature("installed", suppressed=True) contract can name and suppress it.
+- work on the existing ring sketch;
+- move several related points atomically;
+- keep the same profile topology;
+- not cut or add material;
+- result in one named history step;
+- be suppressible by configuration.
 
-The final API name and exact argument spelling belong to the Forge/SolidCraft
-capability design. The clamp-side semantics above are the consumer requirement.
+## Configuration behavior
 
-## Current API audit
-
-### What Forge v0.27.0 already provides
-
-The following parts are already sufficient:
+The final configuration should target only that one history step:
 
 ~~~python
-with feature("installed", suppressed=True):
-    ...
-
-clamp.feature("installed")
-
 clamp.configure(
     active="Free",
     columns=(clamp.feature("installed"),),
@@ -258,150 +203,132 @@ clamp.configure(
 )
 ~~~
 
-So feature identity, initial suppression, reusable-component feature exposure
-and saved Free/Installed configuration do not need another redesign.
+~~~text
+Free       installed = suppressed
+Installed  installed = active
+~~~
 
-### Shape.move(...) is not the missing deformation
+The Free/Installed state no longer needs `clamp_bore` as a configuration column.
 
-Forge v0.27.0 Shape.move(x, y, z) is a CSG translation helper.
+## Current API audit
 
-It:
+### What Forge v0.27.0 already provides
 
-- translates an entire primitive/CSG shape;
-- is feature-transparent in the current Forge history model;
-- does not rotate or deform part of one continuous solid;
-- does not create the required native suppressible body-history operation.
+Feature identity and configuration are already sufficient:
 
-It therefore cannot open this ring.
+~~~python
+with feature("installed", suppressed=True):
+    ...
 
-### Native SolidCraft solid.move is also insufficient
+clamp.feature("installed")
+clamp.configure(...)
+~~~
 
-SolidCraft 0.50.0 has a richer solid.move command with rigid translation and
-rotation of bodies.
+That part does not need redesign.
 
-Forge v0.27.0 does not expose that command as the required public Shape-history
-operation, but exposing it alone would still not solve this clamp.
+### What SolidCraft 0.50.0 already provides
 
-A rigid move can move whole bodies. Opening this one continuous C-shaped ring
-requires different displacement around the arc. Splitting the ring into rigid
-halves would change the modeling contract, and a symmetric opening would require
-opposite transforms rather than one history transform.
+SolidCraft already contains sketch point-edit commands:
 
-So the missing capability is not merely "expose solid.move".
+~~~text
+sketch.move_point
+sketch.move_points
+sketch.move
+~~~
 
-### Native SolidCraft solid.scale is not acceptable
+In particular, `sketch.move_points` accepts several point-to-target moves in
+one solve. This is the backend operation closest to the required clamp edit.
 
-SolidCraft has solid.scale, but Forge v0.27.0 does not expose it as this
-history operation.
+### What Forge v0.27.0 is missing
 
-More importantly, scaling the ring from Ø9.6 to Ø10 would also scale the wall
-and the ring material. It would not preserve the 2.0 mm wall or neutral-axis
-material length.
+The current connected-profile API authors points and arcs but does not return
+stable public handles to the profile endpoints and arc centres for a later edit.
 
-It is therefore not the Installed model.
+Forge also has no public operation equivalent to:
 
-### Native SolidCraft solid.offset_face is not acceptable
+~~~python
+ring.move_points({...})
+~~~
 
-SolidCraft has solid.offset_face, also not exposed by the current Forge
-surface.
+inside a normal named `feature(...)` scope.
 
-One offset distance cannot move both the inner and outer cylindrical faces in
-the required radial direction while preserving a 2.0 mm wall. Doing that with
-separate offsets would require multiple history operations and would no longer
-be the one suppressible Installed step.
+The likely Forge-side addition is therefore small:
 
-### Parameter configuration is geometrically usable but has the wrong history
+1. expose stable semantic references to selected connected-profile points/arc centres;
+2. expose one atomic point-move edit over those references;
+3. lower it to the existing SolidCraft sketch point-edit command;
+4. prove that the edit can be one suppressible configuration target.
 
-Forge can already parameterize both bore and opening angle. A two-parameter
-Free/Installed table could therefore reproduce the 9.6/90 and 10.0/99 geometry
-without a backend change.
+The fourth item is the only unresolved backend question. SolidCraft documents
+`sketch.move_points` as an edit performed while editing a Sketch. That does not
+by itself prove that the edit is stored as a separate timeline feature that
+`config.configure(features=[...])` can suppress.
 
-That alternative is rejected for this change because it recreates the ring from
-configuration values instead of representing Installed as one later
-suppressible deformation of the Free clamp.
+The next capability test is therefore exactly:
 
-If the one-step history requirement is intentionally dropped later, this is the
-available no-API-change fallback.
+> Can one atomic `sketch.move_points` edit be recorded/named as one timeline
+> feature and then suppressed by a configuration row?
 
-## Capability conclusion
+If yes, Forge only needs the thin point-reference/edit authoring surface.
 
-The proposed clamp geometry is now concrete, and the capability result is also
-concrete:
+If no, the missing SolidCraft capability is specifically **suppressible sketch
+geometry-edit history**. It is not generic flex/deformation.
 
-**Forge v0.27.0 + SolidCraft 0.50.0 cannot currently express the approved
-physical intent as one suppressible Installed history feature.**
+## Explicit non-solutions
 
-The missing capability is one continuous-solid bend/flex operation that can
-change the radius of a curved constant-section body while preserving its
-neutral-axis length and a fixed datum.
+Do not solve Installed with:
 
-This is not a configuration problem.
+- a larger cylindrical bore cut;
+- `radial_flex` or another generic deformation abstraction;
+- body scaling;
+- two independent clamp bodies;
+- a Python `if installed:` branch;
+- a second unrelated Installed sketch;
+- multiple hidden history operations presented as one state.
 
-A follow-up capability design must therefore answer one focused question:
-
-> How does Forge author one native SolidCraft history feature that performs the
-> radial bend/flex described above on a continuous body?
-
-If SolidCraft first needs such a native history command, that backend dependency
-must be implemented there rather than hidden in CAD consumer code.
-
-Do not replace this gap with:
-
-- the old bore-widening cut;
-- a scaled ring;
-- two or more hidden offset operations;
-- split rigid clamp bodies;
-- a Python if installed: branch;
-- a second independent Installed body.
+A parameter-row implementation remains technically possible, but it does not
+meet the requested one-suppressed-step history and is not the design proposed here.
 
 ## Scope after approval
 
 After this record is approved:
 
-1. record the missing deformation capability in its owning Forge/SolidCraft
-   issue/design;
-2. implement and qualify that capability independently;
-3. adopt the released capability in this CAD catalog;
-4. insert installed immediately after the shared ring extrusion in both
-   female and male variants;
-5. replace the current clamp_bore Free/Installed configuration column with
-   one suppression column targeting clamp.feature("installed");
-6. keep Free active for the standalone catalog model and STL;
-7. update visual evidence so Free and Installed can be compared directly.
-
-No bore-cut substitute is permitted while the capability is missing.
+1. create a focused Forge capability/probe for connected-profile point editing;
+2. prove whether the existing SolidCraft point-edit command can be a named
+   suppressible history feature;
+3. only if that proof fails, identify the smallest SolidCraft history change required;
+4. once released, use that operation in the shared HUB75 ring;
+5. keep the same point-move rule for female and male variants;
+6. replace the current parameter Free/Installed table with one suppression column;
+7. keep Free active for the standalone model and STL.
 
 ## Verification
 
-The eventual implementation is acceptable only when all of the following are
-true:
+The eventual implementation is acceptable when:
 
-1. Free is the existing printable preloaded clamp.
-2. Free has installed suppressed.
-3. Installed differs by activating exactly that one named history feature.
-4. Default Free geometry is Ø9.6 inner diameter, 2.0 mm wall and 90° opening.
-5. Default Installed geometry accommodates Ø10.0, retains the 2.0 mm wall and
-   opens to approximately 99° under the neutral-axis model.
-6. The rear/interface datum does not move.
-7. The clamp remains one continuous body.
-8. No clamp material is removed merely to create Installed.
-9. Female and male variants use the same ring deformation mechanism.
-10. Their later interface features remain mechanically coherent and are not
-    themselves scaled/deformed.
+1. Free remains the existing printable clamp.
+2. Free has `installed` suppressed.
+3. Installed is produced by activating exactly one point-edit history step.
+4. Default Free inner diameter remains Ø9.6 mm.
+5. Installed inner diameter becomes Ø10.0 mm.
+6. Wall thickness remains 2.0 mm.
+7. The opening changes from 90° to approximately 99° under the selected
+   neutral-axis approximation.
+8. The ring remains one continuous profile/body.
+9. No material-removal feature creates Installed.
+10. Female and male variants use the same shared ring edit.
 11. The standalone STL remains Free.
-12. Saved SolidCraft configuration switches Free/Installed without rerunning
-    Forge Python.
+12. Saved SolidCraft configuration switches Free/Installed without rerunning Forge Python.
 
 ## Approval gate
 
-Approval of this record means approval of:
+Approval means approval of:
 
-- the one-feature suppression history;
-- the constant-wall, conserved-neutral-axis Installed approximation;
-- the fixed rear datum and symmetric lip opening;
-- the conclusion that the current released API is missing the required
-  deformation operation.
+- one suppressible Installed history step;
+- implementing that step as movement of the existing ring's defining sketch
+  points/arc centres;
+- the Ø10 / 2.0 mm wall / approximately 99° Installed target for the current defaults;
+- investigating only the minimal sketch-point-history capability needed to make
+  that step configurable.
 
-It does **not** approve an arbitrary new Forge API name or implementation. That
-capability must be designed and qualified in its owning repository before this
-CAD model adopts it.
+It does **not** approve a generic deformation API.

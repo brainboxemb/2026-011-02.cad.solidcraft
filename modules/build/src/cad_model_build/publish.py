@@ -193,6 +193,58 @@ def _update_scope(
     _write_plan(existing_plan_path, merged)
 
 
+def _update_test_scope(
+    *,
+    worktree: Path,
+    candidate_scope: Path,
+    candidate_plan: dict,
+    active_ids: set[str],
+    baseline_namespace: str,
+) -> None:
+    """Materialize one complete rolling review scope from dev plus candidate."""
+
+    baseline_scope = worktree / baseline_namespace
+    baseline_plan_path = baseline_scope / "build-plan.json"
+    if not baseline_plan_path.is_file():
+        raise PublishError(
+            f"rolling test output requires durable {baseline_namespace!r} baseline"
+        )
+
+    baseline_plan = _read_plan(baseline_plan_path)
+    if baseline_plan.get("namespace") != baseline_namespace:
+        raise PublishError("rolling test baseline namespace is invalid")
+
+    published_scope = worktree / "test"
+    if published_scope.exists():
+        shutil.rmtree(published_scope)
+    shutil.copytree(baseline_scope, published_scope)
+
+    published_models = published_scope / "models"
+    if published_models.is_dir():
+        for child in tuple(published_models.iterdir()):
+            if child.is_dir() and child.name not in active_ids:
+                shutil.rmtree(child)
+
+    rows = {
+        row["id"]: row
+        for row in baseline_plan.get("models", [])
+        if isinstance(row, dict)
+        and isinstance(row.get("id"), str)
+        and row["id"] in active_ids
+    }
+
+    for row in candidate_plan["models"]:
+        model_id = row.get("id")
+        if not isinstance(model_id, str):
+            raise PublishError("candidate plan model is missing id")
+        _copy_model(candidate_scope, published_scope, model_id)
+        rows[model_id] = row
+
+    result = dict(candidate_plan)
+    result["models"] = [rows[key] for key in sorted(rows)]
+    _write_plan(published_scope / "build-plan.json", result)
+
+
 def publish(
     *,
     repo: Path,
@@ -241,14 +293,23 @@ def publish(
             worktree = Path(tmp) / "build-branch"
             try:
                 _prepare_worktree(repo, project.build_branch, worktree)
-                _update_scope(
-                    worktree=worktree,
-                    candidate_scope=candidate_scope,
-                    candidate_plan=candidate_plan,
-                    active_ids=active_ids,
-                    namespace=namespace,
-                    full=full,
-                )
+                if namespace == "test":
+                    _update_test_scope(
+                        worktree=worktree,
+                        candidate_scope=candidate_scope,
+                        candidate_plan=candidate_plan,
+                        active_ids=active_ids,
+                        baseline_namespace=project.development_branch,
+                    )
+                else:
+                    _update_scope(
+                        worktree=worktree,
+                        candidate_scope=candidate_scope,
+                        candidate_plan=candidate_plan,
+                        active_ids=active_ids,
+                        namespace=namespace,
+                        full=full,
+                    )
                 _run(["git", "add", namespace], cwd=worktree)
                 diff = _run(
                     ["git", "diff", "--cached", "--quiet"],

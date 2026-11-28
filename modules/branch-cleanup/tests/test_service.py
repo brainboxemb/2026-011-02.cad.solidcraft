@@ -17,6 +17,7 @@ class FakeClient:
         self._branches = [
             "main",
             "dev",
+            "exp",
             "issue/1-done",
             "fix/2-open",
             "docs/3-plan",
@@ -60,6 +61,7 @@ class ServiceTests(unittest.TestCase):
         deleted = sweep(client, config=CONFIG)
         self.assertEqual(deleted, ("issue/1-done", "docs/3-plan"))
         self.assertEqual(client.deleted, ["issue/1-done", "docs/3-plan"])
+        self.assertNotIn("exp", client.deleted)
 
 
 if __name__ == "__main__":

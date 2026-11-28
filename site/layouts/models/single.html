@@ -101,6 +101,7 @@
 {{ $blobBase := printf "https://github.com/%s/blob/build/%s/" $repo $scope }}
 {{ $rawBase := printf "https://raw.githubusercontent.com/%s/build/%s/" $repo $scope }}
 {{ $toolchain := .Params.toolchain }}
+{{ $sourceEvidence := index $toolchain "source" }}
 {{ $forge := index $toolchain "forge" }}
 {{ $solidcraft := index $toolchain "solidcraft" }}
 {{ $commandCount := 0 }}
@@ -296,10 +297,14 @@
     <h2 class="cad-section-title">Build information</h2>
     <dl class="cad-verification-grid">
       <dt>Build scope</dt><dd><code>{{ $scope }}</code></dd>
+      <dt>Source branch</dt><dd><code>{{ index $sourceEvidence "ref" }}</code></dd>
+      <dt>Source SHA</dt><dd><code>{{ index $sourceEvidence "sha" }}</code></dd>
       <dt>Build variant</dt><dd><code>{{ index $build "id" }}</code></dd>
       <dt>Physical owner</dt><dd><code>{{ index $build "owner" }}</code></dd>
       <dt>Built source</dt><dd><code>{{ index $build "built_source_sha" }}</code></dd>
-      <dt>Forge</dt><dd><code>{{ index $forge "version" }} · {{ index $forge "commit" }}</code></dd>
+      <dt>Forge baseline</dt><dd><code>{{ index $forge "version" }}</code></dd>
+      {{ with index $forge "qualification_ref" }}<dt>Forge qualification</dt><dd><code>{{ . }}</code></dd>{{ end }}
+      {{ with index $forge "commit" }}<dt>Forge commit</dt><dd><code>{{ . }}</code></dd>{{ end }}
       <dt>SolidCraft</dt><dd><code>{{ index $solidcraft "version" }}</code></dd>
       <dt>Runtime</dt><dd><code>{{ index $solidcraft "image" }}</code></dd>
     </dl>

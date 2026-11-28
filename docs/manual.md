@@ -2,8 +2,8 @@
 
 ## Stable configuration
 
-Root `ci.yml` defines permanent source branches, the generated build branch,
-Forge/SolidCraft versions and repository roots. Forge is selected by its
+Root `ci.yml` defines permanent source branches (`main`, `dev`, `exp`),
+the generated build branch, Forge/SolidCraft versions and repository roots. Forge is selected by its
 released Git tag, for example `version: v0.16.0`. Local bootstrap and CI use
 that same release version.
 
@@ -57,8 +57,50 @@ The normal `ci.yml.dependencies.forge.version` remains the released
 adds `forge.qualification_ref` for the exact candidate used by the temporary
 run.
 
-Permanent `dev` and `main` CI ignore work-branch `build.yml`, and
+Permanent `dev`, `exp` and `main` CI ignore work-branch `build.yml`, and
 `bootstrap.ps1` remains release-only.
+
+## Rolling test output
+
+A temporary work branch can make its generated CAD result reviewable without
+creating a permanent source branch or a per-PR output directory.
+
+Add this to the matching root `build.yml`:
+
+```yaml
+output:
+  scope: test
+```
+
+The request requires the `build` task. A successful PR build remains bounded
+to its selected models. Publication then creates a fresh complete
+`build/test` scope from the current durable `build/dev` catalog and overlays
+the selected candidate model outputs before rebuilding Pages at `/test/`.
+
+There is deliberately only one rolling test output. A later successful test
+publication replaces the earlier one. Unselected active model artifacts and
+their own `built_source_sha` evidence come from the durable dev baseline;
+candidate rows replace only the models rebuilt by the PR. Nothing is retained
+under a PR-specific directory, so no PR-close cleanup process exists.
+
+The test `build-plan.json` records the exact source branch and source SHA plus
+the normal released Forge baseline and, when used, the exact
+`qualification.forge.ref`. This makes `/test/` suitable for visually
+reviewing an unreleased Forge candidate or a CAD work branch before integration.
+
+Ordinary PRs remain verification-only unless they explicitly request
+`output.scope: test`.
+
+## Experimental lane
+
+`exp` is a permanent source lane, not a test-output alias. It has its own
+`build/exp` generated scope and Pages presentation at `/exp/`.
+
+Normal work branches may target `exp` for isolated experimental development.
+Permanent `dev -> exp` synchronization and `exp -> dev` integration use merge
+commits through the repository-local merge policy. `exp -> main` is not an
+allowed route; accepted experimental work returns through `dev` before any
+stable `dev -> main` promotion.
 
 ## Branch integration
 
@@ -78,9 +120,11 @@ merge button as a fallback, or manually choose squash/merge/rebase. If the
 
 The merge-policy owns:
 
-- short-lived branch -> `dev`: squash;
+- short-lived branch -> `dev` or `exp`: squash;
+- `dev` <-> `exp`: merge commit;
 - `dev` -> `main`: merge commit;
-- exceptional `main` -> `dev`: merge commit.
+- exceptional `main` -> `dev`: merge commit;
+- `exp` -> `main`: rejected.
 
 Promote accepted development with a merge-commit PR from `dev` to `main`.
 
@@ -112,15 +156,15 @@ tasks:
 If the branch field does not match the actual work branch, the file is ignored
 and CI falls back to full.
 
-### dev
+### dev / exp
 
-`build.yml` is ignored.
+`build.yml` is ignored on both permanent development lanes.
 
-CI finds the most recent successful push/workflow_dispatch run on `dev` and
-uses its SHA as the baseline. The current `dev` SHA is the target.
+CI finds the most recent successful push/workflow_dispatch run on the same lane
+and uses its SHA as the baseline. The current lane SHA is the target.
 
 ```text
-git diff --name-only <successful-baseline> <current-dev>
+git diff --name-only <successful-baseline> <current-lane>
 ```
 
 Only changed items plus declared impact run.
@@ -344,10 +388,16 @@ During a run, generated output is written below the checkout:
 
 ```text
 build/
+  main/
+    build-plan.json
+    models/
   dev/
     build-plan.json
     models/
-  main/
+  exp/
+    build-plan.json
+    models/
+  test/
     build-plan.json
     models/
 ```
@@ -356,18 +406,27 @@ Successful permanent-branch runs then publish that scope to the generated
 `build` branch. On that branch the repository root is:
 
 ```text
+main/
+  build-plan.json
+  models/
 dev/
   build-plan.json
   models/
-main/
+exp/
+  build-plan.json
+  models/
+test/
   build-plan.json
   models/
 ```
 
-PR/work-branch builds are verification-only and never publish. Incremental
-`dev` publication replaces only selected model directories, preserves
-unselected active models, and removes model directories that are no longer
-active. A full `main` build replaces the complete `main/` scope.
+Ordinary PR/work-branch builds are verification-only. A PR that explicitly
+requests `output.scope: test` publishes a fresh rolling `test/` scope by
+copying the current durable `dev/` catalog and overlaying its selected
+candidate model outputs. Incremental `dev` and `exp` publication replace only
+selected model directories, preserve unselected active models, and remove model
+directories that are no longer active. A full `main` build replaces the
+complete `main/` scope.
 
 Publication uses normal non-force pushes and checks that the source branch still
 points at the source SHA being published.
@@ -389,18 +448,22 @@ rebuilding CAD. Generated CAD artifacts remain owned exclusively by the
 generated `build` branch; Pages never republishes those files into
 `gh-pages`.
 
-One Pages deployment contains both presentation scopes:
+One Pages deployment contains the permanent presentations plus the current
+rolling review when present:
 
 ```text
-/       <- main source + build/main
-/dev/   <- dev source  + build/dev
+/        <- main source + build/main
+/dev/    <- dev source  + build/dev
+/exp/    <- exp source   + build/exp
+/test/   <- exact source SHA recorded by build/test + build/test
 ```
 
 Both scopes use the same Hugo/Hextra layouts. Each scope is verified against
 its matching build plan before the combined generated site is published.
 
 `model.yml` owns presentation text. `ci.yml` owns source/variant identity.
-The generated `build/main` / `build/dev` scopes own JSON, SC, STEP, PNG,
+The generated `build/main` / `build/dev` / `build/exp` / `build/test`
+scopes own JSON, SC, STEP, PNG,
 optional STL, model-owned snapshot images and native drawing PDFs declared by
 Forge.
 
@@ -427,8 +490,8 @@ image URL. Do not add model-name branches to shared Hugo templates.
 
 Pages runs in a separate workflow from CAD CI. After a successful permanent
 build publishes its build scope, CI sends a `workflow_dispatch` for
-`pages.yml` and then finishes. The Pages workflow independently rebuilds both
-the stable root and `/dev/`, then publishes the complete tree atomically to the
+`pages.yml` and then finishes. The Pages workflow independently rebuilds the stable root, `/dev/`, optional `/exp/`
+and current `/test/` when available, then publishes the complete tree atomically to the
 generated `gh-pages` branch.
 
 The explicit dispatch is intentional: GitHub suppresses most chained workflow

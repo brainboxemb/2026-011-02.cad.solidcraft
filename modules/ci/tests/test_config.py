@@ -13,7 +13,7 @@ class ConfigTests(unittest.TestCase):
             repo = Path(tmp)
             (repo / "ci.yml").write_text(
                 "schema: 1\n"
-                "branches: {stable: main, development: dev}\n"
+                "branches: {stable: main, development: dev, experimental: exp}\n"
                 "dependencies:\n"
                 "  forge:\n"
                 "    repository: brainboxemb/lib.py.solidcraft.forge\n"
@@ -22,6 +22,7 @@ class ConfigTests(unittest.TestCase):
                 encoding="utf-8",
             )
             config = load_project(repo)
+            self.assertEqual(config.experimental_branch, "exp")
             self.assertEqual(config.forge.version, "v0.13.2")
             self.assertEqual(config.modules_root, Path("modules"))
             self.assertEqual(config.output_root, Path("build"))
@@ -56,6 +57,41 @@ class ConfigTests(unittest.TestCase):
             selection = load_build(repo, "chore/forge-candidate")
 
             self.assertEqual(selection.forge_ref, ref)
+
+    def test_matching_build_yml_can_request_rolling_test_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "build.yml").write_text(
+                "schema: 1\n"
+                "branch: chore/review-output\n"
+                "modules: [build]\n"
+                "models: all\n"
+                "tasks: [build]\n"
+                "output:\n"
+                "  scope: test\n",
+                encoding="utf-8",
+            )
+
+            selection = load_build(repo, "chore/review-output")
+
+            self.assertEqual(selection.output_scope, "test")
+
+    def test_rolling_test_output_requires_build_task(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            (repo / "build.yml").write_text(
+                "schema: 1\n"
+                "branch: chore/review-output\n"
+                "modules: [ci]\n"
+                "models: []\n"
+                "tasks: [test]\n"
+                "output:\n"
+                "  scope: test\n",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "requires the build task"):
+                load_build(repo, "chore/review-output")
 
     def test_forge_qualification_ref_must_be_exact_commit_sha(self):
         with tempfile.TemporaryDirectory() as tmp:

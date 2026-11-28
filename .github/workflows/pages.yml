@@ -2,7 +2,7 @@ name: Pages
 
 on:
   pull_request:
-    branches: [dev, main]
+    branches: [dev, main, exp]
     paths:
       - ".github/workflows/pages.yml"
       - "site/**"
@@ -51,14 +51,29 @@ jobs:
           hugo-version: "0.169.0"
           extended: true
 
+      - name: Resolve matching durable Pages scope
+        id: scope
+        run: |
+          scope=main
+          if [ "${{ github.base_ref }}" = "exp" ] || [ "${{ github.head_ref }}" = "exp" ]; then
+            if [ -s prepared-build/exp/build-plan.json ]; then
+              scope=exp
+            else
+              echo "No durable exp scope yet; using dev for initial exp bootstrap verification"
+              scope=dev
+            fi
+          elif [ "${{ github.base_ref }}" = "dev" ] || [ "${{ github.head_ref }}" = "dev" ]; then
+            scope=dev
+          fi
+          echo "scope=$scope" >> "$GITHUB_OUTPUT"
+
       - name: Build and verify Pages
         env:
           PYTHONPATH: modules/pages/src
-          PAGES_SCOPE: ${{ (github.base_ref == 'dev' || github.head_ref == 'dev') && 'dev' || 'main' }}
         run: >-
           python -m cad_model_pages.build
           --source-root .
-          --build-scope prepared-build/$PAGES_SCOPE
+          --build-scope prepared-build/${{ steps.scope.outputs.scope }}
           --destination generated-site
           --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
           --source-repository "${{ github.repository }}"
@@ -93,6 +108,55 @@ jobs:
           ref: build
           path: prepared-build
           fetch-depth: 1
+          persist-credentials: false
+
+      - name: Detect optional experimental source
+        id: exp
+        run: |
+          if git -C source-main ls-remote --exit-code --heads origin refs/heads/exp >/dev/null 2>&1 && [ -s prepared-build/exp/build-plan.json ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out experimental source
+        if: steps.exp.outputs.exists == 'true'
+        uses: actions/checkout@v7
+        with:
+          ref: exp
+          path: source-exp
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Detect rolling test source
+        id: test
+        run: |
+          if [ -s prepared-build/test/build-plan.json ]; then
+            python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+          plan = json.loads(Path("prepared-build/test/build-plan.json").read_text())
+          source_sha = plan.get("source_sha")
+          source_ref = plan.get("source_ref")
+          if not isinstance(source_sha, str) or len(source_sha) != 40:
+              raise SystemExit("test build plan has no exact source_sha")
+          if not isinstance(source_ref, str) or not source_ref:
+              raise SystemExit("test build plan has no source_ref")
+          print("exists=true")
+          print(f"source_sha={source_sha}")
+          print(f"source_ref={source_ref}")
+          PY
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out rolling test source
+        if: steps.test.outputs.exists == 'true'
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.test.outputs.source_sha }}
+          path: source-test
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Set up Python
@@ -132,6 +196,32 @@ jobs:
           --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/dev/"
           --source-repository "${{ github.repository }}"
           --source-ref dev
+
+      - name: Build experimental site
+        if: steps.exp.outputs.exists == 'true'
+        env:
+          PYTHONPATH: source-exp/modules/pages/src
+        run: >-
+          python -m cad_model_pages.build
+          --source-root source-exp
+          --build-scope prepared-build/exp
+          --destination generated-site/exp
+          --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/exp/"
+          --source-repository "${{ github.repository }}"
+          --source-ref exp
+
+      - name: Build rolling test site
+        if: steps.test.outputs.exists == 'true'
+        env:
+          PYTHONPATH: source-test/modules/pages/src
+        run: >-
+          python -m cad_model_pages.build
+          --source-root source-test
+          --build-scope prepared-build/test
+          --destination generated-site/test
+          --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/test/"
+          --source-repository "${{ github.repository }}"
+          --source-ref "${{ steps.test.outputs.source_sha }}"
 
       - name: Publish Pages branch
         env:

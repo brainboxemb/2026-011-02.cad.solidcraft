@@ -12,14 +12,21 @@ class WorkflowBoundaryTests(unittest.TestCase):
         self.assertNotIn("lib.py.solidcraft.forge", text)
         self.assertNotIn("python -m scpf", text)
 
-    def test_pr_job_is_read_only_and_build_job_can_publish(self):
+    def test_pr_verify_is_read_only_and_publish_jobs_are_explicit(self):
         text = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
         self.assertIn("if: github.event_name == 'pull_request'", text)
         self.assertIn("contents: read", text)
         self.assertIn(
-            "if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')",
+            "if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main' || github.ref_name == 'exp')",
             text,
         )
+        self.assertIn("publish-test:", text)
+        self.assertIn("group: cad-test-output", text)
+        self.assertIn("build/test/build-plan.json", text)
+        self.assertIn("actions/upload-artifact@v7", text)
+        self.assertIn("actions/download-artifact@v7", text)
+        self.assertIn("--namespace test", text)
+        self.assertIn("--full", text)
         self.assertIn("contents: write", text)
         self.assertIn("python -m cad_model_build.publish", text)
         self.assertIn("PYTHONPATH: modules/build/src", text)
@@ -30,9 +37,9 @@ class WorkflowBoundaryTests(unittest.TestCase):
     def test_pages_are_dispatched_after_build_without_blocking_ci(self):
         ci = Path(".github/workflows/ci.yml").read_text(encoding="utf-8")
         pages = Path(".github/workflows/pages.yml").read_text(encoding="utf-8")
-        self.assertIn("push:\n    branches: [dev, main]", ci)
+        self.assertIn("push:\n    branches: [dev, main, exp]", ci)
         self.assertIn(
-            "if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main')",
+            "if: github.event_name != 'pull_request' && (github.ref_name == 'dev' || github.ref_name == 'main' || github.ref_name == 'exp')",
             ci,
         )
         self.assertIn("actions: write", ci)

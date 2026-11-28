@@ -11,9 +11,15 @@ def is_main_governance(*, head: str, base: str) -> bool:
 
 
 def merge_method(*, head: str, base: str) -> str:
-    if base == "dev" and head not in {"main", "dev"}:
+    permanent = {"main", "dev", "exp"}
+    if base in {"dev", "exp"} and head not in permanent:
         return "squash"
-    if (head, base) in {("dev", "main"), ("main", "dev")}:
+    if (head, base) in {
+        ("dev", "main"),
+        ("main", "dev"),
+        ("dev", "exp"),
+        ("exp", "dev"),
+    }:
         return "merge"
     if is_main_governance(head=head, base=base):
         return "squash"

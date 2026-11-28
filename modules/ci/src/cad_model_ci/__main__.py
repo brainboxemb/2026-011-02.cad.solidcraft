@@ -19,15 +19,21 @@ def _selection(repo, project, branch, modules, models):
     if branch == project.stable_branch:
         return full_selection(branch)
 
+    permanent = {
+        project.stable_branch,
+        project.development_branch,
+        project.experimental_branch,
+    }
+
     if (
         event == "pull_request"
-        and branch == project.development_branch
-        and base == project.stable_branch
+        and branch in permanent
+        and base in permanent
     ):
         return full_selection(branch)
 
     if (
-        branch == project.development_branch
+        branch in {project.development_branch, project.experimental_branch}
         and event in {"push", "workflow_dispatch"}
     ):
         token = os.environ.get("GH_TOKEN", "")
@@ -61,11 +67,19 @@ def _selection(repo, project, branch, modules, models):
     return load_build(repo, branch) or full_selection(branch)
 
 
-def _output_namespace(project, branch: str) -> str:
+def _output_namespace(project, branch: str, selection) -> str:
+    if selection.output_scope == "test":
+        return "test"
+
+    permanent = {
+        project.stable_branch,
+        project.development_branch,
+        project.experimental_branch,
+    }
     base = os.environ.get("GITHUB_BASE_REF", "").strip()
-    if base in {project.stable_branch, project.development_branch}:
+    if base in permanent:
         return base
-    if branch in {project.stable_branch, project.development_branch}:
+    if branch in permanent:
         return branch
     return project.development_branch
 
@@ -86,7 +100,7 @@ def main() -> None:
         repo=repo,
         project=project,
         selection=selection,
-        namespace=_output_namespace(project, branch),
+        namespace=_output_namespace(project, branch, selection),
         modules=select(modules, selection.modules),
         models=select(models, selection.models),
     )

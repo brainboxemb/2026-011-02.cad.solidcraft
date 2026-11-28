@@ -102,11 +102,16 @@ class PipelineTests(unittest.TestCase):
             actual = execute(
                 repo=repo,
                 namespace="dev",
+                source_ref="issue/review",
                 selected_ids=("box",),
                 forge_ref=ref,
             )
 
             self.assertEqual(actual, expected)
+            self.assertEqual(
+                resolve_plan.call_args.kwargs["source_ref"],
+                "issue/review",
+            )
             self.assertEqual(
                 resolve_plan.call_args.kwargs["forge_ref"],
                 ref,

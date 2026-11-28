@@ -17,10 +17,11 @@ class CleanupConfig:
     stable: str
     development: str
     temporary_prefixes: tuple[str, ...]
+    experimental: str = "exp"
 
     @property
     def permanent(self) -> frozenset[str]:
-        return frozenset({self.stable, self.development})
+        return frozenset({self.stable, self.development, self.experimental})
 
 
 def load_config(repo: Path) -> CleanupConfig:
@@ -33,13 +34,24 @@ def load_config(repo: Path) -> CleanupConfig:
         raise CleanupConfigError(f"branches must be a mapping: {path}")
     stable = branches.get("stable")
     development = branches.get("development")
+    experimental = branches.get("experimental")
     prefixes = branches.get("temporary_prefixes")
-    if not isinstance(stable, str) or not isinstance(development, str):
-        raise CleanupConfigError(f"stable/development branches must be strings: {path}")
+    if not all(
+        isinstance(value, str)
+        for value in (stable, development, experimental)
+    ):
+        raise CleanupConfigError(
+            f"stable/development/experimental branches must be strings: {path}"
+        )
     if (
         not isinstance(prefixes, list)
         or not prefixes
         or not all(isinstance(value, str) and value for value in prefixes)
     ):
         raise CleanupConfigError(f"temporary_prefixes must be a non-empty list: {path}")
-    return CleanupConfig(stable, development, tuple(prefixes))
+    return CleanupConfig(
+        stable,
+        development,
+        tuple(prefixes),
+        experimental=experimental,
+    )

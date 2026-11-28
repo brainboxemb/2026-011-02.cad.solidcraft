@@ -1,0 +1,29 @@
+schema: 1
+id: hub75-frame-tube-10mm
+builder: forge
+source: scpf/model.py
+process: true
+
+snapshot:
+  camera:
+    target: [0, 0, 0]
+    yaw: -0.65
+    pitch: 0.28
+    distance: 410
+    fov: 0
+
+snapshots:
+  - name: end-profile.png
+    camera:
+      target: [0, 0, 0]
+      yaw: 1.5708
+      pitch: 0
+      distance: 42
+      fov: 0
+  - name: side.png
+    camera:
+      target: [0, 0, 0]
+      yaw: 0
+      pitch: 0
+      distance: 410
+      fov: 0

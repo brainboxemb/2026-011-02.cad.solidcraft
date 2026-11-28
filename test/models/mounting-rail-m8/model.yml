@@ -1,0 +1,43 @@
+purpose: [example]
+section: components
+group: mft
+priority: 30
+title: Mounting Rail M8
+tagline: 250 mm 27/18 perforated sheet rail, product-aligned from one end and folded opening-up
+description: >
+  A reusable light mounting-rail component authored in fabrication order as
+  native sheet metal: developed flat blank, four source perforations, one
+  repeated native feature pattern and four 90-degree folds. The supplied
+  DRESSELHAUS/HORNBACH product establishes 1000 mm length, galvanized steel,
+  M8 use and 1.25 mm thickness. The 27 × 18 mm section and perforation
+  dimensions use a generic published 27/18 rail reference and are not claimed
+  as DRESSELHAUS manufacturing dimensions.
+parameters: 250 mm default length; first round opening 12.5 mm from Y=0; 2 repeat units at editable 100 mm repeat pitch; fixed 27 × 18 × 1.25 mm reference section; 15 mm opening; R1.25/K0.40 bend rule
+stages:
+  - Local orientation — +Y from the product-pattern start side, perforated back web below, C-opening toward +Z
+  - Flat development — native sheet blank developed for the 27 × 18 mm formed section and 15 mm opening
+  - Repeat source — four native cuts while flat: round, longitudinal slot, round, transverse slot
+  - Native pattern — one Rectangular Pattern repeats all four source features together
+  - Lip folds — two native 90-degree folds form the free C-profile lips
+  - Side folds — two native 90-degree folds form the 18 mm side walls
+  - Native parameters — 250 mm length, repeat_count 2, repeat_pitch 100 mm
+extra_views:
+  title: Product reference and perforation review
+  note: The local product image is retained for visual comparison; only the cropped derivative is rendered on the page.
+  items:
+    - kind: asset
+      src: mounting_rail_m8_reference_w320.jpg
+      alt: Galvanized M8 mounting rail reference
+      caption: 'Reference product — Source: HORNBACH / DRESSELHAUS'
+    - kind: build
+      src: rear-pattern.png
+      alt: Mounting Rail M8 straight rear view showing the perforation pattern
+      caption: Rear view — complete repeat pattern
+    - kind: build
+      src: right-profile.png
+      alt: Mounting Rail M8 right-end view showing the C-profile
+      caption: Right-end view — 27 × 18 C-profile with 15 mm opening
+    - kind: build
+      src: pattern-closeup.png
+      alt: Mounting Rail M8 perforation pattern close-up
+      caption: Four-feature repeat — round, longitudinal slot, round, transverse slot

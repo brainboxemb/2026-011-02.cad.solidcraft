@@ -1,0 +1,18 @@
+purpose: [example]
+section: subassemblies
+group: display-frame
+priority: 30
+title: BasicHub75Screen
+tagline: Five shared native HUB75 occurrences with two 180° rotations
+description: >
+  Five panels on the source project's 800 × 320 mm nominal grid. One reusable
+  detailed panel component is reused at X=-320, -160, 0, 160 and 320 mm.
+  Columns 2 and 4 reverse direction for the rear data chain, and all
+  occurrences stand upright in XZ.
+parameters: Five 159.70 × 319.71 × 14.50 mm panels; X pitch 160 mm
+stages:
+  - Create the reusable detailed HUB75 component
+  - Ground the middle occurrence at X=0
+  - Place four copies on the 160 mm nominal grid
+  - Apply alternating native occurrence rotations
+  - Verify five saved native occurrences

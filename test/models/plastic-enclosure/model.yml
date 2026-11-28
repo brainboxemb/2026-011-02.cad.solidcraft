@@ -1,0 +1,17 @@
+purpose: [example]
+section: basic
+priority: 70
+title: Plastic Enclosure
+tagline: A shelled enclosure with native plastic design features
+description: >
+  Rebuilds the supplied enclosure with the normal SCPF Box sketch/extrusion,
+  followed by native Shell, Lip, Snap Fit, Boss and Rest features.
+parameters: 80 × 50 × 30 mm; 2 mm wall; two Ø7 × 12 bosses
+stages:
+  - Enclosure footprint — sketch the 80 × 50 mm base
+  - Extrude1 — create the 30 mm solid
+  - Shell1 — hollow to 2 mm with the top open
+  - Lip1 — add a 1 × 2 mm rim lip
+  - SnapFit1 — add the 14 mm cantilever snap
+  - Boss1 / Boss2 — add two Ø7 × 12 mm screw bosses
+  - Rest1 — add the 16 × 24 × 3 mm centre rest

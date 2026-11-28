@@ -20,14 +20,12 @@ from models.components.hub75_frame_coupler.scpf.features import (
     TUBE_CLEARANCE_DIAMETER,
     TUBE_CLEARANCE_LENGTH,
     _add_receiver_interface,
+    _apply_reference_pattern,
     _axis_x_cylinder,
-    _cut_edge_like_base,
+    _axis_y_cylinder,
     _cut_panel_pin_pass_through,
     _cut_tapered_rail_relief,
-    _edge_like_stock,
-    _edge_support_z,
-    _guide_clearance,
-    _locator_pad,
+    _profile_solid,
     _rail_entry_edges,
     _rail_xy,
     _rectangle_xy,
@@ -38,6 +36,7 @@ from models.components.hub75_frame_coupler.scpf.parameters import (
     _CONFIGURED_PARAMETERS,
     _ConfiguredCouplerRoot,
     _parameters,
+    _source_profile,
 )
 
 
@@ -51,30 +50,107 @@ def _build_corner_body(
     reference_holes=False,
 ):
     """Build one configured left/right Corner body."""
-    screw_xs = (screw_x,)
+    datum = p["mid_datum"]
+    base_depth = p["mid_base"]
+    guide_depth = p["mid_guide"]
+    mount_z = -p["edge_screw_in"]
+    support_z = mount_z - p["mid_bushing_z"]
+    support_r = p["mid_bushing_r"] + p["mid_bushing_gap"] + p["mid_wall"]
 
-    body = _edge_like_stock(
-        p=p,
-        profile_key=profile_key,
-        screw_xs=screw_xs,
+    # Extrude the retained Corner outline in both directions around the panel
+    # datum, then reinforce the single mounting/bushing position.
+    profiles = _source_profile(profile_key, "base", p)
+    body = _profile_solid(
+        name=f"{profile_key} base profile",
+        loops=profiles,
+        y=-datum,
+        distance=-base_depth,
     )
-    body = _cut_edge_like_base(
+    guide = _profile_solid(
+        name=f"{profile_key} guide stock",
+        loops=profiles,
+        y=-datum,
+        distance=guide_depth,
+    )
+    body = body + guide
+    body = body + _axis_y_cylinder(
+        diameter=2.0 * support_r,
+        length=base_depth,
+        x=screw_x,
+        y=-datum - base_depth / 2.0,
+        z=support_z,
+    )
+    body = body + _axis_y_cylinder(
+        diameter=2.0 * support_r,
+        length=guide_depth,
+        x=screw_x,
+        y=-datum + guide_depth / 2.0,
+        z=support_z,
+    )
+
+    # Drill the Corner mounting position: screw bore, rear relief and the
+    # deeper tube clearance remain visible as one construction stage.
+    body = body - _axis_y_cylinder(
+        diameter=p["mid_screw_d"],
+        length=base_depth + 0.2,
+        x=screw_x,
+        y=-datum - base_depth / 2.0 + (base_depth - base_depth) / 2.0,
+        z=mount_z,
+    )
+    body = body - _axis_y_cylinder(
+        diameter=p["mid_screw_d"] + 0.8,
+        length=0.2,
+        x=screw_x,
+        y=-datum - base_depth + 0.1,
+        z=mount_z,
+    )
+    body = body - _axis_y_cylinder(
+        diameter=2.0 * (p["mid_tube_r"] + p["mid_tube_gap"]),
+        length=p["mid_tube_depth"],
+        x=screw_x,
+        y=-datum - p["mid_tube_depth"] / 2.0,
+        z=mount_z,
+    )
+
+    # Optional reference marks/holes belong to the rear face of the base.
+    body = _apply_reference_pattern(
         body,
         p=p,
         profile_key=profile_key,
-        screw_xs=screw_xs,
         reference_ticks=reference_ticks,
         reference_holes=reference_holes,
     )
+
+    # Shape the rail-side guide before opening the bushing clearance.
     body = _cut_tapered_rail_relief(
         body,
         p=p,
         profile_key=relief_key,
     )
-    for x in screw_xs:
-        body = _guide_clearance(body, p=p, x=x, z=_edge_support_z(p))
+    body = body - _axis_y_cylinder(
+        diameter=2.0 * (p["mid_bushing_r"] + p["mid_bushing_gap"]),
+        length=guide_depth + 0.1,
+        x=screw_x,
+        y=-datum + guide_depth / 2.0,
+        z=support_z,
+    )
 
-    return _locator_pad(body, p=p, x=screw_x, z=_edge_support_z(p))
+    # Finish with the locating boss and pin on the panel side.
+    body = body + _axis_y_cylinder(
+        diameter=2.0 * p["mid_pad_r"],
+        length=p["mid_pad_h"],
+        x=screw_x,
+        y=-datum + p["mid_pad_h"] / 2.0,
+        z=support_z,
+    )
+    body = body + _axis_y_cylinder(
+        diameter=2.0 * p["mid_pin_r"],
+        length=p["mid_pin_h"],
+        x=screw_x,
+        y=-datum + p["mid_pad_h"] + p["mid_pin_h"] / 2.0,
+        z=support_z,
+    )
+    return body
 
 
 @component(include=_CONFIGURED_PARAMETERS)

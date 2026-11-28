@@ -60,6 +60,10 @@ the durable rolling `/test/` consumer record. The current Forge experimental
 checkpoint `72e01a8db8b522b97b9f33a63eb08f6ce4153a68` passed the complete
 43-model catalog and representative visual review.
 
-The integration decision now belongs to
-`brainboxemb/lib.py.solidcraft.forge` PR #641 (`exp -> dev`). Do not create
-a CAD source change merely to record that Forge decision.
+The Forge integration decision remains explicitly **unmade**. CAD qualification
+is evidence only: it does not authorize or imply an `exp -> dev` merge.
+
+Forge PR #641 was merged prematurely and is being corrected through Forge
+rollback PR #643. After that rollback, review this durable `/test/` evidence
+before selecting any new Forge integration checkpoint. Do not create a CAD
+source change merely to record that later Forge decision.

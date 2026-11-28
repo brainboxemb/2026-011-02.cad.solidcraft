@@ -1,4 +1,4 @@
-"""Publish successful permanent-branch model output to the generated build branch."""
+"""Publish permanent-lane or rolling test model output to the generated build branch."""
 
 from __future__ import annotations
 
@@ -204,12 +204,23 @@ def publish(
 ) -> str | None:
     repo = repo.resolve()
     project = load_project(repo)
-    if namespace not in {project.development_branch, project.stable_branch}:
-        raise BuildConfigError(f"cannot publish non-permanent namespace {namespace!r}")
-    if source_ref != namespace:
-        raise PublishError(
-            f"source ref {source_ref!r} must match build namespace {namespace!r}"
-        )
+    permanent = {
+        project.stable_branch,
+        project.development_branch,
+        project.experimental_branch,
+    }
+    if namespace == "test":
+        if source_ref in permanent:
+            raise PublishError("test output must come from a temporary source branch")
+        if not full:
+            raise PublishError("test output must replace the complete test scope")
+    else:
+        if namespace not in permanent:
+            raise BuildConfigError(f"cannot publish namespace {namespace!r}")
+        if source_ref != namespace:
+            raise PublishError(
+                f"source ref {source_ref!r} must match build namespace {namespace!r}"
+            )
 
     candidate_scope = repo / project.output_root / namespace
     candidate_plan = _read_plan(candidate_scope / "build-plan.json")
@@ -217,6 +228,8 @@ def publish(
         raise PublishError("candidate plan namespace does not match publication scope")
     if candidate_plan.get("source_sha") != source_sha:
         raise PublishError("candidate plan source SHA does not match publication source")
+    if candidate_plan.get("source_ref") != source_ref:
+        raise PublishError("candidate plan source ref does not match publication source")
     if not candidate_plan["models"]:
         return None
 

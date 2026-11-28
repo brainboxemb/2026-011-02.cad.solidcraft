@@ -3,14 +3,6 @@
     {
       "command": "parameters.add",
       "params": {
-        "name": "arm_width",
-        "expression": "24",
-        "unit": "mm"
-      }
-    },
-    {
-      "command": "parameters.add",
-      "params": {
         "name": "horizontal_arm_length",
         "expression": "60",
         "unit": "mm"
@@ -53,6 +45,14 @@
       "params": {
         "name": "vertical_arm_length",
         "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_width",
+        "expression": "24",
         "unit": "mm"
       }
     },
@@ -155,8 +155,8 @@
     {
       "command": "sketch.create",
       "params": {
-        "plane": "XZ",
-        "name": "Profile"
+        "name": "Profile",
+        "plane": "XZ"
       }
     },
     {
@@ -231,9 +231,9 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "arm_width",
         "direction": "symmetric",
-        "body_name": "CornerBracket"
+        "body_name": "CornerBracket",
+        "distance": "arm_width"
       }
     },
     {
@@ -253,6 +253,8 @@
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "CornerBracket",
+        "distance": "side_edge_chamfer",
         "edges": [
           [
             60.0,
@@ -324,14 +326,14 @@
             12.0,
             -60.0
           ]
-        ],
-        "distance": "side_edge_chamfer",
-        "body": "CornerBracket"
+        ]
       }
     },
     {
       "command": "solid.chamfer",
       "params": {
+        "body": "CornerBracket",
+        "distance": "elephant_foot_relief",
         "edges": [
           [
             29.7,
@@ -343,9 +345,7 @@
             12.0,
             -0.0
           ]
-        ],
-        "distance": "elephant_foot_relief",
-        "body": "CornerBracket"
+        ]
       }
     },
     {
@@ -403,12 +403,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
         "direction": "positive",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm"
       }
     },
     {
@@ -466,12 +466,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
         "direction": "negative",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm"
       }
     },
     {
@@ -529,12 +529,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
         "direction": "positive",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm"
       }
     },
     {
@@ -592,12 +592,12 @@
     {
       "command": "solid.extrude",
       "params": {
-        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
         "direction": "negative",
         "operation": "cut",
         "targets": [
           "CornerBracket"
-        ]
+        ],
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm"
       }
     },
     {

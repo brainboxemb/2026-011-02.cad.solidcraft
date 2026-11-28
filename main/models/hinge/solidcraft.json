@@ -74,12 +74,12 @@
         "length": "d1_HingeLeaf_length",
         "width": "d1_HingeLeaf_width",
         "height": "d1_HingeLeaf_thickness",
-        "operation": "new",
         "corner": [
           "(d1_HingeLeaf_length / 2) + (-(d1_HingeLeaf_length / 2))",
           "(d1_HingeLeaf_width / 2) + (-(d1_HingeLeaf_width / 2))",
           0.0
         ],
+        "operation": "new",
         "body_name": "HingeLeaf"
       }
     },

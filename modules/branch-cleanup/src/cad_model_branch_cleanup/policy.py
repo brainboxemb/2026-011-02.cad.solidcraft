@@ -15,8 +15,8 @@ def merge_targets(branch: str, config: CleanupConfig) -> tuple[str, ...]:
     """Return valid completed integration targets for one temporary branch."""
 
     if branch.startswith("docs/"):
-        return (config.development, config.stable)
-    return (config.development,)
+        return (config.development, config.experimental, config.stable)
+    return (config.development, config.experimental)
 
 
 def eligible_post_merge(

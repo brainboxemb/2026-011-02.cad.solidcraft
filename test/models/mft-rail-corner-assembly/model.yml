@@ -1,0 +1,35 @@
+purpose: [verification, example]
+section: subassemblies
+group: mft
+priority: 30
+title: MFT Rail Corner Assembly
+tagline: Two perpendicular Mounting Rail M8 profiles with structural bracket and replaceable PETG corner insert
+description: >
+  Native-source MFT rail corner subassembly. Two 150 mm MountingRailM8 pieces
+  meet at 90 degrees with their C-openings facing outward. The structural PETG
+  bracket fixes and supports both rail ends. A separate replaceable PETG corner
+  insert fills the exposed outside corner and clips into place with two
+  integral retaining lips. The bracket rail holes align with the first and
+  second round perforations, while the top gusset exposes the MFT underside
+  screw seat.
+parameters: 2 × 150 mm rails; 75 mm bracket arms; 6 mm under-rail feet; exact R18 bracket foot corner; separate PETG corner insert; rail holes at 12.5 / 62.5 mm
+stages:
+  - X rail — 150 mm MountingRailM8, opening toward -Y
+  - Y rail — 150 mm MountingRailM8, opening toward -X
+  - Bracket — place the reusable MFT Rail Corner Bracket at the common inside corner
+  - Alignment — use existing round perforations for both bracket fixing pairs
+  - Rail support — rest both rail ends on the 6 mm printed feet
+  - Corner insert — place the separate PETG filler/protection part at the exposed outside corner
+  - Clip retention — use the two source-derived insert lips against the rail corner
+  - Access — keep both C-openings and rail ends free for slide-in hardware
+extra_views:
+  title: Corner fit review
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of two perpendicular M8 rails and corner bracket
+      caption: Top view — bracket remains inside the rail corner
+    - kind: build
+      src: outside.png
+      alt: Outside view of the MFT rail corner assembly
+      caption: Outside view — both C-openings remain accessible

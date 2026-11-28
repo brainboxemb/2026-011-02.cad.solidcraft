@@ -1,0 +1,33 @@
+schema: 1
+id: mft-rail-corner-assembly
+builder: forge
+source: scpf/model.py
+process: true
+dependencies:
+  - mounting-rail-m8
+  - mft-rail-corner-bracket
+  - mft-rail-corner-insert
+
+snapshot:
+  camera:
+    target: [45, 45, -13.5]
+    yaw: -0.78
+    pitch: 0.45
+    distance: 245
+    fov: 0
+
+snapshots:
+  - name: top.png
+    camera:
+      target: [45, 45, -5]
+      yaw: 0
+      pitch: 1.48
+      distance: 245
+      fov: 0
+  - name: outside.png
+    camera:
+      target: [20, 20, -13.5]
+      yaw: 2.35
+      pitch: 0.18
+      distance: 230
+      fov: 0

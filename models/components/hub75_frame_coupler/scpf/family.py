@@ -633,6 +633,7 @@ class Hub75FrameCouplerMiddle:
             body,
             p=p,
             profile_key="middle",
+            steps=8,
         )
         body = _apply_reference_pattern(
             body,

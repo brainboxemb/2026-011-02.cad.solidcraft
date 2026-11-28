@@ -1,5 +1,0 @@
-schema: 1
-id: plastic-enclosure-pi
-builder: forge
-source: scpf/model.py
-process: true

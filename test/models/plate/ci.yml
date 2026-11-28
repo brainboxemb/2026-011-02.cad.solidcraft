@@ -1,5 +1,0 @@
-schema: 1
-id: plate
-builder: forge
-source: scpf/model.py
-process: true

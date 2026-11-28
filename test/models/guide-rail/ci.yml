@@ -1,9 +1,0 @@
-schema: 1
-id: guide-rail
-builder: forge
-variants:
-  - id: guide-rail
-    source: scpf/model.py
-  - id: guide-rail-makita
-    source: scpf/makita.py
-process: true

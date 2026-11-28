@@ -168,6 +168,22 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("missing variant link for", verify_source)
         self.assertIn("missing physical-owner back link", verify_source)
 
+    def test_model_page_exposes_source_and_qualification_evidence(self):
+        adapter = (SITE / "content/models/_content.gotmpl").read_text(
+            encoding="utf-8"
+        )
+        page = (SITE / "layouts/models/single.html").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('index $plan "source_ref"', adapter)
+        self.assertIn('index $plan "source_sha"', adapter)
+        self.assertIn('index $plan "namespace"', adapter)
+        self.assertIn("Source branch", page)
+        self.assertIn("Source SHA", page)
+        self.assertIn("Forge baseline", page)
+        self.assertIn("Forge qualification", page)
+        self.assertIn('index $forge "qualification_ref"', page)
+
     def test_pages_build_passes_durable_scope_to_hugo(self):
         build = (ROOT / "modules/pages/src/cad_model_pages/build.py").read_text(
             encoding="utf-8"
@@ -185,7 +201,7 @@ class SiteContractTests(unittest.TestCase):
             verify,
         )
 
-    def test_pages_workflow_builds_main_and_dev_scopes(self):
+    def test_pages_workflow_builds_main_dev_exp_and_test_scopes(self):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
             encoding="utf-8"
         )
@@ -193,6 +209,13 @@ class SiteContractTests(unittest.TestCase):
         self.assertIn("--destination generated-site", workflow)
         self.assertIn("--build-scope prepared-build/dev", workflow)
         self.assertIn("--destination generated-site/dev", workflow)
+        self.assertIn("--build-scope prepared-build/exp", workflow)
+        self.assertIn("--destination generated-site/exp", workflow)
+        self.assertIn("--build-scope prepared-build/test", workflow)
+        self.assertIn("--destination generated-site/test", workflow)
+        self.assertIn("prepared-build/test/build-plan.json", workflow)
+        self.assertIn('plan.get("source_sha")', workflow)
+        self.assertIn('plan.get("source_ref")', workflow)
         self.assertIn("github.repository_owner", workflow)
         self.assertIn("github.event.repository.name", workflow)
         self.assertIn('--source-repository "${{ github.repository }}"', workflow)
@@ -205,6 +228,7 @@ class SiteContractTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
             encoding="utf-8"
         )
+        self.assertIn("github.base_ref == 'exp' || github.head_ref == 'exp'", workflow)
         self.assertIn("github.base_ref == 'dev' || github.head_ref == 'dev'", workflow)
         self.assertIn("--build-scope prepared-build/$PAGES_SCOPE", workflow)
         self.assertNotIn('"models/**/model.yml"', workflow)

@@ -230,7 +230,7 @@ Generic model page adapter.
         "build" $build
         "toolchain" (dict
           "source" (dict
-            "ref" (index $plan "source_ref")
+            "ref" (default (index $plan "namespace") (index $plan "source_ref"))
             "sha" (index $plan "source_sha")
           )
           "forge" (index $plan "forge")

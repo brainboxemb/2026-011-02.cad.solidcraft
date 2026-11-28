@@ -11,7 +11,13 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-No active work selected.
+### #310 — test fewer Middle seam-guide slices
+
+Run one bounded Middle-only A/B experiment: keep the retained seam-guide
+foot/tip sections but reduce its approximation from 16 to 8 slices. Measure
+whether STL/history cost falls materially and reject the candidate if geometry
+becomes insufficiently source-faithful. Keep Edge and the shared helper default
+unchanged.
 
 ## Mandatory integration rule
 

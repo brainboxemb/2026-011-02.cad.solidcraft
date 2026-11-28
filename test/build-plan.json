@@ -1,0 +1,57 @@
+{
+  "forge": {
+    "repository": "brainboxemb/lib.py.solidcraft.forge",
+    "version": "v0.26.0"
+  },
+  "models": [
+    {
+      "artifact_options": {},
+      "artifacts": [
+        "stl"
+      ],
+      "built_source_sha": "8178dfd9dcb2b1309c70140b77bc672ab9f1a826",
+      "commands": "models/simple-box/solidcraft.json",
+      "dependencies": [],
+      "drawings": [],
+      "id": "simple-box",
+      "native": {
+        "png": "models/simple-box/model.png",
+        "sc": "models/simple-box/model.sc",
+        "step": "models/simple-box/model.step",
+        "stl": "models/simple-box/model.stl"
+      },
+      "owner": "simple-box",
+      "priority": 100,
+      "root": "models/simple-box",
+      "snapshot": {
+        "camera": null
+      },
+      "snapshots": [
+        {
+          "camera": {
+            "distance": 90,
+            "fov": 0,
+            "pitch": -1.55,
+            "target": [
+              0,
+              0,
+              5
+            ],
+            "yaw": 0
+          },
+          "name": "top.png",
+          "path": "models/simple-box/top.png"
+        }
+      ],
+      "source": "models/simple-box/scpf/model.py"
+    }
+  ],
+  "namespace": "test",
+  "schema": 1,
+  "solidcraft": {
+    "image": "ghcr.io/brainboxemb/cad-solidcraft:v0.3.8",
+    "version": "0.50.0"
+  },
+  "source_ref": "issue/285-exp-test-output",
+  "source_sha": "8178dfd9dcb2b1309c70140b77bc672ab9f1a826"
+}

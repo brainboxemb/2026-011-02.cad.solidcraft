@@ -1,14 +1,8 @@
 schema: 1
-branch: issue/285-exp-test-output
+branch: chore/299-forge-027
 
-modules:
-  - ci
-  - build
-  - pages
-  - merge-policy
-  - branch-cleanup
-models:
-  - simple-box
+modules: all
+models: all
 tasks:
   - test
   - build

@@ -230,6 +230,5 @@ jobs:
           python -m cad_model_pages.publish
           --repo source-main
           --site "${GITHUB_WORKSPACE}/generated-site"
-          --source-repository "${{ github.repository }}"
           --source-ref main
           --source-sha "$(git -C source-main rev-parse HEAD)"

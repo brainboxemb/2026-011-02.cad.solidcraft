@@ -11,7 +11,13 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-No active work selected.
+### #307 — test a more efficient HUB75 Middle coupler authoring path
+
+Run one bounded A/B experiment on the Middle coupler: replace its four
+separate guide Sketch/extrude/join operations with one multi-profile
+Sketch/extrude while preserving identical source loops and geometry. Measure
+generated/history cost and artifact sizes. Keep further seam-guide/tessellation
+experiments separate if this first change does not materially improve STL size.
 
 ## Mandatory integration rule
 

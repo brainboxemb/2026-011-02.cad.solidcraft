@@ -228,9 +228,12 @@ class SiteContractTests(unittest.TestCase):
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(
             encoding="utf-8"
         )
-        self.assertIn("github.base_ref == 'exp' || github.head_ref == 'exp'", workflow)
-        self.assertIn("github.base_ref == 'dev' || github.head_ref == 'dev'", workflow)
-        self.assertIn("--build-scope prepared-build/$PAGES_SCOPE", workflow)
+        self.assertIn('"${{ github.base_ref }}" = "exp"', workflow)
+        self.assertIn('"${{ github.head_ref }}" = "exp"', workflow)
+        self.assertIn("prepared-build/exp/build-plan.json", workflow)
+        self.assertIn("using dev for initial exp bootstrap verification", workflow)
+        self.assertIn('"${{ github.base_ref }}" = "dev"', workflow)
+        self.assertIn("prepared-build/${{ steps.scope.outputs.scope }}", workflow)
         self.assertNotIn('"models/**/model.yml"', workflow)
         self.assertNotIn('"models/**/page.md"', workflow)
 

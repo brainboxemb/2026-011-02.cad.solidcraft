@@ -1,0 +1,890 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rim_diameter",
+        "expression": "22",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "hole_diameter",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "interference",
+        "expression": "0.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "slot_width",
+        "expression": "1.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "slot_corner_radius",
+        "expression": "0.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 1.5,
+        "diameter": "rim_diameter",
+        "base": [
+          0,
+          0,
+          0
+        ],
+        "axis": "Z",
+        "operation": "new",
+        "body_name": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            11.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "distance": 1.0,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 18.5,
+        "diameter": "hole_diameter",
+        "base": [
+          0,
+          0,
+          1.5
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.cone",
+      "params": {
+        "height": 20.0,
+        "diameter": "hole_diameter + (interference)",
+        "top_diameter": "hole_diameter",
+        "base": [
+          0,
+          0,
+          -20.0
+        ],
+        "axis": "Z",
+        "operation": "join",
+        "targets": [
+          "FlexBenchDog"
+        ]
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.1,
+            0.0,
+            -20.0
+          ]
+        ],
+        "distance": 1.0,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Flex slot X"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "(-((hole_diameter + (interference) + 2 mm) / 2))",
+          "(-(slot_width / 2))"
+        ],
+        "p1": [
+          "((hole_diameter + (interference) + 2 mm) / 2)",
+          "(slot_width / 2)"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot X",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Flex slot Y"
+      }
+    },
+    {
+      "command": "sketch.rectangle.two_point",
+      "params": {
+        "p0": [
+          "(-(slot_width / 2))",
+          "(-((hole_diameter + (interference) + 2 mm) / 2))"
+        ],
+        "p1": [
+          "(slot_width / 2)",
+          "((hole_diameter + (interference) + 2 mm) / 2)"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Flex slot Y",
+        "distance": 16.0,
+        "direction": "positive"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.75,
+            0.75,
+            -12.0
+          ],
+          [
+            -0.75,
+            0.75,
+            -12.0
+          ],
+          [
+            -0.75,
+            -0.75,
+            -12.0
+          ],
+          [
+            0.75,
+            -0.75,
+            -12.0
+          ]
+        ],
+        "radius": "slot_corner_radius",
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            10.0,
+            0.0,
+            20.0
+          ]
+        ],
+        "distance": 0.6,
+        "body": "FlexBenchDog"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 1"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11163126113028762,
+            4.409314624144388
+          ],
+          [
+            3.9093146241443884,
+            2.1116312611302877
+          ],
+          [
+            3.6116312611302877,
+            1.590685375855612
+          ],
+          [
+            -0.4093146241443879,
+            3.888368738869712
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 1",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 2"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3.8,
+            2.3
+          ],
+          [
+            3.8,
+            -2.3
+          ],
+          [
+            3.2,
+            -2.3
+          ],
+          [
+            3.2,
+            2.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 2",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 3"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            3.9093146241443884,
+            -2.1116312611302877
+          ],
+          [
+            -0.11163126113028762,
+            -4.409314624144388
+          ],
+          [
+            -0.4093146241443879,
+            -3.888368738869712
+          ],
+          [
+            3.6116312611302877,
+            -1.590685375855612
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 3",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 4"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.11163126113028762,
+            -4.409314624144388
+          ],
+          [
+            -3.9093146241443884,
+            -2.1116312611302877
+          ],
+          [
+            -3.6116312611302877,
+            -1.590685375855612
+          ],
+          [
+            0.4093146241443879,
+            -3.888368738869712
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 4",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 5"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3.8,
+            -2.3
+          ],
+          [
+            -3.8,
+            2.3
+          ],
+          [
+            -3.2,
+            2.3
+          ],
+          [
+            -3.2,
+            -2.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 5",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 6"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -3.9093146241443884,
+            2.1116312611302877
+          ],
+          [
+            0.11163126113028762,
+            4.409314624144388
+          ],
+          [
+            0.4093146241443879,
+            3.888368738869712
+          ],
+          [
+            -3.6116312611302877,
+            1.590685375855612
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 6",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 7"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.3,
+            -0.3
+          ],
+          [
+            -0.3,
+            4.3
+          ],
+          [
+            0.3,
+            4.3
+          ],
+          [
+            0.3,
+            -0.3
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 7",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 8"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -0.11163126113028762,
+            0.4093146241443879
+          ],
+          [
+            3.9093146241443884,
+            -1.8883687388697126
+          ],
+          [
+            3.6116312611302877,
+            -2.409314624144388
+          ],
+          [
+            -0.4093146241443879,
+            -0.11163126113028762
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 8",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            20.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top logo rib 9"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.4093146241443879,
+            -0.11163126113028762
+          ],
+          [
+            -3.6116312611302877,
+            -2.409314624144388
+          ],
+          [
+            -3.9093146241443884,
+            -1.8883687388697126
+          ],
+          [
+            0.11163126113028762,
+            0.4093146241443879
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "FlexBenchDog"
+        ],
+        "name": "Top logo rib 9",
+        "distance": 0.6,
+        "direction": "negative"
+      }
+    }
+  ]
+}

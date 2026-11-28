@@ -1,0 +1,936 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_width",
+        "expression": "24",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "horizontal_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "elephant_foot_relief",
+        "expression": "0.6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_height",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_end_chamfer",
+        "expression": "3",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "outer_corner_chamfer",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "vertical_arm_length",
+        "expression": "60",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "inside_corner_radius",
+        "expression": "4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "side_edge_chamfer",
+        "expression": "2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "head_diameter",
+        "expression": "10",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "head_clearance",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "head_recess",
+        "expression": "1",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "plywood_thickness",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_offset",
+        "expression": "12",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_y_offset",
+        "expression": "0",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_diameter",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_clearance",
+        "expression": "0.4",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_hole_edge_relief",
+        "expression": "0.2",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bolt_spacing",
+        "expression": "18",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "Profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "horizontal_arm_length - (elephant_foot_relief)",
+            0
+          ],
+          [
+            "horizontal_arm_length",
+            "-(elephant_foot_relief)"
+          ],
+          [
+            "horizontal_arm_length",
+            "-(arm_height - (arm_end_chamfer))"
+          ],
+          [
+            "horizontal_arm_length - (arm_end_chamfer)",
+            "-(arm_height)"
+          ],
+          [
+            "(-(arm_height)) + (outer_corner_chamfer)",
+            "-(arm_height)"
+          ],
+          [
+            "-(arm_height)",
+            "-(arm_height - (outer_corner_chamfer))"
+          ],
+          [
+            "-(arm_height)",
+            "-((-(vertical_arm_length)) + (arm_end_chamfer))"
+          ],
+          [
+            "(-(arm_height)) + (arm_end_chamfer)",
+            "vertical_arm_length"
+          ],
+          [
+            "-(elephant_foot_relief)",
+            "vertical_arm_length"
+          ],
+          [
+            0,
+            "-((-(vertical_arm_length)) + (elephant_foot_relief))"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "i_corner",
+          "tip_hor_relief",
+          "o_hor_tip",
+          "o_hor_bevel",
+          "o_hor",
+          "o_corner",
+          "o_vert",
+          "o_vert_bevel",
+          "o_vert_end",
+          "tip_vert_relief",
+          "v_tip"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "arm_width",
+        "direction": "symmetric",
+        "body_name": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ]
+        ],
+        "radius": "inside_corner_radius",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            60.0,
+            -12.0,
+            4.8
+          ],
+          [
+            58.5,
+            -12.0,
+            10.5
+          ],
+          [
+            25.5,
+            -12.0,
+            12.0
+          ],
+          [
+            -9.0,
+            -12.0,
+            9.0
+          ],
+          [
+            -12.0,
+            -12.0,
+            -25.5
+          ],
+          [
+            -10.5,
+            -12.0,
+            -58.5
+          ],
+          [
+            -4.8,
+            -12.0,
+            -60.0
+          ],
+          [
+            60.0,
+            12.0,
+            4.8
+          ],
+          [
+            58.5,
+            12.0,
+            10.5
+          ],
+          [
+            25.5,
+            12.0,
+            12.0
+          ],
+          [
+            -9.0,
+            12.0,
+            9.0
+          ],
+          [
+            -12.0,
+            12.0,
+            -25.5
+          ],
+          [
+            -10.5,
+            12.0,
+            -58.5
+          ],
+          [
+            -4.8,
+            12.0,
+            -60.0
+          ]
+        ],
+        "distance": "side_edge_chamfer",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": [
+          [
+            29.7,
+            -12.0,
+            -0.0
+          ],
+          [
+            29.7,
+            12.0,
+            -0.0
+          ]
+        ],
+        "distance": "elephant_foot_relief",
+        "body": "CornerBracket"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            57.292893218813454,
+            12.707106781186548,
+            0.0
+          ],
+          "x_dir": [
+            0.7071067811865476,
+            0.7071067811865475,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "Horizontal tip relief +Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-(elephant_foot_relief)) - 1 mm",
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            "elephant_foot_relief + 1 mm"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            57.292893218813454,
+            -12.707106781186548,
+            0.0
+          ],
+          "x_dir": [
+            0.7071067811865476,
+            -0.7071067811865475,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            0.0,
+            1.0
+          ]
+        },
+        "name": "Horizontal tip relief -Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-(elephant_foot_relief)) - 1 mm",
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            "elephant_foot_relief + 1 mm"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
+        "direction": "negative",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            9.292893218813452,
+            -60.707106781186546
+          ],
+          "x_dir": [
+            0.0,
+            0.7071067811865476,
+            -0.7071067811865475
+          ],
+          "y_dir": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "name": "Vertical tip relief +Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-(elephant_foot_relief)) - 1 mm",
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            "elephant_foot_relief + 1 mm"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
+        "direction": "positive",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            -9.292893218813452,
+            -60.707106781186546
+          ],
+          "x_dir": [
+            0.0,
+            -0.7071067811865476,
+            -0.7071067811865475
+          ],
+          "y_dir": [
+            -1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "name": "Vertical tip relief -Y"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            "(-(elephant_foot_relief)) - 1 mm",
+            -1
+          ],
+          [
+            1,
+            -1
+          ],
+          [
+            1,
+            "elephant_foot_relief + 1 mm"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "side_edge_chamfer * 1.41421 + 2 mm",
+        "direction": "negative",
+        "operation": "cut",
+        "targets": [
+          "CornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "plywood_thickness + (bolt_offset)",
+          "bolt_y_offset",
+          "arm_height"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "head_diameter + (head_clearance)",
+        "depth": "head_recess",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "plywood_thickness + (bolt_offset)",
+          "bolt_y_offset",
+          "arm_height - (head_recess)"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "bolt_diameter + (bolt_clearance)",
+        "depth": "arm_height - (head_recess)",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "head_diameter + (head_clearance)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "plywood_thickness + (bolt_offset)",
+          "bolt_y_offset",
+          "arm_height"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(head_diameter + (head_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "plywood_thickness + (bolt_offset)",
+          "bolt_y_offset",
+          0
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(bolt_diameter + (bolt_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(plywood_thickness + (bolt_offset)) + (bolt_spacing)",
+          "bolt_y_offset",
+          "arm_height"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "head_diameter + (head_clearance)",
+        "depth": "head_recess",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(plywood_thickness + (bolt_offset)) + (bolt_spacing)",
+          "bolt_y_offset",
+          "arm_height - (head_recess)"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "bolt_diameter + (bolt_clearance)",
+        "depth": "arm_height - (head_recess)",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "head_diameter + (head_clearance)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(plywood_thickness + (bolt_offset)) + (bolt_spacing)",
+          "bolt_y_offset",
+          "arm_height"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(head_diameter + (head_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(plywood_thickness + (bolt_offset)) + (bolt_spacing)",
+          "bolt_y_offset",
+          0
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(bolt_diameter + (bolt_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(arm_height)",
+          "bolt_y_offset",
+          "-(plywood_thickness + (bolt_offset))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "head_diameter + (head_clearance)",
+        "depth": "head_recess",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(-(arm_height)) + (head_recess)",
+          "bolt_y_offset",
+          "-(plywood_thickness + (bolt_offset))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "bolt_diameter + (bolt_clearance)",
+        "depth": "arm_height - (head_recess)",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "head_diameter + (head_clearance)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(arm_height)",
+          "bolt_y_offset",
+          "-(plywood_thickness + (bolt_offset))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(head_diameter + (head_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0,
+          "bolt_y_offset",
+          "-(plywood_thickness + (bolt_offset))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(bolt_diameter + (bolt_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(arm_height)",
+          "bolt_y_offset",
+          "-((plywood_thickness + (bolt_offset)) + (bolt_spacing))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "head_diameter + (head_clearance)",
+        "depth": "head_recess",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "(-(arm_height)) + (head_recess)",
+          "bolt_y_offset",
+          "-((plywood_thickness + (bolt_offset)) + (bolt_spacing))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "bolt_diameter + (bolt_clearance)",
+        "depth": "arm_height - (head_recess)",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "head_diameter + (head_clearance)",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "-(arm_height)",
+          "bolt_y_offset",
+          "-((plywood_thickness + (bolt_offset)) + (bolt_spacing))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(head_diameter + (head_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0,
+          "bolt_y_offset",
+          "-((plywood_thickness + (bolt_offset)) + (bolt_spacing))"
+        ],
+        "targets": [
+          "CornerBracket"
+        ],
+        "diameter": "(bolt_diameter + (bolt_clearance)) + (bolt_hole_edge_relief * 2)",
+        "depth": "bolt_hole_edge_relief",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ]
+}

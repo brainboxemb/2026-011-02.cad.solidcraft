@@ -1,0 +1,841 @@
+{
+  "format": "scpf-replay",
+  "version": 2,
+  "commands": [
+    {
+      "command": "component.create",
+      "params": {
+        "name": "WallHook",
+        "grounded": true
+      },
+      "bind": {
+        "$wallhook": "occurrence",
+        "$component_1": "component"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_WallHook__Sharp hook side profile"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            -0.0
+          ],
+          [
+            6.0,
+            -0.0
+          ],
+          [
+            32.0,
+            -26.0
+          ],
+          [
+            32.0,
+            -42.0
+          ],
+          [
+            26.0,
+            -42.0
+          ],
+          [
+            26.0,
+            -32.0
+          ],
+          [
+            6.0,
+            -32.0
+          ],
+          [
+            6.0,
+            -57.0
+          ],
+          [
+            0.0,
+            -57.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "back_lower",
+          "diagonal_lower",
+          "diagonal_upper",
+          "outer_tip_upper",
+          "inner_tip_upper",
+          "inner_tip_lower",
+          "inner_back_corner",
+          "back_upper_inner",
+          "back_upper_outer"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 15.0,
+        "direction": "symmetric",
+        "body_name": "WallHook"
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0,
+            0.0
+          ],
+          [
+            32.0,
+            0.0,
+            26.0
+          ],
+          [
+            32.0,
+            0.0,
+            42.0
+          ],
+          [
+            26.0,
+            0.0,
+            42.0
+          ],
+          [
+            26.0,
+            0.0,
+            32.0
+          ],
+          [
+            6.0,
+            0.0,
+            32.0
+          ],
+          [
+            6.0,
+            0.0,
+            57.0
+          ],
+          [
+            0.0,
+            0.0,
+            57.0
+          ]
+        ],
+        "radius": 2.0,
+        "body": "WallHook"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": "XZ",
+        "name": "d1_WallHook__Sharp triangular gusset window"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            6.0,
+            -8.485281374238571
+          ],
+          [
+            23.51471862576143,
+            -26.0
+          ],
+          [
+            6.0,
+            -26.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "window_lower",
+          "window_front",
+          "window_upper"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": 15.0,
+        "direction": "symmetric",
+        "operation": "cut",
+        "targets": [
+          "WallHook"
+        ]
+      }
+    },
+    {
+      "command": "solid.fillet",
+      "params": {
+        "edges": [
+          [
+            6.0,
+            0.0,
+            8.485281374238571
+          ],
+          [
+            23.51471862576143,
+            0.0,
+            26.0
+          ],
+          [
+            6.0,
+            0.0,
+            26.0
+          ]
+        ],
+        "radius": 2.0,
+        "body": "WallHook"
+      }
+    },
+    {
+      "command": "solid.cylinder",
+      "params": {
+        "height": 26.0,
+        "diameter": 8.0,
+        "base": [
+          6.0,
+          0,
+          17.0
+        ],
+        "axis": "X",
+        "operation": "cut",
+        "targets": [
+          "WallHook"
+        ]
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$d1_WallHook_topology_face_1": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              -1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$d1_WallHook_topology_edges_1": {
+          "field": "edges",
+          "boundary_of": "$d1_WallHook_topology_face_1",
+          "body": "WallHook"
+        }
+      }
+    },
+    {
+      "command": "model.faces",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$d1_WallHook_topology_face_2": {
+          "field": "faces",
+          "where": {
+            "plane_normal": [
+              0,
+              1,
+              0
+            ]
+          },
+          "max": "area"
+        }
+      }
+    },
+    {
+      "command": "model.edges",
+      "params": {
+        "body": "WallHook"
+      },
+      "bind": {
+        "$d1_WallHook_topology_edges_2": {
+          "field": "edges",
+          "boundary_of": "$d1_WallHook_topology_face_2",
+          "body": "WallHook",
+          "prepend": "$d1_WallHook_topology_edges_1"
+        }
+      }
+    },
+    {
+      "command": "solid.chamfer",
+      "params": {
+        "edges": "$d1_WallHook_topology_edges_2",
+        "distance": 1.5,
+        "body": "WallHook"
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          6.0,
+          0.0,
+          47.0
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": 4.2,
+        "depth": 6.0,
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": 6.2,
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0.0,
+          0.0,
+          47.0
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": 4.2,
+        "depth": 6.0,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": 4.8,
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          6.0,
+          0.0,
+          17.0
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": 4.2,
+        "depth": 6.0,
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": 6.2,
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          0.0,
+          0.0,
+          17.0
+        ],
+        "targets": [
+          "WallHook"
+        ],
+        "diameter": 4.2,
+        "depth": 6.0,
+        "direction": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "type": "countersink",
+        "cs_diameter": 4.8,
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "appearance.assign",
+      "params": {
+        "bodies": [
+          "WallHook"
+        ],
+        "color": "#FFD21A"
+      }
+    },
+    {
+      "command": "component.activate",
+      "params": {
+        "component": "root"
+      }
+    },
+    {
+      "command": "drawing.create",
+      "params": {
+        "name": "Wall Hook Drawing",
+        "template": "iso-a4-part",
+        "first_sheet_name": "Sheet 1"
+      },
+      "bind": {
+        "$drawing_1": "id",
+        "$drawing_1_source": {
+          "field": "sources",
+          "where": {
+            "path": null
+          },
+          "select": "id"
+        },
+        "$drawing_1_sheet": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "id"
+        }
+      }
+    },
+    {
+      "command": "drawing.sheet.set",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "orientation": "landscape",
+        "documents": {
+          "source": "$drawing_1_source",
+          "component": "$component_1"
+        },
+        "title_block_overrides": {
+          "title": "Wall Hook",
+          "identification_number": "wall-hook"
+        }
+      }
+    },
+    {
+      "command": "drawing.inspect",
+      "params": {},
+      "bind": {
+        "$drawing_1_orientation": {
+          "field": "sheets",
+          "where": {
+            "name": "Sheet 1"
+          },
+          "select": "orientation"
+        }
+      }
+    },
+    {
+      "command": "drawing.properties.set",
+      "params": {
+        "values": {
+          "part_number": "wall-hook",
+          "description": "Wall Hook technical drawing"
+        }
+      }
+    },
+    {
+      "command": "drawing.revision.add",
+      "params": {
+        "set": {
+          "revision": "A",
+          "description": "Initial technical drawing",
+          "designer": "brainboxemb",
+          "checker": "CI",
+          "date": "2026-11-26",
+          "hidden": true
+        }
+      }
+    },
+    {
+      "command": "drawing.view.standard",
+      "params": {
+        "sheet": "$drawing_1_sheet",
+        "iso": true,
+        "gap_mm": 16.0,
+        "scale": "1:1"
+      },
+      "bind": {
+        "$drawing_1_front": "view",
+        "$drawing_1_top": "top",
+        "$drawing_1_right": "right",
+        "$drawing_1_iso": "iso"
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_front",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$wallhook"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_iso",
+        "set": {
+          "source": {
+            "occurrences": [
+              [
+                "$wallhook"
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_front",
+        "set": {
+          "place": {
+            "at": [
+              52.0,
+              138.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_top",
+        "set": {
+          "place": {
+            "at": [
+              52.0,
+              76.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_right",
+        "set": {
+          "place": {
+            "at": [
+              108.0,
+              138.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "command": "drawing.view.edit",
+      "params": {
+        "view": "$drawing_1_iso",
+        "set": {
+          "place": {
+            "at": [
+              220.0,
+              142.0
+            ]
+          },
+          "scale": "1:1",
+          "visual_style": "shaded"
+        }
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                3.0,
+                0.0,
+                0.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                0.0,
+                57.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 12.0
+      },
+      "bind": {
+        "$drawing_1_dimension_1": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_top",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                3.0,
+                -7.5,
+                47.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                7.5,
+                47.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 10.0
+      },
+      "bind": {
+        "$drawing_1_dimension_2": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                0.0,
+                0.0,
+                40.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                6.0,
+                0.0,
+                40.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "horizontal"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_3": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                6.0,
+                0.0,
+                37.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                26.0,
+                0.0,
+                37.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "horizontal"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_4": "dimension"
+      }
+    },
+    {
+      "command": "drawing.dimension.add",
+      "params": {
+        "view": "$drawing_1_front",
+        "kind": {
+          "faces": {
+            "a": {
+              "point": [
+                16.0,
+                0.0,
+                32.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "b": {
+              "point": [
+                3.0,
+                0.0,
+                57.0
+              ],
+              "path": [
+                "$wallhook"
+              ]
+            },
+            "direction": "vertical"
+          }
+        },
+        "decimals": 0,
+        "offset_mm": 8.0
+      },
+      "bind": {
+        "$drawing_1_dimension_5": "dimension"
+      }
+    },
+    {
+      "command": "drawing.note.add",
+      "params": {
+        "anchor": {
+          "sheet": "$drawing_1_sheet"
+        },
+        "at": [
+          14.0,
+          50.0
+        ],
+        "content": "NOTES\n1. ALL DIMENSIONS IN MM.\n2. HOLE CENTRES: 10 FROM TOP; 17 FROM BOTTOM.\n3. 2\u00d7 \u00d84.2 THRU; LOWER TOOL ACCESS \u00d88.\n4. CHAMFERS: BODY 1.5; ENTRY 1.0; WALL RELIEF 0.3.",
+        "cap_mm": 1.6,
+        "align": "left"
+      },
+      "bind": {
+        "$drawing_1_note_1": "note"
+      }
+    },
+    {
+      "command": "drawing.view.inspect",
+      "params": {
+        "view": "$drawing_1_iso"
+      }
+    },
+    {
+      "command": "drawing.inspect",
+      "params": {}
+    },
+    {
+      "command": "drawing.close",
+      "params": {}
+    }
+  ],
+  "artifacts": {
+    "drawings": [
+      {
+        "name": "Wall Hook Drawing",
+        "drawing": "$drawing_1",
+        "sheet": "$drawing_1_sheet",
+        "orientation": "$drawing_1_orientation",
+        "pdf": "drawings/Wall-Hook-Drawing.pdf",
+        "png": "drawings/Wall-Hook-Drawing.png",
+        "inspect": "drawings/Wall-Hook-Drawing.json",
+        "expected": {
+          "orientation": "landscape",
+          "view_count": 4,
+          "dimension_count": 5,
+          "note_count": 1,
+          "properties": {
+            "part_number": "wall-hook",
+            "description": "Wall Hook technical drawing"
+          },
+          "title_block": {
+            "title": "Wall Hook",
+            "identification_number": "wall-hook"
+          },
+          "view_styles": {
+            "$drawing_1_iso": "shaded"
+          },
+          "revision": {
+            "revision": "A",
+            "description": "Initial technical drawing",
+            "designer": "brainboxemb",
+            "checker": "CI",
+            "date": "2026-11-26",
+            "hidden": true
+          }
+        }
+      }
+    ]
+  }
+}

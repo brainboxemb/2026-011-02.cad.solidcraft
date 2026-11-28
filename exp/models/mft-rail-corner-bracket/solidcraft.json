@@ -1,0 +1,619 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "arm_length",
+        "expression": "75",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "wall_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "foot_thickness",
+        "expression": "6",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "top_gusset_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "top_gusset_leg",
+        "expression": "55",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bottom_gusset_leg",
+        "expression": "55",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "bottom_gusset_thickness",
+        "expression": "5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_bolt_diameter",
+        "expression": "8.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_hole_first",
+        "expression": "12.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "rail_hole_second",
+        "expression": "62.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "mft_screw_diameter",
+        "expression": "5.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "mft_screw_head_diameter",
+        "expression": "10.5",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "mft_screw_x",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "mft_screw_y",
+        "expression": "20",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "arm_length",
+        "width": "wall_thickness",
+        "height": "foot_thickness + 27 mm",
+        "operation": "new",
+        "corner": [
+          "(arm_length / 2) + (-(arm_length / 2))",
+          0,
+          "-(foot_thickness + 27 mm)"
+        ],
+        "body_name": "MFTRailCornerBracket"
+      }
+    },
+    {
+      "command": "solid.box",
+      "params": {
+        "length": "wall_thickness",
+        "width": "arm_length",
+        "height": "foot_thickness + 27 mm",
+        "operation": "join",
+        "corner": [
+          0,
+          "(arm_length / 2) + (-(arm_length / 2))",
+          "-(foot_thickness + 27 mm)"
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -5.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Top MFT gusset"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "top_gusset_leg",
+            0
+          ],
+          [
+            0,
+            "top_gusset_leg"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "top_gusset_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -27.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Bottom corner gusset"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            0
+          ],
+          [
+            "bottom_gusset_leg",
+            0
+          ],
+          [
+            0,
+            "bottom_gusset_leg"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "bottom_gusset_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "X rail support foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0,
+            -18.0
+          ],
+          [
+            75.0,
+            -18.0
+          ],
+          [
+            75.0,
+            0
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Y rail support foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -18.0,
+            0
+          ],
+          [
+            0,
+            0
+          ],
+          [
+            0,
+            75.0
+          ],
+          [
+            -18.0,
+            75.0
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            -33.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Rounded outside corner foot"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -18.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            -18.0
+          ]
+        ],
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.arc.center_point",
+      "params": {
+        "center": [
+          0.0,
+          0.0
+        ],
+        "start": [
+          0.0,
+          -18.0
+        ],
+        "end": [
+          -18.0,
+          0.0
+        ],
+        "clockwise": true,
+        "connect": true
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "distance": "foot_thickness",
+        "direction": "positive",
+        "operation": "join",
+        "targets": [
+          "MFTRailCornerBracket"
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "rail_hole_first",
+          "wall_thickness",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "rail_bolt_diameter",
+        "depth": "wall_thickness",
+        "direction": [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "rail_hole_second",
+          "wall_thickness",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "rail_bolt_diameter",
+        "depth": "wall_thickness",
+        "direction": [
+          0.0,
+          -1.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "wall_thickness",
+          "rail_hole_first",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "rail_bolt_diameter",
+        "depth": "wall_thickness",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "wall_thickness",
+          "rail_hole_second",
+          -13.5
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "rail_bolt_diameter",
+        "depth": "wall_thickness",
+        "direction": [
+          -1.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "solid.hole",
+      "params": {
+        "position": [
+          "mft_screw_x",
+          "mft_screw_y",
+          "-(top_gusset_thickness)"
+        ],
+        "targets": [
+          "MFTRailCornerBracket"
+        ],
+        "diameter": "mft_screw_diameter",
+        "depth": "top_gusset_thickness",
+        "direction": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "type": "countersink",
+        "cs_diameter": "mft_screw_head_diameter",
+        "cs_angle": 90
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "PETG prototype",
+        "density_g_cm3": 1.27,
+        "color": "#30343B"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MFTRailCornerBracket"
+        ],
+        "material": "PETG prototype"
+      }
+    }
+  ]
+}

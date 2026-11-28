@@ -1,0 +1,449 @@
+{
+  "commands": [
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "length",
+        "expression": "250",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "repeat_count",
+        "expression": "2",
+        "unit": ""
+      }
+    },
+    {
+      "command": "parameters.add",
+      "params": {
+        "name": "repeat_pitch",
+        "expression": "100",
+        "unit": "mm"
+      }
+    },
+    {
+      "command": "sheet.manage_rules",
+      "params": {
+        "name": "Mounting Rail M8 Rule",
+        "thickness": 1.25,
+        "k_factor": 0.4,
+        "bend_radius": 1.25,
+        "active": true
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Flat rail blank"
+      }
+    },
+    {
+      "command": "sketch.line",
+      "params": {
+        "points": [
+          [
+            -32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            0
+          ],
+          [
+            32.99778714378214,
+            "length"
+          ],
+          [
+            -32.99778714378214,
+            "length"
+          ]
+        ],
+        "closed": true,
+        "ids": [
+          "a",
+          "b",
+          "c",
+          "d"
+        ]
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "sheet.flange",
+      "params": {
+        "type": "base",
+        "sketch": "Flat rail blank",
+        "rule": "Mounting Rail M8 Rule",
+        "body_name": "MountingRailM8"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Repeat round A"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          12.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round A",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Repeat horizontal slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          0.0,
+          35.7
+        ],
+        "p1": [
+          0.0,
+          39.3
+        ],
+        "width": 6.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat horizontal slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Repeat round B"
+      }
+    },
+    {
+      "command": "sketch.circle.center",
+      "params": {
+        "center": [
+          0.0,
+          62.5
+        ],
+        "diameter": 12.5
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat round B",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "sketch.create",
+      "params": {
+        "plane": {
+          "origin": [
+            0.0,
+            0.0,
+            1.25
+          ],
+          "x_dir": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "y_dir": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        "name": "Repeat vertical slot"
+      }
+    },
+    {
+      "command": "sketch.slot.center_to_center",
+      "params": {
+        "p0": [
+          -3.3,
+          87.5
+        ],
+        "p1": [
+          3.3,
+          87.5
+        ],
+        "width": 8.4
+      }
+    },
+    {
+      "command": "sketch.finish",
+      "params": {}
+    },
+    {
+      "command": "solid.extrude",
+      "params": {
+        "operation": "cut",
+        "targets": [
+          "MountingRailM8"
+        ],
+        "name": "Repeat vertical slot",
+        "distance": 2.5,
+        "direction": "negative"
+      }
+    },
+    {
+      "command": "solid.pattern.rectangular",
+      "params": {
+        "features": [
+          "Repeat round A",
+          "Repeat horizontal slot",
+          "Repeat round B",
+          "Repeat vertical slot"
+        ],
+        "dir1": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "count1": "repeat_count",
+        "spacing1": "repeat_pitch",
+        "alignment": "right",
+        "reversed": false
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            -28.123340357836604,
+            250.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          125.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            28.123340357836604,
+            0.0,
+            0.0
+          ],
+          [
+            28.123340357836604,
+            250.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          125.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            -12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            -12.374446785945535,
+            250.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          125.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "sheet.fold",
+      "params": {
+        "angle": 90,
+        "position": "centerline",
+        "flip": false,
+        "body": "MountingRailM8",
+        "points": [
+          [
+            12.374446785945535,
+            0.0,
+            0.0
+          ],
+          [
+            12.374446785945535,
+            250.0,
+            0.0
+          ]
+        ],
+        "fixed": [
+          0.0,
+          125.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "command": "material.create",
+      "params": {
+        "name": "Galvanized steel",
+        "density_g_cm3": 7.85,
+        "color": "#9EA6AA"
+      }
+    },
+    {
+      "command": "material.assign",
+      "params": {
+        "bodies": [
+          "MountingRailM8"
+        ],
+        "material": "Galvanized steel"
+      }
+    }
+  ]
+}

@@ -11,7 +11,12 @@ create a `main -> dev` sync merely to copy plan/handoff metadata.
 
 ## Now
 
-No active work selected.
+### #299 — adopt released Forge v0.27.0 baseline
+
+Change only the released Forge dependency pin from v0.26.0 to v0.27.0, then
+run the complete CAD catalog with all modules and all active model owners.
+Keep SolidCraft runtime v0.3.8 / SolidCraft 0.50.0 unchanged. Integrate only
+after full qualification and permanent dev build evidence are green.
 
 ## Mandatory integration rule
 
@@ -55,15 +60,7 @@ Direct merge API calls, auto-merge and UI/manual merge fallback are forbidden.
 
 ## Next
 
-CAD #294 is complete and its evidence-only PR #297 remains open/unmerged as
-the durable rolling `/test/` consumer record. The current Forge experimental
-checkpoint `72e01a8db8b522b97b9f33a63eb08f6ce4153a68` passed the complete
-43-model catalog and representative visual review.
+After #299 is accepted, reconcile the released baseline in this main-owned plan.
+Do not carry the earlier Forge-exp qualification/rollback narrative forward as
+active work; v0.27.0 is now a published release.
 
-The Forge integration decision remains explicitly **unmade**. CAD qualification
-is evidence only: it does not authorize or imply an `exp -> dev` merge.
-
-Forge PR #641 was merged prematurely and is being corrected through Forge
-rollback PR #643. After that rollback, review this durable `/test/` evidence
-before selecting any new Forge integration checkpoint. Do not create a CAD
-source change merely to record that later Forge decision.

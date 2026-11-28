@@ -10,7 +10,8 @@ description: >
   share one source-derived parameter graph with two tube-interface families:
   protruding rails for the female-slot clamp and female receivers for the
   male-dovetail clamp. Native reference ticks and blind tapered reference holes
-  remain independently selectable creation options on every reusable coupler.
+  remain independently selectable creation options on every reusable coupler,
+  but both are disabled by default to keep routine Forge/SolidCraft builds small.
 variant_groups:
   - title: Standard
     variants:
@@ -43,7 +44,7 @@ variants:
       - Clear the two panel bushings
       - Add two mounting bores and two locator pad/pin stacks
       - Add the panel-seam guide
-      - Cut native reference tick marks and blind tapered reference holes
+      - Optionally cut native reference tick marks and blind tapered reference holes
   hub75-frame-coupler-edge:
     title: HUB75 Frame Coupler — Edge
     tagline: Configured straight edge coupler for a HUB75 display frame
@@ -57,7 +58,7 @@ variants:
       - Preserve the native TOP-edge T clip and rounded guide ends
       - Add the two bushing support zones, mounting bores and locator pads
       - Cut the source two-section tapered rail clearance
-      - Cut native reference tick marks and blind tapered reference holes
+      - Optionally cut native reference tick marks and blind tapered reference holes
       - Control the exact stepped panel-pin pass-through from the native configuration table
   hub75-frame-coupler-corner-left:
     title: HUB75 Frame Coupler — Corner Left
@@ -72,7 +73,7 @@ variants:
       - Add the source bushing support
       - Cut the source two-section tapered rail clearance and bushing relief
       - Add one mounting bore and locator pad
-      - Cut native reference tick marks and blind tapered reference holes
+      - Optionally cut native reference tick marks and blind tapered reference holes
   hub75-frame-coupler-corner-right:
     title: HUB75 Frame Coupler — Corner Right
     tagline: Configured right corner member from the shared HUB75 frame-coupler family
@@ -103,7 +104,7 @@ variants:
       - Cut clamp-bow clearance at the inner side
       - Add the asymmetric source rail-entry chamfers
       - Join the final R5 rear support and continuous base around both clamps
-      - Re-cut the selected reference marks into the new rear material
+      - Optionally re-cut the selected reference marks into the new rear material
   hub75-frame-coupler-corner-left-tube:
     title: HUB75 Frame Coupler — Corner Left Tube
     tagline: Configured left Corner coupler with one loose-clamp slide interface
@@ -147,7 +148,7 @@ variants:
     stages:
       - Reuse the shared configured Edge coupler history
       - Apply the shared inward clamp-foot and bow clearances
-      - Preserve the final R5 rear support, base plate and reference recut
+      - Preserve the final R5 rear support and base plate; optionally re-cut selected reference marks
       - Add two 16 mm receiver supports
       - Cut two source 12-point female dovetail profiles with 0.2 mm clearance
   hub75-frame-coupler-corner-left-tube-receiver:

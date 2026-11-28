@@ -549,8 +549,8 @@ def _apply_reference_pattern(
     *,
     p,
     profile_key,
-    reference_ticks=True,
-    reference_holes=True,
+    reference_ticks=False,
+    reference_holes=False,
 ):
     """Apply independently optional native reference features."""
     if reference_ticks:
@@ -582,8 +582,8 @@ class Hub75FrameCouplerMiddle:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -688,8 +688,8 @@ def _cut_edge_like_base(
     p,
     profile_key,
     screw_xs,
-    reference_ticks=True,
-    reference_holes=True,
+    reference_ticks=False,
+    reference_holes=False,
 ):
     """Apply mounting bores plus independently optional reference cuts."""
     for x in screw_xs:
@@ -754,8 +754,8 @@ def _build_edge_like(
     profile_key,
     relief_key,
     screw_x,
-    reference_ticks=True,
-    reference_holes=True,
+    reference_ticks=False,
+    reference_holes=False,
 ):
     """Shared configured construction for one left/right corner member."""
     screw_xs = (screw_x,)
@@ -781,7 +781,7 @@ def _build_edge_like(
     return _locator_pad(body, p=p, x=screw_x, z=_edge_support_z(p))
 
 
-def _build_edge_body(*, p, reference_ticks=True, reference_holes=True):
+def _build_edge_body(*, p, reference_ticks=False, reference_holes=False):
     """Shared configured Edge body before optional tube-interface features."""
     screw_xs = (-p["mid_screw_x"], p["mid_screw_x"])
     body = _edge_like_stock(
@@ -861,8 +861,8 @@ class Hub75FrameCouplerEdge:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -884,8 +884,8 @@ class Hub75FrameCouplerCornerLeft:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -908,8 +908,8 @@ class Hub75FrameCouplerCornerRight:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1153,7 +1153,7 @@ def _cut_edge_tube_bow_clearance(body):
     return body - bow_clearance
 
 
-def _add_edge_tube_rear_support(body, *, p, reference_ticks=True):
+def _add_edge_tube_rear_support(body, *, p, reference_ticks=False):
     """Final active Edge rear support/base/reference chain #226-230."""
     rear_support = _multi_profile_solid(
         name="Symmetrische bulten met R5-overgangen",
@@ -1233,7 +1233,7 @@ def _add_receiver_interface(body, *centers):
     return body - grooves
 
 
-def _add_edge_tube_interface(body, *, p, reference_ticks=True):
+def _add_edge_tube_interface(body, *, p, reference_ticks=False):
     """Existing active rail interface #189/#191/#195/#198 plus #226-230."""
     body = _cut_edge_tube_foot_clearance(body)
 
@@ -1259,7 +1259,7 @@ def _add_edge_tube_interface(body, *, p, reference_ticks=True):
     )
 
 
-def _add_edge_tube_receiver_interface(body, *, p, reference_ticks=True):
+def _add_edge_tube_receiver_interface(body, *, p, reference_ticks=False):
     """Alternate source interface with female receivers instead of rails."""
     body = _cut_edge_tube_foot_clearance(body)
     body = _cut_edge_tube_bow_clearance(body)
@@ -1341,8 +1341,8 @@ class Hub75FrameCouplerEdgeTube:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1368,8 +1368,8 @@ class Hub75FrameCouplerCornerLeftTube:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1396,8 +1396,8 @@ class Hub75FrameCouplerCornerRightTube:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1425,8 +1425,8 @@ class Hub75FrameCouplerEdgeTubeReceiver:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1452,8 +1452,8 @@ class Hub75FrameCouplerCornerLeftTubeReceiver:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)
@@ -1480,8 +1480,8 @@ class Hub75FrameCouplerCornerRightTubeReceiver:
     mid_wall: float = 4.0
     mid_base: float = 3.0
     mid_guide: float = 6.0
-    reference_ticks: bool = True
-    reference_holes: bool = True
+    reference_ticks: bool = False
+    reference_holes: bool = False
 
     def build(self):
         p = _parameters(self)

@@ -20,6 +20,7 @@ class PolicyTests(unittest.TestCase):
     def test_permanent_branches_are_never_temporary(self):
         self.assertFalse(is_temporary("main", CONFIG))
         self.assertFalse(is_temporary("dev", CONFIG))
+        self.assertFalse(is_temporary("exp", CONFIG))
 
     def test_allowed_prefix_is_temporary(self):
         self.assertTrue(is_temporary("issue/11-cleanup", CONFIG))
@@ -38,7 +39,7 @@ class PolicyTests(unittest.TestCase):
     def test_docs_branch_may_be_cleaned_after_governance_merge_to_stable(self):
         self.assertEqual(
             merge_targets("docs/125-governance", CONFIG),
-            ("dev", "main"),
+            ("dev", "exp", "main"),
         )
         self.assertTrue(
             eligible_post_merge(
@@ -53,12 +54,23 @@ class PolicyTests(unittest.TestCase):
     def test_issue_branch_cannot_be_cleaned_after_direct_main_merge(self):
         self.assertEqual(
             merge_targets("issue/11-work", CONFIG),
-            ("dev",),
+            ("dev", "exp"),
         )
         self.assertFalse(
             eligible_post_merge(
                 head="issue/11-work",
                 base="main",
+                same_repository=True,
+                merged=True,
+                config=CONFIG,
+            )
+        )
+
+    def test_feature_branch_may_be_cleaned_after_exp_merge(self):
+        self.assertTrue(
+            eligible_post_merge(
+                head="issue/22-experiment",
+                base="exp",
                 same_repository=True,
                 merged=True,
                 config=CONFIG,

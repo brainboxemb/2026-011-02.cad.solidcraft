@@ -58,12 +58,18 @@ def resolve_plan(
     models: tuple[ModelConfig, ...],
     selected_ids: tuple[str, ...],
     namespace: str,
+    source_ref: str | None = None,
     forge_ref: str | None = None,
 ) -> dict:
-    if namespace not in {project.development_branch, project.stable_branch}:
+    allowed = {
+        project.stable_branch,
+        project.development_branch,
+        project.experimental_branch,
+        "test",
+    }
+    if namespace not in allowed:
         raise BuildConfigError(
-            f"output namespace must be {project.development_branch!r} "
-            f"or {project.stable_branch!r}"
+            f"output namespace must be one of {', '.join(sorted(allowed))}"
         )
     if len(set(selected_ids)) != len(selected_ids):
         raise BuildConfigError("selected model ids must be unique")
@@ -126,6 +132,7 @@ def resolve_plan(
     return {
         "schema": 1,
         "namespace": namespace,
+        "source_ref": source_ref or namespace,
         "source_sha": built_source_sha,
         "forge": {
             "repository": project.forge.repository,

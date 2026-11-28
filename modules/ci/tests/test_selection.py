@@ -84,6 +84,21 @@ class SelectionTests(unittest.TestCase):
         result = expand_model_dependents(selection, MODELS)
         self.assertEqual(result.models, ("box", "screen", "case"))
 
+    def test_dependent_expansion_preserves_build_overrides(self):
+        selection = BuildSelection(
+            branch="issue/review",
+            modules=(),
+            models=("box",),
+            tasks=("test", "build"),
+            forge_ref="a" * 40,
+            output_scope="test",
+        )
+        result = expand_model_dependents(selection, MODELS)
+
+        self.assertEqual(result.forge_ref, "a" * 40)
+        self.assertEqual(result.output_scope, "test")
+        self.assertEqual(result.models, ("box", "screen", "case"))
+
     def test_changed_process_false_model_is_not_selected_automatically(self):
         result = changed_selection(
             branch="dev",

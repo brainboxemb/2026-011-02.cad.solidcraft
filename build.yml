@@ -1,8 +1,9 @@
 schema: 1
-branch: chore/299-forge-027
+branch: issue/310-middle-seam-guide-8-slices
 
-modules: all
-models: all
+modules: []
+models:
+  - hub75-frame-coupler
 tasks:
   - test
   - build

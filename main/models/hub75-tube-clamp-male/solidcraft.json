@@ -570,20 +570,20 @@
       }
     },
     {
-      "command": "config.rule",
+      "command": "config.row",
       "params": {
-        "rule": {
-          "id": "installed",
-          "name": "Installed",
-          "enabled": false,
-          "condition": {
-            "type": "always"
+        "name": "Installed",
+        "values": {
+          "param:clamp_bore": "tube_d"
+        }
+      },
+      "bind": {
+        "$config_row_f8b32f4e92bd": {
+          "field": "rows",
+          "where": {
+            "name": "Installed"
           },
-          "effect": {
-            "type": "drive_parameter",
-            "parameter": "clamp_bore",
-            "expression": "tube_d"
-          }
+          "select": "id"
         }
       }
     },

@@ -1,0 +1,24 @@
+schema: 1
+id: hub75-screen-2panel
+builder: forge
+source: scpf/model.py
+process: true
+dependencies:
+  - hub75-panel
+
+snapshot:
+  camera:
+    target: [0, 0, 160]
+    yaw: -0.24
+    pitch: 0.20
+    distance: 500
+    fov: 0
+
+snapshots:
+  - name: rear.png
+    camera:
+      target: [0, -8, 160]
+      yaw: 2.90
+      pitch: 0.20
+      distance: 500
+      fov: 0

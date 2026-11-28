@@ -1,0 +1,31 @@
+purpose: [example]
+section: components
+group: display-case
+priority: 31
+title: Latch Hook
+tagline: Source-faithful 2 mm sheet-metal keeper from the supplied native SolidCraft model
+description: >
+  Generic matching hook/keeper for the latch. The SCPF model mirrors the
+  supplied native SolidCraft blank and fold history directly: one fixed
+  2 mm sheet blank with two Ø4.3 mounting holes followed by one R2.1 fold.
+  The native hook source is preserved beside the reconstruction.
+parameters: 2 mm sheet; 24 mm mounting width; 15 mm neck width; 2 × Ø4.3 holes at 14 mm pitch; 5 mm edge datum; R2.1; K0.44; 138.76675° fold; 20 mm formed side projection
+stages:
+  - Blank — source Uitslag haak with R5 mounting lobes and tangent straight transitions
+  - Mounting holes — two Ø4.3 holes centred at X5 / Y±7
+  - Sheet base — native 2 mm Haak 2 mm rule, R2.1, K0.44
+  - Hook fold — source fold at X15.9, 138.76675°, position start
+  - Material — galvanized steel
+extra_views:
+  title: Formed hook review
+  note: The top view verifies the native blank outline; the side view verifies the source fold.
+  verified_only: true
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the source-faithful latch hook
+      caption: Top — native R5 lobes, tangent transitions, 15 mm neck and two Ø4.3 holes
+    - kind: build
+      src: side.png
+      alt: Side view of the source-faithful latch hook
+      caption: Side — native R2.1 / 138.76675° formed hook

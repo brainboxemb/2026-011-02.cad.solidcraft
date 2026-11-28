@@ -1,0 +1,34 @@
+purpose: [example]
+section: components
+group: mft
+priority: 36
+title: MFT Rail Corner Insert
+tagline: Replaceable PETG outside-corner filler with two integral clip lips
+description: >
+  Separate printable insert from the native MFT corner assembly. The part fills
+  and rounds the exposed outside corner between the two perpendicular mounting
+  rails. Its source outline uses an exact R18 outer quarter arc, an inner
+  rounded notch and two integral clip lips with sloped lead-ins. The insert is
+  kept separate from the structural rail bracket so it can be printed or
+  replaced independently.
+parameters: R18 outer corner; 26.6 mm body height; v2 inner notch; enlarged clip lips; two upright C-profile lugs; R0.8 lip-root fillets; PETG prototype
+stages:
+  - Outer shell — exact source outline at Z=-26.8, extruded 26.6 mm
+  - Inner notch — diagonal source edges with rounded central relief
+  - Clip Y — enlarged retaining lip with 1.0 mm sloped lead-in
+  - Clip X — enlarged perpendicular retaining lip with 1.0 mm sloped lead-in
+  - C-profile lugs — two additional upright source-derived click lugs
+  - Lip roots — R0.8 inner fillets
+  - Material — PETG prototype
+extra_views:
+  title: Insert fit review
+  verified_only: true
+  items:
+    - kind: build
+      src: top.png
+      alt: Top view of the MFT rail corner insert
+      caption: Top — R18 outside corner and source inner notch
+    - kind: build
+      src: underside.png
+      alt: Underside view of the MFT rail corner insert
+      caption: Underside — two independent clip lips
